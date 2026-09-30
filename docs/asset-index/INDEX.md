@@ -1,7 +1,8 @@
 # tmp_game 에셋 인덱스 — 컨셉별
 
 > 수집 2026-09-28. 대상 계획: [`../CONCEPTS.md`](../CONCEPTS.md#컨셉-71) (미착수 40안 = 20주제 × 상업·예술).
-> 전체 7.0 GB · **파일 95,372개** · 출처 기록(`SOURCE.json`·`sources.json`) 1,019개.
+> 전체 5.8 GB · **파일 67,281개** · 출처 기록(`SOURCE.json`·`sources.json`) 1,019개.
+> (2026-09-30 중복 정리 뒤. 정리 전 기록은 7.0 GB · 95,372개 — 아래 "중복 정리" 참조.)
 >
 > **실물은 `AssetDownloads/tmp_game/`(gitignore)에만 있다.** 원격 수집 폴더
 > (`orca:/home/ubuntu/orca/workspaces/game/tmp_game`)는 2026-09-29에 삭제했다 — 지우기 전에
@@ -13,19 +14,52 @@
 > 뒤엣것을 `LICENSE.opengameart.txt` 로 이름을 갈라 받아 둘 다 살렸다
 > (경위는 그 폴더의 `CASE_COLLISION.md`).
 > 이 문서는 **사람이 고른 요약**이다. `usedFor` 기준 전체 목록은 [`CONCEPT_PACKS.md`](CONCEPT_PACKS.md)
-> (`python3 _tools/build_concept_index.py`로 재생성, 기계용은 `concept_index.json`).
+> (`python3 kit/tools/asset-collect/build_concept_index.py`로 재생성, 기계용은 `concept_index.json`).
 
 ## 폴더
 
+크기는 2026-09-30 중복 정리 뒤 실바이트 합이다(디스크 점유가 아니다 — `icons/` 는
+작은 SVG 5만여 개라 블록 낭비가 커서 `du` 로 재면 훨씬 크게 나온다).
+
 | 폴더 | 크기 | 내용 | 안내 |
 |---|---|---|---|
-| `fonts/` | 321 MB | 76 패밀리 — 터미널·픽셀·한글 모노, 손글씨(영9·한14), 타자기·세리프, UI, 만화, 7세그먼트 | [README](fonts.md) |
-| `shaders/` | 46 MB | 105종 — CRT, 수중 굴절·커스틱, 반사, 필름그레인·VHS, 손전등·어둠, 얼음·균열 | [README](shaders.md) |
-| `audio/` | 2.8 GB | 276팩·5,069파일 — Kenney 전체, 앰비언스, 폴리, 타건, 라디오 노이즈, 발소리, 숨, 관객, 얼음, 드론, PD 음성 6시간, BGM | [README](audio.md) |
-| `images/` | 936 MB | 흑백 PD 사진 266, 사물 461, 장소 248, PBR 재질 44, HDRI 9, 오버레이 40, 실루엣 54, 만화 404, 종이인형 참고 103 | [README](images.md) |
-| `models/` | 2.6 GB | Kenney 38팩, Quaternius 23팩, Poly Haven 392개, 애니메이션 캐릭터 12팩 | [README](models.md) |
-| `icons/` | 347 MB | game-icons.net 4,239, Kenney 2D 40팩, Lucide·Tabler·Phosphor·OpenMoji·Twemoji | [README](icons.md) |
+| `fonts/` | 204 MB | 76 패밀리 — 터미널·픽셀·한글 모노, 손글씨(영9·한14), 타자기·세리프, UI, 만화, 7세그먼트 | [README](fonts.md) |
+| `shaders/` | 40 MB | 105종 — CRT, 수중 굴절·커스틱, 반사, 필름그레인·VHS, 손전등·어둠, 얼음·균열 | [README](shaders.md) |
+| `audio/` | 2.8 GB | 앰비언스, 폴리, 타건, 라디오 노이즈, 발소리, 숨, 관객, 얼음, 드론, PD 음성 6시간, BGM (Kenney 2팩은 옮겨 갔다 — 아래 참조) | [README](audio.md) |
+| `images/` | 927 MB | 흑백 PD 사진 266, 사물 461, 장소 248, PBR 재질 44, HDRI 9, 오버레이 40, 실루엣 54, 만화 404, 종이인형 참고 103 | [README](images.md) |
+| `models/` | 1.7 GB | Quaternius 23팩, Poly Haven 392개, 애니메이션 캐릭터 9팩 (Kenney 38팩은 옮겨 갔다 — 아래 참조) | [README](models.md) |
+| `icons/` | 153 MB | game-icons.net 4,239, Kenney 2D 37팩, Lucide·Tabler·Phosphor·OpenMoji·Twemoji | [README](icons.md) |
 | `kit/tools/asset-collect/` | — | 수집 스크립트(Kenney·Quaternius·itch·Poly Haven), 인덱스 생성기 | |
+
+## 중복 정리 (2026-09-30) — 껍데기만 남은 폴더 45개
+
+`AssetDownloads/` 전체에서 **같은 sha256 파일이 두 자리 이상에 있던 것**을 한 벌로 줄였다.
+남길 쪽은 **tmp_game 밖**을 골랐다 — `library/` 가 예전부터 쓰던 Kenney 팩 단위 정규 자리다.
+
+그 결과 **tmp_game 안의 팩 폴더 45개가 `SOURCE.json` 하나만 남은 껍데기가 되었다.**
+아래 표와 `concept_index.json` 이 그 폴더들을 **`0개`** 로 적는 것은 고장이 아니라 사실이다.
+**내용물은 지워지지 않았다.** 실물의 현재 위치는 이렇다:
+
+| 껍데기가 된 곳 (tmp_game/assets/) | 실물이 있는 곳 (AssetDownloads/) | 개수 |
+|---|---|---|
+| `models/kenney/*` 38팩 전부 | `library/kenney/<같은 이름>/` | 38 |
+| `models/characters-animated/animated-characters-{protagonists,retro,survivors}` | `library/kenney/<같은 이름>/` | 3 |
+| `audio/kenney-audio/{interface-sounds,rpg-audio}` | `Kenney/<같은 이름>.zip` (**압축 상태**) | 2 |
+| `icons/kenney-2d/game-icons` | `Kenney/game-icons.zip` (**압축 상태**) | 1 |
+| `icons/kenney-2d/board-game-icons` | `deckbuilder/icons/kenney_board-game-icons/` (**759/774, 불완전**) | 1 |
+
+**아래 "컨셉별" 표는 계속 tmp_game 경로로 적는다.** `models/kenney/furniture-kit` 처럼
+껍데기가 된 자리를 가리키는 칸이 6개 있으니, 위 표의 규칙대로 `library/kenney/` 에서 찾는다.
+
+주의 두 가지:
+
+- **Kenney 오디오·아이콘 3팩은 zip 으로만 남았다.** 쓰려면 먼저 풀어야 한다.
+- **`board-game-icons` 는 15개(PNG 12·SVG 3)가 실제로 없어졌다.** CC0 이고
+  `SOURCE.json` 에 `downloadUrl` 과 `sha256` 이 있으므로
+  `kit/tools/asset-collect/collect_kenney.py` 로 다시 받으면 복구된다.
+
+벤더 팩 안에서 포맷별로 같은 텍스처가 중복된 것(`Textures/` + `glTF/`, 약 277 MB)은
+**일부러 남겼다.** glTF·FBX 가 그 사본을 상대경로로 참조하므로 지우면 머티리얼이 빈 채로 임포트된다.
 
 ## 라이선스 — 쓰기 전에 확인
 

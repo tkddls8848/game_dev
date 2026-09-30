@@ -3,7 +3,7 @@
 `kit/tools/asset-collect/build_concept_index.py`가 각 `SOURCE.json`·`sources.json`의 `usedFor`에서 만든다. 손으로 고치지 말 것.
 큐레이션한 요약은 `INDEX.md`.
 
-## 1번 — 항목 93개 · 파일 26,958개 · 545 MB
+## 1번 — 항목 93개 · 파일 24,248개 · 439 MB
 
 **fonts** (24)
 
@@ -11,11 +11,11 @@
 - `fonts/terminal-mono/departure-mono` — 6개, OFL-1.1
 - `fonts/terminal-mono/firacode` — 4개, OFL-1.1
 - `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
-- `fonts/terminal-mono/ibmplexmono` — 17개, OFL-1.1
-- `fonts/terminal-mono/jetbrainsmono` — 5개, OFL-1.1
+- `fonts/terminal-mono/ibmplexmono` — 15개, OFL-1.1
+- `fonts/terminal-mono/jetbrainsmono` — 3개, OFL-1.1
 - `fonts/terminal-mono/majormonodisplay` — 4개, OFL-1.1
 - `fonts/terminal-mono/monaspace` — 7개, OFL-1.1
-- `fonts/terminal-mono/nanumgothiccoding` — 5개, OFL-1.1
+- `fonts/terminal-mono/nanumgothiccoding` — 1개, OFL-1.1
 - `fonts/terminal-mono/neodgm` — 3개, OFL-1.1
 - `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
 - `fonts/terminal-mono/pressstart2p` — 5개, OFL-1.1
@@ -23,14 +23,14 @@
 - `fonts/terminal-mono/silkscreen` — 5개, OFL-1.1
 - `fonts/terminal-mono/spacemono` — 7개, OFL-1.1
 - `fonts/terminal-mono/vt323` — 4개, OFL-1.1
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (24)
 
@@ -38,7 +38,7 @@
 - `shaders/crt/Flowerwall-CRT-shader-for-Godot` — 19개, MIT
 - `shaders/crt/Godot-3-2D-CRT-Shader` — 8개, MIT
 - `shaders/crt/Simple-CRT-Shader` — 12개, MIT
-- `shaders/crt/SimpleGodotCRTShader` — 14개, MIT
+- `shaders/crt/SimpleGodotCRTShader` — 13개, MIT
 - `shaders/crt/URP_RetroCRTShader` — 10개, MIT
 - `shaders/crt/Unity_CRTEffect` — 21개, BSD-3-Clause
 - `shaders/crt/godot-crt-lottes-shader` — 5개, Unlicense
@@ -53,18 +53,18 @@
 - `shaders/crt/godotshaders-com/vhs-scanline-color-fuzz` — 2개, CC0-1.0
 - `shaders/crt/gpl-reference/libretro` — 13개, GPL-2.0-or-later (crt-geom, zfast_crt, crt-pi) / GPL (crt-easymode, version unspecified)
 - `shaders/crt/libretro-glsl-permissive` — 47개, Mixed per file: Public Domain / CC0 / MIT
-- `shaders/crt/libretro-slang-permissive` — 57개, Mixed per file: Public Domain / CC0 / MIT
+- `shaders/crt/libretro-slang-permissive` — 55개, Mixed per file: Public Domain / CC0 / MIT
 - `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
-- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
-- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/KinoBloom` — 41개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 23개, MIT
 - `shaders/film-grain-vhs/libretro-permissive` — 14개, Mixed per file: CC0-1.0 / Public Domain / MIT / CC-BY-3.0 (film-grain.slang)
 
 **audio** (18)
 
-- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
-- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
-- `audio/kenney-audio/sci-fi-sounds` — 78개, CC0-1.0
-- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/digital-audio` — 66개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 0개, CC0-1.0
+- `audio/kenney-audio/sci-fi-sounds` — 75개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 54개, CC0-1.0
 - `audio/sfx-ui-typing/50-cc0-sci-fi-sfx` — 52개, CC0
 - `audio/sfx-ui-typing/60-cc0-sci-fi-sfx` — 62개, CC0
 - `audio/sfx-ui-typing/9-sci-fi-computer-sounds-and-beeps` — 11개, CC-BY 3.0
@@ -86,7 +86,7 @@
 
 **models** (15)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/Television_01` — 5개, CC0-1.0
 - `models/polyhaven/cassette_player` — 8개, CC0-1.0
 - `models/polyhaven/circuit_board` — 5개, CC0-1.0
@@ -100,23 +100,23 @@
 - `models/polyhaven/television_02` — 5개, CC0-1.0
 - `models/polyhaven/vintage_video_camera` — 5개, CC0-1.0
 - `models/quaternius/cyberpunkgamekit` — 287개, CC0-1.0
-- `models/quaternius/sci-fi-essentials-kit` — 181개, CC0-1.0
+- `models/quaternius/sci-fi-essentials-kit` — 155개, CC0-1.0
 
 **icons** (11)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
-- `icons/kenney-2d/ui-pack-sci-fi` — 1119개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
+- `icons/kenney-2d/ui-pack-sci-fi` — 1050개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
 - `icons/tabler` — 6224개, MIT
 
-## 2번 — 항목 80개 · 파일 16,727개 · 937 MB
+## 2번 — 항목 80개 · 파일 14,222개 · 902 MB
 
 **fonts** (24)
 
@@ -125,10 +125,10 @@
 - `fonts/terminal-mono/departure-mono` — 6개, OFL-1.1
 - `fonts/terminal-mono/firacode` — 4개, OFL-1.1
 - `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
-- `fonts/terminal-mono/ibmplexmono` — 17개, OFL-1.1
-- `fonts/terminal-mono/jetbrainsmono` — 5개, OFL-1.1
+- `fonts/terminal-mono/ibmplexmono` — 15개, OFL-1.1
+- `fonts/terminal-mono/jetbrainsmono` — 3개, OFL-1.1
 - `fonts/terminal-mono/majormonodisplay` — 4개, OFL-1.1
-- `fonts/terminal-mono/nanumgothiccoding` — 5개, OFL-1.1
+- `fonts/terminal-mono/nanumgothiccoding` — 1개, OFL-1.1
 - `fonts/terminal-mono/neodgm` — 3개, OFL-1.1
 - `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
 - `fonts/terminal-mono/pressstart2p` — 5개, OFL-1.1
@@ -136,14 +136,14 @@
 - `fonts/terminal-mono/silkscreen` — 5개, OFL-1.1
 - `fonts/terminal-mono/spacemono` — 7개, OFL-1.1
 - `fonts/terminal-mono/vt323` — 4개, OFL-1.1
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (20)
 
@@ -151,7 +151,7 @@
 - `shaders/crt/Flowerwall-CRT-shader-for-Godot` — 19개, MIT
 - `shaders/crt/Godot-3-2D-CRT-Shader` — 8개, MIT
 - `shaders/crt/Simple-CRT-Shader` — 12개, MIT
-- `shaders/crt/SimpleGodotCRTShader` — 14개, MIT
+- `shaders/crt/SimpleGodotCRTShader` — 13개, MIT
 - `shaders/crt/URP_RetroCRTShader` — 10개, MIT
 - `shaders/crt/Unity_CRTEffect` — 21개, BSD-3-Clause
 - `shaders/crt/godot-crt-lottes-shader` — 5개, Unlicense
@@ -166,11 +166,11 @@
 - `shaders/crt/godotshaders-com/vhs-scanline-color-fuzz` — 2개, CC0-1.0
 - `shaders/crt/gpl-reference/libretro` — 13개, GPL-2.0-or-later (crt-geom, zfast_crt, crt-pi) / GPL (crt-easymode, version unspecified)
 - `shaders/crt/libretro-glsl-permissive` — 47개, Mixed per file: Public Domain / CC0 / MIT
-- `shaders/crt/libretro-slang-permissive` — 57개, Mixed per file: Public Domain / CC0 / MIT
+- `shaders/crt/libretro-slang-permissive` — 55개, Mixed per file: Public Domain / CC0 / MIT
 
 **audio** (21)
 
-- `audio/kenney-audio/sci-fi-sounds` — 78개, CC0-1.0
+- `audio/kenney-audio/sci-fi-sounds` — 75개, CC0-1.0
 - `audio/radio-static-noise/100-cc0-sfx` — 102개, CC0
 - `audio/radio-static-noise/commons-radio` — 2개, mixed per file: CC0
 - `audio/radio-static-noise/dark-ambience-soundscapes` — 9개, CC-BY-SA 3.0
@@ -199,7 +199,7 @@
 
 **models** (5)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/Barrel_01` — 5개, CC0-1.0
 - `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
 - `models/polyhaven/boombox` — 7개, CC0-1.0
@@ -208,30 +208,30 @@
 **icons** (8)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 3번 — 항목 364개 · 파일 21,330개 · 1,986 MB
+## 3번 — 항목 364개 · 파일 14,209개 · 1,785 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (15)
 
-- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
+- `shaders/film-grain-vhs/KinoBloom` — 41개, MIT
 - `shaders/flashlight-darkness/2D-Volumetric-Lighting` — 9개, CC0-1.0
 - `shaders/flashlight-darkness/Unity-URP-Volumetric-Light` — 34개, MIT
 - `shaders/flashlight-darkness/VolumetricLights` — 20개, BSD-3-Clause
@@ -255,7 +255,7 @@
 - `audio/breathing-heartbeat/goblin-breathing` — 2개, CC-BY 3.0
 - `audio/breathing-heartbeat/heartbeat-single-sound` — 2개, CC0
 - `audio/breathing-heartbeat/heartbeat-sounds` — 6개, CC0
-- `audio/breathing-heartbeat/nhfea-sound` — 36개, CC0
+- `audio/breathing-heartbeat/nhfea-sound` — 32개, CC0
 - `audio/breathing-heartbeat/silly-me` — 2개, CC0
 - `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
 - `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
@@ -292,10 +292,10 @@
 - `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
 - `audio/horror-drones/wind` — 8개, CC0
 - `audio/horror-drones/zombies-sound-pack` — 26개, CC0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 - `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
-- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 133개, CC0
 - `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
 
 **images** (50)
@@ -323,7 +323,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -353,23 +353,23 @@
 
 **models** (235)
 
-- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
-- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animated-characters-protagonists` — 0개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 0개, CC0-1.0
 - `models/characters-animated/animatedzombie` — 4개, CC0-1.0
 - `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
-- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 5개, CC0-1.0
 - `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/graveyard-kit` — 467개, CC0-1.0
-- `models/kenney/light-masks` — 462개, CC0-1.0
-- `models/kenney/mini-dungeon` — 164개, CC0-1.0
-- `models/kenney/modular-buildings` — 556개, CC0-1.0
-- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
-- `models/kenney/particle-pack` — 197개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/smoke-particles` — 82개, CC0-1.0
-- `models/kenney/survival-kit` — 414개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/graveyard-kit` — 0개, CC0-1.0
+- `models/kenney/light-masks` — 0개, CC0-1.0
+- `models/kenney/mini-dungeon` — 0개, CC0-1.0
+- `models/kenney/modular-buildings` — 0개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 0개, CC0-1.0
+- `models/kenney/particle-pack` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/smoke-particles` — 0개, CC0-1.0
+- `models/kenney/survival-kit` — 0개, CC0-1.0
 - `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
 - `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
 - `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
@@ -583,51 +583,51 @@
 - `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
 - `models/polyhaven/yellow_onion` — 5개, CC0-1.0
 - `models/quaternius/furniture` — 25개, CC0-1.0
-- `models/quaternius/survival` — 55개, CC0-1.0
-- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
-- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
-- `models/quaternius/ultimatemonsters` — 57개, CC0-1.0
-- `models/quaternius/zombieapocalypsekit` — 68개, CC0-1.0
+- `models/quaternius/survival` — 54개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 21개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 124개, CC0-1.0
+- `models/quaternius/ultimatemonsters` — 53개, CC0-1.0
+- `models/quaternius/zombieapocalypsekit` — 67개, CC0-1.0
 
 **icons** (8)
 
-- `icons/kenney-2d/crosshair-pack` — 2015개, CC0-1.0
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/crosshair-pack` — 2012개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 4번 — 항목 154개 · 파일 13,245개 · 954 MB
+## 4번 — 항목 154개 · 파일 10,547개 · 864 MB
 
 **fonts** (24)
 
-- `fonts/handwriting/songmyung` — 4개, OFL-1.1
+- `fonts/handwriting/songmyung` — 2개, OFL-1.1
 - `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
-- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
-- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
-- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
-- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 2개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 2개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 2개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 1개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 4개, OFL-1.1
 - `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
-- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
-- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
-- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 3개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 2개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 3개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (28)
 
@@ -690,12 +690,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -725,7 +725,7 @@
 - `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
 - `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
 - `audio/foley-props/zipper` — 3개, CC0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 - `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
 
 **images** (9)
@@ -742,11 +742,11 @@
 
 **models** (21)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/Camera_01` — 11개, CC0-1.0
 - `models/polyhaven/fancy_picture_frame_01` — 8개, CC0-1.0
 - `models/polyhaven/fancy_picture_frame_02` — 8개, CC0-1.0
-- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 7개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
 - `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
@@ -757,8 +757,8 @@
 - `models/polyhaven/round_spectacles` — 5개, CC0-1.0
 - `models/polyhaven/security_camera_01` — 5개, CC0-1.0
 - `models/polyhaven/security_camera_02` — 5개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 6개, CC0-1.0
 - `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
 - `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
 - `models/polyhaven/steel_frame_shelves_03` — 8개, CC0-1.0
@@ -766,26 +766,26 @@
 
 **icons** (7)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 5번 — 항목 160개 · 파일 23,768개 · 1,886 MB
+## 5번 — 항목 160개 · 파일 17,273개 · 1,705 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (111)
 
@@ -828,12 +828,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -863,12 +863,12 @@
 - `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
 - `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
 - `audio/foley-props/zipper` — 3개, CC0
-- `audio/kenney-audio/casino-audio` — 59개, CC0-1.0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
-- `audio/kenney-audio/music-jingles` — 90개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
-- `audio/kenney-audio/voiceover-pack` — 100개, CC0-1.0
-- `audio/kenney-audio/voiceover-pack-fighter` — 51개, CC0-1.0
+- `audio/kenney-audio/casino-audio` — 57개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
+- `audio/kenney-audio/music-jingles` — 88개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
+- `audio/kenney-audio/voiceover-pack` — 98개, CC0-1.0
+- `audio/kenney-audio/voiceover-pack-fighter` — 49개, CC0-1.0
 - `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
 - `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
 - `audio/music/bossa-nova` — 2개, CC0
@@ -898,7 +898,7 @@
 - `audio/music/talking-cute-chiptune` — 2개, CC0
 - `audio/music/the-field-of-dreams` — 4개, CC0
 - `audio/music/trouble-makers-coolriff-jazz` — 4개, CC-BY 3.0
-- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 133개, CC0
 - `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
 
 **images** (4)
@@ -910,17 +910,17 @@
 
 **models** (24)
 
-- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
-- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/animated-characters-protagonists` — 0개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 5개, CC0-1.0
 - `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
-- `models/kenney/blocky-characters` — 152개, CC0-1.0
-- `models/kenney/castle-kit` — 399개, CC0-1.0
-- `models/kenney/cube-pets` — 131개, CC0-1.0
-- `models/kenney/fantasy-town-kit` — 849개, CC0-1.0
-- `models/kenney/holiday-kit` — 511개, CC0-1.0
-- `models/kenney/mini-characters` — 141개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/toy-car-kit` — 806개, CC0-1.0
+- `models/kenney/blocky-characters` — 0개, CC0-1.0
+- `models/kenney/castle-kit` — 0개, CC0-1.0
+- `models/kenney/cube-pets` — 0개, CC0-1.0
+- `models/kenney/fantasy-town-kit` — 0개, CC0-1.0
+- `models/kenney/holiday-kit` — 0개, CC0-1.0
+- `models/kenney/mini-characters` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/toy-car-kit` — 0개, CC0-1.0
 - `models/polyhaven/american_football` — 5개, CC0-1.0
 - `models/polyhaven/baseball_01` — 5개, CC0-1.0
 - `models/polyhaven/baseball_bat` — 5개, CC0-1.0
@@ -931,47 +931,47 @@
 - `models/polyhaven/rubber_duck_toy` — 5개, CC0-1.0
 - `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
 - `models/quaternius/cutemonsters` — 44개, CC0-1.0
-- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 303개, CC0-1.0
 - `models/quaternius/farmanimal` — 9개, CC0-1.0
-- `models/quaternius/ultimateanimatedanimals` — 15개, CC0-1.0
+- `models/quaternius/ultimateanimatedanimals` — 14개, CC0-1.0
 
 **icons** (13)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/background-elements-remastered` — 173개, CC0-1.0
-- `icons/kenney-2d/board-game-icons` — 776개, CC0-1.0
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/emotes-pack` — 536개, CC0-1.0
-- `icons/kenney-2d/googly-eyes` — 14개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/playing-cards-pack` — 293개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/background-elements-remastered` — 170개, CC0-1.0
+- `icons/kenney-2d/board-game-icons` — 0개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/emotes-pack` — 533개, CC0-1.0
+- `icons/kenney-2d/googly-eyes` — 11개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/playing-cards-pack` — 290개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 6번 — 항목 185개 · 파일 32,506개 · 1,883 MB
+## 6번 — 항목 185개 · 파일 24,760개 · 1,641 MB
 
 **fonts** (17)
 
 - `fonts/signage/b612` — 7개, OFL-1.1
-- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 6개, OFL-1.1
 - `fonts/signage/dseg` — 156개, OFL-1.1
 - `fonts/signage/orbitron` — 4개, OFL-1.1
 - `fonts/signage/oswald` — 5개, OFL-1.1
 - `fonts/signage/overpass` — 5개, OFL-1.1
-- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/signage/overpassmono` — 3개, OFL-1.1
 - `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
 - `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (1)
 
@@ -988,14 +988,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -1071,7 +1071,7 @@
 - `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
 - `audio/horror-drones/wind` — 8개, CC0
 - `audio/horror-drones/zombies-sound-pack` — 26개, CC0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
 - `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
 
 **images** (48)
@@ -1097,7 +1097,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -1127,57 +1127,57 @@
 
 **models** (13)
 
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/graveyard-kit` — 467개, CC0-1.0
-- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
-- `models/kenney/modular-space-kit` — 216개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/smoke-particles` — 82개, CC0-1.0
-- `models/kenney/space-kit` — 1696개, CC0-1.0
-- `models/kenney/space-station-kit` — 499개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/graveyard-kit` — 0개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 0개, CC0-1.0
+- `models/kenney/modular-space-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/smoke-particles` — 0개, CC0-1.0
+- `models/kenney/space-kit` — 0개, CC0-1.0
+- `models/kenney/space-station-kit` — 0개, CC0-1.0
 - `models/quaternius/cyberpunkgamekit` — 287개, CC0-1.0
-- `models/quaternius/sci-fi-essentials-kit` — 181개, CC0-1.0
-- `models/quaternius/ultimatemodularscifi` — 93개, CC0-1.0
-- `models/quaternius/zombieapocalypsekit` — 68개, CC0-1.0
+- `models/quaternius/sci-fi-essentials-kit` — 155개, CC0-1.0
+- `models/quaternius/ultimatemodularscifi` — 92개, CC0-1.0
+- `models/quaternius/zombieapocalypsekit` — 67개, CC0-1.0
 
 **icons** (12)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/minimap-pack` — 170개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
-- `icons/kenney-2d/ui-pack-sci-fi` — 1119개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/minimap-pack` — 150개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
+- `icons/kenney-2d/ui-pack-sci-fi` — 1050개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
 - `icons/tabler` — 6224개, MIT
 
-## 7번 — 항목 71개 · 파일 51,973개 · 271 MB
+## 7번 — 항목 71개 · 파일 45,011개 · 221 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (3)
 
-- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
-- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
-- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/digital-audio` — 66개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 0개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 54개, CC0-1.0
 
 **models** (32)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/CheeseBox_01` — 5개, CC0-1.0
 - `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
 - `models/polyhaven/Shelf_01` — 5개, CC0-1.0
@@ -1213,53 +1213,53 @@
 **icons** (28)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/1-bit-pack` — 26개, CC0-1.0
-- `icons/kenney-2d/animal-pack-remastered` — 286개, CC0-1.0
-- `icons/kenney-2d/board-game-icons` — 776개, CC0-1.0
-- `icons/kenney-2d/board-game-info` — 870개, CC0-1.0
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/flag-pack` — 702개, CC0-1.0
-- `icons/kenney-2d/game-icons` — 436개, CC0-1.0
-- `icons/kenney-2d/game-icons-expansion` — 812개, CC0-1.0
-- `icons/kenney-2d/generic-items` — 341개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/map-pack` — 200개, CC0-1.0
-- `icons/kenney-2d/micro-roguelike` — 334개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/monochrome-rpg` — 436개, CC0-1.0
-- `icons/kenney-2d/rune-pack` — 694개, CC0-1.0
-- `icons/kenney-2d/tiny-dungeon` — 144개, CC0-1.0
-- `icons/kenney-2d/tiny-town` — 143개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
-- `icons/kenney-2d/ui-pack-rpg-expansion` — 96개, CC0-1.0
+- `icons/kenney-2d/1-bit-pack` — 23개, CC0-1.0
+- `icons/kenney-2d/animal-pack-remastered` — 267개, CC0-1.0
+- `icons/kenney-2d/board-game-icons` — 0개, CC0-1.0
+- `icons/kenney-2d/board-game-info` — 867개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/flag-pack` — 691개, CC0-1.0
+- `icons/kenney-2d/game-icons` — 0개, CC0-1.0
+- `icons/kenney-2d/game-icons-expansion` — 377개, CC0-1.0
+- `icons/kenney-2d/generic-items` — 335개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/map-pack` — 199개, CC0-1.0
+- `icons/kenney-2d/micro-roguelike` — 329개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/monochrome-rpg` — 427개, CC0-1.0
+- `icons/kenney-2d/rune-pack` — 693개, CC0-1.0
+- `icons/kenney-2d/tiny-dungeon` — 139개, CC0-1.0
+- `icons/kenney-2d/tiny-town` — 138개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
+- `icons/kenney-2d/ui-pack-rpg-expansion` — 95개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
-- `icons/openmoji` — 9000개, CC-BY-SA-4.0
-- `icons/phosphor` — 9076개, MIT
+- `icons/openmoji` — 6376개, CC-BY-SA-4.0
+- `icons/phosphor` — 9073개, MIT
 - `icons/tabler` — 6224개, MIT
-- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+- `icons/twemoji` — 3704개, CC-BY-4.0 (graphics); MIT (code)
 
-## 8번 — 항목 204개 · 파일 19,967개 · 1,379 MB
+## 8번 — 항목 204개 · 파일 10,501개 · 1,243 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (18)
 
-- `shaders/water-refraction/InteractiveStylizedWater` — 28개, MIT
+- `shaders/water-refraction/InteractiveStylizedWater` — 27개, MIT
 - `shaders/water-refraction/Stylized-Water-Shader` — 3개, CC0-1.0
 - `shaders/water-refraction/URP-WaterShaders` — 10개, MIT
-- `shaders/water-refraction/URPUnderwaterEffects` — 90개, MIT
+- `shaders/water-refraction/URPUnderwaterEffects` — 89개, MIT
 - `shaders/water-refraction/godotshaders-com/2d-water-distortion-effect-godot-4` — 2개, CC0-1.0
 - `shaders/water-refraction/godotshaders-com/3d-low-distortion-refraction-low-poly-glass` — 2개, CC0-1.0
 - `shaders/water-refraction/godotshaders-com/absorption-based-stylized-water` — 2개, CC0-1.0
@@ -1286,14 +1286,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -1412,7 +1412,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -1442,79 +1442,79 @@
 
 **models** (11)
 
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/city-kit-suburban` — 218개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/modular-buildings` — 556개, CC0-1.0
-- `models/kenney/nature-kit` — 3620개, CC0-1.0
-- `models/kenney/pirate-kit` — 372개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/watercraft-kit` — 241개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/city-kit-suburban` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/modular-buildings` — 0개, CC0-1.0
+- `models/kenney/nature-kit` — 0개, CC0-1.0
+- `models/kenney/pirate-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/watercraft-kit` — 0개, CC0-1.0
 - `models/quaternius/animatedfish` — 8개, CC0-1.0
-- `models/quaternius/cutefish` — 54개, CC0-1.0
-- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+- `models/quaternius/cutefish` — 53개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 124개, CC0-1.0
 
 **icons** (8)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/fish-pack` — 389개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/fish-pack` — 386개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 9번 — 항목 179개 · 파일 35,776개 · 1,177 MB
+## 9번 — 항목 179개 · 파일 32,932개 · 1,047 MB
 
 **fonts** (46)
 
 - `fonts/handwriting/caveat` — 4개, OFL-1.1
 - `fonts/handwriting/cedarvillecursive` — 4개, OFL-1.1
 - `fonts/handwriting/cutefont` — 4개, OFL-1.1
-- `fonts/handwriting/dawningofanewday` — 4개, OFL-1.1
-- `fonts/handwriting/dokdo` — 4개, OFL-1.1
-- `fonts/handwriting/eastseadokdo` — 4개, OFL-1.1
-- `fonts/handwriting/gaegu` — 6개, OFL-1.1
-- `fonts/handwriting/gamjaflower` — 4개, OFL-1.1
-- `fonts/handwriting/himelody` — 4개, OFL-1.1
+- `fonts/handwriting/dawningofanewday` — 3개, OFL-1.1
+- `fonts/handwriting/dokdo` — 1개, OFL-1.1
+- `fonts/handwriting/eastseadokdo` — 3개, OFL-1.1
+- `fonts/handwriting/gaegu` — 2개, OFL-1.1
+- `fonts/handwriting/gamjaflower` — 1개, OFL-1.1
+- `fonts/handwriting/himelody` — 3개, OFL-1.1
 - `fonts/handwriting/homemadeapple` — 4개, Apache-2.0
-- `fonts/handwriting/kiranghaerang` — 4개, OFL-1.1
+- `fonts/handwriting/kiranghaerang` — 2개, OFL-1.1
 - `fonts/handwriting/kristi` — 4개, OFL-1.1
-- `fonts/handwriting/labelleaurore` — 4개, OFL-1.1
+- `fonts/handwriting/labelleaurore` — 3개, OFL-1.1
 - `fonts/handwriting/mrssaintdelafield` — 4개, OFL-1.1
-- `fonts/handwriting/nanumbrushscript` — 4개, OFL-1.1
-- `fonts/handwriting/nanumpenscript` — 4개, OFL-1.1
-- `fonts/handwriting/nothingyoucoulddo` — 4개, OFL-1.1
-- `fonts/handwriting/poorstory` — 4개, OFL-1.1
+- `fonts/handwriting/nanumbrushscript` — 3개, OFL-1.1
+- `fonts/handwriting/nanumpenscript` — 1개, OFL-1.1
+- `fonts/handwriting/nothingyoucoulddo` — 3개, OFL-1.1
+- `fonts/handwriting/poorstory` — 3개, OFL-1.1
 - `fonts/handwriting/reeniebeanie` — 4개, OFL-1.1
 - `fonts/handwriting/singleday` — 4개, OFL-1.1
-- `fonts/handwriting/songmyung` — 4개, OFL-1.1
-- `fonts/handwriting/stylish` — 4개, OFL-1.1
+- `fonts/handwriting/songmyung` — 2개, OFL-1.1
+- `fonts/handwriting/stylish` — 1개, OFL-1.1
 - `fonts/handwriting/yeonsung` — 4개, OFL-1.1
 - `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
-- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
-- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
-- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
-- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 2개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 2개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 2개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 1개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 4개, OFL-1.1
 - `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
-- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
-- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
-- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 3개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 2개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 3개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (85)
 
@@ -1545,12 +1545,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -1580,8 +1580,8 @@
 - `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
 - `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
 - `audio/foley-props/zipper` — 3개, CC0
-- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 0개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 - `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
 - `audio/sfx-ui-typing/50-cc0-sci-fi-sfx` — 52개, CC0
 - `audio/sfx-ui-typing/60-cc0-sci-fi-sfx` — 62개, CC0
@@ -1611,7 +1611,7 @@
 
 **models** (32)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/CheeseBox_01` — 5개, CC0-1.0
 - `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
 - `models/polyhaven/Shelf_01` — 5개, CC0-1.0
@@ -1647,40 +1647,40 @@
 **icons** (14)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/fantasy-ui-borders` — 288개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-adventure` — 395개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
-- `icons/kenney-2d/ui-pack-rpg-expansion` — 96개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/fantasy-ui-borders` — 275개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-adventure` — 392개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
+- `icons/kenney-2d/ui-pack-rpg-expansion` — 95개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
-- `icons/phosphor` — 9076개, MIT
+- `icons/phosphor` — 9073개, MIT
 - `icons/tabler` — 6224개, MIT
 
-## 10번 — 항목 110개 · 파일 23,015개 · 1,107 MB
+## 10번 — 항목 110개 · 파일 20,294개 · 1,072 MB
 
 **fonts** (16)
 
 - `fonts/signage/b612` — 7개, OFL-1.1
-- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 6개, OFL-1.1
 - `fonts/signage/dseg` — 156개, OFL-1.1
 - `fonts/signage/orbitron` — 4개, OFL-1.1
 - `fonts/signage/oswald` — 5개, OFL-1.1
 - `fonts/signage/overpass` — 5개, OFL-1.1
-- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/signage/overpassmono` — 3개, OFL-1.1
 - `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (78)
 
@@ -1712,12 +1712,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -1747,8 +1747,8 @@
 - `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
 - `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
 - `audio/foley-props/zipper` — 3개, CC0
-- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
-- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 0개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 54개, CC0-1.0
 - `audio/voice-publicdomain/Apollo11Audio` — 7개, Public Domain (PDM 1.0)
 - `audio/voice-publicdomain/Apollo13Audio` — 2개, Public Domain (PDM 1.0)
 - `audio/voice-publicdomain/EDIS-SRP-0199-05` — 2개, Public Domain
@@ -1760,7 +1760,7 @@
 - `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
 - `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
 - `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
-- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 133개, CC0
 - `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
 
 **images** (1)
@@ -1769,7 +1769,7 @@
 
 **models** (6)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
 - `models/polyhaven/korean_public_payphone_01` — 5개, CC0-1.0
 - `models/polyhaven/power_box_01` — 5개, CC0-1.0
@@ -1778,35 +1778,35 @@
 
 **icons** (9)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
 - `icons/tabler` — 6224개, MIT
 
-## 11번 — 항목 415개 · 파일 17,685개 · 1,961 MB
+## 11번 — 항목 415개 · 파일 12,963개 · 1,851 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (39)
 
 - `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
 - `shaders/film-grain-vhs/Godot-Hi-8-Demo` — 14개, MIT
 - `shaders/film-grain-vhs/KinoFringe` — 12개, MIT
-- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 23개, MIT
 - `shaders/film-grain-vhs/godotshaders-com/aberration-phasmophobia-effect` — 2개, CC0-1.0
 - `shaders/film-grain-vhs/godotshaders-com/adjustable-chromatic-aberration` — 2개, MIT
 - `shaders/film-grain-vhs/godotshaders-com/advanced-side-vignette` — 2개, CC0-1.0
@@ -1854,14 +1854,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -1962,7 +1962,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -1992,10 +1992,10 @@
 
 **models** (219)
 
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/light-masks` — 462개, CC0-1.0
-- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/light-masks` — 0개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
 - `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
 - `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
@@ -2209,36 +2209,36 @@
 - `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
 - `models/polyhaven/yellow_onion` — 5개, CC0-1.0
 - `models/quaternius/furniture` — 25개, CC0-1.0
-- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
-- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 21개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 124개, CC0-1.0
 
 **icons** (8)
 
-- `icons/kenney-2d/crosshair-pack` — 2015개, CC0-1.0
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/crosshair-pack` — 2012개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 12번 — 항목 135개 · 파일 22,617개 · 1,751 MB
+## 12번 — 항목 135개 · 파일 17,471개 · 1,684 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (50)
 
-- `audio/kenney-audio/music-jingles` — 90개, CC0-1.0
+- `audio/kenney-audio/music-jingles` — 88개, CC0-1.0
 - `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
 - `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
 - `audio/music/bossa-nova` — 2개, CC0
@@ -2312,7 +2312,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -2342,10 +2342,10 @@
 
 **models** (20)
 
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 0개, CC0-1.0
 - `models/polyhaven/Barrel_01` — 5개, CC0-1.0
 - `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
 - `models/polyhaven/Television_01` — 5개, CC0-1.0
@@ -2365,43 +2365,43 @@
 
 **icons** (9)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
 - `icons/tabler` — 6224개, MIT
 
-## 13번 — 항목 309개 · 파일 53,392개 · 1,453 MB
+## 13번 — 항목 309개 · 파일 44,643개 · 1,236 MB
 
 **fonts** (23)
 
 - `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
-- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
-- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
-- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
-- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 2개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 2개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 2개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 1개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 4개, OFL-1.1
 - `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
-- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
-- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
-- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 3개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 2개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 3개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (65)
 
@@ -2432,12 +2432,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -2467,9 +2467,9 @@
 - `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
 - `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
 - `audio/foley-props/zipper` — 3개, CC0
-- `audio/kenney-audio/casino-audio` — 59개, CC0-1.0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/casino-audio` — 57개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 
 **images** (36)
 
@@ -2512,13 +2512,13 @@
 
 **models** (170)
 
-- `models/kenney/city-kit-industrial` — 203개, CC0-1.0
-- `models/kenney/factory-kit` — 729개, CC0-1.0
-- `models/kenney/food-kit` — 1011개, CC0-1.0
-- `models/kenney/holiday-kit` — 511개, CC0-1.0
-- `models/kenney/mini-market` — 116개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/toy-car-kit` — 806개, CC0-1.0
+- `models/kenney/city-kit-industrial` — 0개, CC0-1.0
+- `models/kenney/factory-kit` — 0개, CC0-1.0
+- `models/kenney/food-kit` — 0개, CC0-1.0
+- `models/kenney/holiday-kit` — 0개, CC0-1.0
+- `models/kenney/mini-market` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/toy-car-kit` — 0개, CC0-1.0
 - `models/polyhaven/Barrel_01` — 5개, CC0-1.0
 - `models/polyhaven/Barrel_02` — 5개, CC0-1.0
 - `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
@@ -2587,7 +2587,7 @@
 - `models/polyhaven/gaming_console` — 6개, CC0-1.0
 - `models/polyhaven/garden_gnome` — 5개, CC0-1.0
 - `models/polyhaven/gothic_statue` — 5개, CC0-1.0
-- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 7개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
 - `models/polyhaven/horse_head` — 5개, CC0-1.0
@@ -2649,8 +2649,8 @@
 - `models/polyhaven/small_lpg_tank` — 5개, CC0-1.0
 - `models/polyhaven/spray_paint_bottles` — 8개, CC0-1.0
 - `models/polyhaven/standing_chalkboard_01` — 8개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 6개, CC0-1.0
 - `models/polyhaven/sungka_board` — 5개, CC0-1.0
 - `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
 - `models/polyhaven/tea_set_01` — 5개, CC0-1.0
@@ -2679,53 +2679,53 @@
 - `models/polyhaven/wooden_crate_01` — 5개, CC0-1.0
 - `models/polyhaven/wooden_crate_02` — 5개, CC0-1.0
 - `models/polyhaven/wooden_military_crate` — 5개, CC0-1.0
-- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 303개, CC0-1.0
 - `models/quaternius/junkfood` — 18개, CC0-1.0
-- `models/quaternius/ultimatefood` — 105개, CC0-1.0
+- `models/quaternius/ultimatefood` — 104개, CC0-1.0
 
 **icons** (15)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/generic-items` — 341개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/rpg-urban-pack` — 497개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/generic-items` — 335개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/rpg-urban-pack` — 493개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 - `icons/lucide` — 2122개, ISC
-- `icons/openmoji` — 9000개, CC-BY-SA-4.0
-- `icons/phosphor` — 9076개, MIT
+- `icons/openmoji` — 6376개, CC-BY-SA-4.0
+- `icons/phosphor` — 9073개, MIT
 - `icons/tabler` — 6224개, MIT
-- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+- `icons/twemoji` — 3704개, CC-BY-4.0 (graphics); MIT (code)
 
-## 14번 — 항목 52개 · 파일 27,386개 · 324 MB
+## 14번 — 항목 52개 · 파일 22,027개 · 281 MB
 
 **fonts** (15)
 
 - `fonts/comic/bangers` — 4개, OFL-1.1
-- `fonts/comic/blackhansans` — 4개, OFL-1.1
+- `fonts/comic/blackhansans` — 2개, OFL-1.1
 - `fonts/comic/comicneue` — 9개, OFL-1.1
-- `fonts/comic/dohyeon` — 4개, OFL-1.1
+- `fonts/comic/dohyeon` — 2개, OFL-1.1
 - `fonts/comic/dongle` — 6개, OFL-1.1
 - `fonts/comic/gugi` — 4개, OFL-1.1
 - `fonts/comic/jua` — 4개, OFL-1.1
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (3)
 
-- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
-- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
-- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/digital-audio` — 66개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 0개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 54개, CC0-1.0
 
 **images** (15)
 
@@ -2747,57 +2747,57 @@
 
 **models** (1)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 
 **icons** (18)
 
-- `icons/kenney-2d/background-elements-remastered` — 173개, CC0-1.0
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/emotes-pack` — 536개, CC0-1.0
-- `icons/kenney-2d/fantasy-ui-borders` — 288개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/scribble-dungeons` — 285개, CC0-1.0
-- `icons/kenney-2d/shape-characters` — 221개, CC0-1.0
-- `icons/kenney-2d/sketch-town` — 358개, CC0-1.0
-- `icons/kenney-2d/splat-pack` — 115개, CC0-1.0
-- `icons/kenney-2d/toon-characters` — 700개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-adventure` — 395개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
-- `icons/openmoji` — 9000개, CC-BY-SA-4.0
-- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+- `icons/kenney-2d/background-elements-remastered` — 170개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/emotes-pack` — 533개, CC0-1.0
+- `icons/kenney-2d/fantasy-ui-borders` — 275개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/scribble-dungeons` — 282개, CC0-1.0
+- `icons/kenney-2d/shape-characters` — 218개, CC0-1.0
+- `icons/kenney-2d/sketch-town` — 280개, CC0-1.0
+- `icons/kenney-2d/splat-pack` — 112개, CC0-1.0
+- `icons/kenney-2d/toon-characters` — 697개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-adventure` — 392개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
+- `icons/openmoji` — 6376개, CC-BY-SA-4.0
+- `icons/twemoji` — 3704개, CC-BY-4.0 (graphics); MIT (code)
 
-## 15번 — 항목 204개 · 파일 14,722개 · 2,126 MB
+## 15번 — 항목 204개 · 파일 10,594개 · 1,944 MB
 
 **fonts** (16)
 
 - `fonts/signage/b612` — 7개, OFL-1.1
-- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 6개, OFL-1.1
 - `fonts/signage/dseg` — 156개, OFL-1.1
 - `fonts/signage/orbitron` — 4개, OFL-1.1
 - `fonts/signage/oswald` — 5개, OFL-1.1
 - `fonts/signage/overpass` — 5개, OFL-1.1
-- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/signage/overpassmono` — 3개, OFL-1.1
 - `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (13)
 
 - `shaders/ice-crack/Godot-Glass-Break-Effect` — 5개, MIT
 - `shaders/ice-crack/unity-frosted-glass` — 22개, MIT
-- `shaders/reflection/AdamPlaneReflection` — 19개, MIT
+- `shaders/reflection/AdamPlaneReflection` — 18개, MIT
 - `shaders/reflection/Godot-SSPR` — 21개, MIT
-- `shaders/reflection/UnityURP-MobileScreenSpacePlanarReflection` — 34개, MIT
+- `shaders/reflection/UnityURP-MobileScreenSpacePlanarReflection` — 32개, MIT
 - `shaders/reflection/godotshaders-com/2d-mirror-effect` — 2개, CC0-1.0
 - `shaders/reflection/godotshaders-com/procedural-window-rain-drop-shader` — 2개, MIT
 - `shaders/reflection/godotshaders-com/rain-on-glass` — 2개, MIT
@@ -2805,7 +2805,7 @@
 - `shaders/reflection/godotshaders-com/realistic-glass-with-traced-and-simple-reflection-and-refraction` — 2개, CC0-1.0
 - `shaders/reflection/godotshaders-com/simple-zoom-reflections-mirrors` — 2개, CC0-1.0
 - `shaders/reflection/kMirrors` — 10개, MIT
-- `shaders/reflection/planar-reflections-unity` — 46개, MIT
+- `shaders/reflection/planar-reflections-unity` — 43개, MIT
 
 **audio** (93)
 
@@ -2818,14 +2818,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -2930,7 +2930,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -2960,58 +2960,58 @@
 
 **models** (22)
 
-- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
-- `models/characters-animated/animated-characters-retro` — 14개, CC0-1.0
-- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animated-characters-protagonists` — 0개, CC0-1.0
+- `models/characters-animated/animated-characters-retro` — 0개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 0개, CC0-1.0
 - `models/characters-animated/animatedmen` — 11개, CC0-1.0
-- `models/characters-animated/animatedwomen` — 10개, CC0-1.0
+- `models/characters-animated/animatedwomen` — 9개, CC0-1.0
 - `models/characters-animated/animatedzombie` — 4개, CC0-1.0
-- `models/characters-animated/ultimatedanimatedcharacter` — 54개, CC0-1.0
+- `models/characters-animated/ultimatedanimatedcharacter` — 53개, CC0-1.0
 - `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
-- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
-- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 55개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 5개, CC0-1.0
 - `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
-- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
-- `models/kenney/blocky-characters` — 152개, CC0-1.0
-- `models/kenney/mini-characters` — 141개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
-- `models/kenney/skyboxes` — 14개, CC0-1.0
-- `models/kenney/train-kit` — 529개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 86개, CC0-1.0
+- `models/kenney/blocky-characters` — 0개, CC0-1.0
+- `models/kenney/mini-characters` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 0개, CC0-1.0
+- `models/kenney/skyboxes` — 0개, CC0-1.0
+- `models/kenney/train-kit` — 0개, CC0-1.0
 - `models/quaternius/backgroundposedhumans` — 30개, CC0-1.0
-- `models/quaternius/modulartrain` — 16개, CC0-1.0
+- `models/quaternius/modulartrain` — 15개, CC0-1.0
 - `models/quaternius/publictransport` — 14개, CC0-1.0
-- `models/quaternius/ultimatemonsters` — 57개, CC0-1.0
+- `models/quaternius/ultimatemonsters` — 53개, CC0-1.0
 
 **icons** (8)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/monster-builder-pack` — 369개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/monster-builder-pack` — 366개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 16번 — 항목 199개 · 파일 18,283개 · 1,384 MB
+## 16번 — 항목 199개 · 파일 10,237개 · 1,233 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (13)
 
 - `shaders/ice-crack/Godot-Glass-Break-Effect` — 5개, MIT
-- `shaders/ice-crack/Unity-URP-ShaderGraph-Ice-Shader` — 22개, MIT
-- `shaders/ice-crack/cracked-ice` — 175개, MIT
+- `shaders/ice-crack/Unity-URP-ShaderGraph-Ice-Shader` — 21개, MIT
+- `shaders/ice-crack/cracked-ice` — 174개, MIT
 - `shaders/ice-crack/godotshaders-com/frostbite` — 2개, CC0-1.0
 - `shaders/ice-crack/godotshaders-com/frosted-glass-fast` — 2개, CC0-1.0
 - `shaders/ice-crack/godotshaders-com/frosted-glass-gaussian-blur` — 2개, CC0-1.0
@@ -3019,7 +3019,7 @@
 - `shaders/ice-crack/godotshaders-com/impact-glass-shader` — 2개, MIT
 - `shaders/ice-crack/godotshaders-com/improved-frosted-glass` — 2개, CC0-1.0
 - `shaders/ice-crack/godotshaders-com/screen-space-frost-with-volumetric-snow` — 2개, MIT
-- `shaders/ice-crack/phase-transition` — 42개, MIT
+- `shaders/ice-crack/phase-transition` — 31개, MIT
 - `shaders/ice-crack/shaders-ice` — 23개, MIT
 - `shaders/ice-crack/unity-frosted-glass` — 22개, MIT
 
@@ -3034,14 +3034,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -3133,11 +3133,11 @@
 - `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
 - `audio/horror-drones/wind` — 8개, CC0
 - `audio/horror-drones/zombies-sound-pack` — 26개, CC0
-- `audio/ice/35-wooden-crackshitsdestructions` — 37개, CC0
+- `audio/ice/35-wooden-crackshitsdestructions` — 36개, CC0
 - `audio/ice/4-dry-snow-steps` — 7개, CC0
 - `audio/ice/41-snow-shoe-steps` — 44개, CC0
 - `audio/ice/5-break-crunch-impacts` — 7개, CC0
-- `audio/ice/9-wet-snow-steps` — 12개, CC0
+- `audio/ice/9-wet-snow-steps` — 11개, CC0
 - `audio/ice/cracking-sounds` — 3개, CC-BY 4.0
 - `audio/ice/ice-breakingshattering` — 7개, CC0
 - `audio/ice/leaves-cracking-and-crumbling` — 82개, CC-BY 3.0
@@ -3164,7 +3164,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -3194,52 +3194,52 @@
 
 **models** (8)
 
-- `models/kenney/holiday-kit` — 511개, CC0-1.0
-- `models/kenney/nature-kit` — 3620개, CC0-1.0
-- `models/kenney/particle-pack` — 197개, CC0-1.0
-- `models/kenney/platformer-kit` — 779개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/skyboxes` — 14개, CC0-1.0
-- `models/kenney/survival-kit` — 414개, CC0-1.0
-- `models/quaternius/survival` — 55개, CC0-1.0
+- `models/kenney/holiday-kit` — 0개, CC0-1.0
+- `models/kenney/nature-kit` — 0개, CC0-1.0
+- `models/kenney/particle-pack` — 0개, CC0-1.0
+- `models/kenney/platformer-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/skyboxes` — 0개, CC0-1.0
+- `models/kenney/survival-kit` — 0개, CC0-1.0
+- `models/quaternius/survival` — 54개, CC0-1.0
 
 **icons** (7)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 17번 — 항목 496개 · 파일 24,038개 · 3,018 MB
+## 17번 — 항목 496개 · 파일 17,581개 · 2,812 MB
 
 **fonts** (23)
 
 - `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
-- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
-- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
-- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
-- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
-- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
-- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 2개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 2개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 2개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 1개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 3개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 4개, OFL-1.1
 - `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
-- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
-- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
-- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 3개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 2개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 3개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (201)
 
@@ -3252,14 +3252,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -3343,12 +3343,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -3413,8 +3413,8 @@
 - `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
 - `audio/horror-drones/wind` — 8개, CC0
 - `audio/horror-drones/zombies-sound-pack` — 26개, CC0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 - `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
 - `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
 - `audio/music/bossa-nova` — 2개, CC0
@@ -3497,7 +3497,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -3527,15 +3527,15 @@
 
 **models** (187)
 
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/castle-kit` — 399개, CC0-1.0
-- `models/kenney/city-kit-commercial` — 221개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/mini-arcade` — 116개, CC0-1.0
-- `models/kenney/mini-market` — 116개, CC0-1.0
-- `models/kenney/modular-buildings` — 556개, CC0-1.0
-- `models/kenney/pirate-kit` — 372개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/castle-kit` — 0개, CC0-1.0
+- `models/kenney/city-kit-commercial` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/mini-arcade` — 0개, CC0-1.0
+- `models/kenney/mini-market` — 0개, CC0-1.0
+- `models/kenney/modular-buildings` — 0개, CC0-1.0
+- `models/kenney/pirate-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
 - `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
 - `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
@@ -3612,7 +3612,7 @@
 - `models/polyhaven/gothic_coffee_table` — 5개, CC0-1.0
 - `models/polyhaven/gothic_statue` — 5개, CC0-1.0
 - `models/polyhaven/hand_truck` — 5개, CC0-1.0
-- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 7개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
 - `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
 - `models/polyhaven/horse_head` — 5개, CC0-1.0
@@ -3676,8 +3676,8 @@
 - `models/polyhaven/sofa_03` — 5개, CC0-1.0
 - `models/polyhaven/spray_paint_bottles` — 8개, CC0-1.0
 - `models/polyhaven/standing_chalkboard_01` — 8개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
-- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 7개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 6개, CC0-1.0
 - `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
 - `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
 - `models/polyhaven/sungka_board` — 5개, CC0-1.0
@@ -3708,37 +3708,37 @@
 - `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
 - `models/polyhaven/wooden_table_02` — 5개, CC0-1.0
 - `models/polyhaven/yellow_onion` — 5개, CC0-1.0
-- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 303개, CC0-1.0
 - `models/quaternius/farmanimal` — 9개, CC0-1.0
 - `models/quaternius/furniture` — 25개, CC0-1.0
-- `models/quaternius/ultimateanimatedanimals` — 15개, CC0-1.0
-- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
-- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+- `models/quaternius/ultimateanimatedanimals` — 14개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 21개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 124개, CC0-1.0
 
 **icons** (8)
 
 - `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 18번 — 항목 166개 · 파일 13,499개 · 1,674 MB
+## 18번 — 항목 166개 · 파일 10,886개 · 1,640 MB
 
 **fonts** (9)
 
 - `fonts/signage/dseg` — 156개, OFL-1.1
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (30)
 
@@ -3747,7 +3747,7 @@
 - `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
 - `shaders/film-grain-vhs/Godot-Hi-8-Demo` — 14개, MIT
 - `shaders/film-grain-vhs/KinoFringe` — 12개, MIT
-- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 23개, MIT
 - `shaders/film-grain-vhs/VHS-Effect` — 8개, MIT
 - `shaders/film-grain-vhs/godotshaders-com/aberration-phasmophobia-effect` — 2개, CC0-1.0
 - `shaders/film-grain-vhs/godotshaders-com/adjustable-chromatic-aberration` — 2개, MIT
@@ -3803,12 +3803,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -3881,7 +3881,7 @@
 
 **models** (17)
 
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/Barrel_01` — 5개, CC0-1.0
 - `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
 - `models/polyhaven/Television_01` — 5개, CC0-1.0
@@ -3901,26 +3901,26 @@
 
 **icons** (7)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 19번 — 항목 398개 · 파일 19,702개 · 2,500 MB
+## 19번 — 항목 398개 · 파일 13,410개 · 2,297 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **audio** (110)
 
@@ -3930,7 +3930,7 @@
 - `audio/breathing-heartbeat/goblin-breathing` — 2개, CC-BY 3.0
 - `audio/breathing-heartbeat/heartbeat-single-sound` — 2개, CC0
 - `audio/breathing-heartbeat/heartbeat-sounds` — 6개, CC0
-- `audio/breathing-heartbeat/nhfea-sound` — 36개, CC0
+- `audio/breathing-heartbeat/nhfea-sound` — 32개, CC0
 - `audio/breathing-heartbeat/silly-me` — 2개, CC0
 - `audio/foley-props/10-book-page-flips` — 12개, CC0
 - `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
@@ -3959,12 +3959,12 @@
 - `audio/foley-props/elevatordoor` — 2개, CC0
 - `audio/foley-props/equipment-clicks-iii` — 2개, CC0
 - `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
-- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 82개, CC0
 - `audio/foley-props/glass-break` — 2개, CC0
 - `audio/foley-props/gui-sound-effects` — 15개, CC0
 - `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
 - `audio/foley-props/impact` — 12개, CC0
-- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/interface-sounds` — 2개, CC0
 - `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
 - `audio/foley-props/item-handling` — 13개, CC-BY 3.0
 - `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
@@ -4029,10 +4029,10 @@
 - `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
 - `audio/horror-drones/wind` — 8개, CC0
 - `audio/horror-drones/zombies-sound-pack` — 26개, CC0
-- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
-- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 130개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 0개, CC0-1.0
 - `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
-- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 133개, CC0
 - `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
 
 **images** (46)
@@ -4056,7 +4056,7 @@
 - `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
 - `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
-- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 2개, CC0 1.0
 - `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
 - `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
 - `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
@@ -4086,18 +4086,18 @@
 
 **models** (227)
 
-- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/animated-characters-protagonists` — 0개, CC0-1.0
 - `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
-- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
-- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 55개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 5개, CC0-1.0
 - `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
-- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
-- `models/kenney/building-kit` — 409개, CC0-1.0
-- `models/kenney/cube-pets` — 131개, CC0-1.0
-- `models/kenney/food-kit` — 1011개, CC0-1.0
-- `models/kenney/furniture-kit` — 1548개, CC0-1.0
-- `models/kenney/light-masks` — 462개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 86개, CC0-1.0
+- `models/kenney/building-kit` — 0개, CC0-1.0
+- `models/kenney/cube-pets` — 0개, CC0-1.0
+- `models/kenney/food-kit` — 0개, CC0-1.0
+- `models/kenney/furniture-kit` — 0개, CC0-1.0
+- `models/kenney/light-masks` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
 - `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
 - `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
 - `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
@@ -4311,35 +4311,35 @@
 - `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
 - `models/polyhaven/yellow_onion` — 5개, CC0-1.0
 - `models/quaternius/furniture` — 25개, CC0-1.0
-- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
-- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 21개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 124개, CC0-1.0
 
 **icons** (7)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
 
-## 20번 — 항목 234개 · 파일 21,824개 · 2,236 MB
+## 20번 — 항목 234개 · 파일 11,919개 · 1,892 MB
 
 **fonts** (8)
 
-- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
-- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 1개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 6개, OFL-1.1
 - `fonts/ui-sans/inter` — 5개, OFL-1.1
-- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 4개, OFL-1.1
 - `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
-- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 1개, OFL-1.1
 - `fonts/ui-sans/pretendard` — 11개, OFL-1.1
-- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 3개, OFL-1.1
 
 **shaders** (14)
 
-- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
+- `shaders/film-grain-vhs/KinoBloom` — 41개, MIT
 - `shaders/flashlight-darkness/Unity-URP-Volumetric-Light` — 34개, MIT
 - `shaders/flashlight-darkness/VolumetricLights` — 20개, BSD-3-Clause
 - `shaders/flashlight-darkness/godotshaders-com/2d-retro-dithered-lighting-fog-of-war` — 2개, MIT
@@ -4365,14 +4365,14 @@
 - `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
 - `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
 - `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
-- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 43개, CC0
 - `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
 - `audio/ambience/bird-chirping-sounds` — 3개, CC0
 - `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
 - `audio/ambience/bubble-sound-effects` — 6개, CC0
 - `audio/ambience/bubbles-pop` — 2개, CC0
 - `audio/ambience/car-engine-start-01` — 3개, CC0
-- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chain-winch-sounds` — 10개, CC0
 - `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
 - `audio/ambience/clock-tick-0` — 2개, CC0
 - `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
@@ -4471,29 +4471,29 @@
 
 **models** (93)
 
-- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
-- `models/characters-animated/animated-characters-retro` — 14개, CC0-1.0
-- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animated-characters-protagonists` — 0개, CC0-1.0
+- `models/characters-animated/animated-characters-retro` — 0개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 0개, CC0-1.0
 - `models/characters-animated/animatedmen` — 11개, CC0-1.0
-- `models/characters-animated/animatedwomen` — 10개, CC0-1.0
-- `models/characters-animated/ultimatedanimatedcharacter` — 54개, CC0-1.0
+- `models/characters-animated/animatedwomen` — 9개, CC0-1.0
+- `models/characters-animated/ultimatedanimatedcharacter` — 53개, CC0-1.0
 - `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
-- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
-- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 55개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 5개, CC0-1.0
 - `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
-- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
-- `models/kenney/3d-road-tiles` — 917개, CC0-1.0
-- `models/kenney/blocky-characters` — 152개, CC0-1.0
-- `models/kenney/car-kit` — 261개, CC0-1.0
-- `models/kenney/city-kit-commercial` — 221개, CC0-1.0
-- `models/kenney/city-kit-roads` — 489개, CC0-1.0
-- `models/kenney/city-kit-suburban` — 218개, CC0-1.0
-- `models/kenney/mini-characters` — 141개, CC0-1.0
-- `models/kenney/modular-buildings` — 556개, CC0-1.0
-- `models/kenney/nature-kit` — 3620개, CC0-1.0
-- `models/kenney/prototype-kit` — 742개, CC0-1.0
-- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
-- `models/kenney/skyboxes` — 14개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 86개, CC0-1.0
+- `models/kenney/3d-road-tiles` — 0개, CC0-1.0
+- `models/kenney/blocky-characters` — 0개, CC0-1.0
+- `models/kenney/car-kit` — 0개, CC0-1.0
+- `models/kenney/city-kit-commercial` — 0개, CC0-1.0
+- `models/kenney/city-kit-roads` — 0개, CC0-1.0
+- `models/kenney/city-kit-suburban` — 0개, CC0-1.0
+- `models/kenney/mini-characters` — 0개, CC0-1.0
+- `models/kenney/modular-buildings` — 0개, CC0-1.0
+- `models/kenney/nature-kit` — 0개, CC0-1.0
+- `models/kenney/prototype-kit` — 0개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 0개, CC0-1.0
+- `models/kenney/skyboxes` — 0개, CC0-1.0
 - `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
 - `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
 - `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
@@ -4560,20 +4560,20 @@
 - `models/polyhaven/wooden_stool_01` — 5개, CC0-1.0
 - `models/polyhaven/wooden_stool_02` — 5개, CC0-1.0
 - `models/quaternius/backgroundposedhumans` — 30개, CC0-1.0
-- `models/quaternius/downtown-city-megakit` — 528개, CC0-1.0
+- `models/quaternius/downtown-city-megakit` — 499개, CC0-1.0
 - `models/quaternius/modularstreets` — 27개, CC0-1.0
 - `models/quaternius/publictransport` — 14개, CC0-1.0
-- `models/quaternius/simplebuildings` — 18개, CC0-1.0
+- `models/quaternius/simplebuildings` — 17개, CC0-1.0
 
 **icons** (10)
 
-- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
-- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
-- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
-- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
-- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
-- `icons/kenney-2d/rpg-urban-pack` — 497개, CC0-1.0
-- `icons/kenney-2d/shape-characters` — 221개, CC0-1.0
-- `icons/kenney-2d/toon-characters` — 700개, CC0-1.0
-- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
-- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1095개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 189개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 3235개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 803개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1369개, CC0-1.0
+- `icons/kenney-2d/rpg-urban-pack` — 493개, CC0-1.0
+- `icons/kenney-2d/shape-characters` — 218개, CC0-1.0
+- `icons/kenney-2d/toon-characters` — 697개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1195개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 475개, CC0-1.0
