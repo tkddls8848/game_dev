@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사라지는 언어의 마지막 화자</title>
+<style>
+:root{--paper:#ece4d2;--paper-d:#d9cdb2;--ink:#1d1a17;--ink2:#4a443c;--seal:#a8321f;--fade:#b9ae98}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0e0d0b}
+body{font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:#1a1814}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+.desk{position:absolute;inset:0;background:radial-gradient(ellipse at 40% 40%,#3a342a,#141210 75%)}
+.paper{position:absolute;background:var(--paper);box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.2)}
+.paper::before{content:"";position:absolute;inset:0;opacity:.55;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='4' seed='3'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .36  0 0 0 .5 0'/></filter><rect width='300' height='300' filter='url(%23f)'/></svg>")}
+.paper::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 80px rgba(120,95,55,.35)}
+.book{left:60px;top:60px;width:860px;height:880px}
+.spine{position:absolute;left:0;top:0;bottom:0;width:40px;background:linear-gradient(90deg,rgba(0,0,0,.25),transparent)}
+.head{position:absolute;left:80px;right:50px;top:46px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:10px;z-index:2}
+.head h1{font-size:30px;letter-spacing:.2em}
+.head span{font-size:16px;color:var(--ink2);letter-spacing:.15em}
+.entries{position:absolute;left:80px;right:50px;top:118px;z-index:2}
+.e{padding:14px 0 16px;border-bottom:1px dotted rgba(29,26,23,.35)}
+.e b{font-size:34px;letter-spacing:.06em;margin-right:14px}
+.e i{font-style:normal;font-size:15px;color:var(--ink2);letter-spacing:.1em}
+.e p{font-size:20px;line-height:1.6;margin-top:4px}
+.e.faded{opacity:.5}
+.e.writing b{color:var(--ink)}
+.e.writing p span.cur{display:inline-block;width:2px;height:22px;background:var(--ink);vertical-align:-3px;animation:cur 1s steps(2) infinite}
+@keyframes cur{50%{opacity:0}}
+.e.writing{position:relative;background:linear-gradient(90deg,rgba(168,50,31,.07),transparent)}
+.brush{position:absolute;z-index:3;pointer-events:none;filter:drop-shadow(6px 10px 6px rgba(0,0,0,.35))}
+.study{position:absolute;left:80px;right:50px;top:596px;z-index:2}
+.study p{font-size:16px;color:var(--ink2);line-height:1.7;margin-top:2px}.study p span{color:var(--ink);font-size:19px}
+.seal{position:absolute;width:82px;height:82px;border:4px solid var(--seal);color:var(--seal);font-size:22px;line-height:1.1;display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(-6deg);opacity:.85;z-index:2;mix-blend-mode:multiply}
+.world{left:960px;top:60px;width:580px;height:880px}
+.world .cap{position:absolute;left:34px;right:34px;top:30px;display:flex;justify-content:space-between;font-size:15px;letter-spacing:.2em;color:var(--ink2);z-index:2}
+.world svg{position:absolute;left:0;top:0;z-index:1}
+.forget{position:absolute;left:34px;right:34px;bottom:30px;z-index:2;padding:16px 18px;border-top:2px solid var(--ink)}
+.forget h3{font-size:14px;letter-spacing:.3em;color:var(--seal);margin-bottom:8px}
+.forget li{list-style:none;font-size:17px;line-height:1.8;color:var(--ink2)}
+.forget li s{text-decoration-color:var(--seal)}
+.forget li.now{color:var(--ink)}
+.meter{position:absolute;left:80px;right:50px;bottom:40px;z-index:2;display:flex;gap:30px;align-items:center;font-size:15px;color:var(--ink2);letter-spacing:.1em}
+.meter .bar{flex:1;height:6px;background:rgba(29,26,23,.15);position:relative}
+.meter .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.meter b{font-size:22px;color:var(--ink);letter-spacing:0}
+.lamp{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 55% at 35% 40%,rgba(255,220,160,.1),transparent 60%),radial-gradient(ellipse 90% 90% at 50% 50%,transparent 55%,rgba(0,0,0,.65))}
+.snow{position:absolute;inset:0;z-index:2;pointer-events:none;background-image:radial-gradient(2px 2px at 20% 30%,#8a8272,transparent),radial-gradient(1.5px 1.5px at 70% 10%,#8a8272,transparent),radial-gradient(2px 2px at 45% 60%,#8a8272,transparent),radial-gradient(1.4px 1.4px at 85% 45%,#8a8272,transparent);background-size:240px 260px;animation:snow 12s linear infinite;opacity:.7}
+@keyframes snow{to{background-position:30px 260px,-20px 260px,10px 260px,-30px 260px}}
+#tabs{position:absolute;right:14px;bottom:10px;z-index:50;display:flex;gap:4px}
+#tabs a{font:12px/1 serif;color:#d9cdb2;text-decoration:none;padding:6px 10px;border:1px solid #6a5e48;background:#1a1814cc}
+#tabs a.on{background:var(--seal);color:#fff;border-color:var(--seal)}
+.dissolve{animation:dis 4s ease-in-out infinite alternate}
+@keyframes dis{to{opacity:.35}}
+.last{position:absolute;left:80px;right:50px;top:590px;z-index:2;text-align:center}
+.last small{display:block;font-size:16px;letter-spacing:.3em;color:var(--seal);margin-bottom:14px}
+.last .q{font-size:30px;line-height:1.6}
+.last .blank{margin:18px auto 0;width:360px;height:70px;border-bottom:2px solid var(--ink);position:relative}
+.last .blank span{position:absolute;left:50%;bottom:10px;width:3px;height:44px;background:var(--ink);animation:cur 1.2s steps(2) infinite}
+.dense{columns:2;column-gap:40px;position:absolute;left:80px;right:50px;top:118px;height:420px;z-index:2;overflow:hidden}
+.dense div{break-inside:avoid;font-size:15px;line-height:1.55;padding:5px 0;border-bottom:1px dotted rgba(29,26,23,.3)}
+.dense div b{font-size:19px;margin-right:6px}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <svg width="0" height="0" style="position:absolute">
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter>
+  <filter id="wash"><feTurbulence type="fractalNoise" baseFrequency=".015" numOctaves="3" seed="2"/><feDisplacementMap in="SourceGraphic" scale="18"/><feGaussianBlur stdDeviation="1.4"/></filter>
+  <filter id="erode"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.35" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
+ </svg>
+ <section class="screen" id="sa">
+  <div class="desk"></div>
+  <div class="paper book"><div class="spine"></div>
+   <div class="head"><h1>솔매 말 사전</h1><span>스물세 번째 장 · 늦은 봄</span></div>
+   <div class="entries">
+    <div class="e faded"><b>옹살</b><i>이름씨</i><p>할머니가 아이를 부를 때만 쓰던 이름. 다른 사람이 부르면 뜻이 없다.</p></div>
+    <div class="e faded"><b>베루</b><i>움직씨</i><p>배를 띄우기 전, 강에게 오늘 물이 무거운지 묻다.</p></div>
+    <div class="e"><b>소미</b><i>이름씨</i><p>연기가 흔들리지 않고 곧게 오르는 아침. 바람이 쉬는 날.</p></div>
+    <div class="e writing"><b>탈미</b><i>이름씨</i><p>눈 녹은 물이 처음으로 돌 사이를 흐를 때 나는 소리. 그 소리를 들으면<span class="cur"></span></p>
+    </div>
+   </div>
+   <svg class="brush" style="left:668px;top:392px" width="200" height="200" viewBox="0 0 200 200"><path d="M40 160 L150 40" stroke="#5a3a1e" stroke-width="11" stroke-linecap="round"/><path d="M150 40 L176 14" stroke="#2a1a0e" stroke-width="13" stroke-linecap="round"/><path d="M44 156 C34 164 26 174 18 186 C30 182 40 176 50 164Z" fill="#1d1a17"/><path d="M40 160 l10 -10" stroke="#c9b48a" stroke-width="6"/></svg>
+   <div class="study">
+    <svg width="560" height="100" viewBox="0 45 560 100">
+     <g filter="url(#wash)" fill="#5a5448" opacity=".55"><ellipse cx="90" cy="120" rx="70" ry="26"/><ellipse cx="230" cy="130" rx="54" ry="22"/><ellipse cx="380" cy="118" rx="80" ry="28"/></g>
+     <g filter="url(#ink)" stroke="#1d1a17" fill="none" stroke-width="3"><path d="M20 100 C80 90 120 110 170 104 C220 96 260 112 320 100 C380 90 440 108 540 98"/><path d="M60 118 C110 110 150 124 210 118 M300 120 C350 112 400 126 470 116" stroke-width="2" opacity=".7"/></g>
+     <g fill="#1d1a17" opacity=".7"><circle cx="150" cy="70" r="2"/><circle cx="162" cy="58" r="1.5"/><circle cx="300" cy="66" r="2"/><circle cx="314" cy="52" r="1.5"/></g>
+    </svg>
+    <p>받아 적는 중 — 할머니가 하던 말투 그대로.<br><span>"탈미가 들리면 봄이 온 거여. 그때 씨를 불려."</span></p>
+   </div>
+   <div class="seal" style="right:60px;top:170px;opacity:.6">솔매<br>마지막</div>
+   <div class="meter"><span>적은 낱말</span><b>23</b><div class="bar"><i style="width:46%"></i></div><span>남은 기억</span><b>27</b></div>
+  </div>
+  <div class="paper world">
+   <div class="cap"><span>창 밖 · 솔매 마을</span><span>잊혀지는 중</span></div>
+   <svg width="580" height="880" viewBox="0 0 580 880">
+    <g filter="url(#wash)">
+     <path d="M0 330 C80 250 140 220 210 270 C260 210 320 160 400 230 C460 190 520 220 580 260 L580 520 L0 520Z" fill="#8a8272" opacity=".45"/>
+     <path d="M0 420 C90 360 170 380 250 400 C330 350 430 370 580 360 L580 560 L0 560Z" fill="#5a5448" opacity=".55"/>
+    </g>
+    <g filter="url(#ink)" fill="#1d1a17">
+     <path d="M70 560 l40 -34 l40 34 v44 h-80z"/><path d="M60 562 l50 -44 l50 44" stroke="#1d1a17" stroke-width="6" fill="none"/>
+     <path d="M420 540 l36 -30 l36 30 v40 h-72z"/><path d="M410 542 l46 -40 l46 40" stroke="#1d1a17" stroke-width="6" fill="none"/>
+     <rect x="96" y="580" width="14" height="24" fill="#ece4d2"/>
+    </g>
+    <!-- river being forgotten -->
+    <g class="dissolve" filter="url(#erode)">
+     <path d="M580 618 C440 628 380 640 300 650 C220 660 120 664 0 670 L0 694 C140 688 240 682 320 674 C400 664 470 654 580 644Z" fill="#3a3530" opacity=".8"/>
+     <path d="M520 632 C430 640 380 650 320 660 M260 668 C200 674 140 678 60 682" stroke="#ece4d2" stroke-width="3" fill="none"/>
+    </g>
+    <!-- smoke rising straight -->
+    <path d="M100 520 C96 480 106 450 98 410 C92 380 104 350 100 320" stroke="#4a443c" stroke-width="3" fill="none" opacity=".6" filter="url(#ink)"/>
+    <!-- people -->
+    <g fill="#1d1a17" filter="url(#ink)"><circle cx="220" cy="600" r="7"/><path d="M214 608 h12 l4 30 h-20z"/><circle cx="244" cy="606" r="5"/><path d="M240 612 h8 l3 20 h-14z"/></g>
+    <!-- trees -->
+    <g stroke="#1d1a17" stroke-width="4" fill="none" filter="url(#ink)"><path d="M520 560 C518 520 530 490 520 450 M520 500 l-22 -20 M522 480 l20 -16"/></g>
+    <g fill="#1d1a17" opacity=".7" filter="url(#wash)"><ellipse cx="512" cy="450" rx="36" ry="22"/><ellipse cx="540" cy="470" rx="24" ry="16"/></g>
+    <!-- flying birds -->
+    <path d="M300 200 q8 -8 16 0 q8 -8 16 0 M360 170 q6 -6 12 0 q6 -6 12 0" stroke="#1d1a17" stroke-width="2.4" fill="none"/>
+    <text x="300" y="614" font-size="15" fill="#a8321f" letter-spacing="2">— 강 소리, 흐려진다</text>
+   </svg>
+   <div class="forget"><h3>탈미를 적으면 잊는 것</h3><ul>
+    <li><s>옹살 — 할머니의 목소리</s></li>
+    <li><s>베루 — 아버지의 배 이름</s></li>
+    <li class="now">탈미 — 마을 앞 강이 흐르던 소리 …</li>
+   </ul></div>
+  </div>
+  <div class="lamp"></div>
+ </section>
+
+ <section class="screen" id="sb">
+  <div class="desk" style="filter:brightness(.8)"></div>
+  <div class="paper book"><div class="spine"></div>
+   <div class="head"><h1>솔매 말 사전</h1><span>마흔아홉 번째 장 · 첫눈</span></div>
+   <div class="dense" id="dense"></div>
+   <div class="last"><small>— 쉰 번째, 마지막 낱말 —</small><div class="q">이 말로 <b>'나'</b>를 뭐라고 했더라.<br>적으면, 적는 사람을 잊는다.</div><div class="blank"><span></span></div></div>
+   <div class="seal" style="right:60px;top:600px">솔매<br>마지막</div>
+   <div class="meter"><span>적은 낱말</span><b>49</b><div class="bar"><i style="width:98%"></i></div><span>남은 기억</span><b>1</b></div>
+  </div>
+  <div class="paper world" style="background:#f1ebdd">
+   <div class="cap"><span>창 밖</span><span>…</span></div><div class="snow"></div>
+   <svg width="580" height="880" viewBox="0 0 580 880">
+    <g opacity=".08" filter="url(#wash)"><path d="M0 420 C90 360 170 380 250 400 C330 350 430 370 580 360 L580 560 L0 560Z" fill="#5a5448"/></g>
+    <g filter="url(#ink)" fill="#1d1a17" opacity=".9">
+     <path d="M250 560 l40 -34 l40 34 v44 h-80z"/><path d="M240 562 l50 -44 l50 44" stroke="#1d1a17" stroke-width="6" fill="none"/>
+     <rect x="282" y="578" width="16" height="26" fill="#f6d9a0"/>
+    </g>
+    <g stroke="#1d1a17" stroke-width="3" fill="none" opacity=".5" filter="url(#ink)"><path d="M380 600 C378 570 386 550 380 520 M380 560 l-16 -14"/></g>
+    <g fill="#8a8272" opacity=".5"><circle cx="120" cy="140" r="2"/><circle cx="220" cy="90" r="1.6"/><circle cx="330" cy="200" r="2.2"/><circle cx="460" cy="120" r="1.8"/><circle cx="80" cy="300" r="1.5"/><circle cx="500" cy="330" r="2"/><circle cx="260" cy="320" r="1.4"/></g>
+    <line x1="30" y1="604" x2="550" y2="604" stroke="#1d1a17" stroke-width="1" opacity=".25"/>
+   </svg>
+   <div class="forget"><h3>남은 것</h3><ul>
+    <li><s>강 소리</s> · <s>산 이름</s> · <s>어머니의 손</s> · <s>마을</s></li>
+    <li class="now">창 너머 불 켜진 집 한 채. 누구의 집인지는 아직 안다.</li>
+   </ul></div>
+  </div>
+  <div class="lamp" style="background:radial-gradient(ellipse 50% 50% at 35% 60%,rgba(255,220,160,.12),transparent 60%),radial-gradient(ellipse 90% 90% at 50% 50%,transparent 50%,rgba(0,0,0,.75))"></div>
+ </section>
+ <nav id="tabs"><a href="#a" data-k="a">1 · 적는다</a><a href="#b" data-k="b">2 · 마지막 낱말</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ window.addEventListener('keydown',function(e){if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';});
+ var W=[['옹살','아이를 부르던 이름'],['베루','강에게 묻다'],['소미','곧은 연기의 아침'],['탈미','눈 녹은 물 소리'],['가람숨','여름 강의 냄새'],['누비','겨울 첫 바느질'],['하재','손님이 올 것 같은 날'],['모래비','마른 바람의 비'],['솔잠','소나무 아래 낮잠'],['나래','떠나는 사람의 뒷모습'],['달꼬','달이 둘로 보이는 밤'],['빈솥','밥 짓지 않는 저녁'],['너울','배를 흔드는 긴 물결'],['담아','말없이 곁에 앉다'],['새비','새벽에 우는 새 이름'],['울담','울음을 참은 담장'],['이랑','아버지의 밭 한 줄'],['물꼬','처음 물을 여는 일'],['고미','다락의 따뜻한 먼지'],['잔별','이름 없는 작은 별'],['해름','해가 막 넘어간 때'],['손끝말','손으로만 하는 말']];
+ var d=document.getElementById('dense');
+ if(d){for(var i=0;i<W.length;i++){var x=document.createElement('div');x.innerHTML='<b>'+W[i][0]+'</b>'+W[i][1];x.style.opacity=(0.35+0.65*(i/W.length)).toFixed(2);d.appendChild(x);}}
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function brush(){var c=ac();if(!c)return;var n=Math.floor(c.sampleRate*0.5),b=c.createBuffer(1,n,c.sampleRate),dd=b.getChannelData(0);for(var i=0;i<n;i++){dd[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n)*0.6;}var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=0.6;var g=c.createGain();g.gain.value=0.25;s.connect(f);f.connect(g);g.connect(c.destination);s.start();}
+ st.addEventListener('click',function(e){if(e.target&&e.target.tagName==='A')return;brush();
+  var r=st.getBoundingClientRect(),sc=r.width/1600;var blot=document.createElement('div');var x=(e.clientX-r.left)/sc,y=(e.clientY-r.top)/sc;
+  blot.style.cssText='position:absolute;left:'+(x-18)+'px;top:'+(y-18)+'px;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,#1d1a17 40%,rgba(29,26,23,.4) 60%,transparent 72%);filter:url(#ink);z-index:40;pointer-events:none;transition:transform 1.2s ease-out,opacity 3s ease-in';
+  st.appendChild(blot);setTimeout(function(){blot.style.transform='scale(1.8)';blot.style.opacity='0';},30);setTimeout(function(){if(blot.parentNode)blot.parentNode.removeChild(blot);},3200);});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{
+  "_": "메르텐 조약. 여섯 조항이 이 PoC의 결과물이다. favorA 는 하란, favorB 는 케리아에 얼마나 유리한가 — 전부 정수다.",
+  "_왜_전문이_조항인가": "지난 일을 무엇이라 적는가가 국경선만큼 무겁다. '유감'과 '사과'는 케리아말에서 다른 낱말이고 하란말에서는 같은 낱말이다 — 이 조약에서 통역이 가장 크게 흔들 수 있는 자리다.",
+
+  "clauses": [
+    {
+      "id": "c_preamble",
+      "article": 0,
+      "name": "전문 — 지난 일을 무엇이라 적는가",
+      "unsetText": "(지난 일에 대하여는 적지 아니한다)",
+      "variants": [
+        { "id": "v_pre_regret",   "text": "케리아 왕국은 지난 일에 유감을 표하였다.",           "favorA": 8,  "favorB": 6,   "note": "케리아말의 '유감'에는 잘못을 인정하는 뜻이 없다. 하란말에는 있다" },
+        { "id": "v_pre_apology",  "text": "케리아 왕국은 지난 일을 사죄하였다.",                 "favorA": 22, "favorB": -10, "note": "케리아 왕은 이 줄을 읽고 조약을 물릴 수도 있다" },
+        { "id": "v_pre_mutual",   "text": "두 나라는 지난 일에 서로 유감을 표하였다.",            "favorA": -4, "favorB": 18,  "note": "'서로' 한 낱말이 승패를 지운다" }
+      ]
+    },
+    {
+      "id": "c_border",
+      "article": 1,
+      "name": "제1조 — 국경",
+      "unsetText": "(국경에 관하여는 따로 정한다)",
+      "variants": [
+        { "id": "v_border_ridge", "text": "국경은 카로 능선을 따른다.",                          "favorA": 30, "favorB": -10, "note": "능선 남쪽 마을 열하나가 하란 쪽에 남는다" },
+        { "id": "v_border_river", "text": "국경은 메르텐 강을 따른다.",                          "favorA": 5,  "favorB": 25,  "note": "강은 눈으로 보이고 다툴 것이 없다" },
+        { "id": "v_border_line",  "text": "국경은 조인일 현재의 주둔선으로 한다.",               "favorA": 12, "favorB": 6,   "note": "★ 둘 다 서명할 수 있는 단 하나의 문구이고, 둘이 서로 다른 선을 떠올린다" }
+      ]
+    },
+    {
+      "id": "c_garrison",
+      "article": 2,
+      "name": "제2조 — 주둔군",
+      "unsetText": "(주둔에 관하여는 따로 정한다)",
+      "variants": [
+        { "id": "v_gar_withdraw", "text": "하란 수비대는 메르텐에서 물러난다.",                  "favorA": -10, "favorB": 30, "note": "'언제'가 적혀 있지 않다" },
+        { "id": "v_gar_reduce",   "text": "하란 수비대는 절반으로 줄인다.",                      "favorA": 8,   "favorB": 14, "note": "양쪽이 다 조금씩 진 얼굴로 서명한다" },
+        { "id": "v_gar_stay",     "text": "하란 수비대는 현 위치에 머문다.",                     "favorA": 28,  "favorB": -12, "note": "메르텐 마을의 우물이 군막 안에 있다" }
+      ]
+    },
+    {
+      "id": "c_reparations",
+      "article": 3,
+      "name": "제3조 — 전쟁 값",
+      "unsetText": "(전쟁 값에 관하여는 따로 정한다)",
+      "variants": [
+        { "id": "v_rep_coin",  "text": "케리아 왕국은 금화 사십만을 낸다.",                      "favorA": 30, "favorB": -20, "note": "케리아 곳간에 없는 액수다" },
+        { "id": "v_rep_grain", "text": "케리아 왕국은 곡물로 대신 낸다.",                        "favorA": 8,  "favorB": 12,  "note": "몇 해치인지는 적혀 있지 않다" },
+        { "id": "v_rep_none",  "text": "전쟁 값은 묻지 아니한다.",                               "favorA": -8, "favorB": 28,  "note": "'이번에는'이 빠져 있다" }
+      ]
+    },
+    {
+      "id": "c_prisoners",
+      "article": 4,
+      "name": "제4조 — 포로",
+      "unsetText": "(포로에 관하여는 따로 정한다)",
+      "variants": [
+        { "id": "v_pri_all",    "text": "포로 전원을 곧바로 돌려보낸다.",                        "favorA": 4,  "favorB": 26, "note": "하란 진영에 '전원'이 몇인지 아는 사람이 없다" },
+        { "id": "v_pri_staged", "text": "포로를 세 차례에 나누어 돌려보낸다.",                   "favorA": 10, "favorB": 12, "note": "" },
+        { "id": "v_pri_named",  "text": "명부에 오른 자를 돌려보낸다.",                          "favorA": 24, "favorB": -6, "note": "명부를 누가 적는지는 적혀 있지 않다" }
+      ]
+    },
+    {
+      "id": "c_tongue",
+      "article": 5,
+      "name": "제5조 — 공문서의 말",
+      "unsetText": "(공문서의 말에 관하여는 적지 아니한다)",
+      "variants": [
+        { "id": "v_tongue_both",  "text": "공문서는 두 말로 함께 적는다.",                       "favorA": 6,  "favorB": 20,  "note": "통역이 앞으로도 필요하다는 뜻이다" },
+        { "id": "v_tongue_haran", "text": "공문서는 하란말로 적는다.",                           "favorA": 26, "favorB": -14, "note": "이 방에서 통역 자신에 대해 나온 유일한 조항이다" }
+      ]
+    }
+  ]
+}

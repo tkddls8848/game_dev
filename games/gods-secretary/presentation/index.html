@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>천상의 서류 — gods-secretary</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  장부의 수치도, 좌우 대조도, 대가 없는 허가를 찾는 표도 전부 data/*.json 에서 계산한다.
+  규칙(고통의 볼록함 · 보존 · 보류가 키우는 사정)은 src/ 의 C# 과 같은 식을 쓴다.
+
+  **목업은 씨드를 돌리지 않는다.** 편지마다 dayOptions 의 첫 날에 도착한다고 본다 —
+  씨드가 무엇을 바꾸는지는 검사기(tests/)가 본다. 여기서 보여 주려는 것은 하나다:
+  **들어준 것과 빠진 자리가 장부의 좌우에 나란히 있고, 빠진 자리마다 이름이 있다.**
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/gods-secretary && python -m http.server 8102
+      → http://localhost:8102/presentation/index.html
+-->
+<style>
+@font-face { font-family:"Hahmlet"; src:url("assets/fonts/Hahmlet.ttf") format("truetype"); font-weight:300 700; font-display:swap; }
+@font-face { font-family:"NanumPenScript"; src:url("assets/fonts/NanumPenScript-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root {
+  --marble:#F2F0EB; --marbleLit:#FBFAF7; --marbleDim:#E6E3DC;
+  --vein:#DBD6CD; --veinDeep:#C7C1B6; --hair:#B3ADA2;
+  --engrave:#3A372F; --engraveSoft:#6C685E; --engraveFaint:#98938A;
+  --letterInk:#33415B; --waxGrant:#2F5D57; --waxDeny:#6E2A28; --waxDefer:#6A6A6A;
+  --sTitle:40px; --sHead:22px; --sBody:16px; --sLetter:21px; --sHint:13px; --sNum:14px;
+  --trkTitle:14px; --trkHead:4px;
+  --maxW:1080px; --gutter:24px; --pad:56px; --secGap:56px; --ledgerGap:48px;
+  --ruleW:1px; --ruleHW:2px; --hiOff:1px; --shOff:1px; --hiA:.72; --shA:.26; --vig:.1;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body {
+  background:var(--marble); color:var(--engrave);
+  font-family:"Hahmlet", Georgia, serif; font-size:var(--sBody); line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+/* 대리석 결 — 각도가 다른 가느다란 줄 두 겹. 이미지를 받지 않았다 */
+body::before {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(var(--veinA), rgba(58,55,47,var(--veinO)) 0 var(--veinW), transparent var(--veinW) var(--veinP)),
+    repeating-linear-gradient(var(--vein2A), rgba(58,55,47,var(--vein2O)) 0 1px, transparent 1px var(--vein2P)),
+    repeating-linear-gradient(0deg, rgba(58,55,47,var(--grainO)) 0 1px, transparent 1px var(--grainP));
+}
+body::after {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 34%, transparent 62%, rgba(58,55,47,var(--vig)) 100%);
+}
+main { position:relative; z-index:1; max-width:var(--maxW); margin:0 auto; padding:48px var(--gutter) 110px; }
+
+.slab {
+  position:relative; background:linear-gradient(168deg, var(--marbleLit), var(--marble) 55%, var(--marbleDim));
+  border:var(--ruleW) solid var(--veinDeep);
+  padding:var(--pad); margin:0 0 var(--secGap);
+  box-shadow:0 1px 0 rgba(255,255,255,.8) inset, 0 -1px 0 rgba(58,55,47,.06) inset;
+}
+/* 음각 — 위는 흰 테, 아래는 옅은 그늘. 두 줄이 전부다 */
+h1,h2,h3,.eng {
+  text-shadow: 0 calc(-1 * var(--hiOff)) 0 rgba(255,255,255,var(--hiA)),
+               0 var(--shOff) 0 rgba(58,55,47,var(--shA));
+}
+h1 { font-weight:700; font-size:var(--sTitle); letter-spacing:var(--trkTitle); margin:0 0 10px; line-height:1.3; }
+h2 { font-weight:700; font-size:var(--sHead); letter-spacing:var(--trkHead); margin:0 0 4px; }
+h2 + .rule { height:var(--ruleHW); background:var(--engrave); opacity:.5; margin:0 0 22px; }
+h3 { font-size:var(--sBody); font-weight:700; letter-spacing:2px; margin:30px 0 8px; color:var(--engraveSoft); }
+p { margin:8px 0 16px; max-width:72ch; }
+.hint { font-size:var(--sHint); color:var(--engraveSoft); line-height:1.8; }
+.lede { font-size:calc(var(--sBody) + 2px); }
+em { font-style:normal; box-shadow:inset 0 -6px 0 rgba(47,93,87,.16); }
+code,.num { font-family:"Hahmlet",monospace; font-size:var(--sNum); font-variant-numeric:tabular-nums; }
+
+table { border-collapse:collapse; width:100%; margin:14px 0 10px; font-size:var(--sNum); }
+th,td { padding:7px 10px; border-bottom:var(--ruleW) solid var(--hair); text-align:left; }
+thead th { border-bottom:var(--ruleHW) solid var(--engrave); font-size:var(--sHint); letter-spacing:2px; font-weight:700; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+tr.deep td { background:rgba(110,42,40,.05); }
+tr.well td { background:rgba(47,93,87,.05); }
+.faint { color:var(--engraveFaint); }
+.deny { color:var(--waxDeny); }
+.grant { color:var(--waxGrant); }
+
+/* 편지 — 유일한 손글씨 */
+.letter {
+  font-family:"NanumPenScript", cursive; font-size:var(--sLetter); line-height:1.6;
+  color:var(--letterInk); max-width:34ch; text-shadow:none;
+}
+.letter .from { display:block; font-size:calc(var(--sLetter) * .8); color:var(--engraveSoft); margin-top:6px; }
+
+/* 장부 좌우 — 이 띠가 좁으면 「어디서 빠졌는가」가 사라진다 */
+.ledger { display:grid; grid-template-columns:1fr 1fr; gap:0 var(--ledgerGap); align-items:start; }
+.ledger > div { min-width:0; }
+.ledger .side { font-size:var(--sHint); letter-spacing:3px; color:var(--engraveSoft); margin-bottom:10px; }
+.ledger .rightside { border-left:var(--ruleW) solid var(--hair); padding-left:var(--ledgerGap); }
+@media (max-width:820px) { .ledger { grid-template-columns:1fr; }
+  .ledger .rightside { border-left:none; padding-left:0; margin-top:30px; } }
+
+/* 접수함 */
+.docket { display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:34px 44px; }
+.slip { border-top:var(--ruleHW) solid var(--engrave); padding-top:14px; }
+.slip .head { display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+              font-size:var(--sHint); letter-spacing:2px; color:var(--engraveSoft); }
+.seals { display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap; }
+.seals button { background:none; border:none; padding:0; cursor:pointer; line-height:0; }
+.seals button[disabled] { opacity:.28; cursor:default; }
+.seals .lbl { font-size:var(--sHint); letter-spacing:2px; color:var(--engraveFaint); }
+.done { font-size:var(--sHint); letter-spacing:2px; }
+
+.pick { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:18px 0 0; }
+.pick button {
+  font:inherit; font-size:var(--sHint); letter-spacing:2px; padding:6px 16px;
+  border:var(--ruleW) solid var(--hair); background:transparent; color:var(--engrave); cursor:pointer;
+}
+.pick button.on { border-color:var(--engrave); border-width:var(--ruleHW); font-weight:700; }
+.err { color:var(--waxDeny); font-weight:700; }
+svg { display:block; overflow:visible; }
+.bigline { font-size:var(--sHead); letter-spacing:2px; }
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">장부를 펴는 중… (화면이 비어 있다면 <code>python -m http.server 8102</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ─────────────────────────────
+const FILES = ["domains", "souls", "ledgers", "prayers", "balance"];
+let D = {}, PAL = null;
+
+async function load() {
+  const raw = {};
+  await Promise.all(FILES.map(async n => { raw[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  PAL = await (await fetch("palette.json")).json();
+  D.bal = raw.balance;
+  D.domains = {}; D.domainOrder = raw.domains.domains.map(x => x.id);
+  raw.domains.domains.forEach(x => D.domains[x.id] = x);
+  D.souls = {}; raw.souls.souls.forEach(x => D.souls[x.id] = x);
+  D.soulOrder = raw.souls.souls.map(x => x.id);
+  D.volumes = raw.ledgers.volumes;
+  D.volById = {}; D.volumes.forEach(v => D.volById[v.id] = v);
+  D.prayers = raw.prayers.prayers;
+  D.byVolume = {};
+  D.volumes.forEach(v => {
+    D.byVolume[v.id] = D.prayers.filter(p => p.volumeId === v.id)
+                                .sort((a, b) => a.id.localeCompare(b.id));
+  });
+}
+
+function applyPalette() {
+  const s = document.documentElement.style, c = PAL.color, t = PAL.type,
+        l = PAL.layout, e = PAL.engrave, m = PAL.marble;
+  s.setProperty("--marble", c.marble); s.setProperty("--marbleLit", c.marbleLit);
+  s.setProperty("--marbleDim", c.marbleDim); s.setProperty("--vein", c.vein);
+  s.setProperty("--veinDeep", c.veinDeep); s.setProperty("--hair", c.hair);
+  s.setProperty("--engrave", c.engrave); s.setProperty("--engraveSoft", c.engraveSoft);
+  s.setProperty("--engraveFaint", c.engraveFaint); s.setProperty("--letterInk", c.letterInk);
+  s.setProperty("--waxGrant", c.waxGrant); s.setProperty("--waxDeny", c.waxDeny);
+  s.setProperty("--waxDefer", c.waxDefer);
+  s.setProperty("--sTitle", t.sizeTitle + "px"); s.setProperty("--sHead", t.sizeHeading + "px");
+  s.setProperty("--sBody", t.sizeBody + "px"); s.setProperty("--sLetter", t.sizeLetter + "px");
+  s.setProperty("--sHint", t.sizeHint + "px"); s.setProperty("--sNum", t.sizeNumeral + "px");
+  s.setProperty("--trkTitle", t.trackingTitle + "px"); s.setProperty("--trkHead", t.trackingHeading + "px");
+  s.setProperty("--maxW", l.maxWidthPx + "px"); s.setProperty("--gutter", l.gutterPx + "px");
+  s.setProperty("--pad", l.sheetPadPx + "px"); s.setProperty("--secGap", l.sectionGapPx + "px");
+  s.setProperty("--ledgerGap", l.ledgerGapPx + "px");
+  s.setProperty("--ruleW", e.ruleWidthPx + "px"); s.setProperty("--ruleHW", e.ruleHeavyWidthPx + "px");
+  s.setProperty("--hiOff", e.highlightOffsetPx + "px"); s.setProperty("--shOff", e.shadowOffsetPx + "px");
+  s.setProperty("--hiA", e.highlightAlpha / 100); s.setProperty("--shA", e.shadowAlpha / 100);
+  s.setProperty("--veinA", m.veinAngleDeg + "deg"); s.setProperty("--veinP", m.veinPitchPx + "px");
+  s.setProperty("--veinW", m.veinWidthPx + "px"); s.setProperty("--veinO", m.veinOpacity / 100);
+  s.setProperty("--vein2A", m.veinSecondAngleDeg + "deg"); s.setProperty("--vein2P", m.veinSecondPitchPx + "px");
+  s.setProperty("--vein2O", m.veinSecondOpacity / 100);
+  s.setProperty("--grainP", m.grainPitchPx + "px"); s.setProperty("--grainO", m.grainOpacity / 100);
+  s.setProperty("--vig", m.vignette);
+}
+
+// ── 규칙. src/ 의 C# 과 같은 식이다 ───────────────────────────────────────────
+/** 장부 하나. conservation 이 false 면 대조 세계 — 허가해도 아무 데서도 빠지지 않는다. */
+function newLedger(volumeId, conservation) {
+  const v = D.volById[volumeId], have = {}, need = {}, tol = {}, present = {};
+  v.holdings.forEach(h => {
+    const k = h.soulId + "/" + h.domain;
+    have[k] = h.have; need[k] = h.need; tol[k] = h.toleranceUnits; present[k] = true;
+  });
+  const total = {};
+  D.domainOrder.forEach(d => total[d] = sumOf(have, present, d));
+  return { volumeId, have, need, tol, present, initial: total, conservation: conservation !== false };
+}
+function sumOf(have, present, dom) {
+  let t = 0;
+  for (const k in present) if (k.endsWith("/" + dom)) t += have[k];
+  return t;
+}
+function cloneLedger(L) {
+  return { volumeId:L.volumeId, have:Object.assign({}, L.have), need:Object.assign({}, L.need),
+           tol:L.tol, present:L.present, initial:L.initial, conservation:L.conservation };
+}
+const holds = (L, s, d) => !!L.present[s + "/" + d];
+const deficit = (L, s, d) => Math.max(0, L.need[s + "/" + d] - L.have[s + "/" + d]);
+
+/** 부족분에 비례하고, 견딜 한도를 넘은 몫에는 값이 더 붙는다 — 이 볼록함이 게임을 만든다. */
+function hardship(L, s, d) {
+  const k = s + "/" + d;
+  if (!L.present[k]) return 0;
+  const dd = D.domains[d], def = L.need[k] - L.have[k];
+  if (def <= 0) return 0;
+  const over = Math.max(0, def - L.tol[k]);
+  return def * dd.hardshipPerUnit + over * dd.severeExtraPerUnit;
+}
+function totalHardship(L) {
+  let t = 0;
+  for (const k in L.present) { const [s, d] = k.split("/"); t += hardship(L, s, d); }
+  return t;
+}
+/** 그 이름에게서 units 만큼 뺐을 때 그 자리의 고통이 얼마나 오르는가. **0 이면 공짜 허가다.** */
+function costOfDrawing(L, s, d, units) {
+  const k = s + "/" + d, before = hardship(L, s, d);
+  L.have[k] -= units;
+  const after = hardship(L, s, d);
+  L.have[k] += units;
+  return after - before;
+}
+
+/** 허가 한 번. 어느 이름에서 얼마씩 빠지는지를 줄로 남긴다. */
+function grant(L, prayer, grown, order) {
+  const want = Math.min(prayer.askUnits + grown, deficit(L, prayer.fromSoulId, prayer.domain));
+  if (want <= 0) return null;
+  let remaining = want, drawn = 0, cost = 0;
+  const debits = [];
+  for (const sid of order) {
+    const src = prayer.sources.find(x => x.soulId === sid);
+    if (!src) continue;
+    const k = sid + "/" + prayer.domain;
+    let can = Math.min(src.maxUnits, L.have[k], remaining);
+    if (can <= 0) continue;
+    cost += costOfDrawing(L, sid, prayer.domain, can);
+    if (L.conservation) L.have[k] -= can;
+    debits.push({ soulId: sid, units: can, note: src.note });
+    drawn += can; remaining -= can;
+    if (remaining <= 0) break;
+  }
+  if (drawn <= 0) return null;
+  L.have[prayer.fromSoulId + "/" + prayer.domain] += drawn;
+  return { granted: drawn, drawn, cost, debits };
+}
+const cheapestFirst = (L, p) => p.sources.slice().sort((a, b) => {
+  const ca = costOfDrawing(L, a.soulId, p.domain, 1), cb = costOfDrawing(L, b.soulId, p.domain, 1);
+  if (ca !== cb) return ca - cb;
+  return L.have[b.soulId + "/" + p.domain] - L.have[a.soulId + "/" + p.domain];
+}).map(x => x.soulId);
+
+// ── 여섯 날을 정책으로 돌린다. 두 세계 비교에 쓴다 ────────────────────────────
+function runPolicy(volumeId, kind, conservation) {
+  const v = D.volById[volumeId], L = newLedger(volumeId, conservation);
+  const letters = D.byVolume[volumeId].map(p => ({ def:p, day:p.dayOptions[0], grown:0, open:true }));
+  let accrued = 0, grants = 0, denies = 0, defers = 0, granted = 0, drawn = 0;
+  const cap = D.bal.day.deferCapUnits;
+  const grow = l => {
+    let add = Math.min(l.def.deferPenaltyUnits, cap - l.grown);
+    if (add <= 0) return;
+    l.grown += add; L.need[l.def.fromSoulId + "/" + l.def.domain] += add;
+  };
+  for (let day = 0; day < v.days; day++) {
+    let stamps = D.bal.day.stampsPerDay;
+    while (stamps > 0) {
+      const open = letters.filter(l => l.open && l.day <= day);
+      if (!open.length) break;
+      let pick = null, order = null;
+      if (kind === "grantAll") {
+        pick = open.find(l => Math.min(l.def.askUnits + l.grown, deficit(L, l.def.fromSoulId, l.def.domain)) > 0);
+        if (pick) order = cheapestFirst(L, pick.def);
+      } else if (kind === "helpsOnly") {
+        let bestGain = 0;
+        for (const l of open) {
+          const ord = cheapestFirst(L, l.def);
+          const probe = cloneLedger(L), before = totalHardship(probe);
+          const g = grant(probe, l.def, l.grown, ord);
+          if (!g) continue;
+          const gain = before - totalHardship(probe);
+          if (gain > bestGain) { bestGain = gain; pick = l; order = ord; }
+        }
+      }
+      if (pick && order) {
+        const g = grant(L, pick.def, pick.grown, order);
+        if (g) { pick.open = false; grants++; granted += g.granted; drawn += g.drawn; }
+        else { pick.open = false; denies++; }
+      } else {
+        const x = open[0];
+        if (!x) break;
+        x.open = false; denies++;
+      }
+      stamps--;
+    }
+    letters.filter(l => l.open && l.day <= day).forEach(l => { grow(l); defers++; });
+    accrued += totalHardship(L);
+  }
+  return { accrued, grants, denies, defers, granted, drawn, L };
+}
+
+// ── 봉랍 · 그리기 ────────────────────────────────────────────────────────────
+const esc = s => String(s).replace(/[&<>]/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[m]));
+const soulName = id => D.souls[id].name;
+
+/** 눌린 밀랍. 난수를 쓰지 않고 사인 두 겹으로 테두리를 흔든다 — 화면이 매번 같아야 대조할 수 있다. */
+function waxSvg(kind, size) {
+  const w = PAL.wax, c = { grant:PAL.color.waxGrant, deny:PAL.color.waxDeny, defer:PAL.color.waxDefer }[kind];
+  const glyph = { grant:w.glyphGrant, deny:w.glyphDeny, defer:w.glyphDefer }[kind];
+  const rot = { grant:w.rotateGrantDeg, deny:w.rotateDenyDeg, defer:w.rotateDeferDeg }[kind];
+  const r = size ? size / 2 - 3 : w.radiusPx, cx = r + 3, d = (r + 3) * 2;
+  const pts = [];
+  for (let i = 0; i < w.lobes * 4; i++) {
+    const a = i / (w.lobes * 4) * Math.PI * 2;
+    const j = 1 + (w.lobeJitterPercent / 100) * (Math.sin(a * w.lobes) * 0.7 + Math.sin(a * 3 + 1.1) * 0.3);
+    pts.push((cx + Math.cos(a) * r * j).toFixed(1) + "," + (cx + Math.sin(a) * r * j).toFixed(1));
+  }
+  return '<svg width="' + d + '" height="' + d + '" viewBox="0 0 ' + d + ' ' + d
+    + '" style="transform:rotate(' + rot + 'deg)">'
+    + '<polygon points="' + pts.join(" ") + '" fill="' + c + '"/>'
+    + '<polygon points="' + pts.join(" ") + '" fill="none" stroke="rgba(255,255,255,'
+    + (w.riseHighlight / 100) + ')" stroke-width="1.5" transform="translate(0,-1.2)"/>'
+    + '<circle cx="' + cx + '" cy="' + cx + '" r="' + (r * 0.74) + '" fill="none" stroke="rgba(0,0,0,'
+    + (w.riseShadow / 100) + ')" stroke-width="1"/>'
+    + '<text x="' + cx + '" y="' + (cx + r * 0.3) + '" text-anchor="middle" fill="#FBFAF7" font-size="'
+    + (r * 0.85).toFixed(0) + '" font-family="Hahmlet,serif" font-weight="700">' + glyph + "</text></svg>";
+}
+
+// ── 화면 상태 ────────────────────────────────────────────────────────────────
+const S = { vid:null, L:null, letters:[], day:0, stamps:0, log:[], accrued:0 };
+
+function reset() {
+  const v = D.volById[S.vid];
+  S.L = newLedger(S.vid, true);
+  S.letters = D.byVolume[S.vid].map(p => ({ def:p, day:p.dayOptions[0], grown:0, open:true, verdict:null }));
+  S.day = 0; S.stamps = D.bal.day.stampsPerDay; S.log = []; S.accrued = 0;
+}
+
+function closeDay() {
+  const cap = D.bal.day.deferCapUnits;
+  S.letters.filter(l => l.open && l.day <= S.day).forEach(l => {
+    const add = Math.min(l.def.deferPenaltyUnits, cap - l.grown);
+    if (add > 0) { l.grown += add; S.L.need[l.def.fromSoulId + "/" + l.def.domain] += add; }
+  });
+  S.accrued += totalHardship(S.L);
+  S.day++;
+  S.stamps = D.bal.day.stampsPerDay;
+}
+
+function stamp(letter, kind) {
+  if (S.stamps <= 0 || !letter.open) return;
+  if (kind === "grant") {
+    const g = grant(S.L, letter.def, letter.grown, cheapestFirst(S.L, letter.def));
+    if (!g) return;
+    letter.open = false; letter.verdict = "grant";
+    S.log.push({ day:S.day, p:letter.def, kind:"grant", g });
+  } else if (kind === "deny") {
+    letter.open = false; letter.verdict = "deny";
+    S.log.push({ day:S.day, p:letter.def, kind:"deny" });
+  } else {
+    const cap = D.bal.day.deferCapUnits;
+    const add = Math.min(letter.def.deferPenaltyUnits, cap - letter.grown);
+    if (add > 0) { letter.grown += add; S.L.need[letter.def.fromSoulId + "/" + letter.def.domain] += add; }
+    S.log.push({ day:S.day, p:letter.def, kind:"defer", grew:add });
+  }
+  S.stamps--;
+  if (S.stamps <= 0 && S.day < D.volById[S.vid].days - 1) closeDay();
+  render();
+}
+
+function ledgerTable() {
+  const v = D.volById[S.vid];
+  let h = '<table><thead><tr><th>이름</th><th>사는 곳</th><th>영역</th>'
+        + '<th class="n">가진 것</th><th class="n">필요한 것</th><th class="n">모자람</th>'
+        + '<th class="n">견딜 한도</th><th class="n">고통</th></tr></thead><tbody>';
+  D.soulOrder.forEach(sid => {
+    D.domainOrder.forEach(dom => {
+      if (!holds(S.L, sid, dom)) return;
+      const def = deficit(S.L, sid, dom), k = sid + "/" + dom;
+      const cls = def > S.L.tol[k] ? "deep" : (def === 0 ? "well" : "");
+      h += '<tr class="' + cls + '"><td>' + esc(soulName(sid)) + "</td><td>"
+        + esc(D.souls[sid].place) + "</td><td>" + esc(D.domains[dom].name) + "</td>"
+        + '<td class="n">' + S.L.have[k] + '</td><td class="n">' + S.L.need[k] + "</td>"
+        + '<td class="n">' + (def || "—") + '</td><td class="n">' + S.L.tol[k] + "</td>"
+        + '<td class="n">' + (hardship(S.L, sid, dom) || "—") + "</td></tr>";
+    });
+  });
+  h += "</tbody></table>";
+  let tot = '<p class="hint">영역 총량 — ';
+  tot += D.domainOrder.map(d => esc(D.domains[d].name) + " " + sumOf(S.L.have, S.L.present, d)
+        + "/" + S.L.initial[d] + " " + esc(D.domains[d].unitName)).join(" · ");
+  tot += " · 세상의 고통 <b>" + totalHardship(S.L) + "</b> · 쌓인 고통 <b>" + S.accrued + "</b></p>";
+  return h + tot;
+}
+
+function docket() {
+  const open = S.letters.filter(l => l.open && l.day <= S.day);
+  if (!open.length) return '<p class="hint">오늘 접수함에 남은 편지가 없다.</p>';
+  return '<div class="docket">' + open.map(l => {
+    const grantable = Math.min(l.def.askUnits + l.grown, deficit(S.L, l.def.fromSoulId, l.def.domain));
+    return '<div class="slip"><div class="head"><span>' + esc(D.domains[l.def.domain].name)
+      + " " + (l.def.askUnits + l.grown) + esc(D.domains[l.def.domain].unitName)
+      + (l.grown ? ' <span class="deny">(보류로 +' + l.grown + ")</span>" : "")
+      + '</span><span>' + (l.day + 1) + "일째</span></div>"
+      + '<p class="letter">' + esc(l.def.text) + '<span class="from">— '
+      + esc(soulName(l.def.fromSoulId)) + " · " + esc(D.souls[l.def.fromSoulId].place) + "</span></p>"
+      + '<div class="seals">'
+      + '<button data-stamp="grant" data-p="' + l.def.id + '"' + (grantable > 0 ? "" : " disabled")
+      + ' title="허가">' + waxSvg("grant", 52) + "</button>"
+      + '<button data-stamp="deny" data-p="' + l.def.id + '" title="기각">' + waxSvg("deny", 52) + "</button>"
+      + '<button data-stamp="defer" data-p="' + l.def.id + '" title="보류">' + waxSvg("defer", 52) + "</button>"
+      + '<span class="lbl">' + (grantable > 0 ? "들어주면 " + grantable + "까지 건너간다" : "들어줄 것이 남지 않았다")
+      + "</span></div></div>";
+  }).join("") + "</div>";
+}
+
+/** ★ 장부의 좌우. 왼쪽은 들어온 기도, 오른쪽은 그 대가로 빠진 자리 — 자리마다 이름이 있다. */
+function ledgerSides() {
+  const grants = S.log.filter(x => x.kind === "grant");
+  let left = "", right = "";
+  if (!grants.length) {
+    left = '<p class="hint">아직 아무 기도도 들어주지 않았다.</p>';
+    right = '<p class="hint">그래서 아직 아무 데서도 빠지지 않았다. 장부의 두 쪽은 늘 같은 높이다.</p>';
+  } else {
+    left = "<table><thead><tr><th>날</th><th>누구의 기도</th><th>영역</th>"
+         + '<th class="n">건너간 것</th></tr></thead><tbody>'
+         + grants.map(x => "<tr><td>" + (x.day + 1) + "</td><td>" + esc(soulName(x.p.fromSoulId))
+             + "</td><td>" + esc(D.domains[x.p.domain].name) + '</td><td class="n grant">+'
+             + x.g.granted + "</td></tr>").join("") + "</tbody></table>";
+    right = "<table><thead><tr><th>날</th><th>빠진 자리 (이름)</th><th>어디서</th>"
+          + '<th class="n">빠진 것</th></tr></thead><tbody>'
+          + grants.map(x => x.g.debits.map(dd => "<tr><td>" + (x.day + 1) + "</td><td>"
+              + esc(soulName(dd.soulId)) + "</td><td>" + esc(dd.note) + '</td><td class="n deny">−'
+              + dd.units + "</td></tr>").join("")).join("") + "</tbody></table>";
+  }
+  const g = grants.reduce((a, x) => a + x.g.granted, 0);
+  const t = grants.reduce((a, x) => a + x.g.debits.reduce((b, y) => b + y.units, 0), 0);
+  const balance = '<p class="bigline eng" style="margin-top:22px">건너간 것 ' + g + " · 빠진 것 " + t
+    + " — " + (g === t ? "장부가 맞는다" : '<span class="err">장부가 맞지 않는다</span>') + "</p>";
+  return '<div class="ledger"><div><div class="side">들어온 기도</div>' + left + "</div>"
+    + '<div class="rightside"><div class="side">그 대가로 빠진 자리</div>' + right + "</div></div>" + balance;
+}
+
+/** ★ 대가 없는 허가를 찾는다. 접수함의 모든 편지 x 모든 출처를 실제로 빼 보고 값을 센다. */
+function freeGrantTable() {
+  const open = S.letters.filter(l => l.open && l.day <= S.day);
+  let rows = "", probes = 0, cheapest = Infinity, free = 0;
+  open.forEach(l => {
+    l.def.sources.forEach(src => {
+      const k = src.soulId + "/" + l.def.domain;
+      const max = Math.min(src.maxUnits, S.L.have[k]);
+      if (max <= 0) return;
+      const c1 = costOfDrawing(S.L, src.soulId, l.def.domain, 1);
+      const cMax = costOfDrawing(S.L, src.soulId, l.def.domain, max);
+      probes += max;
+      if (c1 < cheapest) cheapest = c1;
+      if (c1 <= 0) free++;
+      rows += "<tr><td>" + esc(soulName(l.def.fromSoulId)) + "</td><td>"
+        + esc(D.domains[l.def.domain].name) + "</td><td>" + esc(soulName(src.soulId)) + "</td>"
+        + '<td class="n">' + max + '</td><td class="n' + (c1 <= 0 ? " err" : "") + '">' + c1
+        + '</td><td class="n">' + cMax + "</td></tr>";
+    });
+  });
+  if (!rows) return '<p class="hint">접수함이 비어 있어 뒤질 것이 없다.</p>';
+  return "<table><thead><tr><th>누구의 기도</th><th>영역</th><th>빼 올 이름</th>"
+    + '<th class="n">뺄 수 있는 양</th><th class="n">한 단위의 값</th><th class="n">전부 뺄 때의 값</th>'
+    + "</tr></thead><tbody>" + rows + "</tbody></table>"
+    + "<p>뒤진 자리 <b>" + probes + "</b>개 · 값이 0 인 자리 <b"
+    + (free ? ' class="err"' : "") + ">" + free + "</b>개 · 가장 싼 자리의 값 <b>" + cheapest + "</b>. "
+    + "<em>값이 0 인 자리가 하나라도 생기면 최적 전략이 「그것만 들어준다」가 되어 게임이 끝난다.</em></p>";
+}
+
+function worldTable() {
+  let h = "<table><thead><tr><th>장부</th><th>세계</th><th>전부 허가</th><th>덜어질 때만</th>"
+        + '<th class="n">허가 횟수</th><th class="n">건너간 것</th><th class="n">빠진 것</th>'
+        + "<th>총량이 그대로인가</th></tr></thead><tbody>";
+  D.volumes.forEach(v => {
+    [[true, "켠 세계 (이 PoC)"], [false, "보존을 끈 세계"]].forEach(([cons, label], i) => {
+      const a = runPolicy(v.id, "grantAll", cons), b = runPolicy(v.id, "helpsOnly", cons);
+      const kept = D.domainOrder.every(d => sumOf(b.L.have, b.L.present, d) === b.L.initial[d]);
+      h += "<tr" + (cons ? "" : ' class="deep"') + ">"
+        + (i === 0 ? '<td rowspan="2">' + esc(v.name) + "</td>" : "")
+        + "<td>" + label + '</td><td class="n">' + a.accrued + '</td><td class="n"><b>' + b.accrued + "</b></td>"
+        + '<td class="n">' + b.grants + '</td><td class="n">' + b.granted + '</td><td class="n">' + b.drawn + "</td>"
+        + "<td>" + (kept ? "그대로다" : '<span class="err">늘었다</span>') + "</td></tr>";
+    });
+  });
+  return h + "</tbody></table>";
+}
+
+function render() {
+  const v = D.volById[S.vid];
+  const done = S.day >= v.days;
+  let h = "";
+
+  h += '<section class="slab"><h1>천상의 서류</h1><div class="rule"></div>'
+    + '<p class="lede">기도가 편지로 온다. 분류하고, 회신하고, 기각한다. '
+    + '<em>들어주면 반드시 다른 곳에서 대가가 빠지고, 그 빠진 자리에는 이름이 있다.</em> '
+    + '신은 한 번도 등장하지 않는다.</p>'
+    + '<p class="hint">' + esc(v.note) + "</p>"
+    + '<p class="hint">장부 「' + esc(v.name) + "」 · " + v.days + "일 · 편지 "
+    + D.byVolume[S.vid].length + "장 · 하루에 봉랍 " + D.bal.day.stampsPerDay + "번 "
+    + "\u2014 <b>다 볼 수 없다.</b> 도장을 못 받은 편지는 밤에 저절로 보류되고 그만큼 사정이 커진다.</p>"
+    + '<div class="pick"><b>장부</b>' + D.volumes.map(x =>
+        '<button data-vol="' + x.id + '" class="' + (x.id === S.vid ? "on" : "") + '">'
+        + esc(x.name) + "</button>").join("")
+    + '<button data-act="reset">처음부터</button></div></section>';
+
+  h += '<section class="slab"><h2><span class="faint">01</span> 오늘의 접수함</h2><div class="rule"></div>'
+    + '<p class="hint">' + (done ? "여섯째 날이 지났다. 남은 편지는 끝내 답을 받지 못했다."
+        : (S.day + 1) + "일째 · 남은 봉랍 " + S.stamps + "번 · 접수함 "
+          + S.letters.filter(l => l.open && l.day <= S.day).length + "장") + "</p>"
+    + (done ? "" : docket())
+    + '<div class="pick">' + (done ? "" : '<button data-act="close">오늘을 닫는다</button>')
+    + '<span class="hint">봉랍 셋: '
+    + '<span class="grant">許 허가</span> · <span class="deny">却 기각</span> · 留 보류</span></div>'
+    + "</section>";
+
+  h += '<section class="slab"><h2><span class="faint">02</span> 장부의 좌우</h2><div class="rule"></div>'
+    + "<p>왼쪽이 들어준 것, 오른쪽이 그 대가로 빠진 자리다. <em>오른쪽의 모든 줄에 이름이 있다</em> — "
+    + "익명의 「세계」에서 빼는 길은 이 서식에 없다. 두 쪽의 합이 어긋나면 장부가 맞지 않는 것이고, "
+    + "그것은 이 PoC에서 고장이다.</p>" + ledgerSides() + "</section>";
+
+  h += '<section class="slab"><h2><span class="faint">03</span> 대가 없이 들어줄 수 있는가</h2><div class="rule"></div>'
+    + "<p>지금 접수함의 모든 편지에 대해, 쓸 수 있는 모든 이름에서 실제로 빼 보고 그 자리의 고통이 "
+    + "얼마나 오르는지 센다. <b>한 자리도 0 이 아니어야 한다.</b></p>"
+    + freeGrantTable() + "</section>";
+
+  h += '<section class="slab"><h2><span class="faint">04</span> 장부</h2><div class="rule"></div>'
+    + "<p>붉게 깔린 줄은 <b>견딜 한도를 넘은</b> 자리다. 거기서 빼면 값이 두 배로 들고, 거기에 채워 주면 "
+    + "두 배로 덜어진다 — <em>비서의 일은 그 계산이다.</em></p>" + ledgerTable() + "</section>";
+
+  h += '<section class="slab"><h2><span class="faint">05</span> 보존을 끄면 어떻게 되는가</h2><div class="rule"></div>'
+    + "<p>같은 장부를 두 세계에서 여섯 날 돌린다. <b>보존을 끈 세계</b>에서는 들어줘도 아무 데서도 빠지지 않는다 "
+    + "— 총량이 늘고, 고통이 무너지고, <em>기각 도장이 죽는다.</em></p>" + worldTable()
+    + '<p class="hint">이 표는 목업이 브라우저에서 직접 계산한 것이다. 씨드 열여섯 개와 빔 탐색으로 잰 수치는 '
+    + "tests/ 의 ConservationHolds · NoFreeGrant 가 본다.</p></section>";
+
+  h += '<section class="slab"><h2><span class="faint">06</span> 이 화면이 읽은 것</h2><div class="rule"></div>'
+    + "<p>수치를 하나도 손으로 옮겨 적지 않았다.</p><table><thead><tr><th>파일</th><th>무엇이 들어 있나</th>"
+    + "</tr></thead><tbody>"
+    + [["data/souls.json", "이름 " + D.soulOrder.length + " \u2014 사는 곳과 사정"],
+       ["data/domains.json", "영역 " + D.domainOrder.length + " \u2014 단위당 고통과 한도를 넘은 값"],
+       ["data/ledgers.json", "장부 " + D.volumes.length + "권 \u2014 가진 것 · 필요한 것 · 견딜 한도"],
+       ["data/prayers.json", "편지 " + D.prayers.length + "장 \u2014 본문과 **빠질 수 있는 이름들**"],
+       ["data/balance.json", "봉랍 수 · 보류가 키우는 몫 · 검사기 기준값"],
+       ["presentation/palette.json", PAL.name + " \u2014 " + PAL.oneLine]]
+      .map(r => "<tr><td><code>" + r[0] + "</code></td><td>" + esc(r[1]) + "</td></tr>").join("")
+    + "</tbody></table></section>";
+
+  document.getElementById("app").innerHTML = h;
+  wire();
+}
+
+function wire() {
+  document.querySelectorAll("[data-vol]").forEach(el => el.onclick = () => {
+    S.vid = el.dataset.vol; reset(); render();
+  });
+  document.querySelectorAll("[data-stamp]").forEach(el => el.onclick = () => {
+    const l = S.letters.find(x => x.def.id === el.dataset.p);
+    if (l) stamp(l, el.dataset.stamp);
+  });
+  document.querySelectorAll("[data-act]").forEach(el => el.onclick = () => {
+    if (el.dataset.act === "reset") reset();
+    else if (S.day < D.volById[S.vid].days) closeDay();
+    render();
+  });
+}
+
+load().then(() => {
+  applyPalette();
+  document.title = PAL.name + " — gods-secretary";
+  S.vid = D.volumes[0].id;
+  reset();
+  render();
+}).catch(e => {
+  document.getElementById("boot").textContent =
+    "데이터를 읽지 못했다: " + e + " — python -m http.server 8102 로 열어야 한다 (fetch 는 file:// 에서 막힌다)";
+});
+</script>
+</body>
+</html>

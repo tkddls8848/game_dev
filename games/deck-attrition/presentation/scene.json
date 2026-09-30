@@ -1,0 +1,1250 @@
+{
+  "_": "손으로 쓰지 말 것. tests/SceneExportTests.cs 가 실제 시뮬레이션에서 굽는다.",
+  "generatedBy": "deck-attrition.Tests / SceneExportTests",
+  "rule": "소모되는 카드 — 활자는 한 판이 아니라 회차 전체에서 닳는다. 찍을수록 뭉개지고, 다 쓰면 녹여 버린다.",
+  "policy": "Measured (적절히 쓴다)",
+  "seed": 5151,
+  "won": true,
+  "playerMaxHp": 80,
+  "deadlineRounds": 14,
+  "battles": [
+    {
+      "index": 0,
+      "enemyId": "enemy_proof",
+      "enemyNameKo": "교정쇄",
+      "enemyMaxHp": 46,
+      "isBoss": false,
+      "hpAtStart": 80,
+      "caseAtStart": [
+        {
+          "id": "card_woodtype",
+          "nameKo": "대형 목활자",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_vermilion",
+          "nameKo": "주홍 잉크",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_forme",
+          "nameKo": "조판틀",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_makeready",
+          "nameKo": "판 고르기",
+          "usesLeft": 2,
+          "usesTotal": 2,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_recast",
+          "nameKo": "활자 재주조",
+          "usesLeft": 1,
+          "usesTotal": 1,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        }
+      ],
+      "melted": [],
+      "outcome": "PlayerWon"
+    },
+    {
+      "index": 1,
+      "enemyId": "enemy_quoin",
+      "enemyNameKo": "조임쇠",
+      "enemyMaxHp": 60,
+      "isBoss": false,
+      "hpAtStart": 62,
+      "caseAtStart": [
+        {
+          "id": "card_woodtype",
+          "nameKo": "대형 목활자",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_vermilion",
+          "nameKo": "주홍 잉크",
+          "usesLeft": 2,
+          "usesTotal": 3,
+          "timesUsed": 1,
+          "sharpnessPct": 80
+        },
+        {
+          "id": "card_forme",
+          "nameKo": "조판틀",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_makeready",
+          "nameKo": "판 고르기",
+          "usesLeft": 2,
+          "usesTotal": 2,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_recast",
+          "nameKo": "활자 재주조",
+          "usesLeft": 1,
+          "usesTotal": 1,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        }
+      ],
+      "melted": [],
+      "outcome": "PlayerWon"
+    },
+    {
+      "index": 2,
+      "enemyId": "enemy_quoin",
+      "enemyNameKo": "조임쇠",
+      "enemyMaxHp": 60,
+      "isBoss": false,
+      "hpAtStart": 49,
+      "caseAtStart": [
+        {
+          "id": "card_woodtype",
+          "nameKo": "대형 목활자",
+          "usesLeft": 2,
+          "usesTotal": 3,
+          "timesUsed": 1,
+          "sharpnessPct": 80
+        },
+        {
+          "id": "card_vermilion",
+          "nameKo": "주홍 잉크",
+          "usesLeft": 2,
+          "usesTotal": 3,
+          "timesUsed": 1,
+          "sharpnessPct": 80
+        },
+        {
+          "id": "card_forme",
+          "nameKo": "조판틀",
+          "usesLeft": 2,
+          "usesTotal": 3,
+          "timesUsed": 1,
+          "sharpnessPct": 80
+        },
+        {
+          "id": "card_makeready",
+          "nameKo": "판 고르기",
+          "usesLeft": 2,
+          "usesTotal": 2,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_recast",
+          "nameKo": "활자 재주조",
+          "usesLeft": 1,
+          "usesTotal": 1,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        }
+      ],
+      "melted": [
+        "card_recast",
+        "card_makeready",
+        "card_forme"
+      ],
+      "outcome": "PlayerWon"
+    },
+    {
+      "index": 3,
+      "enemyId": "enemy_platen",
+      "enemyNameKo": "압판",
+      "enemyMaxHp": 128,
+      "isBoss": true,
+      "hpAtStart": 47,
+      "caseAtStart": [
+        {
+          "id": "card_woodtype",
+          "nameKo": "대형 목활자",
+          "usesLeft": 3,
+          "usesTotal": 3,
+          "timesUsed": 0,
+          "sharpnessPct": 100
+        },
+        {
+          "id": "card_vermilion",
+          "nameKo": "주홍 잉크",
+          "usesLeft": 1,
+          "usesTotal": 3,
+          "timesUsed": 2,
+          "sharpnessPct": 60
+        },
+        {
+          "id": "card_forme",
+          "nameKo": "조판틀",
+          "usesLeft": 0,
+          "usesTotal": 3,
+          "timesUsed": 3,
+          "sharpnessPct": 40
+        },
+        {
+          "id": "card_makeready",
+          "nameKo": "판 고르기",
+          "usesLeft": 0,
+          "usesTotal": 2,
+          "timesUsed": 2,
+          "sharpnessPct": 50
+        },
+        {
+          "id": "card_recast",
+          "nameKo": "활자 재주조",
+          "usesLeft": 0,
+          "usesTotal": 1,
+          "timesUsed": 1,
+          "sharpnessPct": 100
+        }
+      ],
+      "melted": [
+        "card_vermilion",
+        "card_woodtype"
+      ],
+      "outcome": "PlayerWon"
+    }
+  ],
+  "focus": {
+    "battleIndex": 3,
+    "enemyId": "enemy_platen",
+    "enemyNameKo": "압판",
+    "enemyMaxHp": 128,
+    "isBoss": true,
+    "turns": [
+      {
+        "round": 1,
+        "playerHp": 47,
+        "playerHpAfter": 38,
+        "playerBlock": 6,
+        "enemyHp": 128,
+        "enemyHpAfter": 118,
+        "energy": 3,
+        "deck": 9,
+        "discard": 0,
+        "hand": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 15,
+        "enemyAction": "enemy attack 15 (막음 6) hp=38"
+      },
+      {
+        "round": 2,
+        "playerHp": 38,
+        "playerHpAfter": 38,
+        "playerBlock": 0,
+        "enemyHp": 118,
+        "enemyHpAfter": 106,
+        "energy": 3,
+        "deck": 4,
+        "discard": 5,
+        "hand": [
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "textKo": "기력 0. 활자 2장을 집어 온다.",
+            "cost": 0,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_vermilion",
+            "nameKo": "주홍 잉크",
+            "textKo": "피해 8. 번짐 7. 회차에 3번 — 이 인쇄소에 붉은 것은 이것 하나뿐이다.",
+            "cost": 1,
+            "rarity": "uncommon",
+            "consumable": true,
+            "usesLeft": 1,
+            "usesTotal": 3,
+            "sharpnessPct": 60
+          }
+        ],
+        "played": [
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "cost": 0,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_vermilion",
+            "nameKo": "주홍 잉크",
+            "cost": 1,
+            "consumable": true,
+            "sharpnessPct": 60
+          }
+        ],
+        "meltedNow": [
+          "card_vermilion"
+        ],
+        "intentType": "block",
+        "intentAmount": 14,
+        "enemyAction": "enemy block 14"
+      },
+      {
+        "round": 3,
+        "playerHp": 38,
+        "playerHpAfter": 31,
+        "playerBlock": 6,
+        "enemyHp": 99,
+        "enemyHpAfter": 93,
+        "energy": 3,
+        "deck": 8,
+        "discard": 0,
+        "hand": [
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "textKo": "피해 20. 회차에 3번. 찍을 때마다 모서리가 뭉개진다.",
+            "cost": 2,
+            "rarity": "rare",
+            "consumable": true,
+            "usesLeft": 3,
+            "usesTotal": 3,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "textKo": "기력 0. 활자 2장을 집어 온다.",
+            "cost": 0,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "cost": 0,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "cost": 2,
+            "consumable": true,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 13,
+        "enemyAction": "enemy attack 13 (막음 6) hp=31"
+      },
+      {
+        "round": 4,
+        "playerHp": 31,
+        "playerHpAfter": 31,
+        "playerBlock": 0,
+        "enemyHp": 87,
+        "enemyHpAfter": 74,
+        "energy": 3,
+        "deck": 1,
+        "discard": 7,
+        "hand": [
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "heal",
+        "intentAmount": 8,
+        "enemyAction": "enemy heal 8 ehp=75"
+      },
+      {
+        "round": 5,
+        "playerHp": 31,
+        "playerHpAfter": 29,
+        "playerBlock": 18,
+        "enemyHp": 75,
+        "enemyHpAfter": 75,
+        "energy": 3,
+        "deck": 8,
+        "discard": 0,
+        "hand": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "textKo": "기력 0. 활자 2장을 집어 온다.",
+            "cost": 0,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "cost": 0,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 20,
+        "enemyAction": "enemy attack 20 (막음 18) hp=29"
+      },
+      {
+        "round": 6,
+        "playerHp": 29,
+        "playerHpAfter": 20,
+        "playerBlock": 6,
+        "enemyHp": 69,
+        "enemyHpAfter": 53,
+        "energy": 3,
+        "deck": 1,
+        "discard": 7,
+        "hand": [
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "textKo": "피해 20. 회차에 3번. 찍을 때마다 모서리가 뭉개진다.",
+            "cost": 2,
+            "rarity": "rare",
+            "consumable": true,
+            "usesLeft": 2,
+            "usesTotal": 3,
+            "sharpnessPct": 80
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "cost": 2,
+            "consumable": true,
+            "sharpnessPct": 80
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 15,
+        "enemyAction": "enemy attack 15 (막음 6) hp=20"
+      },
+      {
+        "round": 7,
+        "playerHp": 20,
+        "playerHpAfter": 20,
+        "playerBlock": 0,
+        "enemyHp": 48,
+        "enemyHpAfter": 33,
+        "energy": 3,
+        "deck": 8,
+        "discard": 0,
+        "hand": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "block",
+        "intentAmount": 14,
+        "enemyAction": "enemy block 14"
+      },
+      {
+        "round": 8,
+        "playerHp": 20,
+        "playerHpAfter": 19,
+        "playerBlock": 12,
+        "enemyHp": 29,
+        "enemyHpAfter": 29,
+        "energy": 3,
+        "deck": 3,
+        "discard": 5,
+        "hand": [
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 13,
+        "enemyAction": "enemy attack 13 (막음 12) hp=19"
+      },
+      {
+        "round": 9,
+        "playerHp": 19,
+        "playerHpAfter": 19,
+        "playerBlock": 0,
+        "enemyHp": 26,
+        "enemyHpAfter": 11,
+        "energy": 3,
+        "deck": 8,
+        "discard": 0,
+        "hand": [
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "textKo": "피해 20. 회차에 3번. 찍을 때마다 모서리가 뭉개진다.",
+            "cost": 2,
+            "rarity": "rare",
+            "consumable": true,
+            "usesLeft": 1,
+            "usesTotal": 3,
+            "sharpnessPct": 60
+          },
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "textKo": "기력 0. 활자 2장을 집어 온다.",
+            "cost": 0,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_furniture",
+            "nameKo": "여백재",
+            "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_composing",
+            "nameKo": "조판",
+            "cost": 0,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_woodtype",
+            "nameKo": "대형 목활자",
+            "cost": 2,
+            "consumable": true,
+            "sharpnessPct": 60
+          },
+          {
+            "id": "card_ink",
+            "nameKo": "잉크 방망이",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [
+          "card_woodtype"
+        ],
+        "intentType": "heal",
+        "intentAmount": 8,
+        "enemyAction": "enemy heal 8 ehp=15"
+      },
+      {
+        "round": 10,
+        "playerHp": 19,
+        "playerHpAfter": 19,
+        "playerBlock": 0,
+        "enemyHp": 15,
+        "enemyHpAfter": 0,
+        "energy": 3,
+        "deck": 1,
+        "discard": 6,
+        "hand": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_mallet",
+            "nameKo": "다지개",
+            "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+            "cost": 1,
+            "rarity": "common",
+            "consumable": false,
+            "usesLeft": -1,
+            "usesTotal": -1,
+            "sharpnessPct": 100
+          }
+        ],
+        "played": [
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          },
+          {
+            "id": "card_sort",
+            "nameKo": "상용 활자",
+            "cost": 1,
+            "consumable": false,
+            "sharpnessPct": 100
+          }
+        ],
+        "meltedNow": [],
+        "intentType": "attack",
+        "intentAmount": 20,
+        "enemyAction": "(없음)"
+      }
+    ]
+  },
+  "meltedInFocus": [
+    "card_vermilion",
+    "card_woodtype"
+  ],
+  "melted": [
+    "card_recast",
+    "card_makeready",
+    "card_forme",
+    "card_vermilion",
+    "card_woodtype"
+  ],
+  "caseAtEnd": [
+    {
+      "id": "card_woodtype",
+      "nameKo": "대형 목활자",
+      "usesLeft": 0,
+      "usesTotal": 3,
+      "timesUsed": 3,
+      "sharpnessPct": 40
+    },
+    {
+      "id": "card_vermilion",
+      "nameKo": "주홍 잉크",
+      "usesLeft": 0,
+      "usesTotal": 3,
+      "timesUsed": 3,
+      "sharpnessPct": 40
+    },
+    {
+      "id": "card_forme",
+      "nameKo": "조판틀",
+      "usesLeft": 0,
+      "usesTotal": 3,
+      "timesUsed": 3,
+      "sharpnessPct": 40
+    },
+    {
+      "id": "card_makeready",
+      "nameKo": "판 고르기",
+      "usesLeft": 0,
+      "usesTotal": 2,
+      "timesUsed": 2,
+      "sharpnessPct": 50
+    },
+    {
+      "id": "card_recast",
+      "nameKo": "활자 재주조",
+      "usesLeft": 0,
+      "usesTotal": 1,
+      "timesUsed": 1,
+      "sharpnessPct": 100
+    }
+  ]
+}

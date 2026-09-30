@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>냄새의 층</title>
+<style>
+:root{--bg:#0b0907;--txt:#dccfb6;--dim:#8a7d69;--faint:#4d4436;--gold:#e0b76a;--iron:#c2503c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--txt)}
+#stage{position:absolute;width:1600px;height:1000px;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;
+  background:radial-gradient(ellipse 60% 55% at 38% 45%,#1d1711 0%,#100c09 55%,#060504 100%)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.serif{font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif}
+.room{position:absolute;left:0;top:0;width:1100px;height:840px;opacity:.55}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.2;mix-blend-mode:overlay;z-index:9}
+.vign{position:absolute;inset:0;pointer-events:none;z-index:8;background:radial-gradient(ellipse 62% 60% at 36% 44%,transparent 40%,rgba(0,0,0,.9) 100%)}
+.hdr{position:absolute;left:52px;top:34px;z-index:10}
+.hdr .k{font-size:12px;letter-spacing:.5em;color:var(--dim)}
+.hdr h1{font-size:40px;font-weight:300;letter-spacing:.18em;margin-top:4px;color:#efe3cb;text-shadow:0 0 24px rgba(224,183,106,.25)}
+.hdr .rm{margin-top:10px;font-size:15px;color:#b9a98c;letter-spacing:.06em}
+.hdr .rm b{font-weight:500;color:#f3e6cc;font-size:22px;margin-right:10px;letter-spacing:.2em}
+.breath{position:absolute;left:52px;top:170px;z-index:10;display:flex;gap:7px;align-items:center}
+.breath i{width:14px;height:14px;border-radius:50%;border:1px solid #6d614f;background:transparent;transition:all .4s}
+.breath i.u{background:radial-gradient(circle at 40% 40%,#8a7d69,#3a322a);border-color:#3a322a}
+.breath span{font-size:12px;color:var(--dim);margin-left:8px;letter-spacing:.1em}
+/* strata */
+.strata{position:absolute;left:52px;top:220px;width:1050px;height:590px;z-index:5}
+.band{position:absolute;left:0;right:0;cursor:pointer;transition:filter .3s}
+.band .haze{position:absolute;left:150px;right:215px;top:0;bottom:0;border-radius:40px;transition:all .8s;-webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);will-change:transform}
+.band .core{position:absolute;left:170px;right:235px;top:30%;bottom:30%;border-radius:20px;opacity:.75;transition:all .8s;-webkit-mask-image:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent);mask-image:linear-gradient(180deg,transparent,#000 40%,#000 60%,transparent)}
+.band .nm{position:absolute;left:0;top:50%;transform:translateY(-50%);width:140px;text-align:right;font-size:15px;color:#e8dcc4}
+.band .nm small{display:block;font-size:10.5px;letter-spacing:.3em;color:var(--dim)}
+.band .who{position:absolute;right:0;top:50%;transform:translateY(-50%);width:200px;font-size:12px;color:#cbbd9f;line-height:1.35}
+.band .who b{font-weight:500;color:#f3e6cc}
+.band:hover{filter:brightness(1.35)}
+.band.sel .haze{box-shadow:0 0 0 1px rgba(255,230,180,.5)}
+.band.mud .core{background-image:repeating-linear-gradient(115deg,rgba(0,0,0,.35) 0 4px,transparent 4px 10px)!important}
+.band.gone{opacity:.18}
+.band.gone .core{opacity:.2}
+.floorline{position:absolute;left:150px;right:190px;border-top:1px dashed rgba(220,200,160,.25)}
+.axis{position:absolute;left:150px;right:190px;bottom:-26px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);letter-spacing:.2em}
+.cls{position:absolute;left:-44px;writing-mode:vertical-rl;font-size:11px;letter-spacing:.5em;color:#6d614f}
+.drift{animation:drift 7s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translateX(0) scaleY(1)}50%{transform:translateX(14px) scaleY(1.12)}}
+@keyframes rise{from{transform:translateY(0)}to{transform:translateY(-24px) scaleX(1.04)}}
+.inhale .band .haze{animation:inh 1.4s ease-out}
+@keyframes inh{0%{opacity:1}35%{opacity:.55;transform:scaleY(1.5)}100%{opacity:1}}
+/* right panel */
+.side{position:absolute;right:44px;top:40px;width:420px;z-index:10}
+.clock{text-align:right}
+.clock b{font-size:48px;font-weight:200;letter-spacing:.06em;color:#f3e6cc;font-variant-numeric:tabular-nums}
+.clock span{display:block;font-size:12px;letter-spacing:.3em;color:var(--dim)}
+.panel{margin-top:22px;padding:18px 20px;background:linear-gradient(180deg,rgba(30,24,18,.75),rgba(16,12,9,.8));border:1px solid rgba(220,200,160,.1);border-radius:2px}
+.panel h3{font-size:11px;letter-spacing:.45em;color:var(--dim);font-weight:400;margin-bottom:12px}
+.ppl{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.pp{display:flex;align-items:center;gap:9px;font-size:13px}
+.pp i{width:26px;height:26px;border-radius:50%;flex:none;box-shadow:0 0 12px currentColor}
+.pp small{display:block;font-size:10.5px;color:var(--dim)}
+.pp.q{opacity:.4}
+.date .row{display:flex;justify-content:space-between;font-size:13px;margin:8px 0 4px;color:#cbbd9f}
+.date .row b{font-weight:500;color:#f3e6cc;font-variant-numeric:tabular-nums}
+.meter{position:relative;height:8px;background:#1f1913;border-radius:4px;overflow:hidden}
+.meter i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;transition:width .8s}
+.meter em{position:absolute;top:-3px;bottom:-3px;width:2px;background:#f3e6cc}
+.verdictA{margin-top:14px;padding:12px 14px;border-left:2px solid #8a4c3c;background:rgba(80,30,20,.25);font-size:13.5px;line-height:1.55;color:#e6d2c0}
+.verdictB{margin-top:14px;padding:14px 16px;border-left:2px solid var(--gold);background:rgba(224,183,106,.12);font-size:14px;line-height:1.55;color:#f3e6cc}
+.act{display:flex;gap:10px;margin-top:16px}
+.act button{flex:1;padding:14px 8px;font:inherit;font-size:15px;letter-spacing:.12em;border-radius:2px;cursor:pointer;color:#f3e6cc;border:1px solid rgba(224,183,106,.45);
+  background:linear-gradient(180deg,rgba(224,183,106,.18),rgba(224,183,106,.05));transition:all .15s}
+.act button small{display:block;font-size:10.5px;letter-spacing:.05em;color:var(--dim);margin-top:3px}
+.act button:hover{background:rgba(224,183,106,.28)}.act button:active{transform:scale(.97)}
+.act button.ghost{border-color:rgba(220,200,160,.18);background:transparent}
+/* bottom board */
+.board{position:absolute;left:52px;right:44px;bottom:26px;height:132px;z-index:10;display:flex;gap:26px}
+.map{width:270px;height:132px;position:relative}
+.map svg{width:100%;height:100%}
+.recon{flex:1;position:relative;padding:12px 16px;background:rgba(16,12,9,.75);border:1px solid rgba(220,200,160,.1)}
+.recon h3{font-size:11px;letter-spacing:.45em;color:var(--dim);font-weight:400;display:flex;justify-content:space-between}
+.recon h3 b{letter-spacing:.05em;color:#f3e6cc;font-weight:400;font-size:14px}
+.recon svg{position:absolute;left:16px;right:16px;top:32px;width:calc(100% - 32px);height:92px}
+.tabs{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px}
+.tabs button{font:inherit;font-size:12px;letter-spacing:.08em;padding:5px 12px;border-radius:12px;border:1px solid rgba(220,200,160,.25);background:rgba(10,8,6,.7);color:#b9a98c;cursor:pointer}
+.tabs button.on{background:#dccfb6;color:#1a140e}
+.stamp{position:absolute;left:800px;top:128px;z-index:11;transform:translate(-50%,-50%) rotate(-4deg);padding:16px 28px;border:2px solid var(--gold);color:#fff3da;
+  background:rgba(20,14,8,.7);text-align:center;box-shadow:0 0 60px rgba(224,183,106,.35)}
+.stamp.hit{animation:st 1.2s cubic-bezier(.2,1.4,.3,1) both}
+.stamp .s1{font-size:12px;letter-spacing:.5em;color:var(--gold)}
+.stamp .s2{font-size:34px;letter-spacing:.08em;margin-top:6px;font-weight:300}
+.stamp .s3{font-size:13px;color:#cbbd9f;margin-top:6px}
+@keyframes st{from{opacity:0;transform:translate(-50%,-50%) scale(1.4) rotate(-4deg)}}
+.gonenote{position:absolute;z-index:6;font-size:12px;color:#8a7d69;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="grainf"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <filter id="smoke" x="-20%" y="-50%" width="140%" height="200%"><feTurbulence type="fractalNoise" baseFrequency=".012 .05" numOctaves="3" seed="3"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="40"/><feGaussianBlur stdDeviation="3"/></filter>
+</defs></svg>
+
+<!-- ================= A ================= -->
+<section class="screen" id="A">
+  <svg class="room" viewBox="0 0 1100 840"><g stroke="#3a3128" stroke-width="1.3" fill="none" opacity=".9">
+    <path d="M120 60 L120 780 M980 60 L980 780 M120 780 L980 780"/>
+    <path d="M160 110 H460 V720 H160Z M160 230 H460 M160 350 H460 M160 470 H460 M160 590 H460"/>
+    <path d="M176 120 v100 M192 128 v92 M214 116 v104 M230 124 v96 M252 132 v88 M290 118 v102 M312 126 v94 M350 120 v100 M380 130 v90 M420 118 v102"/>
+    <path d="M180 250 v90 M200 244 v96 M226 254 v86 M260 246 v94 M300 250 v90 M340 244 v96 M372 252 v88 M410 248 v92"/>
+    <path d="M560 520 H900 L940 560 H600Z M600 560 V740 M900 560 V740 M620 520 C640 470 700 470 720 520"/>
+    <path d="M760 520 C760 440 860 440 860 520 M790 440 L800 380 L830 380 L840 440"/>
+    <path d="M620 180 H900 V440 H620Z M760 180 V440 M620 310 H900"/>
+  </g><rect x="620" y="180" width="280" height="260" fill="rgba(60,80,120,.06)"/></svg>
+  <div class="hdr"><div class="k">냄새만 남았다 · 능내동 삼거리 언덕집</div><h1 class="serif">냄새의 층</h1><div class="rm"><b class="serif">서재</b>두 번째 들숨 · 누가, 몇 시에 여기 있었나</div></div>
+  <div class="breath" id="brA"></div>
+
+  <div class="strata" id="strA"></div>
+
+  <div class="side">
+    <div class="clock"><b class="serif" id="clkA">22:45</b><span>밤이 끝나는 02:00까지 3시간 15분</span></div>
+    <div class="panel"><h3>이 방에서 알아본 사람 — 표지 잔향으로</h3>
+      <div class="ppl">
+        <div class="pp"><i style="color:#54646B;background:#54646B"></i><div>왕진 온 의사<small>에테르 · 알아봄</small></div></div>
+        <div class="pp"><i style="color:#6A4A32;background:#8a6040"></i><div>집주인의 아들<small>가죽 · 알아봄</small></div></div>
+        <div class="pp q"><i style="color:#8C7A48;background:#8C7A48"></i><div>가정부 윤씨<small>밀랍 · 없음</small></div></div>
+        <div class="pp q"><i style="color:#5A5A56;background:#5A5A56"></i><div>찬모 한씨<small>재 · 없음</small></div></div>
+        <div class="pp q"><i style="color:#4E4433;background:#6a5a40"></i><div>정원사 배씨<small>흙 · 없음</small></div></div>
+      </div>
+    </div>
+    <div class="panel date"><h3>되짚기 — 알코올 (머리향)</h3>
+      <div class="row"><span>순도 · 아들 몫</span><b id="purA">89%</b></div>
+      <div class="meter"><i id="purBarA" style="width:89%;background:linear-gradient(90deg,#6d6630,#9A8C3A)"></i><em style="left:97%"></em></div>
+      <div class="row"><span>남은 세기</span><b>1,146 <span style="color:#8a7d69;font-weight:300">/ 바닥 26</span></b></div>
+      <div class="meter"><i style="width:78%;background:linear-gradient(90deg,#4a3a2a,#9A8C3A)"></i><em style="left:2%"></em></div>
+      <div class="verdictA">의사의 알코올 135가 섞여 있다. 비율이 흐려 <b>시각을 댈 수 없다.</b><br>의사 몫이 코끝 아래(10)로 내려갈 때 다시 와야 한다 — 그 전에 아들 몫이 26 아래로 떨어지면 창은 닫힌다.</div>
+    </div>
+    <div class="act"><button id="sniffA">들이쉰다<small>15분 · 들숨 하나</small></button><button class="ghost" id="leaveA">현관으로<small>걸어서 3분</small></button></div>
+  </div>
+
+  <div class="board">
+    <div class="map" id="mapA"></div>
+    <div class="recon"><h3>되짚은 하루 — 16:00 ~ 21:30<b id="cntA">7 / 14</b></h3><svg id="recA" viewBox="0 0 860 92" preserveAspectRatio="none"></svg></div>
+  </div>
+  <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#grainf)"/></svg>
+  <div class="vign"></div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="screen" id="B">
+  <svg class="room" viewBox="0 0 1100 840" style="opacity:.7"><g stroke="#4a3e30" stroke-width="1.3" fill="none">
+    <path d="M120 60 L120 780 M980 60 L980 780 M120 780 L980 780"/>
+    <path d="M160 110 H460 V720 H160Z M160 230 H460 M160 350 H460 M160 470 H460 M160 590 H460"/>
+    <path d="M560 520 H900 L940 560 H600Z M600 560 V740 M900 560 V740"/>
+    <path d="M760 520 C760 440 860 440 860 520 M790 440 L800 380 L830 380 L840 440"/>
+    <path d="M620 180 H900 V440 H620Z M760 180 V440 M620 310 H900"/>
+  </g><rect x="620" y="180" width="280" height="260" fill="rgba(90,110,150,.10)"/></svg>
+  <div class="hdr"><div class="k">되돌아왔다 · 두 시간 뒤</div><h1 class="serif">냄새의 층</h1><div class="rm"><b class="serif">서재</b>남의 냄새가 코끝 아래로 가라앉았다 — 층이 갈라진다</div></div>
+  <div class="breath" id="brB"></div>
+  <div class="strata" id="strB"></div>
+  <div class="stamp serif" id="stampB"><div class="s1">되짚었다</div><div class="s2">19:00 · 집주인의 아들 · 서재</div><div class="s3">알코올 ÷ 가죽 비율 → 스물한 걸음 전 (15분 × 21)</div></div>
+
+  <div class="side">
+    <div class="clock"><b class="serif">00:15</b><span>밤이 끝나는 02:00까지 1시간 45분</span></div>
+    <div class="panel"><h3>이 방에서 알아본 사람 — 표지 잔향으로</h3>
+      <div class="ppl">
+        <div class="pp"><i style="color:#54646B;background:#54646B"></i><div>왕진 온 의사<small>에테르 · 시각 모름</small></div></div>
+        <div class="pp"><i style="color:#e0b76a;background:#8a6040"></i><div>집주인의 아들<small style="color:#e0b76a">가죽 · 19:00 확정</small></div></div>
+        <div class="pp q"><i style="background:#8C7A48"></i><div>가정부 윤씨<small>밀랍 · 없음</small></div></div>
+        <div class="pp q"><i style="background:#5A5A56"></i><div>찬모 한씨<small>재 · 없음</small></div></div>
+        <div class="pp q"><i style="background:#6a5a40"></i><div>정원사 배씨<small>흙 · 없음</small></div></div>
+      </div>
+    </div>
+    <div class="panel date"><h3>되짚기 — 알코올 (머리향)</h3>
+      <div class="row"><span>순도 · 아들 몫</span><b style="color:#e0b76a">100%</b></div>
+      <div class="meter"><i style="width:100%;background:linear-gradient(90deg,#9A8C3A,#f0d890)"></i><em style="left:97%"></em></div>
+      <div class="row"><span>남은 세기</span><b>127 <span style="color:#8a7d69;font-weight:300">/ 바닥 26</span></b></div>
+      <div class="meter"><i style="width:28%;background:linear-gradient(90deg,#4a3a2a,#c9a64a)"></i><em style="left:2%"></em></div>
+      <div class="verdictB">의사의 알코올이 <b>6.8</b> — 코끝 아래로 사라졌다. 한 사람만 남은 층은 비율이 곧 나이다.<br><span style="color:#cbbd9f;font-size:12.5px">의사가 이 방에 온 시각은 이제 영영 알코올로 댈 수 없다. 에테르는 누구인지만 말한다.</span></div>
+    </div>
+    <div class="act"><button id="sniffB">새긴다<small>되짚은 하루에 놓는다</small></button><button class="ghost">온실로<small>걸어서 3분 · 풀즙 창이 닫혀 간다</small></button></div>
+  </div>
+
+  <div class="board">
+    <div class="map" id="mapB"></div>
+    <div class="recon"><h3>되짚은 하루 — 16:00 ~ 21:30<b style="color:#e0b76a">11 / 14</b></h3><svg id="recB" viewBox="0 0 860 92" preserveAspectRatio="none"></svg></div>
+  </div>
+  <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#grainf)"/></svg>
+  <div class="vign"></div>
+</section>
+
+<div class="tabs"><button data-s="A">1 · 섞인 층</button><button data-s="B">2 · 갈라진 층</button></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var stage=document.getElementById('stage');
+function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+
+var AC=null;function ac(){try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C();}}catch(e){}return AC;}
+function inhale(){var a=ac();if(!a)return;var d=1.3,n=a.sampleRate*d|0,b=a.createBuffer(1,n,a.sampleRate),c=b.getChannelData(0);
+  for(var i=0;i<n;i++){var e=i/n;c[i]=(Math.random()*2-1)*Math.sin(Math.PI*e)*(e<.7?e/.7:1);}
+  var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.Q.value=.8;f.frequency.setValueAtTime(500,a.currentTime);f.frequency.linearRampToValueAtTime(1500,a.currentTime+d);
+  var g=a.createGain();g.gain.value=.22;s.connect(f);f.connect(g);g.connect(a.destination);s.start();}
+function chime(){var a=ac();if(!a)return;var t=a.currentTime;[523.25,659.25,987.77].forEach(function(fr,k){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=fr;g.gain.setValueAtTime(0,t+k*.09);g.gain.linearRampToValueAtTime(.09,t+k*.09+.02);g.gain.exponentialRampToValueAtTime(.0001,t+k*.09+2.2);o.connect(g);g.connect(a.destination);o.start(t+k*.09);o.stop(t+3);});}
+
+/* strata data: [name, class, color, thickness(px), attribution html, flags] */
+var bandsA=[
+ ['감귤 세제','머리향','#B4662C',30,'<b>잡내</b> · 누구 것도 아니다','q'],
+ ['알코올','머리향','#9A8C3A',96,'<b>아들 89% · 의사 11%</b><br>섞였다 · 시각을 못 댄다','mud'],
+ ['탄내','중간향','#4A4238',64,'아들 · 누구인지만 거든다',''],
+ ['땀','잔향','#6B5A52',60,'아들 · 집의 잡내',''],
+ ['가죽','잔향','#8a6040',88,'<b>집주인의 아들</b><br>표지 — 이 사람만 가졌다',''],
+ ['에테르','잔향','#5b7480',70,'<b>왕진 온 의사</b><br>표지 · 옅지만 또렷하다',''],
+ ['쇠·피','잔향','#8A3F32',46,'의사 · 가죽 가방? 혹은…','']];
+var bandsB=[
+ ['감귤 세제','머리향','#B4662C',10,'코끝 아래 — 사라졌다','gone'],
+ ['알코올','머리향','#c2b25a',62,'<b>아들 100%</b><br>한 사람만 남았다 → 나이','clear'],
+ ['탄내','중간향','#4A4238',54,'아들 · 잡내',''],
+ ['땀','잔향','#6B5A52',52,'아들 · 집의 잡내',''],
+ ['가죽','잔향','#a0703f',84,'<b>집주인의 아들</b><br>알코올과 견줄 짝',''],
+ ['에테르','잔향','#5b7480',66,'<b>왕진 온 의사</b><br>누구인지만 · 시각은 잃었다',''],
+ ['쇠·피','잔향','#8A3F32',42,'의사','']];
+function strata(id,bands,mode){var el=document.getElementById(id),h='',y=0,gap=10,total=0;bands.forEach(function(b){total+=b[3]+gap;});
+  var scale=560/total;
+  var lastCls='';
+  bands.forEach(function(b,i){var hh=b[3]*scale,col=b[2],fl=b[5];
+    var hz='radial-gradient(ellipse 60% 70% at '+(35+i*7)+'% 50%,'+col+'cc,'+col+'55 55%,transparent 80%)';
+    var core='linear-gradient(90deg,transparent,'+col+' 12%,'+col+' 88%,transparent)';
+    if(fl==='mud'){hz='radial-gradient(ellipse 50% 70% at 30% 50%,#9A8C3Acc,transparent 75%),radial-gradient(ellipse 40% 70% at 72% 50%,#5b7480bb,transparent 75%)';core='linear-gradient(90deg,transparent,#9A8C3A 12%,#7d7f5c 50%,#5b7480 88%,transparent)';}
+    if(fl==='clear'){hz='radial-gradient(ellipse 70% 80% at 50% 50%,rgba(240,216,144,.85),rgba(194,178,90,.45) 55%,transparent 82%)';core='linear-gradient(90deg,transparent,#f0d890 10%,#fff2c4 50%,#f0d890 90%,transparent)';}
+    h+='<div class="band '+(fl==='mud'?'mud sel':'')+(fl==='gone'?' gone':'')+(fl==='clear'?' sel':'')+'" style="top:'+y+'px;height:'+hh+'px" data-i="'+i+'">';
+    if(b[1]!==lastCls){h+='<div class="cls" style="top:0">'+b[1]+'</div>';lastCls=b[1];}
+    h+='<div class="haze drift" style="background:'+hz+';animation-delay:-'+(i*1.3)+'s"></div><div class="core" style="background:'+core+(fl==='clear'?';opacity:1;box-shadow:0 0 30px #f0d890':'')+'"></div>';
+    h+='<div class="nm">'+b[0]+'<small>'+b[1]+'</small></div><div class="who">'+b[4]+'</div></div>';
+    y+=hh+gap*scale;});
+  h+='<div class="axis"><span>← 먼저 사라지는 층</span><span>옅어짐 · 15분마다</span><span>오래 남는 층 →</span></div>';
+  el.innerHTML=h;}
+strata('strA',bandsA);strata('strB',bandsB);
+// smoke wisps overlay
+function wisps(id,col){var el=document.getElementById(id);var s='<svg style="position:absolute;left:120px;top:-40px;width:760px;height:640px;pointer-events:none;opacity:.22;animation:rise 9s ease-in-out infinite alternate;will-change:transform" viewBox="0 0 760 640"><g>';
+  for(var i=0;i<7;i++){s+='<path d="M'+(60+i*100)+' 640 C'+(30+i*100)+' 480 '+(120+i*100)+' 360 '+(70+i*100)+' 200 C'+(40+i*100)+' 120 '+(100+i*100)+' 60 '+(80+i*100)+' 0" stroke="'+col+'" stroke-width="'+(10+i%3*6)+'" stroke-linecap="round" fill="none" opacity=".18"/><path d="M'+(60+i*100)+' 640 C'+(30+i*100)+' 480 '+(120+i*100)+' 360 '+(70+i*100)+' 200 C'+(40+i*100)+' 120 '+(100+i*100)+' 60 '+(80+i*100)+' 0" stroke="'+col+'" stroke-width="2" fill="none" opacity=".35"/>';}
+  s+='</g></svg>';el.insertAdjacentHTML('afterbegin',s);}
+wisps('strA','#b7a27a');wisps('strB','#e7cf8e');
+
+function breath(id,used){var h='';for(var i=0;i<11;i++)h+='<i class="'+(i<used?'u':'')+'"></i>';h+='<span>들숨 '+(11-used)+' / 11 남음 · 코가 지친다</span>';document.getElementById(id).innerHTML=h;}
+var usedA=5;breath('brA',usedA);breath('brB',9);
+
+/* house map */
+function map(id,cur,visited,next){var R={porch:[125,108,'현관'],kitchen:[48,70,'부엌'],study:[200,70,'서재'],cellar:[30,18,'저장실'],green:[125,18,'온실'],bath:[222,18,'욕실']};
+  var E=[['porch','kitchen',2],['porch','study',3],['porch','bath',5],['kitchen','cellar',2],['kitchen','green',4],['kitchen','bath',4],['study','bath',2],['study','green',3],['cellar','green',5]];
+  var s='<svg viewBox="0 0 270 132"><text x="0" y="130" font-size="10" fill="#6d614f" letter-spacing="3">집 · 도보 분</text>';
+  E.forEach(function(e){var a=R[e[0]],b=R[e[1]];s+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+((e[0]===cur||e[1]===cur)&&(e[0]===next||e[1]===next)?'#e0b76a':'#3a3128')+'" stroke-width="1.4"/><text x="'+((a[0]+b[0])/2+3)+'" y="'+((a[1]+b[1])/2-3)+'" font-size="9" fill="#6d614f">'+e[2]+'</text>';});
+  for(var k in R){var r=R[k],on=k===cur,v=visited.indexOf(k)>=0;s+='<circle cx="'+r[0]+'" cy="'+r[1]+'" r="'+(on?10:7)+'" fill="'+(on?'#e0b76a':(v?'#5c5040':'#1d1711'))+'" stroke="'+(on?'#fff3da':'#6d614f')+'"/>'+(on?'<circle cx="'+r[0]+'" cy="'+r[1]+'" r="16" fill="none" stroke="#e0b76a" opacity=".5"><animate attributeName="r" values="11;20;11" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="2.6s" repeatCount="indefinite"/></circle>':'')+'<text x="'+(r[0]+13)+'" y="'+(r[1]+4)+'" font-size="11" fill="'+(on?'#f3e6cc':'#8a7d69')+'">'+r[2]+'</text>';}
+  s+='</svg>';document.getElementById(id).innerHTML=s;}
+map('mapA','study',['porch','kitchen','cellar','study'],'porch');
+map('mapB','study',['porch','kitchen','cellar','study','bath','green'],'green');
+
+/* reconstruction board: rooms x time */
+var rooms=['현관','부엌','서재','저장실','온실','욕실'],rk={r_porch:0,r_kitchen:1,r_study:2,r_cellar:3,r_greenhouse:4,r_bath:5};
+var acol={g:'#6a5a40',d:'#5b7480',h:'#8C7A48',s:'#a0703f',c:'#6e6e68'};
+var V=[['g','r_greenhouse',960],['d','r_porch',1005],['h','r_kitchen',1020],['d','r_cellar',1035],['d','r_study',1050],['h','r_bath',1080],['s','r_porch',1095],['c','r_kitchen',1110],['c','r_cellar',1125],['s','r_study',1140],['s','r_bath',1170],['g','r_cellar',1215],['h','r_greenhouse',1230],['g','r_porch',1290]];
+function rec(id,known,newOne,lost){var W=860,x0=56,x1=850;function X(m){return x0+(m-960)/(1290-960)*(x1-x0);}
+  var s='';rooms.forEach(function(r,i){var y=6+i*14;s+='<text x="0" y="'+(y+4)+'" font-size="10" fill="#8a7d69">'+r+'</text><line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="#2a231b"/>';});
+  for(var m=960;m<=1290;m+=60){s+='<line x1="'+X(m)+'" y1="0" x2="'+X(m)+'" y2="80" stroke="#231d16"/><text x="'+X(m)+'" y="91" font-size="9" fill="#6d614f" text-anchor="middle">'+Math.floor(m/60)+':00</text>';}
+  V.forEach(function(v,i){var y=6+rk[v[1]]*14,x=X(v[2]);
+    if(known.indexOf(i)>=0){s+='<circle cx="'+x+'" cy="'+y+'" r="5.5" fill="'+acol[v[0]]+'" stroke="#dccfb6" stroke-width=".8"/>';}
+    else if(i===newOne){s+='<circle cx="'+x+'" cy="'+y+'" r="7" fill="#e0b76a" stroke="#fff3da"><animate attributeName="r" values="6;9;6" dur="1.4s" repeatCount="indefinite"/></circle><text x="'+(x+10)+'" y="'+(y+4)+'" font-size="10" fill="#e0b76a">아들 19:00</text>';}
+    else if(lost&&lost.indexOf(i)>=0){s+='<path d="M'+(x-4)+' '+(y-4)+' l8 8 m0 -8 l-8 8" stroke="#8A3F32" stroke-width="1.6"/>';}
+    else s+='<circle cx="'+x+'" cy="'+y+'" r="4" fill="none" stroke="#3a3128" stroke-dasharray="2 2"/>';});
+  document.getElementById(id).innerHTML=s;}
+rec('recA',[0,1,2,3,6,7,8],-1,null);
+rec('recB',[0,1,2,3,5,6,7,8,10,12],9,[4]);
+
+/* interactions */
+var clk=22*60+45;
+document.getElementById('sniffA').addEventListener('click',function(){if(usedA>=11)return;usedA++;breath('brA',usedA);clk+=15;
+  var hh=Math.floor(clk/60)%24,mm=clk%60;document.getElementById('clkA').textContent=(hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm;
+  var st=document.getElementById('strA');st.classList.remove('inhale');void st.offsetWidth;st.classList.add('inhale');
+  var p=Math.min(96,89+(usedA-5)*2);document.getElementById('purA').textContent=p+'%';document.getElementById('purBarA').style.width=p+'%';inhale();});
+document.getElementById('leaveA').addEventListener('click',function(){inhale();});
+function bandClicks(root){Array.prototype.forEach.call(document.querySelectorAll('#'+root+' .band'),function(b){b.addEventListener('click',function(){
+  Array.prototype.forEach.call(document.querySelectorAll('#'+root+' .band'),function(o){o.classList.remove('sel');});b.classList.add('sel');inhale();});});}
+bandClicks('strA');bandClicks('strB');
+document.getElementById('sniffB').addEventListener('click',function(){var s=document.getElementById('stampB');s.classList.remove('hit');void s.offsetWidth;s.classList.add('hit');chime();});
+
+function show(id){['A','B'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.classList.toggle('on',b.getAttribute('data-s')===id);});
+  try{history.replaceState(null,'','#'+id.toLowerCase());}catch(e){}}
+Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){show(b.getAttribute('data-s'));});});
+addEventListener('keydown',function(e){if(e.key==='1')show('A');else if(e.key==='2')show('B');else if(e.key===' '){e.preventDefault();var on=document.getElementById('A').classList.contains('on');document.getElementById(on?'sniffA':'sniffB').click();}});
+addEventListener('hashchange',function(){show(location.hash==='#b'?'B':'A');});
+show(location.hash==='#b'?'B':'A');
+setTimeout(function(){stage.classList.add('ready');},600);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>반사·굴절</title>
+<style>
+:root{
+  --bg:#0f1012; --panel:#17181b; --panel2:#1d1f23; --line:#2a2d33; --text:#d9dade; --dim:#8b8f98; --accent:#6fd6c8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);overflow:hidden;
+  font:13px/1.45 "Noto Sans CJK KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+#app{display:grid;grid-template-columns:1fr 380px;grid-template-rows:52px 1fr;height:100vh;min-height:0}
+header{grid-column:1/3;display:flex;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid var(--line);background:#121316}
+header h1{font-size:17px;margin:0;font-weight:700;letter-spacing:-.2px}
+header h1 small{font-weight:400;color:var(--dim);font-size:12px;margin-left:8px}
+header .sp{flex:1}
+header .pill{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:3px 9px}
+header .pill b{color:var(--text);font-weight:600}
+#snd.on{color:var(--accent);border-color:var(--accent)}
+#grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;padding:10px;min-height:0;min-width:0}
+.cell{position:relative;background:#000;border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:0;min-width:0;cursor:crosshair}
+.cell.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.cell canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.cell .lab{position:absolute;left:0;top:0;right:0;display:flex;gap:8px;align-items:center;padding:6px 10px;
+  background:linear-gradient(#000c,#0000);pointer-events:none;font-size:12px;z-index:2}
+.cell .lab .k{font-weight:700;color:#fff}
+.cell .lab .c{color:var(--accent);font-size:11px;border:1px solid color-mix(in srgb,var(--accent) 60%,transparent);border-radius:4px;padding:0 5px}
+.cell .hint{position:absolute;left:10px;bottom:7px;font-size:11px;color:#fffa;pointer-events:none;z-index:2;text-shadow:0 1px 2px #000}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow:auto;min-height:0;padding:12px 14px 20px}
+aside h2{font-size:14px;margin:4px 0 2px}
+aside h3{font-size:12px;margin:16px 0 6px;color:var(--dim);font-weight:600;letter-spacing:.3px}
+aside .cons{color:var(--accent);font-size:11px}
+.row{display:grid;grid-template-columns:96px 1fr 58px;gap:8px;align-items:center;margin:5px 0}
+.row label{color:var(--dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row input{width:100%;accent-color:var(--accent)}
+.row output{font:12px ui-monospace,Consolas,monospace;text-align:right;color:var(--text)}
+pre.json{background:#0c0d0f;border:1px solid var(--line);border-radius:6px;padding:8px;font:11px/1.4 ui-monospace,Consolas,monospace;color:#b9c0ca;white-space:pre-wrap;margin:6px 0 0;user-select:all}
+.memo{font-size:12px;color:#c3c6cc}
+.memo p{margin:4px 0 8px}
+.memo b{color:#fff}
+.memo ul{margin:4px 0 8px;padding-left:18px}
+.memo li{margin:2px 0}
+.memo code{font:11px ui-monospace,Consolas,monospace;background:#0c0d0f;border:1px solid var(--line);border-radius:3px;padding:0 3px;color:#e6c98f}
+.btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.btns button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:4px 9px;font:inherit;font-size:12px;cursor:pointer}
+.btns button:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>반사·굴절 <small>창문 반사 속 다른 얼굴 · 수면 아래 스넬 창 · 수면 경계의 굴절 · 김 서린 유리 닦기</small></h1>
+    <div class="sp"></div>
+    <span class="pill">셀을 클릭하면 선택 · 키 <b>1–4</b> 전환 · <b>R</b> 리셋</span>
+    <span class="pill" id="snd">소리: 첫 클릭 후 켜짐</span>
+    <span class="pill">FPS <b id="fps">–</b></span>
+  </header>
+  <main id="grid"></main>
+  <aside id="panel"></aside>
+</div>
+<script>
+"use strict";
+/* ============================== 공용 코어 (모든 fx 샘플 동일) ============================== */
+// ---- 결정적 난수 ----
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function hash2(x,y,s){let h=(x*374761393+y*668265263+(s|0)*1442695041)|0;h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296;}
+function vnoise(x,y,s){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);
+  const a=hash2(xi,yi,s),b=hash2(xi+1,yi,s),c=hash2(xi,yi+1,s),d=hash2(xi+1,yi+1,s);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+function fbm(x,y,s,o=4){let f=0,a=.5;for(let i=0;i<o;i++){f+=a*vnoise(x,y,s+i*17);x*=2.03;y*=2.03;a*=.5;}return f/(1-Math.pow(.5,o));}
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, smooth=(a,b,x)=>{x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x)};
+const easeOutBack=(t,s=1.7)=>{t-=1;return 1+t*t*((s+1)*t+s)}, easeOutCubic=t=>1-Math.pow(1-t,3);
+
+// ---- 오디오 (첫 사용자 입력 이후에만 생성) ----
+const AU={ctx:null,master:null,wet:null,noise:null,brown:null};
+function audio(){
+  if(AU.ctx) {if(AU.ctx.state==='suspended')AU.ctx.resume();return AU.ctx;}
+  const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+  const ctx=AU.ctx=new C();
+  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=4; comp.attack.value=.003; comp.release.value=.2;
+  AU.master=ctx.createGain(); AU.master.gain.value=.8; AU.master.connect(comp); comp.connect(ctx.destination);
+  AU.wet=ctx.createConvolver(); AU.wet.buffer=makeImpulse(ctx,2.4,2.6,11); const wg=ctx.createGain(); wg.gain.value=.55; AU.wet.connect(wg); wg.connect(AU.master);
+  const r=mulberry32(7), n=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate), d=n.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=r()*2-1; AU.noise=n;
+  const b=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate), e=b.getChannelData(0); let last=0; for(let i=0;i<e.length;i++){last=(last+.02*(r()*2-1))/1.02;e[i]=last*3.5;} AU.brown=b;
+  const s=document.getElementById('snd'); s.textContent='소리: 켜짐'; s.classList.add('on');
+  return ctx;
+}
+// 생성형 임펄스 응답: 지수 감쇠 노이즈(스테레오). 방 크기 = dur, 감쇠 곡선 = decay
+function makeImpulse(ctx,dur,decay,seed){const r=mulberry32(seed),len=Math.floor(ctx.sampleRate*dur),b=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++){d[i]=(r()*2-1)*Math.pow(1-i/len,decay);}}return b;}
+// 공용 합성 도우미. o: {t, dur, gain, a(attack), f,f2(주파수 스윕), q, type, wet(리버브 송신), pan, buf}
+function out(node,o){const ctx=AU.ctx;let n=node;if(o.pan){const p=ctx.createStereoPanner();p.pan.value=o.pan;n.connect(p);n=p;}
+  n.connect(o.dest||AU.master); if(o.wet){const g=ctx.createGain();g.gain.value=o.wet;n.connect(g);g.connect(AU.wet);} }
+function envGain(t,a,peak,dur,curve){const g=AU.ctx.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(peak,t+a);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(a+.005,dur));return g;}
+function sNoise(o){const ctx=audio();if(!ctx)return;const t=(o.t??ctx.currentTime),dur=o.dur||.2;
+  const s=ctx.createBufferSource();s.buffer=o.brown?AU.brown:AU.noise;s.loop=true;s.playbackRate.value=o.rate||1;
+  const f=ctx.createBiquadFilter();f.type=o.type||'bandpass';f.frequency.setValueAtTime(o.f||1000,t);if(o.f2)f.frequency.exponentialRampToValueAtTime(o.f2,t+dur);f.Q.value=o.q??1;
+  const g=envGain(t,o.a??.004,o.gain??.3,dur);s.connect(f);f.connect(g);out(g,o);s.start(t,(o.off??0)%1.9);s.stop(t+dur+.05);return {src:s,f,g};}
+function sTone(o){const ctx=audio();if(!ctx)return;const t=(o.t??ctx.currentTime),dur=o.dur||.2;
+  const s=ctx.createOscillator();s.type=o.type||'sine';s.frequency.setValueAtTime(o.f||440,t);if(o.f2)s.frequency.exponentialRampToValueAtTime(o.f2,t+(o.sweep||dur));
+  if(o.detune)s.detune.value=o.detune;let n=s;if(o.lp){const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=o.lp;f.Q.value=o.lq||.7;s.connect(f);n=f;}
+  const g=envGain(t,o.a??.004,o.gain??.2,dur);n.connect(g);out(g,o);s.start(t);s.stop(t+dur+.05);return s;}
+// 지속음(루프) — 게인을 외부에서 조절
+function sLoop(o){const ctx=audio();if(!ctx)return null;const s=ctx.createBufferSource();s.buffer=o.brown?AU.brown:AU.noise;s.loop=true;
+  const f=ctx.createBiquadFilter();f.type=o.type||'lowpass';f.frequency.value=o.f||400;f.Q.value=o.q??.7;const g=ctx.createGain();g.gain.value=0;
+  s.connect(f);f.connect(g);out(g,o);s.start();return {src:s,f,g,set(v,tc=.08){g.gain.setTargetAtTime(v,ctx.currentTime,tc);}};}
+
+// ---- WebGL 미니 도우미 ----
+const QUAD_VS=`attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0.,1.);}`;
+const GLSL_NOISE=`
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*vn(p);p=p*2.03+17.1;a*=.5;}return s/.96875;}
+`;
+function glCtx(canvas,opt){const gl=canvas.getContext('webgl',Object.assign({antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:false,alpha:false},opt||{}));
+  if(!gl)throw new Error('WebGL 사용 불가');gl.getExtension('OES_standard_derivatives');const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);gl._quad=b;return gl;}
+function glProg(gl,vs,fs){const mk=(t,s)=>{const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);
+    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(sh)+'\n'+s.split('\n').map((l,i)=>(i+1)+': '+l).join('\n'));return sh;};
+  const p=gl.createProgram();gl.attachShader(p,mk(gl.VERTEX_SHADER,vs));gl.attachShader(p,mk(gl.FRAGMENT_SHADER,'precision highp float;\n'+fs));gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));p._u={};p._a={};return p;}
+function glU(gl,p,name,v){let l=p._u[name];if(l===undefined)l=p._u[name]=gl.getUniformLocation(p,name);if(l===null)return;
+  if(typeof v==='number')gl.uniform1f(l,v);else if(v.tex){gl.activeTexture(gl.TEXTURE0+v.unit);gl.bindTexture(gl.TEXTURE_2D,v.tex);gl.uniform1i(l,v.unit);}
+  else if(v.length===2)gl.uniform2fv(l,v);else if(v.length===3)gl.uniform3fv(l,v);else if(v.length===4)gl.uniform4fv(l,v);}
+function glQuad(gl,p,uniforms){gl.useProgram(p);gl.bindBuffer(gl.ARRAY_BUFFER,gl._quad);let a=p._a.p;if(a===undefined)a=p._a.p=gl.getAttribLocation(p,'p');
+  gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);for(const k in uniforms)glU(gl,p,k,uniforms[k]);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
+function glTex(gl,src,o={}){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);const f=o.nearest?gl.NEAREST:gl.LINEAR;
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,f);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,f);
+  const w=o.repeat?gl.REPEAT:gl.CLAMP_TO_EDGE;gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,w);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,w);return t;}
+function glTexUpdate(gl,t,src){gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);}
+function mkCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+
+// ---- 변형(variant) 등록과 화면 ----
+const V=[];let SEL=0;const SOLO=+(new URLSearchParams(location.search).get('solo')??-1); // ?solo=N: 한 변형만 갱신(저사양·검증용)
+function variant(def){V.push(def);}
+function params(v){const o={};for(const p of v.params)o[p.k]=p.v;return o;}
+function buildUI(){
+  const grid=document.getElementById('grid');
+  V.forEach((v,i)=>{
+    const cell=document.createElement('div');cell.className='cell';
+    cell.innerHTML=`<div class="lab"><span class="k">${i+1}. ${v.name}</span><span class="c">${v.concept}</span></div><div class="hint">${v.hint}</div>`;
+    const cv=document.createElement('canvas');cell.appendChild(cv);grid.appendChild(cell);v.cell=cell;v.canvas=cv;v.P=params(v);v.t=0;v.freeze=0;v.id=i;
+  });
+  // 크기 확정 후 setup
+  for(const v of V){const r=v.cell.getBoundingClientRect(),s=Math.min(window.devicePixelRatio||1,1.25);
+    v.canvas.width=Math.round(r.width*s);v.canvas.height=Math.round(r.height*s);v.W=v.canvas.width;v.H=v.canvas.height;v.scale=s;
+    try{v.setup(v);}catch(e){console.error(e);v.err=e;}
+    const pos=e=>{const b=v.canvas.getBoundingClientRect();return[(e.clientX-b.left)*v.W/b.width,(e.clientY-b.top)*v.H/b.height];};
+    v.canvas.addEventListener('pointerdown',e=>{audio();select(v.id);v.canvas.setPointerCapture(e.pointerId);v.drag=true;const[x,y]=pos(e);v.mx=x;v.my=y;v.down&&v.down(v,x,y,e);});
+    v.canvas.addEventListener('pointermove',e=>{const[x,y]=pos(e);v.mx=x;v.my=y;v.move&&v.move(v,x,y,e,v.drag);});
+    v.canvas.addEventListener('pointerup',e=>{v.drag=false;const[x,y]=pos(e);v.up&&v.up(v,x,y,e);});
+    v.canvas.addEventListener('pointerleave',e=>{v.leave&&v.leave(v);});
+    v.canvas.addEventListener('contextmenu',e=>e.preventDefault());
+  }
+  window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const n=+e.key;if(n>=1&&n<=V.length){select(n-1);return;}
+    audio();const v=V[SEL];if((e.key==='r'||e.key==='R')&&v.reset){v.reset(v);return;}v.key&&v.key(v,e);});
+  select(0);
+}
+function select(i){SEL=i;V.forEach((v,k)=>v.cell.classList.toggle('sel',k===i));renderPanel();}
+function renderPanel(){
+  const v=V[SEL],el=document.getElementById('panel');
+  el.innerHTML=`<h2>${SEL+1}. ${v.name}</h2><div class="cons">${v.concept}</div><div class="memo"><p>${v.about||''}</p></div>
+  <h3>파라미터</h3><div id="rows"></div>
+  <div class="btns">${(v.buttons||[]).map((b,i)=>`<button data-b="${i}">${b[0]}</button>`).join('')}<button id="rst">기본값</button></div>
+  <pre class="json" id="json"></pre>
+  <h3>구현 메모 — 이 변형</h3><div class="memo">${v.memo||''}</div>
+  <h3>구현 메모 — 공통</h3><div class="memo">${COMMON_MEMO}</div>`;
+  const rows=el.querySelector('#rows');
+  v.params.forEach(p=>{const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<label title="${p.label}">${p.label}</label><input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${v.P[p.k]}"><output></output>`;
+    const inp=r.querySelector('input'),o=r.querySelector('output');const show=()=>{o.textContent=fmt(v.P[p.k],p.step)+(p.unit||'');};show();
+    inp.addEventListener('input',()=>{v.P[p.k]=+inp.value;show();dumpJson();v.onParam&&v.onParam(p.k);});rows.appendChild(r);});
+  el.querySelectorAll('[data-b]').forEach(b=>b.addEventListener('click',()=>{audio();v.buttons[+b.dataset.b][1](v);}));
+  el.querySelector('#rst').addEventListener('click',()=>{v.P=params(v);renderPanel();v.onParam&&v.onParam('*');});
+  dumpJson();
+}
+function fmt(x,step){const d=String(step).includes('.')?String(step).split('.')[1].length:0;return(+x).toFixed(d);}
+function dumpJson(){const v=V[SEL];document.getElementById('json').textContent='// '+v.name+'\n'+JSON.stringify(v.P,null,0).replace(/,/g,', ');}
+// 히트스톱: v.freeze(ms) 동안 시뮬레이션 dt=0 (렌더는 계속)
+let lastT=performance.now(),fpsAcc=0,fpsN=0;
+function loop(now){
+  const dtReal=Math.min(50,now-lastT);lastT=now;fpsAcc+=dtReal;fpsN++;
+  if(fpsAcc>500){document.getElementById('fps').textContent=Math.round(1000*fpsN/fpsAcc);fpsAcc=0;fpsN=0;}
+  for(const v of V){if(v.err||(SOLO>=0&&v.id!==SOLO))continue;let dt=dtReal;if(v.freeze>0){v.freeze-=dtReal;dt=0;}v.t+=dt;try{v.frame(v,dt,dtReal);}catch(e){console.error(e);v.err=e;}}
+  requestAnimationFrame(loop);
+}
+window.addEventListener('load',()=>{buildUI();if(SOLO>=0)select(SOLO);requestAnimationFrame(loop);});
+/* ============================== 효과 본체 ============================== */
+//@TITLE 반사·굴절
+//@DESC 창문 반사 속 다른 얼굴 · 수면 아래 스넬 창 · 수면 경계의 굴절 · 김 서린 유리 닦기
+//@ACCENT #6fd6c8
+const COMMON_MEMO=`
+<p><b>반사는 “밝기 차이”로 결정된다.</b> 유리 반사율은 수직 입사에서 약 4–8%뿐이라, 반사가 보이는 건 <b>반대편이 어두울 때</b>다. 그래서 반사 연출은 반사 텍스처보다 <b>바깥 밝기·실내 밝기 두 값</b>이 먼저다 — 둘의 비율만 바꿔도 반사가 나타났다 사라진다(게임 규칙으로 쓸 수 있다).</p>
+<ul>
+<li><b>굴절은 방향을 꺾어 다른 곳을 샘플링하는 것</b>: 평면 수면이면 <code>refract(I, N, 1/1.333)</code> 한 번. 물속에서 올려다보면 임계각 48.6° 밖은 전반사(TIR) → 스넬 창(시야각 97°의 원) 밖은 물속 거울이 된다.</li>
+<li><b>Unity 이식</b>: 창 반사는 반사 전용 카메라(RenderTexture) 또는 미리 렌더한 반사 텍스처 + 셰이더 합성(판정용 “다른 승객”은 텍스처 교체만으로 충분). 스넬 창은 풀스크린 패스(카메라 역투영 → 수면 교차 → refract) 또는 URP 수면 머티리얼(아래에서 볼 때만 이 분기). 파문은 링 소스 배열(최대 8개) uniform.</li>
+<li><b>순수 C#</b>: 실내등 상태·깜빡임 타이밍(ms), 파문 소스(위치·시작 ms), 성에 격자(0..1000 정수)와 재응결 속도. 셰이더는 결과만 읽는다.</li>
+<li><b>함정</b>: ① 반사를 알파 블렌드로 “얹으면” 스티커처럼 뜬다 — 반드시 가산(어두운 곳에서만 보이도록)으로. ② 반사와 바깥은 <b>시차가 반대</b>다: 시점을 움직이면 바깥은 느리게, 반사는 반대 방향으로 — 이게 깊이감의 전부. ③ 굴절 경계에 색분산을 조금 넣지 않으면 CG 티가 난다.</li>
+</ul>`;
+const TUNNEL=`
+vec3 tunnel(vec2 q,float S){ // q: 창 안 좌표(0..1), S: 스크롤 위치
+  float x=q.x*2.+S;vec3 c=vec3(.012,.014,.02);
+  c+=vec3(.05,.045,.04)*fbm(vec2(x*.8,q.y*6.))*.6;                               // 벽(가로 모션블러)
+  for(int i=0;i<3;i++){float y=.25+float(i)*.12;c+=vec3(.08)*smoothstep(.006,.0,abs(q.y-y-.01*sin(x*.7+float(i))));} // 케이블
+  float lx=fract(x*.18)-.5;float lamp=exp(-lx*lx*1400.)*exp(-pow((q.y-.74)*26.,2.))+.35*exp(-lx*lx*300.)*exp(-pow((q.y-.74)*14.,2.));   // 터널 등(가로 번짐)
+  c+=vec3(1.,.82,.55)*lamp*2.;c+=vec3(1.,.75,.45)*exp(-lx*lx*18.)*.16;               // 등이 지나갈 때 창 전체가 밝아짐
+  return c;}
+float lampWash(float S){float x=.5*2.+S;float lx=fract(x*.18)-.5;return exp(-lx*lx*18.);}`;
+// 앉은 승객(2D) — look=true면 정면을 보는 창백한 얼굴
+function passenger(g,x,y,s,coat,look,r){
+  g.fillStyle=coat;g.beginPath();g.moveTo(x-40*s,y+120*s);g.lineTo(x-44*s,y+20*s);g.quadraticCurveTo(x,y-10*s,x+44*s,y+20*s);g.lineTo(x+40*s,y+120*s);g.fill();
+  g.fillRect(x-40*s,y+100*s,110*s,34*s); // 무릎
+  if(look){g.fillStyle='#d8d4cc';g.beginPath();g.ellipse(x,y-18*s,20*s,25*s,0,0,7);g.fill();g.fillStyle='#141012';g.beginPath();g.ellipse(x,y-34*s,23*s,16*s,0,Math.PI,0);g.fill();
+    g.fillRect(x-23*s,y-34*s,7*s,40*s);g.fillRect(x+16*s,y-34*s,7*s,40*s);
+    g.fillStyle='#0a0808';g.beginPath();g.ellipse(x-8*s,y-18*s,3.6*s,2.4*s,0,0,7);g.ellipse(x+8*s,y-18*s,3.6*s,2.4*s,0,0,7);g.fill();}
+  else{g.fillStyle='#b89a84';g.beginPath();g.ellipse(x+3*s,y-14*s,18*s,22*s,.25,0,7);g.fill();g.fillStyle=['#1a1410','#2a1a12','#3a3030'][Math.floor(r()*3)];g.beginPath();g.ellipse(x,y-22*s,21*s,20*s,.2,0,7);g.fill();
+    g.fillStyle='rgba(170,200,255,.9)';g.fillRect(x-6*s,y+48*s,14*s,20*s);g.fillStyle='rgba(170,200,255,.12)';g.beginPath();g.arc(x+2*s,y+40*s,30*s,0,7);g.fill();}}
+function drawCarInterior(W,H,odd){const c=mkCanvas(W,H),g=c.getContext('2d'),r=mulberry32(29);
+  g.fillStyle='#000';g.fillRect(0,0,W,H);
+  // 천장 조명 띠, 손잡이 봉, 광고판
+  g.fillStyle='#fff6e0';g.fillRect(0,H*.04,W,H*.035);g.fillStyle='rgba(255,240,200,.25)';g.fillRect(0,H*.075,W,H*.05);
+  for(let i=0;i<4;i++){g.fillStyle='#707070';g.fillRect(W*(.1+i*.27),H*.1,5,H*.8);}
+  for(let i=0;i<3;i++){g.fillStyle='#403c38';g.fillRect(W*(.12+i*.3),H*.18,W*.2,H*.12);g.fillStyle=['#6a4a3a','#3a5a6a','#5a5a3a'][i];g.fillRect(W*(.13+i*.3),H*.19,W*.18,H*.1);}
+  g.fillStyle='#2a3a30';g.fillRect(0,H*.66,W,H*.14);g.fillStyle='#34483c';g.fillRect(0,H*.56,W,H*.12);   // 좌석
+  const n=6;for(let i=0;i<n;i++){const x=W*(.09+i*.165),s=H/340;if(i===2&&odd>=0)continue;passenger(g,x,H*.5,s,['#3a3a44','#5a4030','#2a2a2a','#4a5a6a','#6a3a3a','#3a4a3a'][i],false,r);}
+  if(odd>=0){passenger(g,W*(.09+odd*.165),H*.5,H/340,'#1a1a1e',true,r);}
+  return c;}
+variant({
+  name:'창문 반사 속 다른 승객',concept:'#29 창문 속 괴물',
+  hint:'이동: 고개 움직이기(시차) · 클릭: 실내등 깜빡임 — 불이 돌아오면 “그것”이 한 칸 가까워져 있다',
+  about:'바깥(터널)과 반사(실내)를 <b>반대 방향 시차</b>로 합성. 반사는 가산이라 <b>터널 등이 지나가면 씻겨 사라지고</b>, 실내등이 꺼지면 반사가 사라지고 바깥이 보인다. 복층 유리의 이중 반사, 유리 얼룩, 미세 왜곡.',
+  params:[
+    {k:'refl',label:'반사율',min:0,max:100,step:1,v:55,unit:'%'},
+    {k:'speed',label:'열차 속도',min:0,max:300,step:1,v:110,unit:'%'},
+    {k:'para',label:'시차 세기',min:0,max:60,step:1,v:24,unit:'px'},
+    {k:'ghost',label:'이중 반사',min:0,max:12,step:.5,v:4,unit:'px'},
+    {k:'flicker',label:'깜빡임 길이',min:100,max:2000,step:50,v:700,unit:'ms'},
+  ],
+  memo:`<ul>
+<li><b>합성식</b>: <code>col = outside(q − par) + refl(q + par)·R·interior·(1 − wash)</code>. wash = 터널 등이 지날 때의 바깥 밝기. 이중 반사는 같은 반사를 ghost px 옮겨 30%로 한 번 더.</li>
+<li><b>규칙과 연결</b>: “다른 승객”은 반사 텍스처에만 존재 → 판정은 C#에서 좌석 인덱스로, 셰이더는 교체된 텍스처만 본다. 깜빡임(C#): 0–80ms 꺼짐, 80–160 켜짐, 160–<code>flicker</code> 꺼짐, 복귀 시 인덱스 −1.</li>
+<li><b>소리</b>: 레일 이음새 “다-덤” 2타(1.1초 주기, 속도에 비례), 저역 럼블 루프, 깜빡임은 100Hz 톱니 버즈 게이트 + 복귀 때 저음 스팅어.</li>
+<li><b>함정</b>: 반사를 너무 선명하게 하면 “창 너머 방”으로 읽힌다. 약간의 흐림·색 빠짐·유리 얼룩이 반사라는 신호다.</li></ul>`,
+  setup(v){const gl=v.gl=glCtx(v.canvas),W=v.W,H=v.H;v.odd=4;v.rT=glTex(gl,drawCarInterior(1024,512,v.odd));
+    v.sh=glProg(gl,QUAD_VS,GLSL_NOISE+TUNNEL+`
+uniform vec2 R,par;uniform float T,S,refl,inter,ghost;uniform sampler2D rf;varying vec2 uv;
+float sdb(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,q.y),0.)-r;}
+void main(){vec2 p=gl_FragCoord.xy;
+  // 차량 내벽
+  vec3 wall=vec3(.62,.6,.55)*(.55+.45*uv.y)*(.6+.4*inter);wall*=.92+.08*vn(p*.05);
+  vec2 wc=R*vec2(.5,.56),wh=R*vec2(.44,.33);float d=sdb(p-wc,wh,22.);
+  vec3 col=wall;
+  if(d<0.){vec2 q=(p-(wc-wh))/(2.*wh);
+    vec2 w=vec2(fbm(q*3.+T*.05),fbm(q*3.+7.))*.004;                      // 유리 미세 왜곡
+    vec3 o=tunnel(q-par/R*.3,S);float wash=lampWash(S);
+    vec2 rq=vec2(1.-q.x,q.y)+par/R+w;                                      // 반사: 좌우 반전, 시차 반대
+    vec3 r1=texture2D(rf,rq).rgb,r2=texture2D(rf,rq+vec2(ghost/R.x,-ghost/R.y*.5)).rgb;
+    vec3 rc=(r1+r2*.3)*vec3(.9,.88,.8);
+    float Rf=refl*(.75+.35*smoothstep(0.,1.,1.-q.y))*inter*(1.-.8*wash);  // 위로 갈수록 반사율↑(프레넬 흉내)
+    col=o+rc*Rf;
+    float smudge=fbm(q*vec2(5.,2.)+3.)*smoothstep(.35,.0,q.y);col+=vec3(.05)*smudge*(inter*.5+wash);  // 아래쪽 손자국
+    col*=1.-.25*smoothstep(-30.,0.,d);}
+  // 고무 패킹·창틀
+  col=mix(col,vec3(.08),smoothstep(3.,0.,abs(d-2.)));col=mix(col,vec3(.35,.34,.32)*(.6+.4*inter),smoothstep(10.,8.,d)*smoothstep(4.,6.,d));
+  // 실내 조명 반사 하이라이트(창틀 위)
+  col+=vec3(.2)*smoothstep(4.,0.,abs(d-9.))*step(wc.y+wh.y-10.,p.y)*inter;
+  col*=1.-.35*pow(length(uv-.5)*1.3,2.);
+  gl_FragColor=vec4(col,1.);}`);
+    v.reset(v);},
+  reset(v){v.S=0;v.inter=1;v.fl=-1;v.clack=0;v.px=0;v.py=0;if(v.odd!==4){v.odd=4;glTexUpdate(v.gl,v.rT,drawCarInterior(1024,512,v.odd));}},
+  down(v){if(v.fl>=0)return;v.fl=0;v.moved=false;const ctx=audio();if(!ctx)return;const t=ctx.currentTime,F=v.P.flicker/1000;
+    const o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=100;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=900;bp.Q.value=2;const g=ctx.createGain();g.gain.value=0;
+    [[0,.12],[.08,0],[.16,.12],[.2,0],[F,.1],[F+.06,0]].forEach(([dt,val])=>g.gain.setValueAtTime(val,t+dt));o.connect(bp);bp.connect(g);out(g,{});o.start(t);o.stop(t+F+.1);
+    sNoise({t,dur:.03,type:'highpass',f:3000,gain:.2});sNoise({t:t+F,dur:.03,type:'highpass',f:3000,gain:.2});},
+  frame(v,dt){const gl=v.gl,W=v.W,H=v.H,P=v.P,s=dt/1000;v.S+=s*P.speed/100*1.6;
+    const tx=((v.mx??W/2)/W-.5)*P.para*v.scale,ty=((v.my??H/2)/H-.5)*P.para*.4*v.scale;v.px+=(tx-v.px)*Math.min(1,s*6);v.py+=(ty-v.py)*Math.min(1,s*6);
+    if(v.fl>=0){v.fl+=dt;const f=v.fl,F=P.flicker;v.inter=f<80?0:f<160?1:f<F?0.02:1;
+      if(f>=F&&!v.moved){v.moved=true;v.odd=Math.max(0,v.odd-1);glTexUpdate(gl,v.rT,drawCarInterior(1024,512,v.odd));
+        if(AU.ctx){const t=AU.ctx.currentTime;sTone({t,f:55,dur:1.8,gain:.3,type:'sawtooth',lp:300,wet:.5});sTone({t,f:58.3,dur:1.8,gain:.2,type:'sawtooth',lp:260,wet:.5});}}
+      if(f>F+50)v.fl=-1;}
+    // 주행음: 럼블 + 이음새 2타
+    if(AU.ctx){if(!v.rum)v.rum=sLoop({brown:true,type:'lowpass',f:140});v.rum&&v.rum.set((SEL===v.id?.35:0)*Math.min(1,P.speed/100),.2);
+      v.clack-=s*P.speed/100;if(v.clack<=0&&SEL===v.id&&P.speed>0){v.clack=1.1;const t=AU.ctx.currentTime;[0,.12].forEach(o=>{sNoise({t:t+o,dur:.05,type:'lowpass',f:700,gain:.3});sNoise({t:t+o,dur:.02,f:2500,q:3,gain:.06});});}}
+    gl.viewport(0,0,W,H);glQuad(gl,v.sh,{R:[W,H],par:[v.px,v.py],T:v.t/1000,S:v.S,refl:P.refl/100,inter:v.inter,ghost:P.ghost*v.scale,rf:{tex:v.rT,unit:0}});
+  }
+});
+
+/* ---------------------------------------------------------------- 2. 스넬 창 (#15) */
+variant({
+  name:'수면 아래 스넬 창',concept:'#15 수면 아래 스텔스',
+  hint:'이동: 시선 돌리기 · 클릭: 수면에 파문(경비가 발을 구르면 이렇게 번진다)',
+  about:'물속 카메라 역투영 → 파도 수면과 교차 → <b>refract(1/1.333)</b>. 97° 원 안에는 위층 전시실(조명·걸어가는 경비 실루엣)이 압축되어 보이고, 원 밖은 <b>전반사</b>로 물속이 비친다. 창 가장자리 색분산·빛내림·코스틱.',
+  params:[
+    {k:'wave',label:'파도 높이',min:0,max:100,step:1,v:35,unit:'%'},
+    {k:'disp',label:'색분산',min:0,max:100,step:1,v:40,unit:'%'},
+    {k:'rip',label:'파문 세기',min:0,max:100,step:1,v:60,unit:'%'},
+    {k:'fog',label:'물 탁도',min:0,max:100,step:1,v:45,unit:'%'},
+    {k:'fov',label:'시야각',min:50,max:120,step:1,v:95,unit:'°'},
+  ],
+  memo:`<ul>
+<li><b>셰이더</b>: 픽셀 → 시선 d, 수면 z=0과 교차 <code>t = depth/d.z</code>, 그 점의 파도 법선 n. <code>refract(d, −n, 1.333)</code>이 0이면 전반사 → <code>reflect</code>로 물속 환경. R/G/B를 η 1.331/1.335/1.342로 세 번 굴절하면 창 가장자리에 무지개 테.</li>
+<li><b>투과율</b>: 슐릭 근사 <code>T = 1 − F(cosθt)</code>. 임계각 근처에서 T가 급락해 창 테두리가 자연스럽게 반사로 녹는다.</li>
+<li><b>Unity</b>: 풀스크린 패스 1장(카메라 inverse VP로 시선 복원). 위 세계는 큐브맵(리플렉션 프로브)을 굴절 방향으로 샘플 — 동적 경비는 큐브맵 대신 저해상 실시간 프로브 또는 실루엣 스프라이트를 직접 투영.</li>
+<li><b>게임 규칙</b>: 경비는 스넬 창 안에서만 보인다 → 시선을 올려야 위험을 본다. 파문은 창 안 이미지를 흔들어 “발소리”를 시각화.</li>
+<li><b>함정</b>: 창 크기를 화면 비율로 그리면 틀린다 — 97°는 시야각이 아니라 <b>방향 공간의 원뿔</b>이다. 역투영으로 계산해야 FOV를 바꿔도 맞다.</li></ul>`,
+  setup(v){const gl=v.gl=glCtx(v.canvas);
+    v.sh=glProg(gl,QUAD_VS,GLSL_NOISE+`
+uniform vec2 R;uniform float T,yaw,pitch,wave,disp,rip,fog,fov;uniform vec4 rp0,rp1,rp2,rp3,rp4,rp5;uniform vec3 gd;varying vec2 uv;
+float H(vec2 p){float h=0.;h+=sin(dot(p,vec2(.9,.3))*1.2+T*1.1)*.5;h+=sin(dot(p,vec2(-.4,.8))*1.9+T*1.5)*.3;h+=sin(dot(p,vec2(.2,-1.))*3.1+T*2.1)*.15;h+=(fbm(p*1.3+T*.3)-.5)*.25;h*=wave;
+  vec4 r[6];r[0]=rp0;r[1]=rp1;r[2]=rp2;r[3]=rp3;r[4]=rp4;r[5]=rp5;
+  for(int i=0;i<6;i++){float a=T-r[i].z;if(a<0.||a>6.)continue;float d=length(p-r[i].xy);float w=d-a*2.2;h+=rip*r[i].w*sin(w*6.)*exp(-w*w*1.5)*exp(-a*.7)/(1.+d*.6);}
+  return h*.1;}
+vec3 above(vec3 d){ // 위층 전시실 (공기 중 방향)
+  float e=asin(clamp(d.z,-1.,1.)),az=atan(d.y,d.x);
+  vec3 c=mix(vec3(.46,.4,.3),vec3(.13,.13,.17),smoothstep(.1,1.2,e));
+  float ring=smoothstep(.025,.0,abs(e-.95))+smoothstep(.025,.0,abs(e-1.25));float beam=smoothstep(.03,.0,abs(fract(az*1.2732+.5)-.5)/1.2732)*step(.45,e);
+  c*=1.-.55*max(ring,beam);                                                             // 천장 들보(방사·동심 — 어안 압축이 읽힌다)
+  vec2 g=vec2(az*1.2732,e);float la=(fract(g.x)-.5)/1.2732;float lamp=exp(-(la*la*900.+pow(e-1.1,2.)*300.));c+=vec3(1.,.88,.65)*lamp*2.2;   // 펜던트 조명 8개
+  for(int i=0;i<3;i++){float ga=gd[i];float da=abs(mod(az-ga+3.14159,6.2832)-3.14159);
+    float body=smoothstep(.1,.08,da-.03*smoothstep(.3,.0,e))*smoothstep(.62,.58,e)*step(.0,e);float head=smoothstep(.07,.055,length(vec2(da,e-.69)));c=mix(c,vec3(.03,.03,.04),max(body,head));}
+  c=mix(c,vec3(.75,.65,.5),smoothstep(.12,.0,e)*.6);
+  return c;}
+vec3 below(vec3 d,vec2 sp){ // 물속(전반사로 보이는 것)
+  float k=-d.z;vec3 c=mix(vec3(.02,.12,.14),vec3(.0,.03,.05),smoothstep(0.,1.,k));
+  float cs=abs(sin(fbm(sp*.6+T*.2)*12.));c+=vec3(.1,.3,.28)*pow(1.-cs,6.)*.35*(1.-k);  // 바닥 코스틱
+  return c;}
+vec3 dirOf(vec2 p){vec2 s=(p-R*.5)/R.y;float f=tan(radians(fov)*.5)*2.;
+  vec3 fw=vec3(cos(pitch)*cos(yaw),cos(pitch)*sin(yaw),sin(pitch)),rt=normalize(vec3(-sin(yaw),cos(yaw),0.)),up=cross(rt,fw);
+  return normalize(fw+rt*s.x*f+up*s.y*f);}
+void main(){vec2 p=gl_FragCoord.xy;vec3 d=dirOf(p);
+  vec3 wc=vec3(.0,.12,.14);vec3 col;
+  if(d.z>.02){float t=3./d.z;vec2 sp=d.xy*t;float e=.05;
+    vec3 n=normalize(vec3(-(H(sp+vec2(e,0.))-H(sp-vec2(e,0.)))/(2.*e),-(H(sp+vec2(0.,e))-H(sp-vec2(0.,e)))/(2.*e),1.));
+    vec3 cs=vec3(0.);vec3 eta=vec3(1.331,1.335,1.342+.02*disp)*0.+vec3(1.335)+vec3(-.004,0.,.007+.03*disp)*disp;
+    for(int i=0;i<3;i++){float et=i==0?eta.x:i==1?eta.y:eta.z;vec3 r=refract(d,-n,et);vec3 s;
+      if(dot(r,r)<.001){s=below(reflect(d,-n),sp);}
+      else{float ci=dot(-d,-n),ct=r.z;float F0=.02;float F=F0+(1.-F0)*pow(1.-clamp(ci,0.,1.),5.);float Tt=smoothstep(.0,.18,ct)*(1.-F);
+        s=mix(below(reflect(d,-n),sp),above(r),Tt)+vec3(.55,.6,.5)*smoothstep(.0,.06,ct)*smoothstep(.3,.04,ct)*.45;}
+      cs[i]=s[i];}
+    col=cs;
+    float fd=1.-exp(-t*.06*(.5+fog));col=mix(col,wc,fd);                           // 거리 안개
+  } else {col=mix(wc,vec3(.0,.02,.03),smoothstep(.0,-.8,d.z));float cs=abs(sin(fbm(p*.01+T*.15)*10.));col+=vec3(.05,.15,.13)*pow(1.-cs,5.)*smoothstep(-.6,0.,d.z);}
+  // 빛내림: 위쪽 방향에 가까울수록
+  float up=max(d.z,0.);float ang=atan(d.y,d.x);float rays=fbm(vec2(ang*6.,T*.2))*smoothstep(.2,.9,up);col+=vec3(.25,.4,.35)*rays*.35*(1.-fog*.5);
+  col+=vec3(.6,.8,.7)*step(.9985,h21(floor(p/2.)+floor(T*3.)))*.4;                // 부유물
+  col*=1.-.4*pow(length(uv-.5)*1.3,2.);
+  gl_FragColor=vec4(col,1.);}`);
+    v.reset(v);},
+  reset(v){v.yaw=0;v.pitch=1.3;v.rips=[];v.rn=0;},
+  down(v,x,y){const W=v.W,H=v.H;// 클릭한 화면점의 수면 좌표를 JS에서 역투영
+    const s=[(x-W/2)/H,((H-y)-H/2)/H],f=Math.tan(v.P.fov*Math.PI/360)*2,cy=Math.cos(v.yaw),sy=Math.sin(v.yaw),cp=Math.cos(v.pitch),spp=Math.sin(v.pitch);
+    const fw=[cp*cy,cp*sy,spp],rt=[-sy,cy,0],up=[rt[1]*fw[2]-rt[2]*fw[1],rt[2]*fw[0]-rt[0]*fw[2],rt[0]*fw[1]-rt[1]*fw[0]];
+    let d=[0,1,2].map(i=>fw[i]+rt[i]*s[0]*f+up[i]*s[1]*f);const l=Math.hypot(...d);d=d.map(a=>a/l);
+    let sp=[0,0];if(d[2]>.05){const t=3/d[2];sp=[d[0]*t,d[1]*t];}else sp=[fw[0]*3,fw[1]*3];
+    v.rips[v.rn++%6]=[sp[0],sp[1],v.t/1000,1];
+    const ctx=audio();if(!ctx)return;const t=ctx.currentTime;// 물속에서 듣는 첨벙: 저역 쿵 + 거품 처프
+    sNoise({t,dur:.35,type:'lowpass',f:350,gain:.5,wet:.5});sTone({t,f:80,f2:40,dur:.3,gain:.35});
+    const r=mulberry32(v.rn*7);for(let i=0;i<9;i++){const tt=t+.05+r()*.5,f0=300+r()*700;sTone({t:tt,f:f0,f2:f0*2.2,sweep:.05,dur:.06,gain:.05,type:'sine',wet:.6});}},
+  frame(v,dt){const gl=v.gl,W=v.W,H=v.H,P=v.P,s=dt/1000,T=v.t/1000;
+    const ty=((v.mx??W/2)/W-.5)*1.4,tp=1.3-((v.my??H/2)/H-.5)*1.2;v.yaw+=(ty-v.yaw)*Math.min(1,s*3);v.pitch+=(clamp(tp,.25,1.5)-v.pitch)*Math.min(1,s*3);
+    const R=v.rips,rp=i=>R[i]||[0,0,-99,0];
+    if(AU.ctx){if(!v.amb){v.amb=sLoop({brown:true,type:'lowpass',f:260});v.bub=0;}v.amb&&v.amb.set(SEL===v.id?.22:0,.3);
+      v.bub-=s;if(v.bub<=0&&SEL===v.id){v.bub=.4+hash2(Math.floor(T*10),1,2)*1.6;const f0=400+hash2(Math.floor(T*10),2,2)*900;sTone({f:f0,f2:f0*1.8,sweep:.04,dur:.05,gain:.025,wet:.7});}}
+    const gd=[T*.12,2.1-T*.08,4.2+T*.05];
+    gl.viewport(0,0,W,H);glQuad(gl,v.sh,{R:[W,H],T,yaw:v.yaw,pitch:v.pitch,wave:P.wave/100*2,disp:P.disp/100,rip:P.rip/100*3,fog:P.fog/100,fov:P.fov,
+      rp0:rp(0),rp1:rp(1),rp2:rp(2),rp3:rp(3),rp4:rp(4),rp5:rp(5),gd});
+  }
+});
+
+/* ---------------------------------------------------------------- 3. 수면 경계 굴절 (#16) */
+function drawDrownedRoom(W,H){const c=mkCanvas(W,H),g=c.getContext('2d'),r=mulberry32(16);
+  g.fillStyle='#6a5a44';g.fillRect(0,0,W,H);for(let x=0;x<W;x+=W/16){g.fillStyle=`rgba(0,0,0,${.06+r()*.05})`;g.fillRect(x,0,W/32,H);}  // 벽지
+  for(let y=0;y<H*.2;y+=10){g.fillStyle='rgba(0,0,0,.08)';g.fillRect(0,y,W,1);}
+  g.fillStyle='#4a3a2a';g.fillRect(0,0,W,H*.08);                                  // 천장 몰딩
+  g.fillStyle='#3a2a1e';g.fillRect(W*.62,H*.16,W*.2,H*.22);g.fillStyle='#8a9a8a';g.fillRect(W*.635,H*.18,W*.17,H*.18); // 액자
+  g.fillStyle='#5a6a5a';g.beginPath();g.moveTo(W*.635,H*.36);g.lineTo(W*.7,H*.25);g.lineTo(W*.75,H*.3);g.lineTo(W*.805,H*.22);g.lineTo(W*.805,H*.36);g.fill();
+  g.fillStyle='#2a1e16';g.fillRect(W*.08,H*.3,W*.2,H*.62);g.fillStyle='#3a2a1e';g.fillRect(W*.1,H*.34,W*.16,H*.26);g.fillRect(W*.1,H*.64,W*.16,H*.24); // 문
+  g.fillStyle='#c0a060';g.beginPath();g.arc(W*.24,H*.62,5,0,7);g.fill();
+  // 바닥 + 떠 있는 의자(수면을 가로지름)
+  g.fillStyle='#3a2a1e';g.fillRect(0,H*.9,W,H*.1);
+  g.save();g.translate(W*.48,H*.5);g.rotate(.28);g.fillStyle='#5a3a24';g.fillRect(-60,-110,14,220);g.fillRect(46,-110,14,220);g.fillRect(-60,-20,120,16);g.fillRect(-60,-110,120,14);g.fillRect(-60,-70,120,8);g.restore();
+  g.fillStyle='#2a3a4a';g.fillRect(W*.34,H*.78,W*.3,H*.12);                        // 가라앉은 가방/상자
+  return c;}
+variant({
+  name:'수면 경계 굴절 · 발걸음',concept:'#16 익사한 집',
+  hint:'클릭: 위층의 발걸음(등이 흔들리고 파문이 수면을 가로지른다) · 이동: 수위 높이',
+  about:'반쯤 잠긴 시점. 수면 위는 그대로, 아래는 <b>1.33배 확대·색 흡수·코스틱</b>, 수면 바로 아래는 <b>전반사 거울 띠</b>. 수면을 가로지르는 의자는 <b>꺾여 보인다</b>. 발걸음마다 천장 먼지와 등 흔들림, 파문이 경계선과 반사를 흔든다.',
+  params:[
+    {k:'mag',label:'굴절 배율',min:100,max:160,step:1,v:133,unit:'%'},
+    {k:'absorb',label:'색 흡수',min:0,max:100,step:1,v:60,unit:'%'},
+    {k:'mirror',label:'거울 띠 폭',min:0,max:120,step:1,v:46,unit:'px'},
+    {k:'caus',label:'코스틱',min:0,max:100,step:1,v:55,unit:'%'},
+    {k:'step',label:'발걸음 세기',min:0,max:100,step:1,v:60,unit:'%'},
+  ],
+  memo:`<ul>
+<li><b>경계선</b>: <code>y0(x) = level + Σ 파문(x, age)</code>. 파문은 1D 감쇠 사인 <code>A·e^{−age}·sin(k(|x−x0|−c·age))</code> 최대 6개. 경계선 위/아래로 한 셰이더가 두 매질을 분기.</li>
+<li><b>꺾임</b>: 아래쪽 샘플 좌표 <code>center + (p − center)/mag</code> — 같은 텍스처를 위아래가 다르게 읽기 때문에 수면을 가로지른 물체가 어긋난다(“젓가락 꺾임”). 모델을 둘로 나눌 필요가 없다.</li>
+<li><b>거울 띠</b>: 경계 아래 <code>mirror</code> px 안에서 <code>y' = 2·y0 − y</code>로 물속 장면을 뒤집어 샘플, 거리로 페이드. Unity: 수면 메시 아랫면 머티리얼(Cull Front)에서 SSR 또는 반전 카메라.</li>
+<li><b>소리</b>: 발걸음 = 저역 쿵(물에 막혀 LP 180Hz) + 목재 삐걱(밴드패스 톱니 스윕) + 0.2초 뒤 물 출렁임.</li></ul>`,
+  setup(v){const gl=v.gl=glCtx(v.canvas),W=v.W,H=v.H;v.rT=glTex(gl,drawDrownedRoom(W,H));
+    v.sh=glProg(gl,QUAD_VS,GLSL_NOISE+`
+uniform vec2 R;uniform float T,level,mag,absorb,mirror,caus,swing,lampOn,stepT,stepX;uniform vec4 r0,r1,r2,r3,r4,r5;uniform sampler2D rm;varying vec2 uv;
+float surf(float x){float y=level+sin(x*.02+T*1.3)*2.+sin(x*.047-T*1.9)*1.2;vec4 r[6];r[0]=r0;r[1]=r1;r[2]=r2;r[3]=r3;r[4]=r4;r[5]=r5;
+  for(int i=0;i<6;i++){float a=T-r[i].y;if(a<0.||a>5.)continue;float d=abs(x-r[i].x);float w=d-a*260.;y+=r[i].z*14.*sin(w*.05)*exp(-w*w*.00008)*exp(-a*.8);}return y;}
+float caustic(vec2 u,float t){vec2 p=mod(u*6.2832,6.2832)-250.;vec2 i=p;float c=1.;for(int n=0;n<4;n++){float tt=t*(1.-3.5/float(n+1));
+  i=p+vec2(cos(tt-i.x)+sin(tt+i.y),sin(tt-i.y)+cos(tt+i.x));c+=1./length(vec2(p.x/(sin(i.x+tt)/.005),p.y/(cos(i.y+tt)/.005)));}c/=4.;c=1.17-pow(c,1.4);return pow(abs(c),8.);}
+vec3 room(vec2 p){vec3 c=texture2D(rm,clamp(p/R,0.,1.)).rgb;
+  vec2 L=vec2(R.x*.5+sin(swing)*R.y*.12,R.y*.8-abs(sin(swing))*R.y*.02);float d=length((p-L)/R.y);
+  c*=.25+lampOn*(.9*exp(-d*d*3.5)+.2);                                  // 등 빛
+  return c;}
+void main(){vec2 p=gl_FragCoord.xy;float y0=surf(p.x);vec3 col;
+  vec2 L=vec2(R.x*.5+sin(swing)*R.y*.12,R.y*.8);
+  if(p.y>y0){ col=room(p);
+    // 등 + 줄
+    vec2 a=vec2(R.x*.5,R.y),b=L;vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/dot(ba,ba),0.,1.);col=mix(col,vec3(.05),smoothstep(1.5,.5,length(pa-ba*h)));
+    float lg=length((p-L)/vec2(1.,1.2));col=mix(col,vec3(1.,.85,.55)*lampOn+vec3(.1),smoothstep(14.,11.,lg)*step(p.y,L.y+2.));col+=vec3(1.,.8,.5)*lampOn*.25*exp(-lg*.03);
+    // 수면 윗면 반사광(위에서 본 수면)
+    col+=vec3(1.,.9,.7)*lampOn*.25*smoothstep(8.,0.,p.y-y0)*(.5+.5*sin(p.x*.08+T*3.));
+    // 발걸음 뒤 천장에서 떨어지는 먼지
+    float ds=T-stepT;if(ds>0.&&ds<3.5){float cx=floor(p.x/5.);float h=h21(vec2(cx,floor(stepT*10.)));
+      if(h>.86&&abs(p.x-stepX)<R.x*.28){float yy=R.y*.97-ds*(30.+70.*h21(vec2(cx,7.)))-ds*ds*6.;float xx=cx*5.+2.5+sin(ds*3.+h*20.)*3.;
+        col+=vec3(.9,.85,.75)*smoothstep(2.2,.6,length(p-vec2(xx,yy)))*(1.-ds/3.5)*.8;}}
+  } else {
+    vec2 c=vec2(R.x*.5,y0);vec2 q=c+(p-c)/mag;q.x+=sin(p.y*.05+T*2.)*2.;                // 굴절 확대 + 일렁임
+    col=room(q);
+    float depth=(y0-p.y)/R.y;vec3 ab=exp(-vec3(2.2,.9,.7)*(.3+depth*2.)*absorb);col*=ab;col+=vec3(.0,.06,.07)*absorb;
+    // 코스틱(물속 표면에 비치는 그물 빛)
+    col+=vec3(.55,.8,.75)*caustic(q/R.y*3.,T*.5)*caus*lampOn*(1.-depth)*1.4;
+    // 전반사 거울 띠
+    float md=y0-p.y;if(md<mirror){vec2 mq=c+(vec2(p.x,y0+md*1.6)-c)/mag;mq.y=y0-(mq.y-y0);mq.y=2.*y0-mq.y;
+      vec3 m=room(vec2(p.x+sin(p.x*.03+T*2.)*3.,y0-md*1.8-10.))*ab;col=mix(col,m*.9+vec3(.02,.05,.06),smoothstep(mirror,0.,md)*.85);}
+    col=mix(col,vec3(.8,.9,.85),smoothstep(2.5,0.,md)*.5);                                 // 메니스커스 선
+    col+=vec3(.7,.9,.85)*step(.997,h21(floor(p/2.)+floor(T*2.)))*.3;                      // 부유물
+  }
+  col*=1.-.4*pow(length(uv-.5)*1.3,2.);
+  gl_FragColor=vec4(col,1.);}`);
+    v.reset(v);},
+  reset(v){v.rips=[];v.rn=0;v.sw=0;v.swv=0;v.dust=[];v.lampOn=1;v.lev=v.H*.5;},
+  down(v,x){const P=v.P,st=P.step/100;v.stepT=v.t/1000;v.stepX=x;v.rips[v.rn++%6]=[x,v.t/1000,st,0];v.swv+=(x<v.W/2?1:-1)*1.6*st;v.lampOn=.35;
+    const ctx=audio();if(!ctx)return;const t=ctx.currentTime;
+    sNoise({t,dur:.25,type:'lowpass',f:180,gain:.7*st+.1,wet:.35});sTone({t,f:70,f2:38,dur:.3,gain:.5*st});
+    const o=ctx.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(140,t+.05);o.frequency.linearRampToValueAtTime(95,t+.4);const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=700;bp.Q.value=6;
+    const g=envGain(t+.05,.05,.05*st,.4);o.connect(bp);bp.connect(g);out(g,{wet:.3});o.start(t+.05);o.stop(t+.5);
+    sNoise({t:t+.22,dur:.6,f:500,f2:250,q:1.2,gain:.12*st,a:.15,wet:.5});},
+  frame(v,dt){const gl=v.gl,W=v.W,H=v.H,P=v.P,s=dt/1000;
+    const tl=H*(.3+.4*(1-((v.my??H/2)/H)));v.lev+=(clamp(tl,H*.25,H*.75)-v.lev)*Math.min(1,s*2);
+    v.swv+=-v.sw*9*s;v.swv*=Math.pow(.5,s);v.sw+=v.swv*s;v.lampOn=Math.min(1,v.lampOn+s*3*(.5+.5*Math.sin(v.t*.05)));
+    const R=v.rips,rp=i=>R[i]||[0,-99,0,0];
+    if(AU.ctx){if(!v.amb)v.amb=sLoop({brown:true,type:'lowpass',f:300});v.amb&&v.amb.set(SEL===v.id?.12:0,.3);}
+    gl.viewport(0,0,W,H);glQuad(gl,v.sh,{R:[W,H],T:v.t/1000,stepT:v.stepT??-99,stepX:v.stepX??0,level:v.lev,mag:P.mag/100,absorb:P.absorb/100,mirror:P.mirror*v.scale,caus:P.caus/100,swing:v.sw,lampOn:v.lampOn,
+      r0:rp(0),r1:rp(1),r2:rp(2),r3:rp(3),r4:rp(4),r5:rp(5),rm:{tex:v.rT,unit:0}});
+  }
+});
+
+/* ---------------------------------------------------------------- 4. 김 서린 창 닦기 (#30) */
+function drawSeatReflection(W,H){const c=mkCanvas(W,H),g=c.getContext('2d'),r=mulberry32(30);
+  g.fillStyle='#000';g.fillRect(0,0,W,H);
+  g.fillStyle='rgba(255,220,160,.8)';g.fillRect(0,H*.03,W,H*.03);
+  g.fillStyle='#4a2a1c';g.fillRect(0,H*.62,W,H*.2);g.fillStyle='#5a3424';g.fillRect(0,H*.5,W,H*.14);
+  // 옆자리 사람: 따뜻한 조명의 얼굴, 코트, 목도리
+  const x=W*.62,y=H*.42,s=H/300;
+  g.fillStyle='#6a5040';g.beginPath();g.moveTo(x-48*s,y+130*s);g.lineTo(x-52*s,y+34*s);g.quadraticCurveTo(x,y-2*s,x+52*s,y+34*s);g.lineTo(x+48*s,y+130*s);g.fill();
+  g.fillStyle='#9a3a2a';g.fillRect(x-30*s,y+22*s,60*s,16*s);
+  const fg=g.createRadialGradient(x-6*s,y-10*s,4*s,x,y,34*s);fg.addColorStop(0,'#e8c0a0');fg.addColorStop(1,'#8a6048');g.fillStyle=fg;g.beginPath();g.ellipse(x,y-6*s,22*s,28*s,0,0,7);g.fill();
+  g.fillStyle='#2a1a12';g.beginPath();g.ellipse(x,y-24*s,26*s,20*s,0,Math.PI,0);g.fill();g.fillRect(x-26*s,y-24*s,9*s,52*s);g.fillRect(x+17*s,y-24*s,9*s,52*s);
+  g.fillStyle='rgba(40,20,10,.8)';g.beginPath();g.ellipse(x-8*s,y-6*s,3*s,1.6*s,0,0,7);g.ellipse(x+8*s,y-6*s,3*s,1.6*s,0,0,7);g.fill();
+  // 내 어깨(반사 속 앞쪽, 어둡게)
+  g.fillStyle='#141414';g.beginPath();g.ellipse(W*.25,H*.95,W*.2,H*.3,0,0,7);g.fill();g.beginPath();g.ellipse(W*.25,H*.52,W*.07,H*.1,0,0,7);g.fill();
+  return c;}
+variant({
+  name:'김 서린 창 닦기',concept:'#30 종점',
+  hint:'드래그: 성에를 닦는다(뽀드득) — 닦은 자리에만 옆자리에 앉은 “잊은 사람”이 비친다 · 시간이 지나면 다시 흐려진다',
+  about:'성에 격자(2D 마스크)를 드래그로 지우고 매 프레임 조금씩 다시 덮는다. 흐린 곳은 <b>다중 탭 블러 + 산란광 + 물방울 굴절</b>, 닦인 곳은 선명한 바깥 + 반사. 닦인 경계에 물방울이 맺혀 <b>흘러내린다</b>.',
+  params:[
+    {k:'brush',label:'닦는 폭',min:10,max:80,step:1,v:32,unit:'px'},
+    {k:'regrow',label:'재응결',min:0,max:100,step:1,v:22,unit:'%/s'},
+    {k:'fogAmt',label:'성에 농도',min:20,max:100,step:1,v:85,unit:'%'},
+    {k:'refl',label:'반사율',min:0,max:100,step:1,v:60,unit:'%'},
+    {k:'drops',label:'물방울',min:0,max:100,step:1,v:60,unit:'%'},
+  ],
+  memo:`<ul>
+<li><b>마스크</b>: 256×160 캔버스. 드래그 = <code>destination-out</code> 소프트 원(이전 점과 선분 보간 — 빠른 드래그에도 끊기지 않게), 재응결 = 매 프레임 흰색 <code>fillRect</code> 알파 <code>regrow·dt</code>. 텍스처로 업로드해 셰이더가 샘플.</li>
+<li><b>흐림</b>: 8탭 원형 블러(반경 = 성에×9px) + 밝은 산란(바깥 등빛이 번짐) + 고주파 노이즈 물방울 법선으로 굴절 오프셋. Unity: 블러는 저해상 RT 한 번으로 충분.</li>
+<li><b>흘러내림</b>: 마스크 경계(기울기 큰 곳)에 물방울 하이라이트, 무작위 열에서 세로 줄무늬가 아래로 이동. C#: 줄마다 시작 ms·속도 정수.</li>
+<li><b>소리</b>: 뽀드득 = 속도에 비례한 공명 밴드패스(Q 12) 노이즈 + 900–1600Hz 사인 “끽” 게이트. 드래그를 멈추면 50ms 안에 끊어야 손에 붙는다.</li></ul>`,
+  setup(v){const gl=v.gl=glCtx(v.canvas),W=v.W,H=v.H;v.rT=glTex(gl,drawSeatReflection(512,320));
+    v.fog=mkCanvas(256,160);v.fg=v.fog.getContext('2d');v.fT=glTex(gl,v.fog);
+    v.sh=glProg(gl,QUAD_VS,GLSL_NOISE+TUNNEL+`
+uniform vec2 R;uniform float T,S,refl,fogAmt,drops;uniform sampler2D rf,fm;varying vec2 uv;
+float sdb(vec2 p,vec2 b,float r){vec2 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,q.y),0.)-r;}
+vec3 clear(vec2 q){vec3 o=tunnel(q,S);float wash=lampWash(S);vec3 r=texture2D(rf,vec2(q.x,q.y)).rgb;return o+r*refl*(1.-.75*wash);}
+void main(){vec2 p=gl_FragCoord.xy;vec3 wall=vec3(.42,.3,.22)*(.5+.5*uv.y);vec3 col=wall;
+  vec2 wc=R*vec2(.5,.54),wh=R*vec2(.43,.36);float d=sdb(p-wc,wh,30.);
+  if(d<0.){vec2 q=(p-(wc-wh))/(2.*wh);
+    float f=texture2D(fm,q).a*fogAmt;
+    // 물방울 법선(고주파)
+    vec2 dn=vec2(vn(q*vec2(160.,100.))-.5,vn(q*vec2(160.,100.)+9.)-.5);
+    vec3 cl=clear(q+dn*.004*f);
+    vec3 bl=vec3(0.);for(int i=0;i<8;i++){float a=float(i)*.785;bl+=clear(q+vec2(cos(a),sin(a))*.02*f+dn*.02);}bl/=8.;
+    vec3 fogc=bl*.8+vec3(.22,.22,.24)*f+vec3(.25,.2,.15)*lampWash(S)*f;              // 산란
+    col=mix(cl,fogc,smoothstep(.05,.6,f));
+    // 경계 물방울 + 흘러내림
+    float g=length(vec2(texture2D(fm,q+vec2(.004,0.)).a-texture2D(fm,q-vec2(.004,0.)).a,texture2D(fm,q+vec2(0.,.006)).a-texture2D(fm,q-vec2(0.,.006)).a));
+    float bead=step(.86,h21(floor(q*vec2(220.,140.))))*smoothstep(.05,.3,g);col+=vec3(.5)*bead*drops;
+    float xw=q.x*90.+sin(q.y*30.)*.25;float colx=floor(xw);float run=step(.9,h21(vec2(colx,3.)));float head=fract(-T*.05*(.4+h21(vec2(colx,5.)))+h21(vec2(colx,8.)));float yy=q.y-head;
+    float trail=step(0.,yy)*smoothstep(.35,.0,yy);col=mix(col,cl*1.05+.03,run*drops*smoothstep(.2,.05,abs(fract(xw)-.5))*trail*step(.3,f)*.85);col+=vec3(.6)*run*drops*smoothstep(.012,.0,abs(yy))*smoothstep(.25,.1,abs(fract(xw)-.5))*step(.3,f);
+    col*=1.-.2*smoothstep(-40.,0.,d);}
+  col=mix(col,vec3(.12,.1,.08),smoothstep(12.,9.,d)*smoothstep(0.,2.,d));
+  col*=1.-.35*pow(length(uv-.5)*1.3,2.);
+  gl_FragColor=vec4(col,1.);}`);
+    v.reset(v);},
+  reset(v){v.fg.globalCompositeOperation='source-over';v.fg.fillStyle='#fff';v.fg.fillRect(0,0,256,160);v.S=0;v.last=null;v.wipeSp=0;},
+  toFog(v,x,y){const W=v.W,H=v.H,wx=W*.07,wy=H*.1,ww=W*.86,wh=H*.72;return[(x-wx)/ww*256,(y-wy)/wh*160];},
+  down(v,x,y){v.last=this.toFog(v,x,y);},
+  move(v,x,y,e,drag){if(!drag||!v.last)return;const [fx,fy]=this.toFog(v,x,y),g=v.fg,r=v.P.brush*v.scale/v.W*0.86*256*0+v.P.brush*256/(v.W*.86)*v.scale;
+    const dx=fx-v.last[0],dy=fy-v.last[1],n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/(r*.3)));g.globalCompositeOperation='destination-out';
+    for(let i=1;i<=n;i++){const px=v.last[0]+dx*i/n,py=v.last[1]+dy*i/n,gr=g.createRadialGradient(px,py,0,px,py,r);gr.addColorStop(0,'rgba(0,0,0,.9)');gr.addColorStop(.6,'rgba(0,0,0,.6)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(px-r,py-r,r*2,r*2);}
+    g.globalCompositeOperation='source-over';v.wipeSp=Math.min(1,Math.hypot(dx,dy)/8);v.wipeT=performance.now();v.last=[fx,fy];},
+  up(v){v.last=null;},
+  frame(v,dt){const gl=v.gl,W=v.W,H=v.H,P=v.P,s=dt/1000;v.S+=s*1.4;
+    const g=v.fg;g.globalCompositeOperation='source-over';g.fillStyle=`rgba(255,255,255,${Math.min(1,P.regrow/100*s*.5)})`;g.fillRect(0,0,256,160);glTexUpdate(gl,v.fT,v.fog);
+    if(performance.now()-(v.wipeT||0)>50)v.wipeSp*=Math.pow(.001,s);
+    if(AU.ctx){if(!v.sq){v.sq=sLoop({type:'bandpass',f:1200,q:12});v.rum=sLoop({brown:true,type:'lowpass',f:120});
+        const o=AU.ctx.createOscillator();o.frequency.value=1100;const og=AU.ctx.createGain();og.gain.value=0;o.connect(og);out(og,{});o.start();v.sqo={o,og};}
+      const w=v.wipeSp*(SEL===v.id?1:0),t=AU.ctx.currentTime;v.sq&&v.sq.set(w*.5,.02);v.sq&&v.sq.f.frequency.setTargetAtTime(900+w*1400,t,.03);
+      v.sqo.og.gain.setTargetAtTime(w>.3?.035*w:0,t,.015);v.sqo.o.frequency.setTargetAtTime(1000+500*Math.sin(v.t*.03)+w*300,t,.02);v.rum&&v.rum.set(SEL===v.id?.25:0,.3);}
+    gl.viewport(0,0,W,H);glQuad(gl,v.sh,{R:[W,H],T:v.t/1000,S:v.S,refl:P.refl/100*1.4,fogAmt:P.fogAmt/100,drops:P.drops/100,rf:{tex:v.rT,unit:0},fm:{tex:v.fT,unit:1}});
+  }
+});
+
+</script>
+</body>
+</html>

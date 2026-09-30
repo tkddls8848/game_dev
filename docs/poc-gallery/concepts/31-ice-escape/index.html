@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>빙판 탈출</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#06131c}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#0c2233}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:#cfe6f1}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;inset:0}
+.tabs{position:absolute;left:50%;transform:translateX(-50%);top:18px;z-index:60;display:flex;background:rgba(255,255,255,.55);border-radius:20px;padding:3px;backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(20,60,90,.2)}
+.tabs button{font:800 12px/1 inherit;font-family:inherit;border:none;background:none;padding:8px 14px;border-radius:16px;color:#3b6178;cursor:pointer;letter-spacing:1px}
+.tabs button.on{background:#0c2233;color:#e9f6fc}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.78),rgba(226,242,250,.6));border:1px solid rgba(255,255,255,.9);box-shadow:0 10px 30px rgba(16,58,86,.22),inset 0 1px 0 #fff;backdrop-filter:blur(8px);border-radius:14px}
+.tl{position:absolute;left:28px;top:24px;z-index:30;padding:16px 22px;width:300px}
+.tl small{font-size:12px;letter-spacing:3px;color:#4d7890;font-weight:800}
+.tl .tm{font-size:64px;font-weight:900;letter-spacing:-3px;font-variant-numeric:tabular-nums;line-height:1.05}
+.tl .tm.red{color:#d8322a}
+.tl .row{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:#3b6178;margin-top:4px}
+.tl .bar{height:6px;border-radius:3px;background:#c7dde8;margin-top:10px;overflow:hidden}
+.tl .bar b{display:block;height:100%;background:linear-gradient(90deg,#1f7fb8,#63c2ee);border-radius:3px}
+.tr{position:absolute;right:28px;top:24px;z-index:30;padding:14px 20px;text-align:right;width:260px}
+.tr small{font-size:12px;letter-spacing:3px;color:#4d7890;font-weight:800}
+.tr b{display:block;font-size:40px;font-weight:900;letter-spacing:-1px}
+.tr span{font-size:14px;color:#3b6178;font-weight:700}
+.audio{position:absolute;left:28px;right:28px;bottom:24px;height:128px;z-index:30;display:grid;grid-template-columns:240px 1fr 300px;gap:18px;padding:16px 22px;align-items:center}
+.audio h4{font-size:12px;letter-spacing:3px;color:#4d7890;margin-bottom:6px}
+.audio .big{font-size:30px;font-weight:900;letter-spacing:-1px}
+.audio .big em{font-style:normal;color:#d8322a}
+.audio canvas{width:100%;height:92px;border-radius:8px;background:linear-gradient(#0c2233,#123149)}
+.keys{font-size:14px;font-weight:700;color:#3b6178;line-height:1.9}
+.keys kbd{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;margin-right:6px;border-radius:5px;background:#0c2233;color:#e9f6fc;font:800 12px/1.5 inherit;font-family:inherit;box-shadow:0 2px 0 #3b6178}
+.dirlab{position:absolute;z-index:25;transform:translate(-50%,-50%);font-weight:900;font-size:18px;padding:4px 10px;border-radius:12px;background:rgba(255,255,255,.8);box-shadow:0 3px 10px rgba(12,34,51,.2);cursor:pointer;transition:transform .12s;white-space:nowrap}
+.dirlab:hover{transform:translate(-50%,-50%) scale(1.1)}
+.dirlab small{display:block;font-size:10px;letter-spacing:1px;font-weight:800;opacity:.7;text-align:center}
+.s0{color:#1f7fb8}.s1{color:#c9820a}.s2{color:#d8322a}
+.flash{position:absolute;inset:0;z-index:50;pointer-events:none;background:#fff;opacity:0;transition:opacity .3s}
+/* B */
+#b #sB{animation:quake .09s infinite}
+@keyframes quake{0%{transform:translate(0,0)}33%{transform:translate(3px,-2px)}66%{transform:translate(-3px,2px)}}
+.stop{position:absolute;left:800px;top:250px;transform:translate(-50%,-50%);z-index:35;text-align:center;pointer-events:none}
+.stop b{display:block;font-size:120px;font-weight:900;letter-spacing:-6px;color:#fff;-webkit-text-stroke:4px #d8322a;text-shadow:0 8px 0 #d8322a,0 14px 30px rgba(216,50,42,.5);animation:pump .5s ease-in-out infinite}
+@keyframes pump{50%{transform:scale(1.06)}}
+.stop span{display:inline-block;margin-top:14px;background:#d8322a;color:#fff;font-weight:900;font-size:20px;padding:8px 18px;border-radius:20px;letter-spacing:1px}
+.redv{position:absolute;inset:0;z-index:20;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 45%,rgba(200,20,10,.35));animation:rp .5s ease-in-out infinite}
+@keyframes rp{50%{opacity:.5}}
+</style>
+</head>
+<body>
+<div id="stage">
+<nav class="tabs"><button data-s="a">1 · 듣고 걷기</button><button data-s="b">2 · 멈춰!</button></nav>
+
+<section class="screen" id="a">
+ <svg class="scene" id="sA" viewBox="0 0 1600 1000"></svg>
+ <div class="tl glass"><small>호수 3 · 해 지기 전까지</small><div class="tm">01:42</div><div class="row"><span>체온</span><span>68%</span></div><div class="bar"><b style="width:68%"></b></div></div>
+ <div class="tr glass"><small>기슭까지</small><b>146 m</b><span>걸음 23 · 멈춤 9</span></div>
+ <div class="audio glass">
+  <div><h4>균열음 · 지금</h4><div class="big" id="aBig">북동 <em>쩍</em></div><div class="keys" style="margin-top:4px">발밑: 삐걱 약함</div></div>
+  <canvas id="wA" width="920" height="92"></canvas>
+  <div class="keys"><kbd>Space</kbd>멈춰서 듣기<br><kbd>WASD</kbd>한 걸음 · 방향 칸 클릭<br><kbd>Shift</kbd>엎드려 무게 분산</div>
+ </div>
+ <div id="labs"></div>
+ <div class="flash" id="fl"></div>
+</section>
+
+<section class="screen" id="b">
+ <svg class="scene" id="sB" viewBox="0 0 1600 1000"></svg>
+ <div class="redv"></div>
+ <div class="tl glass"><small>호수 3 · 해 지기 전까지</small><div class="tm red">00:18</div><div class="row"><span>체온</span><span style="color:#d8322a">41%</span></div><div class="bar"><b style="width:41%;background:linear-gradient(90deg,#d8322a,#f07a4a)"></b></div></div>
+ <div class="tr glass"><small>기슭까지</small><b>12 m</b><span>걸음 61 · 멈춤 22</span></div>
+ <div class="stop"><b>멈춰!</b><span>발밑이 갈라진다 · 0.8초 안에 Space</span></div>
+ <div class="audio glass">
+  <div><h4 style="color:#d8322a">균열음 · 발밑</h4><div class="big"><em>콰직— 콰직</em></div><div class="keys" style="margin-top:4px;color:#d8322a">한 걸음 더 가면 빠진다</div></div>
+  <canvas id="wB" width="920" height="92"></canvas>
+  <div class="keys"><kbd>Space</kbd>지금 멈추기<br><kbd>Shift</kbd>엎드리기 (1회 남음)<br><kbd>A</kbd>뒤로 한 걸음</div>
+ </div>
+</section>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var k=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+addEventListener('resize',fit);fit();
+var NS='http://www.w3.org/2000/svg';
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+var AC=null;function ac(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){AC=null}return AC;}
+function crack(lv){var c=ac();if(!c)return;var t=c.currentTime,n=[1,2,4][lv]||1;
+ for(var k=0;k<n;k++){var len=.05+lv*.08,b=c.createBuffer(1,c.sampleRate*len,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3+lv);
+  var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=lv===0?2400:(lv===1?900:500);f.Q.value=lv===0?8:2;var g=c.createGain();g.gain.value=[.25,.5,.9][lv];s.connect(f);f.connect(g);g.connect(c.destination);s.start(t+k*(.06+rnd()*.08));}
+ // ice 'pew' ring
+ var o=c.createOscillator(),og=c.createGain();o.type='sine';o.frequency.setValueAtTime(lv===2?300:1800,t);o.frequency.exponentialRampToValueAtTime(lv===2?80:600,t+.4);og.gain.setValueAtTime(.06,t);og.gain.exponentialRampToValueAtTime(.001,t+.5);o.connect(og);og.connect(c.destination);o.start(t);o.stop(t+.55);}
+
+function lake(svg,mode){
+ var B=mode==='b';seed=B?19:7;
+ var d=el('defs',{},svg);
+ var f=el('filter',{id:'ice'+mode,x:0,y:0,width:'100%',height:'100%'},d);
+ el('feTurbulence',{type:'fractalNoise',baseFrequency:'.004 .012',numOctaves:4,seed:3,result:'n'},f);
+ el('feColorMatrix',{in:'n',type:'matrix',values:'0 0 0 0 .78  0 0 0 0 .89  0 0 0 0 .95  0 0 -1.3 0 1.05'},f);
+ var f2=el('filter',{id:'deep'+mode},d);el('feGaussianBlur',{stdDeviation:28},f2);
+ var f3=el('filter',{id:'soft'+mode},d);el('feGaussianBlur',{stdDeviation:3},f3);
+ var fr=el('filter',{id:'frost'+mode},d);el('feTurbulence',{type:'fractalNoise',baseFrequency:'.9',numOctaves:2,seed:5},fr);el('feColorMatrix',{type:'matrix',values:'0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 -.18'},fr);
+ var rg=el('radialGradient',{id:'base'+mode,cx:.45,cy:.5,r:.8},d);el('stop',{offset:0,'stop-color':'#e3f2f8'},rg);el('stop',{offset:.7,'stop-color':'#b6d6e5'},rg);el('stop',{offset:1,'stop-color':'#8fb9cf'},rg);
+ el('rect',{width:1600,height:1000,fill:'url(#base'+mode+')'},svg);
+ var wg0=el('radialGradient',{id:'water'+mode,cx:.4,cy:.5,r:.7},d);el('stop',{offset:0,'stop-color':'#041a2a'},wg0);el('stop',{offset:.7,'stop-color':'#0b3a5a'},wg0);el('stop',{offset:1,'stop-color':'#3f86ad'},wg0);
+ // dark water visible through thin ice
+ var deep=el('g',{filter:'url(#deep'+mode+')',opacity:B?.9:.55},svg);
+ [[520,330,150,80],[980,640,190,90],[1180,300,120,70],[300,720,160,70],[760,180,130,60],[B?800:640,B?500:520,B?150:60,B?120:40]].forEach(function(e){el('ellipse',{cx:e[0],cy:e[1],rx:e[2],ry:e[3],fill:'#0e3a57'},deep);});
+ el('rect',{width:1600,height:1000,filter:'url(#ice'+mode+')',opacity:.75},svg);
+ // bubbles trapped
+ for(var i=0;i<70;i++)el('circle',{cx:rnd()*1500,cy:rnd()*1000,r:1+rnd()*3.5,fill:'none',stroke:'rgba(255,255,255,.8)','stroke-width':1},svg);
+ // old cracks (random map)
+ var cg=el('g',{stroke:'#ffffff','stroke-width':1.6,fill:'none',opacity:.85},svg);
+ var cg2=el('g',{stroke:'#4d7f9c','stroke-width':1.1,fill:'none',opacity:.6},svg);
+ for(var c=0;c<26;c++){var x=rnd()*1400,y=rnd()*1000,p='M'+x+' '+y,a=rnd()*6.28;for(var s=0;s<5+rnd()*6;s++){a+=(rnd()-.5)*1.1;x+=Math.cos(a)*(20+rnd()*40);y+=Math.sin(a)*(20+rnd()*40);p+=' L'+x.toFixed(1)+' '+y.toFixed(1);}el('path',{d:p},cg);el('path',{d:p,transform:'translate(1.5,1.5)'},cg2);}
+ // snow drifts
+ var sd=el('g',{opacity:.8},svg);
+ for(var k=0;k<14;k++){var sx=rnd()*1400,sy=rnd()*1000;el('path',{d:'M'+sx+' '+sy+' q'+(60+rnd()*80)+' '+(-10-rnd()*10)+' '+(160+rnd()*120)+' 4 q-80 10 -'+(160+rnd()*120)+' -4Z',fill:'#f7fcff',filter:'url(#soft'+mode+')'},sd);}
+ // shore right
+ var sh=el('path',{d:'M1600 0 L1420 0 C1380 120 1450 220 1400 330 C1350 460 1440 560 1420 680 C1400 800 1460 900 1440 1000 L1600 1000Z',fill:'#f4f9fb'},svg);
+ el('path',{d:'M1420 0 C1380 120 1450 220 1400 330 C1350 460 1440 560 1420 680 C1400 800 1460 900 1440 1000',stroke:'#9cc2d4','stroke-width':6,fill:'none',opacity:.6},svg);
+ for(var t=0;t<16;t++){var tx=1470+rnd()*140,ty=rnd()*1000,r=24+rnd()*22;el('circle',{cx:tx+8,cy:ty+10,r:r,fill:'rgba(40,80,100,.25)'},svg);el('circle',{cx:tx,cy:ty,r:r,fill:'#244d4a'},svg);el('circle',{cx:tx-r*.3,cy:ty-r*.3,r:r*.55,fill:'#e9f5f7',opacity:.9},svg);}
+ // shore flag
+ el('line',{x1:1440,y1:500,x2:1440,y2:440,stroke:'#0c2233','stroke-width':4},svg);el('path',{d:'M1440 440 L1476 452 L1440 464Z',fill:'#e8452e'},svg);
+ // footprint path
+ var fp=el('g',{fill:'rgba(70,120,150,.45)'},svg);
+ var path=B?[[140,560],[260,520],[380,540],[520,480],[660,460],[800,470]]:[[120,700],[220,660],[330,640],[430,580],[520,560],[600,520]];
+ for(var q=0;q<path.length-1;q++){var a0=path[q],a1=path[q+1];for(var u=0;u<4;u++){var tt=u/4,xx=a0[0]+(a1[0]-a0[0])*tt,yy=a0[1]+(a1[1]-a0[1])*tt,ang=Math.atan2(a1[1]-a0[1],a1[0]-a0[0]),off=(u%2?7:-7);el('ellipse',{cx:xx-Math.sin(ang)*off,cy:yy+Math.cos(ang)*off,rx:7,ry:4,transform:'rotate('+(ang*57.3)+' '+(xx-Math.sin(ang)*off)+' '+(yy+Math.cos(ang)*off)+')'},fp);}}
+ // stop markers (where player paused) small rings
+ path.forEach(function(p,i){if(i%2===0)el('circle',{cx:p[0],cy:p[1],r:10,fill:'none',stroke:'rgba(31,127,184,.5)','stroke-width':2,'stroke-dasharray':'3 3'},svg)});
+ el('rect',{width:1600,height:1000,filter:'url(#frost'+mode+')',opacity:.5},svg);
+ return {p:path[path.length-1]};
+}
+
+function player(svg,x,y,ang){
+ var g=el('g',{transform:'translate('+x+','+y+') rotate('+ang+')'},svg);
+ el('ellipse',{cx:6,cy:10,rx:34,ry:24,fill:'rgba(14,50,70,.28)'},g);
+ el('ellipse',{cx:0,cy:0,rx:22,ry:30,fill:'#28506b'},g);
+ el('ellipse',{cx:-4,cy:-4,rx:14,ry:22,fill:'#3a6e8e'},g);
+ el('path',{d:'M8 -18 C20 -6 20 6 8 18',stroke:'#e8452e','stroke-width':8,fill:'none','stroke-linecap':'round'},g);
+ el('circle',{cx:14,cy:0,r:13,fill:'#f2ece0'},g);el('circle',{cx:14,cy:0,r:8,fill:'#6a4a36'},g);
+ el('path',{d:'M-6 -30 L6 -44 M-6 30 L6 44',stroke:'#1a3a50','stroke-width':7,'stroke-linecap':'round'},g);
+ return g;
+}
+
+// ---- A
+var sA=document.getElementById('sA');var LA=lake(sA,'a');var px=LA.p[0],py=LA.p[1];
+// sound rings
+var rings=el('g',{},sA);
+for(var r=0;r<3;r++){var c=el('circle',{cx:px,cy:py,r:40,fill:'none',stroke:'#1f7fb8','stroke-width':2.5,opacity:0},rings);
+ el('animate',{attributeName:'r',from:40,to:230,dur:'2.4s',begin:(r*.8)+'s',repeatCount:'indefinite'},c);
+ el('animate',{attributeName:'opacity',values:'.8;0',dur:'2.4s',begin:(r*.8)+'s',repeatCount:'indefinite'},c);}
+// direction wedges (8) with danger level
+var lv=[0,2,1,1,0,1,0,0];// E, NE, N, NW, W, SW, S, SE  (angles 0,-45,-90...)
+var dirs=['동','북동','북','북서','서','남서','남','남동'],words=['고요','삐걱','쩍'];
+var wg=el('g',{},sA),wedges=[];
+lv.forEach(function(l,i){var a0=(-i*45-22)*Math.PI/180,a1=(-i*45+22)*Math.PI/180,R0=58,R1=150;
+ var p='M'+(px+Math.cos(a0)*R0)+' '+(py+Math.sin(a0)*R0)+' L'+(px+Math.cos(a0)*R1)+' '+(py+Math.sin(a0)*R1)+' A'+R1+' '+R1+' 0 0 1 '+(px+Math.cos(a1)*R1)+' '+(py+Math.sin(a1)*R1)+' L'+(px+Math.cos(a1)*R0)+' '+(py+Math.sin(a1)*R0)+' A'+R0+' '+R0+' 0 0 0 '+(px+Math.cos(a0)*R0)+' '+(py+Math.sin(a0)*R0)+'Z';
+ var col=['rgba(31,127,184,','rgba(230,150,20,','rgba(216,50,42,'][l];
+ var w=el('path',{d:p,fill:col+(l?'.28)':'.12)'),stroke:col+'.9)','stroke-width':l===2?3:1.5,style:'cursor:pointer;transition:fill .2s'},wg);
+ w.addEventListener('click',function(){hear(i)});wedges.push(w);});
+// hidden crack ahead NE revealed faintly
+el('path',{d:'M'+(px+90)+' '+(py-60)+' l30 -22 l18 8 l26 -30 l20 4 l24 -26',stroke:'#d8322a','stroke-width':2,fill:'none','stroke-dasharray':'4 5',opacity:.8},sA);
+player(sA,px,py,-20);
+var labs=document.getElementById('labs');
+lv.forEach(function(l,i){var a=(-i*45)*Math.PI/180,R=190;var d=document.createElement('div');d.className='dirlab s'+l;d.style.left=(px+Math.cos(a)*R)+'px';d.style.top=(py+Math.sin(a)*R)+'px';d.innerHTML=words[l]+'<small>'+dirs[i]+'</small>';d.onclick=function(){hear(i)};labs.appendChild(d);});
+function hear(i){var l=lv[i];crack(l);document.getElementById('aBig').innerHTML=dirs[i]+' <em style="color:'+['#1f7fb8','#c9820a','#d8322a'][l]+'">'+words[l]+'</em>';spike=l+1;wedges.forEach(function(w,j){w.setAttribute('stroke-width',j===i?5:(lv[j]===2?3:1.5))});}
+
+// ---- B
+var sB=document.getElementById('sB');var LB=lake(sB,'b');var bx=LB.p[0],by=LB.p[1];
+// big radial crack + water
+var wat=el('path',{d:'M'+(bx+26)+' '+(by-14)+' l60 -46 l50 18 l84 -22 l30 30 l-50 52 l-90 28 l-50 34 l-46 -30 l14 -40Z',fill:'url(#waterb)',stroke:'#e9f6fc','stroke-width':4,'stroke-linejoin':'bevel'},sB);
+for(var wr=0;wr<3;wr++){var ri=el('ellipse',{cx:bx+120,cy:by-10,rx:20,ry:10,fill:'none',stroke:'rgba(170,225,255,.6)','stroke-width':1.5},sB);el('animate',{attributeName:'rx',from:10,to:70,dur:'1.8s',begin:(wr*.6)+'s',repeatCount:'indefinite'},ri);el('animate',{attributeName:'ry',from:5,to:30,dur:'1.8s',begin:(wr*.6)+'s',repeatCount:'indefinite'},ri);el('animate',{attributeName:'opacity',values:'.8;0',dur:'1.8s',begin:(wr*.6)+'s',repeatCount:'indefinite'},ri);}
+el('path',{d:'M'+(bx+60)+' '+(by-20)+' l30 -6 l20 12',stroke:'rgba(160,220,255,.6)','stroke-width':2,fill:'none'},sB);
+var rc=el('g',{stroke:'#fff','stroke-width':3,fill:'none','stroke-linecap':'round'},sB);
+var rc2=el('g',{stroke:'#0c2233','stroke-width':2,fill:'none',opacity:.6},sB);
+seed=33;for(var k=0;k<14;k++){var a=k/14*6.28+rnd()*.3,x=bx,y=by,p='M'+x+' '+y,L=6+rnd()*6;for(var s=0;s<L;s++){a+=(rnd()-.5)*.6;x+=Math.cos(a)*(18+rnd()*26);y+=Math.sin(a)*(18+rnd()*26);p+=' L'+x.toFixed(1)+' '+y.toFixed(1);}
+ var pp=el('path',{d:p,'stroke-dasharray':1200,'stroke-dashoffset':1200},rc);el('animate',{attributeName:'stroke-dashoffset',from:1200,to:0,dur:(1+rnd())+'s',fill:'freeze',repeatCount:'indefinite'},pp);el('path',{d:p,transform:'translate(2,2)'},rc2);}
+// concentric fracture rings
+[70,120].forEach(function(r){el('circle',{cx:bx,cy:by,r:r,fill:'none',stroke:'#fff','stroke-width':2,'stroke-dasharray':'20 14 6 18',opacity:.8},sB)});
+// spray/shards
+for(var z=0;z<22;z++){var a2=rnd()*6.28,d2=40+rnd()*110;el('path',{d:'M0 0 l'+(4+rnd()*8)+' '+(-3-rnd()*6)+' l'+(3+rnd()*5)+' '+(8+rnd()*4)+'Z',transform:'translate('+(bx+Math.cos(a2)*d2)+','+(by+Math.sin(a2)*d2)+') rotate('+(a2*57)+')',fill:'#fff',stroke:'#7fb2cc','stroke-width':1},sB);}
+// reaction ring
+var rr=el('circle',{cx:bx,cy:by,r:64,fill:'none',stroke:'#d8322a','stroke-width':7},sB);
+el('animate',{attributeName:'r',from:130,to:40,dur:'.8s',repeatCount:'indefinite'},rr);
+player(sB,bx,by,10);
+
+// waveform canvases
+var spike=0;
+function wave(id,red){var cv=document.getElementById(id);if(!cv||!cv.getContext)return;var g=cv.getContext('2d'),W=cv.width,H=cv.height,t=0,buf=[];for(var i=0;i<180;i++)buf.push((Math.random()-.5)*(red?(Math.random()<.12?1.6:.35):(Math.random()<.03?.8:.1)));
+ function step(){t++;var base=red?.35:.08,v=(Math.random()-.5)*base;if(red&&Math.random()<.12)v=(Math.random()-.5)*1.8;if(!red&&Math.random()<.015)v=(Math.random()-.5)*.9;if(spike){v=(Math.random()-.5)*(.5*spike);if(Math.random()<.08)spike=0;}
+  buf.push(v);buf.shift();g.clearRect(0,0,W,H);
+  g.strokeStyle='rgba(120,180,210,.15)';g.lineWidth=1;for(var y=0;y<H;y+=23){g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke();}
+  var bw=W/buf.length;for(var i=0;i<buf.length;i++){var a=Math.min(1,Math.abs(buf[i]));var h=Math.max(2,a*H*.9);g.fillStyle=a>.5?'#ff5a44':(a>.2?'#ffb13b':'#7fd3ff');g.fillRect(i*bw,H/2-h/2,bw-1.5,h);}
+  g.fillStyle='rgba(233,246,252,.6)';g.font='bold 12px sans-serif';g.fillText(red?'발밑 · 0.3m':'8방향 청취',10,16);
+  requestAnimationFrame(step);}
+ step();}
+wave('wA',false);wave('wB',true);
+
+var tabs=document.querySelectorAll('.tabs button');
+function show(id){if(id!=='a'&&id!=='b')id='a';document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});tabs.forEach(function(b){b.classList.toggle('on',b.dataset.s===id)});if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}
+tabs.forEach(function(b){b.onclick=function(){crack(b.dataset.s==='b'?2:0);show(b.dataset.s)}});
+addEventListener('hashchange',function(){show(location.hash.slice(1))});
+var keyDir={d:0,e:1,w:2,q:3,a:4,z:5,s:6,c:7};
+addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');else if(e.code==='Space'){e.preventDefault();var f=document.getElementById('fl');f.style.opacity=.35;setTimeout(function(){f.style.opacity=0},150);crack(0);}else if(keyDir[e.key]!==undefined)hear(keyDir[e.key]);});
+show(location.hash.slice(1)||'a');
+})();
+</script>
+</body>
+</html>

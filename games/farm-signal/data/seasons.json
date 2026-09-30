@@ -1,0 +1,69 @@
+{
+  "_": "계절 길이 · 날씨 분포(씨드 고정) · 계절 전환.",
+  "_노출": "weathers[].exposurePercent 가 이 PoC의 핵이다 — 날씨가 '남이 얼마나 보는가'를 바꾼다. 안개 40 / 맑음 115. 밭을 숨기는 날씨가 실제로 있다.",
+  "daysPerSeason": 28,
+  "seasons": [
+    {
+      "id": "spring", "nameKo": "봄", "nameEn": "Spring", "order": 0,
+      "transitionSoilLoss": 0,
+      "roadTrafficPercent": 100,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 40 },
+        { "weatherId": "rain", "weight": 30 },
+        { "weatherId": "fog", "weight": 14 },
+        { "weatherId": "storm", "weight": 8 },
+        { "weatherId": "drought", "weight": 4 },
+        { "weatherId": "frost", "weight": 4 }
+      ]
+    },
+    {
+      "id": "summer", "nameKo": "여름", "nameEn": "Summer", "order": 1,
+      "transitionSoilLoss": 1,
+      "roadTrafficPercent": 130,
+      "_장날": "여름에 길이 붐빈다 — 같은 작물을 심어도 여름에 더 많이 본다.",
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 46 },
+        { "weatherId": "rain", "weight": 18 },
+        { "weatherId": "drought", "weight": 18 },
+        { "weatherId": "storm", "weight": 14 },
+        { "weatherId": "fog", "weight": 4 },
+        { "weatherId": "frost", "weight": 0 }
+      ]
+    },
+    {
+      "id": "autumn", "nameKo": "가을", "nameEn": "Autumn", "order": 2,
+      "transitionSoilLoss": 1,
+      "roadTrafficPercent": 115,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 34 },
+        { "weatherId": "fog", "weight": 24 },
+        { "weatherId": "rain", "weight": 22 },
+        { "weatherId": "storm", "weight": 10 },
+        { "weatherId": "drought", "weight": 6 },
+        { "weatherId": "frost", "weight": 4 }
+      ]
+    },
+    {
+      "id": "winter", "nameKo": "겨울", "nameEn": "Winter", "order": 3,
+      "transitionSoilLoss": 0,
+      "roadTrafficPercent": 55,
+      "_겨울": "길이 비어 아무도 지나지 않는다. 겨울에 심은 것은 잘 안 보인다 — 겨울호밀이 그래서 값을 한다.",
+      "weatherWeights": [
+        { "weatherId": "frost", "weight": 40 },
+        { "weatherId": "fog", "weight": 24 },
+        { "weatherId": "clear", "weight": 22 },
+        { "weatherId": "storm", "weight": 8 },
+        { "weatherId": "rain", "weight": 6 },
+        { "weatherId": "drought", "weight": 0 }
+      ]
+    }
+  ],
+  "weathers": [
+    { "id": "clear",   "nameKo": "맑음",   "nameEn": "Clear",    "waterDelta": 0,  "growthPercent": 110, "exposurePercent": 115 },
+    { "id": "rain",    "nameKo": "비",     "nameEn": "Rain",     "waterDelta": 8,  "growthPercent": 95,  "exposurePercent": 75 },
+    { "id": "storm",   "nameKo": "폭풍",   "nameEn": "Storm",    "waterDelta": 4,  "growthPercent": 40,  "exposurePercent": 55 },
+    { "id": "drought", "nameKo": "가뭄",   "nameEn": "Drought",  "waterDelta": -8, "growthPercent": 70,  "exposurePercent": 120 },
+    { "id": "frost",   "nameKo": "서리",   "nameEn": "Frost",    "waterDelta": -2, "growthPercent": 35,  "exposurePercent": 100 },
+    { "id": "fog",     "nameKo": "안개",   "nameEn": "Fog",      "waterDelta": 2,  "growthPercent": 80,  "exposurePercent": 40 }
+  ]
+}

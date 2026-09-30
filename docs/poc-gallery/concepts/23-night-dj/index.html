@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>야간 방송 진행자</title>
+<style>
+:root{
+  --amber:#ffb347; --amber2:#ff8a2a; --tung:#ffcf8a; --wood:#5a3620; --wood2:#3a2012;
+  --alu:#b9b4aa; --ink:#221710; --red:#ff3b2f; --mag:#ff4f9a; --cyan:#62e6ff; --led:#ffae3d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:#f3e3c8}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s}
+.screen.on{opacity:1;pointer-events:auto}
+.mono{font-family:"DejaVu Sans Mono","Consolas",monospace}
+
+/* room */
+.room{position:absolute;inset:0;background:
+  radial-gradient(60% 55% at 50% 30%, rgba(255,170,80,.22), transparent 70%),
+  repeating-linear-gradient(90deg, #1d130d 0 58px, #22160f 58px 60px),
+  #1a110b}
+.foam{position:absolute;left:0;right:0;top:0;height:420px;opacity:.55;background:
+  radial-gradient(circle at 30px 30px,#2c1d14 18px,transparent 19px) 0 0/60px 60px,
+  radial-gradient(circle at 60px 60px,#241810 16px,transparent 17px) 0 0/60px 60px}
+.window{position:absolute;left:70px;top:120px;width:300px;height:250px;border:10px solid #2b1c12;border-radius:4px;overflow:hidden;
+  background:linear-gradient(#0a1422,#13233a 70%,#1c2b3c);box-shadow:inset 0 0 40px rgba(0,0,0,.8),0 10px 30px rgba(0,0,0,.6)}
+.window .rain{position:absolute;inset:-100px 0 0 0;background:repeating-linear-gradient(100deg,transparent 0 12px,rgba(170,200,255,.18) 12px 13px);animation:rain .6s linear infinite}
+@keyframes rain{to{transform:translate(-18px,100px)}}
+.window .lamp{position:absolute;left:190px;top:150px;width:10px;height:10px;border-radius:50%;background:#ffd28a;box-shadow:0 0 30px 12px rgba(255,190,110,.4)}
+.window .bar{position:absolute;left:0;right:0;top:115px;height:8px;background:#2b1c12}
+.window .sil{position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(transparent,#070b12 40%);clip-path:polygon(0 60%,20% 40%,20% 20%,34% 20%,34% 45%,55% 45%,62% 10%,70% 45%,100% 30%,100% 100%,0 100%)}
+.clockW{position:absolute;left:70px;top:390px;font-size:14px;letter-spacing:4px;color:#b08a60}
+.pennant{position:absolute;left:430px;top:160px;width:280px;height:70px;background:linear-gradient(90deg,#6d1f18,#8a2a1c);clip-path:polygon(0 0,100% 50%,0 100%);color:#f6d7a6;font-size:17px;padding:24px 0 0 20px;letter-spacing:2px;opacity:.75}
+
+/* top bar */
+.top{position:absolute;left:0;right:0;top:0;height:92px;display:flex;align-items:center;padding:0 40px;gap:30px;
+  background:linear-gradient(#0e0906,rgba(14,9,6,.85));border-bottom:1px solid rgba(255,180,90,.18);z-index:5}
+.onair{width:170px;height:54px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;letter-spacing:6px;font-size:22px;
+  background:linear-gradient(#5a0d08,#3a0805);color:#ff9b8e;border:2px solid #7a1a10;box-shadow:inset 0 0 12px rgba(0,0,0,.6)}
+.onair.lit{background:radial-gradient(ellipse at 50% 40%,#ff6a55,#d8210f 70%);color:#fff6ef;box-shadow:0 0 30px rgba(255,60,40,.7),inset 0 0 12px rgba(255,255,255,.3);animation:hum 3s ease-in-out infinite}
+@keyframes hum{50%{box-shadow:0 0 22px rgba(255,60,40,.55),inset 0 0 12px rgba(255,255,255,.25)}}
+.prog .name{font-size:26px;font-weight:800;letter-spacing:1px;color:var(--tung)}
+.prog .sub{font-size:14px;opacity:.65;margin-top:4px;letter-spacing:2px}
+.led{margin-left:auto;display:flex;gap:26px;align-items:center}
+.ledbox{background:#0a0503;border:1px solid #3a2414;border-radius:6px;padding:8px 16px;box-shadow:inset 0 0 14px rgba(0,0,0,.9)}
+.ledbox .k{font-size:11px;letter-spacing:3px;color:#9a7a55}
+.ledbox .v{font-size:32px;color:var(--led);text-shadow:0 0 10px rgba(255,160,50,.8);letter-spacing:2px;line-height:1.1}
+.ledbox .v small{font-size:14px;color:#7fe08a;text-shadow:0 0 8px rgba(120,240,140,.6);margin-left:8px}
+.spark{width:160px;height:40px}
+
+/* desk */
+.desk{position:absolute;left:0;right:0;bottom:0;height:560px;background:
+  linear-gradient(180deg,#6b4126 0,#56331d 6%,#472916 60%,#2d180c 100%);
+  box-shadow:0 -20px 60px rgba(0,0,0,.6)}
+.desk:before{content:"";position:absolute;inset:0;opacity:.35;background:repeating-linear-gradient(178deg,transparent 0 9px,rgba(0,0,0,.25) 9px 10px,transparent 10px 23px,rgba(255,200,140,.06) 23px 24px)}
+.desk:after{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:linear-gradient(#a8754a,#6b4126)}
+.lampPool{position:absolute;left:380px;top:360px;width:900px;height:520px;background:radial-gradient(closest-side,rgba(255,200,120,.28),transparent);pointer-events:none}
+
+/* cards */
+.cards{position:absolute;left:470px;top:470px;width:700px;height:420px}
+.card{position:absolute;width:300px;height:360px;padding:26px 26px 20px;color:#2b1f16;cursor:pointer;
+  box-shadow:0 20px 34px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.4) inset;transition:transform .25s cubic-bezier(.2,.8,.3,1),box-shadow .25s}
+.card:hover{transform:translateY(-26px) rotate(0deg)!important;box-shadow:0 36px 50px rgba(0,0,0,.6);z-index:5}
+.card .from{font-size:13px;letter-spacing:2px;color:#8a6040}
+.card h3{font-size:22px;margin:10px 0 12px;line-height:1.35;font-weight:800}
+.card p{font-size:16px;line-height:1.7;font-family:"Nanum Pen Script","Gaegu","Noto Serif KR",serif}
+.card .song{position:absolute;left:26px;right:26px;bottom:64px;font-size:13px;padding:7px 10px;border-radius:3px;background:rgba(0,0,0,.07)}
+.card .tags{position:absolute;left:26px;right:26px;bottom:20px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:4px 9px;border-radius:12px;font-weight:700;letter-spacing:1px}
+.t-up{background:#2e7d3a;color:#eaffe8}.t-lol{background:#d88b1a;color:#fff}.t-risk{background:#b3261e;color:#fff}.t-cry{background:#3d5aa8;color:#fff}
+.c1{left:0;top:30px;transform:rotate(-7deg);background:linear-gradient(#fbf3df,#efe0bf)}
+.c1:before{content:"";position:absolute;right:18px;top:18px;width:58px;height:70px;background:repeating-linear-gradient(45deg,#c24a3a 0 4px,#fbf3df 4px 8px);opacity:.85;outline:3px dashed #fbf3df;outline-offset:-3px}
+.c2{left:200px;top:0;transform:rotate(1.5deg);background:linear-gradient(#fdfdfb,#ecebe6);font-family:inherit}
+.c2:after{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(0,0,0,.12) 8px 10px)}
+.c3{left:400px;top:40px;transform:rotate(8deg);background:linear-gradient(#e8f0f4,#d3e0e8)}
+.card.sel{transform:translate(0,-60px) scale(1.04) rotate(0)!important;outline:3px solid var(--amber);box-shadow:0 0 0 8px rgba(255,170,70,.18),0 40px 60px rgba(0,0,0,.6);z-index:6}
+
+/* console */
+.console{position:absolute;left:40px;top:470px;width:380px;height:400px;border-radius:10px;padding:18px;
+  background:linear-gradient(#cfc9bd,#9d978b);box-shadow:0 20px 40px rgba(0,0,0,.6),inset 0 1px 0 #fff}
+.console .vus{display:flex;gap:12px}
+.vu{flex:1;height:120px;border-radius:6px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 120%,#fff3cf,#f2d792 70%);box-shadow:inset 0 0 0 3px #3a3128,inset 0 6px 14px rgba(0,0,0,.35)}
+.vu svg{position:absolute;inset:0}
+.vu .needle{transform-origin:50% 105%;transition:transform .08s linear}
+.vu .lab{position:absolute;bottom:6px;width:100%;text-align:center;font-size:11px;color:#3a3128;letter-spacing:3px;font-weight:700}
+.faders{display:flex;justify-content:space-between;margin-top:18px;height:200px;padding:10px 6px;background:#2c2721;border-radius:6px;box-shadow:inset 0 3px 8px rgba(0,0,0,.7)}
+.fd{width:48px;position:relative;text-align:center;font-size:11px;color:#d8cfbf;letter-spacing:1px}
+.fd .slot{position:absolute;left:21px;top:6px;width:6px;height:140px;background:#0a0806;border-radius:3px}
+.fd .knob{position:absolute;left:6px;width:36px;height:22px;border-radius:3px;background:linear-gradient(#f4f1ea,#a8a397);box-shadow:0 3px 5px rgba(0,0,0,.6);cursor:ns-resize}
+.fd .knob:after{content:"";position:absolute;left:4px;right:4px;top:10px;height:2px;background:#222}
+.fd.hot .knob{background:linear-gradient(#ff8a70,#c23a24)}
+.fd span{position:absolute;bottom:0;left:0;right:0}
+.console .brand{margin-top:10px;font-size:11px;letter-spacing:4px;color:#3a3128;font-weight:800}
+
+/* right panel */
+.side{position:absolute;right:40px;top:120px;width:360px;z-index:3}
+.panel{background:rgba(14,9,6,.78);border:1px solid rgba(255,180,90,.2);border-radius:10px;padding:18px 20px;margin-bottom:16px;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.panel h5{font-size:12px;letter-spacing:5px;color:#c79a64;margin-bottom:12px}
+.goal{display:flex;justify-content:space-between;font-size:15px;padding:6px 0;border-bottom:1px dashed rgba(255,200,140,.12)}
+.goal b{color:var(--tung)}
+.goal .ok{color:#8fe39a}
+.tape{display:flex;align-items:center;gap:12px;padding:8px 0}
+.cass{width:66px;height:42px;border-radius:4px;background:linear-gradient(#e7dcc6,#c9bba0);position:relative;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.cass:before,.cass:after{content:"";position:absolute;top:14px;width:14px;height:14px;border-radius:50%;background:#2a2019;box-shadow:0 0 0 3px #7a6a55}
+.cass:before{left:12px}.cass:after{right:12px}
+.cass.spin:before,.cass.spin:after{animation:spin 1.2s linear infinite;background:conic-gradient(#2a2019 0 25%,#6a5a45 0 50%,#2a2019 0 75%,#6a5a45 0)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tape .tt{font-size:15px}.tape .tt small{display:block;font-size:12px;opacity:.6;margin-top:2px}
+.nowread{position:absolute;left:470px;top:118px;width:680px;padding:20px 26px;border-radius:10px;background:rgba(10,6,4,.72);border:1px solid rgba(255,180,90,.25);z-index:3;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.nowread .k{font-size:12px;letter-spacing:5px;color:#c79a64}
+.nowread .line{font-size:25px;line-height:1.6;margin-top:10px;color:#fff1da;min-height:80px}
+.nowread .line em{font-style:normal;color:var(--amber)}
+.nowread .cursor{display:inline-block;width:12px;height:24px;background:var(--amber);vertical-align:-4px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.nowread .foot{display:flex;gap:20px;margin-top:12px;font-size:13px;opacity:.75}
+.deckB{position:absolute;left:40px;top:540px;width:390px;height:350px;z-index:3;border-radius:12px;padding:18px 20px;
+  background:linear-gradient(#2a1a14,#160d0a);border:1px solid rgba(255,90,74,.35);box-shadow:0 20px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+.deckB h5{font-size:12px;letter-spacing:5px;color:#ff8a78;margin-bottom:12px}
+.deckB .reels{display:flex;justify-content:space-around;align-items:center;height:170px;background:#0c0706;border-radius:8px;position:relative;box-shadow:inset 0 0 20px #000}
+.deckB .reel{width:130px;height:130px;border-radius:50%;background:conic-gradient(#3a2a22 0 16%,#15100d 0 33%,#3a2a22 0 50%,#15100d 0 66%,#3a2a22 0 83%,#15100d 0);box-shadow:0 0 0 6px #6a5a48,0 0 24px rgba(255,60,60,.25);animation:spin 1.4s linear infinite;position:relative}
+.deckB .reel:after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:#c9b89a}
+.deckB .reel.s{width:92px;height:92px;animation-duration:.9s}
+.deckB .band{position:absolute;left:94px;right:84px;bottom:20px;height:4px;background:#4a2e22}
+.deckB .lab{margin-top:14px;font-size:15px;color:#f2d7c0;display:flex;justify-content:space-between}
+.deckB .lab b{color:#ff5a4a}
+.deckB .prog{margin-top:10px;height:8px;border-radius:4px;background:#2a1712;overflow:hidden}
+.deckB .prog i{display:block;height:100%;width:83%;background:linear-gradient(90deg,#b8452f,#ff5a4a);box-shadow:0 0 10px #ff5a4a;animation:pulseW 1s ease-in-out infinite alternate}
+@keyframes pulseW{to{filter:brightness(1.5)}}
+.deckB small{display:block;margin-top:8px;font-size:12.5px;color:#c79a64;letter-spacing:1px}
+.hintBar{position:absolute;left:470px;bottom:22px;font-size:14px;letter-spacing:2px;color:#e8c89a;opacity:.8;z-index:4}
+.hintBar kbd{font-family:inherit;border:1px solid rgba(255,210,150,.5);padding:2px 8px;border-radius:4px;margin:0 3px}
+.float{position:absolute;z-index:9;font-size:26px;font-weight:900;color:#8fe39a;text-shadow:0 0 12px rgba(100,255,140,.6);pointer-events:none;animation:up 1.4s ease-out forwards}
+@keyframes up{to{transform:translateY(-90px);opacity:0}}
+
+/* ---- B : 03:33 surge ---- */
+#B .room{background:
+  radial-gradient(70% 60% at 50% 35%, rgba(255,40,60,.28), transparent 70%),
+  repeating-linear-gradient(90deg, #1a0a0e 0 58px, #200c11 58px 60px),#12060a}
+#B .flash{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(255,40,40,.35),transparent 60%);animation:alarm 1.1s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes alarm{50%{opacity:.25}}
+#B .desk{background:linear-gradient(180deg,#4a2a22 0,#3a1f18 6%,#2a140f 60%,#16090a 100%)}
+.graph{position:absolute;left:40px;top:120px;width:560px;height:300px;z-index:3}
+.graph svg{width:100%;height:230px}
+.big{font-size:74px;font-weight:900;letter-spacing:-1px;color:#fff;text-shadow:0 0 30px rgba(255,80,120,.7);line-height:1}
+.big small{font-size:22px;color:#8fe39a;margin-left:12px;text-shadow:none}
+.sms{position:absolute;right:40px;top:136px;width:430px;height:620px;overflow:hidden;z-index:3;
+  -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
+.sms .feed{position:absolute;left:0;right:0;top:0;animation:feed 14s linear infinite}
+@keyframes feed{to{transform:translateY(-50%)}}
+.bub{margin:10px 0;padding:12px 16px;border-radius:16px 16px 16px 4px;background:rgba(30,12,20,.85);border:1px solid rgba(255,90,150,.35);font-size:15px;line-height:1.5;box-shadow:0 0 18px rgba(255,60,120,.15)}
+.bub .n{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:3px}
+.bub.hot{border-color:var(--cyan);box-shadow:0 0 20px rgba(98,230,255,.3)}
+.smsHead{position:absolute;right:40px;top:110px;width:430px;z-index:4;display:flex;justify-content:space-between;font-size:13px;letter-spacing:3px;color:#ff9ec4}
+.smsHead b{color:#fff;font-size:18px}
+.caller{position:absolute;left:640px;top:120px;width:480px;padding:22px 26px;border-radius:12px;z-index:3;
+  background:linear-gradient(135deg,rgba(40,10,20,.9),rgba(20,6,12,.9));border:1px solid rgba(255,80,120,.45);box-shadow:0 0 40px rgba(255,40,90,.25)}
+.caller .k{font-size:12px;letter-spacing:5px;color:#ff8fb6}
+.caller .who{font-size:22px;font-weight:800;margin:8px 0 10px}
+.caller .q{font-size:22px;line-height:1.6;color:#fff}
+.caller .wave{height:44px;margin-top:12px;display:flex;align-items:center;gap:3px}
+.caller .wave i{flex:1;background:linear-gradient(var(--mag),var(--cyan));border-radius:2px;animation:wv .5s ease-in-out infinite alternate}
+@keyframes wv{from{height:10%}to{height:100%}}
+.choices{position:absolute;left:470px;top:490px;width:640px;z-index:4}
+.choices .k{font-size:13px;letter-spacing:5px;color:#ffcf8a;margin-bottom:12px}
+.ch{display:flex;align-items:center;gap:18px;padding:18px 22px;margin-bottom:12px;border-radius:10px;cursor:pointer;
+  background:linear-gradient(90deg,rgba(255,240,220,.96),rgba(240,222,196,.96));color:#2b1f16;box-shadow:0 12px 24px rgba(0,0,0,.5);transition:transform .15s,box-shadow .15s}
+.ch:hover{transform:translateX(12px);box-shadow:0 0 0 3px var(--amber),0 16px 30px rgba(0,0,0,.6)}
+.ch:active{transform:translateX(12px) scale(.98)}
+.ch .num{width:38px;height:38px;border-radius:50%;background:#2b1f16;color:#ffcf8a;display:flex;align-items:center;justify-content:center;font-weight:900}
+.ch .txt{flex:1;font-size:19px;line-height:1.45;font-weight:600}
+.ch .fx{text-align:right;font-size:13px;font-weight:800;line-height:1.6;white-space:nowrap}
+.up{color:#1f7a2e}.dn{color:#b3261e}
+.warn{position:absolute;left:40px;top:440px;width:390px;z-index:3;padding:14px 18px;border-radius:8px;background:rgba(80,10,10,.8);border:1px solid #ff5a4a;font-size:14px;line-height:1.6}
+.warn b{color:#ffb0a6;letter-spacing:2px}
+.warn .pips{display:flex;gap:6px;margin-top:6px}.warn .pips i{width:40px;height:8px;border-radius:2px;background:#ff5a4a}.warn .pips i.off{background:rgba(255,90,74,.2)}
+.timer{position:absolute;left:470px;top:452px;width:640px;height:6px;border-radius:3px;background:rgba(255,255,255,.1);z-index:4;overflow:hidden}
+.timer i{display:block;height:100%;background:linear-gradient(90deg,#ffcf8a,#ff3b2f);animation:drain 9s linear infinite}
+@keyframes drain{from{width:100%}to{width:0}}
+
+.grain{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.13;mix-blend-mode:overlay}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:49;background:radial-gradient(80% 75% at 50% 45%,transparent 60%,rgba(0,0,0,.7))}
+.tabs{position:absolute;left:18px;bottom:14px;z-index:100;display:flex;gap:4px}
+.tabs button{font:700 12px/1 "DejaVu Sans Mono",monospace;padding:7px 10px;border:1px solid #6b4a2a;background:#140c07;color:#ffae3d;border-radius:3px;cursor:pointer;letter-spacing:1px}
+.tabs button.act{background:#ffae3d;color:#140c07}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ A : choosing the story ============ -->
+<section id="A" class="screen">
+  <div class="room"><div class="foam"></div></div>
+  <div class="window"><div class="rain"></div><div class="bar"></div><div class="lamp"></div><div class="sil"></div></div>
+  <div class="clockW">구 한빛중학교 · 3층 방송실</div>
+
+  <div class="top">
+    <div class="onair lit" id="lampA">ON AIR</div>
+    <div class="prog"><div class="name">새벽 두 시, 교실 라디오</div><div class="sub">DJ 은하 · 셋째 밤 · 88.7MHz 해적 송출</div></div>
+    <div class="led">
+      <div class="ledbox"><div class="k">현재 시각</div><div class="v mono" id="clk">02:14:37</div></div>
+      <div class="ledbox"><div class="k">동시 청취자</div><div class="v mono"><span id="lis">1,284</span><small id="dl">▲ 36</small></div></div>
+      <svg class="spark" viewBox="0 0 160 40"><polyline fill="none" stroke="#ffae3d" stroke-width="2" points="0,34 16,32 32,33 48,28 64,29 80,24 96,25 112,19 128,20 144,14 160,11"/><circle cx="160" cy="11" r="3" fill="#ffae3d"/></svg>
+    </div>
+  </div>
+
+  <div class="nowread">
+    <div class="k">지금 읽는 중 · 사연 3 / 6</div>
+    <div class="line" id="nr">“…그래서 저는 오늘도 편의점 야간 카운터에서 이 방송을 켭니다. <em>은하 님 목소리 들리면 새벽이 조금 짧아져요.</em>”<span class="cursor"></span></div>
+    <div class="foot"><span>보낸이 · 삼각김밥장인</span><span>신청곡 · 015B 「텅 빈 거리에서」</span><span>반응 ▲ 212</span></div>
+  </div>
+
+  <div class="desk"></div>
+  <div class="lampPool"></div>
+
+  <div class="console">
+    <div class="vus">
+      <div class="vu"><svg viewBox="0 0 160 120"><path d="M20 80 A70 70 0 0 1 140 80" fill="none" stroke="#3a3128" stroke-width="2"/><path d="M110 50 A70 70 0 0 1 140 80" fill="none" stroke="#c23a24" stroke-width="5"/><g class="needle" id="n1"><line x1="80" y1="126" x2="80" y2="30" stroke="#1a1410" stroke-width="2"/></g></svg><div class="lab">L · 마이크</div></div>
+      <div class="vu"><svg viewBox="0 0 160 120"><path d="M20 80 A70 70 0 0 1 140 80" fill="none" stroke="#3a3128" stroke-width="2"/><path d="M110 50 A70 70 0 0 1 140 80" fill="none" stroke="#c23a24" stroke-width="5"/><g class="needle" id="n2"><line x1="80" y1="126" x2="80" y2="30" stroke="#1a1410" stroke-width="2"/></g></svg><div class="lab">R · 음악</div></div>
+    </div>
+    <div class="faders">
+      <div class="fd hot"><div class="slot"></div><div class="knob" style="top:30px"></div><span>MIC</span></div>
+      <div class="fd"><div class="slot"></div><div class="knob" style="top:80px"></div><span>BGM</span></div>
+      <div class="fd"><div class="slot"></div><div class="knob" style="top:110px"></div><span>TAPE</span></div>
+      <div class="fd"><div class="slot"></div><div class="knob" style="top:128px"></div><span>전화</span></div>
+      <div class="fd"><div class="slot"></div><div class="knob" style="top:60px"></div><span>MAIN</span></div>
+    </div>
+    <div class="brand">한빛 방송반 · MX-80 믹서</div>
+  </div>
+
+  <div class="cards">
+    <div class="card c1" data-g="340" data-t="“선생님이 칠판에 쓰신 마지막 문장을 아직 기억해요. ‘모르는 건 부끄러운 게 아니다.’”">
+      <div class="from">엽서 · 부산 영도 · 파란운동화</div>
+      <h3>20년 만에 담임 선생님을 찾습니다</h3>
+      <p>졸업식 날 인사를 못 드렸어요. 혹시 이 방송을 들으신다면…</p>
+      <div class="song">신청곡 · 김광석 「서른 즈음에」</div>
+      <div class="tags"><span class="tag t-cry">감동</span><span class="tag t-up">예상 ▲ 340</span></div>
+    </div>
+    <div class="card c2" data-g="180" data-t="“라면 물을 두 번 올렸는데 두 번 다 태웠습니다. 냄비가 저를 싫어하는 것 같습니다.”">
+      <div class="from">문자 #0412 · 010-****-7719</div>
+      <h3>룸메이트가 몰래 제 라면을 먹었어요</h3>
+      <p>증거는 국물 한 방울. 은하 님이 판결해 주세요 ㅋㅋ</p>
+      <div class="song">신청곡 · 자우림 「일탈」</div>
+      <div class="tags"><span class="tag t-lol">웃음</span><span class="tag t-up">예상 ▲ 180</span><span class="tag t-up">문자 多</span></div>
+    </div>
+    <div class="card c3" data-g="-120" data-t="“방송실 창문에 불빛이 보여요. 이 학교, 5년 전에 문 닫았잖아요.”">
+      <div class="from">편지 · 발신인 없음 · 소인 1998</div>
+      <h3>지금 그 방송실, 정말 거기 맞나요?</h3>
+      <p>매일 밤 운동장 건너편에서 창문을 봅니다. 불이 켜져 있어요.</p>
+      <div class="song">신청곡 · 없음 (테이프 동봉)</div>
+      <div class="tags"><span class="tag t-risk">위험</span><span class="tag t-risk">이탈 ▼ 120</span><span class="tag t-up">화제성 ★</span></div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="panel"><h5>오늘 밤 목표</h5>
+      <div class="goal"><span>동시 청취자 2,000</span><b>1,284</b></div>
+      <div class="goal"><span>사연 6개 소개</span><b>2 / 6</b></div>
+      <div class="goal"><span>광고 2회 송출</span><b class="ok">완료</b></div>
+      <div class="goal"><span>위험 사연 0회</span><b>0</b></div>
+    </div>
+    <div class="panel"><h5>테이프 큐</h5>
+      <div class="tape"><div class="cass spin"></div><div class="tt">015B 「텅 빈 거리에서」<small>재생 중 · 02:41 남음</small></div></div>
+      <div class="tape"><div class="cass"></div><div class="tt">새벽 로고송 B<small>다음 · 0:12</small></div></div>
+      <div class="tape"><div class="cass"></div><div class="tt">광고 · 한빛 분식<small>03:00 예약</small></div></div>
+    </div>
+    <div class="panel"><h5>받은 사연함</h5>
+      <div class="goal"><span>엽서</span><b>41</b></div>
+      <div class="goal"><span>문자</span><b>188</b></div>
+      <div class="goal"><span>발신인 없는 편지</span><b style="color:#ff7b6b">3</b></div>
+    </div>
+  </div>
+  <div class="hintBar">사연을 골라 <kbd>클릭</kbd> — 음악이 끝나기 전에 다음 사연을 올려야 한다</div>
+</section>
+
+<!-- ============ B : 03:33 surge ============ -->
+<section id="B" class="screen">
+  <div class="room"><div class="foam"></div></div>
+  <div class="flash"></div>
+  <div class="top">
+    <div class="onair lit">ON AIR</div>
+    <div class="prog"><div class="name">새벽 두 시, 교실 라디오</div><div class="sub" style="color:#ff9ec4">⚠ 생방송 전화 연결 중 · 편집 불가</div></div>
+    <div class="led">
+      <div class="ledbox"><div class="k">현재 시각</div><div class="v mono" style="color:#ff5a4a;text-shadow:0 0 12px #ff3b2f">03:33:00</div></div>
+      <div class="ledbox"><div class="k">동시 청취자</div><div class="v mono"><span id="lisB">4,812</span><small>▲ 3,528</small></div></div>
+    </div>
+  </div>
+
+  <div class="graph">
+    <div class="k" style="font-size:12px;letter-spacing:5px;color:#ff9ec4;margin-bottom:6px">청취 추이 · 오늘 밤</div>
+    <div class="big mono">4,812<small>역대 최고</small></div>
+    <svg viewBox="0 0 560 230">
+      <defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4f9a" stop-opacity=".55"/><stop offset="1" stop-color="#ff4f9a" stop-opacity="0"/></linearGradient></defs>
+      <g stroke="rgba(255,255,255,.08)"><line x1="0" y1="50" x2="560" y2="50"/><line x1="0" y1="110" x2="560" y2="110"/><line x1="0" y1="170" x2="560" y2="170"/></g>
+      <path d="M0 200 L60 196 L120 190 L180 184 L240 176 L300 170 L360 166 L400 160 L430 150 L460 120 L490 80 L520 40 L545 18 L545 230 L0 230Z" fill="url(#gf)"/>
+      <polyline fill="none" stroke="#ff4f9a" stroke-width="3" points="0,200 60,196 120,190 180,184 240,176 300,170 360,166 400,160 430,150 460,120 490,80 520,40 545,18"/>
+      <circle cx="545" cy="18" r="6" fill="#fff"><animate attributeName="r" values="5;10;5" dur="1s" repeatCount="indefinite"/></circle>
+      <line x1="400" y1="0" x2="400" y2="230" stroke="#62e6ff" stroke-dasharray="4 4"/>
+      <text x="404" y="222" fill="#62e6ff" font-size="12">03:21 편지 낭독</text>
+      <text x="4" y="222" fill="rgba(255,255,255,.4)" font-size="12">01:00</text>
+    </svg>
+  </div>
+  <div class="warn"><b>방송 심의 경고</b> · 한 번 더 받으면 송출 중단<div class="pips"><i></i><i></i><i class="off"></i></div></div>
+
+  <div class="caller">
+    <div class="k">☎ 전화 연결 · 3번 회선</div>
+    <div class="who">“1998년 방송반 2기, 이름은 말 못 해요.”</div>
+    <div class="q">“그날 방송실에서 마지막으로 튼 테이프요. 지금 은하 씨가 틀고 있는 그거예요. 끝까지 틀면 안 돼요.”</div>
+    <div class="wave"><i style="animation-delay:0s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.05s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.25s"></i><i style="animation-delay:.08s"></i><i style="animation-delay:.18s"></i><i style="animation-delay:.28s"></i><i style="animation-delay:.12s"></i><i style="animation-delay:.22s"></i><i style="animation-delay:.02s"></i><i style="animation-delay:.32s"></i><i style="animation-delay:.14s"></i><i style="animation-delay:.24s"></i><i style="animation-delay:.04s"></i><i style="animation-delay:.34s"></i><i style="animation-delay:.16s"></i><i style="animation-delay:.26s"></i></div>
+  </div>
+
+  <div class="desk"></div>
+  <div class="timer"><i></i></div>
+  <div class="choices">
+    <div class="k">마이크 앞에서 읽을 말 · 9초 안에 고른다</div>
+    <div class="ch" data-r="up"><div class="num">1</div><div class="txt">“여러분, 방금 들으신 건 저희 새벽 괴담 코너였습니다!”</div><div class="fx"><span class="up">이탈 방지 ▲</span><br><span class="dn">신뢰 ▼</span></div></div>
+    <div class="ch" data-r="hot"><div class="num">2</div><div class="txt">“끝까지 틀어 보겠습니다. 다들 같이 들어 주세요.”</div><div class="fx"><span class="up">청취자 ▲▲▲</span><br><span class="dn">경고 위험</span></div></div>
+    <div class="ch" data-r="off"><div class="num">3</div><div class="txt">“…잠시 음악 듣고 오겠습니다.” (테이프를 꺼낸다)</div><div class="fx"><span class="dn">청취자 ▼▼</span><br><span class="up">안전</span></div></div>
+  </div>
+
+  <div class="deckB"><h5>재생 중 · 출처 불명 테이프</h5>
+    <div class="reels"><div class="reel"></div><div class="reel s"></div><div class="band"></div></div>
+    <div class="lab"><span>B면 · 라벨 없음</span><b>14:52 / 17:58</b></div>
+    <div class="prog"><i></i></div>
+    <small>끝까지 3분 6초 · 멈출 수 있는 건 지금뿐</small>
+  </div>
+  <div class="hintBar">번호 <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 또는 클릭 — 시간이 다 되면 침묵이 방송된다</div>
+  <div class="smsHead"><span>실시간 문자</span><b class="mono">초당 41건</b></div>
+  <div class="sms"><div class="feed" id="feed"></div></div>
+</section>
+
+<div class="vig"></div>
+<svg class="grain" width="1600" height="1000"><filter id="gn"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#gn)"/></svg>
+<div class="tabs"><button data-s="A">1 사연 고르기</button><button data-s="B">2 03:33</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var cur='A';
+  function show(id){cur=id;['A','B'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});
+    var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('act',bs[i].getAttribute('data-s')===id);
+    var h='#'+id.toLowerCase();if(location.hash!==h){try{history.replaceState(null,'',h);}catch(e){}}}
+  function fromHash(){show((location.hash||'').toLowerCase()==='#b'?'B':'A');}
+  window.addEventListener('hashchange',fromHash);
+  var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('A');else if(e.key==='2')show('B');});
+
+  /* audio */
+  var ac=null;
+  function A_(){if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;try{ac=new C();}catch(e){return null;}}if(ac.state==='suspended')ac.resume();return ac;}
+  function clickTone(freqs,type,dur,vol){var a=A_();if(!a)return;var t=a.currentTime;
+    freqs.forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t+i*.07);g.gain.exponentialRampToValueAtTime(vol,t+i*.07+.01);g.gain.exponentialRampToValueAtTime(.0001,t+i*.07+dur);
+      o.connect(g);g.connect(a.destination);o.start(t+i*.07);o.stop(t+i*.07+dur+.05);});}
+  function tapeThunk(){var a=A_();if(!a)return;var n=a.sampleRate*.12,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=900;var g=a.createGain();g.gain.value=.5;s.connect(f);f.connect(g);g.connect(a.destination);s.start();}
+
+  /* A: clock + listeners */
+  var sec=14*60+37+2*3600, lis=1284, lisEl=document.getElementById('lis'), dl=document.getElementById('dl');
+  function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+  setInterval(function(){sec++;var h=Math.floor(sec/3600),m=Math.floor(sec/60)%60,s=sec%60;
+    document.getElementById('clk').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    var d=Math.round(Math.random()*6-2);lis=Math.max(0,lis+d);lisEl.textContent=fmt(lis);},1000);
+
+  /* needles */
+  var n1=document.getElementById('n1'),n2=document.getElementById('n2'),boost=0;
+  setInterval(function(){var a=-30+Math.random()*40+boost,b=-20+Math.random()*30+boost*.5;boost*=.85;
+    n1.style.transform='rotate('+a+'deg)';n2.style.transform='rotate('+b+'deg)';},90);
+
+  /* cards */
+  var cards=document.querySelectorAll('.card'),nr=document.getElementById('nr');
+  for(var c=0;c<cards.length;c++){cards[c].addEventListener('click',function(e){
+    for(var k=0;k<cards.length;k++)cards[k].classList.remove('sel');this.classList.add('sel');
+    var g=parseInt(this.getAttribute('data-g'),10)||0;lis=Math.max(0,lis+g);lisEl.textContent=fmt(lis);
+    dl.textContent=(g>=0?'▲ ':'▼ ')+Math.abs(g);dl.style.color=g>=0?'#7fe08a':'#ff6b5a';
+    nr.innerHTML=this.getAttribute('data-t')+'<span class="cursor"></span>';boost=40;
+    var r=stage.getBoundingClientRect(),s=r.width/1600,f=document.createElement('div');f.className='float';
+    f.style.left=((e.clientX-r.left)/s-30)+'px';f.style.top=((e.clientY-r.top)/s-40)+'px';f.style.color=g>=0?'#8fe39a':'#ff6b5a';
+    f.textContent=(g>=0?'+':'')+g;stage.appendChild(f);setTimeout(function(){if(f.parentNode)f.parentNode.removeChild(f);},1500);
+    tapeThunk();clickTone(g>=0?[523,659,784]:[392,370,330],'triangle',.35,.12);
+  });}
+
+  /* B: sms feed */
+  var msgs=[["미역국먹은고래","지금 소름 돋았어요 테이프 계속 틀어요??"],["영도파란운동화","저 98년에 한빛중 다녔는데… 방송반 있었어요 진짜로"],["야간경비 김씨","운동장 건너편인데 3층 불 켜진 거 보임"],["0719","은하님 괜찮아요? 목소리 떨려요"],["삼각김밥장인","편의점 손님들까지 다 같이 듣는 중"],["익명","끝까지 틀어!!!!!!"],["라디오키드","이거 연출이죠? 연출이라고 해 주세요"],["모름","테이프 B면에 뭐 녹음돼 있는지 알아요"],["택시기사 박","차 세우고 듣고 있습니다"],["한빛동 주민","창문 닫으세요"]];
+  var feed=document.getElementById('feed'),html='';
+  for(var r=0;r<2;r++)for(var m=0;m<msgs.length;m++){html+='<div class="bub'+(m%4===1?' hot':'')+'"><div class="n">'+msgs[m][0]+'</div>'+msgs[m][1]+'</div>';}
+  feed.innerHTML=html;
+  var lisB=4812,lbEl=document.getElementById('lisB');
+  setInterval(function(){if(cur!=='B')return;lisB+=Math.round(Math.random()*30+5);lbEl.textContent=fmt(lisB);},400);
+  var chs=document.querySelectorAll('.ch');
+  for(var q=0;q<chs.length;q++)chs[q].addEventListener('click',function(){var t=this.getAttribute('data-r');
+    if(t==='hot'){lisB+=900;clickTone([220,330,440,660],'sawtooth',.4,.06);}else if(t==='off'){lisB=Math.max(0,lisB-1400);tapeThunk();clickTone([300,200],'sine',.5,.15);}else{clickTone([660,880],'square',.15,.05);}
+    lbEl.textContent=fmt(lisB);});
+  fromHash();
+})();
+</script>
+</body>
+</html>

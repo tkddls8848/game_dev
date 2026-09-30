@@ -1,0 +1,69 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는_곳": "presentation/index.html 이 이 파일을 fetch 해서 CSS 변수로 심는다. 색을 고치려면 여기만 고친다.",
+
+  "name": "필사본 달력·연감",
+  "oneLine": "시간이 되돌아가는 것을 천체 기록처럼 읽히게 한다",
+  "reference": "중세 성무일도서 달력장 · 금박 이니셜 · 천문 도해 · 달의 위상표",
+
+  "color": {
+    "void": "#070C18",
+    "ink": "#0A1226",
+    "surface": "#132140",
+    "night": "#0F1A33",
+    "paper": "#D8CBA8",
+    "_paper": "양피지. 밤하늘 위에 얹는 글자와 표에만 쓴다 — 배경으로 쓰면 연감이 아니라 문서가 된다.",
+    "gold": "#C9A227",
+    "goldLight": "#E8CE7A",
+    "goldDeep": "#8A6E16",
+    "accent": "#9E2B2B",
+    "_accent": "주서(朱書). 되감기 흔적과 마감일에만 쓴다. 아끼지 않으면 금박이 죽는다.",
+    "muted": "#4A5A7A",
+    "grid": "#243858",
+    "scar": "#7A4A52",
+    "_scar": "흔적. 붉은기가 도는 회색 — 금박과 싸우지 않으면서 '깎였다'가 읽히는 자리."
+  },
+
+  "type": {
+    "family": "EB Garamond",
+    "familyKo": "Song Myung",
+    "_글꼴": "둘 다 OFL. 라틴은 EB Garamond(휴머니스트 필사본 계열), 한글은 송명체로 옛 활자 느낌을 맞췄다. CREDITS.md 참고.",
+    "sizeTitle": 46,
+    "sizeHeading": 22,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeCell": 11,
+    "outlinePx": 0,
+    "letterSpacingTitle": 3
+  },
+
+  "grade": {
+    "saturation": 0.82,
+    "contrast": 1.12,
+    "blackLift": 0.03,
+    "vignette": 0.52,
+    "grainStatic": true,
+    "paperTextureOpacity": 0.14,
+    "starOpacity": 0.5,
+    "goldSheenOpacity": 0.22,
+    "_금박": "금은 색이 아니라 반사다. 평면 노란색으로 칠하면 금박이 아니라 형광이 된다 — 옅은 사선 그라디언트를 겹친다."
+  },
+
+  "almanac": {
+    "dayCellPx": 34,
+    "moonPx": 18,
+    "seasonGapPx": 14,
+    "fullMoonGlowPx": 10,
+    "_망": "한 해에 네 번. 주기(28일)가 계절 길이와 같아서 계절마다 정확히 한 번 찬다 — 검사기가 이 사실을 지킨다.",
+    "ladderRowPx": 22
+  },
+
+  "sfx": {
+    "plant": "assets/handleSmallLeather.ogg",
+    "harvest": "assets/chop.ogg",
+    "pageTurn": "assets/bookFlip1.ogg",
+    "rewind": "assets/bookClose.ogg",
+    "coins": "assets/handleCoins.ogg",
+    "_": "CC0 (Kenney). 되감기에 bookClose를 쓴다 — 책을 덮는 소리가 한 해를 닫는 소리다."
+  }
+}

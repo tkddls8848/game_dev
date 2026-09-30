@@ -1,0 +1,38 @@
+{
+  "_": "수치는 전부 정수다. 부동소수를 쓰면 「0.999일 뒤에 갇혔다」가 생기고 테스트를 쓸 수 없다 (설계 원칙 4).",
+  "_수렴을보장하는것": "maxFlipsPerCell 하나뿐이다. 한 필지를 세 번까지만 다시 지을 수 있으므로 뒤집기의 총수가 칸수x3 으로 막혀 있고 고정점이 반드시 있다. -1(무한)로 두면 무른 구역이 영원히 진동한다 — CityConverges 의 음성 대조군이 그것을 보인다.",
+  "_그리고이건게임의말이다": "필지가 닳으면 도시는 지도를 무시하고 그 자리에 그대로 남는다. 지도는 그 칸에 대해 영원히 거짓말이 된다.",
+
+  "seed": 20260927,
+  "trialSeeds": 20,
+
+  "conformPressurePerDay": 5,
+  "inferPressurePerDay": 3,
+  "flipCostBlock": 15,
+  "flipCostStreet": 10,
+  "flipCostPlaza": 8,
+
+  "_짐작규칙": "길 이웃이 3 이상이면 건물(교차로 가운데를 비워 두지 않는다), 2 이상이면 길, 광장 이웃이 2 이상이면 광장, 그 밖에는 건물. 첫 줄이 진동의 씨앗이다 — 길이 생기면 옆 칸은 건물을 원하고 건물이 생기면 다시 길을 원한다.",
+  "inferBlockOverStreets": 3,
+  "inferStreetMin": 2,
+  "inferPlazaMin": 2,
+
+  "maxFlipsPerCell": 3,
+  "convergeDays": 90,
+  "quietDays": 6,
+
+  "editCostBlock": 8,
+  "editCostStreet": 6,
+  "editCostPlaza": 5,
+  "_지우개": "redrawSurcharge 는 같은 칸을 다시 그을 때 붙는 값이다. 되돌리는 것이 처음 그은 것보다 비싸야 ButNotFree 가 성립한다.",
+  "redrawSurcharge": 7,
+
+  "entombExtraHarm": 5,
+  "harmPenaltyPerPoint": 2,
+
+  "borderLocked": true,
+  "rescueMaxDays": 14,
+  "rescueMaxEdits": 3,
+  "rescueFrontier": 3,
+  "walkStepsPerDay": 1
+}

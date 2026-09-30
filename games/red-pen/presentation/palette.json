@@ -1,0 +1,119 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(사건 파일 · 청사진 모눈 · 목판화 타로 · 납 활자 인쇄소 · 바랜 측량도 · 필사본 연감 · 전보 시세판 · 창고 장부 · 겨울 요새 · 식물 표본집 · 구성주의 포스터 · 자수 지도 · 두 단 대역 조약문)과 겹치지 않는다. 여기만 **인쇄된 원고지 칸(연청색 괘선)** 위에 글이 앉고, 붉은 것이 얼룩이 아니라 **손으로 그은 획**이며, **회차가 지날수록 잉크가 진해져** 오간 횟수가 색으로 읽힌다.",
+
+  "name": "교정지",
+  "oneLine": "다섯 번 오간 원고지. 붉은 획이 지워지지 않고 쌓여서, 얼마나 붉어졌는지가 그 관계의 역사가 된다",
+  "reference": "출판사 편집부의 교정지 — 200자 원고지의 연청색 인쇄 칸, 검은 볼펜 본문, 붉은 펜으로 그은 삭제선·삽입 갈고리·이동 화살표, 여백에 흘려 쓴 손글씨 메모, 오래 놓여 있던 자리에 남은 커피 잔 자국 하나",
+
+  "color": {
+    "paper": "#EFE7D3",
+    "paperLit": "#F7F1E2",
+    "paperDim": "#E0D6BE",
+    "paperEdge": "#C4B99C",
+    "grid": "#7E9AA6",
+    "gridStrong": "#5E7F8D",
+    "bodyInk": "#2A2A2E",
+    "bodyInkWeak": "#5E5B57",
+    "margin": "#8A8069",
+    "coffee": "#9C7244",
+    "_괘선은_청색": "원고지 칸선은 인쇄된 것이라 청색이다. 붉은 것은 사람이 손으로 그은 것뿐이다 — 이 구별이 이 연출의 첫째 규칙이다",
+    "_커피": "한 점만. 두 점이면 지저분한 것이고, 한 점이면 오래 붙들고 있었다는 뜻이다"
+  },
+
+  "pen": {
+    "_": "★ 이 연출의 핵. **회차마다 잉크가 다르다** — 1회차는 바래고 5회차는 새 잉크다. 몇 번 오갔는지가 색으로 읽힌다",
+    "roundInk": ["#9B5B50", "#AE4C3E", "#BE3C2C", "#C9301F", "#D22A16"],
+    "roundAlpha": [55, 66, 77, 88, 100],
+    "strokeWidthPx": 2,
+    "handJitterPx": 1,
+    "_손떨림": "획의 끝점을 1px 안에서 흔든다. 자로 그은 줄은 교정지가 아니라 표다. 흔들림은 **문장 id 로 정해진 값**이라 다시 그려도 같은 자리다 — 난수가 아니다",
+    "refusedDash": [3, 3],
+    "_버틴_표시": "작가가 받아들이지 않은 표시는 점선으로 남는다. 지우지 않는다 — 요청했고 거절당했다는 사실이 이 원고의 일부다"
+  },
+
+  "marks": {
+    "_": "부호마다 그리는 법. 값이 여기 있어야 스무 곳에서 같은 모양이 나온다",
+    "m_delete":  { "glyph": "strike",  "label": "삭제선",       "marginText": "빼자" },
+    "m_insert":  { "glyph": "caret",   "label": "삽입 갈고리", "marginText": "이렇게" },
+    "m_cut":     { "glyph": "bracket", "label": "도려내기",     "marginText": "군더더기" },
+    "m_move":    { "glyph": "arrow",   "label": "이동 화살표", "marginText": "앞으로" },
+    "m_query":   { "glyph": "query",   "label": "물음표 주석", "marginText": "이게 무슨 뜻?" },
+    "m_praise":  { "glyph": "circle",  "label": "여백의 칭찬", "marginText": "여기" },
+    "m_leave":   { "glyph": "none",    "label": "그대로",       "marginText": "" },
+    "caretHeightPx": 9,
+    "bracketInsetPx": 3,
+    "arrowCurve": 22,
+    "circleRadiusPx": 8
+  },
+
+  "grid": {
+    "_": "원고지 칸. 글자를 칸에 넣지는 않는다(웹에서 한 글자 한 칸은 읽히지 않는다) — 칸선을 배경으로 깔아 **원고지 위에 쓴 것**으로 보이게 한다",
+    "cellPx": 26,
+    "lineWidthPx": 1,
+    "lineAlpha": 36,
+    "rowRuleAlpha": 56,
+    "marginLeftCols": 2,
+    "_왼쪽_여백": "두 칸을 비운다. 붉은 펜의 메모가 거기 들어간다"
+  },
+
+  "coffee": {
+    "_": "커피 잔 자국 한 점. 자리는 고정이다 — 난수로 흔들면 화면이 매번 달라져 눈으로 대조할 수 없다",
+    "xPercent": 78,
+    "yPercent": 16,
+    "outerRadiusPx": 54,
+    "ringWidthPx": 7,
+    "outerAlpha": 22,
+    "innerAlpha": 7
+  },
+
+  "type": {
+    "family": "NanumGothicCoding",
+    "familyHand": "Dokdo",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "본문은 폭이 고른 글꼴(Nanum Gothic Coding)이어야 원고지 칸 위에 앉는다. 붉은 펜의 메모는 거친 손글씨(Dokdo)여야 사람이 쓴 것으로 읽힌다 — 이 둘의 대비가 '인쇄된 원고 vs 손으로 그은 교정'이다",
+    "sizeTitle": 44,
+    "sizeHeading": 23,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeNumeral": 13,
+    "sizeManuscript": 17,
+    "sizeHand": 21,
+    "lineHeightManuscript": 200,
+    "trackingTitle": 1,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "gauge": {
+    "_": "작가의 상태 셋. 색이 다르고, 셋이 같은 축 위에 겹쳐 그려진다",
+    "confidence": "#4B6B8A",
+    "trust": "#5E7F5C",
+    "stubborn": "#8A6A2B",
+    "heightPx": 84,
+    "strokeWidthPx": 2,
+    "quitLine": "#C9301F"
+  },
+
+  "grade": {
+    "saturation": 0.70,
+    "contrast": 1.05,
+    "blackLift": 0.03,
+    "vignette": 0.10,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 결이어야 종이가 된다",
+    "_채도": "0.70. 붉은 펜만 튀어야 한다. 괘선의 청색이 튀면 원고지가 아니라 모눈종이가 되고, 그건 이미 다른 PoC가 쓴 연출이다"
+  },
+
+  "motion": {
+    "_": "연출은 느리고 판정은 그 자리에서 난다. 이 값들은 눈속임이다",
+    "strokeDrawMs": 260,
+    "roundRevealMs": 120,
+    "easing": "cubic-bezier(.2,.7,.2,1)",
+    "_획_그리기": "붉은 획은 한 번에 켜지 않고 stroke-dashoffset 으로 그어 나간다 — 펜이 지나가는 시간이다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 펜·종이·봉투에 맞는 CC0 소리를 원 페이지에서 확인하지 못했고, 없는 것을 있는 척 적지 않는다. CREDITS.md 의 '버린 것'에 같은 사실을 적었다"
+  }
+}

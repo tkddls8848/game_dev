@@ -1,0 +1,123 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood 의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(사건 파일 · 청사진 모눈 · 목판화 타로 · 납 활자 인쇄소 · 바랜 측량도 · 필사본 연감 · 전보 시세판 · 크라프트 장부 · 겨울 요새 · 식물 표본집 · 구성주의 포스터 · 자수 지도 · 한지 족보)과 겹치지 않는다. 여기만 **바탕이 오선지**이고, 정보가 글자가 아니라 **음표의 모양**(원 크기 · 기울기 · 획 굵기)으로 실려 있으며, 결과가 화면 위에 **인쇄 망점이 보이는 회색 조각**으로 덧붙는다. 소리가 없으므로 화면이 전부다.",
+
+  "name": "오선지 위에 붙은 신문 조각",
+  "oneLine": "미색 오선지에 검은 음표. 연주가 끝나면 다음 날 신문 조각이 그 위에 붙는다",
+  "reference": "손으로 그린 오선지 — 다섯 줄, 흐린 마디선, 연필로 눌러 쓴 음표. 그 위에 가위로 잘라 붙인 신문 조각: 인쇄 망점이 육안으로 보이는 회색, 접힌 자국, 살짝 비뚤어진 각도",
+
+  "color": {
+    "paper": "#EFE9D8",
+    "paperLit": "#F7F3E6",
+    "paperDim": "#E2DAC5",
+    "staff": "#9A947F",
+    "staffFaint": "#BDB69F",
+    "barline": "#6E6853",
+    "ink": "#1E1D1A",
+    "inkSoft": "#4A4740",
+    "inkGhost": "#8A8677",
+    "_음표는_검정_하나": "음표는 ink 하나로만 그린다. 색으로 무리를 구별하면 '모양으로 읽는다'는 규칙이 무너진다",
+    "clip": "#C9C6BE",
+    "clipLit": "#D8D5CD",
+    "clipInk": "#2A2926",
+    "clipDot": "#7E7C76",
+    "_신문_조각": "clip 계열은 **회색뿐이다.** 오선지가 미색이라 회색 조각이 붙으면 종이가 두 겹인 것이 바로 보인다",
+    "pass": "#3C5C46",
+    "fail": "#8B3A2E",
+    "baton": "#B0842F",
+    "_지휘봉": "화면에서 유일한 따뜻한 색. 지금 지휘봉이 어디를 가리키는지가 한눈에 보여야 한다"
+  },
+
+  "staff": {
+    "_": "★ 이 연출의 바탕. 오선은 이미지가 아니라 반복 그라디언트다",
+    "lineGapPx": 11,
+    "lineWidthPx": 1,
+    "systemGapPx": 34,
+    "barlineWidthPx": 1,
+    "beatTickPx": 7,
+    "_마디선": "굵으면 표가 되고 없으면 종이가 된다. 1px 이 오선지다",
+    "cursorWidthPx": 2,
+    "cursorOpacity": 34,
+    "_박_커서": "지금 박의 자리. 굵게 하면 리듬 게임의 판정선처럼 보이고, 이 게임에는 판정선이 없다"
+  },
+
+  "glyph": {
+    "_": "★ 단원 하나를 그리는 규칙. **세 채널이 세 가지 모양이다** — 글자로 적지 않는다",
+    "headRadiusBasePx": 9,
+    "headRadiusPerBreathPx": 3,
+    "_호흡": "원의 크기. 눈금 한 칸마다 반지름이 3px 늘어난다. 늦으면 커지고 앞서면 작아진다 — 숨이 차오르는 것이 보인다",
+    "headSquashPercent": 86,
+    "bowLengthPx": 46,
+    "bowDegPerLevel": 9,
+    "bowWidthPx": 2,
+    "_활": "머리를 지나는 선의 기울기. 눈금 한 칸마다 9도. 벌어지는 **속도**를 보여 준다",
+    "strokeWidthBasePx": 2,
+    "strokeWidthPerFacePx": 1,
+    "strokeLengthPx": 17,
+    "_표정": "머리 위에 붙는 짧은 획. 세기가 넘치면 굵고 위로, 모자라면 가늘고 아래로. 활과 방향이 달라 헷갈리지 않는다",
+    "restDashPx": [3, 4],
+    "_쉬는_무리": "아직 들어오지 않은 무리는 점선 원으로만 둔다. 비워 두면 무리가 몇인지 알 수 없다",
+    "batonRingPx": 4,
+    "trailBeats": 6,
+    "trailOpacityStart": 34,
+    "_잔상": "지난 여섯 박의 머리를 흐리게 남긴다. **누적 어긋남이 궤적으로 보인다** — 이 게임에서 가장 중요한 한 가지다"
+  },
+
+  "clipping": {
+    "_": "다음 날 신문 조각. 연주가 끝나야 붙는다",
+    "rotateDeg": -2,
+    "halftoneDotPx": 2,
+    "halftonePitchPx": 6,
+    "halftoneOpacity": 40,
+    "_망점": "인쇄 망점이 육안으로 보이는 크기여야 신문이 된다. 너무 촘촘하면 그냥 회색 종이다",
+    "foldOffsetPx": 44,
+    "shadowBlurPx": 9,
+    "shadowOpacity": 24,
+    "tapeWidthPx": 54,
+    "maxWidthCh": 62,
+    "_조각의_폭": "신문에서 잘라 낸 한 단이므로 본문 폭을 넘지 않는다. 화면 가득 차면 조각이 아니라 배경이 된다",
+    "tapeOpacity": 30,
+    "revealMs": 520
+  },
+
+  "type": {
+    "family": "Noto Serif KR",
+    "familyMasthead": "Bodoni Moda",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "신문 조각이므로 본문은 세리프여야 한다(Noto Serif KR). 제호는 명암 대비가 극단적인 디도(Bodoni Moda)라야 19세기 신문 제호처럼 읽힌다. **명조 계열 중 나눔명조·송명은 쓰지 않는다** — 다른 PoC의 연출과 겹친다",
+    "sizeTitle": 46,
+    "sizeMasthead": 30,
+    "sizeHeading": 22,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeNumeral": 13,
+    "sizeGlyphLabel": 11,
+    "trackingMasthead": 3,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "grade": {
+    "saturation": 0.46,
+    "contrast": 1.05,
+    "blackLift": 0.02,
+    "vignette": 0.14,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 결이어야 종이가 된다",
+    "_채도": "0.46. 오선지·음표·신문이 전부 무채색에 가깝고 지휘봉의 금색 하나만 따뜻하다"
+  },
+
+  "motion": {
+    "_": "연출은 부드럽고 판정은 **박**에서만 내려간다. 이 값들은 눈속임이다",
+    "beatAdvanceMs": 170,
+    "glyphEaseMs": 220,
+    "batonSwingMs": 140,
+    "easing": "cubic-bezier(.22,.7,.2,1)",
+    "_박_넘김": "박이 넘어갈 때 커서가 스르르 움직인다. 즉시 튀면 표가 된다"
+  },
+
+  "sfx": {
+    "_없는_것": "★ **소리를 넣지 않았다. 이 게임은 무음이 컨셉이다.** 지휘자가 청각을 잃었으므로 플레이어도 듣지 못한다. 대신 감각을 화면이 전부 짊어진다 — 음표 크기(호흡) · 기울기(활) · 획(표정) · 잔상(누적 어긋남) · 지휘봉 고리(지금 보는 곳) · 신문 조각(결과). 뿌리 CLAUDE.md 가 요구하는 '의도적인 무음의 대체 피드백'이 이 여섯이다."
+  }
+}

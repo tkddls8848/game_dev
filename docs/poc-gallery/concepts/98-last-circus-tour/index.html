@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마지막 순회 서커스</title>
+<style>
+:root{--red:#b3202a;--red-d:#6e0f16;--cream:#f4e6c8;--paper:#ead7ae;--gold:#e2b44c;--gold-d:#9c7322;--ink:#2a1a12;--navy:#1d2340;--teal:#2f6b6a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0b0606;overflow:hidden}
+body{font-family:"Noto Sans CJK KR","Noto Sans KR",sans-serif;color:var(--ink)}
+.serif{font-family:"Noto Serif CJK KR","Noto Serif KR",serif}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#2a0f10}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+canvas.full{position:absolute;left:0;top:0;width:1600px;height:1000px}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.16;mix-blend-mode:overlay}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse 85% 80% at 50% 50%,transparent 58%,rgba(20,5,5,.6))}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px/1 "Noto Sans CJK KR",sans-serif;padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.55);color:#eee;cursor:pointer}
+.tabs button.on{background:var(--gold);color:#2a1a08;border-color:var(--gold)}
+
+/* A backdrop: striped tent canvas */
+.stripes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#9e1b24 0 80px,#e9d6ae 80px 160px);filter:saturate(.85)}
+.stripes::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,6,6,.35),rgba(30,6,6,.75))}
+.marquee{position:absolute;left:40px;top:22px;width:760px;height:96px;z-index:6;border-radius:14px;background:linear-gradient(180deg,#7a1119,#4d0a10);border:3px solid var(--gold);box-shadow:0 10px 26px rgba(0,0,0,.55),inset 0 0 0 6px #5d0c12}
+.marquee h1{position:absolute;left:0;right:0;top:14px;text-align:center;font-size:44px;color:#ffe9b0;letter-spacing:.06em;text-shadow:0 2px 0 #7a4b10,0 0 18px rgba(255,210,120,.55)}
+.bulbs{position:absolute;inset:6px;pointer-events:none}
+.bulb{position:absolute;width:10px;height:10px;border-radius:50%;background:#ffe7a0;box-shadow:0 0 8px #ffd46a,0 0 16px rgba(255,190,80,.7)}
+.bulb.off{background:#6d5530;box-shadow:none}
+.meta{position:absolute;left:830px;top:28px;display:flex;gap:12px;z-index:6}
+.pill{background:rgba(244,230,200,.95);border-radius:10px;padding:8px 14px;box-shadow:0 6px 16px rgba(0,0,0,.4);min-width:120px}
+.pill small{display:block;font-size:11px;letter-spacing:.14em;color:#7b5a3a}
+.pill b{font-size:22px}
+.pill b.r{color:var(--red)}
+
+.map{position:absolute;left:40px;top:140px;width:880px;height:560px;z-index:5;border-radius:6px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.6);transform:rotate(-.6deg)}
+.map canvas{position:absolute;left:0;top:0}
+.map svg{position:absolute;left:0;top:0}
+.town{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:pointer}
+.town .nm{font-size:16px;font-weight:800;color:#3a2414;background:rgba(244,230,200,.9);padding:2px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.town .taste{display:flex;gap:4px;justify-content:center;margin-top:4px}
+.taste span{font-size:11px;padding:2px 6px;border-radius:8px;background:#3a2414;color:#f4e6c8;white-space:nowrap}
+.taste span.hot{background:var(--red)}
+.town.next .nm{background:#ffe9b0;outline:2px solid var(--red)}
+.town.done .nm{opacity:.6;text-decoration:line-through}
+.maplegend{position:absolute;left:18px;bottom:14px;font-size:12px;color:#5a3a22;background:rgba(244,230,200,.8);padding:6px 10px;border-radius:4px}
+.compass{position:absolute;right:20px;top:18px}
+
+.board{position:absolute;left:950px;top:140px;width:610px;height:560px;z-index:5;border-radius:12px;background:linear-gradient(180deg,#3a1f14,#26140d);border:3px solid #8a5a2a;box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 0 40px rgba(0,0,0,.5);padding:18px 20px}
+.board h3{font-size:20px;color:#ffe9b0;display:flex;justify-content:space-between;align-items:baseline}
+.board h3 small{font-size:13px;color:#c9a57a;font-weight:500}
+.slots{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.slot{height:62px;border-radius:8px;display:flex;align-items:center;gap:12px;padding:0 14px;background:linear-gradient(180deg,#f6e8c9,#e6d0a3);box-shadow:0 3px 0 #a07b44,0 6px 10px rgba(0,0,0,.35);position:relative;cursor:grab;transition:transform .15s}
+.slot:hover{transform:translateX(-4px)}
+.slot .no{width:34px;height:34px;border-radius:50%;background:var(--red);color:#ffe9b0;display:grid;place-items:center;font-weight:900;font-size:15px;flex:none}
+.slot .ic{font-size:26px;width:34px;text-align:center}
+.slot b{font-size:17px;display:block}
+.slot small{font-size:12px;color:#6b4a2a}
+.slot .fx{margin-left:auto;display:flex;gap:5px}
+.fx span{font-size:12px;font-weight:700;padding:3px 7px;border-radius:9px;background:#3a2414;color:#f4e6c8}
+.fx span.up{background:#2f6b3a}.fx span.dn{background:var(--red)}
+.slot.empty{background:repeating-linear-gradient(135deg,rgba(255,233,176,.08) 0 10px,transparent 10px 20px);border:2px dashed #e2b44c;box-shadow:none;color:#ffe9b0}
+.slot.empty small{color:#e2c38a}
+.slot.empty .no{background:transparent;border:2px dashed #e2b44c;color:#e2b44c}
+.pick{display:flex;gap:8px;margin-top:12px}
+.pick div{flex:1;border-radius:8px;padding:8px 6px;text-align:center;background:rgba(255,233,176,.08);border:1px solid rgba(226,180,76,.5);color:#ffe9b0;font-size:13px;cursor:pointer;transition:background .15s}
+.pick div:hover,.pick div.sel{background:rgba(226,180,76,.28)}
+.pick div i{display:block;font-style:normal;font-size:22px}
+.forecast{margin-top:14px;display:flex;justify-content:space-between;align-items:center;color:#ffe9b0;font-size:14px}
+.gauge{flex:1;margin-left:14px;height:14px;border-radius:7px;background:#1a0d08;overflow:hidden;box-shadow:inset 0 1px 3px #000}
+.gauge i{display:block;height:100%;width:72%;background:linear-gradient(90deg,#e2b44c,#ff8a4a);box-shadow:0 0 12px rgba(255,160,80,.6)}
+
+.troupe{position:absolute;left:40px;right:40px;bottom:26px;height:250px;z-index:5;display:flex;gap:12px}
+.mem{flex:1;border-radius:10px;background:linear-gradient(180deg,#f4e6c8,#e3cd9f);box-shadow:0 8px 18px rgba(0,0,0,.5);position:relative;overflow:hidden;cursor:pointer;transition:transform .15s}
+.mem:hover{transform:translateY(-6px)}
+.mem svg{position:absolute;left:0;top:0;width:100%;height:140px}
+.mem .info{position:absolute;left:12px;right:12px;top:142px}
+.mem b{font-size:16px}
+.mem .role{font-size:12px;color:#7b5a3a;margin-left:6px}
+.st{display:flex;align-items:center;gap:6px;font-size:11px;color:#5a3a22;margin-top:5px}
+.st span{width:28px}
+.st .bar{flex:1;height:7px;border-radius:4px;background:rgba(0,0,0,.12);overflow:hidden}
+.st .bar i{display:block;height:100%}
+.mem .tag{position:absolute;right:8px;top:8px;font-size:11px;font-weight:700;padding:3px 7px;border-radius:9px;background:var(--red);color:#ffe9b0;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.mem .tag.old{background:#5a4a3a}
+
+/* B */
+.bhud{position:absolute;left:0;right:0;top:0;z-index:10;text-align:center;padding-top:30px;color:#ffe9b0}
+.bhud small{font-size:15px;letter-spacing:.5em;color:#e2b44c}
+.bhud b{display:block;font-size:58px;text-shadow:0 0 30px rgba(255,200,100,.5),0 3px 0 #5a0c12}
+.applause{position:absolute;left:40px;top:40px;z-index:10;width:300px;padding:14px 18px;border-radius:12px;background:rgba(30,8,8,.78);border:1px solid rgba(226,180,76,.5);color:#ffe9b0}
+.applause small{font-size:12px;letter-spacing:.2em;color:#e2b44c}
+.applause .v{font-size:40px;font-weight:900}
+.applause .gauge{margin:6px 0 0 0}
+.ticket{position:absolute;right:40px;top:40px;z-index:10;width:300px;padding:16px 20px 18px;background:#f4e6c8;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,.6);transform:rotate(2deg);
+  -webkit-mask:radial-gradient(circle 9px at 0 50%,transparent 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 9px at 100% 50%,transparent 98%,#000) right/51% 100% no-repeat}
+.ticket h4{font-size:13px;letter-spacing:.3em;color:var(--red);border-bottom:2px dashed #b59b6c;padding-bottom:8px}
+.ticket li{list-style:none;display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dotted #c9b28a}
+.ticket li b{color:#2f6b3a}
+.ticket li.now{color:var(--red);font-weight:800}
+.ticket .foot{margin-top:10px;font-size:12px;color:#7b5a3a;line-height:1.5}
+.bottomline{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:10;text-align:center;color:#ffe9b0;padding:16px 60px 14px;border-radius:40px;background:radial-gradient(ellipse at 50% 60%,rgba(12,3,3,.85),rgba(12,3,3,.55) 60%,rgba(12,3,3,0) 100%)}
+.bottomline p{font-size:20px;text-shadow:0 2px 10px #000}
+.bottomline .btns{display:flex;gap:12px;justify-content:center;margin-top:14px}
+.btn{height:50px;padding:0 26px;border-radius:25px;border:0;font:700 16px "Noto Sans CJK KR",sans-serif;cursor:pointer}
+.btn.gold{background:linear-gradient(180deg,#ffe29a,#e2b44c);color:#3a1a08;box-shadow:0 4px 0 #9c7322,0 0 24px rgba(255,200,100,.4)}
+.btn.ghost{background:rgba(0,0,0,.5);color:#ffe9b0;border:1px solid rgba(226,180,76,.6)}
+</style>
+</head>
+<body>
+<div id="stage">
+<section class="screen" id="sa">
+  <div class="stripes"></div>
+  <div class="marquee serif"><div class="bulbs" id="bulbs"></div><h1>마지막 순회 서커스</h1></div>
+  <div class="meta">
+    <div class="pill"><small>순회</small><b>12일째</b></div>
+    <div class="pill"><small>남은 도시</small><b>4 곳</b></div>
+    <div class="pill"><small>자금</small><b>₩ 3,180,000</b></div>
+    <div class="pill"><small>해체까지</small><b class="r">D−19</b></div>
+  </div>
+
+  <div class="map">
+    <canvas id="mapc" width="880" height="560"></canvas>
+    <svg id="mapsvg" width="880" height="560"></svg>
+    <div class="town done" style="left:110px;top:430px"><div class="nm">소금항</div><div class="taste"><span>웃음</span><span>동물</span></div></div>
+    <div class="town next" style="left:360px;top:300px"><div class="nm">검은재 탄광마을</div><div class="taste"><span class="hot">불·스릴 ▲</span><span>웃음</span></div></div>
+    <div class="town" style="left:600px;top:160px"><div class="nm">안개내 온천</div><div class="taste"><span>음악</span><span>마술</span></div></div>
+    <div class="town" style="left:770px;top:390px"><div class="nm">은행나무골</div><div class="taste"><span>향수</span><span>곡예</span></div></div>
+    <div class="town" style="left:520px;top:470px"><div class="nm">붉은등 항구</div><div class="taste"><span>불</span><span>광대</span></div></div>
+    <svg class="compass" width="70" height="70" viewBox="-35 -35 70 70"><circle r="30" fill="rgba(244,230,200,.8)" stroke="#5a3a22" stroke-width="2"/><path d="M0 -26 L6 0 L0 26 L-6 0Z" fill="#b3202a"/><path d="M0 -26 L6 0 L0 0Z" fill="#6e0f16"/><text y="-14" x="12" font-size="11" fill="#3a2414" font-weight="700">북</text></svg>
+    <div class="maplegend">━ 트레일러 행렬 경로 · ◆ 공연지 · 거리 2일</div>
+  </div>
+
+  <div class="board">
+    <h3 class="serif">오늘 밤 프로그램 <small>검은재 탄광마을 · 저녁 7시</small></h3>
+    <div class="slots">
+      <div class="slot"><div class="no">1</div><div class="ic">🤡</div><div><b>광대 '누더기'의 인사</b><small>개막 · 관객 긴장 풀기</small></div><div class="fx"><span class="up">웃음 +2</span></div></div>
+      <div class="slot"><div class="no">2</div><div class="ic">🔥</div><div><b>불을 삼키는 남매</b><small>탄광마을 취향 적중</small></div><div class="fx"><span class="up">스릴 +4</span><span class="dn">부상 위험</span></div></div>
+      <div class="slot empty" id="elephant"><div class="no">3</div><div class="ic">🐘</div><div><b>코끼리 '보름'의 자리</b><small>은퇴한 보름 대신 무엇을 넣을까?</small></div></div>
+      <div class="slot"><div class="no">4</div><div class="ic">🎪</div><div><b>외발 자전거 탑 쌓기</b><small>4인 곡예</small></div><div class="fx"><span class="up">곡예 +3</span></div></div>
+      <div class="slot"><div class="no">5</div><div class="ic">🪢</div><div><b>줄 위의 할머니 단장</b><small>피날레 · 서른한 해의 줄타기</small></div><div class="fx"><span class="up">향수 +5</span><span class="dn">체력 −2</span></div></div>
+    </div>
+    <div class="pick">
+      <div data-p="0"><i>🎩</i>마술 상자</div><div data-p="1" class="sel"><i>🐕</i>강아지 합창단</div><div data-p="2"><i>🏮</i>그림자극</div><div data-p="3"><i>🚫</i>비워 둔다</div>
+    </div>
+    <div class="forecast"><span>예상 객석</span><div class="gauge"><i id="seat"></i></div><b style="margin-left:12px" id="seatv">412 / 560석</b></div>
+  </div>
+
+  <div class="troupe" id="troupe"></div>
+</section>
+
+<section class="screen" id="sb">
+  <canvas class="full" id="cb" width="1600" height="1000"></canvas>
+  <div class="bhud serif"><small>마지막 공연 · 은행나무골</small><b>서른한 해의 막이 내린다</b></div>
+  <div class="applause"><small>박수 소리</small><div class="v" id="clap">98</div><div class="gauge"><i style="width:98%"></i></div><div style="font-size:13px;margin-top:8px;color:#e9cf9a">560석 만석 · 기립 박수 3분째</div></div>
+  <div class="ticket serif"><h4>마지막 프로그램</h4><ul>
+    <li><span>1 · 광대 '누더기'</span><b>✓</b></li><li><span>2 · 불을 삼키는 남매</span><b>✓</b></li><li><span>3 · 강아지 합창단</span><b>✓</b></li><li><span>4 · 외발 자전거 탑</span><b>✓</b></li><li class="now"><span>5 · 줄 위의 할머니 단장</span><span>지금</span></li></ul>
+    <div class="foot">순회 31일 · 도시 7곳 · 관객 누적 3,904명<br>부상 2 · 탈단 0</div></div>
+  <div class="bottomline serif"><p>"다들 고마웠어. 이제 불을 꺼도 돼."</p><div class="btns"><button class="btn ghost" id="bow">인사하기</button><button class="btn gold">막 내리기</button></div></div>
+</section>
+
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+<div class="vig"></div>
+<div class="tabs"><button data-s="a">1 · 순회 편성</button><button data-s="b">2 · 마지막 공연</button></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(400,250);
+    for(var i=0;i<d.data.length;i+=4){var v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);c.style.width='1600px';c.style.height='1000px';})();
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  show((location.hash||'#a').slice(1));
+  function rng(s){return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+  var ac=null;function A(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return ac;}
+  function note(f,w,d,v,type){var a=A();if(!a)return;var t=a.currentTime+(w||0),o=a.createOscillator(),g=a.createGain();o.type=type||'square';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.05,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+(d||.25));o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+(d||.25)+.05);}
+  function calliope(){[523,659,784,659,523,784,1046].forEach(function(f,i){note(f,i*.13,.22,.04,'square');note(f/2,i*.13,.22,.03,'triangle');});}
+  function clapNoise(){var a=A();if(!a)return;var len=a.sampleRate*2,b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++){d[i]=(Math.random()*2-1)*(Math.random()<.02?1:.15)*Math.pow(1-i/len,1.5);}var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=1800;var g=a.createGain();g.gain.value=.5;s.connect(f);f.connect(g);g.connect(a.destination);s.start();}
+
+  // bulbs around marquee
+  var bl=document.getElementById('bulbs'),bulbs=[];
+  for(var i=0;i<34;i++){var b=document.createElement('i');b.className='bulb';var W=736,H=72;if(i<17){b.style.left=(i*(W/16)-5)+'px';b.style.top='-5px';}else{b.style.left=((i-17)*(W/16)-5)+'px';b.style.top=(H-5)+'px';}bl.appendChild(b);bulbs.push(b);}
+  setInterval(function(){var k=Math.floor(Date.now()/220)%3;bulbs.forEach(function(b,i){b.classList.toggle('off',i%3===k);});},220);
+
+  // map parchment
+  (function(){var c=document.getElementById('mapc'),x=c.getContext('2d'),R=rng(4);
+    var g=x.createRadialGradient(440,280,60,440,280,560);g.addColorStop(0,'#f1dfb6');g.addColorStop(1,'#c9a871');x.fillStyle=g;x.fillRect(0,0,880,560);
+    for(var i=0;i<3000;i++){x.fillStyle='rgba(90,60,30,'+R()*.06+')';x.fillRect(R()*880,R()*560,1+R()*2,1+R()*2);}
+    // sea
+    x.fillStyle='rgba(80,120,130,.35)';x.beginPath();x.moveTo(0,470);x.bezierCurveTo(120,500,160,560,260,560);x.lineTo(0,560);x.fill();
+    x.strokeStyle='rgba(60,90,100,.4)';for(var w=0;w<5;w++){x.beginPath();x.moveTo(10+w*30,510+w*8);x.quadraticCurveTo(25+w*30,500+w*8,40+w*30,510+w*8);x.stroke();}
+    // mountains
+    x.strokeStyle='rgba(70,45,25,.7)';x.fillStyle='rgba(120,90,60,.25)';for(var m=0;m<14;m++){var mx=260+R()*380,my=90+R()*140,s=18+R()*16;x.beginPath();x.moveTo(mx-s,my+s*.6);x.lineTo(mx,my-s*.6);x.lineTo(mx+s,my+s*.6);x.fill();x.stroke();x.beginPath();x.moveTo(mx,my-s*.6);x.lineTo(mx+s*.3,my+s*.6);x.stroke();}
+    // forests
+    for(var f=0;f<60;f++){var fx=600+R()*260,fy=260+R()*260;x.fillStyle='rgba(60,80,40,.45)';x.beginPath();x.arc(fx,fy,5+R()*4,0,7);x.fill();}
+    // river
+    x.strokeStyle='rgba(70,110,130,.55)';x.lineWidth=4;x.beginPath();x.moveTo(880,120);x.bezierCurveTo(700,240,640,330,470,380);x.bezierCurveTo(330,420,260,500,220,560);x.stroke();
+    // border
+    x.strokeStyle='#6e4a28';x.lineWidth=3;x.strokeRect(8,8,864,544);x.lineWidth=1;x.strokeRect(14,14,852,532);
+    x.font='italic 700 22px "Noto Serif CJK KR",serif';x.fillStyle='rgba(80,50,25,.55)';x.fillText('동쪽 순회로',640,70);})();
+  // map road svg + convoy
+  var svgNS='http://www.w3.org/2000/svg',ms=document.getElementById('mapsvg');
+  function el(t,a,p){var e=document.createElementNS(svgNS,t);for(var k in a)e.setAttribute(k,a[k]);(p||ms).appendChild(e);return e;}
+  el('path',{d:'M110 430 C 180 380, 260 360, 360 300',fill:'none',stroke:'#8a5a2a','stroke-width':5,'stroke-linecap':'round',opacity:.5});
+  var road=el('path',{id:'road',d:'M360 300 C 450 250, 520 190, 600 160 C 690 130, 760 260, 770 390',fill:'none',stroke:'#b3202a','stroke-width':5,'stroke-dasharray':'2 12','stroke-linecap':'round'});
+  el('path',{d:'M360 300 C 400 380, 460 440, 520 470 C 600 510, 700 460, 770 390',fill:'none',stroke:'#6e4a28','stroke-width':3,'stroke-dasharray':'2 10','stroke-linecap':'round',opacity:.6});
+  // travelled segment convoy
+  var conv=el('path',{id:'conv',d:'M110 430 C 180 380, 260 360, 360 300',fill:'none',stroke:'#b3202a','stroke-width':6,'stroke-linecap':'round'});
+  var trailers=[];for(var t=0;t<4;t++){var g=el('g',{});el('rect',{x:-13,y:-8,width:26,height:16,rx:3,fill:t===0?'#2a1a12':'#b3202a',stroke:'#f4e6c8','stroke-width':1.5},g);el('rect',{x:-9,y:-4,width:18,height:3,fill:'#e2b44c'},g);el('circle',{cx:-7,cy:9,r:3,fill:'#2a1a12'},g);el('circle',{cx:7,cy:9,r:3,fill:'#2a1a12'},g);trailers.push(g);}
+  var roadEl=document.getElementById('conv'),RL=roadEl.getTotalLength();
+  // dust
+  var dust=[];for(var d=0;d<10;d++)dust.push(el('circle',{r:4,fill:'rgba(150,110,70,.35)'}));
+
+  // seat gauge + picker
+  var seatTxt=['388 / 560석','412 / 560석','366 / 560석','331 / 560석'],seatW=[69,74,65,59],picks=[['🎩','마술 상자','안개내 취향 · 여기선 평범'],['🐕','강아지 합창단','동물 자리 대체 · 아이들 +3'],['🏮','그림자극','조용함 · 탄광마을 −1'],['🚫','비워 둔다','단원 휴식 · 사기 +1']];
+  function setPick(i){document.querySelectorAll('.pick div').forEach(function(p){p.classList.toggle('sel',+p.dataset.p===i);});
+    var e=document.getElementById('elephant');e.className='slot'+(i===3?' empty':'');e.innerHTML='<div class="no">3</div><div class="ic">'+picks[i][0]+'</div><div><b>'+picks[i][1]+'</b><small>'+picks[i][2]+'</small></div><div class="fx"><span class="'+(i===2?'dn':'up')+'">'+(i===2?'취향 −1':i===3?'사기 +1':'관객 +'+(i+2))+'</span></div>';
+    document.getElementById('seat').style.width=seatW[i]+'%';document.getElementById('seatv').textContent=seatTxt[i];}
+  document.querySelectorAll('.pick div').forEach(function(p){p.addEventListener('click',function(){setPick(+p.dataset.p);calliope();});});
+  document.getElementById('seat').style.width='74%';
+  // keep slot 3 empty-with-question state initially but show selection preview
+  (function(){var e=document.getElementById('elephant');e.innerHTML+='<div class="fx"><span style="background:#e2b44c;color:#3a1a08">🐕 미리보기</span></div>';})();
+
+  // troupe
+  var TR=[['정순','단장 · 줄타기',74,20,71,'#c9a0a0','고령','old'],['무진','불 삼키기',88,35,29,'#d9a05a','',''],['무영','불 삼키기',80,62,27,'#d9a05a','화상','r'],['누더기','광대',55,10,48,'#7aa0c9','의욕 저하','r'],['하늘','공중그네',92,5,19,'#a07ac9','',''],['덕배','조련사',40,15,63,'#8ab07a','보름 은퇴','old']];
+  var troupe=document.getElementById('troupe');
+  TR.forEach(function(m,i){var d=document.createElement('div');d.className='mem';
+    var hair=['#d8d0c8','#2a1a12','#2a1a12','#6a4020','#2a1a12','#9a9088'][i];
+    d.innerHTML='<svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="sp'+i+'" cx="50%" cy="20%" r="80%"><stop offset="0" stop-color="#fff3d0"/><stop offset="1" stop-color="'+m[5]+'"/></radialGradient></defs>'+
+      '<rect width="200" height="140" fill="url(#sp'+i+')"/><path d="M0 140 L0 90 Q100 70 200 90 L200 140Z" fill="rgba(110,15,22,.25)"/>'+
+      '<path d="M60 140 Q64 96 100 92 Q136 96 140 140Z" fill="'+(['#b3202a','#2f6b6a','#2f6b6a','#e2b44c','#1d2340','#6a4020'][i])+'"/>'+
+      '<circle cx="100" cy="64" r="26" fill="#f0c9a0"/>'+(i===3?'<circle cx="100" cy="70" r="6" fill="#d02030"/><path d="M80 52 Q100 38 120 52" stroke="#fff" stroke-width="4" fill="none"/>':'')+
+      '<path d="M74 60 Q76 32 100 34 Q126 32 126 60 Q118 44 100 46 Q84 44 74 60Z" fill="'+hair+'"/>'+
+      '<circle cx="91" cy="64" r="2.4" fill="#2a1a12"/><circle cx="109" cy="64" r="2.4" fill="#2a1a12"/><path d="M92 76 Q100 '+(m[2]>60?82:72)+' 108 76" stroke="#7a3a2a" stroke-width="2" fill="none"/>'+
+      (m[6]==='화상'?'<rect x="112" y="70" width="14" height="8" rx="2" fill="#fff" stroke="#ccc"/>':'')+'</svg>'+
+      (m[6]?'<span class="tag '+m[7]+'">'+m[6]+'</span>':'')+
+      '<div class="info"><b>'+m[0]+'</b><span class="role">'+m[1]+'</span>'+
+      '<div class="st"><span>사기</span><div class="bar"><i style="width:'+m[2]+'%;background:#2f6b3a"></i></div></div>'+
+      '<div class="st"><span>부상</span><div class="bar"><i style="width:'+m[3]+'%;background:#b3202a"></i></div></div>'+
+      '<div class="st"><span>나이</span><div class="bar"><i style="width:'+m[4]+'%;background:#6e4a28"></i></div><span style="width:auto">'+m[4]+'세</span></div></div>';
+    d.addEventListener('click',function(){note(392+i*40,0,.18,.05,'triangle');});troupe.appendChild(d);});
+
+  // ---------- B: big top ----------
+  var cb=document.getElementById('cb'),Y=cb.getContext('2d');
+  var crowd=document.createElement('canvas');crowd.width=1600;crowd.height=1000;(function(){var x=crowd.getContext('2d'),R=rng(9);
+    for(var row=0;row<9;row++){var y=640+row*42,sc=.8+row*.12;for(var px=-20;px<1640;px+=26*sc+R()*8){var cx=px,hy=y+R()*6;var dist=Math.abs(cx-800);if(row<3&&dist<300)continue;
+      var shade=14+((R()*10)|0);x.fillStyle='rgb('+shade+','+(shade*.35|0)+','+(shade*.4|0)+')';x.beginPath();x.ellipse(cx,hy+4*sc,8.5*sc,10*sc,0,0,7);x.fill();x.beginPath();x.moveTo(cx-17*sc,hy+44*sc);x.quadraticCurveTo(cx-16*sc,hy+14*sc,cx,hy+13*sc);x.quadraticCurveTo(cx+16*sc,hy+14*sc,cx+17*sc,hy+44*sc);x.fill();
+      x.strokeStyle='rgba(255,196,120,'+(row<4?.55:.3)+')';x.lineWidth=1.6;x.beginPath();x.ellipse(cx,hy+4*sc,8.5*sc,10*sc,0,Math.PI*1.1,Math.PI*1.9);x.stroke();
+      if(R()<.5){x.strokeStyle='rgba(255,196,120,.25)';x.beginPath();x.moveTo(cx-15*sc,hy+24*sc);x.quadraticCurveTo(cx,hy+10*sc,cx+15*sc,hy+24*sc);x.stroke();}
+      if(R()<.35){x.strokeStyle='rgb(18,6,7)';x.lineWidth=5*sc;x.lineCap='round';x.beginPath();x.moveTo(cx-8*sc,hy+14*sc);x.lineTo(cx-14*sc,hy-18*sc);x.stroke();x.beginPath();x.moveTo(cx+8*sc,hy+14*sc);x.lineTo(cx+14*sc,hy-18*sc);x.stroke();}}}})();
+  var confetti=[];(function(){var R=rng(3);for(var i=0;i<160;i++)confetti.push({x:R()*1600,y:R()*1000,v:30+R()*60,r:R()*6.28,s:3+R()*5,c:['#ffe29a','#b3202a','#f4e6c8','#e2b44c','#7aa0c9'][i%5],w:R()*3});})();
+  function renderB(t){
+    // tent interior: radial stripes from apex
+    var ax=800,ay=-120;Y.fillStyle='#2a0608';Y.fillRect(0,0,1600,1000);
+    for(var i=0;i<28;i++){var a0=Math.PI*(.12+i*.028),a1=a0+.028;Y.fillStyle=i%2?'#7a121a':'#c9b08a';Y.beginPath();Y.moveTo(ax,ay);Y.lineTo(ax+Math.cos(a0)*2000,ay+Math.sin(a0)*2000);Y.lineTo(ax+Math.cos(a1)*2000,ay+Math.sin(a1)*2000);Y.fill();}
+    var dk=Y.createRadialGradient(800,300,100,800,300,900);dk.addColorStop(0,'rgba(30,5,5,.45)');dk.addColorStop(.6,'rgba(20,3,3,.78)');dk.addColorStop(1,'rgba(8,1,1,.95)');Y.fillStyle=dk;Y.fillRect(0,0,1600,1000);
+    // string lights swags
+    for(var s=0;s<4;s++){var yb=160+s*70;Y.strokeStyle='rgba(40,20,10,.8)';Y.lineWidth=1.5;Y.beginPath();for(var x=0;x<=1600;x+=10){var y=yb+Math.sin(x/1600*Math.PI*3)*30+(1-Math.abs(x-800)/800)*40;x?Y.lineTo(x,y):Y.moveTo(x,y);}Y.stroke();
+      for(var b=0;b<=1600;b+=46){var by=yb+Math.sin(b/1600*Math.PI*3)*30+(1-Math.abs(b-800)/800)*40+6;var on=((b/46|0)+s+Math.floor(t*4))%4!==0;Y.fillStyle=on?'#ffe7a0':'#5a4020';if(on){Y.shadowColor='#ffc860';Y.shadowBlur=14;}Y.beginPath();Y.arc(b,by,4,0,7);Y.fill();Y.shadowBlur=0;}}
+    // center poles
+    Y.fillStyle='#3a1a10';Y.fillRect(430,0,16,700);Y.fillRect(1154,0,16,700);Y.fillStyle='rgba(226,180,76,.5)';Y.fillRect(432,0,3,700);Y.fillRect(1156,0,3,700);
+    // high wire
+    Y.strokeStyle='#d8c8a0';Y.lineWidth=2;Y.beginPath();Y.moveTo(446,360);Y.lineTo(1154,360);Y.stroke();
+    // spotlights
+    Y.save();Y.globalCompositeOperation='lighter';[[200,-20,800+Math.sin(t*.6)*30,330],[1400,-20,800+Math.sin(t*.6)*30,330],[800,-40,800,760]].forEach(function(L,i){var g=Y.createLinearGradient(L[0],L[1],L[2],L[3]);g.addColorStop(0,'rgba(255,240,200,.35)');g.addColorStop(1,'rgba(255,220,150,.08)');Y.fillStyle=g;Y.beginPath();Y.moveTo(L[0]-10,L[1]);Y.lineTo(L[2]-(i===2?190:70),L[3]);Y.lineTo(L[2]+(i===2?190:70),L[3]);Y.lineTo(L[0]+10,L[1]);Y.fill();});Y.restore();
+    // ring
+    Y.save();Y.translate(800,760);Y.scale(1,.28);var rg=Y.createRadialGradient(0,0,50,0,0,520);rg.addColorStop(0,'#e8c890');rg.addColorStop(.85,'#b8864a');rg.addColorStop(1,'#6a3a1a');Y.fillStyle=rg;Y.beginPath();Y.arc(0,0,520,0,7);Y.fill();
+    Y.strokeStyle='#b3202a';Y.lineWidth=40;Y.beginPath();Y.arc(0,0,520,0,7);Y.stroke();Y.strokeStyle='#e2b44c';Y.lineWidth=6;Y.beginPath();Y.arc(0,0,500,0,7);Y.stroke();Y.restore();
+    // spotlight pool on ring
+    Y.save();Y.globalCompositeOperation='lighter';var pg=Y.createRadialGradient(800,760,10,800,760,240);pg.addColorStop(0,'rgba(255,240,200,.5)');pg.addColorStop(1,'rgba(255,240,200,0)');Y.fillStyle=pg;Y.beginPath();Y.ellipse(800,760,240,70,0,0,7);Y.fill();Y.restore();
+    // wire walker: old ringmaster with parasol on the wire
+    var wx=800+Math.sin(t*.7)*6,wy=360,sway=Math.sin(t*1.4)*.06;Y.save();Y.translate(wx,wy);Y.rotate(sway);Y.scale(1.5,1.5);
+    Y.fillStyle='#1a0a0a';Y.strokeStyle='#1a0a0a';Y.lineWidth=5;Y.lineCap='round';
+    Y.beginPath();Y.moveTo(-4,0);Y.lineTo(0,-40);Y.lineTo(4,0);Y.stroke();// legs
+    Y.beginPath();Y.moveTo(-14,-40);Y.lineTo(14,-40);Y.lineTo(8,-78);Y.lineTo(-8,-78);Y.fill();// skirt/body
+    Y.beginPath();Y.arc(0,-88,10,0,7);Y.fill();
+    Y.lineWidth=3;Y.beginPath();Y.moveTo(-6,-72);Y.lineTo(-60,-60);Y.stroke();Y.beginPath();Y.moveTo(6,-72);Y.lineTo(56,-96);Y.stroke();
+    Y.fillStyle='#b3202a';Y.beginPath();Y.moveTo(56,-96);Y.arc(56,-96,40,Math.PI*1.05,Math.PI*1.95);Y.closePath();Y.fill();Y.strokeStyle='#e2b44c';Y.lineWidth=2;Y.stroke();
+    Y.restore();
+    // glow halo behind walker
+    Y.save();Y.globalCompositeOperation='lighter';var hg=Y.createRadialGradient(800,300,10,800,300,200);hg.addColorStop(0,'rgba(255,240,210,.45)');hg.addColorStop(1,'rgba(255,240,210,0)');Y.fillStyle=hg;Y.beginPath();Y.arc(800,300,200,0,7);Y.fill();Y.restore();
+    // troupe bowing in ring
+    for(var m=0;m<6;m++){var mx=560+m*96,my=770,bow=(Math.sin(t*1.2+m*.25)*.5+.5)*.55;var col=['#b3202a','#2f6b6a','#2f6b6a','#e2b44c','#1d2340','#6a4020'][m];Y.save();Y.translate(mx,my);
+      Y.fillStyle='rgba(0,0,0,.35)';Y.beginPath();Y.ellipse(10,2,30,7,0,0,7);Y.fill();
+      Y.strokeStyle='#241010';Y.lineWidth=7;Y.lineCap='round';Y.beginPath();Y.moveTo(-6,0);Y.lineTo(-5,-34);Y.moveTo(6,0);Y.lineTo(5,-34);Y.stroke();
+      Y.translate(0,-34);Y.rotate(bow);var bg=Y.createLinearGradient(-14,0,14,0);bg.addColorStop(0,col);bg.addColorStop(1,'rgba(0,0,0,.5)');Y.fillStyle=col;
+      Y.beginPath();Y.moveTo(-15,0);Y.lineTo(-13,-46);Y.quadraticCurveTo(0,-52,13,-46);Y.lineTo(15,0);Y.fill();Y.fillStyle=bg;Y.globalAlpha=.5;Y.fill();Y.globalAlpha=1;
+      Y.fillStyle='#e2b44c';Y.fillRect(-13,-24,26,3);
+      Y.strokeStyle=col;Y.lineWidth=7;Y.beginPath();Y.moveTo(-12,-42);Y.lineTo(-22,-12);Y.moveTo(12,-42);Y.quadraticCurveTo(34,-46,40,-68);Y.stroke();
+      Y.fillStyle='#f0c9a0';Y.beginPath();Y.arc(0,-60,12,0,7);Y.fill();Y.fillStyle=m===0?'#ddd':m===3?'#6a4020':'#2a1a12';Y.beginPath();Y.arc(0,-64,12,Math.PI,0);Y.fill();
+      if(m===3){Y.fillStyle='#d02030';Y.beginPath();Y.arc(10,-58,4,0,7);Y.fill();}
+      Y.fillStyle='rgba(255,230,180,.25)';Y.fillRect(-15,-46,6,46);Y.restore();}
+    // dog chorus
+    for(var dg=0;dg<3;dg++){var dx=1080+dg*36,dy=790;Y.fillStyle='#e8d8b8';Y.beginPath();Y.ellipse(dx,dy-10,14,9,0,0,7);Y.fill();Y.beginPath();Y.arc(dx+12,dy-20-Math.abs(Math.sin(t*4+dg))*5,7,0,7);Y.fill();}
+    // crowd
+    Y.drawImage(crowd,0,0);
+    // confetti
+    confetti.forEach(function(c){c.y+=c.v*.016;if(c.y>1000)c.y=-10;var y=c.y;Y.save();Y.translate(c.x+Math.sin(t*2+c.w)*14,y);Y.rotate(t*3+c.r);Y.fillStyle=c.c;Y.fillRect(-c.s/2,-c.s/4,c.s,c.s/2);Y.restore();});
+  }
+  document.getElementById('bow').addEventListener('click',function(){clapNoise();calliope();});
+  cb.addEventListener('click',function(){clapNoise();});
+
+  var T=0,last=performance.now();
+  function renderA(t){var p=.62+((t*.02)%.3);
+    trailers.forEach(function(g,i){var q=Math.max(0,p*RL-i*26),pt=roadEl.getPointAtLength(q),pt2=roadEl.getPointAtLength(Math.min(RL,q+2));var a=Math.atan2(pt2.y-pt.y,pt2.x-pt.x)*180/Math.PI;g.setAttribute('transform','translate('+pt.x+','+(pt.y+Math.sin(t*9+i)*.8)+') rotate('+a+')');});
+    dust.forEach(function(d,i){var q=Math.max(0,p*RL-4*26-i*6),pt=roadEl.getPointAtLength(q);d.setAttribute('cx',pt.x-6+Math.sin(t*3+i)*3);d.setAttribute('cy',pt.y+4-i*1.2);d.setAttribute('r',3+i*.6);d.setAttribute('opacity',(1-i/10)*.8);});}
+  renderA(1.2);renderB(0);
+  function frame(now){var dt=(now-last)/1000;last=now;T+=Math.min(dt,.05);if(cur==='a')renderA(T+1.2);else renderB(T);requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+  setInterval(function(){var c=document.getElementById('clap');c.textContent=96+Math.floor(Math.random()*4);},700);
+})();
+</script>
+</body>
+</html>

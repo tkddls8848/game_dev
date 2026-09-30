@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그림자 경매 v2</title>
+<style>
+:root{
+  --gold:#d9b25f; --gold-l:#f3d88f; --gold-d:#8a6a2c; --vel:#6e0f16; --ivory:#f1e6cc; --ink:#221208; --paper:#efe3c4;
+  --ok:#2f6b3a; --no:#9a1c14; --q:#8a6a2c; --warn:#ff9a6a;
+  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo","Noto Sans CJK KR",serif;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#040202;overflow:hidden}
+body{font-family:var(--sans);color:var(--ivory)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#0d0405}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;left:0;top:0;width:1600px;height:1000px}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.14;mix-blend-mode:overlay}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:30;background:radial-gradient(ellipse 72% 72% at 50% 40%,transparent 50%,rgba(0,0,0,.7))}
+.tabs{position:absolute;right:12px;bottom:10px;z-index:60;display:flex;gap:6px}
+.tabs button{font:700 12px/1 var(--sans);padding:7px 10px;border-radius:2px;border:1px solid rgba(217,178,95,.45);background:rgba(20,5,6,.8);color:#e9d7a8;cursor:pointer}
+.tabs button.on{background:var(--gold);color:#2a1606;border-color:var(--gold)}
+
+/* shared panels */
+.deco{position:absolute;z-index:35;background:linear-gradient(170deg,rgba(30,11,11,.95),rgba(12,4,5,.95));border:1px solid var(--gold-d);
+  box-shadow:0 0 0 4px rgba(12,4,5,.9),0 0 0 5px rgba(217,178,95,.5),0 18px 40px rgba(0,0,0,.6);padding:14px 16px}
+.deco::before,.deco::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--gold)}
+.deco::before{left:-3px;top:-3px;border-right:0;border-bottom:0}
+.deco::after{right:-3px;bottom:-3px;border-left:0;border-top:0}
+.cap{font:700 11px/1 var(--sans);letter-spacing:.28em;color:#b8955a}
+.paper{position:absolute;z-index:35;background:linear-gradient(175deg,#f2e7c9,#ddcb9d);color:var(--ink);box-shadow:0 18px 36px rgba(0,0,0,.65),inset 0 0 40px rgba(120,80,30,.18);padding:14px 16px}
+.paper h3{font:900 17px/1 var(--serif);letter-spacing:.1em;display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:7px}
+.paper h3 small{font:700 11px/1 var(--sans);letter-spacing:.04em;color:#6b4f2e}
+
+.title{position:absolute;left:28px;top:22px;z-index:35}
+.title h1{font:900 30px/1 var(--serif);letter-spacing:.2em;color:var(--gold-l);text-shadow:0 0 18px rgba(243,216,143,.35),0 2px 0 #4a2d0c}
+.title .lot{display:inline-block;margin-top:9px;font:800 13px/1 var(--sans);letter-spacing:.1em;color:#1c0f05;background:linear-gradient(#f3d88f,#c79a45);padding:6px 10px}
+.title .lot em{font-style:normal;color:#6e0f16}
+
+/* A: hypothesis board */
+.hyp{left:24px;top:112px;width:392px}
+.hyp .sub{font:600 12px/1.45 var(--sans);color:#5a3f22;margin-top:7px}
+.hyp table{width:100%;border-collapse:collapse;margin-top:9px}
+.hyp th{font:800 11px/1 var(--sans);color:#6b4f2e;text-align:center;padding:5px 2px;border-bottom:1px solid #a88c5c}
+.hyp th:first-child{text-align:left}
+.hyp th.cur{color:#1c0f05;background:rgba(217,178,95,.45)}
+.hyp td{padding:8px 2px;border-bottom:1px dashed #b39a6a;text-align:center;vertical-align:middle}
+.hyp td.nm{text-align:left}
+.hyp td.nm b{display:block;font:900 15px/1.15 var(--serif)}
+.hyp td.nm span{display:block;font:600 11px/1.3 var(--sans);color:#6b4f2e;margin-top:2px}
+.hyp td.v{font:900 15px/1 var(--serif);text-align:right;white-space:nowrap}
+.hyp td.v small{display:block;font:700 10px/1.3 var(--sans);color:#6b4f2e}
+.mk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font:900 15px/1 var(--sans)}
+.mk.ok{background:var(--ok);color:#f2ffe9}
+.mk.no{background:var(--no);color:#fff}
+.mk.q{border:2px dashed var(--q);color:var(--q);background:transparent}
+.mk + i{display:block;font:700 9.5px/1.2 var(--sans);font-style:normal;color:#6b4f2e;margin-top:3px}
+.hyp tr.out td{opacity:.42}
+.hyp tr.out td.nm b{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--no)}
+.hyp .sum{margin-top:11px;background:#221208;color:var(--ivory);padding:11px 13px;display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
+.hyp .sum div span{display:block;font:700 10.5px/1 var(--sans);letter-spacing:.12em;color:#b8955a}
+.hyp .sum div b{display:block;font:900 24px/1.1 var(--serif);color:var(--gold-l);margin-top:4px}
+.hyp .sum div b.s{font-size:17px;color:var(--ivory)}
+.hyp .sum p{grid-column:1/3;font:600 11px/1.4 var(--sans);color:#c9b68e;border-top:1px solid #5a3c12;padding-top:6px}
+.hyp .sum.flash{animation:sumf .7s ease-out}
+@keyframes sumf{0%{box-shadow:0 0 0 4px #ffcf7a}100%{box-shadow:0 0 0 0 transparent}}
+
+/* A: money */
+.money{right:24px;top:22px;width:330px}
+.money .big{display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px}
+.money .big b{font:900 38px/1 var(--serif);color:var(--ivory)}
+.money .big b.dn{animation:dn .6s ease-out}
+@keyframes dn{0%{color:#ff7a5a;transform:translateY(-4px)}100%{color:var(--ivory);transform:none}}
+.money .big span{font:700 12px/1.45 var(--sans);color:#a38a66;text-align:right}
+.money .log{margin-top:8px;font:600 12px/1.5 var(--sans);color:#d8c49a}
+.money .log i{font-style:normal;color:var(--warn)}
+.axis{position:relative;height:40px;margin-top:10px}
+.axis .ln{position:absolute;left:0;right:0;top:18px;height:6px;background:#2a1414}
+.axis .fill{position:absolute;left:0;top:18px;height:6px;background:linear-gradient(90deg,#8a6a2c,#f3d88f)}
+.axis .tk{position:absolute;top:10px;width:2px;height:22px}
+.axis .tk em{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font:800 10.5px/1 var(--sans);font-style:normal}
+.axis .tk.p{background:#f3d88f}.axis .tk.p em{top:-12px;color:#f3d88f}
+.axis .tk.e{background:#7fd08a}.axis .tk.e em{top:26px;color:#7fd08a}
+.axis .tk.c{background:#ff9a6a}.axis .tk.c em{top:-12px;color:#ff9a6a}
+
+/* A: auctioneer call */
+.call{position:absolute;z-index:34;left:1236px;top:272px;width:300px;background:linear-gradient(#f5dd97,#d4ac5c);color:#1c0f05;padding:10px 14px 11px;box-shadow:0 10px 24px rgba(0,0,0,.6)}
+.call::after{content:"";position:absolute;left:34px;bottom:-11px;border:11px solid transparent;border-bottom:0;border-top-color:#d4ac5c}
+.call small{display:block;font:800 11px/1 var(--sans);letter-spacing:.14em;color:#6e0f16}
+.call b{display:block;font:900 26px/1.15 var(--serif);margin-top:4px}
+.call .beats{display:flex;gap:10px;margin-top:6px;font:800 11px/1 var(--sans);color:#5a3a12;align-items:center}
+.call .beats i{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid #6e0f16;margin-right:3px;vertical-align:-2px}
+.call .beats i.on{background:#6e0f16}
+.call.pop{animation:pop .35s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{0%{transform:scale(.9)}100%{transform:none}}
+
+/* reaction tags */
+.tag{position:absolute;z-index:34;width:212px;background:rgba(241,230,204,.97);color:var(--ink);padding:7px 10px 8px;box-shadow:0 8px 18px rgba(0,0,0,.6);border-left:5px solid #8a6a2c}
+.tag::after{content:"";position:absolute;left:26px;bottom:-9px;border:9px solid transparent;border-bottom:0;border-top-color:rgba(241,230,204,.97)}
+.tag .h{display:flex;justify-content:space-between;align-items:baseline}
+.tag .h b{font:900 15px/1 var(--serif)}
+.tag .h span{font:700 10.5px/1 var(--sans);color:#6b4f2e}
+.tag .act{font:800 13px/1.3 var(--sans);color:#8a1b12;margin-top:4px}
+.tag .led{margin-top:5px;padding-top:5px;border-top:1px dashed #a88c5c;font:700 11px/1.35 var(--sans);color:#3a2a18}
+.tag .led em{font-style:normal;font-weight:900}
+.tag.hot{border-left-color:#2f6b3a}
+.tag.l::after{left:-9px;top:30px;bottom:auto;border:9px solid transparent;border-left:0;border-right-color:rgba(241,230,204,.97)}
+.tag.hot .led em{color:#2f6b3a}
+.tag.mute{border-left-color:#8a8070;opacity:.93}
+.tag.mute .led em{color:#6b6255}
+.tag.new{border-left-color:#b3201a}
+
+/* controls */
+.ctrl{left:356px;top:872px;width:888px;height:110px;display:flex;gap:14px;align-items:center;padding:10px 14px}
+.rail{position:relative;width:318px;height:88px;flex:none}
+.rail .t{position:absolute;left:0;top:0;font:700 11px/1 var(--sans);letter-spacing:.2em;color:#b8955a}
+.stops{position:absolute;left:0;right:0;top:20px;display:flex;gap:6px}
+.stop{flex:1;height:66px;border:1px solid #6b4a1e;background:#1c0a08;color:#e9d7a8;text-align:center;padding-top:7px;cursor:pointer;position:relative;font-family:var(--sans)}
+.stop b{display:block;font:900 20px/1 var(--serif)}
+.stop span{display:block;font:700 10.5px/1.3 var(--sans);margin-top:5px;color:#b8955a}
+.stop.own{background:#2a1a0e;cursor:default}
+.stop.own span{color:#7fd08a}
+.stop.cur{border:2px solid var(--gold-l);box-shadow:0 0 14px rgba(243,216,143,.4) inset}
+.stop.buy{background:linear-gradient(#f3d88f,#c79a45);color:#1c0f05;border-color:#f7e2a6;box-shadow:0 4px 0 #5a3c12}
+.stop.buy span{color:#5a1a10}
+.stop.buy kbd{position:absolute;right:4px;top:4px}
+kbd{font:800 10px/1 var(--sans);background:rgba(0,0,0,.2);padding:2px 4px;border-radius:2px}
+.btn{height:88px;font:900 20px/1 var(--serif);letter-spacing:.04em;color:#1c0f05;background:linear-gradient(#f3d88f,#c79a45 55%,#a67a2e);border:1px solid #f7e2a6;padding:0 16px;cursor:pointer;box-shadow:0 4px 0 #5a3c12,0 10px 20px rgba(0,0,0,.5);text-align:left;font-family:var(--serif)}
+.btn small{display:block;font:700 11.5px/1.35 var(--sans);letter-spacing:0;color:#4a2a0c;margin-top:6px}
+.btn:active,.btn.pr{transform:translateY(3px);box-shadow:0 1px 0 #5a3c12,0 5px 10px rgba(0,0,0,.5)}
+.btn.main{width:300px;font-size:19px;background:linear-gradient(#b8322a,#7a1216);color:#fff1d8;border-color:#ffb28a}
+.btn.main small{color:#ffd9b8}
+.btn.ghost{width:188px;background:linear-gradient(#3a1416,#240a0c);color:#e9d7a8;border-color:#8a6a2c;box-shadow:0 4px 0 #120405,0 10px 20px rgba(0,0,0,.5)}
+.btn.ghost small{color:#b8955a}
+.btn kbd{margin-right:6px;vertical-align:3px}
+
+/* B */
+.head{position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:35;text-align:center;padding:8px 54px 12px;background:radial-gradient(ellipse 50% 60% at 50% 50%,rgba(10,2,3,.92),rgba(10,2,3,.72) 60%,transparent);white-space:nowrap}
+.head .k{font:700 13px/1 var(--sans);letter-spacing:.3em;color:#b8955a}
+.head h2{font:900 42px/1.1 var(--serif);letter-spacing:.08em;color:var(--gold-l);text-shadow:0 0 24px rgba(243,216,143,.4),0 3px 0 #4a2d0c;margin-top:7px}
+.head h2 em{font-style:normal;color:#ffb89a}
+.review{left:24px;top:112px;width:404px}
+.thr{display:flex;gap:8px;margin-top:10px}
+.th{flex:1;height:124px;position:relative;background:#f7eed6;border:3px solid #c79a45}
+.th.x{border:2px dashed #8a8070;background:#e4dccb}
+.th .l{position:absolute;left:0;right:0;bottom:0;font:800 10.5px/1.25 var(--sans);text-align:center;padding:3px 0;background:#c79a45;color:#1c0f05}
+.th.x .l{background:#8a8070;color:#fff}
+.sec{margin-top:10px;font:700 11px/1 var(--sans);letter-spacing:.16em;color:#6b4f2e}
+.calc{margin-top:6px;background:#221208;color:var(--ivory);padding:10px 12px;font:600 13px/1.55 var(--sans)}
+.calc b{font:900 16px/1 var(--serif);color:var(--gold-l)}
+.calc .over{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px solid #5a3c12}
+.calc .over b{font-size:22px;color:#ff9a6a}
+.note2{margin-top:8px;border:2px dashed #8a8070;padding:8px 10px;font:600 12.5px/1.5 var(--sans);color:#3a3228;background:rgba(255,255,255,.25)}
+.note2 b{color:#1c0f05}
+.note2 .lb{display:inline-block;font:800 10px/1 var(--sans);background:#8a8070;color:#fff;padding:3px 5px;margin-right:4px;vertical-align:1px}
+.settle{right:24px;top:112px;width:352px;transform:rotate(.6deg)}
+.settle table{width:66%;border-collapse:collapse;margin-top:8px;font:700 14px/1.75 var(--sans)}
+.settle td:last-child{text-align:right;font:900 15px/1.75 var(--serif)}
+.settle tr.m td:last-child{color:#8a1b12}
+.settle tr.p td:last-child{color:#2f6b3a}
+.settle tr.tot td{border-top:2px solid var(--ink);font-size:16px;padding-top:2px}
+.settle tr.tot td:last-child{font-size:22px;color:#8a1b12}
+.settle .cash{margin-top:8px;background:#221208;color:var(--ivory);padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.settle .cash span{font:700 12px/1.4 var(--sans);color:#c9b68e}
+.settle .cash b{font:900 30px/1 var(--serif);color:#ffcf7a}
+.settle .nx{margin-top:8px;font:700 12.5px/1.55 var(--sans);color:#3a2a18}
+.settle .nx .okc{color:#2f6b3a;font-weight:900}
+.settle .nx .wr{color:#8a1b12;font-weight:900}
+.stamp{position:absolute;right:10px;top:76px;width:100px;height:100px;border:5px solid #b3201a;border-radius:50%;color:#b3201a;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform:rotate(-14deg);opacity:.85;mix-blend-mode:multiply;font:900 26px/1 var(--serif);box-shadow:inset 0 0 0 3px #f3ead2,inset 0 0 0 5px #b3201a}
+.stamp small{font:800 10px/1 var(--sans);letter-spacing:.14em;margin-top:5px}
+.stamp.hit{animation:stp .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stp{0%{transform:rotate(-14deg) scale(1.8);opacity:0}100%{transform:rotate(-14deg) scale(1);opacity:.85}}
+.ctrlB{left:440px;top:880px;width:720px;height:100px;display:flex;gap:12px;align-items:center;padding:6px 12px}
+.ctrlB .btn{height:80px;flex:1;font-size:18px}
+.flip .th.x{animation:none}
+.th.x svg{opacity:.55}
+.th.x.show svg{opacity:1}
+.th.x.show{border:3px solid #c79a45;background:#f7eed6}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg id="defsvg" width="0" height="0" style="position:absolute;left:0;top:0"></svg>
+
+<!-- ================= A : 입찰 결정 ================= -->
+<section class="screen" id="sa">
+  <svg class="scene" id="scA" viewBox="0 0 1600 1000"></svg>
+  <div class="vig"></div>
+
+  <div class="title"><h1>그림자 경매</h1><br><div class="lot">LOT <em>04</em> / 06 · 학 조각상 · 위탁 개인</div></div>
+
+  <div class="paper hyp">
+    <h3>도감 · 학 조각상<small>후보 3 · 출품 비율 2:2:1</small></h3>
+    <table>
+      <tr><th>후보</th><th>0°<br>날개 끝</th><th class="cur" id="th45">45°<br>가는 선</th><th id="th90">90°<br>선의 끝</th><th style="text-align:right">감정가</th></tr>
+      <tr id="rG"><td class="nm"><b>진품</b><span>청동 주조 · 받침 막대</span></td><td><span class="mk ok">✓</span><i>뾰족</i></td><td><span class="mk ok">✓</span><i>있음</i></td><td id="g90"><span class="mk q">?</span><i>발목</i></td><td class="v">2,600원<small>비율 2</small></td></tr>
+      <tr id="rP"><td class="nm"><b>석고 복제</b><span>청동 도색 · 쇠 지지대</span></td><td><span class="mk ok">✓</span><i>뾰족</i></td><td><span class="mk ok">✓</span><i>있음</i></td><td id="p90"><span class="mk q">?</span><i>배</i></td><td class="v">200원<small>비율 2</small></td></tr>
+      <tr class="out"><td class="nm"><b>후주조 복제</b><span>청동 · 날개 끝 뭉툭</span></td><td><span class="mk no">✗</span><i>뭉툭</i></td><td>—</td><td>—</td><td class="v">800원<small>비율 1</small></td></tr>
+    </table>
+    <div class="sum" id="sum">
+      <div><span>남은 후보</span><b id="sCand">2</b></div>
+      <div><span>기대값</span><b id="sEv">1,400원</b></div>
+      <div style="grid-column:1/3"><span>가치 범위</span><b class="s" id="sRange">200 ~ 2,600원</b></div>
+      <p id="sNote">45°의 가는 선은 진품의 받침 막대일 수도, 석고의 쇠 지지대일 수도 있다. 가르는 것은 90°의 선 끝 높이.</p>
+    </div>
+  </div>
+
+  <div class="deco money">
+    <div class="cap">패들 17 · 내 현금</div>
+    <div class="big"><b id="cash">2,300원</b><span>밤 목표 3,600원<br>남은 로트 3 (이번 포함)</span></div>
+    <div class="log" id="clog">이번 로트: 좌석료 <i>−100</i> · 45° 조명 <i>−200</i></div>
+    <div class="axis">
+      <div class="ln"></div><div class="fill" id="axFill" style="width:52.2%"></div>
+      <div class="tk p" id="tkP" style="left:52.2%"><em id="tkPt">현재가 1,200</em></div>
+      <div class="tk e" id="tkE" style="left:60.9%"><em id="tkEt">기대값 1,400</em></div>
+      <div class="tk c" style="left:99.4%"><em>현금 2,300</em></div>
+    </div>
+  </div>
+
+  <div class="call" id="call"><small>경매사 · 호가 단위 100원</small><b id="callT">1,200원 · 11번</b>
+    <div class="beats" id="beats"><span><i class="on"></i>하나</span><span><i></i>둘</span><span><i></i>셋 → 낙찰</span></div></div>
+
+  <div class="tag mute" style="left:300px;top:596px"><div class="h"><b>3번</b><span>중개인</span></div>
+    <div class="act">헛기침 ×2 · 1,000원 넘긴 뒤</div>
+    <div class="led">장부 · 개인 위탁 로트: 진품 <em>2/4</em> → 신호 없음</div></div>
+  <div class="tag hot l" id="tag11" style="left:812px;top:606px"><div class="h"><b>11번</b><span>청동 수집가</span></div>
+    <div class="act" id="act11">패들 0.4초 · 45° 켜진 직후</div>
+    <div class="led" id="led11">장부 · 빠른 패들 → 진품 <em>4/5</em></div></div>
+  <div class="tag mute" style="left:1090px;top:648px"><div class="h"><b>22번</b><span>도자 전문</span></div>
+    <div class="act" style="color:#5a4a38">관망 · 부채질 계속</div>
+    <div class="led">장부 · 금속 로트 무반응 <em>3/3</em></div></div>
+
+  <div class="deco ctrl">
+    <div class="rail"><div class="t">조명 레일 · 켜면 모두가 본다</div>
+      <div class="stops">
+        <div class="stop own"><b>0°</b><span>무료 · 확보</span></div>
+        <div class="stop own cur" id="st45"><b>45°</b><span>확보 · 지금</span></div>
+        <div class="stop buy" id="st90"><kbd>A</kbd><b>90°</b><span>200원 켜기</span></div>
+      </div></div>
+    <button class="btn main" id="bid"><kbd>Space</kbd>패들 올리기 <span id="bidAmt">1,300원</span><small id="bidSub">기대값보다 100원 아래 · 낙찰 시 현금 1,000원</small></button>
+    <button class="btn ghost" id="pass"><kbd>P</kbd>관망<small>좌석료 100원은 이미 냄<br>현금 <span id="passCash">2,300원</span> 유지</small></button>
+  </div>
+</section>
+
+<!-- ================= B : 복기 ================= -->
+<section class="screen" id="sb">
+  <svg class="scene" id="scB" viewBox="0 0 1600 1000"></svg>
+  <div class="vig"></div>
+
+  <div class="title"><h1>그림자 경매</h1><br><div class="lot">LOT <em>04</em> / 06 · 가림막 걷힘</div></div>
+  <div class="head"><div class="k">탕 · 탕 · 탕 — 17번 낙찰 1,700원</div><h2>정체: <em>석고 복제</em> · 감정가 200원</h2></div>
+
+  <div class="paper review">
+    <h3>복기 · 당시 증거와 해설<small>R: 90° 해설 켜기</small></h3>
+    <div class="thr">
+      <div class="th"><svg viewBox="0 0 120 124" width="100%" height="100%"><g id="bt0"></g></svg><div class="l">0° · 당시 확보</div></div>
+      <div class="th"><svg viewBox="0 0 120 124" width="100%" height="100%"><g id="bt45"></g></svg><div class="l">45° · 당시 확보</div></div>
+      <div class="th x" id="bx90"><svg viewBox="0 0 120 124" width="100%" height="100%"><g id="bt90"></g></svg><div class="l">90° · 해설 (미구매)</div></div>
+    </div>
+    <div class="sec">당시 판단 — 확보한 증거만으로</div>
+    <div class="calc">진품 2 : 석고 2 → 기대값 <b>1,400원</b><br>11번 빠른 패들(4/5)을 믿고 상한을 넘김
+      <div class="over"><span>낙찰가 1,700원 − 기대값 1,400원</span><b>300원 초과</b></div></div>
+    <div class="note2"><span class="lb">해설</span>90°를 켰다면(−200원) 선이 <b>배까지</b> 이어져 석고 확정 → 기대값 <b>200원</b>. 11번도 같은 그림자를 보고 패들을 내렸을 것.</div>
+  </div>
+
+  <div class="paper settle">
+    <h3>정산서 · LOT 04<small>감정실 매입</small></h3>
+    <table>
+      <tr class="m"><td>좌석료</td><td>−100원</td></tr>
+      <tr class="m"><td>45° 조명</td><td>−200원</td></tr>
+      <tr class="m"><td>낙찰가</td><td>−1,700원</td></tr>
+      <tr class="p"><td>감정가 매입</td><td>+200원</td></tr>
+      <tr class="tot"><td>로트 손익</td><td>−1,800원</td></tr>
+    </table>
+    <div class="cash"><span>현금<br>2,600 → </span><b>800원</b></div>
+    <div class="nx">LOT 05 참가비 500원 (시작가 400 + 좌석료 100)<br><span class="okc">800원 ≥ 500원 → 참가 가능</span><br>밤 목표까지 <span class="wr">2,800원</span> · 남은 로트 2<br><span style="color:#6b4f2e">현금 500원 미만이면 관전 전환(장부는 계속 기록)</span></div>
+    <div class="stamp" id="stampB">석고<small>감정 필</small></div>
+  </div>
+
+  <div class="tag new" style="left:444px;top:632px;width:268px"><div class="h"><b>11번 · 장부 갱신</b><span>청동 수집가</span></div>
+    <div class="act">패들을 내리고 한숨 — 그도 45°까지만 봤다</div>
+    <div class="led">빠른 패들 → 진품 <em>4/5 → 4/6</em><br>분할: 90° 공개 후 <em style="color:#2f6b3a">4/4</em> · 공개 전 <em style="color:#b3201a">0/2</em></div></div>
+  <div class="tag mute" style="left:960px;top:664px;width:232px"><div class="h"><b>3번 · 장부 갱신</b><span>중개인</span></div>
+    <div class="act" style="color:#5a4a38">모자를 고쳐 쓴다 · 표정 변화 없음</div>
+    <div class="led">개인 위탁 헛기침 → 진품 <em>2/4 → 2/5</em></div></div>
+
+  <div class="deco ctrlB">
+    <button class="btn ghost" id="replay"><kbd>R</kbd>90° 해설 켜기<small>당시 미확보 · 복기 전용</small></button>
+    <button class="btn" id="rec"><kbd>Space</kbd>장부에 기록<small>11번 · 3번 갱신</small></button>
+    <button class="btn main" id="next"><kbd>N</kbd>LOT 05로<small>현금 800원 · 참가 가능</small></button>
+  </div>
+</section>
+
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+<div class="tabs"><button data-s="a">1 · 입찰 결정</button><button data-s="b">2 · 가림막 뒤 복기</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  /* seeded noise for grain (mock only) */
+  var seed=73;function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;}
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(400,250);
+    for(var i=0;i<d.data.length;i+=4){var v=rnd()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);
+    c.style.width='1600px';c.style.height='1000px';})();
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function txt(p,x,y,s,a){var t=el('text',Object.assign({x:x,y:y,'font-family':'Noto Sans CJK KR,Noto Sans KR,sans-serif','font-weight':800,'text-anchor':'middle'},a||{}),p);t.textContent=s;return t;}
+
+  /* ---------- defs ---------- */
+  document.getElementById('defsvg').innerHTML='<defs>'+
+   '<linearGradient id="velv" x1="0" x2="1"><stop offset="0" stop-color="#2a0306"/><stop offset=".22" stop-color="#7e141c"/><stop offset=".42" stop-color="#b0242d"/><stop offset=".58" stop-color="#5c0b11"/><stop offset=".82" stop-color="#961c24"/><stop offset="1" stop-color="#2a0306"/></linearGradient>'+
+   '<pattern id="folds" width="58" height="1000" patternUnits="userSpaceOnUse"><rect width="58" height="1000" fill="url(#velv)"/></pattern>'+
+   '<linearGradient id="curtShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".65"/></linearGradient>'+
+   '<linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e2a6"/><stop offset=".5" stop-color="#c79a45"/><stop offset="1" stop-color="#6b4a18"/></linearGradient>'+
+   '<radialGradient id="scrGlow" cx=".5" cy=".45" r=".78"><stop offset="0" stop-color="#fff6de"/><stop offset=".4" stop-color="#f1d9a6"/><stop offset=".8" stop-color="#b8844a"/><stop offset="1" stop-color="#5a2e14"/></radialGradient>'+
+   '<pattern id="weave" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H5M2.5 0V5" stroke="#6b3e1a" stroke-opacity=".08" stroke-width="1"/></pattern>'+
+   '<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4"/></filter>'+
+   '<filter id="soft4" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>'+
+   '<filter id="soft8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>'+
+   '<filter id="soft20" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>'+
+   '<linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2412"/><stop offset="1" stop-color="#140707"/></linearGradient>'+
+   '<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2cf" stop-opacity=".6"/><stop offset="1" stop-color="#fff2cf" stop-opacity="0"/></linearGradient>'+
+   '<linearGradient id="bronze" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0c987"/><stop offset=".3" stop-color="#a8773a"/><stop offset=".65" stop-color="#5a3816"/><stop offset="1" stop-color="#2a1a0a"/></linearGradient>'+
+   '<linearGradient id="podG" x1="0" x2="1"><stop offset="0" stop-color="#1c0a06"/><stop offset=".5" stop-color="#5a2a12"/><stop offset="1" stop-color="#140604"/></linearGradient>'+
+   '<linearGradient id="seat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a161c"/><stop offset="1" stop-color="#2a0508"/></linearGradient>'+
+   '<radialGradient id="lampG"><stop offset="0" stop-color="#fff4d0"/><stop offset=".3" stop-color="#ffd07a" stop-opacity=".7"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient>'+
+   '<linearGradient id="skin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a1e14"/><stop offset=".7" stop-color="#b07a58"/><stop offset="1" stop-color="#f0c09a"/></linearGradient>'+
+   '</defs>';
+
+  /* ---------- crane : base centre (0,0), up = -y, facing right ---------- */
+  var P={
+    plinth:'M-72 0 L72 0 L66 -22 L-66 -22Z',
+    foot:'M-20 -22 L26 -22 L22 -28 L-16 -28Z',
+    leg:'M-3 -26 L-5 -94 L-1 -100 L-6 -160 L3 -160 L6 -100 L3 -94 L4 -26Z',
+    tuck:'M-14 -172 L-38 -142 L-34 -136 L-12 -128 L-13 -123 L-40 -133 L-44 -143 L-20 -176Z',
+    body:'M-118 -198 C-96 -170 -40 -156 10 -164 C44 -170 62 -196 52 -224 C42 -246 -10 -252 -60 -238 C-92 -228 -110 -214 -118 -198Z',
+    tail:'M-98 -202 C-128 -198 -152 -182 -168 -160 C-152 -164 -142 -166 -132 -170 C-144 -158 -152 -148 -156 -134 C-132 -154 -114 -172 -92 -186Z',
+    wing:'M-46 -240 C-66 -270 -96 -300 -146 -326 C-150 -318 -148 -312 -140 -306 C-160 -306 -170 -300 -174 -292 C-156 -288 -146 -284 -138 -280 C-158 -276 -166 -268 -168 -262 C-146 -262 -132 -258 -122 -254 C-106 -246 -92 -236 -78 -230Z',
+    neck:'M30 -230 C50 -258 26 -288 32 -318 C38 -346 58 -362 72 -366 L78 -354 C62 -348 50 -336 46 -316 C42 -290 66 -258 50 -222Z',
+    head:'M66 -372 C78 -382 94 -374 94 -362 L172 -352 L92 -352 C86 -346 70 -348 64 -358Z'
+  };
+  // line: 'q' (45: top hidden behind leg) | 'belly' (plaster rod) | 'ankle' (display stand)
+  function crane(g,fill,line,opts){opts=opts||{};
+    ['plinth','foot','tail','wing','body','tuck','leg','neck','head'].forEach(function(k){el('path',{d:P[k],fill:fill},g);});
+    el('circle',{cx:82,cy:-376,r:5,fill:fill},g);
+    var lw=opts.lw||3.4;
+    if(line==='q'){el('path',{d:'M24 -24 L7 -114',stroke:fill,'stroke-width':lw+1.2,'stroke-linecap':'round',fill:'none'},g);}
+    if(line==='belly'){el('rect',{x:20-lw/2,y:-168,width:lw,height:144,fill:opts.rod||fill},g);el('rect',{x:12,y:-172,width:16,height:6,fill:opts.rod||fill},g);}
+    if(line==='ankle'){el('rect',{x:20-lw/2,y:-70,width:lw,height:46,fill:fill},g);el('rect',{x:4,y:-72,width:18,height:5,fill:fill},g);}
+  }
+  function shadowOf(g,view,fill,line){ // view: 0 | 45 | 90
+    var sx=view===0?.36:view===45?.8:1, sk=view===45?-7:0;
+    var inner=el('g',{transform:'skewX('+sk+') scale('+sx+',1)'},g);
+    if(view===0){crane(inner,fill,null);return;}
+    crane(inner,fill,line);
+  }
+
+  /* ---------- hall ---------- */
+  function hall(svg,crest){
+    el('rect',{width:1600,height:1000,fill:'#12050a'},svg);
+    for(var i=0;i<10;i++){var x=240+i*112;el('rect',{x:x,y:70,width:100,height:620,fill:'#1f0b0d',stroke:'rgba(217,178,95,.14)'},svg);
+      el('path',{d:'M'+(x+50)+' 96 L'+(x+86)+' 150 L'+(x+50)+' 204 L'+(x+14)+' 150Z',fill:'none',stroke:'rgba(217,178,95,.12)'},svg);}
+    // sconces
+    [300,1300].forEach(function(x){el('circle',{cx:x,cy:300,r:90,fill:'url(#lampG)',opacity:.55},svg);el('rect',{x:x-6,y:290,width:12,height:26,rx:3,fill:'#c79a45'},svg);el('circle',{cx:x,cy:286,r:7,fill:'#fff3cf'},svg);});
+    el('path',{d:'M170 690 L1430 690 L1600 790 L0 790Z',fill:'url(#floor)'},svg);
+    el('path',{d:'M170 690 L1430 690',stroke:'url(#goldG)','stroke-width':4},svg);
+    for(i=0;i<24;i++)el('line',{x1:180+i*54,y1:690,x2:-60+i*74,y2:790,stroke:'rgba(0,0,0,.3)'},svg);
+    var ar=el('g',{},svg);
+    el('path',{d:'M150 1000 L150 120 L360 40 L1240 40 L1450 120 L1450 1000 L1500 1000 L1500 100 L1260 0 L340 0 L100 100 L100 1000Z',fill:'#1a0708'},ar);
+    el('path',{d:'M170 1000 L170 130 L366 56 L1234 56 L1430 130 L1430 1000',fill:'none',stroke:'url(#goldG)','stroke-width':6},ar);
+    el('path',{d:'M186 1000 L186 140 L372 72 L1228 72 L1414 140 L1414 1000',fill:'none',stroke:'rgba(217,178,95,.45)','stroke-width':1.5},ar);
+    if(crest){var sb=el('g',{transform:'translate(800,58)'},ar);
+      for(i=0;i<15;i++){var a=Math.PI+i*Math.PI/14;el('line',{x1:0,y1:0,x2:Math.cos(a)*64,y2:Math.sin(a)*64,stroke:'url(#goldG)','stroke-width':i%2?2:4},sb);}
+      el('circle',{r:20,fill:'#2a0d0a',stroke:'url(#goldG)','stroke-width':4},sb);}
+  }
+  function curtains(svg){
+    [0,1].forEach(function(ix){var g=el('g',{},svg);
+      var p=ix?'M1600 0 L1320 0 C1350 300 1300 520 1356 760 C1384 880 1346 960 1372 1000 L1600 1000Z':'M0 0 L280 0 C250 300 300 520 244 760 C216 880 254 960 228 1000 L0 1000Z';
+      el('path',{d:p,fill:'url(#folds)'},g);el('path',{d:p,fill:'url(#curtShade)'},g);
+      el('path',{d:p,fill:'none',stroke:'rgba(255,130,110,.2)','stroke-width':2},g);
+      var ty=540,tx=ix?1346:254;el('path',{d:'M'+(ix?1600:0)+' '+(ty-10)+' Q'+tx+' '+(ty+20)+' '+tx+' '+ty,fill:'none',stroke:'url(#goldG)','stroke-width':7},g);
+      el('circle',{cx:tx,cy:ty+22,r:10,fill:'url(#goldG)'},g);
+      for(var k=0;k<7;k++)el('line',{x1:tx-8+k*2.6,y1:ty+30,x2:tx-10+k*3.3,y2:ty+70,stroke:'#c79a45','stroke-width':1.6},g);});
+    var v='M0 0 H1600 V64 ';for(var i=0;i<16;i++){var x=1600-i*100;v+='Q'+(x-50)+' 138 '+(x-100)+' 64 ';}v+='Z';
+    el('path',{d:v,fill:'url(#folds)'},svg);el('path',{d:v,fill:'url(#curtShade)'},svg);
+    var fr='';for(i=0;i<16;i++){var xx=1600-i*100;fr+='M'+xx+' 64 Q'+(xx-50)+' 138 '+(xx-100)+' 64 ';}
+    el('path',{d:fr,fill:'none',stroke:'url(#goldG)','stroke-width':5},svg);
+  }
+  function podium(svg,x,y,pose){var g=el('g',{transform:'translate('+x+','+y+')'},svg);
+    var rim='rgba(255,220,150,.75)';
+    el('path',{d:'M-12 -150 C-44 -150 -58 -110 -62 -60 L62 -60 C58 -110 44 -150 12 -150Z',fill:'#0b0405'},g);
+    el('path',{d:'M-8 -150 L0 -120 L8 -150Z',fill:'#e9e0cc'},g); // shirt front
+    el('path',{d:'M-6 -148 L0 -142 L6 -148 L0 -144Z',fill:'#1a0a08'},g);
+    el('ellipse',{cx:0,cy:-176,rx:24,ry:28,fill:'url(#skin)'},g);
+    el('path',{d:'M-12 -164 C-4 -160 4 -160 12 -164',stroke:'#3a1a10','stroke-width':3,fill:'none'},g); // moustache
+    el('path',{d:'M-30 -196 L30 -196 L26 -234 L-26 -234Z',fill:'#0b0405'},g);el('rect',{x:-42,y:-200,width:84,height:7,rx:2,fill:'#0b0405'},g);
+    el('path',{d:'M-12 -150 C-44 -150 -58 -110 -62 -60',fill:'none',stroke:rim,'stroke-width':2.4},g);
+    if(pose==='gavel'){el('path',{d:'M42 -132 C72 -150 86 -190 92 -222',fill:'none',stroke:'#0b0405','stroke-width':18,'stroke-linecap':'round'},g);
+      el('circle',{cx:92,cy:-226,r:9,fill:'url(#skin)'},g);
+      el('rect',{x:78,y:-262,width:38,height:18,rx:4,fill:'#5a3014',transform:'rotate(-20 97 -253)'},g);el('line',{x1:95,y1:-248,x2:90,y2:-222,stroke:'#5a3014','stroke-width':5},g);
+      el('path',{d:'M42 -132 C72 -150 86 -190 92 -222',fill:'none',stroke:rim,'stroke-width':2},g);}
+    else{el('path',{d:'M-42 -132 C-80 -130 -110 -120 -136 -118',fill:'none',stroke:'#0b0405','stroke-width':18,'stroke-linecap':'round'},g);el('circle',{cx:-140,cy:-118,r:9,fill:'url(#skin)'},g);}
+    el('path',{d:'M-84 -70 L84 -70 L72 150 L-72 150Z',fill:'url(#podG)',stroke:'url(#goldG)','stroke-width':3},g);
+    el('rect',{x:-96,y:-82,width:192,height:16,fill:'#2a1206',stroke:'url(#goldG)','stroke-width':2},g);
+    el('path',{d:'M0 -40 L30 20 L0 80 L-30 20Z',fill:'none',stroke:'url(#goldG)','stroke-width':2},g);
+    el('circle',{cx:0,cy:20,r:8,fill:'url(#goldG)'},g);
+    return g;}
+  function seats(svg){ // rows of seat backs
+    for(var r=0;r<3;r++){var y=770+r*72,h=60+r*14,w=118+r*20;
+      for(var i=-1;i<15;i++){var x=i*(w+10)+(r%2?60:0);el('path',{d:'M'+x+' '+(y+h)+' L'+x+' '+(y+14)+' Q'+(x+w/2)+' '+(y-4)+' '+(x+w)+' '+(y+14)+' L'+(x+w)+' '+(y+h)+'Z',fill:'url(#seat)',stroke:'rgba(217,178,95,.25)'},svg);}}
+  }
+  // person seen from behind; opts: hat, rim, gesture ('paddle'|'paddleDown'|'cough'|'fan'|'none'), num, hl(highlight colour)
+  function person(g,x,y,s,o){var h=el('g',{transform:'translate('+x+','+y+') scale('+s+')'},g);var rim=o.rim||'rgba(255,210,140,.7)',F='#080203';
+    if(o.hl){el('ellipse',{cx:0,cy:0,rx:120,ry:130,fill:o.hl,opacity:.16,filter:'url(#soft8)'},h);}
+    el('path',{d:'M-80 130 C-80 60 -62 30 -30 22 L30 22 C62 30 80 60 80 130Z',fill:F},h);
+    el('path',{d:'M-12 0 L12 0 L14 26 L-14 26Z',fill:F},h);
+    el('ellipse',{cx:0,cy:-24,rx:27,ry:32,fill:F},h);
+    el('path',{d:'M-24 -8 C-26 -2 -24 6 -18 10',stroke:rim,'stroke-width':1.6,fill:'none'},h); // ear/jaw rim
+    if(o.hat==='bowler'){el('ellipse',{cx:0,cy:-38,rx:40,ry:9,fill:F},h);el('path',{d:'M-26 -40 C-26 -78 26 -78 26 -40Z',fill:F},h);el('path',{d:'M-24 -46 C-22 -74 22 -74 24 -46',fill:'none',stroke:rim,'stroke-width':2.2},h);}
+    else if(o.hat==='cloche'){el('path',{d:'M-34 -20 C-40 -72 40 -72 34 -20 C24 -30 -24 -30 -34 -20Z',fill:F},h);el('path',{d:'M20 -52 C40 -90 70 -96 84 -110 C66 -86 50 -70 26 -46Z',fill:F},h);
+      el('path',{d:'M-30 -30 C-34 -64 30 -64 32 -34',fill:'none',stroke:rim,'stroke-width':2.2},h);el('path',{d:'M24 -52 C44 -86 66 -94 82 -108',fill:'none',stroke:rim,'stroke-width':1.6},h);}
+    else if(o.hat==='bob'){el('path',{d:'M-32 0 C-40 -72 40 -72 32 0 C20 -10 -20 -10 -32 0Z',fill:F},h);el('path',{d:'M-30 -6 C-36 -62 34 -64 30 -8',fill:'none',stroke:rim,'stroke-width':2},h);}
+    else {el('path',{d:'M-24 -40 C-18 -58 18 -58 24 -40',fill:'none',stroke:rim,'stroke-width':2},h);}
+    el('path',{d:'M-30 22 C-62 30 -78 60 -80 118 M30 22 C62 30 78 60 80 118',fill:'none',stroke:rim,'stroke-width':1.8,opacity:.75},h);
+    var G=o.gesture;
+    if(G==='paddle'){ // right arm up, fast: motion trail + 0.4 timer
+      el('path',{d:'M44 40 C70 10 78 -40 74 -96',fill:'none',stroke:F,'stroke-width':22,'stroke-linecap':'round'},h);
+      el('path',{d:'M52 36 C78 6 84 -40 82 -96',fill:'none',stroke:rim,'stroke-width':2},h);
+      for(var k=0;k<3;k++)el('path',{d:'M'+(112+k*10)+' '+(-60+k*34)+' q10 -24 0 -48',fill:'none',stroke:'#fff0c8','stroke-width':3-k*.6,opacity:.8-k*.2,'stroke-linecap':'round'},h);
+      var pg=el('g',{transform:'translate(76,-110) rotate(6)'},h);
+      el('rect',{x:-4,y:-6,width:8,height:60,fill:'#3a1f0c'},pg);
+      el('ellipse',{cx:0,cy:-44,rx:38,ry:44,fill:'#f1e6cc',stroke:'#c79a45','stroke-width':4},pg);
+      txt(pg,0,-30,o.num,{'font-size':40,'font-weight':900,fill:'#2a0d0a'});
+      el('ellipse',{cx:0,cy:-6,rx:10,ry:9,fill:'#2a1a14'},pg);}
+    if(G==='paddleDown'){el('path',{d:'M44 40 C60 70 64 96 60 120',fill:'none',stroke:F,'stroke-width':22,'stroke-linecap':'round'},h);
+      var pd=el('g',{transform:'translate(88,70) rotate(150)'},h);el('rect',{x:-4,y:-6,width:8,height:56,fill:'#3a1f0c'},pd);
+      el('ellipse',{cx:0,cy:-42,rx:36,ry:42,fill:'#cfc2a4',stroke:'#8a6a2c','stroke-width':3},pd);txt(pd,0,-28,o.num,{'font-size':38,'font-weight':900,fill:'#2a0d0a',transform:'rotate(180 0 -42)'});}
+    if(G==='cough'){ // left hand to mouth, cough ripples
+      el('path',{d:'M-44 40 C-70 20 -54 -8 -30 -12',fill:'none',stroke:F,'stroke-width':20,'stroke-linecap':'round'},h);
+      el('path',{d:'M-54 36 C-78 16 -62 -12 -34 -18',fill:'none',stroke:rim,'stroke-width':2},h);
+      el('ellipse',{cx:-30,cy:-12,rx:12,ry:10,fill:'url(#skin)'},h);
+      for(k=0;k<3;k++)el('path',{d:'M'+(-58-k*12)+' '+(-34-k*6)+' a'+(18+k*12)+' '+(18+k*12)+' 0 0 0 0 '+(36+k*18),fill:'none',stroke:'#ffd9a0','stroke-width':3-k*.7,opacity:.85-k*.22},h);}
+    if(G==='fan'){var fg=el('g',{transform:'translate(-58,-24) rotate(-30)'},h);
+      for(k=0;k<9;k++)el('path',{d:'M0 0 L'+(Math.cos((-160+k*14)*Math.PI/180)*56).toFixed(1)+' '+(Math.sin((-160+k*14)*Math.PI/180)*56).toFixed(1),stroke:'#3a2418','stroke-width':6},fg);
+      el('path',{d:'M-53 -19 A56 56 0 0 1 36 -43',fill:'none',stroke:'#c79a45','stroke-width':3},fg);}
+    return h;}
+
+  /* ================= build A ================= */
+  var SX=590,SY=140,SW=420,SH=462,CX=800,CY=586;
+  var A=document.getElementById('scA');hall(A,true);
+  var lampHalo=el('ellipse',{cx:CX,cy:SY+SH*.45,rx:280,ry:300,fill:'#ffcf7a',opacity:.22,filter:'url(#soft20)'},A);
+  // screen
+  el('rect',{x:SX-36,y:SY-26,width:SW+72,height:12,rx:6,fill:'url(#goldG)'},A);
+  el('circle',{cx:SX-36,cy:SY-20,r:12,fill:'url(#goldG)'},A);el('circle',{cx:SX+SW+36,cy:SY-20,r:12,fill:'url(#goldG)'},A);
+  el('rect',{x:SX-8,y:SY-12,width:SW+16,height:SH+22,fill:'#2a1206',stroke:'url(#goldG)','stroke-width':3},A);
+  el('rect',{x:SX,y:SY,width:SW,height:SH,fill:'url(#scrGlow)'},A);
+  el('rect',{x:SX,y:SY,width:SW,height:SH,fill:'url(#weave)'},A);
+  for(var i=0;i<7;i++)el('rect',{x:SX+i*60,y:SY,width:30,height:SH,fill:'rgba(90,45,12,.05)'},A);
+  var hot=el('ellipse',{cx:SX+SW*.42,cy:SY+SH*.42,rx:100,ry:80,fill:'#fffaf0',opacity:.38,filter:'url(#soft20)'},A);
+  var shA=el('g',{},A);
+  function drawShadowA(view){shA.innerHTML='';
+    var pen=el('g',{transform:'translate('+(CX+10)+','+CY+') scale(1.12)',opacity:.22,filter:'url(#soft4)'},shA);shadowOf(pen,view,'#1a0a05',view===90?'belly':'q');
+    var core=el('g',{transform:'translate('+CX+','+CY+') scale(1.08)',filter:'url(#soft)'},shA);shadowOf(core,view,'#1c0c06',view===90?'belly':'q');
+    hot.setAttribute('cx',SX+SW*(view===90?.72:view===45?.42:.5));}
+  drawShadowA(45);
+  // magnifier ring on the ambiguous line top
+  var ring=el('g',{},A);
+  el('circle',{cx:CX+5,cy:CY-100,r:34,fill:'none',stroke:'#b3201a','stroke-width':2.6,'stroke-dasharray':'6 4'},ring);
+  el('path',{d:'M'+(CX+36)+' '+(CY-114)+' L'+(CX+96)+' '+(CY-150),stroke:'#b3201a','stroke-width':2},ring);
+  var rl=el('g',{transform:'translate('+(CX+96)+','+(CY-166)+')'},ring);el('rect',{x:0,y:-14,width:150,height:30,fill:'#b3201a'},rl);
+  var ringT=txt(rl,75,7,'선의 끝 — 다리에 가려짐',{'font-size':13,fill:'#fff'});
+  // lamp position marker above screen
+  var lampM=el('g',{transform:'translate('+(SX+SW*.3)+','+(SY-44)+')'},A);
+  el('circle',{r:26,fill:'url(#lampG)'},lampM);el('path',{d:'M-9 -6 L9 -6 L6 8 L-6 8Z',fill:'#c79a45'},lampM);
+  var lampT=txt(lampM,0,-16,'조명 45°',{'font-size':12,fill:'#f3d88f'});
+  el('ellipse',{cx:CX,cy:696,rx:320,ry:22,fill:'#f3c77a',opacity:.26,filter:'url(#soft8)'},A);
+  podium(A,1170,612,'gavel');
+  curtains(A);
+  el('path',{d:'M760 0 L840 0 L1060 690 L540 690Z',fill:'url(#beam)',opacity:.14},A);
+  el('path',{d:'M1140 0 L1182 0 L1250 400 L1100 400Z',fill:'url(#beam)',opacity:.2},A);
+  var motes=el('g',{},A);for(i=0;i<34;i++){var my=40+rnd()*620;var c=el('circle',{cx:560+rnd()*480,cy:my,r:rnd()*1.5+.4,fill:'#fff2cf',opacity:rnd()*.5+.2},motes);
+    el('animate',{attributeName:'cy',values:my+';'+(my-26)+';'+my,dur:(7+rnd()*8).toFixed(1)+'s',repeatCount:'indefinite'},c);}
+  seats(A);
+  var au=el('g',{},A);
+  person(au,440,806,.78,{hat:'none'});
+  person(au,420,760,.86,{hat:'bowler',gesture:'cough',hl:'#ffd9a0'}); // 3번
+  person(au,600,810,.8,{hat:'cloche'});
+  var p11=el('g',{},au);
+  function draw11(g){g.innerHTML='';person(g,700,776,.9,g.down?{hat:'cloche',gesture:'paddleDown',num:'11'}:{hat:'cloche',gesture:'paddle',num:'11',hl:'#9fffb0'});}
+  draw11(p11);
+  person(au,1010,812,.8,{hat:'bob'});
+  person(au,1180,790,.86,{hat:'bob',gesture:'fan'}); // 22번
+  person(au,1320,820,.82,{hat:'bowler'});
+  person(au,300,930,1.1,{hat:'bowler'});person(au,1250,950,1.12,{hat:'cloche'});
+  // 0.4s timer badge near 11's paddle
+  var tb=el('g',{transform:'translate(960,650)'},A);
+  // player's gloved hand + paddle 17
+  var ph=el('g',{transform:'translate(1478,840) rotate(-8)',id:'myPaddle'},A);
+  el('path',{d:'M-46 260 C-54 180 -34 120 -14 92 L30 92 C42 130 44 200 52 260Z',fill:'#140708'},ph);
+  el('path',{d:'M-28 104 C-34 62 -12 40 10 42 C36 44 38 72 32 104Z',fill:'#1e1612'},ph);
+  el('path',{d:'M-22 70 C-10 60 10 60 26 70',stroke:'#4a3a30','stroke-width':2,fill:'none'},ph);
+  el('rect',{x:-4,y:-40,width:10,height:96,fill:'#3a1f0c'},ph);
+  el('ellipse',{cx:1,cy:-100,rx:62,ry:72,fill:'#f1e6cc',stroke:'url(#goldG)','stroke-width':6},ph);
+  el('ellipse',{cx:1,cy:-100,rx:52,ry:62,fill:'none',stroke:'#8a6a2c','stroke-width':1.5},ph);
+  txt(ph,1,-78,'17',{'font-size':62,'font-weight':900,fill:'#6e0f16'});
+
+  /* ================= build B ================= */
+  var B=document.getElementById('scB');hall(B,true);
+  // screen rolled up on rod + torn strip
+  el('rect',{x:SX-36,y:SY-26,width:SW+72,height:12,rx:6,fill:'url(#goldG)'},B);
+  el('rect',{x:SX-12,y:SY-14,width:SW+24,height:34,rx:16,fill:'#c9a36c'},B);
+  el('rect',{x:SX-12,y:SY-14,width:SW+24,height:34,rx:16,fill:'url(#weave)'},B);
+  el('path',{d:'M'+(SX+SW-110)+' '+(SY+18)+' L'+(SX+SW)+' '+(SY+18)+' L'+(SX+SW)+' '+(SY+250)+' L'+(SX+SW-22)+' '+(SY+214)+' L'+(SX+SW-40)+' '+(SY+290)+' L'+(SX+SW-70)+' '+(SY+170)+' L'+(SX+SW-96)+' '+(SY+120)+'Z',fill:'#d6b886',opacity:.9},B);
+  el('path',{d:'M740 0 L860 0 L1020 690 L580 690Z',fill:'url(#beam)',opacity:.5},B);
+  el('ellipse',{cx:800,cy:690,rx:260,ry:34,fill:'#fff0c8',opacity:.42,filter:'url(#soft8)'},B);
+  var pdl=el('g',{transform:'translate(800,690)'},B);
+  el('path',{d:'M-130 0 L130 0 L112 -64 L-112 -64Z',fill:'url(#velv)'},pdl);
+  el('rect',{x:-122,y:-78,width:244,height:16,fill:'#240608',stroke:'url(#goldG)','stroke-width':2},pdl);
+  [-170,170].forEach(function(x){el('rect',{x:x-5,y:-80,width:10,height:80,fill:'url(#goldG)'},pdl);el('circle',{cx:x,cy:-84,r:9,fill:'url(#goldG)'},pdl);});
+  el('path',{d:'M-165 -60 Q-148 -30 -128 -44 M165 -60 Q148 -30 128 -44',stroke:'#8a1b12','stroke-width':5,fill:'none'},pdl);
+  var obj=el('g',{transform:'translate(800,612) scale(.98)'},B);
+  el('ellipse',{cx:10,cy:0,rx:100,ry:12,fill:'#000',opacity:.5,filter:'url(#soft)'},obj);
+  crane(obj,'url(#bronze)','belly',{rod:'#aab3b8',lw:5});
+  el('rect',{x:19,y:-166,width:1.6,height:140,fill:'#f2f8fa'},obj);
+  [[-40,-198,9,-12],[18,-210,6,20],[44,-298,4,70],[-104,-276,7,-30],[-66,-214,5,10]].forEach(function(c){var d='M'+c[0]+' '+c[1]+' l'+c[2]+' '+(-c[2]*.4)+' l'+(c[2]*.5)+' '+(c[2]*.7)+' l'+(-c[2]*.8)+' '+(c[2]*.5)+' l'+(-c[2]*.9)+' '+(-c[2]*.3)+'Z';el('path',{d:d,fill:'#ebe3cf',stroke:'#7a5a30','stroke-width':.8,transform:'rotate('+c[3]+' '+c[0]+' '+c[1]+')'},obj);});
+  el('path',{d:'M-60 -210 C-30 -226 10 -228 40 -220',fill:'none',stroke:'#ffe2a8','stroke-width':3,opacity:.7},obj);
+  el('path',{d:'M40 -306 C42 -326 56 -344 70 -352',fill:'none',stroke:'#ffe2a8','stroke-width':2.4,opacity:.7},obj);
+  // callout: rod reaches belly (end point highlighted)
+  var co=el('g',{},B);var rx=800+20*.98,ry1=612-166*.98;
+  el('circle',{cx:rx,cy:ry1,r:16,fill:'none',stroke:'#ff5a3a','stroke-width':3},co);
+  el('line',{x1:rx+12,y1:612-26,x2:rx+12,y2:ry1+10,stroke:'#ff5a3a','stroke-width':2,'stroke-dasharray':'5 4'},co);
+  el('path',{d:'M'+(rx+16)+' '+ry1+' L'+(rx+120)+' '+(ry1-44),stroke:'#ff5a3a','stroke-width':2.5},co);
+  var ct=el('g',{transform:'translate('+(rx+120)+','+(ry1-60)+')'},co);el('rect',{x:0,y:-18,width:176,height:52,fill:'#ff5a3a'},ct);
+  txt(ct,88,2,'쇠 지지대',{'font-size':17,'font-weight':900,fill:'#fff'});txt(ct,88,24,'선의 끝 = 배 → 석고',{'font-size':13,fill:'#fff'});
+  podium(B,1170,612,'point');
+  curtains(B);
+  seats(B);
+  var auB=el('g',{},B);
+  person(auB,380,810,.8,{hat:'cloche'});person(auB,640,800,.9,{hat:'cloche',gesture:'paddleDown',num:'11',hl:'#ff9a7a'});
+  person(auB,840,812,.8,{hat:'none'});person(auB,1060,800,.86,{hat:'bowler',hl:'#d8c49a'});person(auB,1260,812,.82,{hat:'bob'});
+  person(auB,280,940,1.1,{hat:'bowler'});
+  var ph2=el('g',{transform:'translate(1478,930) rotate(-30)'},B);
+  el('rect',{x:-4,y:-40,width:10,height:120,fill:'#3a1f0c'},ph2);
+  el('ellipse',{cx:1,cy:-100,rx:62,ry:72,fill:'#d8ccb0',stroke:'url(#goldG)','stroke-width':6},ph2);
+  txt(ph2,1,-78,'17',{'font-size':62,'font-weight':900,fill:'#6e0f16'});
+  // thumbnails (same crane, same shadow views)
+  function thumb(id,view,line){var g=document.getElementById(id);g.setAttribute('transform','translate(60,116) scale(.27)');shadowOf(g,view,'#2a1a10',line);}
+  thumb('bt0',0,null);thumb('bt45',45,'q');thumb('bt90',90,'belly');
+  (function(){var g=document.getElementById('bt90');var c=el('circle',{cx:22,cy:-168,r:40,fill:'none',stroke:'#b3201a','stroke-width':6,'stroke-dasharray':'12 8'},g);})();
+
+  /* ---------- audio (synth, mock only) ---------- */
+  var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function knock(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(70,t+.12);
+    g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.25);}
+  function swish(){var c=ac();if(!c)return;var t=c.currentTime,len=c.sampleRate*.25|0,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<len;i++)d[i]=(rnd()*2-1)*Math.sin(Math.PI*i/len)*.5;var n=c.createBufferSource(),f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=1600;n.buffer=b;n.connect(f).connect(c.destination);n.start(t);}
+  function hum(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.value=90;var f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=280;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.08,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+1.4);o.connect(f).connect(g).connect(c.destination);o.start(t);o.stop(t+1.5);}
+
+  /* ---------- A interactions (numbers follow pitch-v2) ---------- */
+  function won(n){return n.toLocaleString('ko-KR')+'원';}
+  var S;function resetA(){S={cash:2300,price:1200,lead:'11',owned90:false};}
+  resetA();
+  function axis(){var max=2300;document.getElementById('axFill').style.width=(S.price/max*100).toFixed(1)+'%';
+    document.getElementById('tkP').style.left=(S.price/max*100).toFixed(1)+'%';document.getElementById('tkPt').textContent='현재가 '+S.price.toLocaleString('ko-KR');
+    var ev=S.owned90?200:1400;document.getElementById('tkE').style.left=(ev/max*100).toFixed(1)+'%';document.getElementById('tkEt').textContent='기대값 '+ev.toLocaleString('ko-KR');}
+  function bid(){if(S.lead==='17')return;var nb=S.price+100;if(nb>S.cash)return;S.price=nb;S.lead='17';
+    document.getElementById('callT').textContent=won(nb)+' · 17번!';var c=document.getElementById('call');c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');
+    var bs=document.querySelectorAll('#beats i');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',j===0);
+    var p=document.getElementById('myPaddle');p.setAttribute('transform','translate(1478,770) rotate(-2)');setTimeout(function(){p.setAttribute('transform','translate(1478,800) rotate(-4)');},260);
+    document.getElementById('bidAmt').textContent='완료';document.getElementById('bidSub').textContent='최고 입찰 17번 · 낙찰 시 현금 '+won(S.cash-nb);
+    var b=document.getElementById('bid');b.classList.add('pr');setTimeout(function(){b.classList.remove('pr');},120);
+    knock();axis();}
+  function buy90(){if(S.owned90)return;S.owned90=true;S.cash-=200;
+    var cb=document.getElementById('cash');cb.textContent=won(S.cash);cb.classList.remove('dn');void cb.offsetWidth;cb.classList.add('dn');
+    document.getElementById('passCash').textContent=won(S.cash);document.getElementById('clog').innerHTML='이번 로트: 좌석료 <i>−100</i> · 45° <i>−200</i> · 90° <i>−200</i>';
+    var s45=document.getElementById('st45'),s90=document.getElementById('st90');s45.classList.remove('cur');s45.querySelector('span').textContent='확보';
+    s90.className='stop own cur';s90.innerHTML='<b>90°</b><span>확보 · 지금</span>';
+    hum();lampM.setAttribute('transform','translate('+(SX+SW*.78)+','+(SY-44)+')');lampT.textContent='조명 90°';
+    setTimeout(function(){drawShadowA(90);ringT.textContent='선의 끝 — 배까지';
+      document.getElementById('th45').classList.remove('cur');document.getElementById('th90').classList.add('cur');
+      document.getElementById('g90').innerHTML='<span class="mk no">✗</span><i>발목 아님</i>';document.getElementById('p90').innerHTML='<span class="mk ok">✓</span><i>배</i>';
+      document.getElementById('rG').classList.add('out');
+      document.getElementById('sCand').textContent='1';document.getElementById('sEv').textContent='200원';document.getElementById('sRange').textContent='200원 확정';
+      document.getElementById('sNote').textContent='모두가 같은 90°를 봤다. 가격이 무너진다.';
+      var sm=document.getElementById('sum');sm.classList.remove('flash');void sm.offsetWidth;sm.classList.add('flash');
+      p11.down=true;draw11(p11);document.getElementById('act11').textContent='패들 내림 · 90° 켜진 직후';document.getElementById('tag11').className='tag mute l';
+      document.getElementById('bidSub').textContent='기대값 200원 초과 · 올리지 말 것';axis();},1500);}
+  document.getElementById('bid').addEventListener('click',bid);
+  document.getElementById('st90').addEventListener('click',buy90);
+  document.getElementById('pass').addEventListener('click',swish);
+  /* B */
+  function stampB(){var s=document.getElementById('stampB');s.classList.remove('hit');void s.offsetWidth;s.classList.add('hit');knock();}
+  function toggle90(){document.getElementById('bx90').classList.toggle('show');swish();}
+  document.getElementById('rec').addEventListener('click',stampB);
+  document.getElementById('replay').addEventListener('click',toggle90);
+
+  /* ---------- screens ---------- */
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tbs=document.querySelectorAll('.tabs button');
+  for(i=0;i<tbs.length;i++)tbs[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');
+    else if(cur==='a'){if(e.code==='Space'){e.preventDefault();bid();}else if(e.key==='a'||e.key==='A')buy90();else if(e.key==='p'||e.key==='P')swish();}
+    else{if(e.code==='Space'){e.preventDefault();stampB();}else if(e.key==='r'||e.key==='R')toggle90();}});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  show((location.hash||'#a').slice(1));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>휴전의 문장</title>
+<style>
+:root{
+  --navy:#0e1524; --navy2:#1a2336; --brass:#d6b876; --brass2:#8a6a2e; --parch:#eee4cc; --ink:#2a2418; --red:#b3312a; --muted:#9aa0b4;
+  --serif:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono","D2Coding","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;transform:translate(-50%,-50%);overflow:hidden;color:var(--parch);font-family:var(--sans);
+  background:linear-gradient(180deg,#121a2b 0%,#0a0f1a 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.1;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:49;background:radial-gradient(ellipse 80% 75% at 50% 45%,transparent 50%,rgba(0,0,0,.7))}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.tabs{position:absolute;right:18px;top:14px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px var(--mono);color:var(--brass);background:rgba(14,21,36,.85);border:1px solid var(--brass2);padding:5px 10px;cursor:pointer;border-radius:2px}
+.tabs button.on{background:var(--brass);color:#1a1408}
+.brassText{background:linear-gradient(180deg,#f7e3ae 0%,#d6b876 45%,#8a6a2e 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* booth window */
+.window{position:absolute;left:0;top:0;width:1600px;height:520px;overflow:hidden}
+.window svg{position:absolute;inset:0}
+.mullion{position:absolute;top:0;bottom:0;width:26px;background:linear-gradient(90deg,#0a0e17,#222c40 40%,#0a0e17);box-shadow:0 0 30px rgba(0,0,0,.8)}
+.sill{position:absolute;left:0;right:0;top:500px;height:40px;background:linear-gradient(180deg,#2a3246,#10151f);box-shadow:0 10px 30px rgba(0,0,0,.8);border-top:1px solid #4a5570}
+.glassRefl{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.05) 38%,transparent 44%,transparent 70%,rgba(255,255,255,.035) 76%,transparent 80%)}
+.titleBlock{position:absolute;left:46px;top:30px;z-index:5}
+.titleBlock h1{font:500 40px/1 var(--serif);letter-spacing:.18em}
+.titleBlock .en{font:600 11px var(--mono);letter-spacing:.5em;color:var(--brass);margin-top:10px}
+.agenda{position:absolute;left:46px;top:112px;z-index:5;font:600 13px var(--mono);letter-spacing:.2em;color:#1a1408;background:var(--brass);padding:6px 12px;box-shadow:0 4px 18px rgba(214,184,118,.35)}
+.onair{position:absolute;right:210px;top:30px;display:flex;align-items:center;gap:8px;font:700 12px var(--mono);letter-spacing:.3em;color:#ff6b5e}
+.onair i{width:10px;height:10px;border-radius:50%;background:#ff4a3d;box-shadow:0 0 12px #ff4a3d;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+/* console */
+.console{position:absolute;left:0;right:0;top:540px;bottom:0;background:
+  linear-gradient(180deg,rgba(0,0,0,.35),transparent 60px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,transparent 2px 5px),
+  linear-gradient(180deg,#1b2437,#0f1522)}
+.orig{position:absolute;left:46px;top:572px;width:720px;height:170px;background:
+  radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.5),transparent 60%),linear-gradient(170deg,#f3ead3,#e2d4b1);color:var(--ink);padding:20px 26px;
+  box-shadow:0 18px 40px rgba(0,0,0,.6),inset 0 0 40px rgba(140,100,40,.25);transform:rotate(-.6deg)}
+.orig .who{font:600 12px var(--mono);letter-spacing:.2em;color:#7a5a22}
+.orig .line{font:500 27px/1.5 var(--serif);margin-top:10px}
+.orig .line u{text-decoration:none;background:linear-gradient(transparent 62%,rgba(214,150,40,.45) 62%);padding:0 2px}
+.orig .gloss{font:13px var(--sans);color:#6b5a3c;margin-top:8px}
+.dialWrap{position:absolute;left:800px;top:566px;width:360px;height:190px}
+.gauge{position:absolute;left:1190px;top:566px;width:370px;height:190px;border:1px solid #3a4560;background:linear-gradient(180deg,#141c2c,#0b101a);border-radius:4px;box-shadow:inset 0 2px 12px rgba(0,0,0,.7)}
+.lbl{font:600 11px var(--mono);letter-spacing:.24em;color:var(--brass)}
+.choices{position:absolute;left:46px;top:776px;width:1114px;display:flex;gap:18px}
+.card{flex:1;height:112px;border:1px solid #3a4560;background:linear-gradient(180deg,#1d2740,#131a2a);padding:16px 20px;cursor:pointer;position:relative;transition:transform .12s,border-color .2s,box-shadow .2s;border-radius:3px}
+.card:hover{transform:translateY(-3px);border-color:var(--brass)}
+.card:active{transform:translateY(1px)}
+.card .k{font:600 11px var(--mono);letter-spacing:.2em;color:var(--muted)}
+.card .t{font:500 21px/1.4 var(--serif);margin-top:8px}
+.card .h{position:absolute;right:16px;top:14px;font:600 12px var(--mono);padding:3px 8px;border-radius:2px}
+.card.sel{border-color:var(--brass);box-shadow:0 0 0 1px var(--brass),0 0 40px rgba(214,184,118,.25);background:linear-gradient(180deg,#2a3350,#161d2e)}
+.card .key{position:absolute;left:20px;bottom:12px;font:11px var(--mono);color:#6d7690}
+.records{position:absolute;left:1190px;top:776px;width:370px;height:190px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rec{background:linear-gradient(170deg,#efe5cc,#d9c9a3);color:var(--ink);padding:10px 12px;font:13px/1.55 var(--serif);box-shadow:0 8px 20px rgba(0,0,0,.5);position:relative}
+.rec b{display:block;font:600 10px var(--mono);letter-spacing:.2em;color:#7a5a22;margin-bottom:5px}
+.rec .cur{display:inline-block;width:7px;height:13px;background:#2a2418;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.feedback{position:absolute;left:46px;top:910px;width:1114px;font:14px var(--sans);color:#b9bfd0;display:flex;gap:14px;align-items:center}
+.feedback .tag{font:600 11px var(--mono);letter-spacing:.2em;color:#1a1408;background:#9aa0b4;padding:3px 8px}
+.vu{display:flex;gap:3px;align-items:flex-end;height:24px;margin-left:auto}
+.vu i{width:4px;background:linear-gradient(0deg,#5fbf7a,#d6b876 70%,#ff6b5e);border-radius:1px;animation:vu .5s ease-in-out infinite alternate}
+@keyframes vu{from{height:4px}to{height:24px}}
+/* B */
+.bHead{position:absolute;left:0;right:0;top:40px;text-align:center}
+.bHead .k{font:600 12px var(--mono);letter-spacing:.4em;color:var(--brass)}
+.bHead h2{font:500 56px/1.2 var(--serif);letter-spacing:.14em;margin-top:12px;text-shadow:0 4px 30px rgba(0,0,0,.8)}
+.bHead p{font:17px/1.7 var(--serif);color:#c7c9d4;margin-top:10px}
+.desk{position:absolute;left:0;right:0;top:250px;bottom:0;background:
+  radial-gradient(ellipse 60% 70% at 50% 30%,rgba(214,184,118,.18),transparent 70%),
+  repeating-linear-gradient(92deg,rgba(0,0,0,.12) 0 3px,transparent 3px 11px),
+  linear-gradient(180deg,#3b2717,#1e140c)}
+.doc{position:absolute;top:290px;width:600px;height:560px;background:
+  radial-gradient(ellipse at 40% 10%,rgba(255,255,255,.55),transparent 55%),linear-gradient(175deg,#f4ebd3,#dccba4);color:var(--ink);padding:34px 40px;
+  box-shadow:0 30px 60px rgba(0,0,0,.7),inset 0 0 60px rgba(120,80,30,.25)}
+.doc.l{left:150px;transform:rotate(-2.2deg)}
+.doc.r{right:150px;transform:rotate(1.8deg)}
+.doc .seal{position:absolute;right:30px;top:26px;width:62px;height:62px;border-radius:50%;border:2px solid #7a5a22;display:flex;align-items:center;justify-content:center;font:700 13px var(--serif);color:#7a5a22;opacity:.8}
+.doc h4{font:600 24px var(--serif);letter-spacing:.2em}
+.doc .sub{font:11px var(--mono);letter-spacing:.2em;color:#7a5a22;margin-top:6px}
+.cl{margin-top:24px;padding-top:14px;border-top:1px solid rgba(42,36,24,.25);position:relative}
+.cl .n{font:600 11px var(--mono);letter-spacing:.2em;color:#7a5a22}
+.cl .tx{font:500 19px/1.6 var(--serif);margin-top:4px}
+.cl.bad .tx{background:linear-gradient(transparent 60%,rgba(179,49,42,.22) 60%)}
+.stampR{position:absolute;right:-8px;top:8px;border:3px solid var(--red);color:var(--red);font:800 20px var(--serif);letter-spacing:.2em;padding:4px 12px;transform:rotate(-12deg);opacity:.88;
+  mix-blend-mode:multiply;filter:url(#rough);animation:st .45s cubic-bezier(.2,1.7,.4,1) both}
+@keyframes st{from{transform:rotate(-12deg) scale(2.4);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.88}}
+.sign{position:absolute;left:40px;bottom:30px;right:40px;display:flex;justify-content:space-between;align-items:flex-end;font:12px var(--mono);color:#7a5a22}
+.sign svg{display:block}
+.thread{position:absolute;left:0;top:0;width:1600px;height:1000px;pointer-events:none}
+.ticker{position:absolute;left:0;right:0;bottom:0;height:46px;background:#070a10;border-top:1px solid #3a2020;overflow:hidden;display:flex;align-items:center}
+.ticker .lab{flex:none;position:relative;z-index:2;box-shadow:12px 0 16px #070a10;background:var(--red);color:#fff;font:700 12px var(--mono);letter-spacing:.2em;height:100%;display:flex;align-items:center;padding:0 16px}
+.ticker .run{white-space:nowrap;font:14px var(--mono);color:#ffb3a8;padding-left:20px;animation:run 22s linear infinite}
+@keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.bStats{position:absolute;left:50%;top:560px;transform:translateX(-50%);width:170px;text-align:center}
+.bStats .box{background:rgba(10,14,22,.85);border:1px solid var(--brass2);padding:12px;margin-bottom:12px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.bStats .k{font:600 11px var(--mono);letter-spacing:.2em;color:var(--brass)}
+.bStats .v{font:600 40px var(--mono);margin-top:4px}
+.flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(255,80,60,.25),transparent 60%);animation:fl 3s ease-in-out infinite}
+@keyframes fl{0%,100%{opacity:.2}8%{opacity:1}14%{opacity:.3}20%{opacity:.8}40%{opacity:.25}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg width="0" height="0" style="position:absolute"><filter id="rough"><feTurbulence baseFrequency=".9" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="3"/></filter></svg>
+  <div class="tabs"><button data-h="a">1 · 통역</button><button data-h="b">2 · 서명</button></div>
+
+  <!-- ============ A ============ -->
+  <section class="screen" id="sa">
+    <div class="window">
+      <svg viewBox="0 0 1600 520" width="1600" height="520">
+        <defs>
+          <radialGradient id="chand" cx=".5" cy="0" r=".9"><stop offset="0" stop-color="#ffe2a6" stop-opacity=".55"/><stop offset=".5" stop-color="#d6b876" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2a44"/><stop offset="1" stop-color="#2c3550"/></linearGradient>
+          <linearGradient id="table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3a20"/><stop offset="1" stop-color="#2a1a0e"/></linearGradient>
+          <linearGradient id="felt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f4a3c"/><stop offset="1" stop-color="#1c2e25"/></linearGradient>
+          <filter id="b1"><feGaussianBlur stdDeviation="1.2"/></filter>
+          <filter id="b6"><feGaussianBlur stdDeviation="8"/></filter>
+          <g id="person"><ellipse cx="0" cy="-58" rx="15" ry="18"/><path d="M-34 10 Q-36 -30 -18 -38 L18 -38 Q36 -30 34 10Z"/></g>
+        </defs>
+        <rect width="1600" height="520" fill="url(#wall)"/>
+        <!-- wall panels -->
+        <g fill="none" stroke="#3a4a6a" stroke-opacity=".6">
+          <rect x="120" y="40" width="240" height="220"/><rect x="400" y="40" width="240" height="220"/><rect x="960" y="40" width="240" height="220"/><rect x="1240" y="40" width="240" height="220"/>
+        </g>
+        <!-- flags -->
+        <g transform="translate(700,40)">
+          <rect x="0" y="0" width="4" height="210" fill="#b89a5a"/><path d="M4 6 L90 6 Q84 60 90 110 L4 110Z" fill="#6a1f22"/><circle cx="46" cy="58" r="18" fill="none" stroke="#d6b876" stroke-width="3"/>
+          <text x="46" y="140" font-size="13" fill="#d6b876" text-anchor="middle" font-family="sans-serif">북국</text>
+        </g>
+        <g transform="translate(900,40)">
+          <rect x="-4" y="0" width="4" height="210" fill="#b89a5a"/><path d="M-4 6 L-90 6 Q-84 60 -90 110 L-4 110Z" fill="#1f3d6a"/><path d="M-60 44 L-46 70 L-32 44Z" fill="none" stroke="#e8e0c8" stroke-width="3"/>
+          <text x="-46" y="140" font-size="13" fill="#d6b876" text-anchor="middle" font-family="sans-serif">남국</text>
+        </g>
+        <rect width="1600" height="520" fill="url(#chand)"/>
+        <!-- chandelier -->
+        <g transform="translate(800,0)"><line x1="0" y1="0" x2="0" y2="40" stroke="#8a6a2e"/><ellipse cx="0" cy="48" rx="70" ry="12" fill="#d6b876" opacity=".5"/>
+          <g fill="#fff3d0"><circle cx="-60" cy="44" r="4"/><circle cx="-30" cy="50" r="4"/><circle cx="0" cy="52" r="4"/><circle cx="30" cy="50" r="4"/><circle cx="60" cy="44" r="4"/></g>
+          <ellipse cx="0" cy="48" rx="120" ry="40" fill="#ffe2a6" opacity=".25" filter="url(#b6)"/></g>
+        <!-- floor -->
+        <path d="M0 330 L1600 330 L1600 520 L0 520Z" fill="#141a28"/>
+        <!-- table in perspective -->
+        <path d="M280 340 L1320 340 L1480 470 L120 470Z" fill="url(#felt)"/>
+        <path d="M120 470 L1480 470 L1480 490 L120 490Z" fill="url(#table)"/>
+        <path d="M280 340 L1320 340" stroke="#d6b876" stroke-opacity=".4"/>
+        <!-- delegations: north left side row, south right side -->
+        <g fill="#0b0f18" filter="url(#b1)">
+          <use href="#person" transform="translate(360,356)"/><use href="#person" transform="translate(470,352)"/><use href="#person" transform="translate(585,350)"/>
+          <use href="#person" transform="translate(1015,350)"/><use href="#person" transform="translate(1130,352)"/><use href="#person" transform="translate(1240,356)"/>
+        </g>
+        <!-- speaking south delegate highlight -->
+        <g transform="translate(1130,352)">
+          <ellipse cx="0" cy="-30" rx="70" ry="80" fill="#d6b876" opacity=".12" filter="url(#b6)"><animate attributeName="opacity" values=".06;.2;.06" dur="1.6s" repeatCount="indefinite"/></ellipse>
+          <path d="M-40 -104 L40 -104 L40 -82 L8 -82 L0 -74 L-8 -82 L-40 -82Z" fill="#d6b876"/><text x="0" y="-88" font-size="12" fill="#1a1408" text-anchor="middle" font-family="sans-serif" font-weight="700">발언 중</text>
+        </g>
+        <!-- papers & mics & nameplates -->
+        <g fill="#e8dcc0" opacity=".9"><rect x="340" y="392" width="46" height="30" transform="skewX(-20)"/><rect x="590" y="392" width="46" height="30" transform="skewX(-12)"/><rect x="1010" y="392" width="46" height="30" transform="skewX(10)"/><rect x="1240" y="392" width="46" height="30" transform="skewX(18)"/></g>
+        <g stroke="#9a9a9a" stroke-width="2"><line x1="470" y1="400" x2="480" y2="360"/><line x1="1130" y1="400" x2="1120" y2="360"/></g>
+        <g fill="#6a1f22"><rect x="440" y="420" width="70" height="16"/></g><g fill="#1f3d6a"><rect x="1095" y="420" width="70" height="16"/></g>
+        <g font-family="sans-serif" font-size="10" fill="#e8dcc0" text-anchor="middle"><text x="475" y="432">북국 수석</text><text x="1130" y="432">남국 수석</text></g>
+        <!-- centre document -->
+        <rect x="760" y="380" width="80" height="54" fill="#f0e6cc" transform="skewX(-4)"/><rect x="772" y="392" width="56" height="3" fill="#8a6a2e"/><rect x="772" y="402" width="44" height="2" fill="#8a6a2e" opacity=".6"/>
+      </svg>
+      <div class="glassRefl"></div>
+      <div class="mullion" style="left:520px"></div><div class="mullion" style="left:1060px"></div>
+      <div class="titleBlock"><h1 class="brassText">휴전의 문장</h1><div class="en">WORDS OF ARMISTICE</div></div>
+      <div class="agenda">제 1 의제 · 철수 시점</div>
+      <div class="onair"><i></i>통역 부스 2 · 송출 중</div>
+      <div class="sill"></div>
+    </div>
+
+    <div class="console"></div>
+    <div class="orig">
+      <div class="who">원문 · 남국 대표</div>
+      <div class="line">“의회의 <u>승인이 나면</u> 국경에서 철수하겠습니다.”</div>
+      <div class="gloss">조건절 — 약속의 강도는 ‘조건부’. 북국은 즉시 철수 확약을 요구하고 있다.</div>
+    </div>
+
+    <!-- promise strength dial -->
+    <div class="dialWrap">
+      <div class="lbl" style="text-align:center">약속 강도 · 원문 ↔ 통역</div>
+      <svg viewBox="0 0 360 170" width="360" height="170">
+        <defs><linearGradient id="br" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f7e3ae"/><stop offset=".5" stop-color="#d6b876"/><stop offset="1" stop-color="#7a5a22"/></linearGradient>
+        <radialGradient id="knob" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff2c8"/><stop offset=".4" stop-color="#d6b876"/><stop offset="1" stop-color="#5a3f12"/></radialGradient></defs>
+        <path d="M40 150 A140 140 0 0 1 320 150" fill="none" stroke="#0a0e17" stroke-width="22" stroke-linecap="round"/>
+        <path d="M40 150 A140 140 0 0 1 320 150" fill="none" stroke="url(#br)" stroke-width="3" opacity=".6"/>
+        <path d="M40 150 A140 140 0 0 1 110 29" fill="none" stroke="#7a8aa8" stroke-width="10" opacity=".5"/>
+        <path d="M110 29 A140 140 0 0 1 250 29" fill="none" stroke="#d6b876" stroke-width="10" opacity=".6"/>
+        <path d="M250 29 A140 140 0 0 1 320 150" fill="none" stroke="#b3312a" stroke-width="10" opacity=".6"/>
+        <g font-family="sans-serif" font-size="13" fill="#e8dcc0" text-anchor="middle"><text x="40" y="168">검토</text><text x="140" y="22">조건부</text><text x="322" y="168">확약</text></g>
+        <!-- original marker -->
+        <g transform="rotate(0 180 150)"><path d="M180 26 L172 10 L188 10Z" fill="#e8dcc0"/><text x="224" y="20" font-size="10" fill="#9aa0b4" font-family="monospace">원문</text></g>
+        <!-- needle (translation) -->
+        <g id="needle" style="transform-origin:180px 150px;transition:transform .6s cubic-bezier(.3,1.6,.5,1)">
+          <path d="M180 150 L176 146 L180 36 L184 146Z" fill="url(#br)"/>
+        </g>
+        <circle cx="180" cy="150" r="16" fill="url(#knob)" stroke="#3a2a10"/>
+        <text x="180" y="112" text-anchor="middle" font-family="monospace" font-size="11" fill="#d6b876" id="needleLbl">통역 · 조건부</text>
+      </svg>
+    </div>
+
+    <!-- tension gauge & stats -->
+    <div class="gauge">
+      <div style="padding:14px 18px">
+        <div class="lbl">회담 상황</div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <div style="flex:1;border:1px solid #2a3450;padding:8px 10px"><div style="font:11px var(--mono);color:var(--muted)">회담</div><div style="font:600 24px var(--mono)">1 / 3</div></div>
+          <div style="flex:1;border:1px solid #2a3450;padding:8px 10px"><div style="font:11px var(--mono);color:var(--muted)">불일치 조항</div><div style="font:600 24px var(--mono)" id="mis">0</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:14px;font:11px var(--mono);color:var(--muted)"><span>긴장</span><span id="tenLbl">0 / 3</span></div>
+        <div style="position:relative;height:18px;margin-top:6px;background:#070a10;border:1px solid #2a3450">
+          <div id="tenBar" style="position:absolute;left:0;top:0;bottom:0;width:6%;background:linear-gradient(90deg,#5f8f7a,#d6b876,#b3312a);transition:width .6s"></div>
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 30px,rgba(255,255,255,.08) 30px 31px)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="choices">
+      <div class="card sel" data-c="literal"><div class="k">통역안 A</div><div class="t">승인을 조건으로 철수하겠다고 전한다</div><span class="h" style="background:rgba(95,143,122,.25);color:#9fd6b8">의미 보존 · 긴장 +1</span><div class="key">[Q] 선택</div></div>
+      <div class="card" data-c="soften"><div class="k">통역안 B</div><div class="t">즉시 철수를 확약했다고 전한다</div><span class="h" style="background:rgba(179,49,42,.25);color:#ff9c90">확약으로 변경 · 불일치 +1</span><div class="key">[W] 선택</div></div>
+    </div>
+
+    <div class="records">
+      <div class="rec"><b>북국 서기 기록</b>제1조. 남국은 국경에서 <span id="recN">의회 승인 후 철수한다</span><span class="cur"></span></div>
+      <div class="rec"><b>남국 서기 기록</b>제1조. 의회의 승인이 나면 국경에서 철수한다.</div>
+    </div>
+
+    <div class="feedback"><span class="tag">장내</span><span id="fb">북국: 즉시 철수 확약을 요구. 남국: 내부 승인 전 확약 불가.</span>
+      <div class="vu"><i style="animation-delay:0s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.25s"></i><i style="animation-delay:.05s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.35s"></i></div>
+    </div>
+  </section>
+
+  <!-- ============ B ============ -->
+  <section class="screen" id="sb">
+    <div class="desk"></div>
+    <div class="flash"></div>
+    <div class="bHead">
+      <div class="k">서명 완료 · 결말</div>
+      <h2 class="brassText">서명 뒤의 총성</h2>
+      <p>북국은 철수가 확정됐다고 믿고 진입했다. 남국은 검토를 약속했을 뿐이라며 발포했다.</p>
+    </div>
+
+    <div class="doc l">
+      <div class="seal">北</div>
+      <h4>휴전 합의서</h4><div class="sub">북국 서기 기록본 · 통역 경유</div>
+      <div class="cl bad"><div class="n">제 1 조 · 철수 시점</div><div class="tx">남국은 국경에서 <b>즉시 철수할 것을 확약</b>한다.</div><div class="stampR" style="animation-delay:.4s">불일치</div></div>
+      <div class="cl"><div class="n">제 2 조 · 사건의 책임</div><div class="tx">남국은 민간 피해에 유감을 표하며, 책임 소재는 조사 중이다.</div></div>
+      <div class="cl bad"><div class="n">제 3 조 · 감시단 입국</div><div class="tx">남국은 감시단의 <b>입국을 허용</b>한다.</div><div class="stampR" style="animation-delay:.9s">불일치</div></div>
+      <div class="sign"><span>북국 수석대표</span>
+        <svg width="170" height="50" viewBox="0 0 170 50"><path d="M4 36 C 20 4, 30 44, 46 22 S 70 8, 78 30 S 104 40, 118 16 S 150 30, 166 20" fill="none" stroke="#1b2a55" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+    </div>
+
+    <div class="doc r">
+      <div class="seal">南</div>
+      <h4>휴전 합의서</h4><div class="sub">남국 서기 기록본 · 원문</div>
+      <div class="cl bad"><div class="n">제 1 조 · 철수 시점</div><div class="tx">의회의 <b>승인이 나면</b> 국경에서 철수한다.</div></div>
+      <div class="cl"><div class="n">제 2 조 · 사건의 책임</div><div class="tx">민간 피해에 유감을 표한다. 책임 소재는 조사 중이다.</div></div>
+      <div class="cl bad"><div class="n">제 3 조 · 감시단 입국</div><div class="tx">감시단의 <b>규모를 합의한 뒤</b> 입국을 허용할 수 있다.</div></div>
+      <div class="sign"><span>남국 수석대표</span>
+        <svg width="170" height="50" viewBox="0 0 170 50"><path d="M6 30 Q 30 6, 40 30 T 72 28 Q 90 10, 104 34 L 120 12 Q 140 40, 164 18" fill="none" stroke="#1b2a55" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+    </div>
+
+    <!-- red threads linking mismatched clauses -->
+    <svg class="thread" viewBox="0 0 1600 1000">
+      <g stroke="#e0463a" stroke-width="2" fill="none" stroke-dasharray="6 6" opacity=".85">
+        <path d="M700 452 C 780 420, 820 420, 900 450"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="1s" repeatCount="indefinite"/></path>
+        <path d="M700 672 C 780 700, 820 700, 900 668"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="1s" repeatCount="indefinite"/></path>
+      </g>
+      <!-- pen -->
+      <g transform="translate(760,880) rotate(-24)"><rect x="0" y="-7" width="190" height="14" rx="7" fill="#101010"/><rect x="120" y="-7" width="12" height="14" fill="#d6b876"/><path d="M0 -7 L-30 0 L0 7Z" fill="#d6b876"/></g>
+    </svg>
+
+    <div class="bStats">
+      <div class="box"><div class="k">기록 불일치</div><div class="v" style="color:#ff7a6c">2</div></div>
+      <div class="box"><div class="k">회담 긴장</div><div class="v">1</div></div>
+    </div>
+
+    <div class="ticker"><div class="lab">국경 전보</div><div class="run">03:12 북국 제7여단, 철수 확정 통보에 따라 완충지대 진입 ── 03:14 남국 초소, 무단 진입으로 판단 · 경고 사격 ── 03:19 감시단 입국 지연: 규모 미합의 ── 통역 기록의 차이가 현장의 명령이 되었다. ── 03:12 북국 제7여단, 철수 확정 통보에 따라 완충지대 진입 ── 03:14 남국 초소, 무단 진입으로 판단 · 경고 사격 ── 03:19 감시단 입국 지연: 규모 미합의 ── 통역 기록의 차이가 현장의 명령이 되었다. ──</div></div>
+  </section>
+
+  <div class="vig"></div><div class="grain"></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(){var h=(location.hash||'#a').replace('#','');if(h!=='b')h='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id==='s'+h);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-h')===h);}
+  window.addEventListener('hashchange',show);show();
+  var tb=document.querySelectorAll('.tabs button');for(var k=0;k<tb.length;k++)tb[k].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-h');});
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}if(ac&&ac.state==='suspended')ac.resume();}catch(e){ac=null;}return ac;}
+  function tone(f,d,type,g){var a=ctx();if(!a)return;try{var o=a.createOscillator(),v=a.createGain(),t=a.currentTime;o.type=type||'sine';o.frequency.value=f;v.gain.setValueAtTime(0.0001,t);v.gain.exponentialRampToValueAtTime(g||0.06,t+0.015);v.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(v);v.connect(a.destination);o.start(t);o.stop(t+d+0.05);}catch(e){}}
+  function thud(){var a=ctx();if(!a)return;try{var n=Math.floor(a.sampleRate*.25),b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);for(var i=0;i<n;i++)x[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);var s=a.createBufferSource(),f=a.createBiquadFilter(),v=a.createGain();f.type='lowpass';f.frequency.value=380;v.gain.value=.5;s.buffer=b;s.connect(f);f.connect(v);v.connect(a.destination);s.start();}catch(e){}}
+
+  var needle=document.getElementById('needle'),lbl=document.getElementById('needleLbl');
+  function pick(c){
+    var cards=document.querySelectorAll('.card');for(var i=0;i<cards.length;i++)cards[i].classList.toggle('sel',cards[i].getAttribute('data-c')===c);
+    if(c==='literal'){needle.style.transform='rotate(0deg)';lbl.textContent='통역 · 조건부';
+      document.getElementById('recN').textContent='의회 승인 후 철수한다';document.getElementById('mis').textContent='0';
+      document.getElementById('tenBar').style.width='36%';document.getElementById('tenLbl').textContent='1 / 3';
+      document.getElementById('fb').textContent='양측 서기가 같은 강도로 기록했습니다. 협상은 느려졌지만 약속은 일치합니다.';
+      tone(392,.35,'triangle',.05);setTimeout(function(){tone(587,.5,'triangle',.04);},120);}
+    else{needle.style.transform='rotate(62deg)';lbl.textContent='통역 · 확약';
+      document.getElementById('recN').textContent='즉시 철수를 확약한다';document.getElementById('mis').textContent='1';
+      document.getElementById('tenBar').style.width='6%';document.getElementById('tenLbl').textContent='0 / 3';
+      document.getElementById('fb').textContent='북국 기록은 확약, 남국 원문은 조건부 약속입니다. 방 안의 긴장은 잠시 낮아졌습니다.';
+      tone(311,.4,'sawtooth',.025);setTimeout(function(){tone(294,.6,'sawtooth',.02);},90);}
+  }
+  var cards=document.querySelectorAll('.card');for(var i=0;i<cards.length;i++)cards[i].addEventListener('click',function(e){pick(e.currentTarget.getAttribute('data-c'));});
+  var stamps=document.querySelectorAll('.stampR');for(var s=0;s<stamps.length;s++)stamps[s].addEventListener('click',function(e){var el=e.currentTarget;el.style.animation='none';void el.offsetWidth;el.style.animation='';thud();});
+  document.getElementById('sb').addEventListener('pointerdown',function(){thud();});
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1'){location.hash='a';tone(523,.1,'sine',.03);}
+    else if(e.key==='2'){location.hash='b';thud();}
+    else if(e.key==='q'||e.key==='Q')pick('literal');
+    else if(e.key==='w'||e.key==='W')pick('soften');
+  });
+})();
+</script>
+</body>
+</html>

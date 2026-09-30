@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>단어 연금술</title>
+<style>
+:root{--paper:#f6ecd3;--paper2:#efe0bd;--cobalt:#2438a8;--cobalt-d:#15206a;--verm:#e8452c;--mustard:#f0b429;--mint:#48c9a0;--coral:#ff7a6b;--ink:#1c1a2e}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#15206a}
+body{font-family:"Jua","Do Hyeon","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;
+ background:radial-gradient(circle at 1px 1px,rgba(36,56,168,.12) 1.2px,transparent 1.6px) 0 0/22px 22px,linear-gradient(160deg,#fbf3df,#f0e0bb)}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+.top{position:absolute;left:0;right:0;top:0;height:84px;background:var(--cobalt);display:flex;align-items:center;padding:0 36px;gap:22px;color:#fff;box-shadow:0 6px 0 var(--cobalt-d)}
+.logo{font-size:34px;font-weight:900;letter-spacing:.02em;color:#fff;text-shadow:3px 3px 0 var(--verm)}
+.stagechip{padding:8px 16px;background:#fff;color:var(--cobalt);border-radius:22px;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--cobalt-d)}
+.goal{font-size:18px;color:#dfe4ff}.goal b{color:var(--mustard)}
+.top .sp{flex:1}
+.pill{padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.14);font-size:16px}
+.pill b{color:var(--mustard);font-size:20px;margin-left:6px}
+.board{position:absolute;left:40px;top:136px;width:840px;height:600px;border-radius:24px;background:#fff8e6;border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);overflow:hidden}
+.board svg{position:absolute;left:20px;top:20px}
+.bench{position:absolute;left:920px;top:136px;width:640px;height:600px;border-radius:24px;background:var(--paper);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:26px 30px}
+.bench h2{font-size:18px;letter-spacing:.25em;color:var(--cobalt);margin-bottom:14px}
+.word{display:flex;align-items:center;gap:18px;margin-bottom:16px}
+.word .big{width:120px;height:120px;border-radius:20px;background:#3fa9e0;border:4px solid var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:5px 5px 0 var(--ink)}
+.word .big span{font-size:56px;color:#fff;text-shadow:3px 3px 0 var(--cobalt-d)}
+.word .old{font-size:20px;color:#8a7a5a}.word .old s{text-decoration:line-through 3px var(--verm)}
+.word .old small{display:block;font-size:14px;color:#8a7a5a;text-decoration:none;letter-spacing:.1em;margin-bottom:4px}
+.eq{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:18px;border:4px dashed var(--cobalt);border-radius:18px;background:#fffdf5;min-height:96px}
+.eq .lhs{font-size:30px;color:var(--cobalt)}
+.slot{min-width:120px;height:54px;border-radius:14px;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:24px;padding:0 14px;box-shadow:4px 4px 0 var(--ink)}
+.slot.empty{border-style:dashed;box-shadow:none;color:#b8a888;background:transparent;animation:blink 1.1s infinite}
+@keyframes blink{50%{border-color:var(--verm);color:var(--verm)}}
+.c-prop{background:var(--mint)}.c-mat{background:var(--mustard)}.c-noun{background:#8fb4ff}.c-act{background:var(--coral)}
+.infer{margin-top:18px;display:flex;align-items:center;gap:8px;font-size:17px;flex-wrap:wrap}
+.infer span{padding:6px 12px;border-radius:10px;background:#fff;border:2px solid var(--ink)}
+.infer i{font-style:normal;color:var(--cobalt);font-size:20px}
+.infer .ok{background:var(--mint);font-weight:800}
+.go{position:absolute;left:30px;right:30px;bottom:26px;height:74px;border-radius:18px;background:var(--verm);border:4px solid var(--ink);box-shadow:0 7px 0 var(--ink);color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;gap:14px;cursor:pointer;transition:transform .06s,box-shadow .06s}
+.go:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+.go small{font-size:15px;opacity:.85;padding:3px 8px;border:2px solid #fff;border-radius:8px}
+.tray{position:absolute;left:40px;right:40px;bottom:30px;height:150px;border-radius:24px;background:var(--cobalt);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:18px 26px}
+.tray h3{color:#dfe4ff;font-size:16px;letter-spacing:.2em;margin-bottom:12px;display:flex;gap:18px}
+.tray h3 em{font-style:normal;font-size:14px;letter-spacing:0;display:flex;align-items:center;gap:6px}
+.tray h3 em::before{content:"";width:14px;height:14px;border-radius:4px;background:var(--c);border:2px solid var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{height:52px;padding:0 20px;border-radius:14px;border:3px solid var(--ink);box-shadow:0 5px 0 var(--ink);display:flex;align-items:center;font-size:23px;cursor:pointer;user-select:none;transition:transform .08s}
+.chip:hover{transform:translateY(-4px) rotate(-2deg)}
+.chip.used{opacity:.35;box-shadow:none;transform:translateY(5px)}
+.chip.held{transform:translate(0,-8px) rotate(4deg);box-shadow:0 18px 0 rgba(0,0,0,.25);outline:4px solid #fff}
+.pop{animation:pop .3s}
+@keyframes pop{40%{transform:scale(1.18) rotate(-4deg)}}
+.prev{position:absolute;left:260px;top:30px;padding:6px 14px;border-radius:12px;background:#fff;border:3px solid #1c1a2e;font-size:16px;color:#2438a8;box-shadow:3px 3px 0 #1c1a2e;animation:bob 1.4s ease-in-out infinite}.prev b{color:#48a080}@keyframes bob{50%{transform:translateY(-4px)}}
+#tabs{position:absolute;right:14px;bottom:6px;z-index:50;display:flex;gap:4px}
+#tabs a{font:13px/1 sans-serif;color:var(--cobalt);text-decoration:none;padding:5px 10px;border:2px solid var(--ink);background:#fff;border-radius:8px;font-weight:700}
+#tabs a.on{background:var(--mustard)}
+/* B */
+.stamp{position:absolute;left:430px;top:500px;width:380px;height:140px;border:9px solid var(--verm);border-radius:22px;color:var(--verm);font-size:70px;font-weight:900;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg);background:rgba(255,248,230,.8);mix-blend-mode:multiply;animation:stampin .5s cubic-bezier(.2,1.6,.4,1) both;text-shadow:none}
+.stamp::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,transparent 60%,rgba(255,248,230,.7) 61%) 0 0/18px 18px;mix-blend-mode:screen}
+@keyframes stampin{0%{transform:rotate(-12deg) scale(2.4);opacity:0}100%{transform:rotate(-12deg) scale(1);opacity:1}}
+.entry{position:absolute;left:920px;top:136px;width:640px;height:600px;border-radius:24px;background:#fffaf0;border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:30px 36px;overflow:hidden}
+.entry::before{content:"";position:absolute;left:70px;top:0;bottom:0;width:2px;background:rgba(232,69,44,.35)}
+.entry .lines{position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 43px,rgba(36,56,168,.14) 43px 45px);pointer-events:none}
+.entry h2{position:relative;font-size:18px;letter-spacing:.25em;color:var(--cobalt);margin-left:50px}
+.entry .hw{position:relative;margin:22px 0 0 50px}
+.entry .hw b{font-size:64px;color:var(--ink)}
+.entry .hw sup{font-size:20px;color:var(--verm);margin-left:6px}
+.entry .hw p{font-size:30px;line-height:1.5;color:var(--cobalt);margin-top:8px}
+.entry .hw .ex{font-size:18px;color:#7a6a4a;margin-top:12px}
+.entry .rw{position:relative;margin:26px 0 0 50px;display:flex;gap:14px}
+.entry .rw div{flex:1;padding:14px;border-radius:14px;border:3px solid var(--ink);text-align:center;box-shadow:4px 4px 0 var(--ink);background:#fff}
+.entry .rw div small{display:block;font-size:14px;color:#7a6a4a}
+.entry .rw div b{font-size:32px;color:var(--cobalt)}
+.stars{position:relative;margin:24px 0 0 50px;font-size:46px;letter-spacing:6px;color:var(--mustard);text-shadow:3px 3px 0 var(--ink)}
+.stars span{color:#e0d6bf}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-40px;font-style:normal;font-size:26px;font-weight:900;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(1100px) rotate(540deg)}}
+.newthing{position:absolute;left:40px;bottom:30px;right:40px;height:150px;border-radius:24px;background:var(--mint);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);display:flex;align-items:center;gap:30px;padding:0 34px}
+.newthing .ico{width:110px;height:110px;border-radius:24px;background:#cdeefc;border:4px solid var(--ink);box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;justify-content:center}
+.newthing h3{font-size:18px;letter-spacing:.2em;color:var(--cobalt-d)}
+.newthing p{font-size:40px;color:var(--ink)}
+.newthing .cnt{margin-left:auto;text-align:right}
+.newthing .cnt b{display:block;font-size:60px;color:#fff;text-shadow:4px 4px 0 var(--ink)}
+.newthing .cnt small{font-size:17px;color:var(--cobalt-d)}
+.newthing .next{padding:18px 26px;border-radius:16px;background:var(--cobalt);color:#fff;font-size:24px;border:4px solid var(--ink);box-shadow:0 6px 0 var(--ink);cursor:pointer}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <section class="screen" id="sa">
+  <div class="top"><span class="logo">단어 연금술</span><span class="stagechip">12 · 얼어붙은 강</span><span class="goal">목표: <b>열쇠</b>를 주워 <b>문</b>을 연다</span><span class="sp"></span><span class="pill">새긴 정의<b>2</b></span><span class="pill">되돌리기<b>3</b></span></div>
+  <div class="board"><svg id="boardA" width="800" height="560" viewBox="0 0 800 560"></svg><div class="prev">미리보기 · 강 → 얼음 <b>밟을 수 있음</b></div></div>
+  <div class="bench">
+   <h2>정의 조합대</h2>
+   <div class="word"><div class="big"><span>강</span></div><div class="old"><small>지금의 뜻</small><s>물이 흘러가는 긴 길</s></div></div>
+   <div class="eq"><span class="lhs">강 =</span><span class="slot c-prop">얼어 굳은</span><span class="slot c-mat">물의</span><span class="slot empty" id="slotA">?</span></div>
+   <div class="infer"><span>굳은</span><i>→</i><span>단단하다</span><i>→</i><span>밟을 수 있다</span><i>→</i><span class="ok">건널 수 있음 ✓</span></div>
+   <div class="infer" style="margin-top:10px"><span>물의</span><i>→</i><span>차갑다</span><i>→</i><span style="background:#ffe2dc">불이 꺼진다 ⚠</span></div>
+   <div class="go" id="goA">정의를 새긴다 <small>Enter</small></div>
+  </div>
+  <div class="tray">
+   <h3>뜻 조각 <em style="--c:var(--mint)">성질</em><em style="--c:var(--mustard)">재료</em><em style="--c:#8fb4ff">사물</em><em style="--c:var(--coral)">동작</em></h3>
+   <div class="chips" id="chipsA">
+    <div class="chip c-prop used">얼어 굳은</div><div class="chip c-mat used">물의</div><div class="chip c-noun held">길</div><div class="chip c-noun">문</div><div class="chip c-act">여는</div><div class="chip c-prop">무거운</div><div class="chip c-prop">떠오르는</div><div class="chip c-mat">빵으로 된</div><div class="chip c-act">삼키는</div><div class="chip c-noun">것</div><div class="chip c-prop">투명한</div><div class="chip c-act">흘러가는</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="screen" id="sb">
+  <div class="top"><span class="logo">단어 연금술</span><span class="stagechip">12 · 얼어붙은 강</span><span class="goal">클리어 · <b>정의 3개</b> (최소 2)</span><span class="sp"></span><span class="pill">걸음<b>14</b></span><span class="pill">새 사물<b>17</b>/200</span></div>
+  <div class="board"><svg id="boardB" width="800" height="560" viewBox="0 0 800 560"></svg></div>
+  <div class="stamp">정의 성립!</div>
+  <div class="entry"><div class="lines"></div>
+   <h2>나의 사전 · 17번째 낱말</h2>
+   <div class="hw"><b>얼음길</b><sup>명사 · 새로 만듦</sup><p>얼어 굳은 물의 길.<br>밟으면 삐걱이지만 건널 수 있다.</p><div class="ex">예) 강에 새 뜻을 새기자 얼음길이 되었다.</div></div>
+   <div class="rw"><div><small>새긴 정의</small><b>3</b></div><div><small>걸음</small><b>14</b></div><div><small>다른 풀이</small><b>2개 더</b></div></div>
+   <div class="stars">★★<span>★</span></div>
+  </div>
+  <div class="newthing">
+   <div class="ico"><svg width="100" height="100" viewBox="0 0 100 100"><rect x="8" y="30" width="84" height="40" rx="8" fill="#cdeefc" stroke="#1c1a2e" stroke-width="4"/><path d="M20 40 l14 10 l-6 12 M60 36 l-8 16 l14 8" stroke="#6ab8e0" stroke-width="3" fill="none"/><path d="M72 42 l8 -8 M78 48 l8 -4" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div>
+   <div><h3>새 사물이 도감에 들어갔다</h3><p>얼음길</p></div>
+   <div class="cnt"><b>17</b><small>/ 200 사물</small></div>
+   <div class="next" id="nextB">다음 방 →</div>
+  </div>
+  <div class="confetti" id="conf"></div>
+ </section>
+ <nav id="tabs"><a href="#a" data-k="a">1 · 조합</a><a href="#b" data-k="b">2 · 성립</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ var NS='http://www.w3.org/2000/svg';
+ function el(p,tag,a,txt){var e=document.createElementNS(NS,tag);for(var k in a){e.setAttribute(k,a[k]);}if(txt)e.textContent=txt;p.appendChild(e);return e;}
+ var MAP=['WWWWWWWWWW','W..R...D.W','W..R..T..W','WH.R...K.W','W..R.T...W','W..R.....W','WWWWWWWWWW'];
+ function tag(g,x,y,t,col){var w=t.length*18+16;el(g,'rect',{x:x+40-w/2,y:y+56,width:w,height:22,rx:6,fill:'#fff',stroke:'#1c1a2e','stroke-width':2});el(g,'text',{x:x+40,y:y+73,'text-anchor':'middle','font-size':15,'font-weight':800,fill:col||'#2438a8'},t);}
+ function draw(id,iced){var s=document.getElementById(id);if(!s)return;
+  for(var r=0;r<7;r++)for(var c=0;c<10;c++){var x=c*80,y=r*80,ch=MAP[r][c];
+   el(s,'rect',{x:x,y:y,width:80,height:80,fill:((r+c)%2)?'#f7ead0':'#fbf1dc'});
+   if(ch==='W'){el(s,'rect',{x:x+2,y:y+2,width:76,height:76,rx:10,fill:'#2438a8',stroke:'#1c1a2e','stroke-width':3});el(s,'rect',{x:x+8,y:y+8,width:64,height:14,rx:5,fill:'#4a60d0'});}
+   if(ch==='R'){if(!iced){el(s,'rect',{x:x,y:y,width:80,height:80,fill:'#3fa9e0'});el(s,'path',{d:'M'+(x+8)+' '+(y+26)+' q10 -8 20 0 t20 0 t20 0 M'+(x+4)+' '+(y+56)+' q10 -8 20 0 t20 0 t20 0',stroke:'#bfe6ff','stroke-width':4,fill:'none','stroke-linecap':'round'});
+     el(s,'rect',{x:x+6,y:y+6,width:68,height:68,rx:8,fill:'none',stroke:'#fff','stroke-width':3,'stroke-dasharray':'8 7',opacity:.9,'class':'ghost'});}
+    else{el(s,'rect',{x:x,y:y,width:80,height:80,fill:'#d6f2ff'});el(s,'path',{d:'M'+(x+10)+' '+(y+20)+' l18 14 l-6 16 l20 12 M'+(x+52)+' '+(y+8)+' l-6 18 l14 10',stroke:'#7cc4ea','stroke-width':3,fill:'none'});el(s,'path',{d:'M'+(x+56)+' '+(y+56)+' l10 -10 M'+(x+62)+' '+(y+64)+' l10 -6',stroke:'#fff','stroke-width':4,'stroke-linecap':'round'});}}
+   if(ch==='T'){el(s,'circle',{cx:x+40,cy:y+34,r:24,fill:'#48c9a0',stroke:'#1c1a2e','stroke-width':3});el(s,'rect',{x:x+34,y:y+52,width:12,height:18,fill:'#8a5a2a',stroke:'#1c1a2e','stroke-width':3});}
+   if(ch==='D'){el(s,'rect',{x:x+12,y:y+6,width:56,height:70,rx:24,fill:'#b0682e',stroke:'#1c1a2e','stroke-width':4});el(s,'circle',{cx:x+40,cy:y+40,r:6,fill:'#1c1a2e'});el(s,'rect',{x:x+37,y:y+42,width:6,height:14,fill:'#1c1a2e'});tag(s,x,y-4,'문','#b0682e');}
+   if(ch==='K'&&!iced){el(s,'circle',{cx:x+28,cy:y+36,r:13,fill:'none',stroke:'#f0b429','stroke-width':7});el(s,'path',{d:'M'+(x+40)+' '+(y+36)+' h28 m-8 0 v10 m-8 -10 v8',stroke:'#f0b429','stroke-width':7,'stroke-linecap':'round',fill:'none'});tag(s,x,y-4,'열쇠','#b07a00');}
+  }
+  if(!iced){for(var rr=1;rr<6;rr++){if(rr===3)tag(s,240,rr*80-4,'강');}
+}
+  else{tag(s,240,390,'얼음길','#2438a8');}
+  var hx=iced?240:80,hy=240;var g=el(s,'g',{transform:'translate('+hx+' '+hy+')','class':'hero'});
+  el(g,'ellipse',{cx:40,cy:70,rx:22,ry:6,fill:'#000',opacity:.2});
+  el(g,'circle',{cx:40,cy:42,r:24,fill:'#fff',stroke:'#1c1a2e','stroke-width':4});
+  el(g,'path',{d:'M16 36 q24 -30 48 0 z',fill:'#e8452c',stroke:'#1c1a2e','stroke-width':4});
+  el(g,'circle',{cx:32,cy:46,r:3.5,fill:'#1c1a2e'});el(g,'circle',{cx:48,cy:46,r:3.5,fill:'#1c1a2e'});
+  if(iced){el(g,'path',{d:'M30 56 q10 8 20 0',stroke:'#1c1a2e','stroke-width':3,fill:'none'});
+   el(s,'g',{});for(var k=0;k<3;k++){el(s,'circle',{cx:170-k*40,cy:290+(k%2)*10,r:5,fill:'#c7b58f'});}
+   el(s,'text',{x:590,y:250,'font-size':30,fill:'#f0b429',stroke:'#1c1a2e','stroke-width':1},'✦');
+   var kg=el(s,'g',{transform:'translate(300 170) rotate(-20)'});el(kg,'circle',{cx:0,cy:0,r:13,fill:'none',stroke:'#f0b429','stroke-width':7});el(kg,'path',{d:'M12 0 h28 m-8 0 v10 m-8 -10 v8',stroke:'#f0b429','stroke-width':7,'stroke-linecap':'round',fill:'none'});
+   el(s,'text',{x:340,y:150,'font-size':22,'font-weight':800,fill:'#e8452c'},'+ 열쇠!');}
+  el(s,'rect',{x:0,y:0,width:800,height:560,fill:'none',stroke:'#1c1a2e','stroke-width':4,rx:6});
+ }
+ draw('boardA',false);draw('boardB',true);
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function blip(f,d,type){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type=type||'square';o.frequency.setValueAtTime(f,c.currentTime);o.frequency.exponentialRampToValueAtTime(f*1.5,c.currentTime+d*0.5);g.gain.setValueAtTime(0.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(0.08,c.currentTime+0.01);g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d+0.02);}
+ function fanfare(){[523,659,784,1046].forEach(function(f,i){setTimeout(function(){blip(f,0.25,'triangle');},i*110);});}
+ var chips=document.querySelectorAll('#chipsA .chip'),slot=document.getElementById('slotA');
+ for(var i=0;i<chips.length;i++){(function(ch){ch.addEventListener('click',function(){if(ch.className.indexOf('used')>=0)return;blip(420+Math.random()*200,0.12);if(slot){slot.textContent=ch.textContent;slot.className='slot pop '+(ch.className.match(/c-\w+/)||[''])[0];}});})(chips[i]);}
+ var go=document.getElementById('goA');if(go)go.addEventListener('click',function(){fanfare();setTimeout(function(){location.hash='b';},450);});
+ var nb=document.getElementById('nextB');if(nb)nb.addEventListener('click',function(){blip(660,0.15,'triangle');});
+ window.addEventListener('keydown',function(e){if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';if(e.key==='Enter'&&go){go.click();}});
+ var cf=document.getElementById('conf');if(cf){var L='ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎ가나다얼음길★';var C=['#e8452c','#2438a8','#f0b429','#48c9a0','#ff7a6b'];
+  for(var j=0;j<34;j++){var e=document.createElement('i');e.textContent=L.charAt(Math.floor(Math.random()*L.length));e.style.left=(Math.random()*100)+'%';e.style.color=C[j%C.length];e.style.animationDuration=(3+Math.random()*4).toFixed(2)+'s';e.style.animationDelay=(-Math.random()*6).toFixed(2)+'s';e.style.fontSize=(18+Math.random()*22).toFixed(0)+'px';cf.appendChild(e);}}
+})();
+</script>
+</body>
+</html>

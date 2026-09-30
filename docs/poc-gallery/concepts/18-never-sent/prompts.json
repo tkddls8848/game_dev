@@ -1,0 +1,17 @@
+{
+ "num": 18,
+ "slug": "never-sent",
+ "title": "보내지 못한 것",
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 12일째 — 비 오는 오후, 보낼 수 없는 답장을 쓴다",
+   "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 screenshot of a quiet grief game about writing letters that can never be sent. Soft hand-painted watercolor style with ragged pigment edges and paper grain. Left half: a side view of a small wooden desk before a tall four-pane window streaked with falling rain, grey-blue rooftops blurred outside, a desk lamp casting a pale cone, a steaming mug, a small photo frame and a pile of unsent envelopes. Right half: a large close-up sheet of cream writing paper, tilted slightly, with a date line and several lines of handwritten Korean, one phrase crossed out, and a yellow pencil resting at the blinking caret mid-sentence. Bottom left: a big serif day counter and a row of 40 tally marks with the current one in rust orange, plus a quoted line from yesterday's letter. Bottom right: three rounded buttons, the send button greyed and dashed with a tooltip, and a solid slate button to put the letter in the drawer. Korean UI: \"12일째\", \"보내기\", \"서랍에 넣는다\". Muted mist blue, slate and graphite with warm paper. Tally constraint: the tally row contains exactly 40 marks drawn as 8 groups of 5 — marks 1 to 11 dark graphite, mark 12 rust orange, marks 13 to 40 faint pale outlines; do not draw more than 40 marks. STRICT (retry): count the tally marks before finishing — there must be exactly 40 marks total in ONE row, as exactly 8 bundles of 5 (four vertical strokes plus one diagonal slash), never 9 or more bundles; only ONE mark (the 12th, inside the 3rd bundle) is rust orange, all other marks are graphite or pale; the letter's date line shows only \"12일째\" style day text with no calendar year, month or date such as \"2024년 11월 12일\"."
+  },
+  {
+   "id": "b",
+   "screen": "B · 40일째 — 비가 그친 새벽, 서른아홉 통이 든 서랍",
+   "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 screenshot of the final day in a quiet grief game about unsent letters. Same watercolor room, now bathed in peach and apricot dawn light: the rain has stopped, one window sash is swung open, a pale sun sits low over hazy hills, two tiny birds, golden dust motes drift through a diagonal light beam. Beneath the desk the drawer is pulled out, packed with thirty-nine small cream envelopes tied with a red string. Right: the fortieth letter on bright paper, only a few short handwritten lines with generous empty space, and a footer line noting there is no recipient. A serif day label and a few italic lines sit on the wall beside the window. Bottom: all forty tally marks complete, the last in rust orange, and two rounded buttons offering to leave the window open or close the drawer. Korean UI: \"40일째\", \"서랍을 닫는다\", \"잘 지내\". Gentle, released, warm peach, cream and soft umber watercolor with bloom."
+  }
+ ]
+}

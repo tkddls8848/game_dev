@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내려가는 곳</title>
+<style>
+:root{--brass:#b8914f;--brass-l:#f0d49a;--brass-d:#4a3514;--teal:#7fd6cf;--ink:#e9e3d6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:#030304}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+.wall{position:absolute;inset:0;background:
+ radial-gradient(ellipse 50% 60% at 22% 50%,rgba(184,145,79,.14),transparent 70%),
+ repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,transparent 2px 9px),
+ linear-gradient(90deg,#0d0b09,#060506 40%,#030304)}
+/* brass panel */
+.plate{position:absolute;left:120px;top:70px;width:420px;height:860px;border-radius:14px;background:
+ repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),
+ linear-gradient(135deg,#5a4520,#a07c3e 30%,#6a5026 55%,#b8914f 75%,#4a3514);
+ box-shadow:inset 0 0 0 3px #2a1d08,inset 0 0 60px rgba(0,0,0,.55),0 30px 80px rgba(0,0,0,.9)}
+.plate::before{content:"";position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse 60% 40% at 30% 15%,rgba(255,240,200,.18),transparent 70%)}
+.screw{position:absolute;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e8cf98,#6a5026);box-shadow:inset 0 0 0 1px #2a1d08}
+.screw::after{content:"";position:absolute;left:3px;right:3px;top:7px;height:2px;background:#2a1d08;transform:rotate(35deg)}
+.plate h1{position:absolute;left:0;right:0;top:34px;text-align:center;font-size:17px;letter-spacing:.6em;color:#2a1d08;text-shadow:0 1px 0 rgba(255,230,180,.4)}
+.grid{position:absolute;left:44px;top:92px;width:332px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px 14px}
+.b{width:70px;height:62px;border-radius:31px;display:flex;align-items:center;justify-content:center;font-family:"Georgia",serif;font-size:19px;color:#2a1d08;
+ background:radial-gradient(circle at 40% 35%,#e0c690,#8a6a34 70%);box-shadow:inset 0 -3px 5px rgba(0,0,0,.35),0 2px 0 #2a1d08,0 4px 8px rgba(0,0,0,.5);cursor:pointer;transition:transform .08s}
+.b:active{transform:translateY(2px)}
+.b.done{color:#8a6a34;background:radial-gradient(circle at 40% 35%,#3a2a12,#1a1208 70%);box-shadow:inset 0 2px 5px #000}
+.b.now{color:#fff4dc;background:radial-gradient(circle at 45% 40%,#ffe2a0,#e08a2a 55%,#6a3008);box-shadow:0 0 22px rgba(255,180,80,.9),0 0 60px rgba(255,150,50,.45),inset 0 0 6px #fff;text-shadow:0 0 6px #fff}
+.b.dark{opacity:.35}
+.b.last{color:#23364a;background:radial-gradient(circle at 45% 40%,#ffffff,#d8e8f0 45%,#6a8a9a);box-shadow:0 0 30px rgba(220,240,255,.9),0 0 90px rgba(200,230,255,.5)}
+.plate .foot{position:absolute;left:0;right:0;bottom:28px;text-align:center;font-size:13px;letter-spacing:.3em;color:#2a1d08}
+/* door gap */
+.doorgap{position:absolute;left:640px;top:70px;width:880px;height:860px;background:linear-gradient(90deg,#0b0a09,#060606 49.7%,#1a1510 49.8%,#1a1510 50.2%,#060606 50.3%,#0b0a09);border-radius:4px;box-shadow:inset 0 0 120px #000}
+.crack{position:absolute;left:1078px;top:70px;width:4px;height:860px;background:linear-gradient(transparent,rgba(255,220,160,.35),rgba(255,210,150,.12),transparent);filter:blur(1px)}
+.rings{position:absolute;left:640px;top:70px;width:880px;height:860px;pointer-events:none}
+.cap{position:absolute;left:640px;width:880px;text-align:center;text-shadow:0 0 10px #000,0 0 24px #000,0 0 40px #000}
+.sfx{font-size:19px;color:var(--teal);letter-spacing:.12em;opacity:.9}
+.line{font-size:36px;line-height:1.5;color:#f4ecdc}
+.line small{display:block;font-size:17px;color:#a89c86;letter-spacing:.2em;margin-bottom:6px}
+.floorbig{position:absolute;right:92px;top:100px;text-align:right}
+.floorbig b{display:block;font-family:"Georgia",serif;font-size:96px;font-weight:400;color:var(--brass-l);text-shadow:0 0 30px rgba(240,200,120,.35)}
+.floorbig span{font-size:17px;letter-spacing:.35em;color:#a89c86}
+.memo{position:absolute;left:680px;bottom:96px;display:flex;gap:10px}
+.memo div{padding:8px 14px;border:1px solid rgba(184,145,79,.45);border-radius:20px;font-size:14px;color:#cdbb95;background:rgba(20,14,6,.6)}
+.memo div i{font-style:normal;color:var(--brass-l);margin-right:6px;font-family:Georgia,serif}
+.hint{position:absolute;right:92px;bottom:100px;text-align:right;font-size:15px;color:#7a705e;line-height:1.8}
+.hint b{color:#cdbb95;font-weight:400}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.18;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .35 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");animation:gr .5s steps(3) infinite}
+@keyframes gr{33%{background-position:40px 70px}66%{background-position:-60px 20px}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 45%,rgba(0,0,0,.9))}
+#tabs{position:absolute;right:14px;bottom:10px;z-index:50;display:flex;gap:4px}
+#tabs a{font:12px/1 Georgia,serif;color:#cdbb95;text-decoration:none;padding:6px 10px;border:1px solid #4a3514;background:#0a0806cc;border-radius:12px}
+#tabs a.on{background:var(--brass);color:#120c04}
+.shade{position:absolute;inset:0;border-radius:14px;background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.45))}
+#sb .crack{width:40px;left:1060px;background:linear-gradient(90deg,transparent,rgba(235,245,255,.42) 45%,rgba(235,245,255,.42) 55%,transparent);filter:blur(8px);animation:open 6s ease-in-out infinite alternate}
+@keyframes open{to{width:70px;left:1045px}}
+.whiteglow{position:absolute;left:760px;top:70px;width:640px;height:860px;background:radial-gradient(ellipse 50% 60% at 50% 50%,rgba(220,235,255,.18),transparent 70%);pointer-events:none}
+.press{position:absolute;right:92px;bottom:96px;padding:14px 28px;border:1px solid rgba(220,240,255,.6);border-radius:30px;font-size:19px;color:#eef6ff;background:rgba(10,14,20,.6);cursor:pointer;animation:pl 2.6s infinite}
+@keyframes pl{50%{box-shadow:0 0 30px rgba(220,240,255,.5)}}
+.heart{position:absolute;left:680px;top:780px;width:560px;height:80px}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <section class="screen" id="sa">
+  <div class="wall"></div>
+  <div class="doorgap"></div><div class="crack"></div>
+  <svg class="rings" viewBox="0 0 880 860" id="ringsA">
+   <defs><radialGradient id="src" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7fd6cf" stop-opacity=".5"/><stop offset="1" stop-color="#7fd6cf" stop-opacity="0"/></radialGradient></defs>
+   <circle cx="720" cy="640" r="60" fill="url(#src)"/>
+   <circle cx="170" cy="280" r="44" fill="url(#src)" opacity=".7"/>
+   <g fill="none" stroke="#7fd6cf" id="rgA"></g>
+   <text x="720" y="560" text-anchor="middle" fill="#7fd6cf" font-size="14" letter-spacing="3" opacity=".7">매미 · 먼 곳</text>
+   <text x="170" y="210" text-anchor="middle" fill="#7fd6cf" font-size="14" letter-spacing="3" opacity=".7">발소리 · 가까이</text>
+  </svg>
+  <div class="plate">
+   <div class="screw" style="left:18px;top:18px"></div><div class="screw" style="right:18px;top:18px"></div><div class="screw" style="left:18px;bottom:18px"></div><div class="screw" style="right:18px;bottom:18px"></div>
+   <h1>내 려 가 는 곳</h1>
+   <div class="grid" id="gridA"></div>
+   <div class="foot">위로 가는 버튼은 없습니다</div>
+  </div>
+  <div class="floorbig"><b>−7</b><span>일곱 살 · 여름 · 저녁</span></div>
+  <div class="cap" style="top:330px"><div class="sfx">[ 왼쪽 가까이 · 맨발로 흙길을 뛰는 소리 ]</div></div>
+  <div class="cap" style="top:440px"><div class="line"><small>— 엄마 —</small>"해 떨어진다, 얼른 들어와서 밥 먹어라.<br>수박 잘라 놨어."</div></div>
+  <div class="cap" style="top:640px"><div class="sfx">[ 오른쪽 멀리 · 매미 소리 · 평상 삐걱이는 소리 ]</div></div>
+  <div class="memo"><div><i>−3</i>할머니 부엌 · 된장 끓는 소리</div><div><i>−5</i>운동장 · 호루라기</div><div><i>−6</i>첫 자전거 · 넘어지는 소리</div></div>
+  <div class="hint">눈을 감고 들어도 된다<br><b>버튼을 누르면 한 층 내려간다</b></div>
+ </section>
+
+ <section class="screen" id="sb">
+  <div class="wall" style="filter:hue-rotate(160deg) saturate(.4)"></div>
+  <div class="doorgap"></div><div class="whiteglow"></div><div class="crack"></div>
+  <svg class="rings" viewBox="0 0 880 860">
+   <g fill="none" stroke="#dcecff" id="rgB"></g>
+  </svg>
+  <div class="plate">
+   <div class="screw" style="left:18px;top:18px"></div><div class="screw" style="right:18px;top:18px"></div><div class="screw" style="left:18px;bottom:18px"></div><div class="screw" style="right:18px;bottom:18px"></div>
+   <h1>내 려 가 는 곳</h1>
+   <div class="shade"></div>
+   <div class="grid" id="gridB"></div>
+   <div class="foot">위로 가는 버튼은 없습니다</div>
+  </div>
+  <div class="floorbig"><b style="color:#eef6ff;text-shadow:0 0 30px rgba(220,240,255,.5)">−39</b><span>일흔여덟 · 겨울 · 새벽</span></div>
+  <div class="cap" style="top:300px"><div class="sfx" style="color:#dcecff">[ 심전도 · 삐— … 삐— … 느려진다 ]</div></div>
+  <div class="cap" style="top:420px"><div class="line"><small>— 딸 —</small>"아빠, 나 왔어. 손 잡을게.<br>…수박 사 왔어. 여름 거 아니라 맛없대도."</div></div>
+  <svg class="heart" viewBox="0 0 560 80"><path id="ecg" d="M0 40 H560" stroke="#dcecff" stroke-width="2" fill="none" opacity=".8"/></svg>
+  <div class="memo" style="bottom:96px"><div><i>−7</i>여름 저녁</div><div><i>−21</i>결혼식 · 박수</div><div><i>−30</i>딸의 첫 울음</div><div><i>−38</i>빈 부엌</div></div>
+  <div class="press" id="pressLast">마지막 층, −40을 누른다</div>
+ </section>
+ <div class="grain"></div><div class="vig"></div>
+ <nav id="tabs"><a href="#a" data-k="a">1 · −7</a><a href="#b" data-k="b">2 · −39</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ window.addEventListener('keydown',function(e){if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';});
+ function build(id,cur,mode){var g=document.getElementById(id);if(!g)return;for(var i=1;i<=40;i++){var d=document.createElement('div');d.className='b';d.textContent='−'+i;
+   if(mode==='a'){if(i<cur)d.className+=' done';else if(i===cur)d.className+=' now';}
+   else{if(i<cur)d.className+=' done dark';else if(i===cur)d.className+=' now';else if(i===40)d.className+=' last';}
+   (function(n,el){el.addEventListener('click',function(){chime(n);});})(i,d);g.appendChild(d);}}
+ build('gridA',7,'a');build('gridB',39,'b');
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function chime(n){var c=ac();if(!c)return;var f=520*Math.pow(0.985,n);[1,2.01,3.02].forEach(function(m,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f*m;var t=c.currentTime;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.12/(i+1),t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+2.4);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+2.5);});}
+ var pl=document.getElementById('pressLast');if(pl)pl.addEventListener('click',function(){chime(40);});
+ // rings
+ function mk(id,srcs){var g=document.getElementById(id);if(!g)return[];var arr=[];for(var s=0;s<srcs.length;s++){for(var k=0;k<4;k++){var c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',srcs[s][0]);c.setAttribute('cy',srcs[s][1]);g.appendChild(c);arr.push({el:c,ph:k/4,sp:srcs[s][2],max:srcs[s][3]});}}return arr;}
+ var RA=mk('rgA',[[720,640,0.12,340],[170,280,0.22,220]]),RB=mk('rgB',[[440,420,0.05,460]]);
+ var t=0,ecg=document.getElementById('ecg');
+ function loop(){t+=0.016;var all=RA.concat(RB);for(var i=0;i<all.length;i++){var r=all[i];var p=(r.ph+t*r.sp)%1;r.el.setAttribute('r',(10+p*r.max).toFixed(1));r.el.setAttribute('stroke-opacity',((1-p)*0.55).toFixed(3));r.el.setAttribute('stroke-width',(2.4-p*1.8).toFixed(2));}
+  if(ecg){var d='M0 40';for(var x=0;x<=560;x+=4){var ph=((x/560)*2+t*0.35)%1;var y=40;if(ph>0.48&&ph<0.5)y=40-(ph-0.48)*900;else if(ph>=0.5&&ph<0.52)y=58-(ph-0.5)*900+18;else if(ph>=0.52&&ph<0.54)y=40+(0.54-ph)*300;d+=' L'+x+' '+y.toFixed(1);}ecg.setAttribute('d',d);}
+  window.requestAnimationFrame(loop);}
+ window.requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

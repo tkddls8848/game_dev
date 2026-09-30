@@ -1,0 +1,43 @@
+{
+  "_": "목업과 SignalBoard 가 같이 읽는 '심는 계획' 셋. 규칙이 아니라 보여 주기 위한 표본이다.",
+  "_채우는_법": "칸을 exposure 내림차순(길가부터)으로 줄세우고 cropOrder[i] 를 i번째 칸에 넣는다. 빈 문자열은 비운다. 그 칸의 토질이 minSoil 아래면 심지 못하고 비워지며, 보드가 그 수를 따로 센다.",
+  "_왜_data_에_있나": "presentation/index.html 과 C# SignalBoard 가 같은 계획을 읽어 같은 시세판을 그려야 한다. 한쪽에만 있으면 목업이 손그림이 된다.",
+  "plans": [
+    {
+      "id": "mono",
+      "nameKo": "단작 — 계절마다 값나가는 것만",
+      "nameEn": "Monoculture",
+      "noteKo": "남이 보지 않는 세계에서는 이게 최적이다. 보는 세계에서는 이것이 시세를 스스로 죽인다",
+      "bySeason": [
+        { "seasonId": "spring", "cropOrder": ["flax","flax","flax","flax","flax","flax","flax","flax","flax","flax","flax","flax"] },
+        { "seasonId": "summer", "cropOrder": ["melon","melon","melon","melon","melon","melon","melon","melon","melon","melon","melon","melon"] },
+        { "seasonId": "autumn", "cropOrder": ["saffron","saffron","saffron","saffron","saffron","saffron","saffron","saffron","saffron","saffron","saffron","saffron"] },
+        { "seasonId": "winter", "cropOrder": ["turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip"] }
+      ]
+    },
+    {
+      "id": "rotate",
+      "nameKo": "윤작 — 한 가지로 밭을 덮지 않는다",
+      "nameEn": "Rotation",
+      "noteKo": "관측치를 여러 작물로 흩어 시세 하락을 나눈다. 라벤더는 길가에 두어 평판으로 쓴다",
+      "bySeason": [
+        { "seasonId": "spring", "cropOrder": ["barley","flax","turnip","barley","flax","turnip","barley","flax","turnip","barley","flax","turnip"] },
+        { "seasonId": "summer", "cropOrder": ["lavender","sorghum","flax","melon","melon","lavender","melon","flax","sorghum","lavender","melon","flax"] },
+        { "seasonId": "autumn", "cropOrder": ["lavender","sorghum","barley","saffron","saffron","lavender","sorghum","barley","turnip","turnip","saffron","turnip"] },
+        { "seasonId": "winter", "cropOrder": ["winterRye","turnip","winterRye","turnip","winterRye","turnip","winterRye","turnip","winterRye","turnip","winterRye","turnip"] }
+      ]
+    },
+    {
+      "id": "screen",
+      "nameKo": "가림 — 키 큰 것을 길가에 세운다",
+      "nameEn": "Screening",
+      "noteKo": "길가 넉 칸을 수수·겨울호밀로 버리고 뒤에 돈작물을 숨긴다. 평판은 포기한다 — 라벤더가 뒤로 가면 아무도 못 본다",
+      "bySeason": [
+        { "seasonId": "spring", "cropOrder": ["winterRye","winterRye","winterRye","winterRye","flax","flax","flax","flax","barley","barley","barley","barley"] },
+        { "seasonId": "summer", "cropOrder": ["sorghum","sorghum","sorghum","sorghum","melon","melon","melon","melon","lavender","lavender","lavender","lavender"] },
+        { "seasonId": "autumn", "cropOrder": ["sorghum","sorghum","sorghum","sorghum","saffron","saffron","saffron","saffron","turnip","turnip","saffron","turnip"] },
+        { "seasonId": "winter", "cropOrder": ["winterRye","winterRye","winterRye","winterRye","turnip","turnip","turnip","turnip","turnip","turnip","turnip","turnip"] }
+      ]
+    }
+  ]
+}

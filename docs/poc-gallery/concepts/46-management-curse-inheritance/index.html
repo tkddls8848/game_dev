@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>저주상속</title>
+<style>
+:root{
+  --lacquer:#12150f; --lacquer2:#1d201b; --wood:#2b2218; --paper:#eee5cc; --paper2:#d9ccaa;
+  --ink:#1e1a14; --cinnabar:#b23a26; --brass:#d2b578; --brass2:#8e7442; --muted:#b7b59f; --well:#6fb3a6;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Noto Serif CJK KR","Batang","AppleMyungjo",serif;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+}
+html,body{margin:0;height:100%;overflow:hidden;background:#050604}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;
+  font-family:var(--serif);color:var(--paper);background:var(--lacquer)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+/* room */
+.room{position:absolute;inset:0;
+  background:
+   radial-gradient(900px 620px at 18% 70%, rgba(255,170,80,.20), transparent 62%),
+   radial-gradient(700px 500px at 80% 20%, rgba(111,179,166,.07), transparent 70%),
+   repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 38px),
+   linear-gradient(180deg,#1a1b14 0%,#14150f 55%,#0c0d09 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .35 0 0 0 .9 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%, transparent 45%, rgba(0,0,0,.72) 100%)}
+.flick{position:absolute;inset:0;pointer-events:none;background:radial-gradient(700px 520px at 14% 76%, rgba(255,160,70,.16), transparent 70%);animation:flick 3.1s infinite steps(1)}
+@keyframes flick{0%{opacity:.9}12%{opacity:.7}19%{opacity:1}33%{opacity:.82}47%{opacity:.95}61%{opacity:.74}78%{opacity:1}90%{opacity:.86}}
+/* window with well */
+.win{position:absolute;left:44px;top:96px;width:300px;height:380px;border:14px solid #2a2016;box-shadow:inset 0 0 0 2px #0c0a07,0 20px 40px rgba(0,0,0,.6);background:#0b1414;overflow:hidden}
+.win svg{position:absolute;inset:0}
+.lattice{position:absolute;inset:0;background:
+  linear-gradient(90deg,transparent 48%,#2a2016 48% 52%,transparent 52%),
+  linear-gradient(0deg,transparent 32%,#2a2016 32% 34.5%,transparent 34.5% 65.5%,#2a2016 65.5% 68%,transparent 68%)}
+.candle{position:absolute;left:120px;top:640px;width:120px;height:260px}
+.flame{transform-origin:60px 70px;animation:sway 1.6s ease-in-out infinite alternate}
+@keyframes sway{0%{transform:scale(1,1) rotate(-2deg)}50%{transform:scale(.94,1.06) rotate(2deg)}100%{transform:scale(1.03,.95) rotate(-1deg)}}
+/* HUD */
+.hud{position:absolute;left:0;right:0;top:0;height:74px;display:flex;align-items:center;padding:0 40px;gap:28px;
+  background:linear-gradient(180deg,rgba(6,7,5,.92),rgba(6,7,5,.0));z-index:5}
+.title{display:flex;align-items:center;gap:14px}
+.title .seal{width:42px;height:42px;background:var(--cinnabar);color:#f6e7d0;display:grid;place-items:center;font-size:22px;font-weight:800;border-radius:4px;transform:rotate(-6deg);box-shadow:0 0 0 2px rgba(0,0,0,.4) inset}
+.title b{font-size:30px;letter-spacing:6px;color:var(--paper)}
+.title small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:4px;color:var(--brass2)}
+.day{margin-left:auto;margin-right:auto;font-size:19px;letter-spacing:3px;color:var(--brass)}
+.day em{font-style:normal;color:var(--muted);font-size:14px;margin-left:10px}
+.res{display:flex;gap:10px;font-family:var(--sans)}
+.res div{background:rgba(29,32,27,.9);border:1px solid rgba(210,181,120,.28);padding:7px 14px;border-radius:3px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.res b{color:var(--paper);font-size:19px;font-family:var(--serif)}
+.pips i{display:inline-block;width:9px;height:14px;margin-right:2px;background:var(--brass);transform:skew(-12deg)}
+.pips i.off{background:#3a3b30}
+/* ledger */
+.ledger{position:absolute;left:380px;top:120px;width:830px;height:680px;transform:perspective(1800px) rotateX(9deg);transform-origin:50% 100%}
+.page{position:absolute;top:0;width:410px;height:670px;color:var(--ink);
+  background:
+   radial-gradient(circle at 20% 80%, rgba(140,90,40,.18) 0 3px, transparent 4px),
+   radial-gradient(circle at 70% 30%, rgba(140,90,40,.14) 0 2px, transparent 3px),
+   radial-gradient(ellipse at 50% 50%, #f1e8cf 0%, #e5d8b6 70%, #cdbb8f 100%);
+  box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.page.l{left:0;border-radius:6px 0 0 6px;box-shadow:inset -30px 0 40px -20px rgba(80,50,20,.45),0 30px 60px rgba(0,0,0,.6)}
+.page.r{left:420px;border-radius:0 6px 6px 0;box-shadow:inset 30px 0 40px -20px rgba(80,50,20,.45),0 30px 60px rgba(0,0,0,.6)}
+.spine{position:absolute;left:405px;top:-6px;width:20px;height:682px;background:linear-gradient(90deg,#3a2a18,#1a1209,#3a2a18);border-radius:3px}
+.pg{position:absolute;inset:34px 36px}
+.pg h3{margin:0 0 4px;font-size:13px;letter-spacing:5px;color:#7a6440;font-weight:600}
+.pg h2{margin:0 0 16px;font-size:30px;letter-spacing:2px}
+.rule{height:1px;background:rgba(60,40,20,.35);margin:10px 0}
+.clause{font-size:15px;line-height:1.95}
+.clause .red{color:var(--cinnabar);font-weight:700}
+.bigseal{position:absolute;right:18px;bottom:20px;width:108px;height:108px;border:4px double var(--cinnabar);color:var(--cinnabar);border-radius:6px;
+  display:grid;place-items:center;text-align:center;font-size:17px;line-height:1.2;font-weight:800;transform:rotate(-9deg);opacity:.78;mix-blend-mode:multiply}
+table.bill{width:100%;border-collapse:collapse;font-size:14px}
+.bill td{padding:9px 4px;border-bottom:1px dashed rgba(60,40,20,.35);vertical-align:top}
+.bill td:first-child{width:70px;color:#6b5636}
+.bill tr.dup td{position:relative}
+.strike{position:relative}
+.strike::after{content:"";position:absolute;left:-6px;right:-6px;top:52%;height:3px;background:var(--cinnabar);transform:rotate(-2deg);border-radius:2px;box-shadow:0 0 1px var(--cinnabar)}
+.target{margin-top:14px;padding:14px;border:1.5px solid rgba(178,58,38,.6);background:rgba(178,58,38,.06)}
+.target b{font-size:22px}
+.target p{margin:6px 0 0;font-size:14px;color:#4a3a28}
+.inkpreview{position:absolute;left:36px;right:36px;bottom:36px;font-size:14px;color:#6b5636;min-height:44px;border-top:1px solid rgba(60,40,20,.3);padding-top:10px;transition:color .2s}
+.inkpreview b{color:var(--cinnabar)}
+/* evidence */
+.evid{position:absolute;right:40px;top:120px;width:330px}
+.card{position:relative;margin-bottom:22px;color:var(--ink);cursor:pointer;transition:transform .25s, box-shadow .25s}
+.card:hover{transform:translateY(-3px) rotate(0deg)!important}
+.receipt{background:linear-gradient(180deg,#e9dcb9,#d7c697);padding:18px 20px 22px;transform:rotate(2.2deg);box-shadow:0 18px 30px rgba(0,0,0,.55);
+  -webkit-mask:radial-gradient(circle 6px at 8px 100%,transparent 98%,#000) 0 0/16px 100% repeat-x;mask:radial-gradient(circle 6px at 8px 100%,transparent 98%,#000) 0 0/16px 100% repeat-x}
+.receipt small{font-family:var(--sans);font-size:11px;letter-spacing:3px;color:#7a6440}
+.receipt h4{margin:6px 0 8px;font-size:20px}
+.receipt .line{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:1px dotted rgba(0,0,0,.25)}
+.receipt .stamp{position:absolute;right:16px;top:30px;border:3px solid var(--cinnabar);color:var(--cinnabar);padding:4px 8px;font-weight:800;transform:rotate(-14deg);font-size:16px;opacity:.85}
+.found-wrap .receipt{transform:none;box-shadow:0 0 0 2px var(--brass),0 0 40px rgba(210,181,120,.45)}
+.card.found{box-shadow:0 0 0 2px var(--brass),0 0 40px rgba(210,181,120,.45),0 18px 30px rgba(0,0,0,.55)}
+.found-tag{z-index:2;position:absolute;left:-12px;top:-12px;background:var(--brass);color:#1d1a10;font-family:var(--sans);font-size:11px;font-weight:700;padding:4px 8px;letter-spacing:1px;transform:rotate(-4deg)}
+.person{background:linear-gradient(180deg,#2b3027,#1f231c);border:1px solid rgba(210,181,120,.3);color:var(--paper);padding:16px;transform:rotate(-1.4deg);box-shadow:0 18px 30px rgba(0,0,0,.55);display:flex;gap:14px}
+.portrait{width:96px;height:124px;flex:none;background:linear-gradient(180deg,#d9ccaa,#b9a883);position:relative;overflow:hidden;border:3px solid #eee5cc}
+.person h4{margin:2px 0 4px;font-size:20px}
+.person small{font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:2px}
+.person q{display:block;margin-top:10px;font-size:15px;line-height:1.55;color:#efe2c2;quotes:"“" "”"}
+.memo{font-family:var(--sans);font-size:12px;color:var(--muted);line-height:1.6;padding:0 6px}
+/* choices */
+.choices{position:absolute;left:380px;right:40px;bottom:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;z-index:4}
+.ch{position:relative;background:linear-gradient(180deg,rgba(43,48,39,.96),rgba(24,27,21,.96));border:1px solid rgba(210,181,120,.25);padding:16px 16px 14px 70px;min-height:94px;cursor:pointer;
+  transition:transform .12s ease, border-color .2s, box-shadow .2s;font-family:var(--serif)}
+.ch:hover{border-color:var(--brass);transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.ch:active{transform:translateY(1px) scale(.99)}
+.ch .ic{position:absolute;left:16px;top:18px;width:40px;height:40px;border-radius:50%;border:2px solid var(--brass2);display:grid;place-items:center;color:var(--brass);font-size:18px}
+.ch b{display:block;font-size:17px;color:var(--paper);margin-bottom:6px}
+.ch span{font-family:var(--sans);font-size:12px;color:var(--muted);line-height:1.5}
+.ch.new{border-color:var(--brass);box-shadow:0 0 0 1px rgba(210,181,120,.4),0 0 34px rgba(210,181,120,.22)}
+.ch.new .ic{background:var(--cinnabar);border-color:#e66a52;color:#fbe9d2}
+.ch.new::before{content:"조사로 열림";position:absolute;right:10px;top:-11px;background:var(--brass);color:#1b180e;font-family:var(--sans);font-size:11px;font-weight:700;padding:3px 8px}
+.ch .cost{color:#e07b62}
+.stampfx{position:absolute;left:760px;top:380px;width:190px;height:190px;border:6px double var(--cinnabar);color:var(--cinnabar);display:grid;place-items:center;font-size:30px;font-weight:900;text-align:center;line-height:1.1;
+  transform:rotate(-10deg) scale(2.2);opacity:0;pointer-events:none;mix-blend-mode:multiply;z-index:3}
+.stampfx.hit{animation:stamp .5s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{0%{opacity:0;transform:rotate(-10deg) scale(2.2)}60%{opacity:.95;transform:rotate(-10deg) scale(.95)}100%{opacity:.85;transform:rotate(-10deg) scale(1)}}
+.shake{animation:shk .25s}
+@keyframes shk{0%{transform:perspective(1800px) rotateX(9deg) translate(0,0)}30%{transform:perspective(1800px) rotateX(9deg) translate(2px,4px)}70%{transform:perspective(1800px) rotateX(9deg) translate(-2px,1px)}}
+.hint{position:absolute;left:40px;bottom:36px;width:300px;font-family:var(--sans);font-size:12px;color:var(--muted);line-height:1.7;z-index:4}
+.hint kbd{border:1px solid #555;padding:0 5px;border-radius:3px;color:var(--paper)}
+/* screen B */
+.B-room{position:absolute;inset:0;background:
+  radial-gradient(1100px 700px at 50% 30%, rgba(111,179,166,.18), transparent 65%),
+  radial-gradient(800px 500px at 50% 110%, rgba(255,170,80,.18), transparent 70%),
+  linear-gradient(180deg,#0e1614,#11150f 60%,#0a0b08)}
+.motes span{position:absolute;width:8px;height:8px;border-radius:50%;background:#ffe7ae;box-shadow:0 0 14px 5px rgba(255,214,140,.55);animation:rise 7s linear infinite;opacity:0}
+@keyframes rise{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-520px) scale(1.1)}}
+.courtyard{position:absolute;left:0;right:0;top:74px;height:520px}
+.newpage{position:absolute;left:470px;top:500px;width:660px;height:420px;color:var(--ink);padding:34px 44px;box-sizing:border-box;
+  background:radial-gradient(ellipse at 50% 40%,#f4ecd6,#e2d3ae 75%,#c9b68a);box-shadow:0 40px 80px rgba(0,0,0,.7);transform:rotate(-1deg)}
+.newpage h2{margin:0;font-size:34px;letter-spacing:3px}
+.newpage h3{margin:0 0 10px;font-size:13px;letter-spacing:5px;color:#7a6440}
+.newpage .terms{font-size:16px;line-height:2}
+.newpage .terms s{color:#8a7a60;text-decoration-color:var(--cinnabar);text-decoration-thickness:3px}
+.sealB{position:absolute;right:40px;bottom:36px;width:150px;height:150px;border:6px double var(--cinnabar);color:var(--cinnabar);display:grid;place-items:center;text-align:center;font-weight:900;font-size:24px;line-height:1.2;transform:rotate(-8deg);mix-blend-mode:multiply;opacity:.9}
+.sign{position:absolute;left:44px;bottom:40px;font-size:13px;color:#5b4a33;line-height:1.8}
+.sign b{font-size:20px;color:var(--ink);font-style:italic}
+.timeline{position:absolute;left:40px;top:500px;width:380px}
+.tl{position:relative;padding:12px 0 12px 44px;border-left:2px solid rgba(210,181,120,.3);margin-left:14px;font-family:var(--sans)}
+.tl::before{content:"";position:absolute;left:-9px;top:16px;width:14px;height:14px;border-radius:50%;background:#2b3027;border:2px solid var(--brass)}
+.tl.loss::before{background:var(--cinnabar);border-color:#e66a52}
+.tl.ok::before{background:var(--well);border-color:#a8e0d4}
+.tl small{font-size:11px;letter-spacing:3px;color:var(--brass2)}
+.tl b{display:block;font-family:var(--serif);font-size:18px;margin:2px 0 3px;color:var(--paper)}
+.tl span{font-size:12px;color:var(--muted);line-height:1.5}
+.result{position:absolute;right:40px;top:470px;width:360px;font-family:var(--sans)}
+.result h4{margin:0 0 12px;font-family:var(--serif);font-size:15px;letter-spacing:4px;color:var(--brass)}
+.meter{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(210,181,120,.15);font-size:14px;color:var(--muted)}
+.meter b{font-family:var(--serif);font-size:22px;color:var(--paper)}
+.meter b.up{color:#9fd8c6}
+.meter b.down{color:#e07b62}
+.quote{margin-top:22px;padding:18px;background:rgba(43,48,39,.7);border-left:3px solid var(--brass);font-family:var(--serif);font-size:16px;line-height:1.7;color:#f1e6c9}
+.quote small{display:block;margin-top:8px;font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:2px}
+.endtitle{position:absolute;left:0;right:0;top:92px;text-align:center;z-index:3}
+.endtitle small{font-family:var(--sans);letter-spacing:8px;font-size:12px;color:var(--brass2)}
+.endtitle h1{margin:6px 0 0;font-size:54px;letter-spacing:10px;color:#f4ead0;text-shadow:0 0 40px rgba(111,179,166,.5)}
+.endtitle p{margin:8px 0 0;font-size:16px;color:var(--muted)}
+.note{position:absolute;left:0;right:0;bottom:22px;text-align:center;font-family:var(--sans);font-size:12px;color:#8e8c78;letter-spacing:1px}
+/* tabs */
+.tabs{position:absolute;right:14px;bottom:10px;display:flex;gap:6px;z-index:50;font-family:var(--sans)}
+.tabs button{background:rgba(10,10,8,.7);border:1px solid rgba(210,181,120,.35);color:var(--muted);font:600 11px var(--sans);padding:4px 9px;cursor:pointer;letter-spacing:1px}
+.tabs button.on{background:var(--brass);color:#16140c}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<!-- ================= A : 결산 2일 ================= -->
+<section class="scr" id="A">
+  <div class="room"></div>
+  <div class="flick"></div>
+
+  <div class="win">
+    <svg viewBox="0 0 300 380" preserveAspectRatio="none">
+      <defs>
+        <radialGradient id="moon" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#e8f2e8"/><stop offset=".4" stop-color="#b9d4cb" stop-opacity=".5"/><stop offset="1" stop-color="#b9d4cb" stop-opacity="0"/></radialGradient>
+        <radialGradient id="wglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7fe0cc" stop-opacity=".8"/><stop offset="1" stop-color="#7fe0cc" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="300" height="380" fill="#0d1a1c"/>
+      <circle cx="220" cy="70" r="70" fill="url(#moon)"/><circle cx="220" cy="70" r="16" fill="#eef5ea"/>
+      <path d="M0 210 L60 170 L120 196 L190 150 L300 190 L300 380 L0 380Z" fill="#101916"/>
+      <path d="M0 250 Q150 225 300 245 L300 380 L0 380Z" fill="#141f1b"/>
+      <!-- well -->
+      <ellipse cx="150" cy="300" rx="120" ry="40" fill="url(#wglow)" opacity=".35"/>
+      <ellipse cx="150" cy="286" rx="62" ry="16" fill="#0b1210" stroke="#56645a" stroke-width="3"/>
+      <path d="M88 286 L88 320 Q150 344 212 320 L212 286" fill="#2a3530" stroke="#4d5a52" stroke-width="2"/>
+      <path d="M96 300 h20 M124 306 h26 M162 306 h22 M190 300 h16 M104 318 h22 M140 322 h24 M178 318 h20" stroke="#1a2320" stroke-width="3"/>
+      <ellipse cx="150" cy="287" rx="50" ry="11" fill="#2f6b62" opacity=".55"><animate attributeName="opacity" values=".35;.6;.35" dur="4s" repeatCount="indefinite"/></ellipse>
+      <path d="M96 286 V218 M204 286 V218 M88 222 L150 196 L212 222" stroke="#3a2f22" stroke-width="7" fill="none"/>
+      <path d="M150 208 V270" stroke="#8a7a5a" stroke-width="1.5"/>
+      <!-- straw rope with talismans -->
+      <path d="M96 236 Q150 252 204 236" stroke="#9c8a5c" stroke-width="3" fill="none"/>
+      <rect x="118" y="240" width="10" height="22" fill="#efe0a8"/><rect x="146" y="246" width="10" height="22" fill="#efe0a8"/><rect x="174" y="240" width="10" height="22" fill="#efe0a8"/>
+      <path d="M120 246 h6 M121 252 h4 M148 252 h6 M176 246 h6" stroke="#b23a26" stroke-width="1.5"/>
+    </svg>
+    <div class="lattice"></div>
+  </div>
+
+  <svg class="candle" viewBox="0 0 120 260">
+    <defs><radialGradient id="fl" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="#fff6d0"/><stop offset=".45" stop-color="#ffc062"/><stop offset="1" stop-color="#ff7a20" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="60" cy="68" r="56" fill="url(#fl)" opacity=".35"/>
+    <g class="flame"><path d="M60 40 C70 58 72 70 60 86 C48 70 50 58 60 40Z" fill="url(#fl)"/><path d="M60 60 C64 68 64 74 60 82 C56 74 56 68 60 60Z" fill="#fffbe6"/></g>
+    <rect x="46" y="86" width="28" height="130" rx="3" fill="#e7dcc0"/><path d="M46 96 q6 10 0 26" stroke="#c9bb96" stroke-width="4" fill="none"/>
+    <ellipse cx="60" cy="222" rx="48" ry="12" fill="#6b5430"/><rect x="14" y="216" width="92" height="10" fill="#4d3c22"/>
+  </svg>
+
+  <header class="hud">
+    <div class="title"><div class="seal">咒</div><div><b>저주상속</b><small>THE INHERITED DEBT</small></div></div>
+    <div class="day">결산 2일 · 마르지 않는 우물 <em>남은 결산 2</em></div>
+    <div class="res">
+      <div>곡물 <b id="grain">7</b></div>
+      <div>안정 <span class="pips" id="pips"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span></div>
+      <div>미지급 <b style="color:#e07b62">3</b></div>
+    </div>
+  </header>
+
+  <div class="ledger" id="ledger">
+    <div class="spine"></div>
+    <div class="page l"><div class="pg">
+      <h3>先代 帳簿 · 선대 장부</h3>
+      <h2>약조 제17호</h2>
+      <div class="clause">풍년력 83년, 조부 <b>강원태</b>가 빈다.<br>
+      마을의 우물이 <b>마르지 않게</b> 하여 주시면,<br>
+      매 결산마다 <span class="red">한 가족의 소중한 기억 하나</span>를<br>대가로 바치겠나이다.</div>
+      <div class="rule"></div>
+      <div class="clause" style="font-size:13px;color:#5b4a33">부기 · 부친 강도윤: “올해는 미룬다.”<br>부기 · 부친 강도윤: “올해도 미룬다.”<br>부기 · 부친 강도윤: “다음 사람이 갚는다.”</div>
+      <div class="rule"></div>
+      <table class="bill" style="font-size:13px;width:78%">
+        <tr><td>108년</td><td>최씨네 · 혼례날의 노래 <span style="color:var(--cinnabar)">✕</span></td></tr>
+        <tr><td>109년</td><td>윤씨네 · 아버지의 목소리 <span style="color:var(--cinnabar)">✕</span></td></tr>
+        <tr><td>110년</td><td>임씨네 · 어머니의 얼굴 <span style="color:var(--cinnabar)">✕</span></td></tr>
+      </table>
+      <div class="bigseal">우물<br>약조<br>之印</div>
+    </div></div>
+    <div class="page r"><div class="pg">
+      <h3>請求 · 이번 결산 청구서</h3>
+      <table class="bill">
+        <tr><td>1일</td><td>박씨네 · 첫 아이의 걸음마 <span style="color:var(--cinnabar)">지급됨</span></td></tr>
+        <tr class="dup"><td>작년</td><td><span class="strike">임매월네 · 어머니의 얼굴</span> <span style="color:var(--cinnabar);font-size:12px">납부 확인</span></td></tr>
+        <tr><td>2일</td><td><b>임매월네 · 어머니의 얼굴</b> <span style="color:#8a6a2a;font-size:12px">← 같은 대가</span></td></tr>
+      </table>
+      <div class="target">
+        <small style="font-family:var(--sans);font-size:11px;letter-spacing:3px;color:#7a6440">오늘의 청구 대상</small><br>
+        <b>임매월</b> · 제례 음식을 차리는 집
+        <p>할아버지는 물을 빌었고, 아버지는 대가를 미뤘다.<br>오늘 청구 대상은 매월네다.</p>
+      </div>
+      <div style="margin-top:16px;font-size:13px;line-height:1.9;color:#4a3a28">
+        <div style="font-size:11px;letter-spacing:4px;color:#7a6440">調査 · 조사 기록</div>
+        <div>✓ 지난해 납부 영수증 확인 · <span style="color:#8a6a2a">곡물 1 사용</span></div>
+        <div>✓ 매월에게 사정 듣기 · <span style="color:#8a6a2a">주민 동의</span></div>
+        <div style="color:#8a7a60">□ 우물 둑 상태 살피기</div>
+      </div>
+      <div class="inkpreview" id="preview">도장을 고르기 전, 장부에 어떤 줄이 남을지 미리 봅니다.</div>
+    </div></div>
+  </div>
+  <div class="stampfx" id="stampfx">결산<br>完</div>
+
+  <aside class="evid">
+    <div class="card found-wrap" id="receipt" style="transform:rotate(2.2deg)"><span class="found-tag">조사 완료</span><div class="receipt">
+      <small>領收 · 지난해 납부 영수증</small>
+      <h4>임매월네 납부분</h4>
+      <div class="line"><span>대가</span><span>어머니의 얼굴</span></div>
+      <div class="line"><span>납부일</span><span>풍년력 110년 동지</span></div>
+      <div class="line"><span>수령</span><span>우물 · 수결</span></div>
+      <div class="stamp">旣納</div>
+    </div></div>
+    <div class="card person" id="mae">
+      <div class="portrait">
+        <svg viewBox="0 0 96 124" width="96" height="124">
+          <rect width="96" height="124" fill="#cbbd98"/>
+          <path d="M8 124 C10 92 30 82 48 82 C66 82 86 92 88 124Z" fill="#3a3a30"/>
+          <ellipse cx="48" cy="52" rx="22" ry="27" fill="#d9c4a2"/>
+          <path d="M26 46 C26 22 70 22 70 46 C66 34 30 34 26 46Z" fill="#231f18"/>
+          <!-- face erased -->
+          <rect x="30" y="40" width="36" height="30" fill="#e9dfc6" opacity=".92"/>
+          <path d="M30 44 h36 M30 52 h36 M30 60 h36 M30 68 h36" stroke="#cfc2a2" stroke-width="2"/>
+        </svg>
+      </div>
+      <div>
+        <small>주민 · 조사함</small>
+        <h4>임매월</h4>
+        <q>지난해에도 어머니의 얼굴을 바쳤어요.</q>
+      </div>
+    </div>
+    <p class="memo">발견한 영수증: 매월네는 지난해 이미 납부했다.<br>선대 장부에는 같은 대가가 다시 적혀 있다.</p>
+  </aside>
+
+  <div class="hint">장부를 조사하고 주민의 사정을 들으면<br>기억을 빼앗지 않는 계약 변경이 열립니다.<br><kbd>1</kbd> <kbd>2</kbd> 화면 전환</div>
+
+  <div class="choices" id="choices">
+    <div class="ch" data-p="안정 +1 · <b>주민의 가족 기억 하나 소실</b> — 계약은 유지되고, 누군가는 가족의 얼굴을 잊는다."><div class="ic">憶</div><b>기억을 대가로 계약 유지</b><span>안정 +1 · <span class="cost">가족 기억 하나 소실</span></span></div>
+    <div class="ch" data-p="곡물 보존 · <b>미지급 +1</b> · 안정 -1 — 아버지처럼 미룬다. 채무는 후계자의 이름으로 넘어간다."><div class="ic">延</div><b>이번 대가 지급 연기</b><span>곡물 보존 · <span class="cost">미지급 +1 · 안정 -1</span></span></div>
+    <div class="ch" data-p="안정 -2 · 대가 없음 · <b>물 공급 위험</b> — 계약이 약해지면 우물이 마른다."><div class="ic">斷</div><b>우물 계약 일부 해지</b><span><span class="cost">안정 -2 · 물 공급 위험</span></span></div>
+    <div class="ch new" data-p="영수증과 주민 동의 확보 · 안정 +1 · <b>새 계약</b> — 중복 청구를 바로잡고 대가를 공동 노동으로 바꾼다."><div class="ic">約</div><b>중복 청구 취소 · 공동 노동 계약</b><span>영수증 + 주민 동의 · 안정 +1</span></div>
+  </div>
+</section>
+
+<!-- ================= B : 결산 3일 · 처음 쓰는 공정한 장부 ================= -->
+<section class="scr" id="B">
+  <div class="B-room"></div>
+  <svg class="courtyard" viewBox="0 0 1600 520">
+    <defs>
+      <radialGradient id="wg2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#8ff0da" stop-opacity=".9"/><stop offset="1" stop-color="#8ff0da" stop-opacity="0"/></radialGradient>
+      <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1a1c" stop-opacity="0"/><stop offset="1" stop-color="#16231e"/></linearGradient>
+    </defs>
+    <rect width="1600" height="520" fill="url(#sky2)" opacity=".7"/>
+    <path d="M0 250 L180 200 L360 225 L560 180 L800 215 L1020 170 L1240 210 L1420 185 L1600 215 V520 H0Z" fill="#0f1814"/>
+    <g fill="#18211b" stroke="#2c3a31" stroke-width="2">
+      <path d="M150 262 Q210 230 270 262 L262 292 L158 292Z"/><path d="M300 272 Q360 236 420 272 L412 300 L308 300Z"/><path d="M440 258 Q490 232 540 258 L534 282 L446 282Z"/>
+      <path d="M1060 258 Q1110 232 1160 258 L1154 282 L1066 282Z"/><path d="M1180 270 Q1240 236 1300 270 L1292 298 L1188 298Z"/><path d="M1330 260 Q1390 228 1450 260 L1442 290 L1338 290Z"/>
+    </g>
+    <g fill="#ffcf7a"><circle cx="210" cy="282" r="4"/><circle cx="360" cy="290" r="4"/><circle cx="490" cy="274" r="4"/><circle cx="1110" cy="274" r="4"/><circle cx="1240" cy="288" r="4"/><circle cx="1390" cy="280" r="4"/></g>
+    <g fill="#ffcf7a" opacity=".22"><circle cx="210" cy="282" r="20"/><circle cx="360" cy="290" r="20"/><circle cx="490" cy="274" r="20"/><circle cx="1110" cy="274" r="20"/><circle cx="1240" cy="288" r="20"/><circle cx="1390" cy="280" r="20"/></g>
+    <path d="M0 330 Q800 280 1600 330 V520 H0Z" fill="#121b16"/>
+    <ellipse cx="800" cy="330" rx="330" ry="70" fill="url(#wg2)" opacity=".5"/>
+    <ellipse cx="800" cy="300" rx="110" ry="24" fill="#0b1210" stroke="#6b7d72" stroke-width="4"/>
+    <path d="M690 300 V350 Q800 384 910 350 V300" fill="#2a3530" stroke="#56645a" stroke-width="3"/>
+    <path d="M700 318 h26 M740 326 h34 M790 330 h30 M834 326 h30 M876 318 h24 M712 342 h30 M760 350 h34 M816 350 h30 M860 342 h30" stroke="#1a2320" stroke-width="4"/>
+    <ellipse cx="800" cy="302" rx="92" ry="17" fill="#3aa391" opacity=".8"><animate attributeName="ry" values="16;18;16" dur="3s" repeatCount="indefinite"/></ellipse>
+    <ellipse cx="800" cy="302" rx="50" ry="8" fill="#9ff3df" opacity=".35"><animate attributeName="rx" values="30;80;30" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".5;0;.5" dur="3s" repeatCount="indefinite"/></ellipse>
+    <path d="M704 300 V196 M896 300 V196 M686 202 L800 162 L914 202" stroke="#3a2f22" stroke-width="10" fill="none"/>
+    <path d="M704 222 Q800 240 896 222" stroke="#9c8a5c" stroke-width="3" fill="none"/>
+    <g fill="#efe0a8"><rect x="736" y="228" width="11" height="24"/><rect x="794" y="233" width="11" height="24"/><rect x="852" y="228" width="11" height="24"/></g>
+    <path d="M910 344 C960 360 1010 368 1090 392 L1076 408 C1000 388 950 376 900 362Z" fill="#3aa391" opacity=".45"/>
+    <g fill="#070b09">
+      <g transform="translate(560 340)"><circle cx="0" cy="-54" r="10"/><path d="M-12 -42 h24 l6 42 h-36z"/><path d="M10 -36 l34 -18" stroke="#070b09" stroke-width="5"/></g>
+      <g transform="translate(616 350)"><circle cx="0" cy="-50" r="9"/><path d="M-11 -40 h22 l5 40 h-32z"/><rect x="-26" y="-30" width="18" height="16" fill="#3a2f22"/></g>
+      <g transform="translate(1000 344)"><circle cx="0" cy="-52" r="10"/><path d="M-12 -42 h24 l6 42 h-36z"/><path d="M-10 -34 l-30 -24" stroke="#070b09" stroke-width="5"/></g>
+      <g transform="translate(1056 356)"><circle cx="0" cy="-46" r="8"/><path d="M-10 -38 h20 l4 38 h-28z"/><rect x="8" y="-30" width="18" height="16" fill="#3a2f22"/></g>
+    </g>
+  </svg>
+  <div class="motes" id="motes"></div>
+
+  <div class="endtitle">
+    <small>결산 3일 · 마지막 결산</small>
+    <h1>처음 쓰는 공정한 장부</h1>
+    <p>중복 청구를 바로잡고 공동 노동으로 대가를 바꿨다. 물은 흐르고, 가족의 기억은 남았다.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl loss"><small>결산 1일</small><b>기억을 대가로 계약 유지</b><span>박씨네 · 첫 아이의 걸음마 — 돌아오지 않는다</span></div>
+    <div class="tl"><small>결산 2일</small><b>영수증 조사 · 매월에게 사정 듣기</b><span>지난해 납부분이 올해 장부에 다시 올라 있었다</span></div>
+    <div class="tl ok"><small>결산 3일</small><b>중복 청구 취소 · 공동 노동 계약</b><span>영수증과 주민 동의 확보 · 새 계약</span></div>
+  </div>
+
+  <div class="newpage">
+    <h3>新 約 · 약조 제17호 개정</h3>
+    <h2>우물은 기억하지 않는다</h2>
+    <div class="terms">
+      <s>매 결산마다 한 가족의 소중한 기억 하나</s><br>
+      매 결산마다 <b>마을의 손 열두 벌</b>, 우물 둑 보수 사흘.<br>
+      <s>임매월네 · 어머니의 얼굴 (중복)</s> <span style="color:var(--cinnabar);font-size:13px">취소</span><br>
+      미지급 3건 → <b>공동 노동으로 분할 상환</b>
+    </div>
+    <div class="sign">상속인 수결<br><b>강 서 진</b> &nbsp;·&nbsp; 주민 대표 <b>임 매 월</b></div>
+    <div class="sealB">公正<br>之約</div>
+  </div>
+
+  <div class="result">
+    <h4>장부 결산</h4>
+    <div class="meter"><span>우물</span><b class="up">흐름</b></div>
+    <div class="meter"><span>안정</span><b class="up">4 <small style="font-size:13px">(+1)</small></b></div>
+    <div class="meter"><span>곡물</span><b>7</b></div>
+    <div class="meter"><span>잃은 기억</span><b class="down">1</b></div>
+    <div class="meter"><span>다음 세대의 청구서</span><b class="up">0</b></div>
+    <div class="quote">“기억 대신 우리 손으로 갚을 수 있으면 좋겠어요.”<small>임매월 · 새 계약이 장부에 남았습니다</small></div>
+  </div>
+  <div class="note">계약을 고쳤지만 이미 바친 기억은 돌아오지 않습니다. 장부는 이전의 희생도 함께 기록합니다.</div>
+</section>
+
+<div class="grain"></div>
+<div class="vig"></div>
+<nav class="tabs"><button data-k="a">A 결산</button><button data-k="b">B 새 장부</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  show(location.hash.replace('#','')||'a');
+
+  /* audio: only after interaction */
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function thump(){var a=ctx();if(!a)return;var t=a.currentTime;
+    var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(48,t+.18);
+    g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.4);
+    var n=a.createBufferSource(),b=a.createBuffer(1,a.sampleRate*.12,a.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+    var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=900;var g2=a.createGain();g2.gain.value=.35;
+    n.buffer=b;n.connect(f);f.connect(g2);g2.connect(a.destination);n.start(t);}
+  function paper(){var a=ctx();if(!a)return;var t=a.currentTime;var n=a.createBufferSource(),b=a.createBuffer(1,a.sampleRate*.2,a.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/d.length)*.5;
+    var f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=3200;f.Q.value=.7;n.buffer=b;n.connect(f);f.connect(a.destination);n.start(t);}
+
+  var prev=document.getElementById('preview'),def=prev.innerHTML;
+  var chs=document.querySelectorAll('.ch');
+  for(var j=0;j<chs.length;j++){
+    chs[j].addEventListener('mouseenter',function(){prev.innerHTML='장부에 남을 줄 · '+this.getAttribute('data-p');});
+    chs[j].addEventListener('mouseleave',function(){prev.innerHTML=def;});
+    chs[j].addEventListener('click',function(){
+      thump();var s=document.getElementById('stampfx');s.className='stampfx';void s.offsetWidth;
+      var isNew=this.className.indexOf('new')>=0; s.innerHTML=isNew?'新約<br>締結':'결산<br>完'; s.className='stampfx hit';
+      var L=document.getElementById('ledger');L.className='ledger';void L.offsetWidth;L.className='ledger shake';
+      if(isNew){setTimeout(function(){show('b');},900);}
+    });}
+  var cards=document.querySelectorAll('.card');
+  for(var k=0;k<cards.length;k++)cards[k].addEventListener('click',paper);
+
+  var m=document.getElementById('motes');
+  for(var q=0;q<26;q++){var sp=document.createElement('span');
+    sp.style.left=(560+((q*97)%480))+'px';sp.style.top=(420+((q*53)%120))+'px';
+    sp.style.setProperty('--dx',(((q*37)%160)-80)+'px');sp.style.animationDelay=(-(q*0.29)).toFixed(2)+'s';sp.style.animationDuration=(5+(q%5))+'s';m.appendChild(sp);}
+})();
+</script>
+</body>
+</html>

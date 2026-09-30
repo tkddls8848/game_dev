@@ -1,0 +1,42 @@
+{
+  "_": "가문의 족보와 마을의 명단. 희생자는 숫자가 아니라 여기 적힌 이름이다 (핵 검사기 VictimsHaveNames).",
+  "_수치규율": "나이는 정수. 값 없는 int 는 -1 을 명시한다.",
+
+  "houseName": "청산 윤씨 종가",
+  "curseName": "누렁물 구덩이의 약조",
+
+  "heirs": [
+    { "id": "h_g1", "name": "윤경보", "generationIndex": 1, "bornYear": 1683, "note": "장부를 처음 받아 적은 사람. 글씨가 가장 굵다" },
+    { "id": "h_g2", "name": "윤세담", "generationIndex": 2, "bornYear": 1711, "note": "제례를 한 해에 두 번으로 늘렸다" },
+    { "id": "h_g3", "name": "윤치억", "generationIndex": 3, "bornYear": 1739, "note": "장부를 석 해 덮어 두었다. 그 값은 손자 대에 왔다" },
+    { "id": "h_g4", "name": "윤상후", "generationIndex": 4, "bornYear": 1768, "note": "당신이 물려받기 직전의 대. 붉은 줄이 넷이다" },
+    { "id": "h_g5", "name": "윤재림", "generationIndex": 5, "bornYear": 1796, "note": "당신. 여기서부터 빈 칸이다" },
+    { "id": "h_g6", "name": "윤덕흠", "generationIndex": 6, "bornYear": 1824, "note": "아직 어리다" },
+    { "id": "h_g7", "name": "윤경식", "generationIndex": 7, "bornYear": 1852, "note": "이름만 정해 두었다" },
+    { "id": "h_g8", "name": "윤태훤", "generationIndex": 8, "bornYear": 1880, "note": "이름만 정해 두었다" },
+    { "id": "h_g9", "name": "윤병노", "generationIndex": 9, "bornYear": 1908, "note": "이름만 정해 두었다" },
+    { "id": "h_g10", "name": "윤인학", "generationIndex": 10, "bornYear": 1936, "note": "이름만 정해 두었다" },
+    { "id": "h_g11", "name": "윤성묵", "generationIndex": 11, "bornYear": 1964, "note": "이름만 정해 두었다" },
+    { "id": "h_g12", "name": "윤하람", "generationIndex": 12, "bornYear": 1992, "note": "이름만 정해 두었다" }
+  ],
+
+  "villagers": [
+    { "id": "v_bok",   "name": "정복만",   "age": 64, "tier": "elder", "household": "아래뜸 정씨",   "note": "무릎이 굳어 겨울마다 업혀 다닌다. 아들 둘을 앞세웠다" },
+    { "id": "v_sun",   "name": "박순덕",   "age": 71, "tier": "elder", "household": "구덩이 옆 박씨", "note": "구덩이에 가장 가까이 산다. 물소리를 듣는다고 말한다" },
+    { "id": "v_gil",   "name": "최길수",   "age": 67, "tier": "elder", "household": "돌담 최씨",     "note": "종가의 나무를 서른 해 손질했다. 손이 성하지 않다" },
+    { "id": "v_mae",   "name": "임매월",   "age": 69, "tier": "elder", "household": "물방아 임씨",   "note": "제례 음식을 대대로 차렸다. 절차를 당신보다 잘 안다" },
+    { "id": "v_tak",   "name": "오탁수",   "age": 73, "tier": "elder", "household": "윗뜸 오씨",     "note": "눈이 거의 보이지 않는다. 손녀가 하나 있다" },
+    { "id": "v_nan",   "name": "한난실",   "age": 66, "tier": "elder", "household": "건너뜸 한씨",   "note": "당신의 유모였다. 당신 이름을 아이 때 부르던 대로 부른다" },
+    { "id": "v_jung",  "name": "서중배",   "age": 62, "tier": "elder", "household": "장터 서씨",     "note": "마을 곳간을 맡아 본다. 장부 글씨를 읽을 수 있는 몇 안 되는 사람" },
+
+    { "id": "v_yeo",   "name": "김여진",   "age": 19, "tier": "young", "household": "아래뜸 김씨",   "note": "가을에 혼례가 잡혀 있다. 상대는 옆 마을 대장장이" },
+    { "id": "v_dan",   "name": "노단이",   "age": 14, "tier": "young", "household": "구덩이 옆 노씨", "note": "오탁수의 손녀. 글을 배우고 싶다고 종가에 세 번 왔다" },
+    { "id": "v_mu",    "name": "강무열",   "age": 23, "tier": "young", "household": "돌담 강씨",     "note": "마을에서 가장 힘이 좋다. 논 스물 마지기를 혼자 맨다" },
+    { "id": "v_bi",    "name": "유비녀",   "age": 21, "tier": "young", "household": "물방아 유씨",   "note": "갓 아이를 낳았다. 이름을 아직 짓지 않았다" },
+    { "id": "v_sam",   "name": "조삼출",   "age": 17, "tier": "young", "household": "윗뜸 조씨",     "note": "셋째로 태어나 이름이 그렇다. 위의 둘은 앞선 대에 바쳐졌다" },
+    { "id": "v_hyang", "name": "신향이",   "age": 16, "tier": "young", "household": "건너뜸 신씨",   "note": "제례 때 물을 나른다. 구덩이를 들여다본 적이 있다" },
+    { "id": "v_chan",  "name": "황찬석",   "age": 25, "tier": "young", "household": "장터 황씨",     "note": "글을 읽는다. 장부를 보여 달라고 청한 적이 있다" },
+    { "id": "v_ok",    "name": "백옥련",   "age": 20, "tier": "young", "household": "아래뜸 백씨",   "note": "약초를 안다. 종가 어른의 병을 두 번 내렸다" },
+    { "id": "v_ra",    "name": "문라경",   "age": 18, "tier": "young", "household": "돌담 문씨",     "note": "노래를 한다. 제례의 축을 혼자 외운다" }
+  ]
+}

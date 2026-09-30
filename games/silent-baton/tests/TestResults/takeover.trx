@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d9321596-abde-4d0c-95b3-f10919c15c82" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:52:33" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:52:33.6520894+09:00" queuing="2026-09-27T20:52:33.6520898+09:00" start="2026-09-27T20:52:32.7692489+09:00" finish="2026-09-27T20:52:33.6809356+09:00" />
+  <TestSettings name="default" id="374c9d59-d578-4c20-9c6f-9c69cb946d82">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_52_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ae2a5840-2341-43d6-b1ec-8855f26d79f0" testId="2c10903f-3d52-1b5c-ec37-d09c6ce9aad9" testName="채널을_하나씩_가려_본다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009730" startTime="2026-09-27T20:52:33.5982468+09:00" endTime="2026-09-27T20:52:33.5992198+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ae2a5840-2341-43d6-b1ec-8855f26d79f0">
+      <Output>
+        <StdOut>p_overture 전부 92 · 호흡 가림 92 · 활 각도 가림 91 · 표정 가림 92&#xD;
+p_adagio 전부 90 · 호흡 가림 90 · 활 각도 가림 89 · 표정 가림 90&#xD;
+p_finale 전부 90 · 호흡 가림 86 · 활 각도 가림 88 · 표정 가림 90</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="768c91f2-0a2f-4904-9734-5557f2637e85" testId="a74da2d6-919e-3ef5-77ea-c6d69953cf19" testName="DelayedFeedbackMatters(77713)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002870" startTime="2026-09-27T20:52:33.3959158+09:00" endTime="2026-09-27T20:52:33.3962027+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="768c91f2-0a2f-4904-9734-5557f2637e85" />
+    <UnitTestResult executionId="6e8fbd31-7735-4993-9c92-2e3d0d98e89e" testId="5a8e0d83-b4a7-5576-232f-57c99741fd66" testName="VisualCuesSuffice(4404)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000749" startTime="2026-09-27T20:52:33.5938646+09:00" endTime="2026-09-27T20:52:33.5939393+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e8fbd31-7735-4993-9c92-2e3d0d98e89e" />
+    <UnitTestResult executionId="b9033f7c-d239-4f43-8c68-a3f79270fb7c" testId="047c762b-fe03-a8ce-799d-12610e2ae72a" testName="세_세계의_성적을_곡별로_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0018470" startTime="2026-09-27T20:52:33.5947192+09:00" endTime="2026-09-27T20:52:33.5965661+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9033f7c-d239-4f43-8c68-a3f79270fb7c">
+      <Output>
+        <StdOut>p_overture 씨드 20260927&#xD;
+   보임 92(절찬) 어긋남 26ms 벌어짐 66ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 9ms 벌어짐 23ms 세기 7&#xD;
+   즉시 92(절찬) 어긋남 26ms 벌어짐 66ms 세기 10&#xD;
+p_overture 씨드 91&#xD;
+   보임 91(절찬) 어긋남 30ms 벌어짐 73ms 세기 10&#xD;
+   들림 97(절찬) 어긋남 9ms 벌어짐 20ms 세기 6&#xD;
+   즉시 91(절찬) 어긋남 30ms 벌어짐 73ms 세기 10&#xD;
+p_overture 씨드 4404&#xD;
+   보임 91(절찬) 어긋남 30ms 벌어짐 75ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 11ms 벌어짐 27ms 세기 7&#xD;
+   즉시 88(절찬) 어긋남 41ms 벌어짐 99ms 세기 10&#xD;
+p_overture 씨드 77713&#xD;
+   보임 91(절찬) 어긋남 29ms 벌어짐 71ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 9ms 벌어짐 21ms 세기 7&#xD;
+   즉시 91(절찬) 어긋남 29ms 벌어짐 71ms 세기 10&#xD;
+p_adagio 씨드 20260927&#xD;
+   보임 90(절찬) 어긋남 32ms 벌어짐 52ms 세기 20&#xD;
+   들림 95(절찬) 어긋남 13ms 벌어짐 16ms 세기 16&#xD;
+   즉시 91(절찬) 어긋남 28ms 벌어짐 43ms 세기 20&#xD;
+p_adagio 씨드 91&#xD;
+   보임 93(절찬) 어긋남 22ms 벌어짐 32ms 세기 18&#xD;
+   들림 95(절찬) 어긋남 16ms 벌어짐 25ms 세기 13&#xD;
+   즉시 93(절찬) 어긋남 22ms 벌어짐 34ms 세기 18&#xD;
+p_adagio 씨드 4404&#xD;
+   보임 92(절찬) 어긋남 27ms 벌어짐 40ms 세기 19&#xD;
+   들림 95(절찬) 어긋남 13ms 벌어짐 14ms 세기 15&#xD;
+   즉시 91(절찬) 어긋남 31ms 벌어짐 52ms 세기 19&#xD;
+p_adagio 씨드 77713&#xD;
+   보임 90(절찬) 어긋남 34ms 벌어짐 58ms 세기 21&#xD;
+   들림 94(절찬) 어긋남 17ms 벌어짐 24ms 세기 17&#xD;
+   즉시 90(절찬) 어긋남 34ms 벌어짐 58ms 세기 21&#xD;
+p_finale 씨드 20260927&#xD;
+   보임 90(절찬) 어긋남 26ms 벌어짐 80ms 세기 17&#xD;
+   들림 93(절찬) 어긋남 18ms 벌어짐 50ms 세기 15&#xD;
+   즉시 86(절찬) 어긋남 40ms 벌어짐 122ms 세기 17&#xD;
+p_finale 씨드 91&#xD;
+   보임 87(절찬) 어긋남 39ms 벌어짐 99ms 세기 17&#xD;
+   들림 93(절찬) 어긋남 19ms 벌어짐 52ms 세기 15&#xD;
+   즉시 87(절찬) 어긋남 41ms 벌어짐 105ms 세기 17&#xD;
+p_finale 씨드 4404&#xD;
+   보임 88(절찬) 어긋남 38ms 벌어짐 99ms 세기 18&#xD;
+   들림 92(절찬) 어긋남 23ms 벌어짐 58ms 세기 16&#xD;
+   즉시 86(절찬) 어긋남 41ms 벌어짐 116ms 세기 18&#xD;
+p_finale 씨드 77713&#xD;
+   보임 88(절찬) 어긋남 38ms 벌어짐 101ms 세기 17&#xD;
+   들림 92(절찬) 어긋남 24ms 벌어짐 52ms 세기 16&#xD;
+   즉시 87(절찬) 어긋남 44ms 벌어짐 102ms 세기 17</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2f326092-5695-489c-9069-ef253c8b85a8" testId="2a583bff-3990-9074-c5bf-ad4a710945fb" testName="SeenFrameContainsOnlyVisibleInformation" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0045090" startTime="2026-09-27T20:52:33.5880426+09:00" endTime="2026-09-27T20:52:33.5925506+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f326092-5695-489c-9069-ef253c8b85a8" />
+    <UnitTestResult executionId="7a190337-9f44-48f3-b852-5f19db54af5c" testId="381ab336-d598-709e-0bc0-11550e8eda5e" testName="VisualCuesSuffice(20260927)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009620" startTime="2026-09-27T20:52:33.5926146+09:00" endTime="2026-09-27T20:52:33.5935761+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a190337-9f44-48f3-b852-5f19db54af5c" />
+    <UnitTestResult executionId="db30f446-4a86-43ae-86dc-52114f58f75c" testId="6825418c-10b2-361b-75b6-ab41f0d3cd75" testName="VisualCuesSuffice(91)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002500" startTime="2026-09-27T20:52:33.5935986+09:00" endTime="2026-09-27T20:52:33.5938488+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db30f446-4a86-43ae-86dc-52114f58f75c" />
+    <UnitTestResult executionId="f8d53e9e-b6ac-4730-95cb-111d0a39cce1" testId="0188eb9c-a1d1-8e51-29f8-1cca931de80c" testName="VisualCuesSuffice(77713)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000649" startTime="2026-09-27T20:52:33.5939433+09:00" endTime="2026-09-27T20:52:33.5940086+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8d53e9e-b6ac-4730-95cb-111d0a39cce1" />
+    <UnitTestResult executionId="aa872c22-5905-4c72-b58d-70452c731a3c" testId="7cc0a587-0600-7ab5-7638-4e45d191876b" testName="DelayedFeedbackMatters(20260927)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0387670" startTime="2026-09-27T20:52:33.3551113+09:00" endTime="2026-09-27T20:52:33.3938288+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa872c22-5905-4c72-b58d-70452c731a3c" />
+    <UnitTestResult executionId="0bc72f04-ff49-4795-8abb-97fe44e5762d" testId="ac4aadae-6a15-9be8-c0be-4e189e67624f" testName="DelayedFeedbackMatters(91)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006130" startTime="2026-09-27T20:52:33.3949747+09:00" endTime="2026-09-27T20:52:33.3955880+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bc72f04-ff49-4795-8abb-97fe44e5762d" />
+    <UnitTestResult executionId="c802ca6f-2498-4e86-8271-6e400380487d" testId="5fe2b793-a560-a70a-15fe-516720efbb83" testName="한_연주의_박을_줄줄이_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0012390" startTime="2026-09-27T20:52:33.6000733+09:00" endTime="2026-09-27T20:52:33.6013118+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c802ca6f-2498-4e86-8271-6e400380487d">
+      <Output>
+        <StdOut>지휘자: 보이는 것만 — 소리 없는 지휘대 → 절찬 92점 (정확 94 · 합주 89 · 세기 93) · 목관이 들리지 않을 만큼 작았다&#xD;
+1-1 현[숨0 활0 낯0] 목관[숨0 활- 낯-1] → 현 박만 준다 · 벌어짐 13ms&#xD;
+1-2 현[숨0 활2 낯0] 목관[숨0 활- 낯-1] → 현 살짝 당긴다 · 벌어짐 1ms&#xD;
+1-3 현[숨0 활2 낯1] 목관[숨0 활- 낯-1] → 현 살짝 당긴다 · 벌어짐 11ms&#xD;
+1-4 현[숨-1 활2 낯1] 목관[숨-1 활- 낯-1] → 목관 세게 늘린다 · 벌어짐 82ms&#xD;
+2-1 현[숨-1 활2 낯0] 목관[숨2 활- 낯-2] 타[숨0 활0 낯0] → 목관 세게 당긴다 · 벌어짐 26ms&#xD;
+2-2 현[숨0 활2 낯0] 목관[숨-1 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 늘린다 · 벌어짐 56ms&#xD;
+2-3 현[숨0 활2 낯0] 목관[숨2 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 당긴다 · 벌어짐 44ms&#xD;
+2-4 현[숨0 활2 낯0] 목관[숨-1 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 늘린다 · 벌어짐 53ms&#xD;
+3-1 현[숨0 활2 낯-2] 목관[숨1 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 당긴다 · 벌어짐 70ms&#xD;
+3-2 현[숨1 활2 낯-2] 목관[숨-2 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 늘린다 · 벌어짐 50ms&#xD;
+3-3 현[숨1 활2 낯-2] 목관[숨1 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 당긴다 · 벌어짐 95ms&#xD;
+3-4 현[숨1 활2 낯-2] 목관[숨-2 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 늘린다 · 벌어짐 71ms&#xD;
+4-1 현[숨1 활2 낯0] 목관[숨0 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 당긴다 · 벌어짐 124ms&#xD;
+4-2 현[숨2 활2 낯0] 목관[숨-3 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 늘린다 · 벌어짐 97ms&#xD;
+4-3 현[숨2 활2 낯0] 목관[숨0 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 당긴다 · 벌어짐 153ms&#xD;
+4-4 현[숨2 활2 낯0] 목관[숨-3 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-2 활-1 낯1] → 목관 세게 늘린다 · 벌어짐 123ms&#xD;
+쏠림(숨은 값): 9, -7, 0, -5</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b411fc36-53a4-4fe6-9e5d-0aceab0d4e2e" testId="9a025d99-7515-e290-47db-982a0bf7bc23" testName="시즌_둘을_나란히_돌려_본다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016610" startTime="2026-09-27T20:52:33.5965767+09:00" endTime="2026-09-27T20:52:33.5982372+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b411fc36-53a4-4fe6-9e5d-0aceab0d4e2e">
+      <Output>
+        <StdOut>시즌 씨드 20260927&#xD;
+   신문 읽음: 1회 91(절찬) · 2회 94(절찬) · 3회 94(절찬) · 4회 96(절찬) · 5회 94(절찬) · 6회 94(절찬) → 평균 93 · 후반 94&#xD;
+   신문 버림: 1회 91(절찬) · 2회 91(절찬) · 3회 88(절찬) · 4회 92(절찬) · 5회 92(절찬) · 6회 89(절찬) → 평균 90 · 후반 91&#xD;
+시즌 씨드 91&#xD;
+   신문 읽음: 1회 93(절찬) · 2회 96(절찬) · 3회 91(절찬) · 4회 97(절찬) · 5회 96(절찬) · 6회 93(절찬) → 평균 94 · 후반 95&#xD;
+   신문 버림: 1회 93(절찬) · 2회 96(절찬) · 3회 87(절찬) · 4회 92(절찬) · 5회 96(절찬) · 6회 90(절찬) → 평균 92 · 후반 92&#xD;
+시즌 씨드 4404&#xD;
+   신문 읽음: 1회 93(절찬) · 2회 94(절찬) · 3회 91(절찬) · 4회 97(절찬) · 5회 95(절찬) · 6회 93(절찬) → 평균 93 · 후반 95&#xD;
+   신문 버림: 1회 93(절찬) · 2회 92(절찬) · 3회 87(절찬) · 4회 93(절찬) · 5회 93(절찬) · 6회 91(절찬) → 평균 91 · 후반 92&#xD;
+시즌 씨드 77713&#xD;
+   신문 읽음: 1회 95(절찬) · 2회 92(절찬) · 3회 90(절찬) · 4회 96(절찬) · 5회 96(절찬) · 6회 92(절찬) → 평균 93 · 후반 94&#xD;
+   신문 버림: 1회 95(절찬) · 2회 88(절찬) · 3회 86(절찬) · 4회 96(절찬) · 5회 96(절찬) · 6회 88(절찬) → 평균 91 · 후반 93</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="388cffd9-3a31-4509-b5cc-3d34b7122e46" testId="d60f896d-bfb7-10bf-2add-76d71780d16d" testName="DelayedFeedbackMatters(4404)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003050" startTime="2026-09-27T20:52:33.3956047+09:00" endTime="2026-09-27T20:52:33.3959098+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="388cffd9-3a31-4509-b5cc-3d34b7122e46" />
+    <UnitTestResult executionId="02ec7bb9-df6d-4657-9061-09584282596b" testId="5bb46c39-816e-cfdf-8dc6-0c2087226963" testName="ExportBrowserFixtures" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1894920" startTime="2026-09-27T20:52:33.3972305+09:00" endTime="2026-09-27T20:52:33.5867220+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02ec7bb9-df6d-4657-9061-09584282596b" />
+    <UnitTestResult executionId="2c2a02a6-ed64-4e3e-962a-f8cb54a6275b" testId="7b750197-f02b-20d3-a8de-ac5d705fbeba" testName="한_무리_한_동작만_되풀이해_본다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008320" startTime="2026-09-27T20:52:33.5992324+09:00" endTime="2026-09-27T20:52:33.6000640+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c2a02a6-ed64-4e3e-962a-f8cb54a6275b">
+      <Output>
+        <StdOut>한 동작 되풀이의 최고: 현/박만 준다 88점 (합격선 62)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e90a49aa-02e4-44c2-be18-3679c6ede347" testId="a39c2f11-3195-a33c-6061-1092b8215bd1" testName="ReplayIsDeterministicAndDoesNotMutateCast" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0012680" startTime="2026-09-27T20:52:33.5867522+09:00" endTime="2026-09-27T20:52:33.5880198+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e90a49aa-02e4-44c2-be18-3679c6ede347" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="VisualCuesSuffice(91)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="6825418c-10b2-361b-75b6-ab41f0d3cd75">
+      <Execution id="db30f446-4a86-43ae-86dc-52114f58f75c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="VisualCuesSuffice(91)" />
+    </UnitTest>
+    <UnitTest name="시즌_둘을_나란히_돌려_본다" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="9a025d99-7515-e290-47db-982a0bf7bc23">
+      <Execution id="b411fc36-53a4-4fe6-9e5d-0aceab0d4e2e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.DiagnosticTests" name="시즌_둘을_나란히_돌려_본다" />
+    </UnitTest>
+    <UnitTest name="SeenFrameContainsOnlyVisibleInformation" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="2a583bff-3990-9074-c5bf-ad4a710945fb">
+      <Execution id="2f326092-5695-489c-9069-ef253c8b85a8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="SeenFrameContainsOnlyVisibleInformation" />
+    </UnitTest>
+    <UnitTest name="세_세계의_성적을_곡별로_찍는다" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="047c762b-fe03-a8ce-799d-12610e2ae72a">
+      <Execution id="b9033f7c-d239-4f43-8c68-a3f79270fb7c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.DiagnosticTests" name="세_세계의_성적을_곡별로_찍는다" />
+    </UnitTest>
+    <UnitTest name="DelayedFeedbackMatters(4404)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="d60f896d-bfb7-10bf-2add-76d71780d16d">
+      <Execution id="388cffd9-3a31-4509-b5cc-3d34b7122e46" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="DelayedFeedbackMatters(4404)" />
+    </UnitTest>
+    <UnitTest name="DelayedFeedbackMatters(91)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="ac4aadae-6a15-9be8-c0be-4e189e67624f">
+      <Execution id="0bc72f04-ff49-4795-8abb-97fe44e5762d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="DelayedFeedbackMatters(91)" />
+    </UnitTest>
+    <UnitTest name="DelayedFeedbackMatters(77713)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="a74da2d6-919e-3ef5-77ea-c6d69953cf19">
+      <Execution id="768c91f2-0a2f-4904-9734-5557f2637e85" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="DelayedFeedbackMatters(77713)" />
+    </UnitTest>
+    <UnitTest name="VisualCuesSuffice(20260927)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="381ab336-d598-709e-0bc0-11550e8eda5e">
+      <Execution id="7a190337-9f44-48f3-b852-5f19db54af5c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="VisualCuesSuffice(20260927)" />
+    </UnitTest>
+    <UnitTest name="한_무리_한_동작만_되풀이해_본다" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="7b750197-f02b-20d3-a8de-ac5d705fbeba">
+      <Execution id="2c2a02a6-ed64-4e3e-962a-f8cb54a6275b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.DiagnosticTests" name="한_무리_한_동작만_되풀이해_본다" />
+    </UnitTest>
+    <UnitTest name="DelayedFeedbackMatters(20260927)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="7cc0a587-0600-7ab5-7638-4e45d191876b">
+      <Execution id="aa872c22-5905-4c72-b58d-70452c731a3c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="DelayedFeedbackMatters(20260927)" />
+    </UnitTest>
+    <UnitTest name="VisualCuesSuffice(77713)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="0188eb9c-a1d1-8e51-29f8-1cca931de80c">
+      <Execution id="f8d53e9e-b6ac-4730-95cb-111d0a39cce1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="VisualCuesSuffice(77713)" />
+    </UnitTest>
+    <UnitTest name="ExportBrowserFixtures" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="5bb46c39-816e-cfdf-8dc6-0c2087226963">
+      <Execution id="02ec7bb9-df6d-4657-9061-09584282596b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="ExportBrowserFixtures" />
+    </UnitTest>
+    <UnitTest name="VisualCuesSuffice(4404)" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="5a8e0d83-b4a7-5576-232f-57c99741fd66">
+      <Execution id="6e8fbd31-7735-4993-9c92-2e3d0d98e89e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="VisualCuesSuffice(4404)" />
+    </UnitTest>
+    <UnitTest name="한_연주의_박을_줄줄이_찍는다" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="5fe2b793-a560-a70a-15fe-516720efbb83">
+      <Execution id="c802ca6f-2498-4e86-8271-6e400380487d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.DiagnosticTests" name="한_연주의_박을_줄줄이_찍는다" />
+    </UnitTest>
+    <UnitTest name="ReplayIsDeterministicAndDoesNotMutateCast" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="a39c2f11-3195-a33c-6061-1092b8215bd1">
+      <Execution id="e90a49aa-02e4-44c2-be18-3679c6ede347" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.AcceptanceTests" name="ReplayIsDeterministicAndDoesNotMutateCast" />
+    </UnitTest>
+    <UnitTest name="채널을_하나씩_가려_본다" storage="c:\users\psi\orca\game\games\silent-baton\testbuild\debug\net8.0\silent-baton.tests.dll" id="2c10903f-3d52-1b5c-ec37-d09c6ce9aad9">
+      <Execution id="ae2a5840-2341-43d6-b1ec-8855f26d79f0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SilentBaton.Tests.DiagnosticTests" name="채널을_하나씩_가려_본다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2c10903f-3d52-1b5c-ec37-d09c6ce9aad9" executionId="ae2a5840-2341-43d6-b1ec-8855f26d79f0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a74da2d6-919e-3ef5-77ea-c6d69953cf19" executionId="768c91f2-0a2f-4904-9734-5557f2637e85" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a8e0d83-b4a7-5576-232f-57c99741fd66" executionId="6e8fbd31-7735-4993-9c92-2e3d0d98e89e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="047c762b-fe03-a8ce-799d-12610e2ae72a" executionId="b9033f7c-d239-4f43-8c68-a3f79270fb7c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2a583bff-3990-9074-c5bf-ad4a710945fb" executionId="2f326092-5695-489c-9069-ef253c8b85a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="381ab336-d598-709e-0bc0-11550e8eda5e" executionId="7a190337-9f44-48f3-b852-5f19db54af5c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6825418c-10b2-361b-75b6-ab41f0d3cd75" executionId="db30f446-4a86-43ae-86dc-52114f58f75c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0188eb9c-a1d1-8e51-29f8-1cca931de80c" executionId="f8d53e9e-b6ac-4730-95cb-111d0a39cce1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7cc0a587-0600-7ab5-7638-4e45d191876b" executionId="aa872c22-5905-4c72-b58d-70452c731a3c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac4aadae-6a15-9be8-c0be-4e189e67624f" executionId="0bc72f04-ff49-4795-8abb-97fe44e5762d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fe2b793-a560-a70a-15fe-516720efbb83" executionId="c802ca6f-2498-4e86-8271-6e400380487d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9a025d99-7515-e290-47db-982a0bf7bc23" executionId="b411fc36-53a4-4fe6-9e5d-0aceab0d4e2e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d60f896d-bfb7-10bf-2add-76d71780d16d" executionId="388cffd9-3a31-4509-b5cc-3d34b7122e46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5bb46c39-816e-cfdf-8dc6-0c2087226963" executionId="02ec7bb9-df6d-4657-9061-09584282596b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b750197-f02b-20d3-a8de-ac5d705fbeba" executionId="2c2a02a6-ed64-4e3e-962a-f8cb54a6275b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a39c2f11-3195-a33c-6061-1092b8215bd1" executionId="e90a49aa-02e4-44c2-be18-3679c6ede347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="16" executed="16" passed="16" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\silent-baton\TestBuild\Debug\net8.0\silent-baton.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 16 of 16 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+p_overture 씨드 20260927&#xD;
+   보임 92(절찬) 어긋남 26ms 벌어짐 66ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 9ms 벌어짐 23ms 세기 7&#xD;
+   즉시 92(절찬) 어긋남 26ms 벌어짐 66ms 세기 10&#xD;
+p_overture 씨드 91&#xD;
+   보임 91(절찬) 어긋남 30ms 벌어짐 73ms 세기 10&#xD;
+   들림 97(절찬) 어긋남 9ms 벌어짐 20ms 세기 6&#xD;
+   즉시 91(절찬) 어긋남 30ms 벌어짐 73ms 세기 10&#xD;
+p_overture 씨드 4404&#xD;
+   보임 91(절찬) 어긋남 30ms 벌어짐 75ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 11ms 벌어짐 27ms 세기 7&#xD;
+   즉시 88(절찬) 어긋남 41ms 벌어짐 99ms 세기 10&#xD;
+p_overture 씨드 77713&#xD;
+   보임 91(절찬) 어긋남 29ms 벌어짐 71ms 세기 10&#xD;
+   들림 96(절찬) 어긋남 9ms 벌어짐 21ms 세기 7&#xD;
+   즉시 91(절찬) 어긋남 29ms 벌어짐 71ms 세기 10&#xD;
+p_adagio 씨드 20260927&#xD;
+   보임 90(절찬) 어긋남 32ms 벌어짐 52ms 세기 20&#xD;
+   들림 95(절찬) 어긋남 13ms 벌어짐 16ms 세기 16&#xD;
+   즉시 91(절찬) 어긋남 28ms 벌어짐 43ms 세기 20&#xD;
+p_adagio 씨드 91&#xD;
+   보임 93(절찬) 어긋남 22ms 벌어짐 32ms 세기 18&#xD;
+   들림 95(절찬) 어긋남 16ms 벌어짐 25ms 세기 13&#xD;
+   즉시 93(절찬) 어긋남 22ms 벌어짐 34ms 세기 18&#xD;
+p_adagio 씨드 4404&#xD;
+   보임 92(절찬) 어긋남 27ms 벌어짐 40ms 세기 19&#xD;
+   들림 95(절찬) 어긋남 13ms 벌어짐 14ms 세기 15&#xD;
+   즉시 91(절찬) 어긋남 31ms 벌어짐 52ms 세기 19&#xD;
+p_adagio 씨드 77713&#xD;
+   보임 90(절찬) 어긋남 34ms 벌어짐 58ms 세기 21&#xD;
+   들림 94(절찬) 어긋남 17ms 벌어짐 24ms 세기 17&#xD;
+   즉시 90(절찬) 어긋남 34ms 벌어짐 58ms 세기 21&#xD;
+p_finale 씨드 20260927&#xD;
+   보임 90(절찬) 어긋남 26ms 벌어짐 80ms 세기 17&#xD;
+   들림 93(절찬) 어긋남 18ms 벌어짐 50ms 세기 15&#xD;
+   즉시 86(절찬) 어긋남 40ms 벌어짐 122ms 세기 17&#xD;
+p_finale 씨드 91&#xD;
+   보임 87(절찬) 어긋남 39ms 벌어짐 99ms 세기 17&#xD;
+   들림 93(절찬) 어긋남 19ms 벌어짐 52ms 세기 15&#xD;
+   즉시 87(절찬) 어긋남 41ms 벌어짐 105ms 세기 17&#xD;
+p_finale 씨드 4404&#xD;
+   보임 88(절찬) 어긋남 38ms 벌어짐 99ms 세기 18&#xD;
+   들림 92(절찬) 어긋남 23ms 벌어짐 58ms 세기 16&#xD;
+   즉시 86(절찬) 어긋남 41ms 벌어짐 116ms 세기 18&#xD;
+p_finale 씨드 77713&#xD;
+   보임 88(절찬) 어긋남 38ms 벌어짐 101ms 세기 17&#xD;
+   들림 92(절찬) 어긋남 24ms 벌어짐 52ms 세기 16&#xD;
+   즉시 87(절찬) 어긋남 44ms 벌어짐 102ms 세기 17&#xD;
+&#xD;
+시즌 씨드 20260927&#xD;
+   신문 읽음: 1회 91(절찬) · 2회 94(절찬) · 3회 94(절찬) · 4회 96(절찬) · 5회 94(절찬) · 6회 94(절찬) → 평균 93 · 후반 94&#xD;
+   신문 버림: 1회 91(절찬) · 2회 91(절찬) · 3회 88(절찬) · 4회 92(절찬) · 5회 92(절찬) · 6회 89(절찬) → 평균 90 · 후반 91&#xD;
+시즌 씨드 91&#xD;
+   신문 읽음: 1회 93(절찬) · 2회 96(절찬) · 3회 91(절찬) · 4회 97(절찬) · 5회 96(절찬) · 6회 93(절찬) → 평균 94 · 후반 95&#xD;
+   신문 버림: 1회 93(절찬) · 2회 96(절찬) · 3회 87(절찬) · 4회 92(절찬) · 5회 96(절찬) · 6회 90(절찬) → 평균 92 · 후반 92&#xD;
+시즌 씨드 4404&#xD;
+   신문 읽음: 1회 93(절찬) · 2회 94(절찬) · 3회 91(절찬) · 4회 97(절찬) · 5회 95(절찬) · 6회 93(절찬) → 평균 93 · 후반 95&#xD;
+   신문 버림: 1회 93(절찬) · 2회 92(절찬) · 3회 87(절찬) · 4회 93(절찬) · 5회 93(절찬) · 6회 91(절찬) → 평균 91 · 후반 92&#xD;
+시즌 씨드 77713&#xD;
+   신문 읽음: 1회 95(절찬) · 2회 92(절찬) · 3회 90(절찬) · 4회 96(절찬) · 5회 96(절찬) · 6회 92(절찬) → 평균 93 · 후반 94&#xD;
+   신문 버림: 1회 95(절찬) · 2회 88(절찬) · 3회 86(절찬) · 4회 96(절찬) · 5회 96(절찬) · 6회 88(절찬) → 평균 91 · 후반 93&#xD;
+&#xD;
+p_overture 전부 92 · 호흡 가림 92 · 활 각도 가림 91 · 표정 가림 92&#xD;
+p_adagio 전부 90 · 호흡 가림 90 · 활 각도 가림 89 · 표정 가림 90&#xD;
+p_finale 전부 90 · 호흡 가림 86 · 활 각도 가림 88 · 표정 가림 90&#xD;
+&#xD;
+한 동작 되풀이의 최고: 현/박만 준다 88점 (합격선 62)&#xD;
+&#xD;
+지휘자: 보이는 것만 — 소리 없는 지휘대 → 절찬 92점 (정확 94 · 합주 89 · 세기 93) · 목관이 들리지 않을 만큼 작았다&#xD;
+1-1 현[숨0 활0 낯0] 목관[숨0 활- 낯-1] → 현 박만 준다 · 벌어짐 13ms&#xD;
+1-2 현[숨0 활2 낯0] 목관[숨0 활- 낯-1] → 현 살짝 당긴다 · 벌어짐 1ms&#xD;
+1-3 현[숨0 활2 낯1] 목관[숨0 활- 낯-1] → 현 살짝 당긴다 · 벌어짐 11ms&#xD;
+1-4 현[숨-1 활2 낯1] 목관[숨-1 활- 낯-1] → 목관 세게 늘린다 · 벌어짐 82ms&#xD;
+2-1 현[숨-1 활2 낯0] 목관[숨2 활- 낯-2] 타[숨0 활0 낯0] → 목관 세게 당긴다 · 벌어짐 26ms&#xD;
+2-2 현[숨0 활2 낯0] 목관[숨-1 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 늘린다 · 벌어짐 56ms&#xD;
+2-3 현[숨0 활2 낯0] 목관[숨2 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 당긴다 · 벌어짐 44ms&#xD;
+2-4 현[숨0 활2 낯0] 목관[숨-1 활- 낯-2] 타[숨0 활-1 낯0] → 목관 세게 늘린다 · 벌어짐 53ms&#xD;
+3-1 현[숨0 활2 낯-2] 목관[숨1 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 당긴다 · 벌어짐 70ms&#xD;
+3-2 현[숨1 활2 낯-2] 목관[숨-2 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 늘린다 · 벌어짐 50ms&#xD;
+3-3 현[숨1 활2 낯-2] 목관[숨1 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 당긴다 · 벌어짐 95ms&#xD;
+3-4 현[숨1 활2 낯-2] 목관[숨-2 활- 낯-3] 금관[숨0 활- 낯0] 타[숨-1 활-1 낯-1] → 목관 세게 늘린다 · 벌어짐 71ms&#xD;
+4-1 현[숨1 활2 낯0] 목관[숨0 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 당긴다 · 벌어짐 124ms&#xD;
+4-2 현[숨2 활2 낯0] 목관[숨-3 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 늘린다 · 벌어짐 97ms&#xD;
+4-3 현[숨2 활2 낯0] 목관[숨0 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-1 활-1 낯1] → 목관 세게 당긴다 · 벌어짐 153ms&#xD;
+4-4 현[숨2 활2 낯0] 목관[숨-3 활- 낯-2] 금관[숨0 활- 낯2] 타[숨-2 활-1 낯1] → 목관 세게 늘린다 · 벌어짐 123ms&#xD;
+쏠림(숨은 값): 9, -7, 0, -5&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

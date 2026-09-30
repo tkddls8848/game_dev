@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework><LangVersion>latest</LangVersion><Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\TestBuild\</BaseOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../src/**/*.cs" />
+    <Compile Include="../../../kit/logic/ConceptGraph.cs" />
+    <Compile Include="../../../kit/logic/ConceptGraphTests.cs" />
+    <Compile Include="*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+  </ItemGroup>
+</Project>

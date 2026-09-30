@@ -1,0 +1,913 @@
+<!doctype html>
+<!--
+  farm-signal 연출 목업 — 전보 · 시세판.
+
+  손으로 그린 그림이 아니다. ../data/ 의 실제 JSON을 읽어서 그린다.
+  시세판·관측치·도둑 주사위·평판은 C#(src/Sim/SignalMath.cs · PriceBook · WeatherCalendar)을
+  JS로 그대로 이식해 뽑으므로, 화면의 3년이 테스트가 돌린 3년과 같다.
+  대조표는 tests/SignalBoardTests.cs 의 "목업이_맞춰_볼_표본값을_찍는다" 가 찍는다.
+
+  **밭을 그리지 않는다.** 밭은 숫자와 전문으로만 나타난다 — 그게 이 PoC의 규칙과 같은 그림이다.
+  색·크기는 palette.json 이 정한다.
+
+  보는 법 (file:// 로 열면 fetch가 막힌다):
+    cd games/farm-signal && python -m http.server 8000
+    http://localhost:8000/presentation/
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>작물이 정보다 · 시세판</title>
+<style>
+  @font-face { font-family:'PlexMono'; src:url('assets/IBMPlexMono-Regular.ttf') format('truetype'); font-display:swap; }
+  @font-face { font-family:'SinhoMono'; src:url('assets/SinhoMono-Regular.subset.ttf') format('truetype'); font-display:swap; }
+
+  :root{
+    --void:#05070A; --ink:#0A0E12; --surface:#101519; --panel:#0D1216;
+    --phosphor:#A8D538; --phosphorGlow:#D6F27A; --phosphorDim:#4E6B1E; --phosphorFaint:#2A3A12;
+    --amber:#E0A33C; --alarm:#C8422E;
+    --tape:#D8CFB8; --tapeInk:#23201A;
+    --grid:#1B242A; --muted:#55686E;
+
+    --cellW:34px; --cellH:26px; --cellGap:3px; --labelW:96px; --glow:7px;
+    --seamOpacity:.55; --scanOpacity:.16; --scanPitch:3px; --glowOpacity:.34;
+    --tapeH:108px; --perf:7px; --perfGap:14px; --tapeMargin:13px; --tapeLh:1.75;
+
+    --fTitle:34px; --fHead:15px; --fBody:13px; --fHint:11px; --fCell:15px; --fTape:13px;
+    --trackTitle:6px; --trackTape:2px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--void); color:var(--phosphor);
+    font-family:'SinhoMono','PlexMono',ui-monospace,monospace;
+    font-size:var(--fBody); line-height:1.65;
+    padding:20px 16px 72px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .station{max-width:1120px; margin:0 auto; position:relative}
+
+  /* 표시관: 주사선 · 비네팅 · 정지한 입자 */
+  .station::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:40;
+    background:repeating-linear-gradient(to bottom,
+      rgba(0,0,0,var(--scanOpacity)) 0 1px, transparent 1px var(--scanPitch));
+  }
+  .station::after{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:41;
+    background:radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(0,0,0,.92) 100%);
+    opacity:var(--vignette,.62);
+  }
+
+  h1{
+    font-family:'PlexMono',ui-monospace,monospace;
+    font-size:var(--fTitle); font-weight:400; margin:0; letter-spacing:var(--trackTitle);
+    color:var(--phosphorGlow); text-shadow:0 0 var(--glow) rgba(168,213,56,var(--glowOpacity));
+  }
+  h1 .ko{
+    display:block; font-family:'SinhoMono',monospace; font-size:.5em;
+    letter-spacing:.24em; color:var(--phosphor); margin-top:6px; text-shadow:none;
+  }
+  .slug{
+    font-size:var(--fHint); color:var(--muted); letter-spacing:.14em;
+    border-bottom:1px solid var(--grid); padding-bottom:8px; margin:12px 0 0;
+    display:flex; flex-wrap:wrap; gap:0 18px;
+  }
+  h2{
+    font-size:var(--fHead); font-weight:400; margin:34px 0 8px; letter-spacing:.2em;
+    color:var(--phosphor);
+  }
+  /* 말머리는 글자가 아니라 CSS 사각형이다 — 글꼴 부분집합에 없는 글자를 쓰면 화면에 두부가 뜬다. */
+  h2::before{
+    content:''; display:inline-block; width:4px; height:.82em;
+    background:var(--phosphorDim); margin-right:9px; vertical-align:-1px;
+  }
+  h2 small{float:right; font-size:var(--fHint); letter-spacing:.06em; color:var(--muted)}
+  .lede{color:var(--muted); font-size:var(--fHint); margin:0 0 10px; letter-spacing:.04em}
+  .err{color:var(--alarm); font-size:var(--fBody)}
+  code{color:var(--phosphorGlow); font-family:'PlexMono',monospace}
+
+  /* 손잡이 */
+  .knobs{display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center; margin:16px 0 2px}
+  .knobs .set{display:flex; gap:4px; align-items:center}
+  .knobs .cap{font-size:var(--fHint); color:var(--muted); letter-spacing:.12em; margin-right:4px}
+  button{
+    font-family:inherit; font-size:var(--fHint); letter-spacing:.1em;
+    background:var(--panel); color:var(--phosphorDim);
+    border:1px solid var(--grid); padding:6px 12px; cursor:pointer;
+  }
+  button:hover{color:var(--phosphor); border-color:var(--phosphorFaint)}
+  button[aria-pressed="true"]{
+    color:var(--void); background:var(--phosphor); border-color:var(--phosphor);
+    box-shadow:0 0 var(--glow) rgba(168,213,56,.45);
+  }
+  button.off[aria-pressed="true"]{background:var(--muted); border-color:var(--muted); box-shadow:none}
+
+  .note{
+    border-left:2px solid var(--phosphorFaint); padding:2px 0 2px 12px; margin:10px 0 0;
+    font-size:var(--fHint); color:var(--muted);
+  }
+  .note b{color:var(--phosphor); font-weight:400}
+
+  /* ── 시세판 ─────────────────────────────────────────────── */
+  .board{overflow-x:auto; padding-bottom:6px}
+  .boardgrid{display:inline-block; min-width:100%}
+  .brow{display:flex; align-items:center; gap:var(--cellGap); margin-bottom:var(--cellGap)}
+  .blabel{
+    width:var(--labelW); min-width:var(--labelW); font-size:var(--fHint);
+    color:var(--phosphorDim); letter-spacing:.04em; text-align:right; padding-right:8px;
+    white-space:nowrap; overflow:hidden;
+  }
+  .brow.head .blabel{color:var(--muted)}
+  .bhead{
+    width:var(--cellW); min-width:var(--cellW); text-align:center;
+    font-size:var(--fHint); color:var(--muted); letter-spacing:0;
+  }
+  .bhead.y{color:var(--phosphorDim)}
+  .cell{
+    width:var(--cellW); min-width:var(--cellW); height:var(--cellH);
+    display:flex; gap:1px; justify-content:center; align-items:stretch;
+  }
+  .flap{
+    flex:1; position:relative; background:linear-gradient(#141B1F 0 49%, #0B1013 51% 100%);
+    border:1px solid var(--grid); display:grid; place-items:center;
+    font-family:'PlexMono',monospace; font-size:var(--fCell); line-height:1;
+    color:var(--phosphor); overflow:hidden;
+  }
+  .flap::after{
+    content:''; position:absolute; left:0; right:0; top:50%; height:1px;
+    background:#000; opacity:var(--seamOpacity);
+  }
+  .flap.turning{color:var(--phosphorGlow)}
+  .cell.lvlUp .flap{color:var(--phosphorGlow); text-shadow:0 0 6px rgba(214,242,122,.6)}
+  .cell.lvlFlat .flap{color:var(--phosphor)}
+  .cell.lvlWarn .flap{color:var(--amber)}
+  .cell.lvlBad .flap{color:var(--alarm); border-color:#2A1412}
+  .cell.empty .flap{color:var(--phosphorFaint)}
+  .cell.focus .flap{border-color:var(--phosphorDim)}
+  .bmark{
+    width:var(--cellW); min-width:var(--cellW); text-align:center;
+    font-size:var(--fHint); height:14px; line-height:14px; color:var(--phosphorFaint);
+  }
+  .bmark.theft{color:var(--alarm)}
+  .bmark.visit{color:var(--amber)}
+
+  /* ── 등록부 (밭을 그리지 않는다) ───────────────────────────── */
+  table{border-collapse:collapse; width:100%; font-size:var(--fHint)}
+  th,td{border-bottom:1px solid var(--grid); padding:4px 7px; text-align:right; white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  th{
+    font-weight:400; color:var(--phosphorDim); letter-spacing:.1em;
+    border-bottom:1px solid var(--phosphorFaint);
+  }
+  td.id{color:var(--phosphor); font-family:'PlexMono',monospace}
+  td.dim{color:var(--muted)}
+  td.hot{color:var(--alarm)}
+  td.warm{color:var(--amber)}
+  td.good{color:var(--phosphorGlow)}
+  tr.screened td{background:rgba(78,107,30,.09)}
+  .bar{display:inline-block; height:6px; background:var(--phosphorDim); vertical-align:middle}
+  .bar.hot{background:var(--alarm)}
+
+  /* ── 종이 테이프 ────────────────────────────────────────── */
+  .tape{
+    position:relative; background:var(--tape); color:var(--tapeInk);
+    min-height:var(--tapeH); margin-top:10px;
+    padding:var(--tapeMargin) calc(var(--tapeMargin) + 16px);
+    font-size:var(--fTape); line-height:var(--tapeLh); letter-spacing:var(--trackTape);
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
+  }
+  /* 천공: 위아래 구멍줄 */
+  .tape::before, .tape::after{
+    content:''; position:absolute; left:0; right:0; height:var(--perf);
+    background-image:radial-gradient(circle at 50% 50%, var(--void) 0 45%, transparent 47%);
+    background-size:var(--perfGap) var(--perf); background-repeat:repeat-x;
+  }
+  .tape::before{top:3px}
+  .tape::after{bottom:3px}
+  .tape .grain{
+    position:absolute; inset:0; pointer-events:none; opacity:var(--tapeTextureOpacity,.22);
+    background-image:url('assets/tape.jpg'); background-size:256px 256px; mix-blend-mode:multiply;
+  }
+  .tape .wire{position:relative; margin:0 0 12px; padding-left:2px}
+  .tape .wire:last-child{margin-bottom:0}
+  .tape .hdr{
+    font-family:'PlexMono',monospace; font-size:var(--fHint); letter-spacing:.18em;
+    color:#6B6152; border-bottom:1px dotted #B3A98F; padding-bottom:2px; margin-bottom:3px;
+  }
+  .tape .ln{display:block}
+  .tape .stop{color:#8A7F68}
+  .tape em{font-style:normal; border-bottom:1px solid var(--alarm); padding-bottom:1px}
+  .tape .none{color:#8A7F68}
+
+  .facts{display:flex; flex-wrap:wrap; gap:4px 26px; font-size:var(--fHint); color:var(--muted); margin:10px 0 0}
+  .facts b{color:var(--phosphorGlow); font-weight:400; font-family:'PlexMono',monospace; font-size:14px}
+  .twoworld{display:flex; flex-wrap:wrap; gap:18px; margin-top:8px}
+  .twoworld .w{
+    flex:1 1 220px; border:1px solid var(--grid); padding:10px 12px; background:var(--panel);
+  }
+  .twoworld .w h3{margin:0 0 4px; font-size:var(--fHint); font-weight:400; letter-spacing:.14em; color:var(--muted)}
+  .twoworld .w .n{font-family:'PlexMono',monospace; font-size:22px; color:var(--phosphorGlow)}
+  .twoworld .w.d .n{color:var(--amber)}
+
+  footer{margin-top:40px; border-top:1px solid var(--grid); padding-top:14px;
+         font-size:var(--fHint); color:var(--muted)}
+  footer b{color:var(--phosphorDim); font-weight:400}
+
+  @media (prefers-reduced-motion: reduce){ .flap{transition:none !important} }
+  @media (max-width:720px){
+    :root{--fTitle:22px; --cellW:28px; --cellH:22px; --labelW:72px; --fCell:12px}
+    body{padding:14px 12px 48px}
+  }
+</style>
+</head>
+<body>
+<div class="station">
+  <h1>SIGNAL EXCHANGE<span class="ko" id="titleKo">&nbsp;</span></h1>
+  <p class="slug" id="slug">data/ 를 읽는 중…</p>
+  <div id="body"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   C# 이식부. 아래 넷은 src/ 의 같은 이름 파일을 그대로 옮긴 것이다.
+   여기에 부동소수나 순회 순서 차이가 들어오면 화면과 테스트가 갈라진다.
+     NetRandom     ← .NET System.Random(seed)
+     mulDiv        ← Sim/IntMath.cs
+     SignalMath    ← Sim/SignalMath.cs
+     Board         ← Report/SignalBoard.cs (+ PriceBook · WeatherCalendar)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function NetRandom(seed){
+  const MBIG=2147483647, MSEED=161803398;
+  const S=new Array(56).fill(0);
+  const sub=(seed===-2147483648)?2147483647:Math.abs(seed);
+  let mj=MSEED-sub, mk=1;
+  S[55]=mj;
+  for(let i=1;i<55;i++){ const ii=(21*i)%55; S[ii]=mk; mk=mj-mk; if(mk<0) mk+=MBIG; mj=S[ii]; }
+  for(let k=1;k<5;k++) for(let i=1;i<56;i++){ let n=i+30; if(n>=55) n-=55; S[i]-=S[1+n]; if(S[i]<0) S[i]+=MBIG; }
+  let inext=0, inextp=21;
+  return { next(max){
+    let a=inext,b=inextp;
+    if(++a>=56) a=1;
+    if(++b>=56) b=1;
+    let r=S[a]-S[b];
+    if(r===MBIG) r--;
+    if(r<0) r+=MBIG;
+    S[a]=r; inext=a; inextp=b;
+    return Math.floor(r*(1.0/MBIG)*max);
+  }};
+}
+
+/// IntMath.MulDiv. 나머지를 remArr[i] 에 쌓는다. den>0 이므로 내림 한 방향이다.
+function mulDiv(value,num,den,remArr,i){
+  const n=value*num+remArr[i];
+  const q=Math.floor(n/den);
+  remArr[i]=n-q*den;
+  return q;
+}
+const clamp=(v,lo,hi)=> v<lo?lo:(v>hi?hi:v);
+
+/// SignalMath 전체. 인자 순서와 나눗셈 순서를 C#과 똑같이 둔다.
+function SignalMath(D,rules){
+  const S={
+    effExposure(baseExposure, heights){
+      let blocked=0;
+      for(const h of heights) blocked += Math.floor(h*D.plots.screenEffectPercent/100);
+      return clamp(baseExposure-blocked, D.plots.exposureFloor, 100);
+    },
+    dailyObserved(visibility, effExp, weatherExpPct, roadPct, remArr, i){
+      return mulDiv(visibility*effExp, weatherExpPct*roadPct, rules.obsDen, remArr, i);
+    },
+    nextPriceIndex(cur, observedIndex, copyAppeal){
+      // C#: observedIndex * copyAppeal / 100 * dropPerPointPer1000 / 1000  (왼쪽부터 정수 나눗셈)
+      const drop=Math.floor(Math.floor(observedIndex*copyAppeal/100)*rules.drop1000/1000);
+      let next=cur-drop;
+      if(observedIndex<=rules.scarcityThreshold) next+=rules.scarcityRise;
+      else if(next<100) next=Math.min(100,next+rules.recover);
+      return clamp(next, rules.floorPct, rules.ceilPct);
+    },
+    theftRisk(observedIndex, renown){
+      if(rules.theftDivisor<=0) return 0;
+      let raw=0;
+      for(let c=0;c<D.crops.crops.length;c++) raw+=observedIndex[c]*D.crops.crops[c].theftAppeal;
+      let risk=Math.floor(raw/rules.theftDivisor);
+      risk-=Math.floor(renown*rules.watchPer100/100);
+      risk=clamp(risk,0,rules.riskCap);
+      return risk<rules.minRiskToRoll?0:risk;
+    },
+    theftHits(risk){
+      if(rules.severityStep<=0) return 1;
+      return clamp(1+Math.floor(risk/rules.severityStep),1,rules.maxPlotsHit);
+    },
+    nextRenown(renown, observedIndex){
+      let gain=0;
+      if(rules.renownDivisor>0){
+        let raw=0;
+        for(let c=0;c<D.crops.crops.length;c++) raw+=observedIndex[c]*D.crops.crops[c].renownGain;
+        gain=Math.floor(raw/rules.renownDivisor);
+      }
+      return clamp(renown+gain-rules.renownDecay,0,rules.renownCap);
+    },
+    visitors(renown){ return rules.perVisitor<=0?0:Math.floor(renown/rules.perVisitor); },
+    premium(v){ return clamp(v*rules.premiumPer,0,rules.premiumCap); },
+    sellUnit(basePrice, idxPct, premiumPct, remArr, i){
+      return mulDiv(basePrice, idxPct*(100+premiumPct), 10000, remArr, i);
+    }
+  };
+  return S;
+}
+
+/// SignalRules.Full / .Off
+function makeRules(D, on){
+  const c=D.signal.copycat, t=D.signal.theft, r=D.signal.renown;
+  return {
+    on,
+    drop1000:      on? c.dropPerPointPer1000 : 0,
+    recover:       on? c.recoverPerSeason : 0,
+    scarcityRise:  on? c.scarcityRisePerSeason : 0,
+    scarcityThreshold: c.scarcityThresholdIndex,
+    floorPct: c.floorPercent, ceilPct: c.ceilPercent,
+    warnPct: c.warnPercent, collapsePct: c.collapsePercent,
+    theftDivisor:  on? t.riskDivisor : 0,
+    riskCap: t.riskCapPer1000,
+    watchPer100:   on? t.watchPer100Renown : 0,
+    severityStep: t.severityStepPer1000, maxPlotsHit: t.maxPlotsHit,
+    minRiskToRoll: t.minRiskToRollPer1000,
+    renownDivisor: on? r.gainDivisor : 0,
+    renownDecay: r.decayPerSeason, renownCap: r.cap,
+    perVisitor: r.perVisitor, premiumPer: r.premiumPerVisitor, premiumCap: r.premiumCapPercent,
+    obsDen: D.signal.observation.denominator
+  };
+}
+
+/// WeatherCalendar
+function weatherCalendar(D, years){
+  const rng=NetRandom(D.config.seed+D.config.weatherSeedOffset);
+  const dps=D.seasons.daysPerSeason, nS=D.seasons.seasons.length;
+  const out=[];
+  for(let day=0; day<years*dps*nS; day++){
+    const s=D.seasons.seasons[Math.floor((day%(dps*nS))/dps)];
+    let total=0; for(const w of s.weatherWeights) total+=w.weight;
+    let pick=s.weatherWeights[s.weatherWeights.length-1].weatherId;
+    if(total>0){
+      let roll=rng.next(total);
+      for(const w of s.weatherWeights){ roll-=w.weight; if(roll<0){ pick=w.weatherId; break; } }
+    }
+    out.push(pick);
+  }
+  return out;
+}
+
+/// PriceBook — 기준가 잡음만. 남의 반응은 여기 없다.
+function priceBook(D, years){
+  const stepDays=Math.max(1,D.economy.priceStepDays);
+  const dpy=D.seasons.daysPerSeason*D.seasons.seasons.length;
+  const steps=Math.floor(years*dpy/stepDays)+1;
+  const n=D.crops.crops.length;
+  const price=[]; for(let c=0;c<n;c++) price.push(new Array(steps).fill(0));
+  const rng=NetRandom(D.config.seed+D.config.priceSeedOffset);
+  const rem=new Array(n).fill(0);
+  const band=D.economy.priceBandPercent;
+  for(let step=0; step<steps; step++)
+    for(let c=0;c<n;c++){
+      const shop=D.shopOf(D.crops.crops[c].id);
+      const basePrice=shop?shop.sellUnit:0;
+      const percent=100-band+rng.next(band*2+1);
+      price[c][step]=mulDiv(basePrice,percent,100,rem,c);
+    }
+  return (cropId,day)=>{
+    const c=D.cropIndex(cropId);
+    return c<0?0:price[c][Math.floor(day/stepDays)];
+  };
+}
+
+/// Report/SignalBoard.Compute — 계획 하나를 계절 단위로 돌려 시세판을 뽑는다.
+function computeBoard(D, plan, on, years){
+  const rules=makeRules(D,on), M=SignalMath(D,rules);
+  const weather=weatherCalendar(D,years), baseUnit=priceBook(D,years);
+  const rng=NetRandom(D.config.seed+D.config.signalSeedOffset);
+
+  const nC=D.crops.crops.length, nP=D.plots.plots.length;
+  const dps=D.seasons.daysPerSeason, nS=D.seasons.seasons.length;
+  const idx=new Array(nC).fill(100);
+  const obsRem=new Array(nC).fill(0), sellRem=new Array(nC).fill(0);
+  let renown=0, visitors=0, premium=0;
+
+  const order=D.plotsByExposureDesc;
+  const rows=[]; let grand=0;
+
+  for(let s=0; s<years*nS; s++){
+    const season=D.seasons.seasons[s%nS];
+    const startDay=s*dps;
+    const row={
+      seasonNumber:s+1, year:Math.floor(s/nS)+1, seasonId:season.id, seasonNameKo:season.nameKo,
+      plotCrop:new Array(nP).fill(null), plotEff:new Array(nP).fill(0), skippedBySoil:0,
+      observedIndex:new Array(nC).fill(0), priceBefore:idx.slice(), priceAfter:null,
+      renownBefore:renown, renownAfter:0, visitors, premium,
+      theftRisk:0, theftRoll:0, theftStruck:false, theftHits:0, theftTargets:[],
+      fogDays:0, revenueByCrop:new Array(nC).fill(0), revenueTotal:0, observedTotal:0
+    };
+
+    // 1. 계획을 칸에 펼친다 (노출 내림차순으로 cropOrder[i])
+    const cropOrder=(plan.bySeason.find(b=>b.seasonId===season.id)||{}).cropOrder||[];
+    const assign={};
+    for(let i=0;i<order.length;i++){
+      const cid=cropOrder[i]||'';
+      if(!cid) continue;
+      const crop=D.cropOf(cid); if(!crop) continue;
+      if(order[i].soil<crop.minSoil){ row.skippedBySoil++; continue; }
+      assign[order[i].id]=cid;
+    }
+    for(let i=0;i<nP;i++) row.plotCrop[i]=assign[D.plots.plots[i].id]||null;
+
+    // 2. 가림을 셈한 유효 노출
+    const depth=Math.max(1,D.plots.screenDepth);
+    for(let i=0;i<nP;i++){
+      const p=D.plots.plots[i], heights=[];
+      for(let k=0;k<depth;k++){
+        const front=D.plotAt(p.x,p.y-(k+1));
+        heights.push(front&&assign[front.id] ? D.cropOf(assign[front.id]).screenHeight : 0);
+      }
+      row.plotEff[i]=M.effExposure(p.exposure,heights);
+    }
+
+    // 3. 계절 내내 날마다 관측한다. 순회는 날짜 → plots[] 순서
+    const obs=new Array(nC).fill(0);
+    for(let dd=0; dd<dps; dd++){
+      const w=D.weatherOf(weather[startDay+dd]);
+      if(w.id==='fog') row.fogDays++;
+      for(let i=0;i<nP;i++){
+        const cid=row.plotCrop[i]; if(!cid) continue;
+        const c=D.cropIndex(cid);
+        obs[c]+=M.dailyObserved(D.crops.crops[c].visibility, row.plotEff[i],
+                                w.exposurePercent, season.roadTrafficPercent, obsRem, c);
+      }
+    }
+
+    // 4. 이 계절에 한 번 걷었다고 볼 때의 매출 (시세지수는 마감 전 값)
+    for(let c=0;c<nC;c++){
+      const crop=D.crops.crops[c];
+      let plotsWith=0;
+      for(let i=0;i<nP;i++) if(row.plotCrop[i]===crop.id) plotsWith++;
+      if(plotsWith===0) continue;
+      const unit=M.sellUnit(baseUnit(crop.id,startDay), idx[c], premium, sellRem, c);
+      row.revenueByCrop[c]=plotsWith*crop.yieldUnits*unit;
+      row.revenueTotal+=row.revenueByCrop[c];
+    }
+    grand+=row.revenueTotal;
+
+    // 5. 남이 반응한다 (SignalState.CloseSeason)
+    for(let c=0;c<nC;c++){ row.observedIndex[c]=Math.floor(obs[c]/dps); row.observedTotal+=row.observedIndex[c]; }
+
+    row.theftRisk=M.theftRisk(row.observedIndex,renown);
+    row.theftRoll=rng.next(1000);                       // 위험도와 무관하게 계절마다 꼭 한 번
+    if(row.theftRisk>0 && row.theftRoll<row.theftRisk){
+      const hits=M.theftHits(row.theftRisk);
+      const cand=[];
+      for(let i=0;i<nP;i++){
+        const cid=row.plotCrop[i]; if(!cid) continue;
+        cand.push({id:D.plots.plots[i].id, cropId:cid, eff:row.plotEff[i], appeal:D.cropOf(cid).theftAppeal});
+      }
+      cand.sort((a,b)=>{
+        const d=(b.appeal*b.eff)-(a.appeal*a.eff);
+        return d!==0?d:(a.id<b.id?-1:a.id>b.id?1:0);
+      });
+      const picks=[];
+      for(const t of cand){ if(picks.length>=hits) break; if(t.appeal>0) picks.push(t); }
+      if(picks.length>0){
+        row.theftStruck=true; row.theftHits=picks.length;
+        row.theftTargets=picks.map(t=>t.id+':'+t.cropId);
+      }
+    }
+
+    renown=M.nextRenown(renown,row.observedIndex);
+    visitors=M.visitors(renown);
+    premium=M.premium(visitors);
+    row.renownAfter=renown;
+
+    for(let c=0;c<nC;c++) idx[c]=M.nextPriceIndex(idx[c],row.observedIndex[c],D.crops.crops[c].copyAppeal);
+    row.priceAfter=idx.slice();
+
+    rows.push(row);
+  }
+  return {planId:plan.id, nameKo:plan.nameKo, noteKo:plan.noteKo, on, rows, grand, rules};
+}
+
+/* ═══════════════════════════ 그리기 ═══════════════════════════ */
+
+const j=async p=>{ const r=await fetch(p); if(!r.ok) throw new Error(p+' → '+r.status); return r.json(); };
+
+function applyPalette(pal){
+  const r=document.documentElement.style;
+  for(const k in pal.color) if(!k.startsWith('_')) r.setProperty('--'+k,pal.color[k]);
+  const set=(n,v)=>r.setProperty(n,v);
+  set('--cellW',pal.board.cellWidthPx+'px'); set('--cellH',pal.board.cellHeightPx+'px');
+  set('--cellGap',pal.board.cellGapPx+'px'); set('--labelW',pal.board.labelWidthPx+'px');
+  set('--glow',pal.board.glowPx+'px'); set('--seamOpacity',pal.board.seamOpacity);
+  set('--tapeH',pal.tape.heightPx+'px'); set('--perf',pal.tape.perforationPx+'px');
+  set('--perfGap',pal.tape.perforationGapPx+'px'); set('--tapeMargin',pal.tape.marginPx+'px');
+  set('--tapeLh',pal.tape.lineHeight);
+  set('--scanOpacity',pal.grade.scanlineOpacity); set('--scanPitch',pal.grade.scanlinePitchPx+'px');
+  set('--glowOpacity',pal.grade.glowOpacity); set('--vignette',pal.grade.vignette);
+  set('--tapeTextureOpacity',pal.grade.tapeTextureOpacity);
+  set('--fTitle',pal.type.sizeTitle+'px'); set('--fHead',pal.type.sizeHeading+'px');
+  set('--fBody',pal.type.sizeBody+'px'); set('--fHint',pal.type.sizeHint+'px');
+  set('--fCell',pal.type.sizeCell+'px'); set('--fTape',pal.type.sizeTape+'px');
+  set('--trackTitle',pal.type.trackingTitle+'px'); set('--trackTape',pal.type.trackingTape+'px');
+}
+
+function level(idx,rules){
+  if(idx>100) return 'lvlUp';
+  if(idx===100) return 'lvlFlat';
+  if(idx>rules.collapsePct) return 'lvlWarn';
+  return 'lvlBad';
+}
+
+/// 스플릿플랩 한 칸. 숫자 세 자리를 각자 뒤집는다.
+function makeCell(){
+  const cell=document.createElement('div');
+  cell.className='cell';
+  for(let i=0;i<3;i++){ const f=document.createElement('div'); f.className='flap'; f.textContent=' '; cell.appendChild(f); }
+  return cell;
+}
+function setCell(cell,value,cls,pal,animate,onFlap){
+  cell.className='cell '+cls;
+  const txt=String(value).padStart(3,' ');
+  [...cell.children].forEach((f,i)=>{
+    const target=txt[i]==='0'&&i===0?' ':txt[i];
+    if(f.textContent===target) return;
+    if(!animate){ f.textContent=target; return; }
+    const steps=1+Math.floor(Math.random()*pal.board.flapStepsMax);
+    let n=0;
+    f.classList.add('turning');
+    const tick=()=>{
+      if(n<steps){ f.textContent=String(Math.floor(Math.random()*10)); n++; setTimeout(tick,pal.board.flapStepMs); }
+      else { f.textContent=target; f.classList.remove('turning'); if(onFlap) onFlap(); }
+    };
+    tick();
+  });
+}
+
+const audio={};
+function beep(pal,key,vol){
+  try{
+    const src=pal.sfx[key]; if(!src) return;
+    if(!audio[key]){ audio[key]=new Audio(src); }
+    const a=audio[key].cloneNode();
+    a.volume=vol==null?0.3:vol;
+    a.play().catch(()=>{});
+  }catch(e){}
+}
+
+/// 전문을 만든다: (반응 틀 x 작물) 격자에서 이 계절에 해당하는 것만 뽑는다.
+/// ContentBudget 이 세는 것이 바로 이 격자다 — 틀 8개 x 작물 8종 = 64통.
+function telegramsFor(D,row,prev,rules){
+  const out=[];
+  const tpl=id=>D.events.templates.find(t=>t.id===id);
+  const name=c=>D.crops.crops[c].nameKo;
+  const push=(id,crop,num)=>{ const t=tpl(id); if(t) out.push({t,crop,num}); };
+
+  // 시세: 가장 크게 내린 작물 · 가장 크게 오른 작물
+  let fell=-1,fellBy=0, rose=-1,roseBy=0;
+  for(let c=0;c<D.crops.crops.length;c++){
+    const d=row.priceAfter[c]-row.priceBefore[c];
+    if(d<0 && -d>fellBy){ fellBy=-d; fell=c; }
+    if(d>0 && d>roseBy && row.priceAfter[c]>100){ roseBy=d; rose=c; }
+  }
+  if(fell>=0 && fellBy>=8) push('copyReport',name(fell),Math.max(1,Math.floor(fellBy/8)));
+  if(fell>=0) push('priceFall',name(fell),row.priceAfter[fell]);
+  if(rose>=0) push('priceRise',name(rose),row.priceAfter[rose]);
+
+  // 도둑
+  if(row.theftStruck){
+    const cid=row.theftTargets[0].split(':')[1];
+    push('thiefHit',D.cropOf(cid).nameKo,row.theftHits);
+  } else if(row.theftRisk>=rules.minRiskToRoll){
+    let hot=0,hotV=-1;
+    for(let c=0;c<D.crops.crops.length;c++){
+      const v=row.observedIndex[c]*D.crops.crops[c].theftAppeal;
+      if(v>hotV){ hotV=v; hot=c; }
+    }
+    push('thiefWarn',name(hot),row.theftRisk);
+  }
+
+  // 평판
+  if(row.visitors>0){
+    let best=0,bestV=-1;
+    for(let c=0;c<D.crops.crops.length;c++){
+      const v=row.observedIndex[c]*D.crops.crops[c].renownGain;
+      if(v>bestV){ bestV=v; best=c; }
+    }
+    push('visitorArrive',name(best),row.visitors);
+  }
+
+  // 가림 간파 · 안개
+  let screenFront=null;
+  for(let i=0;i<D.plots.plots.length;i++){
+    const p=D.plots.plots[i], cid=row.plotCrop[i];
+    if(p.y===0 && cid && D.cropOf(cid).screenHeight>=40){ screenFront=cid; break; }
+  }
+  if(screenFront) push('screenNoticed',D.cropOf(screenFront).nameKo,row.observedTotal);
+  if(row.fogDays>=6){
+    let planted=0;
+    for(let c=0;c<D.crops.crops.length;c++) if(row.observedIndex[c]>row.observedIndex[planted]) planted=c;
+    push('fogCover',name(planted),row.fogDays);
+  }
+  return out;
+}
+
+function fmt(n){ return n.toLocaleString('en-US'); }
+
+(async function(){
+  const body=document.getElementById('body');
+  let pal,config,seasons,crops,plots,economy,signal,events,showcase;
+  try{
+    [pal,config,seasons,crops,plots,economy,signal,events,showcase]=await Promise.all([
+      j('palette.json'), j('../data/config.json'), j('../data/seasons.json'),
+      j('../data/crops.json'), j('../data/plots.json'), j('../data/economy.json'),
+      j('../data/signal.json'), j('../data/events.json'), j('../data/showcase.json')]);
+  }catch(e){
+    document.getElementById('slug').innerHTML='<span class="err">data/ 를 읽지 못했다: '+e.message+
+      '<br>file:// 로 열면 브라우저가 fetch를 막는다. PoC 뿌리에서 <code>python -m http.server 8000</code> 을 띄우고 '+
+      '<code>http://localhost:8000/presentation/</code> 로 열 것.</span>';
+    return;
+  }
+  applyPalette(pal);
+
+  // GameData.Index() 에 해당하는 조회 묶음
+  const D={config,seasons,crops,plots,economy,signal,events,showcase};
+  D.cropOf=id=>crops.crops.find(c=>c.id===id);
+  D.cropIndex=id=>crops.crops.findIndex(c=>c.id===id);
+  D.shopOf=id=>economy.shop.find(s=>s.cropId===id);
+  D.weatherOf=id=>seasons.weathers.find(w=>w.id===id);
+  D.seasonOf=id=>seasons.seasons.find(s=>s.id===id);
+  D.plotAt=(x,y)=>(x<0||y<0||x>=plots.gridWidth||y>=plots.gridHeight)?null:plots.plots.find(p=>p.x===x&&p.y===y);
+  D.plotsByExposureDesc=plots.plots.slice().sort((a,b)=> b.exposure-a.exposure || (a.id<b.id?-1:1));
+
+  document.title=config.titleKo+' · 시세판';
+  document.getElementById('titleKo').textContent=config.titleKo;
+  document.getElementById('slug').innerHTML=
+    `<span>국번 ${config.slug.toUpperCase()}</span><span>씨드 ${config.seed}</span>` +
+    `<span>밭 ${plots.plots.length}칸</span><span>작물 ${crops.crops.length}종</span>` +
+    `<span>${config.simYears}년 · ${seasons.daysPerSeason*seasons.seasons.length*config.simYears}일</span>` +
+    `<span>${pal.name}</span>`;
+
+  const years=config.simYears;
+  let planId=showcase.plans[0].id, signalOn=true, focusSeason=0, first=true;
+
+  body.innerHTML=`
+    <div class="knobs" id="knobs"></div>
+    <p class="note" id="planNote"></p>
+
+    <h2>시세판 <small id="boardSub"></small></h2>
+    <p class="lede">칸의 숫자는 <b>시세지수(%)</b>다. 100 = 상점 기준가. 내려가면 남들이 따라 심었다는 뜻이고,
+      100을 넘으면 아무도 심지 않아 귀해졌다는 뜻이다. 아래 줄의 표시는 그 계절에 벌어진 일이다.</p>
+    <div class="board" id="board"></div>
+    <div class="facts" id="boardFacts"></div>
+
+    <h2>두 세계 <small>같은 계획 · 같은 날씨 · 같은 주사위</small></h2>
+    <div class="twoworld" id="twoworld"></div>
+
+    <h2>관측 등록부 <small id="regSub"></small></h2>
+    <p class="lede">밭을 그리지 않는다. 열두 줄이 열두 칸이고, <b>길에서 보이는 정도</b>가 칸을 가르는
+      유일한 값이다. 앞 칸에 키 큰 작물이 서면 뒤 칸의 유효 노출이 내려간다.</p>
+    <table id="register"></table>
+
+    <h2>전문 <small id="wireSub"></small></h2>
+    <div class="tape" id="tape"><div class="grain"></div></div>
+    <p class="note" id="wireNote"></p>
+
+    <h2>계절 장부 <small>계절마다 한 번 걷었다고 볼 때</small></h2>
+    <table id="ledger"></table>
+
+    <footer id="foot"></footer>`;
+
+  // ── 손잡이 ──
+  const knobs=document.getElementById('knobs');
+  const planSet=document.createElement('div'); planSet.className='set';
+  planSet.innerHTML='<span class="cap">심는 계획</span>';
+  showcase.plans.forEach(p=>{
+    const b=document.createElement('button');
+    b.textContent=p.nameKo.split(' — ')[0];
+    b.title=p.nameKo;
+    b.onclick=()=>{ planId=p.id; beep(pal,'key',.25); render(true); };
+    b.dataset.plan=p.id;
+    planSet.appendChild(b);
+  });
+  const sigSet=document.createElement('div'); sigSet.className='set';
+  sigSet.innerHTML='<span class="cap">남이 보는가</span>';
+  [['켬',true],['끔',false]].forEach(([label,on])=>{
+    const b=document.createElement('button');
+    b.textContent=label; if(!on) b.className='off';
+    b.onclick=()=>{ signalOn=on; beep(pal,'close',.22); render(true); };
+    b.dataset.sig=on?'1':'0';
+    sigSet.appendChild(b);
+  });
+  knobs.appendChild(planSet); knobs.appendChild(sigSet);
+
+  const boardEl=document.getElementById('board');
+  const cellMap=[];   // [cropIndex][season]
+
+  function buildBoard(){
+    boardEl.innerHTML='';
+    const g=document.createElement('div'); g.className='boardgrid';
+
+    const head=document.createElement('div'); head.className='brow head';
+    const hl=document.createElement('div'); hl.className='blabel'; hl.textContent='계절 →';
+    head.appendChild(hl);
+    for(let s=0;s<years*seasons.seasons.length;s++){
+      const d=document.createElement('div');
+      const season=seasons.seasons[s%seasons.seasons.length];
+      d.className='bhead'+(s%seasons.seasons.length===0?' y':'');
+      d.textContent=(s%seasons.seasons.length===0? (Math.floor(s/seasons.seasons.length)+1)+'년' : season.nameKo);
+      d.title=`${Math.floor(s/seasons.seasons.length)+1}년 ${season.nameKo}`;
+      d.onclick=()=>{ focusSeason=s; beep(pal,'key',.2); render(false); };
+      d.style.cursor='pointer';
+      head.appendChild(d);
+    }
+    g.appendChild(head);
+
+    crops.crops.forEach((c,ci)=>{
+      const row=document.createElement('div'); row.className='brow';
+      const lab=document.createElement('div'); lab.className='blabel';
+      lab.textContent=c.nameKo;
+      lab.title=`${c.nameKo} · 기준가 ${D.shopOf(c.id).sellUnit} · 눈에 띔 ${c.visibility} · 따라 심힘 ${c.copyAppeal} · 도둑 ${c.theftAppeal}`;
+      row.appendChild(lab);
+      cellMap[ci]=[];
+      for(let s=0;s<years*seasons.seasons.length;s++){
+        const cell=makeCell();
+        cell.onclick=()=>{ focusSeason=s; beep(pal,'key',.2); render(false); };
+        cell.style.cursor='pointer';
+        cellMap[ci][s]=cell;
+        row.appendChild(cell);
+      }
+      g.appendChild(row);
+    });
+
+    const marks=document.createElement('div'); marks.className='brow';
+    const ml=document.createElement('div'); ml.className='blabel'; ml.textContent='벌어진 일';
+    marks.appendChild(ml);
+    for(let s=0;s<years*seasons.seasons.length;s++){
+      const d=document.createElement('div'); d.className='bmark'; d.id='mark'+s;
+      marks.appendChild(d);
+    }
+    g.appendChild(marks);
+    boardEl.appendChild(g);
+  }
+
+  function render(animate){
+    const plan=showcase.plans.find(p=>p.id===planId);
+    const on=computeBoard(D,plan,signalOn,years);
+    const other=computeBoard(D,plan,!signalOn,years);
+    const rules=on.rules;
+    if(focusSeason>=on.rows.length) focusSeason=on.rows.length-1;
+
+    planSet.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.plan===planId)));
+    sigSet.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.sig==='1')===signalOn)));
+    document.getElementById('planNote').innerHTML='<b>'+plan.nameKo+'</b> — '+plan.noteKo;
+    document.getElementById('boardSub').textContent=
+      `신호 ${signalOn?'켬':'끔'} · 계절을 눌러 등록부와 전문을 바꾼다`;
+
+    if(!cellMap.length) buildBoard();
+
+    let flaps=0;
+    on.rows.forEach((row,s)=>{
+      crops.crops.forEach((c,ci)=>{
+        const v=row.priceBefore[ci];
+        let cls=level(v,rules);
+        let planted=false;
+        for(let i=0;i<plots.plots.length;i++) if(row.plotCrop[i]===c.id){ planted=true; break; }
+        if(!planted && v===100) cls='empty';
+        setCell(cellMap[ci][s],v,cls+(s===focusSeason?' focus':''),pal,animate&&flaps++<18,
+                animate?()=>beep(pal,'flap',.06):null);
+      });
+      const m=document.getElementById('mark'+s);
+      if(row.theftStruck){ m.className='bmark theft'; m.textContent='×'+row.theftHits; m.title=`도둑 ${row.theftHits}칸: ${row.theftTargets.join(' ')}`; }
+      else if(row.visitors>0){ m.className='bmark visit'; m.textContent='◇'+row.visitors; m.title=`방문자 ${row.visitors}명 · 웃돈 ${row.premium}%`; }
+      else { m.className='bmark'; m.textContent='·'; m.title=`위험 ${row.theftRisk} / 주사위 ${row.theftRoll}`; }
+    });
+    if(animate){
+      beep(pal,'wire',.2);
+      // 고른 계절에 도둑이 들었으면 경보를 울린다. 화면에 x 표시만 두고 소리를 안 쓰면
+      // 실리지 않는 에셋이 남는다 — CREDITS 에 적은 것은 실제로 쓰여야 한다.
+      if(on.rows[focusSeason] && on.rows[focusSeason].theftStruck) beep(pal,'alarm',.22);
+    }
+
+    // 판 요약
+    let minIdx=999,maxIdx=0,thefts=0,plotsLost=0,maxRenown=0,maxPrem=0;
+    on.rows.forEach(r=>{
+      r.priceAfter.forEach(v=>{ if(v<minIdx)minIdx=v; if(v>maxIdx)maxIdx=v; });
+      if(r.theftStruck){ thefts++; plotsLost+=r.theftHits; }
+      if(r.renownAfter>maxRenown) maxRenown=r.renownAfter;
+      if(r.premium>maxPrem) maxPrem=r.premium;
+    });
+    document.getElementById('boardFacts').innerHTML=
+      `<div>시세지수 범위 <b>${minIdx}~${maxIdx}%</b></div>` +
+      `<div>도둑 <b>${thefts}회 ${plotsLost}칸</b></div>` +
+      `<div>최고 평판 <b>${maxRenown}</b></div>` +
+      `<div>최고 웃돈 <b>${maxPrem}%</b></div>` +
+      `<div>붕괴선 ${rules.collapsePct}% · 경고선 ${rules.warnPct}% · 천장 ${rules.ceilPct}%</div>`;
+
+    // 두 세계
+    const a=signalOn?on.grand:other.grand, b=signalOn?other.grand:on.grand;
+    const diff=b===0?0:Math.round((a-b)*100/b);
+    document.getElementById('twoworld').innerHTML=
+      `<div class="w"><h3>남이 본다 (신호 켬)</h3><div class="n">${fmt(signalOn?on.grand:other.grand)}</div>` +
+      `<div class="cap" style="font-size:var(--fHint);color:var(--muted)">3년 매출</div></div>` +
+      `<div class="w"><h3>아무도 안 본다 (신호 끔)</h3><div class="n">${fmt(signalOn?other.grand:on.grand)}</div>` +
+      `<div class="cap" style="font-size:var(--fHint);color:var(--muted)">3년 매출</div></div>` +
+      `<div class="w d"><h3>이 계획이 남의 눈에 치르는 값</h3><div class="n">${diff>0?'+':''}${diff}%</div>` +
+      `<div class="cap" style="font-size:var(--fHint);color:var(--muted)">같은 씨드 · 같은 날씨 · 같은 주사위. ` +
+      `다른 것은 남이 보는가 하나뿐이다</div></div>`;
+
+    // 관측 등록부
+    const row=on.rows[focusSeason];
+    document.getElementById('regSub').textContent=`${row.year}년 ${row.seasonNameKo} · 길 통행 ${D.seasonOf(row.seasonId).roadTrafficPercent}% · 안개 ${row.fogDays}일`;
+    const maxObs=Math.max(1,...row.observedIndex);
+    let reg=`<tr><th>칸</th><th>길에서</th><th>토질</th><th>심은 것</th><th>키</th><th>유효 노출</th><th>이 작물 관측</th><th></th></tr>`;
+    D.plotsByExposureDesc.forEach(p=>{
+      const i=plots.plots.findIndex(q=>q.id===p.id);
+      const cid=row.plotCrop[i];
+      const crop=cid?D.cropOf(cid):null;
+      const eff=row.plotEff[i];
+      const screened=eff<p.exposure;
+      const front=D.plotAt(p.x,p.y-1);
+      const obsC=crop?row.observedIndex[D.cropIndex(cid)]:0;
+      const cls=!crop?'dim':(crop.theftAppeal>=30?'hot':(crop.copyAppeal>=60?'warm':'good'));
+      reg+=`<tr class="${screened?'screened':''}">`+
+        `<td class="id">${p.id}</td><td>${p.exposure}</td><td class="dim">${p.soil}</td>`+
+        `<td class="${cls}">${crop?crop.nameKo:'—'}</td>`+
+        `<td class="dim">${crop?crop.screenHeight:'—'}</td>`+
+        `<td class="${screened?'good':''}">${eff}${screened?' ↓'+(p.exposure-eff):''}</td>`+
+        `<td>${obsC}</td>`+
+        `<td><span class="bar ${crop&&crop.theftAppeal>=30?'hot':''}" style="width:${Math.round(obsC*90/maxObs)}px"></span></td></tr>`;
+      if(screened&&front) reg+=`<tr><td colspan="8" class="dim" style="border:0;padding:0 7px 4px">`+
+        `└ 앞 칸 ${front.id} 의 ${row.plotCrop[plots.plots.findIndex(q=>q.id===front.id)]?D.cropOf(row.plotCrop[plots.plots.findIndex(q=>q.id===front.id)]).nameKo:'—'} 가 가린다</td></tr>`;
+    });
+    reg+=`<tr><th>관측 합계</th><th colspan="7" style="text-align:right">${row.observedTotal}</th></tr>`;
+    document.getElementById('register').innerHTML=reg;
+
+    // 전문
+    const wires=telegramsFor(D,row,focusSeason>0?on.rows[focusSeason-1]:null,rules);
+    const tape=document.getElementById('tape');
+    let html='<div class="grain"></div>';
+    if(wires.length===0){
+      html+=`<p class="wire none">— 이 계절에는 들어온 전문이 없다. 아무도 밭을 보지 않았다 —</p>`;
+    } else {
+      wires.slice(0,4).forEach((w,n)=>{
+        const lines=w.t.linesKo.map(l=>l.replace('{0}',w.crop).replace('{1}',w.num));
+        html+=`<div class="wire"><div class="hdr">전문 ${String(focusSeason*4+n+1).padStart(3,'0')} · ${row.year}년 ${row.seasonNameKo} · ${w.t.nameKo}</div>`+
+          lines.map((l,k)=>`<span class="ln">${k===lines.length-1?'<em>'+l+'</em>':l}<span class="stop"> 정지</span></span>`).join('')+
+          `</div>`;
+      });
+    }
+    tape.innerHTML=html;
+    document.getElementById('wireSub').textContent=`${row.year}년 ${row.seasonNameKo} · ${Math.min(4,wires.length)}통`;
+    document.getElementById('wireNote').innerHTML=
+      `전문은 <b>반응 틀 ${events.templates.length}개 × 작물 ${crops.crops.length}종 = 고유 ${events.templates.length*crops.crops.length}통</b>의 격자에서 나온다. ` +
+      `수치는 이 계절의 실제 관측치·시세지수·위험도다. 이 격자가 이 훅의 콘텐츠 예산이고, ` +
+      `<code>tests/ContentBudgetTests.cs</code> 가 그 수를 센다. ` +
+      `<b>격자에서 뽑은 전문이 사람이 쓴 글로 읽히는지는 기계가 판정하지 못한다.</b>`;
+
+    // 계절 장부
+    let led=`<tr><th>계절</th><th>관측</th><th>평판</th><th>방문</th><th>웃돈</th><th>위험</th><th>주사위</th><th>도둑</th><th>매출</th><th>누적</th></tr>`;
+    let acc=0;
+    on.rows.forEach((r,s)=>{
+      acc+=r.revenueTotal;
+      const hit=r.theftStruck;
+      led+=`<tr style="${s===focusSeason?'background:rgba(78,107,30,.14)':''}">`+
+        `<td class="id">${r.year}년 ${r.seasonNameKo}</td><td>${r.observedTotal}</td>`+
+        `<td class="${r.renownAfter>0?'good':'dim'}">${r.renownAfter}</td><td class="dim">${r.visitors}</td>`+
+        `<td class="${r.premium>0?'good':'dim'}">${r.premium}%</td>`+
+        `<td class="${r.theftRisk>=rules.minRiskToRoll?'warm':'dim'}">${r.theftRisk}</td>`+
+        `<td class="dim">${r.theftRoll}</td>`+
+        `<td class="${hit?'hot':'dim'}">${hit?r.theftHits+'칸':'—'}</td>`+
+        `<td>${fmt(r.revenueTotal)}</td><td class="dim">${fmt(acc)}</td></tr>`;
+    });
+    document.getElementById('ledger').innerHTML=led;
+
+    if(first){ first=false; }
+  }
+
+  document.getElementById('foot').innerHTML=
+    `<p><b>이 화면은 손으로 그린 그림이 아니다.</b> <code>../data/</code> 의 여덟 JSON을 읽고, ` +
+    `<code>src/Sim/SignalMath.cs</code> · <code>PriceBook</code> · <code>WeatherCalendar</code> 를 JS로 이식해 ` +
+    `<code>.NET System.Random(${config.seed})</code> 와 같은 수열로 3년을 다시 돌린다. ` +
+    `그래서 화면의 3년이 테스트가 돌린 3년과 같다 — 대조표는 ` +
+    `<code>tests/SignalBoardTests.cs</code> 의 <code>목업이_맞춰_볼_표본값을_찍는다</code> 가 찍는다.</p>` +
+    `<p><b>밭을 그리지 않는 이유.</b> 이 PoC의 규칙은 "내가 심은 것이 남에게 정보로 간다"다. ` +
+    `밭을 그리면 플레이어는 자기 눈으로 밭을 보게 되고, 그러면 규칙과 그림이 어긋난다. ` +
+    `여기서 밭은 등록부의 숫자와 종이 테이프의 전문으로만 나타난다.</p>` +
+    `<p><b>기계가 판정한 것 / 못 한 것.</b> 검사기 아홉이 확인한 것은 고장이다(씨드 재현·참조 무결성·100년 경제· ` +
+    `계절 성립성·죽은 작물·페이싱·콘텐츠 예산·신호가 결과를 바꾸는가·단작이 최적이 아닌가). ` +
+    `"시세판이 딸깍 바뀔 때 긴장되는가"는 사람만 판정한다. <code>README.md</code> 의 판정 칸 참고.</p>` +
+    `<p style="color:var(--phosphorFaint)">글꼴 IBM Plex Mono · Nanum Gothic Coding 부분집합(OFL) · ` +
+    `소리 Kenney Interface Sounds(CC0) · 질감 ambientCG(CC0). 전부 <code>CREDITS.md</code>.</p>`;
+
+  render(false);
+})();
+</script>
+</body>
+</html>

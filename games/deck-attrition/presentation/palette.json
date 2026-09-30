@@ -1,0 +1,107 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs가 같은 역할을 한다. index.html 에는 색도 크기도 박혀 있지 않고 전부 이 파일에서 온다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(청사진·모눈종이 / 목판화 타로 / 세피아 측량도 / 필사본 연감 / 크라프트 장부 / 겨울 등불 / 구성주의 포스터)과 겹치지 않는다. 가장 가까운 것은 tactics-partisan-1941 이지만 그쪽은 '크림 종이 위의 붉은 포스터 + 망점 + 사선'이고, 여기는 '검은 인쇄소 안의 납회색 금속 + 주홍 한 점'이다 — 망점도 사선도 스텐실도 쓰지 않는다. 대신 이 연출에만 있는 것은 아래 impression 이다.",
+
+  "name": "납 활자 · 인쇄소",
+  "oneLine": "검정과 납회색, 주홍 한 점. 많이 쓴 활자는 뭉개져 찍힌다 — 그게 카드가 닳는 그림이다",
+  "reference": "활판 인쇄소 — 납 활자 케이스, 잉크가 번진 자리, 글자마다 미세하게 다른 농도, 종이에 눌린 자국",
+
+  "color": {
+    "void": "#0B0B0C",
+    "ink": "#141517",
+    "surface": "#1B1D20",
+    "lead": "#3B4046",
+    "leadLight": "#5C636C",
+    "leadEdge": "#787F88",
+    "paper": "#E8E3D8",
+    "paperDim": "#CFC8B9",
+    "vermilion": "#C4381C",
+    "vermilionDeep": "#8E2312",
+    "muted": "#7B7468",
+    "_두_색과_한_점": "검정(void/ink/surface) · 납회색(lead/leadLight/leadEdge) 둘이 화면의 전부고, 주홍(vermilion)은 한 판에 한 군데만 쓴다. 종이(paper)는 색이 아니라 찍힌 자리다"
+  },
+
+  "type": {
+    "family": "Hahmlet",
+    "familyFile": "assets/fonts/Hahmlet-Variable.ttf",
+    "familyLatin": "Libre Caslon Text",
+    "familyLatinFile": "assets/fonts/LibreCaslonText-Variable.ttf",
+    "license": "OFL 1.1",
+    "licenseFiles": ["assets/fonts/Hahmlet-OFL.txt", "assets/fonts/LibreCaslonText-OFL.txt"],
+    "_글꼴_선택": "둘 다 OFL. Caslon 은 활판 인쇄의 표준 활자였고, Hahmlet 은 그 라틴 세리프와 같은 무게를 가진 한글 세리프다. 이 저장소의 다른 PoC가 쓰는 글꼴(JetBrains Mono · EB Garamond · IM Fell · Nanum Myeongjo · Song Myung · Gowun Batang · Do Hyeon · Black Han Sans)과 겹치지 않는다. OFL 은 라이선스 전문 동봉이 의무라 두 OFL.txt 를 같이 실었다",
+    "sizeTitle": 52,
+    "sizeHeading": 22,
+    "sizeBody": 14,
+    "sizeHint": 11,
+    "sizeNumeral": 26,
+    "trackingTitle": 6,
+    "trackingBody": 0,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "impression": {
+    "_": "★ 이 연출의 지문. 카드에 남은 횟수를 <숫자로 적지 않고> 찍힘의 선명도로 보인다. 목업은 data/cards.json 의 wearPerUsePct 와 scene.json 의 sharpnessPct 를 읽어 이 표로 픽셀을 만든다.",
+    "sharpFloorPct": 40,
+    "inkAlphaAtFresh": 1.0,
+    "inkAlphaAtWorn": 0.44,
+    "bleedPxAtFresh": 0.0,
+    "bleedPxAtWorn": 1.15,
+    "spreadPxAtFresh": 0.0,
+    "spreadPxAtWorn": 0.9,
+    "trackingAtFresh": 0.0,
+    "trackingAtWorn": 0.7,
+    "debossPx": 2,
+    "debossAlpha": 0.5,
+    "_눌린_자국": "종이에 활자가 눌린 자국. 활판 인쇄를 사진과 구별하는 것이 이것 하나다",
+    "glyphJitterAlpha": 0.14,
+    "_글자마다": "글자마다 농도가 미세하게 다르다. 난수가 아니라 글자 코드에서 뽑아 같은 글자는 늘 같게 찍힌다 — 매 프레임 흔들면 인쇄물이 아니라 노이즈가 된다"
+  },
+
+  "sort": {
+    "_": "활자 하나를 그리는 값. 금속 덩어리이고 카드가 아니다",
+    "widthPx": 132,
+    "heightPx": 168,
+    "shoulderPx": 14,
+    "nickPx": 5,
+    "_닉": "활자 몸통의 홈. 식자공이 손으로 위아래를 가리는 자리이고, 이 연출에서 '이건 금속이다'라고 말하는 한 줄이다",
+    "bevelAlpha": 0.35,
+    "meltedAlpha": 0.16
+  },
+
+  "print": {
+    "paperTexture": "assets/img/paper.jpg",
+    "paperTextureOpacity": 0.3,
+    "leadTexture": "assets/img/lead.jpg",
+    "leadTextureOpacity": 0.22,
+    "leadTextureSaturation": 0.0,
+    "_탈색": "납회색은 에셋을 고쳐서 만든 것이 아니라 CSS 필터로 입힌다. 그래야 이 값 하나를 고쳐 다시 볼 수 있다",
+    "ruleThickPx": 3,
+    "ruleThinPx": 1,
+    "gutterPx": 24
+  },
+
+  "grade": {
+    "saturation": 0.6,
+    "contrast": 1.12,
+    "blackLift": 0.02,
+    "vignette": 0.4,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 인쇄물이 된다"
+  },
+
+  "motion": {
+    "pressMs": 140,
+    "revealMs": 180,
+    "easing": "cubic-bezier(.2,.75,.25,1)",
+    "_": "활판은 빠르고 딱 떨어진다. 카드가 부드럽게 떠다니면 인쇄소가 아니다"
+  },
+
+  "sfx": {
+    "press": "assets/sfx/press.ogg",
+    "sortPlace": "assets/sfx/sort_place.ogg",
+    "sortSpent": "assets/sfx/sort_spent.ogg",
+    "_없는_것": "인쇄기 소리는 아직 없다. 손에 든 CC0 팩에 없었고, 없는 것을 있는 척 적지 않는다"
+  }
+}

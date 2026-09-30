@@ -1,0 +1,39 @@
+{
+  "slug": "puzzle-prayer-office",
+  "kind": "prayer",
+  "title": "기적 배정과",
+  "english": "THE MIRACLE ALLOCATION OFFICE",
+  "tagline": "한 사람의 기적이, 다른 사람의 청구서가 되지 않도록.",
+  "instructions": "오전과 오후의 날씨를 배정하세요. 하류 주민의 편지를 읽어 수문을 먼저 조정한 뒤 배정표를 발송합니다.",
+  "question": "기도를 승인하는 것보다 서로의 조건을 연결하는 과정이 재미있는가?",
+  "values": [
+    2
+  ],
+  "items": [
+    {
+      "id": "farmer",
+      "title": "농부의 기도",
+      "text": "오늘 하루 중 한 번만 비를 내려 주세요.",
+      "detail": "오전 또는 오후에 비"
+    },
+    {
+      "id": "performer",
+      "title": "공연자의 기도",
+      "text": "오후 공연 때만큼은 하늘이 맑았으면 해요.",
+      "detail": "오후 맑음"
+    },
+    {
+      "id": "downstream",
+      "title": "하류에서 온 편지",
+      "text": "미개봉 · 같은 유역에서 도착",
+      "detail": "수문은 오전 강우 전에 열어야 한다."
+    }
+  ],
+  "palette": {
+    "background": "#dce7e6",
+    "surface": "#f3f3e9",
+    "paper": "#203b43",
+    "accent": "#a7683f",
+    "muted": "#627c7e"
+  }
+}

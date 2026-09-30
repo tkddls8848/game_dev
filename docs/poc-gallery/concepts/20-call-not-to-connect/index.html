@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연결하면 안 되는 통화</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+body{font-family:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang",serif;color:#d9d3c4}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:#05070c}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.room{position:absolute;inset:0;
+  background:
+   radial-gradient(ellipse 36% 40% at 78% 56%, rgba(255,170,80,.20), transparent 70%),
+   radial-gradient(ellipse 60% 70% at 36% 42%, rgba(60,90,140,.22), transparent 70%),
+   linear-gradient(180deg,#0b0e15,#07080c 70%,#030304)}
+.scrB .room{background:
+   radial-gradient(ellipse 30% 36% at 78% 56%, rgba(235,240,255,.13), transparent 70%),
+   radial-gradient(ellipse 60% 70% at 36% 42%, rgba(120,130,150,.18), transparent 70%),
+   linear-gradient(180deg,#0c0d10,#07080a 70%,#030303)}
+.win{position:absolute;left:150px;top:120px;width:860px;height:600px;border-radius:2px;overflow:hidden;
+  box-shadow:0 0 0 14px #120d09,0 0 0 16px #2a1e14,0 30px 80px rgba(0,0,0,.9);cursor:pointer}
+.win svg{position:absolute;inset:0}
+.mullion{position:absolute;background:linear-gradient(90deg,#0d0906,#2a1e14 50%,#0d0906);box-shadow:0 0 12px rgba(0,0,0,.8)}
+.glass{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(115deg,transparent 30%,rgba(200,220,255,.05) 38%,transparent 44%,transparent 60%,rgba(200,220,255,.035) 64%,transparent 68%)}
+.sill{position:absolute;left:120px;top:726px;width:920px;height:34px;background:linear-gradient(180deg,#3a2a1c,#1a120b);box-shadow:0 12px 30px rgba(0,0,0,.8)}
+.desk{position:absolute;left:0;right:0;top:760px;height:240px;background:
+  radial-gradient(ellipse 30% 60% at 80% 0%, rgba(255,170,80,.18), transparent 70%),
+  repeating-linear-gradient(179deg,rgba(0,0,0,.25) 0 2px,transparent 2px 13px),
+  linear-gradient(180deg,#24170e,#110a05)}
+.scrB .desk{background:
+  radial-gradient(ellipse 30% 60% at 80% 0%, rgba(230,235,255,.10), transparent 70%),
+  repeating-linear-gradient(179deg,rgba(0,0,0,.25) 0 2px,transparent 2px 13px),
+  linear-gradient(180deg,#1b1714,#0b0908)}
+/* little board */
+.board{position:absolute;left:1090px;top:250px;width:380px;height:470px;border-radius:6px;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.2) 0 2px,transparent 2px 7px),linear-gradient(180deg,#3b2415,#1d1009);
+  box-shadow:inset 0 0 0 8px #150b05,inset 0 0 0 9px #5d4424,inset 0 0 60px rgba(0,0,0,.8),0 30px 60px rgba(0,0,0,.9)}
+.board .ttl{position:absolute;left:30px;right:30px;top:22px;text-align:center;font-size:13px;letter-spacing:8px;color:#8a7350}
+.j{position:absolute;width:70px;height:96px;margin-left:-35px}
+.j .l{position:absolute;left:23px;top:0;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4b4035,#1a140f 70%);box-shadow:0 0 0 3px #4d3818}
+.j .h{position:absolute;left:20px;top:36px;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#000 0 30%,#2a1f10 36%,#a8894c 48%,#5d4424 62%,#1a0f05 72%)}
+.j .t{position:absolute;left:6px;right:6px;top:72px;height:18px;background:#b8ab8c;color:#1b140c;font:11px "Courier New",monospace;text-align:center;line-height:18px;opacity:.75}
+.j.x .l{animation:beat 1.6s ease-in-out infinite}
+.j.x .t{background:#e9e2cf;opacity:1;color:#6a1208;font-weight:bold}
+.j.done .l{background:radial-gradient(circle at 40% 35%,#fff,#dfe6ff 40%,#8390b0 85%);box-shadow:0 0 30px 10px rgba(220,230,255,.35),0 0 0 3px #4d3818}
+@keyframes beat{0%,100%{background:radial-gradient(circle at 40% 35%,#4b4035,#1a140f 70%);box-shadow:0 0 0 3px #4d3818}
+ 12%{background:radial-gradient(circle at 40% 35%,#fff0dc,#ff5a2e 38%,#6d0d00 85%);box-shadow:0 0 36px 12px rgba(255,80,40,.5),0 0 0 3px #4d3818}
+ 30%{background:radial-gradient(circle at 40% 35%,#4b4035,#1a140f 70%);box-shadow:0 0 0 3px #4d3818}}
+.note{position:absolute;left:170px;top:790px;width:250px;padding:14px 16px;background:linear-gradient(#e9dfc6,#cdbf9c);color:#2a2016;transform:rotate(-5deg);font-size:15px;line-height:1.6;box-shadow:0 12px 24px rgba(0,0,0,.7)}
+.note i{display:block;font-size:12px;color:#6a5a40;margin-top:6px;font-style:normal}
+.headset{position:absolute;left:880px;top:792px;width:200px;height:120px}
+/* cinematic */
+.bar{position:absolute;left:0;right:0;height:64px;background:#000;z-index:40}
+.bar.top{top:0}.bar.bot{bottom:0}
+.meta{position:absolute;left:60px;top:22px;z-index:41;font-size:14px;letter-spacing:4px;color:#7e776a}
+.meta b{color:#c9b791;font-weight:normal}
+.sil{position:absolute;right:60px;top:18px;z-index:41;font:22px "Courier New",monospace;color:#9a9282;letter-spacing:3px}
+.sil small{font-family:"Noto Serif KR","Batang",serif;font-size:12px;letter-spacing:6px;margin-right:12px;color:#6a6358}
+.sub{position:absolute;left:0;right:0;bottom:92px;z-index:41;text-align:center;font-size:30px;line-height:1.5;color:#efe7d4;text-shadow:0 2px 12px #000,0 0 2px #000;letter-spacing:1px;transition:opacity .6s}
+.sub .who{display:block;font-size:14px;letter-spacing:8px;color:#b25a3c;margin-bottom:4px}
+.sub.quiet{color:#8f897c;font-style:italic;font-size:26px}
+.choice{position:absolute;left:0;right:0;bottom:22px;z-index:41;text-align:center;font-size:15px;letter-spacing:4px;color:#7e776a}
+.choice span{margin:0 22px}
+.choice kbd{font:12px "Courier New",monospace;border:1px solid #5a5448;padding:1px 7px;border-radius:3px;margin-right:8px;color:#c9b791}
+.choice .pull{color:#e6c9a0;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.45}}
+.grain{position:absolute;inset:0;z-index:38;pointer-events:none;opacity:.35;mix-blend-mode:overlay}
+.vig{position:absolute;inset:0;z-index:37;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 45% 45%,transparent 50%,rgba(0,0,0,.85) 100%)}
+.ledger{position:absolute;left:1080px;top:110px;width:420px;z-index:30;font-size:17px;line-height:1.9;color:#cfc8b8}
+.ledger h3{font-weight:normal;font-size:13px;letter-spacing:8px;color:#8a8373;border-bottom:1px solid #3a372f;padding-bottom:8px;margin-bottom:10px}
+.ledger li{list-style:none;animation:appear .6s ease}
+.ledger li s{color:#6f6a60}
+.ledger li:before{content:"— ";color:#6f6a60}
+@keyframes appear{from{opacity:0}}
+.snow{position:absolute;inset:0;pointer-events:none;z-index:3}
+.flake{position:absolute;top:-10px;width:3px;height:3px;border-radius:50%;background:rgba(235,240,255,.8);animation:fall linear infinite}
+@keyframes fall{to{transform:translate(-40px,640px)}}
+.cordB{position:absolute;inset:0;z-index:12;pointer-events:none}
+.tabs{position:absolute;right:14px;bottom:14px;z-index:60;display:flex;gap:6px}
+.tabs button{font:12px "Courier New",monospace;background:rgba(0,0,0,.7);color:#8a8373;border:1px solid #3a372f;padding:4px 10px;cursor:pointer}
+.tabs button.on{color:#efe7d4;border-color:#8a8373}
+.flick{animation:flk 4s steps(1) infinite}
+@keyframes flk{0%,100%{opacity:1}47%{opacity:.35}48%{opacity:1}49%{opacity:.5}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg width="0" height="0" style="position:absolute"><defs>
+    <filter id="gn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0"/></filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="haze"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs></svg>
+
+  <!-- ===== A : the lamp that should not be answered ===== -->
+  <section class="screen scrA" id="scrA">
+    <div class="room"></div>
+    <div class="win" id="winA"><svg id="vilA" width="860" height="600" viewBox="0 0 860 600"></svg>
+      <div class="mullion" style="left:423px;top:0;width:14px;height:600px"></div>
+      <div class="mullion" style="left:0;top:292px;width:860px;height:12px"></div>
+      <div class="glass"></div></div>
+    <div class="sill"></div>
+    <div class="desk"></div>
+    <div class="board" id="bA"><div class="ttl">북천리 분국 교환대</div></div>
+    <svg class="headset" viewBox="0 0 200 120"><path d="M30 90 C30 20 170 20 170 90" stroke="#1a120b" stroke-width="10" fill="none"/><path d="M30 90 C30 20 170 20 170 90" stroke="#4a3a28" stroke-width="3" fill="none" opacity=".6"/><ellipse cx="30" cy="92" rx="20" ry="24" fill="#0f0a06" stroke="#3a2a1a" stroke-width="3"/><ellipse cx="170" cy="92" rx="20" ry="24" fill="#0f0a06" stroke="#3a2a1a" stroke-width="3"/><path d="M170 110 C 150 140 90 120 60 118" stroke="#0f0a06" stroke-width="6" fill="none"/></svg>
+    <div class="note">13번 램프가 켜지면<br>받지 말 것. 절대로.<i>— 전임 교환수 윤씨, 1959</i></div>
+    <div class="vig"></div>
+    <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#gn)"/></svg>
+    <div class="bar top"></div><div class="bar bot"></div>
+    <div class="meta"><b>북천리</b> · 1961년 12월 24일 · 밤 11시 52분</div>
+    <div class="sil"><small>침묵</small><span id="silA">00:41</span></div>
+    <div class="sub" id="subA"><span class="who">13번 · 미등록 회선</span>…우체국 옆집이죠. 우리 애 좀 바꿔 줘요. 한 번만.</div>
+    <div class="choice"><span class="pull"><kbd>SPACE</kbd>꽂는다</span><span><kbd>—</kbd>아무것도 하지 않는다</span></div>
+  </section>
+
+  <!-- ===== B : the village after ===== -->
+  <section class="screen scrB" id="scrB">
+    <div class="room"></div>
+    <div class="win" id="winB"><svg id="vilB" width="860" height="600" viewBox="0 0 860 600"></svg>
+      <div class="snow" id="snow"></div>
+      <div class="mullion" style="left:423px;top:0;width:14px;height:600px"></div>
+      <div class="mullion" style="left:0;top:292px;width:860px;height:12px"></div>
+      <div class="glass"></div></div>
+    <div class="sill"></div>
+    <div class="desk"></div>
+    <div class="board" id="bB" style="top:360px;height:360px"><div class="ttl">북천리 분국 교환대</div></div>
+    <svg class="cordB" viewBox="0 0 1600 1000"><path d="M1400 604 C 1400 760, 1150 880, 1020 860 S 900 800, 870 830" stroke="#000" stroke-opacity=".5" stroke-width="12" fill="none" transform="translate(5,10)" filter="url(#haze)"/><path d="M1400 604 C 1400 760, 1150 880, 1020 860 S 900 800, 870 830" stroke="#5a1510" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M1400 604 C 1400 760, 1150 880, 1020 860 S 900 800, 870 830" stroke="#9a3a2a" stroke-width="2" stroke-dasharray="3 4" fill="none"/><rect x="1393" y="592" width="14" height="34" rx="4" fill="#a8894c"/></svg>
+    <div class="ledger">
+      <h3>연결 후, 마을에서 사라진 것</h3>
+      <ul>
+        <li style="animation-delay:0s">우체국 옆집 <s>— 불빛, 굴뚝 연기, 대문</s></li>
+        <li style="animation-delay:.12s">자정의 교회 종소리</li>
+        <li style="animation-delay:.24s">다리 위 가로등 넷 중 셋</li>
+        <li style="animation-delay:.36s">장부 속 「윤씨」라는 이름</li>
+      </ul>
+    </div>
+    <div class="vig"></div>
+    <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#gn)"/></svg>
+    <div class="bar top"></div><div class="bar bot"></div>
+    <div class="meta"><b>북천리</b> · 1961년 12월 25일 · 밤 12시 03분</div>
+    <div class="sil"><small>침묵</small><span id="silB">03:12</span></div>
+    <div class="sub quiet" id="subB">( 수화기 너머, 아무 소리도 없다. 그런데 누군가 듣고 있다 )</div>
+    <div class="choice"><span class="pull"><kbd>SPACE</kbd>계속 듣는다</span><span><kbd>—</kbd>코드를 뽑는다</span></div>
+  </section>
+
+  <div class="tabs"><button data-s="a">1 · 13번 램프</button><button data-s="b">2 · 연결 이후</button></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+
+  // deterministic rng
+  function R(seed){var s=seed;return function(){s=(s*1103515245+12345)%2147483648;return s/2147483648;};}
+
+  function village(after){
+    var r=R(7),o=[];
+    var sky=after?['#15171d','#262a33','#3b3f48']:['#070b1a','#12203d','#2c3b5c'];
+    o.push('<defs><linearGradient id="sk'+(after?1:0)+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+sky[0]+'"/><stop offset=".65" stop-color="'+sky[1]+'"/><stop offset="1" stop-color="'+sky[2]+'"/></linearGradient>'+
+      '<radialGradient id="mn'+(after?1:0)+'"><stop offset="0" stop-color="'+(after?'#d8d4cc':'#fff3d6')+'" stop-opacity=".9"/><stop offset=".15" stop-color="'+(after?'#9a968e':'#f3d99c')+'" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>'+
+      '<radialGradient id="wl"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></radialGradient></defs>');
+    o.push('<rect width="860" height="600" fill="url(#sk'+(after?1:0)+')"/>');
+    for(var i=0;i<90;i++){var x=r()*860,y=r()*260;o.push('<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(r()*1.2+.3).toFixed(2)+'" fill="#fff" opacity="'+(after?(r()*.15).toFixed(2):(r()*.7+.1).toFixed(2))+'"/>');}
+    o.push('<circle cx="650" cy="110" r="160" fill="url(#mn'+(after?1:0)+')"/><circle cx="650" cy="110" r="26" fill="'+(after?'#bdb8ae':'#fbeccb')+'"/>');
+    // far hills
+    o.push('<path d="M0 330 C 120 270 220 300 320 280 S 520 230 640 270 S 800 250 860 280 L860 600 L0 600Z" fill="'+(after?'#1f2228':'#0f1a2e')+'"/>');
+    o.push('<path d="M0 380 C 150 340 260 370 420 350 S 700 330 860 360 L860 600 L0 600Z" fill="'+(after?'#17191d':'#0a1222')+'"/>');
+    // river
+    o.push('<path d="M0 520 C 200 500 400 540 860 505 L860 600 L0 600Z" fill="'+(after?'#23262c':'#0e1c33')+'"/>');
+    o.push('<path d="M0 530 C 200 512 400 550 860 516" stroke="'+(after?'#50545c':'#34507a')+'" stroke-width="1.5" fill="none" opacity=".6"/>');
+    // bridge with lamps
+    o.push('<path d="M560 505 Q 690 450 820 505" stroke="#05070c" stroke-width="7" fill="none"/>');
+    var lampsOn=after?[0]:[0,1,2,3];
+    for(var b=0;b<4;b++){var bx=590+b*62,by=505-Math.sin((b+.5)/4*Math.PI)*42;o.push('<line x1="'+bx+'" y1="'+(by)+'" x2="'+bx+'" y2="'+(by-18)+'" stroke="#05070c" stroke-width="2"/>');
+      if(lampsOn.indexOf(b)>=0){o.push('<circle cx="'+bx+'" cy="'+(by-20)+'" r="12" fill="url(#wl)"/><circle cx="'+bx+'" cy="'+(by-20)+'" r="2.4" fill="#ffe3a8"/>');o.push('<rect x="'+(bx-2)+'" y="'+(530)+'" width="4" height="30" fill="#ffcf7a" opacity=".25"/>');}}
+    // houses
+    var H=[[40,410,70,60,'g'],[120,420,56,50,'g'],[190,400,90,74,'f'],[290,415,60,56,'g'],
+           [360,380,110,98,'post'],[480,395,80,74,'house'],[570,420,58,48,'g'],[638,405,64,62,'f'],[720,425,54,44,'g'],[785,415,60,56,'g']];
+    for(var h=0;h<H.length;h++){var q=H[h],x0=q[0],y0=q[1],w=q[2],hh=q[3],t=q[4];
+      if(after&&t==='house'){ // gone: dotted ghost outline + snow lot
+        o.push('<rect x="'+x0+'" y="'+(y0+hh-6)+'" width="'+w+'" height="8" fill="#3a3d44"/>');
+        o.push('<path d="M'+x0+' '+(y0+hh)+' L'+x0+' '+(y0+18)+' L'+(x0+w/2)+' '+(y0-14)+' L'+(x0+w)+' '+(y0+18)+' L'+(x0+w)+' '+(y0+hh)+'" stroke="#8a8e98" stroke-dasharray="3 5" stroke-width="1.3" fill="none" opacity=".45"/>');
+        continue;}
+      var fill=after?'#0c0d10':'#050810';
+      o.push('<path d="M'+x0+' '+(y0+hh)+' L'+x0+' '+(y0+18)+' L'+(x0+w/2)+' '+(y0-14)+' L'+(x0+w)+' '+(y0+18)+' L'+(x0+w)+' '+(y0+hh)+'Z" fill="'+fill+'"/>');
+      if(after)o.push('<path d="M'+(x0-2)+' '+(y0+19)+' L'+(x0+w/2)+' '+(y0-15)+' L'+(x0+w+2)+' '+(y0+19)+'" stroke="#c9ccd4" stroke-width="3" fill="none" opacity=".55"/>');
+      if(t==='post'){o.push('<rect x="'+(x0+30)+'" y="'+(y0+4)+'" width="50" height="12" fill="'+(after?'#2a2c31':'#6a1c14')+'"/><text x="'+(x0+55)+'" y="'+(y0+14)+'" font-size="9" fill="'+(after?'#777':'#f0d8b0')+'" text-anchor="middle" font-family="serif">우체국</text>');
+        // steeple beside
+        o.push('<path d="M'+(x0+86)+' '+(y0+30)+' L'+(x0+86)+' '+(y0-60)+' L'+(x0+96)+' '+(y0-92)+' L'+(x0+106)+' '+(y0-60)+' L'+(x0+106)+' '+(y0+30)+'Z" fill="'+fill+'"/><line x1="'+(x0+96)+'" y1="'+(y0-92)+'" x2="'+(x0+96)+'" y2="'+(y0-108)+'" stroke="'+fill+'" stroke-width="2"/><line x1="'+(x0+90)+'" y1="'+(y0-102)+'" x2="'+(x0+102)+'" y2="'+(y0-102)+'" stroke="'+fill+'" stroke-width="2"/>');
+        if(!after)o.push('<circle cx="'+(x0+96)+'" cy="'+(y0-50)+'" r="4" fill="#d9b35a" opacity=".8"/>');}
+      if(t==='house'&&!after){o.push('<rect x="'+(x0+w-20)+'" y="'+(y0-10)+'" width="9" height="20" fill="'+fill+'"/>');
+        o.push('<path d="M'+(x0+w-15)+' '+(y0-12)+' C '+(x0+w-30)+' '+(y0-40)+' '+(x0+w)+' '+(y0-60)+' '+(x0+w-20)+' '+(y0-90)+'" stroke="#8a96b0" stroke-width="8" fill="none" opacity=".18" filter="url(#haze)"/>');}
+      var nw=Math.max(1,Math.floor(w/28));
+      for(var k=0;k<nw;k++){var wx=x0+10+k*((w-20)/nw)+2,wy=y0+30+((k%2)*10);var lit=after?(t==='g'&&h===2&&k===0):(r()>.25||t==='house');
+        if(lit){o.push('<circle cx="'+(wx+6)+'" cy="'+(wy+7)+'" r="20" fill="url(#wl)"'+(t==='house'?' class="flick"':'')+'/><rect x="'+wx+'" y="'+wy+'" width="12" height="14" fill="'+(after?'#cfd6e6':'#ffc768')+'"'+(t==='house'?' class="flick"':'')+'/>');}
+        else o.push('<rect x="'+wx+'" y="'+wy+'" width="12" height="14" fill="#11141b"/>');}
+    }
+    if(after){o.push('<path d="M0 470 C 200 455 500 470 860 460 L860 520 C 500 525 200 510 0 525Z" fill="#c9ccd4" opacity=".16"/>');}
+    o.push('<rect width="860" height="600" fill="'+(after?'#9aa0ac':'#3a5a9a')+'" opacity=".05"/>');
+    return o.join('');
+  }
+  var va=document.getElementById('vilA'),vb=document.getElementById('vilB');
+  if(va)va.innerHTML=village(false);
+  if(vb)vb.innerHTML=village(true);
+
+  function board(id,after){var b=document.getElementById(id);if(!b)return;
+    var labels=['01 박씨네','02 이발소','03 우체국','04 교회','05 주재소','06 양조장','07 학교','08 정미소','09 약방','10 김씨네','11 —','13'];
+    var rows=after?2:3;
+    for(var i=0;i<rows*4;i++){var li=after?(i+4):i;var r=Math.floor(i/4),c=i%4;var d=document.createElement('div');
+      var isX=labels[li]==='13';d.className='j'+(isX?(after?' done':' x'):'');d.style.left=(70+c*80)+'px';d.style.top=(64+r*128)+'px';
+      d.innerHTML='<div class="l"></div><div class="h"></div><div class="t">'+(isX?'13 · ?':labels[li])+'</div>';b.appendChild(d);}}
+  board('bA',false);board('bB',true);
+
+  var sn=document.getElementById('snow');
+  if(sn){var r=R(3);for(var i=0;i<70;i++){var f=document.createElement('i');f.className='flake';f.style.left=(r()*900)+'px';var s=(r()*2.5+1);f.style.width=f.style.height=s+'px';f.style.opacity=(r()*.6+.2).toFixed(2);f.style.animationDuration=(6+r()*9).toFixed(1)+'s';f.style.animationDelay=(-r()*14).toFixed(1)+'s';sn.appendChild(f);}}
+
+  // silence counters
+  function counter(id,start){var el=document.getElementById(id),t=start;setInterval(function(){t++;if(el)el.textContent=(t/60<10?'0':'')+Math.floor(t/60)+':'+(t%60<10?'0':'')+(t%60);},1000);}
+  counter('silA',41);counter('silB',192);
+
+  // audio: line hum + hiss, only on interaction
+  var ac=null;
+  function A(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();}return ac;}catch(e){return null;}}
+  function hush(d,plugClick){var a=A();if(!a)return;var t=a.currentTime;
+    var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=55;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06,t+.4);g.gain.linearRampToValueAtTime(0,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d);
+    var b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),x=b.getChannelData(0);for(var i=0;i<x.length;i++)x[i]=Math.random()*2-1;
+    var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=900;var g2=a.createGain();g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(.05,t+.5);g2.gain.linearRampToValueAtTime(0,t+d);s.connect(f);f.connect(g2);g2.connect(a.destination);s.start(t);
+    if(plugClick){var o2=a.createOscillator(),g3=a.createGain();o2.type='square';o2.frequency.value=140;g3.gain.setValueAtTime(.08,t);g3.gain.exponentialRampToValueAtTime(.0001,t+.06);o2.connect(g3);g3.connect(a.destination);o2.start(t);o2.stop(t+.08);}}
+
+  var linesA=[['13번 · 미등록 회선','…우체국 옆집이죠. 우리 애 좀 바꿔 줘요. 한 번만.'],['','( 숨소리. 아주 멀리서, 눈 밟는 소리 )'],['13번 · 미등록 회선','연결해 주면, 다른 건 아무것도 안 바랄게요.'],['','( 램프가 다시 깜박인다 )']];
+  var linesB=['( 수화기 너머, 아무 소리도 없다. 그런데 누군가 듣고 있다 )','( 창밖에서, 불 하나가 또 꺼진다 )','( …고마워요 )','( 침묵 )'];
+  var ia=0,ib=0;
+  function advance(){var onB=document.getElementById('scrB').classList.contains('on');
+    if(!onB){ia=(ia+1)%linesA.length;var s=document.getElementById('subA');var L=linesA[ia];s.className='sub'+(L[0]?'':' quiet');s.innerHTML=(L[0]?'<span class="who">'+L[0]+'</span>':'')+L[1];hush(2.2,true);}
+    else{ib=(ib+1)%linesB.length;var s2=document.getElementById('subB');s2.textContent=linesB[ib];hush(3,false);}}
+  ['winA','winB'].forEach(function(id){var w=document.getElementById(id);if(w)w.addEventListener('click',function(){w.style.filter='brightness(.6)';setTimeout(function(){w.style.filter='';},140);hush(1.2,false);});});
+
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(s){s=(s==='b')?'b':'a';document.getElementById('scrA').classList.toggle('on',s==='a');document.getElementById('scrB').classList.toggle('on',s==='b');
+    for(var i=0;i<tabs.length;i++)tabs[i].classList.toggle('on',tabs[i].getAttribute('data-s')===s);
+    if(location.hash!=='#'+s){try{history.replaceState(null,'','#'+s);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++)tabs[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');else if(e.key===' '||e.code==='Space'){e.preventDefault();advance();}});
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  show(location.hash.replace('#',''));
+})();
+</script>
+</body>
+</html>

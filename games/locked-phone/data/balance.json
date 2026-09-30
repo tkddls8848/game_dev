@@ -1,0 +1,15 @@
+{
+  "_": "검사기가 요구하는 하한·상한. **통과시키려고 늘리거나 내리지 않는다** — 못 넘으면 데이터를 고친다.",
+  "_실제값": "2026-09-27 기준 실제로 나온 값: 정답당 알림 최소 4장 · 밀려남o 깨우기 4 / 밀려남x 2 · 한 번 깨워 0/3 · 미리보기x 0/3 · 잠긴 쪽만 3/3 · 고정 박자 189가지 중 0가지.",
+  "checkers": {
+    "minNotificationsPerVerdict": 3,
+    "minWakesOn": 4,
+    "wakeGapMin": 2,
+    "lockedOnlyVerdictsMin": 3,
+    "noPreviewVerdictsMax": 0,
+    "oneWakeVerdictsMax": 0,
+    "metronomeSuccessMaxPercent": 5,
+    "maxPlanWakes": 6,
+    "seedsToCheck": 8
+  }
+}

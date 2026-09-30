@@ -1,0 +1,17 @@
+{
+ "num": 33,
+ "slug": "spot-the-change-patrol",
+ "title": "틀린 그림 순찰",
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 손전등 순찰 — flashlight patrol hunting tonight's changes",
+   "prompt": "Actual gameplay view, not poster, no device frame. First-person view of a night security guard standing in a small classical museum gallery at 2:47 a.m. A warm circular flashlight beam lights the center of the frame while everything else falls into deep near-black shadow with floating dust. The room: burgundy damask wallpaper, dark wood wainscot, herringbone parquet, a gilded-frame portrait of a pale woman whose eyes now stare straight at the viewer, a night seascape painting, a marble bust on a pedestal, a glass vitrine with two celadon vases and one conspicuous empty spot, a full suit of steel armor holding a sword, red velvet rope stanchions, a glowing green exit sign and a small CCTV camera with a red LED. Found changes are circled with gold dashed rings and tilted tag labels like \"초상화의 시선\". HUD in amber: \"2전시실 · 근대 회화\", clock \"02:47\", five change slots with two checked, battery bar, score, and a taped sepia polaroid \"어제 23:00\" in the lower-left for comparison. Tense Five-Nights-style mood, cinematic lighting."
+  },
+  {
+   "id": "b",
+   "screen": "B · CCTV 정산 — comparing yesterday and tonight",
+   "prompt": "Actual gameplay view, not poster, no device frame. A security-office review screen. Two side-by-side CCTV monitors with thick dark bezels show the same museum gallery in grainy monochrome green-grey with scanlines and white monospace overlays — left \"어제 23:00:00\", right with a blinking red REC dot \"오늘 02:47:31\". On the right feed, numbered yellow circles mark four found differences (portrait's gaze, missing vase, sword moved to the other hand, missing moon in the seascape) and one red dashed circle marks the missed one: the marble bust's head now turned toward the door. Below, a large zoomed comparison of the bust, yesterday facing forward vs tonight in profile, with a night timeline scrubber and event ticks. On the right, a cream paper patrol log in serif type titled \"셋째 밤 결과\" listing points, a red missed line, a big total \"14,020\" and a red rubber-stamped grade \"A\". Moody, readable, high-score arcade flavor. Exact log: 1 \"초상화의 시선\" +3,000; 2 \"사라진 청자\" +3,000; 3 \"검을 든 손\" +3,000; 4 \"바다 풍경화의 달\" +3,000; 5 (missed, red) \"흉상의 고개\" 0; \"시간 보너스\" +2,020; total \"14,020\". Both CCTV feeds show the same gallery as the flashlight patrol screen: burgundy damask wall, gilded portrait of a pale woman, night seascape with moon, marble bust, glass vitrine with celadon vases, and a steel suit of armor holding the sword. Overlays show only \"어제 23:00:00\" and \"오늘 02:47:31\" — no calendar dates or years, no real museum name."
+  }
+ ]
+}

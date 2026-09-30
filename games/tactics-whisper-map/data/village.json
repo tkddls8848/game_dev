@@ -1,0 +1,50 @@
+{
+  "_": "★ 이 PoC의 규칙이 사는 곳. **정찰은 사람에게서 온다.**",
+  "_규칙": "순찰 경로(route) · 교대 시각(shift) · 초소 배치=오늘 밤의 위상(post) 을 알려면 마을 사람에게 **물어야** 하고, 묻는 것은 마을의 신뢰를 쓴다.",
+  "_거짓": "정보에는 틀린 것이 섞인다. **한 항목에 거짓을 말하는 사람은 최대 한 명**이다 (불변식). 그래서 두 사람이 같은 답을 하면 그 답은 참이고, 다르면 그 항목은 믿을 수 없다. FalseIntelIsCheckable 이 이 불변식을 씨드 전수로 확인한다.",
+  "_출처_둘": "falsifiable 한 항목은 **반드시 출처가 둘 이상**이다. 하나뿐이면 겹쳐 물을 수 없고, 그러면 틀린 정보로 죽는 것이 불공정해진다 — DetectionFairness 의 어려운 부분이 바로 여기다.",
+  "_위험": "exposureRisk 는 한 번 물을 때 그 사람에게 쌓이는 위험이다. 쌓여서 silenceThreshold 를 넘으면 그 사람은 얼마간 입을 닫는다(balance.json). 같은 사람에게 계속 물으면 신뢰가 더 크게 깎인다 — repeatSurchargePercent.",
+
+  "villagers": [
+    {
+      "id": "v_weaver",
+      "name": "직조공",
+      "note": "이 천을 짠 사람. 종루가 창 밖이다",
+      "baseCostPercent": 6,
+      "exposureRiskPercent": 2,
+      "knows": ["in_route_bell", "in_post_bell", "in_shift_dusk"]
+    },
+    {
+      "id": "v_carter",
+      "name": "짐수레꾼",
+      "note": "골목을 하루에 네 번 지난다. 검문을 가장 많이 받는다",
+      "baseCostPercent": 5,
+      "exposureRiskPercent": 3,
+      "knows": ["in_route_lane", "in_post_lane", "in_shift_dusk"]
+    },
+    {
+      "id": "v_widow",
+      "name": "과수원 과부",
+      "note": "과수원이 그 집 땅이다. 누가 어디로 도는지 다 센다",
+      "baseCostPercent": 8,
+      "exposureRiskPercent": 1,
+      "knows": ["in_route_bell", "in_route_lane", "in_post_bell", "in_post_lane"]
+    },
+    {
+      "id": "v_boy",
+      "name": "종지기 아이",
+      "note": "종을 친다. 값이 싸지만 가장 위험하다 — 아이가 자꾸 사라지면 독일군이 센다",
+      "baseCostPercent": 3,
+      "exposureRiskPercent": 4,
+      "knows": ["in_post_lane", "in_shift_dusk", "in_route_bell"]
+    }
+  ],
+
+  "items": [
+    { "id": "in_route_bell", "kind": "route", "subjectId": "g_bellguard",   "name": "종루 감시병이 도는 순서",   "falsifiable": true },
+    { "id": "in_route_lane", "kind": "route", "subjectId": "g_laneguard",   "name": "골목 초병이 도는 순서",     "falsifiable": true },
+    { "id": "in_post_bell",  "kind": "post",  "subjectId": "g_bellguard",   "name": "종루 감시병이 오늘 어디서 시작하는가", "falsifiable": true },
+    { "id": "in_post_lane",  "kind": "post",  "subjectId": "g_laneguard",   "name": "골목 초병이 오늘 어디서 시작하는가",   "falsifiable": true },
+    { "id": "in_shift_dusk", "kind": "shift", "subjectId": "sc_dusk_relief", "name": "해질 무렵 교대 시각",       "falsifiable": true }
+  ]
+}

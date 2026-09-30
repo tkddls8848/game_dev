@@ -1,0 +1,12 @@
+{
+  "_": "수치는 전부 정수. 값 없는 int는 -1을 명시한다(JsonUtility가 빠진 int를 0으로 채우므로).",
+  "slug": "farm-rewind-year",
+  "titleKo": "되돌릴 수 있는 한 해",
+  "seed": 20260927,
+  "weatherSeedOffset": 101,
+  "priceSeedOffset": 202,
+  "simAttempts": 100,
+  "_시도": "한 해를 최대 이만큼 되감아 본다. EconomyChecker가 '되감기 사다리가 끝나는가'를 여기서 본다.",
+  "foresightGainPerRewind": 28,
+  "_예지": "되감을 때마다 플레이어가 기억하는 날 수. 날씨가 같은 해를 다시 살기 때문에 지식이 쌓인다 - 그것이 되감기의 값이다. 흔적(토질 저하)은 그 값의 대가다."
+}

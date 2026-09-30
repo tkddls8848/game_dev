@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>능선 초소 — 1941 파르티잔</title>
+<style>
+:root{
+  --void:#0b0a0a; --ink:#161211; --surface:#1e1a18; --paper:#ede3cb; --paperDim:#d6caae;
+  --red:#c1272d; --redDeep:#8c1519; --muted:#7a6f5e;
+  --heavy:"Black Han Sans","Noto Sans KR","Malgun Gothic",sans-serif;
+  --body:"Nanum Gothic","Noto Sans KR","Malgun Gothic",sans-serif;
+  --num:"Stardos Stencil","Impact","Arial Black",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:var(--body);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:var(--paper);user-select:none}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .25s}
+body.show-a #scrA, body.show-b #scrB{opacity:1;pointer-events:auto}
+
+.paperbg{position:absolute;inset:0;background:
+  radial-gradient(900px 600px at 70% 30%,#f2e9d3,transparent 70%),linear-gradient(180deg,#ede3cb,#e3d7bb)}
+.paperbg::after{content:"";position:absolute;inset:0;opacity:.45;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .4  0 0 0 0 .33  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.halftone{background-image:radial-gradient(circle,var(--red) 1.6px,transparent 1.9px);background-size:7px 7px}
+.slab{position:absolute;pointer-events:none}
+
+/* header */
+.head{position:absolute;left:0;top:0;height:108px;width:1600px}
+.head .blk{position:absolute;left:-30px;top:0;width:760px;height:108px;background:var(--ink);transform:skewX(-14deg);transform-origin:0 0}
+.head .redbar{position:absolute;left:700px;top:0;width:140px;height:108px;background:var(--red);transform:skewX(-14deg)}
+.head h1{position:absolute;left:34px;top:14px;font-family:var(--heavy);font-weight:900;font-size:50px;letter-spacing:-1px;color:var(--paper);line-height:1}
+.head h1 .mis{position:absolute;left:3px;top:2px;color:var(--red);mix-blend-mode:screen;opacity:.55;z-index:-1}
+.head .sub{position:absolute;left:36px;top:72px;font-family:var(--num);font-size:15px;letter-spacing:3px;color:var(--paperDim)}
+.head .sub b{color:var(--red)}
+.goal{position:absolute;left:880px;top:16px;display:flex;gap:10px}
+.goal div{border:3px solid var(--ink);padding:6px 12px 7px;font-family:var(--heavy);font-weight:900;font-size:19px;background:var(--paper)}
+.goal div.r{background:var(--red);color:var(--paper);border-color:var(--red)}
+.goal div small{display:block;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted)}
+.goal div.r small{color:var(--paperDim)}
+.supply{position:absolute;right:30px;top:16px;display:flex;gap:0}
+.supply div{width:104px;height:72px;border:3px solid var(--ink);margin-left:-3px;padding:6px 10px;background:var(--paper)}
+.supply div span{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted)}
+.supply div b{display:block;font-family:var(--num);font-size:34px;line-height:1.1;color:var(--ink)}
+.supply div b em{font-style:normal;font-size:16px;color:var(--red)}
+.brief{position:absolute;left:880px;top:80px;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brief b{color:var(--red)}
+
+/* map */
+.map{position:absolute;left:24px;top:124px;width:1040px;height:520px}
+.map svg{position:absolute;inset:0;overflow:visible}
+.zlabel{font-family:var(--heavy);font-weight:900;font-size:20px;fill:var(--ink)}
+.zcover{font-family:var(--num);font-size:13px;fill:var(--muted);letter-spacing:1px}
+.zone{cursor:pointer;transition:opacity .2s}
+.clock{position:absolute;left:24px;top:590px;display:flex;align-items:flex-end;gap:10px}
+.clock b{font-family:var(--num);font-size:54px;line-height:.9;color:var(--ink)}
+.clock span{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);padding-bottom:6px}
+.legend{position:absolute;left:250px;top:604px;display:flex;gap:18px;font-size:12px;font-weight:700;color:var(--ink)}
+.legend i{display:inline-block;width:22px;height:14px;vertical-align:-2px;margin-right:6px;border:2px solid var(--ink)}
+
+/* squad */
+.squad{position:absolute;right:30px;top:124px;width:480px}
+.squad h2{font-family:var(--heavy);font-weight:900;font-size:24px;letter-spacing:-.5px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:4px solid var(--ink);padding-bottom:4px}
+.squad h2 small{font-family:var(--body);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px}
+.mem{position:relative;display:grid;grid-template-columns:92px 1fr;gap:14px;padding:12px 0;border-bottom:2px solid var(--ink);cursor:pointer}
+.mem:hover{background:rgba(193,39,45,.07)}
+.mem.sel{background:var(--ink);color:var(--paper);padding:12px 10px;grid-template-columns:92px 1fr}
+.mem .pic{width:92px;height:104px;background:var(--red);position:relative;overflow:hidden}
+.mem .pic svg{position:absolute;inset:0}
+.mem .nm{font-family:var(--heavy);font-weight:900;font-size:24px;line-height:1}
+.mem .role{font-size:12px;margin:4px 0 6px;color:var(--muted);font-weight:700}
+.mem.sel .role{color:var(--paperDim)}
+.mem .kit{display:flex;gap:6px;flex-wrap:wrap}
+.mem .kit span{font-size:11px;font-weight:700;padding:3px 7px;border:2px solid currentColor}
+.mem .kit span.r{background:var(--red);border-color:var(--red);color:var(--paper)}
+.mem .st{position:absolute;right:0;top:10px;text-align:right;font-family:var(--num)}
+.mem.sel .st{right:10px}
+.mem .st b{font-size:32px;line-height:1}
+.mem .st small{display:block;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted)}
+.calc{margin-top:10px;padding:10px 12px;background:var(--paperDim);border-left:8px solid var(--red);font-size:13px;font-weight:700;line-height:1.6}
+.calc b{font-family:var(--num);font-size:17px}
+.calc .no{color:var(--red)}
+
+/* timeline */
+.tl{position:absolute;left:24px;right:30px;top:664px;height:310px;background:var(--ink);color:var(--paper);padding:14px 18px}
+.tl h3{font-family:var(--heavy);font-weight:900;font-size:22px;display:flex;align-items:baseline;gap:16px}
+.tl h3 em{font-style:normal;background:var(--red);padding:0 8px}
+.tl h3 small{font-family:var(--body);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px}
+.tl .play{position:absolute;right:18px;top:12px;height:32px;padding:0 16px;border:2px solid var(--paper);background:none;color:var(--paper);font-family:var(--heavy);font-weight:900;font-size:15px;cursor:pointer;letter-spacing:1px}
+.tl .play:hover{background:var(--red);border-color:var(--red)}
+.tl .play.on{background:var(--paper);color:var(--ink)}
+#tlsvg{position:absolute;left:18px;top:52px;cursor:crosshair}
+
+/* B */
+.alarm{position:absolute;right:30px;top:124px;width:480px;height:132px;background:var(--ink);color:var(--paper);padding:14px 18px}
+.alarm .t{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--heavy);font-weight:900;font-size:22px}
+.alarm .t b{font-family:var(--num);font-size:56px;line-height:.9}
+.alarm .meter{margin-top:10px;height:22px;border:3px solid var(--paper);position:relative;background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(237,227,203,.25) 38px 40px)}
+.alarm .meter span{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--red)}
+.alarm .meter i{position:absolute;right:-3px;top:-10px;bottom:-10px;width:6px;background:var(--red)}
+.alarm small{display:block;margin-top:8px;font-size:12px;color:var(--paperDim);font-weight:700;letter-spacing:.5px}
+.feed{position:absolute;right:30px;top:268px;width:480px;height:376px;border:3px solid var(--ink);background:var(--paper);padding:10px 14px;overflow:hidden}
+.feed h4{font-family:var(--heavy);font-weight:900;font-size:18px;border-bottom:3px solid var(--ink);padding-bottom:4px;margin-bottom:4px;display:flex;justify-content:space-between}
+.feed h4 small{font-family:var(--body);font-size:11px;color:var(--muted)}
+.ev{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:6px 0;border-bottom:1px dashed var(--muted);font-size:13px;font-weight:700;line-height:1.4}
+.ev .tm{font-family:var(--num);font-size:16px}
+.ev.hot{background:var(--red);color:var(--paper);margin:0 -14px;padding:7px 14px;border-bottom:none}
+.ev .why{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.ev.hot .why{color:var(--paperDim)}
+.ev.new{animation:evin .5s}
+@keyframes evin{from{transform:translateX(30px);opacity:0}}
+.banner{position:absolute;z-index:20;left:300px;top:684px;width:700px;height:112px;background:var(--red);transform:rotate(-8deg);transform-origin:0 0;display:flex;align-items:center;padding-left:40px;gap:26px;box-shadow:14px 14px 0 var(--ink);pointer-events:none}
+.banner h2{white-space:nowrap;font-family:var(--heavy);font-weight:900;font-size:76px;color:var(--paper);letter-spacing:-3px;line-height:1;position:relative}
+.banner h2::after{content:attr(data-t);white-space:nowrap;position:absolute;left:4px;top:3px;color:var(--ink);z-index:-1;opacity:.9}
+.banner p{font-family:var(--num);font-size:22px;color:var(--ink);letter-spacing:2px;line-height:1.3;font-weight:700}
+.banner.pop{animation:bpop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bpop{from{transform:rotate(-8deg) scale(1.3);opacity:0}}
+.camp{position:absolute;left:24px;right:30px;bottom:26px;height:196px;display:grid;grid-template-columns:330px 1fr 1fr 1fr;gap:0}
+.camp>div{border:3px solid var(--ink);margin-left:-3px;padding:14px 16px;background:var(--paper);position:relative;cursor:pointer}
+.camp>div:hover{background:var(--paperDim)}
+.camp .loot{background:var(--ink);color:var(--paper);cursor:default}
+.camp .loot:hover{background:var(--ink)}
+.camp h5{font-family:var(--heavy);font-weight:900;font-size:21px}
+.camp .loot .row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--muted);padding:6px 0;font-weight:700;font-size:14px}
+.camp .loot .row b{font-family:var(--num);font-size:28px;color:var(--paper)}
+.camp .loot .row b em{font-style:normal;color:var(--red)}
+.camp .cost{position:absolute;right:14px;top:12px;font-family:var(--num);font-size:30px;color:var(--red)}
+.camp p{font-size:13px;font-weight:700;margin-top:6px;color:var(--ink);line-height:1.5}
+.camp p b{color:var(--red)}
+.camp .ico{position:absolute;right:14px;bottom:12px;width:74px;height:74px}
+.camp .pick{background:var(--red);color:var(--paper)}
+.camp .pick:hover{background:var(--redDeep)}
+.camp .pick p{color:var(--paper)}
+.camp .pick .cost{color:var(--paper)}
+.camp .pick p b{color:var(--ink)}
+.ring{fill:none;stroke:var(--red);stroke-width:4;animation:ring 1.6s ease-out infinite}
+@keyframes ring{from{r:10;opacity:1}to{r:90;opacity:0}}
+.speed{position:absolute;left:24px;top:590px;display:flex;gap:6px;align-items:flex-end}
+
+.tabs{position:absolute;right:30px;bottom:4px;z-index:100;display:flex;gap:4px}
+.tabs button{width:30px;height:18px;border:2px solid var(--ink);background:var(--paper);font-family:var(--num);font-size:11px;cursor:pointer;line-height:1}
+body.show-a .tabs .ta, body.show-b .tabs .tb{background:var(--red);color:var(--paper);border-color:var(--red)}
+.hint{position:absolute;left:24px;bottom:5px;z-index:100;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px}
+</style>
+</head>
+<body class="show-a">
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <pattern id="ht" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.8" fill="#c1272d"/></pattern>
+  <pattern id="htInk" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.3" fill="#161211"/></pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="4" height="8" fill="#161211"/></pattern>
+  <pattern id="hatchR" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="3" height="8" fill="#c1272d"/></pattern>
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="1" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+</defs></svg>
+
+<!-- ================= A : 정찰과 계획 — 감시 공백을 노린다 ================= -->
+<section class="screen" id="scrA">
+  <div class="paperbg"></div>
+  <div class="slab halftone" style="left:560px;top:90px;width:760px;height:600px;opacity:.16;clip-path:polygon(30% 0,100% 0,70% 100%,0 100%)"></div>
+  <div class="head">
+    <div class="blk"></div><div class="redbar"></div>
+    <h1>능선 초소, 해질 무렵<span class="mis">능선 초소, 해질 무렵</span></h1>
+    <div class="sub">정찰 3일째 · <b>계획</b> · 틱 1초 · 1941</div>
+    <div class="goal">
+      <div class="r"><small>승리 조건</small>순찰 2인 제거</div>
+      <div><small>허용 경보</small>0</div>
+      <div><small>퇴각 기한</small>05:00</div>
+    </div>
+    <div class="brief">총성은 한 홉을 간다 — <b>어느 자리에서 쏘는가가 전부다</b></div>
+    <div class="supply">
+      <div><span>탄약</span><b>14</b></div><div><span>의약품</span><b>12</b></div><div><span>마을의 신뢰</span><b>12</b></div>
+    </div>
+  </div>
+
+  <div class="map"><svg id="mapA" width="1040" height="460" viewBox="0 0 1040 460"></svg></div>
+  <div class="clock"><b id="clkA">00:30</b><span>계획 시각</span></div>
+  <div class="legend">
+    <span><i style="background:url(#);background-image:radial-gradient(circle,#c1272d 1.6px,transparent 1.9px);background-size:6px 6px"></i>순찰의 시선</span>
+    <span><i style="background:#ede3cb"></i>감시 공백</span>
+    <span><i style="background:#161211"></i>순찰병</span>
+    <span><i style="background:#c1272d;border-color:#c1272d"></i>분대 · 명령</span>
+    <span><i style="border-style:dashed;background:none"></i>소음 차폐</span>
+  </div>
+
+  <aside class="squad">
+    <h2>분대 <small>이름 없이 직능으로 부른다</small></h2>
+    <div class="mem" data-m="scout">
+      <div class="pic"><svg viewBox="0 0 92 104"><path d="M-10 104 L40 30 L70 38 L102 104Z" fill="#161211"/><circle cx="52" cy="30" r="15" fill="#161211"/><path d="M34 22 L72 16 L70 26 L36 30Z" fill="#161211"/><path d="M0 70 L92 40" stroke="#ede3cb" stroke-width="3"/></svg></div>
+      <div><div class="nm">정찰병</div><div class="role">소리 없이 움직이고 넓게 본다 · 교전 불가</div><div class="kit"><span>잠입 20초</span><span>소음 5</span><span>이동 4초/구역</span></div></div>
+      <div class="st"><b>60</b><small>은밀</small></div>
+    </div>
+    <div class="mem" data-m="sniper">
+      <div class="pic"><svg viewBox="0 0 92 104"><path d="M-10 104 L30 44 L64 50 L102 104Z" fill="#161211"/><circle cx="46" cy="40" r="14" fill="#161211"/><path d="M10 64 L100 20" stroke="#161211" stroke-width="6"/><path d="M60 38 L74 32" stroke="#ede3cb" stroke-width="4"/></svg></div>
+      <div><div class="nm">저격수</div><div class="role">두 홉 안의 한 명을 지운다 · 조준 8초 노출</div><div class="kit"><span class="r">총성 90 = 한 홉</span><span>탄 4</span><span>탄약 2</span></div></div>
+      <div class="st"><b>45</b><small>은밀</small></div>
+    </div>
+    <div class="mem sel" data-m="sapper">
+      <div class="pic"><svg viewBox="0 0 92 104"><path d="M-10 104 L26 40 L66 40 L102 104Z" fill="#161211"/><circle cx="46" cy="30" r="15" fill="#161211"/><rect x="30" y="60" width="32" height="22" fill="#ede3cb"/><path d="M34 64 H58 M34 70 H58 M34 76 H50" stroke="#c1272d" stroke-width="3"/></svg></div>
+      <div><div class="nm">공병</div><div class="role">함정·폭약을 미리 놓는다 · 설치 12초</div><div class="kit"><span class="r">함정 25 = 같은 구역뿐</span><span>함정 2</span><span>폭약 2</span></div></div>
+      <div class="st"><b>40</b><small>은밀</small></div>
+    </div>
+    <div class="calc" id="calc">창고 00:30 함정 설치 — 은밀 <b>40</b> + 엄폐 <b>45</b> − 노출 <b>30</b> = <b class="no">55</b> &lt; 100<br>보이면 들킨다 → 보는 순찰병이 <b>없는</b> 창에 놓는다</div>
+  </aside>
+
+  <div class="tl">
+    <h3><em>§04</em> 감시 공백 <small>구역마다 살아 있는 순찰병 누구에게도 보이지 않는 구간 · 클릭해 시각을 옮긴다</small></h3>
+    <button class="play" id="playA">▶ 계획 재생 ×10</button>
+    <svg id="tlsvg" width="1510" height="246"></svg>
+  </div>
+</section>
+
+<!-- ================= B : 실행 — 매복이 터진다 ================= -->
+<section class="screen" id="scrB">
+  <div class="paperbg"></div>
+  <div class="slab" style="left:0;top:90px;width:1100px;height:600px;background:var(--ink);opacity:.08;clip-path:polygon(0 30%,100% 0,100% 20%,0 60%)"></div>
+  <div class="head">
+    <div class="blk"></div><div class="redbar"></div>
+    <h1>능선 초소, 해질 무렵<span class="mis">능선 초소, 해질 무렵</span></h1>
+    <div class="sub">실행 · <b>틱이 흐른다</b> · 소음과 시야가 판정한다</div>
+    <div class="goal">
+      <div class="r"><small>순찰 제거</small><span id="killN">1</span> / 2</div>
+      <div><small>경보</small><span id="alN">0</span></div>
+      <div><small>손실</small>0</div>
+    </div>
+    <div class="brief">판정 순서 ①명령 → ②함정 → ③소음 — <b>지운 자는 못 듣는다</b></div>
+    <div class="supply">
+      <div><span>탄약</span><b>11</b></div><div><span>의약품</span><b>12</b></div><div><span>마을의 신뢰</span><b>12</b></div>
+    </div>
+  </div>
+  <div class="map"><svg id="mapB" width="1040" height="460" viewBox="0 0 1040 460"></svg></div>
+  <div class="clock"><b id="clkB">01:28</b><span>실행 ×4</span></div>
+
+  <div class="alarm">
+    <div class="t"><span>경보</span><b id="alBig">0</b></div>
+    <div class="meter"><span id="alBar"></span><i title="임계 60"></i></div>
+    <small>임계 60에서 회차가 끝난다 · 승리 조건은 경보 0</small>
+  </div>
+  <div class="feed" id="feed">
+    <h4>전개 기록 <small>난수 없음 · 같은 계획은 같은 로그</small></h4>
+  </div>
+
+  <div class="banner" id="bannerB"><h2 data-t="초소 제거">초소 제거</h2><p>경보 0 · 총성 0<br>함정 둘 · 순찰 둘</p></div>
+
+  <div class="camp">
+    <div class="loot"><h5>빼앗은 보급</h5>
+      <div class="row"><span>탄약</span><b>11 <em>+3</em></b></div>
+      <div class="row"><span>의약품</span><b>12 <em>+1</em></b></div>
+      <div class="row" style="border:none"><span>함정 두 개 값</span><b style="font-size:20px">−6</b></div>
+    </div>
+    <div class="pick" data-r="r_cache"><h5>탄약 은닉처 보수</h5><span class="cost">12</span><p>탄약으로 치른다<br>임무마다 탄약 <b>+1</b></p>
+      <svg class="ico" viewBox="0 0 74 74"><rect x="6" y="30" width="62" height="38" fill="#ede3cb"/><path d="M6 30 L37 8 L68 30" fill="#161211"/><path d="M20 40 V60 M30 40 V60 M40 40 V60 M50 40 V60" stroke="#c1272d" stroke-width="5"/></svg></div>
+    <div data-r="r_infirmary"><h5>야전 치료소</h5><span class="cost">11</span><p>의약품으로 치른다<br>임무마다 의약품 <b>+1</b></p>
+      <svg class="ico" viewBox="0 0 74 74"><rect x="4" y="26" width="66" height="42" fill="#161211"/><path d="M37 32 V62 M22 47 H52" stroke="#c1272d" stroke-width="9"/></svg></div>
+    <div data-r="r_courier"><h5>전령 길 정비</h5><span class="cost">10</span><p>마을의 신뢰로 치른다<br>임무마다 신뢰 <b>+1</b></p>
+      <svg class="ico" viewBox="0 0 74 74"><path d="M4 70 L30 4 L44 4 L70 70Z" fill="#161211"/><path d="M37 12 V66" stroke="#ede3cb" stroke-width="4" stroke-dasharray="8 6"/></svg></div>
+  </div>
+</section>
+
+<div class="hint">1 / 2 화면 전환 · 공백 표를 눌러 시각을 옮긴다 · 보수 항목을 눌러 고른다</div>
+<div class="tabs"><button class="ta" data-s="a">1</button><button class="tb" data-s="b">2</button></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){document.body.className='show-'+k;try{history.replaceState(null,'','#'+k);}catch(e){}}
+  function fromHash(){show((location.hash||'').indexOf('b')>=0?'b':'a');}
+  window.addEventListener('hashchange',fromHash);fromHash();
+  document.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){show(b.getAttribute('data-s'));});});
+
+  /* ---------- audio: field telephone clicks, snare trap, radio hum ---------- */
+  var ac=null;function AC(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return ac;}
+  function click(f,g){var a=AC();if(!a)return;var o=a.createOscillator(),gn=a.createGain();o.type='square';o.frequency.value=f;gn.gain.setValueAtTime(g,a.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.05);o.connect(gn);gn.connect(a.destination);o.start();o.stop(a.currentTime+.06);}
+  function thump(){var a=AC();if(!a)return;var len=Math.floor(a.sampleRate*.4),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);
+    var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=700;var g=a.createGain();g.gain.value=.9;s.connect(f);f.connect(g);g.connect(a.destination);s.start();
+    var o=a.createOscillator(),og=a.createGain();o.frequency.setValueAtTime(90,a.currentTime);o.frequency.exponentialRampToValueAtTime(40,a.currentTime+.3);og.gain.setValueAtTime(.4,a.currentTime);og.gain.exponentialRampToValueAtTime(.001,a.currentTime+.35);o.connect(og);og.connect(a.destination);o.start();o.stop(a.currentTime+.4);}
+  function stamp(){click(180,.2);setTimeout(function(){click(120,.25);},40);}
+
+  /* ---------- data: games/tactics-partisan-1941/data (map_ridge_post · m_ridge_dusk) ---------- */
+  var Z={
+    z_ridge:{nm:'능선 등성이',cover:55,poly:[[30,70],[420,26],[500,150],[110,236]],c:[250,120]},
+    z_treeline:{nm:'숲 경계',cover:70,poly:[[10,290],[190,250],[290,440],[10,452]],c:[120,370]},
+    z_gully:{nm:'마른 골짜기',cover:65,poly:[[230,290],[470,236],[560,400],[320,450]],c:[395,350]},
+    z_track:{nm:'수레길',cover:20,poly:[[500,150],[600,120],[880,300],[790,360]],c:[690,238]},
+    z_post:{nm:'초소',cover:0,poly:[[700,30],[950,10],[990,190],[790,214]],c:[850,110]},
+    z_shed:{nm:'창고',cover:45,poly:[[830,380],[1030,290],[1030,452],[860,452]],c:[945,392]}
+  };
+  var LINKS=[['z_treeline','z_gully',1],['z_treeline','z_ridge',0],['z_gully','z_track',1],['z_gully','z_shed',1],['z_ridge','z_track',0],['z_track','z_post',0],['z_track','z_shed',0],['z_post','z_shed',0]];
+  var SIGHT={z_treeline:['z_treeline','z_ridge','z_gully'],z_gully:['z_gully'],z_ridge:['z_ridge','z_treeline','z_track','z_post','z_shed'],z_track:['z_track','z_ridge','z_post','z_shed'],z_post:['z_post','z_track','z_ridge'],z_shed:['z_shed','z_track']};
+  var GUARDS=[
+    {id:'g_sentry',nm:'감시병',phase:0,legs:[['z_post',60],['z_track',30],['z_shed',45],['z_track',30]],shift:300},
+    {id:'g_rover',nm:'순회병',phase:120,legs:[['z_track',40],['z_gully',35],['z_track',40],['z_post',50]]}
+  ];
+  var ROWS=['z_ridge','z_treeline','z_gully','z_track','z_post','z_shed'];
+  // reference plan RidgeDuskTraps: sapper traps shed @30s, gully @63s (12s each)
+  var ORDERS=[{z:'z_shed',t:30,d:12,lab:'함정 · 창고'},{z:'z_gully',t:63,d:12,lab:'함정 · 골짜기'}];
+  function zoneAt(g,t){var cyc=0;g.legs.forEach(function(l){cyc+=l[1];});var loc;
+    if(g.shift&&t>=g.shift)loc=((t-g.shift)%cyc+cyc)%cyc;else loc=((t+g.phase)%cyc+cyc)%cyc;
+    var acc=0;for(var i=0;i<g.legs.length;i++){acc+=g.legs[i][1];if(loc<acc)return g.legs[i][0];}return g.legs[0][0];}
+  function watched(z,t,dead){for(var i=0;i<GUARDS.length;i++){var g=GUARDS[i];if(dead&&dead[g.id]!==undefined&&t>=dead[g.id])continue;if(SIGHT[zoneAt(g,t)].indexOf(z)>=0)return g;}return null;}
+  function mmss(t){t=Math.max(0,Math.floor(t));return ('0'+Math.floor(t/60)).slice(-2)+':'+('0'+t%60).slice(-2);}
+  function pts(p){return p.map(function(q){return q.join(',');}).join(' ');}
+
+  /* ---------- map renderer ---------- */
+  function renderMap(svgId,t,opt){
+    opt=opt||{};var dead=opt.dead||{};var h='';
+    // shadow slabs (print offset)
+    ROWS.forEach(function(k){var z=Z[k];h+='<polygon points="'+pts(z.poly.map(function(q){return [q[0]+8,q[1]+8];}))+'" fill="#161211"/>';});
+    ROWS.forEach(function(k){var z=Z[k],w=watched(k,t,dead);
+      h+='<polygon class="zone" points="'+pts(z.poly)+'" fill="#ede3cb" stroke="#161211" stroke-width="4"/>';
+      if(w)h+='<polygon points="'+pts(z.poly)+'" fill="url(#ht)" opacity=".85"/>';
+      else h+='<polygon points="'+pts(z.poly)+'" fill="none" stroke="#c1272d" stroke-width="3" stroke-dasharray="14 8" transform="translate(-3 -3)"/>';
+    });
+    // links (noise)
+    LINKS.forEach(function(l){var a=Z[l[0]].c,b=Z[l[1]].c;
+      h+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#ede3cb" stroke-width="'+(l[2]?9:11)+'" opacity=".8"/>';
+      h+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#161211" stroke-width="'+(l[2]?3:5)+'"'+(l[2]?' stroke-dasharray="10 8"':'')+' opacity="'+(l[2]?.9:.85)+'"/>';
+      if(l[2]){var mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;h+='<rect x="'+(mx-9)+'" y="'+(my-9)+'" width="18" height="18" fill="#ede3cb" stroke="#161211" stroke-width="2"/><text x="'+mx+'" y="'+(my+5)+'" font-family="Impact,sans-serif" font-size="13" text-anchor="middle" fill="#c1272d">−40</text>';}
+    });
+    // labels
+    ROWS.forEach(function(k){var z=Z[k],w=watched(k,t,dead),x=z.poly[0][0]+14,y=z.poly[0][1]+30;
+      if(k==='z_treeline'){x=z.poly[0][0]+18;y=z.poly[0][1]+32;}if(k==='z_shed'){x=958;y=438;}if(k==='z_post'){x=720;y=66;}
+      h+='<g><rect x="'+(x-6)+'" y="'+(y-22)+'" width="'+(z.nm.length*20+12)+'" height="28" fill="'+(w?'#c1272d':'#161211')+'"/><text class="zlabel" x="'+x+'" y="'+(y-1)+'" fill="#ede3cb" style="fill:#ede3cb">'+z.nm+'</text></g>'+
+        '<text class="zcover" x="'+x+'" y="'+(y+20)+'">엄폐 '+z.cover+(w?' · 보인다':' · 공백')+'</text>';});
+    // recon vantages
+    ['z_treeline','z_ridge'].forEach(function(k){var c=Z[k].c;h+='<g transform="translate('+(c[0]-60)+' '+(c[1]+22)+')"><path d="M0 8 L10 0 L20 8 L10 16Z" fill="none" stroke="#161211" stroke-width="2.5"/><circle cx="10" cy="8" r="3" fill="#161211"/></g>';});
+    // guards
+    var used={};
+    GUARDS.forEach(function(g){var k=zoneAt(g,t),c=Z[k].c,o=(used[k]||0);used[k]=o+1;var x=c[0]+30+o*78,y=c[1]-4;var isDead=dead[g.id]!==undefined&&t>=dead[g.id];
+      if(isDead){k=opt.deadZone[g.id];c=Z[k].c;x=c[0]+34;y=c[1]-44;}
+      h+='<g transform="translate('+x+' '+y+')">'+(isDead?
+        '<path d="M-16 -16 L16 16 M16 -16 L-16 16" stroke="#c1272d" stroke-width="7"/><path d="M-14 -18 L18 14 M18 -18 L-14 14" stroke="#161211" stroke-width="2.5"/>':
+        '<path d="M0 -22 L18 12 L-18 12Z" fill="#161211"/><path d="M0 -10 L7 6 L-7 6Z" fill="#ede3cb"/>')+
+        '<text x="0" y="32" style="font-family:var(--heavy);font-weight:900" font-size="15" text-anchor="middle" fill="'+(isDead?'#c1272d':'#161211')+'">'+g.nm+'</text></g>';});
+    // squad
+    (opt.squad||[]).forEach(function(s){var c=Z[s.z].c,x=c[0]+s.dx,y=c[1]+s.dy;
+      h+='<g transform="translate('+x+' '+y+')"><rect x="-15" y="-15" width="30" height="30" transform="rotate(45)" fill="#c1272d" stroke="#161211" stroke-width="3"/><text y="6" text-anchor="middle" style="font-family:var(--heavy);font-weight:900" font-size="15" fill="#ede3cb">'+s.l+'</text></g>';});
+    // traps
+    (opt.traps||[]).forEach(function(tr){var c=Z[tr.z].c,x=c[0]-40,y=c[1]+34;
+      h+='<g transform="translate('+x+' '+y+')">'+(tr.fired?'<circle class="ring" cx="0" cy="0" r="10"/><circle class="ring" cx="0" cy="0" r="10" style="animation-delay:.8s"/>':'')+
+        '<circle r="14" fill="'+(tr.fired?'#c1272d':'#ede3cb')+'" stroke="#161211" stroke-width="3"/><path d="M-8 -8 L8 8 M8 -8 L-8 8 M0 -11 V11 M-11 0 H11" stroke="#161211" stroke-width="2.5"/>'+
+        (tr.fired?'':'<text x="22" y="5" font-family="Impact,sans-serif" font-size="15" fill="#161211">'+tr.lab+'</text>')+'</g>';});
+    if(opt.path){h+='<path d="'+opt.path+'" fill="none" stroke="#c1272d" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round"/>';}
+    document.getElementById(svgId).innerHTML=h;
+  }
+
+  /* ---------- A: timeline of watch gaps ---------- */
+  var T0=0,T1=330,X0=132,X1=1490,RH=30,RY=30;
+  function tx(t){return X0+(t-T0)/(T1-T0)*(X1-X0);}
+  var tl=document.getElementById('tlsvg');
+  function buildTL(){
+    var h='';
+    for(var t=0;t<=T1;t+=30){h+='<line x1="'+tx(t)+'" y1="16" x2="'+tx(t)+'" y2="'+(RY+ROWS.length*RH+4)+'" stroke="#3a3330" stroke-width="1"/><text x="'+tx(t)+'" y="12" font-family="Impact,sans-serif" font-size="12" fill="#7a6f5e" text-anchor="middle">'+mmss(t)+'</text>';}
+    ROWS.forEach(function(k,i){var y=RY+i*RH;h+='<text x="0" y="'+(y+20)+'" style="font-family:var(--heavy);font-weight:900" font-size="15" fill="#ede3cb">'+Z[k].nm+'</text>';
+      var st=0,prev=!!watched(k,0),longest=0,ls=0;
+      for(var t=1;t<=T1;t++){var w=!!watched(k,t);if(w!==prev||t===T1){var x=tx(st),wd=tx(t)-x;
+          if(prev)h+='<rect x="'+x+'" y="'+(y+3)+'" width="'+wd+'" height="'+(RH-6)+'" fill="url(#hatchR)"/>';
+          else{h+='<rect x="'+x+'" y="'+(y+3)+'" width="'+wd+'" height="'+(RH-6)+'" fill="#ede3cb"/>';if(t-st>longest){longest=t-st;ls=st;}}
+          st=t;prev=w;}}
+      if(longest>0)h+='<text x="'+(tx(ls)+6)+'" y="'+(y+20)+'" font-family="Impact,sans-serif" font-size="13" fill="#161211">공백 '+longest+'초</text>';
+    });
+    // shift change
+    h+='<line x1="'+tx(300)+'" y1="16" x2="'+tx(300)+'" y2="'+(RY+ROWS.length*RH+4)+'" stroke="#ede3cb" stroke-width="3" stroke-dasharray="6 4"/><text x="'+(tx(300)+6)+'" y="'+(RY+ROWS.length*RH+18)+'" style="font-family:var(--heavy);font-weight:900" font-size="13" fill="#ede3cb">교대 05:00</text>';
+    // orders
+    ORDERS.forEach(function(o){var i=ROWS.indexOf(o.z),y=RY+i*RH;h+='<rect x="'+tx(o.t)+'" y="'+(y-2)+'" width="'+(tx(o.t+o.d)-tx(o.t))+'" height="'+(RH+4)+'" fill="#c1272d" stroke="#ede3cb" stroke-width="2"/><text x="'+(tx(o.t)+2)+'" y="'+(y+RH+16)+'" style="font-family:var(--heavy);font-weight:900" font-size="12" fill="#ede3cb">공병 '+o.lab+'</text>';});
+    // predicted trigger stars
+    [['z_gully',85,'순회병'],['z_shed',90,'감시병']].forEach(function(p){var i=ROWS.indexOf(p[0]),y=RY+i*RH+RH/2,x=tx(p[1]);
+      h+='<path transform="translate('+x+' '+y+')" d="M0 -13 L4 -4 L13 -4 L6 2 L9 12 L0 6 L-9 12 L-6 2 L-13 -4 L-4 -4Z" fill="#ede3cb" stroke="#c1272d" stroke-width="2.5"/>';});
+    h+='<g id="phead"><line x1="0" y1="14" x2="0" y2="'+(RY+ROWS.length*RH+6)+'" stroke="#ede3cb" stroke-width="3"/><path d="M-8 6 L8 6 L0 16Z" fill="#c1272d"/></g>';
+    tl.innerHTML=h;
+  }
+  buildTL();
+  var tA=30,playing=null;
+  function setA(t){tA=t;document.getElementById('clkA').textContent=mmss(t);
+    var ph=document.getElementById('phead');if(ph)ph.setAttribute('transform','translate('+tx(t)+' 0)');
+    var sq=[],traps=[];
+    // sapper position by plan
+    var sz='z_treeline';if(t>=16&&t<50)sz='z_shed';else if(t>=50&&t<90)sz='z_gully';else if(t>=90)sz='z_treeline';
+    sq.push({z:sz,l:'공',dx:-60,dy:-10});sq.push({z:'z_ridge',l:'저',dx:-110,dy:10});sq.push({z:'z_treeline',l:'정',dx:-50,dy:36});
+    if(t>=42)traps.push({z:'z_shed',lab:'함정',fired:false});if(t>=75)traps.push({z:'z_gully',lab:'함정',fired:false});
+    var dead={};if(t>=85)dead.g_rover=85;if(t>=90)dead.g_sentry=90;
+    renderMap('mapA',t,{squad:sq,traps:traps,dead:dead,deadZone:{g_rover:'z_gully',g_sentry:'z_shed'}});
+    var w=watched(sz,t,dead),sum=40+Z[sz].cover-((t>=30&&t<42)||(t>=63&&t<75)?30:0);
+    document.getElementById('calc').innerHTML=Z[sz].nm+' '+mmss(t)+(sum<Z[sz].cover+40?' 함정 설치':' 대기')+' — 은밀 <b>40</b> + 엄폐 <b>'+Z[sz].cover+'</b>'+(sum<Z[sz].cover+40?' − 노출 <b>30</b>':'')+' = <b'+(sum<100?' class="no"':'')+'>'+sum+'</b> '+(sum>=100?'≥ 100 · 보이지 않는다':'&lt; 100')+
+      '<br>'+(w?'<span class="no">지금 '+w.nm+'에게 보인다 — 들킨다</span>':'지금 이 구역을 보는 순찰병이 <b>없다</b> — 공백 안이다');
+  }
+  tl.addEventListener('click',function(e){var r=tl.getBoundingClientRect(),sc=r.width/1510,x=(e.clientX-r.left)/sc;var t=Math.round(T0+(x-X0)/(X1-X0)*(T1-T0));t=Math.max(0,Math.min(T1,t));click(900,.08);setA(t);});
+  document.getElementById('playA').addEventListener('click',function(){var b=this;if(playing){clearInterval(playing);playing=null;b.classList.remove('on');b.textContent='▶ 계획 재생 ×10';return;}
+    b.classList.add('on');b.textContent='■ 멈춤';if(tA>=T1)tA=0;playing=setInterval(function(){var n=tA+1;if(n>T1){clearInterval(playing);playing=null;b.classList.remove('on');b.textContent='▶ 계획 재생 ×10';return;}
+      if(n===85||n===90)thump();else if(n%5===0)click(1400,.03);setA(n);},100);});
+  Array.prototype.forEach.call(document.querySelectorAll('.mem'),function(m){m.addEventListener('click',function(){Array.prototype.forEach.call(document.querySelectorAll('.mem'),function(x){x.classList.remove('sel');});m.classList.add('sel');stamp();});});
+  setA(30);
+
+  /* ---------- B: execution ---------- */
+  var EV=[
+    [30,'공병 · 창고 함정 설치 시작','감시병은 초소, 순회병도 초소 — 창고를 보는 자가 없다',0],
+    [42,'창고 함정 설치 완료','소음 10 · 들리지 않는다',0],
+    [63,'공병 · 마른 골짜기 함정 설치','골짜기는 밖에서 보이지 않는다 · 엄폐 65',0],
+    [85,'함정 작동 — 마른 골짜기 · 순회병','소음 25 → 이웃 구역 −40−40 차폐 → 아무도 못 듣는다',1],
+    [90,'함정 작동 — 창고 · 초소 감시병','소음 25 → 수레길 −40 = 0 < 20 · 살아 있는 순찰병 없음',1],
+    [96,'분대 퇴각 · 숲 경계','경보 0 · 퇴각 기한 05:00 안',0]
+  ];
+  var feed=document.getElementById('feed'),tB=80,shown=0,alarm=0;
+  function renderFeed(t){
+    var rows=feed.querySelectorAll('.ev');Array.prototype.forEach.call(rows,function(r){r.parentNode.removeChild(r);});
+    EV.forEach(function(e,i){if(e[0]>t)return;var d=document.createElement('div');d.className='ev'+(e[3]?' hot':'')+(i===shown-1?' new':'');d.innerHTML='<span class="tm">'+mmss(e[0])+'</span><span>'+e[1]+'<span class="why">'+e[2]+'</span></span>';feed.appendChild(d);});
+  }
+  function setB(t){tB=t;document.getElementById('clkB').textContent=mmss(t);
+    var dead={},traps=[{z:'z_shed',lab:'함정',fired:t>=90},{z:'z_gully',lab:'함정',fired:t>=85}];
+    if(t>=85)dead.g_rover=85;if(t>=90)dead.g_sentry=90;
+    renderMap('mapB',t,{dead:dead,deadZone:{g_rover:'z_gully',g_sentry:'z_shed'},traps:traps,
+      squad:[{z:t>=96?'z_treeline':'z_gully',l:'공',dx:-70,dy:-6},{z:'z_ridge',l:'저',dx:-110,dy:10},{z:'z_treeline',l:'정',dx:-50,dy:36}]});
+    var k=(t>=85?1:0)+(t>=90?1:0);document.getElementById('killN').textContent=k;
+    var n=0;EV.forEach(function(e){if(e[0]<=t)n++;});if(n!==shown){shown=n;renderFeed(t);}
+    var bn=document.getElementById('bannerB');bn.style.display=t>=90?'flex':'none';
+  }
+  setB(96);
+  var bTimer=null;
+  document.getElementById('mapB').addEventListener('click',function(){
+    if(bTimer)return;var t=80;document.getElementById('bannerB').classList.remove('pop');setB(t);
+    bTimer=setInterval(function(){t++;if(t===85||t===90){thump();}else click(1300,.03);setB(t);
+      if(t===90){var b=document.getElementById('bannerB');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}
+      if(t>=96){clearInterval(bTimer);bTimer=null;}},260);});
+  Array.prototype.forEach.call(document.querySelectorAll('.camp>div[data-r]'),function(d){d.addEventListener('click',function(){Array.prototype.forEach.call(document.querySelectorAll('.camp>div[data-r]'),function(x){x.classList.remove('pick');});d.classList.add('pick');stamp();});});
+})();
+</script>
+</body>
+</html>

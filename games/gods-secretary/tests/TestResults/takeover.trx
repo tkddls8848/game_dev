@@ -1,0 +1,460 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="df0ac2cc-7b15-466e-9344-28beae3a5344" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:53:35" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:53:35.9773790+09:00" queuing="2026-09-27T20:53:35.9773796+09:00" start="2026-09-27T20:52:53.7381981+09:00" finish="2026-09-27T20:53:47.1013854+09:00" />
+  <TestSettings name="default" id="838031a3-36f1-43d5-be91-56bbbc88bbc1">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_53_35" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f9205a1d-ecab-472c-bb84-fcc91a8be481" testId="8be98915-b722-c22f-e9df-a1bbf8e5782c" testName="모든_판정_뒤에_영역의_총량이_그대로다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0316610" startTime="2026-09-27T20:53:36.0077761+09:00" endTime="2026-09-27T20:53:36.0394361+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9205a1d-ecab-472c-bb84-fcc91a8be481">
+      <Output>
+        <StdOut>회차 384번 전부 장부가 맞는다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8779e3c3-da4f-4dec-835c-c86961ca51b2" testId="70e6b23b-f1a0-7bd1-2c1d-8db824f1b514" testName="가진_것이_필요한_것을_넘지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004030" startTime="2026-09-27T20:53:36.0414002+09:00" endTime="2026-09-27T20:53:36.0418032+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8779e3c3-da4f-4dec-835c-c86961ca51b2" />
+    <UnitTestResult executionId="baaa7f3e-d549-487e-b27f-ca58b9772e64" testId="2561f9af-478a-54ad-901d-962a7d4114ac" testName="언어를_되돌리면_값도_되돌아온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016040" startTime="2026-09-27T20:53:36.0757607+09:00" endTime="2026-09-27T20:53:36.0773646+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="baaa7f3e-d549-487e-b27f-ca58b9772e64" />
+    <UnitTestResult executionId="16816329-faa6-4863-937d-6eae79338fe5" testId="6790982b-ec37-cccd-bee4-6e9effb77c0e" testName="알려진_최선의_길에서도_공짜_허가가_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0034980" startTime="2026-09-27T20:53:36.2262006+09:00" endTime="2026-09-27T20:53:36.2296987+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16816329-faa6-4863-937d-6eae79338fe5">
+      <Output>
+        <StdOut>알려진 최선의 길에서 뒤진 수 7320번 · 공짜 허가 0건</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c19bf952-e25d-4091-82f0-e7dacca020a9" testId="2bf0be0f-d44d-8dd9-6820-06e04e12e196" testName="들어준_만큼이_정확히_빠지고_그_자리에_이름이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0602310" startTime="2026-09-27T20:53:35.9475055+09:00" endTime="2026-09-27T20:53:36.0077351+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c19bf952-e25d-4091-82f0-e7dacca020a9">
+      <Output>
+        <StdOut>허가 1360건 · 이름이 붙은 차변 2627줄 전부 균형이 맞는다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d8542a4a-3f44-42a7-856d-4b0e52131612" testId="19b443aa-ec3b-761c-73df-05b856bf255c" testName="알려진_최선은_허가와_기각을_둘_다_쓴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005000" startTime="2026-09-27T20:53:36.1092845+09:00" endTime="2026-09-27T20:53:36.1097841+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8542a4a-3f44-42a7-856d-4b0e52131612">
+      <Output>
+        <StdOut>첫 철 알려진 최선 합계: 허가 48 기각 43 보류 0 · 둘 다 쓴 씨드 16/16&#xD;
+가문 철 알려진 최선 합계: 허가 40 기각 52 보류 0 · 둘 다 쓴 씨드 16/16&#xD;
+늦은 철 알려진 최선 합계: 허가 71 기각 22 보류 0 · 둘 다 쓴 씨드 14/16</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9a2407f6-002c-417f-8a27-da4a6b832d7f" testId="208e1c03-c77b-ecd6-c4f7-84a3326fe6b6" testName="검사기에_이가_있다_장부를_한_줄_고치면_찾아낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0019630" startTime="2026-09-27T20:53:36.1735443+09:00" endTime="2026-09-27T20:53:36.1755070+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a2407f6-002c-417f-8a27-da4a6b832d7f">
+      <Output>
+        <StdOut>일부러 고친 장부에서 공짜 허가 198건을 찾아냈다:&#xD;
+  날 0 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 2 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 1 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 0 · p_l_marco 를 s_hessa 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 17 · need 13)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="91c2adb3-fe87-4941-8bf8-420d42173fdb" testId="58ec821b-c7a6-c9bb-855b-c003bdcf8826" testName="씨드가_실제로_무엇을_바꾸는가" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0231180" startTime="2026-09-27T20:53:47.0304018+09:00" endTime="2026-09-27T20:53:47.0535193+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91c2adb3-fe87-4941-8bf8-420d42173fdb">
+      <Output>
+        <StdOut>v_first: 서로 다른 도착표 15가지 · 서로 다른 결과 15가지&#xD;
+v_dry: 서로 다른 도착표 15가지 · 서로 다른 결과 13가지&#xD;
+v_late: 서로 다른 도착표 15가지 · 서로 다른 결과 15가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cc3a51d2-c1d1-4f71-a10b-b49cd56273d2" testId="4b10cded-aa64-9e61-ba05-22edd81b9048" testName="장부와_정책을_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0297820" startTime="2026-09-27T20:53:36.0458204+09:00" endTime="2026-09-27T20:53:36.0756015+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc3a51d2-c1d1-4f71-a10b-b49cd56273d2">
+      <Output>
+        <StdOut>== 첫 철 (v_first) 첫날 고통 150 · 날 6 · 편지 8&#xD;
+   비 총량 35&#xD;
+   숨 총량 28&#xD;
+   곡식 총량 30&#xD;
+   전부 허가            평균   803 | 759(6허0기0보) 754(6허0기0보) 924(5허0기0보) 761(6허0기0보) 750(6허0기0보) 916(5허0기0보) 808(6허0기0보) 759(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균   829 | 768(6허0기0보) 747(6허0기0보) 1012(5허0기0보) 775(6허0기0보) 750(6허0기0보) 1004(5허0기0보) 810(6허0기0보) 768(6허0기0보) &#xD;
+   전부 기각            평균  1096 | 1075(0허6기0보) 1015(0허6기0보) 1184(0허5기0보) 1096(0허6기0보) 1073(0허6기0보) 1168(0허5기0보) 1087(0허6기0보) 1075(0허6기0보) &#xD;
+   전부 보류            평균  1483 | 1543(0허0기6보) 1454(0허0기6보) 1448(0허0기5보) 1495(0허0기6보) 1468(0허0기6보) 1432(0허0기5보) 1487(0허0기6보) 1543(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균   803 | 784(6허0기0보) 734(6허0기0보) 913(5허0기0보) 775(6허0기0보) 746(6허0기0보) 905(5허0기0보) 787(6허0기0보) 784(6허0기0보) &#xD;
+   덜어질 때만           평균   751 | 741(3허3기0보) 691(3허3기0보) 864(3허2기0보) 702(3허3기0보) 679(3허3기0보) 856(3허2기0보) 738(3허3기0보) 741(3허3기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1055 | 934(2허2기2보) 1039(2허2기2보) 1175(2허2기1보) 1105(2허2기2보) 1082(2허2기2보) 1167(2허2기1보) 1007(2허2기2보) 934(2허2기2보) &#xD;
+   숨을 먼저            평균   780 | 778(6허0기0보) 738(6허0기0보) 877(5허0기0보) 724(6허0기0보) 695(6허0기0보) 860(5허0기0보) 791(6허0기0보) 778(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 726 · 허가 3 기각 3 보류 0 · 건너간 14 빠진 14&#xD;
+   [알려진 최선 씨드1] 674 · 허가 3 기각 3 보류 0 · 건너간 13 빠진 13&#xD;
+   [알려진 최선 씨드2] 844 · 허가 3 기각 2 보류 0 · 건너간 15 빠진 15&#xD;
+   [알려진 최선 씨드3] 700 · 허가 3 기각 3 보류 0 · 건너간 14 빠진 14&#xD;
+== 가문 철 (v_dry) 첫날 고통 141 · 날 6 · 편지 8&#xD;
+   비 총량 27&#xD;
+   숨 총량 26&#xD;
+   곡식 총량 29&#xD;
+   전부 허가            평균  1043 | 979(6허0기0보) 953(6허0기0보) 1001(6허0기0보) 1200(5허0기0보) 990(6허0기0보) 1098(5허0기0보) 1121(6허0기0보) 1005(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균  1082 | 1075(6허0기0보) 1050(6허0기0보) 947(6허0기0보) 1174(5허0기0보) 1058(6허0기0보) 1194(5허0기0보) 1061(6허0기0보) 1102(6허0기0보) &#xD;
+   전부 기각            평균  1123 | 1086(0허6기0보) 1033(0허6기0보) 1103(0허6기0보) 1219(0허5기0보) 1057(0허6기0보) 1207(0허5기0보) 1157(0허6기0보) 1122(0허6기0보) &#xD;
+   전부 보류            평균  1422 | 1414(0허0기6보) 1382(0허0기6보) 1441(0허0기6보) 1401(0허0기5보) 1411(0허0기6보) 1442(0허0기5보) 1447(0허0기6보) 1441(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균  1090 | 1037(6허0기0보) 1002(6허0기0보) 1100(6허0기0보) 1200(5허0기0보) 996(6허0기0보) 1225(5허0기0보) 1092(6허0기0보) 1068(6허0기0보) &#xD;
+   덜어질 때만           평균   969 | 917(3허3기0보) 923(3허3기0보) 957(3허3기0보) 1045(2허3기0보) 923(2허4기0보) 1052(4허1기0보) 996(3허3기0보) 944(3허3기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1226 | 1230(2허2기2보) 1177(2허2기2보) 1185(2허2기2보) 1278(2허2기1보) 1152(2허2기2보) 1266(2허2기1보) 1270(2허2기2보) 1257(2허2기2보) &#xD;
+   숨을 먼저            평균   947 | 902(6허0기0보) 936(6허0기0보) 919(6허0기0보) 1012(5허0기0보) 932(6허0기0보) 997(5허0기0보) 958(6허0기0보) 925(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 880 · 허가 3 기각 3 보류 0 · 건너간 10 빠진 10&#xD;
+   [알려진 최선 씨드1] 890 · 허가 3 기각 3 보류 0 · 건너간 10 빠진 10&#xD;
+   [알려진 최선 씨드2] 903 · 허가 2 기각 4 보류 0 · 건너간 4 빠진 4&#xD;
+   [알려진 최선 씨드3] 989 · 허가 2 기각 3 보류 0 · 건너간 4 빠진 4&#xD;
+== 늦은 철 (v_late) 첫날 고통 162 · 날 6 · 편지 8&#xD;
+   비 총량 29&#xD;
+   숨 총량 29&#xD;
+   곡식 총량 30&#xD;
+   전부 허가            평균  1112 | 1120(6허0기0보) 1192(5허0기0보) 1069(6허0기0보) 1117(6허0기0보) 1061(6허0기0보) 998(6허0기0보) 1129(6허0기0보) 1213(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균  1177 | 1169(6허0기0보) 1246(5허0기0보) 1172(6허0기0보) 1188(6허0기0보) 1111(6허0기0보) 1104(6허0기0보) 1173(6허0기0보) 1256(6허0기0보) &#xD;
+   전부 기각            평균  1261 | 1286(0허6기0보) 1304(0허5기0보) 1244(0허6기0보) 1246(0허6기0보) 1198(0허6기0보) 1168(0허6기0보) 1266(0허6기0보) 1378(0허6기0보) &#xD;
+   전부 보류            평균  1638 | 1677(0허0기6보) 1566(0허0기5보) 1656(0허0기6보) 1641(0허0기6보) 1602(0허0기6보) 1602(0허0기6보) 1635(0허0기6보) 1731(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균  1110 | 1120(6허0기0보) 1214(5허0기0보) 1048(6허0기0보) 1105(6허0기0보) 1062(6허0기0보) 993(6허0기0보) 1129(6허0기0보) 1212(6허0기0보) &#xD;
+   덜어질 때만           평균  1037 | 1052(4허2기0보) 1102(4허1기0보) 1034(4허2기0보) 1050(4허2기0보) 979(4허2기0보) 958(5허1기0보) 1039(4허2기0보) 1088(5허1기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1299 | 1380(2허2기2보) 1336(2허2기1보) 1200(2허2기2보) 1328(2허2기2보) 1224(2허2기2보) 1142(2허2기2보) 1336(2허2기2보) 1446(2허2기2보) &#xD;
+   숨을 먼저            평균  1069 | 1083(6허0기0보) 1142(5허0기0보) 1045(6허0기0보) 1074(6허0기0보) 1008(6허0기0보) 971(6허0기0보) 1071(6허0기0보) 1165(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 1037 · 허가 5 기각 1 보류 0 · 건너간 17 빠진 17&#xD;
+   [알려진 최선 씨드1] 1092 · 허가 4 기각 1 보류 0 · 건너간 16 빠진 16&#xD;
+   [알려진 최선 씨드2] 997 · 허가 4 기각 2 보류 0 · 건너간 15 빠진 15&#xD;
+   [알려진 최선 씨드3] 1028 · 허가 4 기각 2 보류 0 · 건너간 15 빠진 15</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="29c5a5a0-17ae-4cce-b9fa-d289fffc2b33" testId="4f8a2f30-656c-2b76-6a42-453e169728df" testName="모든_참조가_실재한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0015180" startTime="2026-09-27T20:53:36.0418201+09:00" endTime="2026-09-27T20:53:36.0433377+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29c5a5a0-17ae-4cce-b9fa-d289fffc2b33" />
+    <UnitTestResult executionId="66cb2b14-11fd-407c-8670-5c4992627164" testId="da503a36-27ab-e40a-51bd-5db0683d82ab" testName="대가_없이_들어줄_수_있는_기도가_하나도_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0506280" startTime="2026-09-27T20:53:36.1755278+09:00" endTime="2026-09-27T20:53:36.2261551+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66cb2b14-11fd-407c-8670-5c4992627164">
+      <Output>
+        <StdOut>뒤진 수 76447번 · 공짜 허가 0건 · 가장 싼 허가의 값 3 (p_f_hessa / s_oren / 1)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f6d1f3cc-0ec5-433b-95a3-db97ee3dd6e6" testId="49f2ab9c-5f5f-ddab-c1da-3459750fb579" testName="표가_없는_열쇠는_한국어_원문을_그대로_준다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000699" startTime="2026-09-27T20:53:36.0777712+09:00" endTime="2026-09-27T20:53:36.0778414+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f6d1f3cc-0ec5-433b-95a3-db97ee3dd6e6" />
+    <UnitTestResult executionId="25960c2b-3360-4184-9629-cdf2df5345e6" testId="4392c220-3261-3b83-cf1f-7dcf19f9ce32" testName="장부마다_봉랍이_편지보다_모자라다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002580" startTime="2026-09-27T20:53:36.0454267+09:00" endTime="2026-09-27T20:53:36.0456841+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25960c2b-3360-4184-9629-cdf2df5345e6" />
+    <UnitTestResult executionId="19accbe2-7de5-4820-a860-1cc418f5b959" testId="3d58250a-15cf-9d9f-eb71-1d04ea991b97" testName="어떤_정책도_알려진_최선을_따라잡지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0320530" startTime="2026-09-27T20:53:36.1097962+09:00" endTime="2026-09-27T20:53:36.1418480+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19accbe2-7de5-4820-a860-1cc418f5b959">
+      <Output>
+        <StdOut>첫 철: 알려진 최선 753 · 가장 가까운 정책 「덜어질 때만」 768 (차이 15)&#xD;
+가문 철: 알려진 최선 917 · 가장 가까운 정책 「숨을 먼저」 943 (차이 25)&#xD;
+늦은 철: 알려진 최선 1023 · 가장 가까운 정책 「덜어질 때만」 1041 (차이 18)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="38e9125a-249e-43c6-b9b1-6b83223de94f" testId="950d9b1b-0896-29b9-59c3-76b22ebc151c" testName="장부_셋_전부에서_최선인_정책이_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0314280" startTime="2026-09-27T20:53:36.1418834+09:00" endTime="2026-09-27T20:53:36.1733103+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="38e9125a-249e-43c6-b9b1-6b83223de94f">
+      <Output>
+        <StdOut>== 첫 철&#xD;
+   전부 허가            평균   824&#xD;
+   넉넉한 쪽에서          평균   861&#xD;
+   전부 기각            평균  1117&#xD;
+   전부 보류            평균  1485&#xD;
+   가장 모자란 쪽부터       평균   819&#xD;
+   덜어질 때만           평균   768  ← 최선&#xD;
+   봉랍을 돌려 찍는다       평균  1073&#xD;
+   숨을 먼저            평균   793&#xD;
+   최선-최악 차이 717&#xD;
+== 가문 철&#xD;
+   전부 허가            평균  1031&#xD;
+   넉넉한 쪽에서          평균  1083&#xD;
+   전부 기각            평균  1114&#xD;
+   전부 보류            평균  1419&#xD;
+   가장 모자란 쪽부터       평균  1083&#xD;
+   덜어질 때만           평균   962&#xD;
+   봉랍을 돌려 찍는다       평균  1219&#xD;
+   숨을 먼저            평균   943  ← 최선&#xD;
+   최선-최악 차이 475&#xD;
+== 늦은 철&#xD;
+   전부 허가            평균  1111&#xD;
+   넉넉한 쪽에서          평균  1178&#xD;
+   전부 기각            평균  1260&#xD;
+   전부 보류            평균  1630&#xD;
+   가장 모자란 쪽부터       평균  1114&#xD;
+   덜어질 때만           평균  1041  ← 최선&#xD;
+   봉랍을 돌려 찍는다       평균  1300&#xD;
+   숨을 먼저            평균  1072&#xD;
+   최선-최악 차이 588&#xD;
+최선이 된 정책 2가지: 덜어질 때만 · 숨을 먼저</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1efc2d41-6c31-4fc5-9892-3f6cce7a7a69" testId="02bbded8-8663-5704-b9f8-479e908edfe9" testName="빠지는_자리마다_이름이_있고_익명의_세계가_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0015370" startTime="2026-09-27T20:53:36.0438707+09:00" endTime="2026-09-27T20:53:36.0454070+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1efc2d41-6c31-4fc5-9892-3f6cce7a7a69" />
+    <UnitTestResult executionId="e385e86a-ab8f-47cf-8190-383b879a99bb" testId="0edf457d-c947-e93f-a3ee-e9708baa7130" testName="같은_씨드면_빔_탐색도_같은_길을_고른다" computerName="DESKTOP-RU6F3DG" duration="00:00:10.7284720" startTime="2026-09-27T20:53:36.2298402+09:00" endTime="2026-09-27T20:53:46.9583118+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e385e86a-ab8f-47cf-8190-383b879a99bb" />
+    <UnitTestResult executionId="e8316705-4cfa-4d5c-a057-908ef4890ea7" testId="840686a9-3e92-b790-033b-08e75642124d" testName="영어를_켜면_표가_원문을_덮는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001830" startTime="2026-09-27T20:53:36.0773793+09:00" endTime="2026-09-27T20:53:36.0775621+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8316705-4cfa-4d5c-a057-908ef4890ea7" />
+    <UnitTestResult executionId="6c5aff60-5f28-4de8-ba51-8e4537b582a3" testId="43c88aad-474e-967b-bd23-24007d948b85" testName="대조_세계에서는_기각_도장이_죽는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0050720" startTime="2026-09-27T20:53:35.9423998+09:00" endTime="2026-09-27T20:53:35.9474705+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6c5aff60-5f28-4de8-ba51-8e4537b582a3">
+      <Output>
+        <StdOut>첫 철: 켠 세계 최선 = 허가 48 기각 43 · 끈 세계 최선 = 허가 91 기각 0&#xD;
+가문 철: 켠 세계 최선 = 허가 40 기각 52 · 끈 세계 최선 = 허가 92 기각 0&#xD;
+늦은 철: 켠 세계 최선 = 허가 71 기각 22 · 끈 세계 최선 = 허가 93 기각 0&#xD;
+합계: 켠 세계 허가 159 기각 117 · 끈 세계 허가 276 기각 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="533080ad-2534-4876-a7cc-8ae0c03a3a17" testId="00fb1460-a87d-676d-ac38-aee08e8ffebe" testName="같은_씨드면_편지가_같은_날_온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0015880" startTime="2026-09-27T20:53:47.0287898+09:00" endTime="2026-09-27T20:53:47.0303773+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="533080ad-2534-4876-a7cc-8ae0c03a3a17" />
+    <UnitTestResult executionId="2f0e09f6-8b04-4571-aa36-26e3d2e93a2a" testId="8de553b6-ae43-0f7f-133c-5eb53de7cb1b" testName="봉랍_하나만_계속_찍는_것은_어느_장부에서도_최선이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0312940" startTime="2026-09-27T20:53:36.0779509+09:00" endTime="2026-09-27T20:53:36.1092435+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f0e09f6-8b04-4571-aa36-26e3d2e93a2a">
+      <Output>
+        <StdOut>첫 철: 최선 768 · 전부 허가 824 · 전부 기각 1117 · 전부 보류 1485&#xD;
+가문 철: 최선 943 · 전부 허가 1031 · 전부 기각 1114 · 전부 보류 1419&#xD;
+늦은 철: 최선 1041 · 전부 허가 1111 · 전부 기각 1260 · 전부 보류 1630</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f2e12a19-a09e-4a3a-9ca4-c964112214ed" testId="daa3e729-5c37-1800-231d-8178a61de850" testName="자리표시자를_쓰고_조각을_이어_붙이지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001870" startTime="2026-09-27T20:53:36.0775754+09:00" endTime="2026-09-27T20:53:36.0777623+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2e12a19-a09e-4a3a-9ca4-c964112214ed" />
+    <UnitTestResult executionId="a8258608-9213-490e-a43d-fccc8272dbf1" testId="5e73dfce-8422-9da4-b87b-7336fc4576cf" testName="대조_세계_보존을_끄면_값이_무너진다" computerName="DESKTOP-RU6F3DG" duration="00:00:41.6109960" startTime="2026-09-27T20:52:54.3302944+09:00" endTime="2026-09-27T20:53:35.9412381+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8258608-9213-490e-a43d-fccc8272dbf1">
+      <Output>
+        <StdOut>첫 철: 켠 세계 평균 753 · 끈 세계 평균 364 · 벌어짐 388&#xD;
+가문 철: 켠 세계 평균 917 · 끈 세계 평균 457 · 벌어짐 459&#xD;
+늦은 철: 켠 세계 평균 1023 · 끈 세계 평균 520 · 벌어짐 502&#xD;
+가장 작은 벌어짐 388 (기준 40)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2ab23029-3265-4b1f-aea3-0c3783062d66" testId="eb2e6c81-016c-f2bb-64fb-d1bf8f0b805b" testName="같은_씨드면_정책의_결과가_똑같다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0704090" startTime="2026-09-27T20:53:46.9583428+09:00" endTime="2026-09-27T20:53:47.0287510+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2ab23029-3265-4b1f-aea3-0c3783062d66" />
+    <UnitTestResult executionId="5c5cf9c3-d4ee-491f-adef-38a4171f9870" testId="a2b8890e-0a17-29d3-96fc-7fd44fb4717b" testName="모든_편지가_받은_날_실제로_들어줄_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005010" startTime="2026-09-27T20:53:36.0433543+09:00" endTime="2026-09-27T20:53:36.0438556+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c5cf9c3-d4ee-491f-adef-38a4171f9870" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="모든_편지가_받은_날_실제로_들어줄_수_있다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="a2b8890e-0a17-29d3-96fc-7fd44fb4717b">
+      <Execution id="5c5cf9c3-d4ee-491f-adef-38a4171f9870" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DataIntegrityTests" name="모든_편지가_받은_날_실제로_들어줄_수_있다" />
+    </UnitTest>
+    <UnitTest name="대가_없이_들어줄_수_있는_기도가_하나도_없다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="da503a36-27ab-e40a-51bd-5db0683d82ab">
+      <Execution id="66cb2b14-11fd-407c-8670-5c4992627164" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoFreeGrantTests" name="대가_없이_들어줄_수_있는_기도가_하나도_없다" />
+    </UnitTest>
+    <UnitTest name="대조_세계_보존을_끄면_값이_무너진다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="5e73dfce-8422-9da4-b87b-7336fc4576cf">
+      <Execution id="a8258608-9213-490e-a43d-fccc8272dbf1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.ConservationHoldsTests" name="대조_세계_보존을_끄면_값이_무너진다" />
+    </UnitTest>
+    <UnitTest name="검사기에_이가_있다_장부를_한_줄_고치면_찾아낸다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="208e1c03-c77b-ecd6-c4f7-84a3326fe6b6">
+      <Execution id="9a2407f6-002c-417f-8a27-da4a6b832d7f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoFreeGrantTests" name="검사기에_이가_있다_장부를_한_줄_고치면_찾아낸다" />
+    </UnitTest>
+    <UnitTest name="모든_참조가_실재한다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="4f8a2f30-656c-2b76-6a42-453e169728df">
+      <Execution id="29c5a5a0-17ae-4cce-b9fa-d289fffc2b33" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DataIntegrityTests" name="모든_참조가_실재한다" />
+    </UnitTest>
+    <UnitTest name="장부와_정책을_찍는다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="4b10cded-aa64-9e61-ba05-22edd81b9048">
+      <Execution id="cc3a51d2-c1d1-4f71-a10b-b49cd56273d2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DiagnosticTests" name="장부와_정책을_찍는다" />
+    </UnitTest>
+    <UnitTest name="모든_판정_뒤에_영역의_총량이_그대로다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="8be98915-b722-c22f-e9df-a1bbf8e5782c">
+      <Execution id="f9205a1d-ecab-472c-bb84-fcc91a8be481" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.ConservationHoldsTests" name="모든_판정_뒤에_영역의_총량이_그대로다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드면_편지가_같은_날_온다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="00fb1460-a87d-676d-ac38-aee08e8ffebe">
+      <Execution id="533080ad-2534-4876-a7cc-8ae0c03a3a17" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.SeedDeterminismTests" name="같은_씨드면_편지가_같은_날_온다" />
+    </UnitTest>
+    <UnitTest name="봉랍_하나만_계속_찍는_것은_어느_장부에서도_최선이_아니다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="8de553b6-ae43-0f7f-133c-5eb53de7cb1b">
+      <Execution id="2f0e09f6-8b04-4571-aa36-26e3d2e93a2a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoDominantStrategyTests" name="봉랍_하나만_계속_찍는_것은_어느_장부에서도_최선이_아니다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓰고_조각을_이어_붙이지_않는다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="daa3e729-5c37-1800-231d-8178a61de850">
+      <Execution id="f2e12a19-a09e-4a3a-9ca4-c964112214ed" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.LocalizationTests" name="자리표시자를_쓰고_조각을_이어_붙이지_않는다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드면_정책의_결과가_똑같다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="eb2e6c81-016c-f2bb-64fb-d1bf8f0b805b">
+      <Execution id="2ab23029-3265-4b1f-aea3-0c3783062d66" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.SeedDeterminismTests" name="같은_씨드면_정책의_결과가_똑같다" />
+    </UnitTest>
+    <UnitTest name="대조_세계에서는_기각_도장이_죽는다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="43c88aad-474e-967b-bd23-24007d948b85">
+      <Execution id="6c5aff60-5f28-4de8-ba51-8e4537b582a3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.ConservationHoldsTests" name="대조_세계에서는_기각_도장이_죽는다" />
+    </UnitTest>
+    <UnitTest name="알려진_최선의_길에서도_공짜_허가가_없다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="6790982b-ec37-cccd-bee4-6e9effb77c0e">
+      <Execution id="16816329-faa6-4863-937d-6eae79338fe5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoFreeGrantTests" name="알려진_최선의_길에서도_공짜_허가가_없다" />
+    </UnitTest>
+    <UnitTest name="어떤_정책도_알려진_최선을_따라잡지_못한다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="3d58250a-15cf-9d9f-eb71-1d04ea991b97">
+      <Execution id="19accbe2-7de5-4820-a860-1cc418f5b959" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoDominantStrategyTests" name="어떤_정책도_알려진_최선을_따라잡지_못한다" />
+    </UnitTest>
+    <UnitTest name="가진_것이_필요한_것을_넘지_않는다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="70e6b23b-f1a0-7bd1-2c1d-8db824f1b514">
+      <Execution id="8779e3c3-da4f-4dec-835c-c86961ca51b2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DataIntegrityTests" name="가진_것이_필요한_것을_넘지_않는다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드면_빔_탐색도_같은_길을_고른다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="0edf457d-c947-e93f-a3ee-e9708baa7130">
+      <Execution id="e385e86a-ab8f-47cf-8190-383b879a99bb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.SeedDeterminismTests" name="같은_씨드면_빔_탐색도_같은_길을_고른다" />
+    </UnitTest>
+    <UnitTest name="장부마다_봉랍이_편지보다_모자라다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="4392c220-3261-3b83-cf1f-7dcf19f9ce32">
+      <Execution id="25960c2b-3360-4184-9629-cdf2df5345e6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DataIntegrityTests" name="장부마다_봉랍이_편지보다_모자라다" />
+    </UnitTest>
+    <UnitTest name="알려진_최선은_허가와_기각을_둘_다_쓴다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="19b443aa-ec3b-761c-73df-05b856bf255c">
+      <Execution id="d8542a4a-3f44-42a7-856d-4b0e52131612" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoDominantStrategyTests" name="알려진_최선은_허가와_기각을_둘_다_쓴다" />
+    </UnitTest>
+    <UnitTest name="표가_없는_열쇠는_한국어_원문을_그대로_준다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="49f2ab9c-5f5f-ddab-c1da-3459750fb579">
+      <Execution id="f6d1f3cc-0ec5-433b-95a3-db97ee3dd6e6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.LocalizationTests" name="표가_없는_열쇠는_한국어_원문을_그대로_준다" />
+    </UnitTest>
+    <UnitTest name="영어를_켜면_표가_원문을_덮는다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="840686a9-3e92-b790-033b-08e75642124d">
+      <Execution id="e8316705-4cfa-4d5c-a057-908ef4890ea7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.LocalizationTests" name="영어를_켜면_표가_원문을_덮는다" />
+    </UnitTest>
+    <UnitTest name="장부_셋_전부에서_최선인_정책이_없다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="950d9b1b-0896-29b9-59c3-76b22ebc151c">
+      <Execution id="38e9125a-249e-43c6-b9b1-6b83223de94f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.NoDominantStrategyTests" name="장부_셋_전부에서_최선인_정책이_없다" />
+    </UnitTest>
+    <UnitTest name="언어를_되돌리면_값도_되돌아온다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="2561f9af-478a-54ad-901d-962a7d4114ac">
+      <Execution id="baaa7f3e-d549-487e-b27f-ca58b9772e64" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.LocalizationTests" name="언어를_되돌리면_값도_되돌아온다" />
+    </UnitTest>
+    <UnitTest name="씨드가_실제로_무엇을_바꾸는가" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="58ec821b-c7a6-c9bb-855b-c003bdcf8826">
+      <Execution id="91c2adb3-fe87-4941-8bf8-420d42173fdb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.SeedDeterminismTests" name="씨드가_실제로_무엇을_바꾸는가" />
+    </UnitTest>
+    <UnitTest name="빠지는_자리마다_이름이_있고_익명의_세계가_없다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="02bbded8-8663-5704-b9f8-479e908edfe9">
+      <Execution id="1efc2d41-6c31-4fc5-9892-3f6cce7a7a69" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.DataIntegrityTests" name="빠지는_자리마다_이름이_있고_익명의_세계가_없다" />
+    </UnitTest>
+    <UnitTest name="들어준_만큼이_정확히_빠지고_그_자리에_이름이_있다" storage="c:\users\psi\orca\game\games\gods-secretary\testbuild\debug\net8.0\gods-secretary.tests.dll" id="2bf0be0f-d44d-8dd9-6820-06e04e12e196">
+      <Execution id="c19bf952-e25d-4091-82f0-e7dacca020a9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Secretary.Tests.ConservationHoldsTests" name="들어준_만큼이_정확히_빠지고_그_자리에_이름이_있다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8be98915-b722-c22f-e9df-a1bbf8e5782c" executionId="f9205a1d-ecab-472c-bb84-fcc91a8be481" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="70e6b23b-f1a0-7bd1-2c1d-8db824f1b514" executionId="8779e3c3-da4f-4dec-835c-c86961ca51b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2561f9af-478a-54ad-901d-962a7d4114ac" executionId="baaa7f3e-d549-487e-b27f-ca58b9772e64" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6790982b-ec37-cccd-bee4-6e9effb77c0e" executionId="16816329-faa6-4863-937d-6eae79338fe5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2bf0be0f-d44d-8dd9-6820-06e04e12e196" executionId="c19bf952-e25d-4091-82f0-e7dacca020a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19b443aa-ec3b-761c-73df-05b856bf255c" executionId="d8542a4a-3f44-42a7-856d-4b0e52131612" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="208e1c03-c77b-ecd6-c4f7-84a3326fe6b6" executionId="9a2407f6-002c-417f-8a27-da4a6b832d7f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58ec821b-c7a6-c9bb-855b-c003bdcf8826" executionId="91c2adb3-fe87-4941-8bf8-420d42173fdb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b10cded-aa64-9e61-ba05-22edd81b9048" executionId="cc3a51d2-c1d1-4f71-a10b-b49cd56273d2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4f8a2f30-656c-2b76-6a42-453e169728df" executionId="29c5a5a0-17ae-4cce-b9fa-d289fffc2b33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da503a36-27ab-e40a-51bd-5db0683d82ab" executionId="66cb2b14-11fd-407c-8670-5c4992627164" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49f2ab9c-5f5f-ddab-c1da-3459750fb579" executionId="f6d1f3cc-0ec5-433b-95a3-db97ee3dd6e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4392c220-3261-3b83-cf1f-7dcf19f9ce32" executionId="25960c2b-3360-4184-9629-cdf2df5345e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d58250a-15cf-9d9f-eb71-1d04ea991b97" executionId="19accbe2-7de5-4820-a860-1cc418f5b959" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="950d9b1b-0896-29b9-59c3-76b22ebc151c" executionId="38e9125a-249e-43c6-b9b1-6b83223de94f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02bbded8-8663-5704-b9f8-479e908edfe9" executionId="1efc2d41-6c31-4fc5-9892-3f6cce7a7a69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0edf457d-c947-e93f-a3ee-e9708baa7130" executionId="e385e86a-ab8f-47cf-8190-383b879a99bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="840686a9-3e92-b790-033b-08e75642124d" executionId="e8316705-4cfa-4d5c-a057-908ef4890ea7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43c88aad-474e-967b-bd23-24007d948b85" executionId="6c5aff60-5f28-4de8-ba51-8e4537b582a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00fb1460-a87d-676d-ac38-aee08e8ffebe" executionId="533080ad-2534-4876-a7cc-8ae0c03a3a17" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8de553b6-ae43-0f7f-133c-5eb53de7cb1b" executionId="2f0e09f6-8b04-4571-aa36-26e3d2e93a2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="daa3e729-5c37-1800-231d-8178a61de850" executionId="f2e12a19-a09e-4a3a-9ca4-c964112214ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e73dfce-8422-9da4-b87b-7336fc4576cf" executionId="a8258608-9213-490e-a43d-fccc8272dbf1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eb2e6c81-016c-f2bb-64fb-d1bf8f0b805b" executionId="2ab23029-3265-4b1f-aea3-0c3783062d66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2b8890e-0a17-29d3-96fc-7fd44fb4717b" executionId="5c5cf9c3-d4ee-491f-adef-38a4171f9870" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="25" executed="25" passed="25" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\gods-secretary\TestBuild\Debug\net8.0\gods-secretary.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 25 of 25 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+첫 철: 켠 세계 평균 753 · 끈 세계 평균 364 · 벌어짐 388&#xD;
+가문 철: 켠 세계 평균 917 · 끈 세계 평균 457 · 벌어짐 459&#xD;
+늦은 철: 켠 세계 평균 1023 · 끈 세계 평균 520 · 벌어짐 502&#xD;
+가장 작은 벌어짐 388 (기준 40)&#xD;
+&#xD;
+&#xD;
+첫 철: 켠 세계 최선 = 허가 48 기각 43 · 끈 세계 최선 = 허가 91 기각 0&#xD;
+가문 철: 켠 세계 최선 = 허가 40 기각 52 · 끈 세계 최선 = 허가 92 기각 0&#xD;
+늦은 철: 켠 세계 최선 = 허가 71 기각 22 · 끈 세계 최선 = 허가 93 기각 0&#xD;
+합계: 켠 세계 허가 159 기각 117 · 끈 세계 허가 276 기각 0&#xD;
+&#xD;
+&#xD;
+허가 1360건 · 이름이 붙은 차변 2627줄 전부 균형이 맞는다&#xD;
+&#xD;
+회차 384번 전부 장부가 맞는다&#xD;
+&#xD;
+== 첫 철 (v_first) 첫날 고통 150 · 날 6 · 편지 8&#xD;
+   비 총량 35&#xD;
+   숨 총량 28&#xD;
+   곡식 총량 30&#xD;
+   전부 허가            평균   803 | 759(6허0기0보) 754(6허0기0보) 924(5허0기0보) 761(6허0기0보) 750(6허0기0보) 916(5허0기0보) 808(6허0기0보) 759(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균   829 | 768(6허0기0보) 747(6허0기0보) 1012(5허0기0보) 775(6허0기0보) 750(6허0기0보) 1004(5허0기0보) 810(6허0기0보) 768(6허0기0보) &#xD;
+   전부 기각            평균  1096 | 1075(0허6기0보) 1015(0허6기0보) 1184(0허5기0보) 1096(0허6기0보) 1073(0허6기0보) 1168(0허5기0보) 1087(0허6기0보) 1075(0허6기0보) &#xD;
+   전부 보류            평균  1483 | 1543(0허0기6보) 1454(0허0기6보) 1448(0허0기5보) 1495(0허0기6보) 1468(0허0기6보) 1432(0허0기5보) 1487(0허0기6보) 1543(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균   803 | 784(6허0기0보) 734(6허0기0보) 913(5허0기0보) 775(6허0기0보) 746(6허0기0보) 905(5허0기0보) 787(6허0기0보) 784(6허0기0보) &#xD;
+   덜어질 때만           평균   751 | 741(3허3기0보) 691(3허3기0보) 864(3허2기0보) 702(3허3기0보) 679(3허3기0보) 856(3허2기0보) 738(3허3기0보) 741(3허3기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1055 | 934(2허2기2보) 1039(2허2기2보) 1175(2허2기1보) 1105(2허2기2보) 1082(2허2기2보) 1167(2허2기1보) 1007(2허2기2보) 934(2허2기2보) &#xD;
+   숨을 먼저            평균   780 | 778(6허0기0보) 738(6허0기0보) 877(5허0기0보) 724(6허0기0보) 695(6허0기0보) 860(5허0기0보) 791(6허0기0보) 778(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 726 · 허가 3 기각 3 보류 0 · 건너간 14 빠진 14&#xD;
+   [알려진 최선 씨드1] 674 · 허가 3 기각 3 보류 0 · 건너간 13 빠진 13&#xD;
+   [알려진 최선 씨드2] 844 · 허가 3 기각 2 보류 0 · 건너간 15 빠진 15&#xD;
+   [알려진 최선 씨드3] 700 · 허가 3 기각 3 보류 0 · 건너간 14 빠진 14&#xD;
+== 가문 철 (v_dry) 첫날 고통 141 · 날 6 · 편지 8&#xD;
+   비 총량 27&#xD;
+   숨 총량 26&#xD;
+   곡식 총량 29&#xD;
+   전부 허가            평균  1043 | 979(6허0기0보) 953(6허0기0보) 1001(6허0기0보) 1200(5허0기0보) 990(6허0기0보) 1098(5허0기0보) 1121(6허0기0보) 1005(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균  1082 | 1075(6허0기0보) 1050(6허0기0보) 947(6허0기0보) 1174(5허0기0보) 1058(6허0기0보) 1194(5허0기0보) 1061(6허0기0보) 1102(6허0기0보) &#xD;
+   전부 기각            평균  1123 | 1086(0허6기0보) 1033(0허6기0보) 1103(0허6기0보) 1219(0허5기0보) 1057(0허6기0보) 1207(0허5기0보) 1157(0허6기0보) 1122(0허6기0보) &#xD;
+   전부 보류            평균  1422 | 1414(0허0기6보) 1382(0허0기6보) 1441(0허0기6보) 1401(0허0기5보) 1411(0허0기6보) 1442(0허0기5보) 1447(0허0기6보) 1441(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균  1090 | 1037(6허0기0보) 1002(6허0기0보) 1100(6허0기0보) 1200(5허0기0보) 996(6허0기0보) 1225(5허0기0보) 1092(6허0기0보) 1068(6허0기0보) &#xD;
+   덜어질 때만           평균   969 | 917(3허3기0보) 923(3허3기0보) 957(3허3기0보) 1045(2허3기0보) 923(2허4기0보) 1052(4허1기0보) 996(3허3기0보) 944(3허3기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1226 | 1230(2허2기2보) 1177(2허2기2보) 1185(2허2기2보) 1278(2허2기1보) 1152(2허2기2보) 1266(2허2기1보) 1270(2허2기2보) 1257(2허2기2보) &#xD;
+   숨을 먼저            평균   947 | 902(6허0기0보) 936(6허0기0보) 919(6허0기0보) 1012(5허0기0보) 932(6허0기0보) 997(5허0기0보) 958(6허0기0보) 925(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 880 · 허가 3 기각 3 보류 0 · 건너간 10 빠진 10&#xD;
+   [알려진 최선 씨드1] 890 · 허가 3 기각 3 보류 0 · 건너간 10 빠진 10&#xD;
+   [알려진 최선 씨드2] 903 · 허가 2 기각 4 보류 0 · 건너간 4 빠진 4&#xD;
+   [알려진 최선 씨드3] 989 · 허가 2 기각 3 보류 0 · 건너간 4 빠진 4&#xD;
+== 늦은 철 (v_late) 첫날 고통 162 · 날 6 · 편지 8&#xD;
+   비 총량 29&#xD;
+   숨 총량 29&#xD;
+   곡식 총량 30&#xD;
+   전부 허가            평균  1112 | 1120(6허0기0보) 1192(5허0기0보) 1069(6허0기0보) 1117(6허0기0보) 1061(6허0기0보) 998(6허0기0보) 1129(6허0기0보) 1213(6허0기0보) &#xD;
+   넉넉한 쪽에서          평균  1177 | 1169(6허0기0보) 1246(5허0기0보) 1172(6허0기0보) 1188(6허0기0보) 1111(6허0기0보) 1104(6허0기0보) 1173(6허0기0보) 1256(6허0기0보) &#xD;
+   전부 기각            평균  1261 | 1286(0허6기0보) 1304(0허5기0보) 1244(0허6기0보) 1246(0허6기0보) 1198(0허6기0보) 1168(0허6기0보) 1266(0허6기0보) 1378(0허6기0보) &#xD;
+   전부 보류            평균  1638 | 1677(0허0기6보) 1566(0허0기5보) 1656(0허0기6보) 1641(0허0기6보) 1602(0허0기6보) 1602(0허0기6보) 1635(0허0기6보) 1731(0허0기6보) &#xD;
+   가장 모자란 쪽부터       평균  1110 | 1120(6허0기0보) 1214(5허0기0보) 1048(6허0기0보) 1105(6허0기0보) 1062(6허0기0보) 993(6허0기0보) 1129(6허0기0보) 1212(6허0기0보) &#xD;
+   덜어질 때만           평균  1037 | 1052(4허2기0보) 1102(4허1기0보) 1034(4허2기0보) 1050(4허2기0보) 979(4허2기0보) 958(5허1기0보) 1039(4허2기0보) 1088(5허1기0보) &#xD;
+   봉랍을 돌려 찍는다       평균  1299 | 1380(2허2기2보) 1336(2허2기1보) 1200(2허2기2보) 1328(2허2기2보) 1224(2허2기2보) 1142(2허2기2보) 1336(2허2기2보) 1446(2허2기2보) &#xD;
+   숨을 먼저            평균  1069 | 1083(6허0기0보) 1142(5허0기0보) 1045(6허0기0보) 1074(6허0기0보) 1008(6허0기0보) 971(6허0기0보) 1071(6허0기0보) 1165(6허0기0보) &#xD;
+   [알려진 최선 씨드0] 1037 · 허가 5 기각 1 보류 0 · 건너간 17 빠진 17&#xD;
+   [알려진 최선 씨드1] 1092 · 허가 4 기각 1 보류 0 · 건너간 16 빠진 16&#xD;
+   [알려진 최선 씨드2] 997 · 허가 4 기각 2 보류 0 · 건너간 15 빠진 15&#xD;
+   [알려진 최선 씨드3] 1028 · 허가 4 기각 2 보류 0 · 건너간 15 빠진 15&#xD;
+&#xD;
+&#xD;
+첫 철: 최선 768 · 전부 허가 824 · 전부 기각 1117 · 전부 보류 1485&#xD;
+가문 철: 최선 943 · 전부 허가 1031 · 전부 기각 1114 · 전부 보류 1419&#xD;
+늦은 철: 최선 1041 · 전부 허가 1111 · 전부 기각 1260 · 전부 보류 1630&#xD;
+&#xD;
+&#xD;
+첫 철 알려진 최선 합계: 허가 48 기각 43 보류 0 · 둘 다 쓴 씨드 16/16&#xD;
+가문 철 알려진 최선 합계: 허가 40 기각 52 보류 0 · 둘 다 쓴 씨드 16/16&#xD;
+늦은 철 알려진 최선 합계: 허가 71 기각 22 보류 0 · 둘 다 쓴 씨드 14/16&#xD;
+&#xD;
+&#xD;
+첫 철: 알려진 최선 753 · 가장 가까운 정책 「덜어질 때만」 768 (차이 15)&#xD;
+가문 철: 알려진 최선 917 · 가장 가까운 정책 「숨을 먼저」 943 (차이 25)&#xD;
+늦은 철: 알려진 최선 1023 · 가장 가까운 정책 「덜어질 때만」 1041 (차이 18)&#xD;
+&#xD;
+&#xD;
+== 첫 철&#xD;
+   전부 허가            평균   824&#xD;
+   넉넉한 쪽에서          평균   861&#xD;
+   전부 기각            평균  1117&#xD;
+   전부 보류            평균  1485&#xD;
+   가장 모자란 쪽부터       평균   819&#xD;
+   덜어질 때만           평균   768  ← 최선&#xD;
+   봉랍을 돌려 찍는다       평균  1073&#xD;
+   숨을 먼저            평균   793&#xD;
+   최선-최악 차이 717&#xD;
+== 가문 철&#xD;
+   전부 허가            평균  1031&#xD;
+   넉넉한 쪽에서          평균  1083&#xD;
+   전부 기각            평균  1114&#xD;
+   전부 보류            평균  1419&#xD;
+   가장 모자란 쪽부터       평균  1083&#xD;
+   덜어질 때만           평균   962&#xD;
+   봉랍을 돌려 찍는다       평균  1219&#xD;
+   숨을 먼저            평균   943  ← 최선&#xD;
+   최선-최악 차이 475&#xD;
+== 늦은 철&#xD;
+   전부 허가            평균  1111&#xD;
+   넉넉한 쪽에서          평균  1178&#xD;
+   전부 기각            평균  1260&#xD;
+   전부 보류            평균  1630&#xD;
+   가장 모자란 쪽부터       평균  1114&#xD;
+   덜어질 때만           평균  1041  ← 최선&#xD;
+   봉랍을 돌려 찍는다       평균  1300&#xD;
+   숨을 먼저            평균  1072&#xD;
+   최선-최악 차이 588&#xD;
+최선이 된 정책 2가지: 덜어질 때만 · 숨을 먼저&#xD;
+&#xD;
+&#xD;
+일부러 고친 장부에서 공짜 허가 198건을 찾아냈다:&#xD;
+  날 0 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_f_lina 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 13 · need 9)&#xD;
+  날 1 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 2 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 1 · p_d_noor 를 s_kaid 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 12 · need 8)&#xD;
+  날 0 · p_l_marco 를 s_hessa 에게서 1 빼 들어줬는데 그 자리의 고통이 오르지 않았다 (have 17 · need 13)&#xD;
+&#xD;
+&#xD;
+뒤진 수 76447번 · 공짜 허가 0건 · 가장 싼 허가의 값 3 (p_f_hessa / s_oren / 1)&#xD;
+&#xD;
+알려진 최선의 길에서 뒤진 수 7320번 · 공짜 허가 0건&#xD;
+&#xD;
+v_first: 서로 다른 도착표 15가지 · 서로 다른 결과 15가지&#xD;
+v_dry: 서로 다른 도착표 15가지 · 서로 다른 결과 13가지&#xD;
+v_late: 서로 다른 도착표 15가지 · 서로 다른 결과 15가지&#xD;
+&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

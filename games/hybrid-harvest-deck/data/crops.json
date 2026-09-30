@@ -1,0 +1,47 @@
+{
+  "_": "작물. 밭이 덱을 만든다 — 작물→카드 대응은 여기에만 적는다(별도 파일로 흩뜨리지 않는다).",
+  "_수치": "전부 정수. growTurns=성숙까지 턴, waterPerTurn=턴당 물, seedCost=심는 데 드는 씨앗.",
+  "_대응": "cardId + cardsPerHarvest 가 '이 카드를 뽑고 싶으면 이 작물을 심어야 한다'를 만든다.",
+  "crops": [
+    {
+      "id": "crop_turnip", "nameKo": "순무", "nameEn": "Turnip",
+      "growTurns": 1, "waterPerTurn": 1, "seedCost": 1,
+      "seasons": ["season_spring", "season_summer", "season_autumn"],
+      "cardId": "card_slash", "cardsPerHarvest": 2,
+      "glyph": "turnip", "sortOrder": 0,
+      "note": "싸고 빨리 는다. 덱을 묽게 만든다"
+    },
+    {
+      "id": "crop_pumpkin", "nameKo": "호박", "nameEn": "Pumpkin",
+      "growTurns": 3, "waterPerTurn": 1, "seedCost": 2,
+      "seasons": ["season_spring", "season_summer", "season_autumn"],
+      "cardId": "card_bulwark", "cardsPerHarvest": 2,
+      "glyph": "pumpkin", "sortOrder": 1,
+      "note": "밭을 오래 묶는다"
+    },
+    {
+      "id": "crop_chili", "nameKo": "고추", "nameEn": "Chili",
+      "growTurns": 2, "waterPerTurn": 2, "seedCost": 2,
+      "seasons": ["season_summer", "season_autumn"],
+      "cardId": "card_ember", "cardsPerHarvest": 2,
+      "glyph": "chili", "sortOrder": 2,
+      "note": "물을 두 배 먹는다 — 물 자원과 경쟁한다"
+    },
+    {
+      "id": "crop_herb", "nameKo": "약초", "nameEn": "Herb",
+      "growTurns": 2, "waterPerTurn": 1, "seedCost": 2,
+      "seasons": ["season_spring", "season_summer", "season_autumn"],
+      "cardId": "card_sort", "cardsPerHarvest": 2,
+      "glyph": "herb", "sortOrder": 3,
+      "note": "아무 계절에나 자란다. 덱을 얇게 유지하는 유일한 수단을 낸다"
+    },
+    {
+      "id": "crop_wheat", "nameKo": "밀", "nameEn": "Wheat",
+      "growTurns": 2, "waterPerTurn": 1, "seedCost": 3,
+      "seasons": ["season_autumn"],
+      "cardId": "card_harvest", "cardsPerHarvest": 2,
+      "glyph": "wheat", "sortOrder": 4,
+      "note": "가을에만. 덱 구성 전체를 보상한다"
+    }
+  ]
+}

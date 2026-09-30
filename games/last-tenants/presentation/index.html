@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>철거 고지서 — last-tenants</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 파형도, 선택지 표도, 세 세계 비교도 전부
+  data/*.json 에서 계산한다. 규칙(침묵의 게이트 · 경감 백분율 · 유예의 파급)은 src/ 의 C# 과
+  같은 식을 쓴다.
+
+  **목업은 씨드를 돌리지 않는다.** 소리마다 slotOptions 의 첫 시간대에 놓고 거짓은 뽑지 않는다
+  — 씨드가 무엇을 바꾸는지는 검사기(tests/)가 본다. 여기서 보여 주려는 것은 하나다:
+  **파형이 있는 칸과 없는 칸이 화면에서 다르게 보이고, 그 차이가 수치를 바꾼다.**
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/last-tenants && python -m http.server 8101
+      → http://localhost:8101/presentation/index.html
+-->
+<style>
+@font-face { font-family:"GothicA1"; src:url("assets/fonts/GothicA1-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"GothicA1"; src:url("assets/fonts/GothicA1-Bold.ttf") format("truetype"); font-weight:700; font-display:swap; }
+@font-face { font-family:"NanumGothicCoding"; src:url("assets/fonts/NanumGothicCoding-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root {
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --paper:#E6E1D3; --paperLit:#F2EFE5; --paperDim:#D5CFBC; --paperShade:#BEB7A2;
+  --rule:#9C9684; --ruleHeavy:#5F5A4C; --ink:#17160F; --inkSoft:#4B483C; --inkFaint:#7A7566;
+  --seal:#A81F17; --sealFaded:#C4685F;
+  --sTitle:34px; --sHead:21px; --sBody:15px; --sHint:12px; --sNum:13px;
+  --trkTitle:8px; --trkHead:2px;
+  --cellW:232px; --cellH:132px; --ruleW:1px; --ruleHW:2px; --floorW:44px;
+  --maxW:1140px; --gutter:20px; --secGap:34px;
+  --waveH:34px; --fibreP:3px; --fibreA:.06; --foldA:.09; --vig:.14;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body {
+  background:var(--paper); color:var(--ink);
+  font-family:"GothicA1", system-ui, sans-serif; font-size:var(--sBody); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+body::before {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, rgba(23,22,15,var(--fibreA)) 0 1px, transparent 1px var(--fibreP)),
+    repeating-linear-gradient(90deg, rgba(23,22,15,.035) 0 1px, transparent 1px var(--fibreP));
+}
+body::after {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 38%, transparent 56%, rgba(23,22,15,var(--vig)) 100%);
+}
+main { position:relative; z-index:1; max-width:var(--maxW); margin:0 auto; padding:34px var(--gutter) 90px; }
+
+.sheet {
+  position:relative; background:linear-gradient(175deg, var(--paperLit), var(--paper) 45%, var(--paperDim));
+  border:var(--ruleW) solid var(--ruleHeavy);
+  padding:26px 28px 30px; margin:0 0 var(--secGap);
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset, 0 8px 18px -12px rgba(23,22,15,.4);
+}
+.sheet .folds { position:absolute; inset:0; pointer-events:none; }
+.sheet .folds i { position:absolute; top:0; bottom:0; width:1px; background:rgba(23,22,15,var(--foldA)); }
+
+h1 { font-weight:700; font-size:var(--sTitle); letter-spacing:var(--trkTitle); margin:0 0 4px; line-height:1.25; }
+h2 { font-weight:700; font-size:var(--sHead); letter-spacing:var(--trkHead);
+     margin:0 0 6px; padding-bottom:5px; border-bottom:var(--ruleHW) solid var(--ruleHeavy); }
+h2 .no { font-family:"NanumGothicCoding",monospace; color:var(--seal); margin-right:10px; font-size:.82em; }
+h3 { font-size:var(--sBody); font-weight:700; margin:20px 0 6px; color:var(--inkSoft); }
+p { margin:6px 0 12px; max-width:78ch; }
+.hint { font-size:var(--sHint); color:var(--inkSoft); }
+.lede { font-size:calc(var(--sBody) + 2px); }
+em { font-style:normal; border-bottom:2px solid var(--seal); }
+b,strong { font-weight:700; }
+code, .num { font-family:"NanumGothicCoding",monospace; font-size:var(--sNum); }
+.red { color:var(--seal); }
+.faint { color:var(--inkFaint); }
+
+table { border-collapse:collapse; width:100%; margin:10px 0 8px; font-size:var(--sNum); }
+th,td { padding:5px 8px; border:var(--ruleW) solid var(--rule); text-align:left; }
+th { background:rgba(23,22,15,.055); font-weight:700; font-size:var(--sHint); letter-spacing:1px; }
+td.n, th.n { text-align:right; font-family:"NanumGothicCoding",monospace; }
+tr.hi td { background:rgba(168,31,23,.08); }
+tr.dim td { color:var(--inkFaint); }
+
+/* 배치도 — 층 x 좌우의 표. 칸 하나가 세대 하나다 */
+.plan { display:flex; margin:14px 0 4px; }
+.plan .floors { width:var(--floorW); }
+.plan .floors div {
+  height:var(--cellH); display:flex; align-items:center; justify-content:center;
+  border:var(--ruleW) solid var(--rule); border-right:none;
+  font-family:"NanumGothicCoding",monospace; font-size:var(--sHint); color:var(--inkSoft);
+  background:rgba(23,22,15,.045);
+}
+.plan .rows { flex:1; }
+.plan .row { display:grid; grid-template-columns:1fr 1fr; }
+.cell {
+  height:var(--cellH); border:var(--ruleW) solid var(--rule); padding:7px 9px 6px;
+  position:relative; background:transparent; text-align:left; width:100%; cursor:pointer;
+  font:inherit; color:inherit; display:flex; flex-direction:column; gap:2px;
+}
+.cell:hover { background:rgba(23,22,15,.04); }
+.cell .no { font-family:"NanumGothicCoding",monospace; font-size:var(--sBody); font-weight:700; }
+.cell .who { font-size:var(--sHint); color:var(--inkSoft); line-height:1.35; }
+.cell .amb { position:absolute; right:9px; top:7px; font-family:"NanumGothicCoding",monospace;
+             font-size:var(--sHint); color:var(--inkFaint); }
+.cell.silent .amb { color:var(--seal); }
+.cell .slot { margin-top:auto; }
+.cell.listened { box-shadow:0 0 0 var(--ruleHW) var(--ruleHeavy) inset; }
+.cell .lv { text-align:right; min-height:16px; line-height:1.3;
+            font-family:"NanumGothicCoding",monospace; font-size:var(--sHint); color:var(--inkSoft); }
+.cell.helped { background:rgba(168,31,23,.10); }
+.wave { width:100%; height:var(--waveH); display:block; }
+.wavebox { width:100%; height:var(--waveH); display:flex; align-items:center; justify-content:center;
+           font-size:var(--sHint); letter-spacing:1px; }
+.wavebox.silence { border:1px dashed var(--seal); color:var(--seal); }
+.wavebox.unheard { border:1px dotted var(--rule); color:var(--inkFaint); }
+
+.tabs { display:flex; flex-wrap:wrap; margin:10px 0 2px; }
+.tabs button {
+  font:inherit; font-size:var(--sHint); letter-spacing:1px; padding:5px 13px;
+  border:var(--ruleW) solid var(--rule); background:transparent; color:var(--inkSoft);
+  cursor:pointer; margin-right:-1px;
+}
+.tabs button.on { background:var(--ink); color:var(--paperLit); border-color:var(--ink); font-weight:700; }
+.tabs button.spent { color:var(--inkFaint); background:rgba(23,22,15,.09); }
+.pick { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0 2px; }
+.pick button {
+  font:inherit; font-size:var(--sHint); padding:4px 11px;
+  border:var(--ruleW) solid var(--rule); background:transparent; cursor:pointer; color:var(--ink);
+}
+.pick button.on { background:var(--seal); color:#FBF8F2; border-color:var(--seal); font-weight:700; }
+
+.headrow { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
+.meta { font-family:"NanumGothicCoding",monospace; font-size:var(--sNum); color:var(--inkSoft); }
+.meta div { white-space:nowrap; }
+.grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:10px 26px; }
+.heard { border-left:var(--ruleHW) solid var(--rule); padding:2px 0 2px 12px; margin:8px 0; }
+.heard div { font-size:var(--sHint); margin:3px 0; }
+.heard .when { font-family:"NanumGothicCoding",monospace; color:var(--inkFaint); margin-right:7px; }
+.err { color:var(--seal); font-weight:700; }
+.bar { display:inline-block; height:9px; background:var(--ink); vertical-align:middle; }
+.bar.s { background:var(--seal); }
+svg { display:block; overflow:visible; }
+@media (max-width:760px) { .plan .row { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">고지서를 붙이는 중… (화면이 비어 있다면 <code>python -m http.server 8101</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ─────────────────────────────
+const FILES = ["needs", "buildings", "households", "cues", "balance"];
+let D = {}, PAL = null;
+
+async function load() {
+  const raw = {};
+  await Promise.all(FILES.map(async n => {
+    raw[n] = await (await fetch("../data/" + n + ".json")).json();
+  }));
+  PAL = await (await fetch("palette.json")).json();
+
+  D.bal = raw.balance;
+  D.needsOrder = raw.needs.needs.map(n => n.id);
+  D.needs = {}; raw.needs.needs.forEach(n => D.needs[n.id] = n);
+  D.buildings = raw.buildings.buildings;
+  D.bldById = {}; D.buildings.forEach(b => D.bldById[b.id] = b);
+  D.units = {}; D.buildings.forEach(b => b.units.forEach(u => D.units[u.id] = u));
+  D.hh = {}; raw.households.households.forEach(h => D.hh[h.id] = h);
+  D.byBuilding = {};
+  D.buildings.forEach(b => {
+    D.byBuilding[b.id] = raw.households.households
+      .filter(h => h.buildingId === b.id)
+      .sort((a, c) => D.units[a.unitId].unitNo.localeCompare(D.units[c.unitId].unitNo));
+  });
+  D.cuesByBuilding = {};
+  D.buildings.forEach(b => {
+    D.cuesByBuilding[b.id] = raw.cues.cues
+      .filter(c => D.hh[c.atHouseholdId].buildingId === b.id)
+      .sort((a, c) => a.id.localeCompare(c.id));
+  });
+}
+
+function applyPalette() {
+  const s = document.documentElement.style, c = PAL.color, t = PAL.type,
+        g = PAL.grid, l = PAL.layout, w = PAL.waveform, p = PAL.paper;
+  s.setProperty("--paper", c.newsprint); s.setProperty("--paperLit", c.newsprintLit);
+  s.setProperty("--paperDim", c.newsprintDim); s.setProperty("--paperShade", c.newsprintShade);
+  s.setProperty("--rule", c.rule); s.setProperty("--ruleHeavy", c.ruleHeavy);
+  s.setProperty("--ink", c.ink); s.setProperty("--inkSoft", c.inkSoft); s.setProperty("--inkFaint", c.inkFaint);
+  s.setProperty("--seal", c.seal); s.setProperty("--sealFaded", c.sealFaded);
+  s.setProperty("--sTitle", t.sizeTitle + "px"); s.setProperty("--sHead", t.sizeHeading + "px");
+  s.setProperty("--sBody", t.sizeBody + "px"); s.setProperty("--sHint", t.sizeHint + "px");
+  s.setProperty("--sNum", t.sizeNumeral + "px");
+  s.setProperty("--trkTitle", t.trackingTitle + "px"); s.setProperty("--trkHead", t.trackingHeading + "px");
+  s.setProperty("--cellH", g.cellHeightPx + "px"); s.setProperty("--ruleW", g.ruleWidthPx + "px");
+  s.setProperty("--ruleHW", g.ruleHeavyWidthPx + "px"); s.setProperty("--floorW", g.floorLabelWidthPx + "px");
+  s.setProperty("--maxW", l.maxWidthPx + "px"); s.setProperty("--gutter", l.gutterPx + "px");
+  s.setProperty("--secGap", l.sectionGapPx + "px");
+  s.setProperty("--waveH", w.slotHeightPx + "px");
+  s.setProperty("--fibreP", p.fibrePitchPx + "px"); s.setProperty("--fibreA", p.fibreOpacity / 100);
+  s.setProperty("--foldA", p.foldOpacity / 100); s.setProperty("--vig", p.vignette);
+}
+
+// ── 규칙. src/ 의 C# 과 같은 식이다 ───────────────────────────────────────────
+const isSilent = id => D.hh[id].voice === "silent";
+
+/**
+ * 하루 하나. mode 가 세 세계를 가른다.
+ *   on             이 PoC. 이웃의 말은 침묵을 확인한 뒤에야 확신이 된다
+ *   noSilentDoors  침묵한 문에 귀를 댈 수 없다
+ *   asSound        침묵한 칸이 자기 문에서 자기 사정을 말한다 (침묵이 사라진 세계)
+ * 씨드는 돌리지 않는다 — slotOptions 의 첫 시간대에 놓고 거짓은 뽑지 않는다.
+ */
+function buildNight(bid, mode) {
+  const hs = D.byBuilding[bid], slots = D.bal.day.slotCount;
+  const idx = {}; hs.forEach((h, i) => idx[h.id] = i);
+  const heard = hs.map(() => Array.from({ length: slots }, () => []));
+  const cues = [];
+  D.cuesByBuilding[bid].forEach(c => {
+    const r = {
+      id: c.id, at: c.atHouseholdId, about: c.aboutHouseholdId, slot: c.slotOptions[0],
+      loud: c.loudnessPercent, effect: c.effect, need: c.needId, text: c.text,
+      slotOptions: c.slotOptions, falsifiable: c.falsifiable
+    };
+    if (mode === "asSound" && r.about !== r.at && isSilent(r.about)) r.at = r.about;
+    cues.push(r);
+    heard[idx[r.at]][r.slot].push(r);
+  });
+  return { bid, hs, idx, slots, heard, cues, mode,
+           gate: mode !== "asSound", forbidSilent: mode === "noSilentDoors" };
+}
+
+/** 귀를 댄 목록에서 세대별로 아는 것을 계산한다. 듣는 순서는 결론을 바꾸지 않는다. */
+function beliefs(n, listens) {
+  const st = n.hs.map(() => ({ trues: [], lies: [], hint: 0, stakes: 0, vacant: 0, silence: 0 }));
+  listens.forEach(([d, s]) => {
+    if (isSilent(n.hs[d].id)) st[d].silence++;
+    n.heard[d][s].forEach(c => {
+      const a = n.idx[c.about]; if (a === undefined) return;
+      if (c.effect === "need") st[a].trues.push(c.need);
+      else if (c.effect === "mislead") st[a].lies.push(c.need);
+      else if (c.effect === "stakes") st[a].stakes++;
+      else if (c.effect === "vacant") st[a].vacant++;
+      else st[a].hint++;
+    });
+  });
+  const byOrder = a => a.slice().sort((x, y) => D.needsOrder.indexOf(x) - D.needsOrder.indexOf(y))[0];
+  return st.map((x, i) => {
+    const b = { level: 0, need: null, misled: false, confirmed: x.silence > 0 };
+    const gated = n.gate && isSilent(n.hs[i].id) && x.silence === 0;
+    if (gated) {
+      b.level = (x.hint || x.trues.length || x.lies.length || x.vacant || x.stakes) ? 1 : 0;
+      return b;
+    }
+    if (x.vacant > 0) { b.level = 3; b.need = "need_none"; return b; }
+    if (x.trues.length) { b.level = x.stakes > 0 ? 3 : 2; b.need = byOrder(x.trues); return b; }
+    if (x.lies.length) { b.level = 2; b.need = byOrder(x.lies); b.misled = true; return b; }
+    b.level = (x.hint > 0 || x.stakes > 0 || x.silence > 0) ? 1 : 0;
+    return b;
+  });
+}
+
+/** 유예 graceDays 일이 가중치 weight 인 집에 얹는 손실. 나머지를 하루마다 누적한다. */
+function spill(graceDays, weight, flat) {
+  let total = 0, rem = 0;
+  for (let g = 0; g < graceDays; g++) { const num = flat * weight + rem; total += Math.floor(num / 100); rem = num % 100; }
+  return total;
+}
+
+/** 한 집을 골라 도운 결과. 하루에 들어가지 않으면 null. */
+function help(n, bs, ci, start) {
+  const hb = D.bal.help, b = bs[ci];
+  let slots, grace, pct, believed = b.need;
+  if (b.level >= 2 && believed) {
+    const nd = D.needs[believed];
+    slots = nd.slotsRequired; grace = nd.graceCost;
+    pct = b.misled ? hb.wrongNeedReliefPercent : hb.reliefPercentByLevel[b.level];
+  } else {
+    slots = hb.blindSlotsRequired; grace = hb.blindGraceCost;
+    pct = hb.reliefPercentByLevel[Math.max(0, b.level)]; believed = null;
+  }
+  if (start < 0 || start + slots > n.slots) return null;
+  if (grace > D.bldById[n.bid].graceDaysTotal) return null;
+  const flat = D.bal.spillover.perGraceFlat, fin = [];
+  let others = 0, sp = 0;
+  n.hs.forEach((h, i) => {
+    if (i === ci) return;
+    const s = spill(grace, h.spilloverWeightPercent, flat);
+    sp += s; fin[i] = h.baseStakes + s; others += fin[i];
+  });
+  const c = n.hs[ci], relief = Math.floor(c.baseStakes * pct / 100);
+  fin[ci] = c.baseStakes - relief;
+  return { ci, id: c.id, start, slots, grace, level: b.level, misled: b.misled, believed,
+           relief, remaining: fin[ci], spill: sp, others, total: others + fin[ci], fin };
+}
+
+function noOne(n) {
+  let t = 0; const fin = n.hs.map(h => { t += h.baseStakes; return h.baseStakes; });
+  return { ci: -1, total: t, others: t, fin, spill: 0, relief: 0, grace: 0 };
+}
+
+/**
+ * 하루를 전수 탐색한다. 얻을 것이 없는 문에 귀를 대는 가지만 지운다
+ * (그 가지는 쉬는 것과 결과가 같으므로 최선을 잃지 않는다).
+ */
+function exhaustive(n) {
+  const best = new Array(n.hs.length).fill(null);
+  const listens = [], silCount = new Array(n.hs.length).fill(0);
+  let nodes = 0;
+  (function dfs(slot) {
+    nodes++;
+    const bs = beliefs(n, listens);
+    for (let c = 0; c < n.hs.length; c++) {
+      const o = help(n, bs, c, slot);
+      if (!o) continue;
+      o.plan = listens.slice();
+      if (!best[c] || o.total < best[c].total
+          || (o.total === best[c].total && o.plan.length < best[c].plan.length)) best[c] = o;
+    }
+    if (slot >= n.slots) return;
+    dfs(slot + 1);
+    for (let d = 0; d < n.hs.length; d++) {
+      const silent = isSilent(n.hs[d].id);
+      if (n.forbidSilent && silent) continue;
+      if (!n.heard[d][slot].length && !(silent && silCount[d] === 0)) continue;
+      listens.push([d, slot]); if (silent) silCount[d]++;
+      dfs(slot + 1);
+      listens.pop(); if (silent) silCount[d]--;
+    }
+  })(0);
+  const rows = best.filter(Boolean);
+  return { best, rows, noOne: noOne(n), nodes };
+}
+
+/** 두 축(건짐 · 물림)에서 지배되지 않는 선택지들. 하나뿐이면 지배적 최선이 있다는 뜻이다. */
+function pareto(rows) {
+  return rows.filter(a => !rows.some(b =>
+    b !== a && b.relief >= a.relief && b.spill <= a.spill
+    && (b.relief > a.relief || b.spill < a.spill)));
+}
+
+// ── 그리기 ───────────────────────────────────────────────────────────────────
+const S = { bid: null, curSlot: 0, slotAction: [], helpCi: -1 };
+const esc = s => String(s).replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m]));
+const slotName = s => D.bal.day.slotNames[s];
+const slotHours = s => {
+  const h = (D.bal.day.startHour + s * (D.bal.day.slotMinutes / 60)) % 24;
+  const e = (h + D.bal.day.slotMinutes / 60) % 24;
+  const p = v => String(v).padStart(2, "0");
+  return p(h) + "–" + p(e);
+};
+const listensOf = () => { const o = []; S.slotAction.forEach((d, s) => { if (d >= 0) o.push([d, s]); }); return o; };
+const helpStart = () => { let m = -1; S.slotAction.forEach((d, s) => { if (d >= 0) m = s; }); return m + 1; };
+
+/** 파형. 막대 높이는 들은 소리의 크기에서 계산한다 — 손으로 그리지 않는다. */
+function waveSvg(loud, faint) {
+  const p = PAL.waveform, n = p.barCount, bw = p.barWidthPx, gap = p.barGapPx;
+  let s = "";
+  for (let i = 0; i < n; i++) {
+    const t = n === 1 ? 0 : i / (n - 1);
+    const env = Math.abs((0.55 + 0.45 * Math.sin(t * Math.PI * 3.1 + 0.7)) * (0.7 + 0.3 * Math.sin(t * Math.PI * 7.3)));
+    const h = Math.max(p.minBarPx, Math.round(p.minBarPx + (p.maxBarPx - p.minBarPx) * loud / 100 * env));
+    s += '<rect x="' + (i * (bw + gap)) + '" y="' + ((p.slotHeightPx - h) / 2) + '" width="' + bw
+       + '" height="' + h + '" fill="' + p.strokeColor + '" opacity="' + (faint ? 0.34 : 1) + '"/>';
+  }
+  const w = n * (bw + gap) - gap;
+  return '<svg class="wave" viewBox="0 0 ' + w + ' ' + p.slotHeightPx + '" preserveAspectRatio="none">' + s + "</svg>";
+}
+
+function sealSvg() {
+  const p = PAL.seal, r = p.radiusPx, c = PAL.color.seal, d = r * 2 + 8;
+  return '<svg width="' + d + '" height="' + d + '" viewBox="0 0 ' + d + ' ' + d
+    + '" style="transform:rotate(' + p.rotateDeg + 'deg);opacity:' + (p.inkOpacity / 100) + '">'
+    + '<circle cx="' + (d / 2) + '" cy="' + (d / 2) + '" r="' + r + '" fill="none" stroke="' + c
+    + '" stroke-width="' + p.ringWidthPx + '"/>'
+    + '<circle cx="' + (d / 2) + '" cy="' + (d / 2) + '" r="' + (r - p.innerGapPx) + '" fill="none" stroke="' + c
+    + '" stroke-width="' + p.innerRingWidthPx + '"/>'
+    + '<text x="' + (d / 2) + '" y="' + (d / 2 - 12) + '" text-anchor="middle" fill="' + c
+    + '" font-size="13" letter-spacing="2" font-family="GothicA1,sans-serif">' + esc(p.textTop) + "</text>"
+    + '<text x="' + (d / 2) + '" y="' + (d / 2 + 26) + '" text-anchor="middle" fill="' + c
+    + '" font-size="30" font-weight="700" letter-spacing="4" font-family="GothicA1,sans-serif">'
+    + esc(p.textBottom) + "</text></svg>";
+}
+
+function planCell(n, i, bs) {
+  const h = n.hs[i], u = D.units[h.unitId], silent = isSilent(h.id);
+  const slotsHere = S.slotAction.map((d, s) => d === i ? s : -1).filter(s => s >= 0);
+  const listened = slotsHere.length > 0;
+  const hs = helpStart();
+  const helped = S.helpCi === i;
+  let loudest = -1, texts = [];
+  slotsHere.forEach(s => n.heard[i][s].forEach(c => {
+    if (c.loud > loudest) loudest = c.loud;
+    texts.push(c);
+  }));
+  let slotHtml;
+  if (!listened) {
+    slotHtml = '<div class="wavebox unheard">' + esc(PAL.waveform.unheardLabel) + "</div>";
+  } else if (silent) {
+    slotHtml = '<div class="wavebox silence">' + esc(PAL.waveform.silenceLabel) + "</div>";
+  } else if (loudest >= 0) {
+    slotHtml = waveSvg(loudest, false);
+  } else {
+    slotHtml = waveSvg(h.ambientLoudnessPercent, true);
+  }
+  const b = bs[i];
+  const lv = listened || b.level > 0
+    ? "Lv" + b.level + (b.misled ? "*" : "") + (b.need ? " " + esc(D.needs[b.need].name) : "")
+    : "";
+  return '<button class="cell' + (silent ? " silent" : "") + (listened ? " listened" : "")
+    + (helped ? " helped" : "") + '" data-door="' + i + '">'
+    + '<span class="amb">' + (silent ? "무음" : h.ambientLoudnessPercent + "%") + "</span>"
+    + '<span class="no">' + esc(u.unitNo) + "</span>"
+    + '<span class="who">' + esc(h.name) + "</span>"
+    + '<span class="slot">' + slotHtml + "</span>"
+    + '<span class="lv">' + lv + "</span></button>";
+}
+
+function planTable(n, bs) {
+  const floors = [...new Set(n.hs.map(h => D.units[h.unitId].floor))].sort((a, b) => b - a);
+  let rows = "", labels = "";
+  floors.forEach(f => {
+    labels += "<div>" + f + "층</div>";
+    const left = n.hs.findIndex(h => D.units[h.unitId].floor === f && D.units[h.unitId].side === "left");
+    const right = n.hs.findIndex(h => D.units[h.unitId].floor === f && D.units[h.unitId].side === "right");
+    rows += '<div class="row">' + planCell(n, left, bs) + planCell(n, right, bs) + "</div>";
+  });
+  return '<div class="plan"><div class="floors">' + labels + '</div><div class="rows">' + rows + "</div></div>";
+}
+
+function slotTabs() {
+  let h = '<div class="tabs">';
+  for (let s = 0; s < D.bal.day.slotCount; s++) {
+    const used = S.slotAction[s] >= 0, on = s === S.curSlot;
+    h += '<button data-slot="' + s + '" class="' + (on ? "on" : (used ? "spent" : "")) + '">'
+      + slotName(s) + " " + slotHours(s) + (used ? " ●" : "") + "</button>";
+  }
+  return h + "</div>";
+}
+
+function choiceTable(n, rows, nn, best) {
+  const front = new Set(pareto(rows).map(r => r.id));
+  let h = "<table><thead><tr><th>호수</th><th>세대</th><th>침묵</th><th>안 것</th><th>들고 간 것</th>"
+        + '<th class="n">유예</th><th class="n">그 집이 건짐</th><th class="n">나머지가 물림</th>'
+        + '<th class="n">총 손실</th><th>지배되지 않음</th></tr></thead><tbody>';
+  rows.slice().sort((a, b) => a.total - b.total).forEach(r => {
+    const hh = n.hs[r.ci], u = D.units[hh.unitId];
+    h += "<tr" + (best && r.id === best.id ? ' class="hi"' : (r.total > nn.total ? ' class="dim"' : "")) + ">"
+      + "<td>" + esc(u.unitNo) + "</td><td>" + esc(hh.name) + "</td>"
+      + '<td class="' + (hh.silenceKind !== "none" ? "red" : "") + '">'
+      + (hh.silenceKind === "gone" ? "이미 나갔다" : hh.silenceKind === "unable" ? "말할 수 없다" : "—") + "</td>"
+      + "<td>Lv" + r.level + (r.misled ? " (거짓을 믿는다)" : "") + "</td>"
+      + "<td>" + (r.believed ? esc(D.needs[r.believed].name) : "모르고 두드린다") + "</td>"
+      + '<td class="n">' + r.grace + '일</td><td class="n">' + r.relief + "</td>"
+      + '<td class="n red">+' + r.spill + '</td><td class="n"><b>' + r.total + "</b></td>"
+      + "<td>" + (front.has(r.id) ? "●" : "") + "</td></tr>";
+  });
+  h += '<tr><td colspan="5">아무도 돕지 않는다</td><td class="n">0일</td><td class="n">0</td>'
+     + '<td class="n">+0</td><td class="n"><b>' + nn.total + "</b></td><td></td></tr>";
+  return h + "</tbody></table>";
+}
+
+function heardList(n) {
+  const ls = listensOf();
+  if (!ls.length) return '<p class="hint">아직 어느 문에도 귀를 대지 않았다.</p>';
+  let h = '<div class="heard">';
+  ls.forEach(([d, s]) => {
+    const cues = n.heard[d][s], door = D.units[n.hs[d].unitId].unitNo;
+    if (!cues.length) {
+      h += "<div><span class=\"when\">" + slotName(s) + " · " + door + "호</span>"
+        + (isSilent(n.hs[d].id)
+            ? '<span class="red">아무 소리도 나지 않는다. 침묵을 확인했다</span>'
+            : '<span class="faint">생활 소음뿐. 알아낼 것이 없었다</span>') + "</div>";
+      return;
+    }
+    cues.forEach(c => {
+      const about = c.about !== c.at ? D.units[D.hh[c.about].unitId].unitNo + "호 얘기" : "자기 집";
+      h += '<div><span class="when">' + slotName(s) + " · " + door + "호</span>"
+        + esc(c.text) + ' <span class="faint">(' + about + " · " + c.loud + "%)</span></div>";
+    });
+  });
+  return h + "</div>";
+}
+
+function worldTable() {
+  const modes = [["on", "켠 세계 (이 PoC)"], ["noSilentDoors", "침묵한 문을 막은 세계"], ["asSound", "침묵을 소리로 바꾼 세계"]];
+  let h = "<table><thead><tr><th>건물</th><th>세계</th><th>최선 선택</th>"
+        + '<th class="n">최선 총 손실</th><th>말할 수 없는 집</th><th class="n">그 집을 고른 최선</th>'
+        + '<th class="n">필요한 엿듣기</th></tr></thead><tbody>';
+  D.buildings.forEach(b => {
+    const unable = D.byBuilding[b.id].find(x => x.silenceKind === "unable");
+    modes.forEach(([m, label], mi) => {
+      const n = buildNight(b.id, m), r = exhaustive(n);
+      const best = r.rows.slice().sort((x, y) => x.total - y.total)[0];
+      const bh = n.hs[best.ci], bu = D.units[bh.unitId];
+      const ur = unable ? r.best[n.idx[unable.id]] : null;
+      h += "<tr" + (m === "on" ? ' class="hi"' : "") + ">"
+        + (mi === 0 ? '<td rowspan="3">' + esc(b.name) + "</td>" : "")
+        + "<td>" + label + "</td>"
+        + "<td>" + esc(bu.unitNo) + "호 " + esc(bh.name) + "</td>"
+        + '<td class="n"><b>' + best.total + "</b></td>"
+        + "<td>" + (unable ? esc(D.units[unable.unitId].unitNo) + "호" : "없다") + "</td>"
+        + '<td class="n">' + (ur ? ur.total : "—") + "</td>"
+        + '<td class="n">' + (ur ? ur.plan.length + "번" : "—") + "</td></tr>";
+    });
+  });
+  return h + "</tbody></table>";
+}
+
+function render() {
+  const b = D.bldById[S.bid];
+  const n = buildNight(S.bid, "on");
+  const bs = beliefs(n, listensOf());
+  const hs = helpStart();
+  const cur = S.helpCi >= 0 ? help(n, bs, S.helpCi, hs) : null;
+  const ex = exhaustive(n);
+  const exBest = ex.rows.slice().sort((x, y) => x.total - y.total)[0];
+  const folds = '<div class="folds">' + PAL.paper.foldLineXPercent
+        .map(x => '<i style="left:' + x + '%"></i>').join("") + "</div>";
+
+  let h = "";
+
+  // §01 고지서
+  h += '<section class="sheet">' + folds
+    + '<div class="headrow"><div><h1>철거 계고장</h1>'
+    + '<p class="lede">' + esc(b.name) + " · " + esc(b.address) + "<br>"
+    + '<span class="hint">' + esc(b.demolitionNote) + "</span></p></div>"
+    + '<div class="meta"><div>문서번호 ' + esc(b.noticeNo) + "</div><div>" + esc(b.noticeDate) + "</div>"
+    + "<div>유예 잔량 " + b.graceDaysTotal + "일</div>"
+    + "<div>세대 " + n.hs.length + "</div></div>"
+    + "<div>" + sealSvg() + "</div></div>"
+    + '<p class="hint">' + esc(b.note) + "</p>"
+    + '<div class="pick"><b>건물</b>' + D.buildings.map(x =>
+        '<button data-bld="' + x.id + '" class="' + (x.id === S.bid ? "on" : "") + '">'
+        + esc(x.name) + "</button>").join("") + "</div></section>";
+
+  // §02 배치도
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">02</span>세대 배치도 — 귀를 댄 칸에만 파형이 뜬다</h2>'
+    + "<p>복도에서 알 수 있는 것은 <b>소리가 있는지 없는지</b>뿐이다(칸 오른쪽 위). 무슨 소리인지는 "
+    + "그 문에 귀를 대야 안다. 하루는 네 시간짜리 여섯 칸이고, <b>한 칸에 문 하나</b>다. "
+    + "<em>소리 없는 칸은 파형 자리가 비어 있고 그것이 이 표에서 가장 눈에 띈다</em> — "
+    + "그 빈 자리가 「내용 없음」인지 「말할 수 없음」인지는 이웃의 말과 겹쳐야 갈린다.</p>"
+    + slotTabs()
+    + '<p class="hint">시간대를 고르고 칸을 누르면 그 시간대에 그 문에 귀를 댄다. 같은 칸을 다시 누르면 취소한다.</p>'
+    + planTable(n, bs)
+    + '<p class="hint">'
+    + '<span style="border-bottom:1px dashed var(--seal);color:var(--seal)">붉은 점선</span> = 귀를 댔는데 아무 소리도 없었다 &nbsp;·&nbsp; '
+    + '<span style="border-bottom:1px dotted var(--rule);color:var(--inkFaint)">회색 점선</span> = 아직 귀를 대지 않았다 &nbsp;·&nbsp; '
+    + '흐린 파형 = 생활 소음뿐</p>'
+    + '<div class="pick"><b>계획</b>'
+    + '<button data-fill="best">전수 탐색의 최선 계획을 넣는다</button>'
+    + '<button data-fill="clear">비운다</button></div>'
+    + "</section>";
+
+  // §03 들은 것
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">03</span>들은 것</h2>' + heardList(n)
+    + "<h3>지금 아는 것</h3><table><thead><tr><th>호수</th><th>세대</th><th>단계</th>"
+    + "<th>필요한 것</th><th>침묵 확인</th></tr></thead><tbody>"
+    + n.hs.map((x, i) => {
+        const u = D.units[x.unitId], bb = bs[i];
+        return "<tr" + (bb.level === 0 ? ' class="dim"' : "") + "><td>" + esc(u.unitNo) + "</td><td>"
+          + esc(x.name) + "</td><td>Lv" + bb.level + (bb.misled ? " (거짓)" : "") + "</td><td>"
+          + (bb.need ? esc(D.needs[bb.need].name) : "—") + "</td><td>"
+          + (isSilent(x.id) ? (bb.confirmed ? "확인했다" : '<span class="red">아직</span>') : "—")
+          + "</td></tr>";
+      }).join("") + "</tbody></table></section>";
+
+  // §04 지금 고를 수 있는 것
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">04</span>하나만 고를 수 있다 — 지금 아는 것으로</h2>'
+    + "<p>남은 시간대는 <b>" + (n.slots - hs) + "칸</b>이다. 돕는 일마다 먹는 칸과 유예가 다르고, "
+    + "<em>쓴 유예만큼 나머지 다섯 집의 손실이 오른다</em>. 모르고 두드리면 유예는 그대로 빠지고 건지는 것이 없다.</p>"
+    + '<div class="pick"><b>돕는다</b>'
+    + n.hs.map((x, i) => {
+        const o = help(n, bs, i, hs);
+        return '<button data-help="' + i + '" class="' + (S.helpCi === i ? "on" : "") + '"'
+          + (o ? "" : " disabled") + ">" + esc(D.units[x.unitId].unitNo) + "호"
+          + (o ? "" : " (시간 없음)") + "</button>";
+      }).join("")
+    + '<button data-help="-1" class="' + (S.helpCi < 0 ? "on" : "") + '">아무도</button></div>';
+  if (cur) {
+    const ch = n.hs[cur.ci];
+    h += "<p>" + esc(D.units[ch.unitId].unitNo) + "호 " + esc(ch.name) + " 를 돕는다 — "
+      + (cur.believed ? esc(D.needs[cur.believed].name) : "무엇이 필요한지 모른 채")
+      + ", 시간대 " + cur.slots + "칸 · 유예 " + cur.grace + "일. "
+      + "그 집이 건진 것 <b>" + cur.relief + "</b> · 나머지 다섯이 물어 준 것 <b class=\"red\">+"
+      + cur.spill + "</b> · 총 손실 <b>" + cur.total + "</b>"
+      + " (아무도 돕지 않으면 " + ex.noOne.total + ")</p>"
+      + "<table><thead><tr><th>호수</th><th>세대</th><th>본래 손실</th><th>이 선택 뒤</th><th>차이</th></tr></thead><tbody>"
+      + n.hs.map((x, i) => {
+          const d = cur.fin[i] - x.baseStakes;
+          return "<tr" + (i === cur.ci ? ' class="hi"' : "") + "><td>" + esc(D.units[x.unitId].unitNo)
+            + "</td><td>" + esc(x.name) + '</td><td class="n">' + x.baseStakes
+            + '</td><td class="n">' + cur.fin[i] + '</td><td class="n' + (d > 0 ? " red" : "") + '">'
+            + (d > 0 ? "+" + d : d) + "</td></tr>";
+        }).join("") + "</tbody></table>";
+  } else {
+    h += '<p class="hint">아무도 돕지 않으면 총 손실은 ' + ex.noOne.total + " 이고 유예는 한 푼도 빠지지 않는다.</p>";
+  }
+  h += "</section>";
+
+  // §05 전수 탐색
+  const front = pareto(ex.rows);
+  const worse = ex.rows.filter(r => r.total > ex.noOne.total).length;
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">05</span>선택지 여섯 — 전수 탐색이 찾은 각자의 최선</h2>'
+    + "<p>여섯 선택지마다 하루를 <b>전수 탐색</b>해(계획 " + ex.nodes.toLocaleString("ko")
+    + "가지) 그 집을 위한 최선을 찾았다. 「그 집이 건짐」과 「나머지가 물림」 두 축에서 "
+    + "<em>지배되지 않는 선택지가 " + front.length + "개</em>다 — 하나뿐이면 지배적 최선이 있다는 뜻이고 "
+    + "그러면 이 게임은 고를 것이 없다.</p>"
+    + choiceTable(n, ex.rows, ex.noOne, exBest)
+    + "<p>여섯 중 <b>" + worse + "개</b>는 <b>아무도 돕지 않는 것보다 나쁘다</b>. "
+    + "고른다는 것 자체가 위험이다 — 유예는 반드시 빠지고, 잘못 고르면 건지는 것 없이 나머지만 밀린다.</p>"
+    + "</section>";
+
+  // §06 세 세계
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">06</span>침묵을 끄면 어떻게 되는가 — 세 세계</h2>'
+    + "<p>같은 데이터를 세 세계에서 전수 탐색한다. <b>침묵한 문을 막은 세계</b>에서는 그 칸을 고른 결과가 "
+    + "뚜렷이 나빠지고, <b>침묵을 소리로 바꾼 세계</b>에서는 같은 것을 알아내는 데 필요한 엿듣기가 줄어든다. "
+    + "<em>침묵이 값을 물린다</em>는 것이 이 표의 마지막 두 열이다.</p>"
+    + worldTable()
+    + '<p class="hint">이 표는 목업이 브라우저에서 직접 계산한 것이다. 씨드를 열여섯 개 돌린 수치와 '
+    + "침묵을 무시하는 정책이 받는 벌은 tests/ 의 SilenceIsInformation · SilenceTwoWorlds 가 본다.</p>"
+    + "</section>";
+
+  // §07 데이터
+  h += '<section class="sheet">' + folds
+    + '<h2><span class="no">07</span>이 화면이 읽은 것</h2>'
+    + "<p>수치를 하나도 손으로 옮겨 적지 않았다. 아래 파일만 읽고 계산했다.</p>"
+    + "<table><thead><tr><th>파일</th><th>무엇이 들어 있나</th></tr></thead><tbody>"
+    + ["data/buildings.json|건물 3동 · 칸 18개 · 층과 좌우",
+       "data/households.json|세대 18 · 사정 · 손실 · 침묵의 종류",
+       "data/cues.json|문에서 들리는 소리 " + D.cuesByBuilding[S.bid].length + "종(이 건물)",
+       "data/needs.json|도와야 하는 것 " + D.needsOrder.length + "가지 · 시간대와 유예",
+       "data/balance.json|경감 백분율 · 유예의 파급 · 검사기 기준값",
+       "presentation/palette.json|" + PAL.name + " — " + PAL.oneLine]
+      .map(r => { const p = r.split("|"); return "<tr><td><code>" + p[0] + "</code></td><td>" + esc(p[1]) + "</td></tr>"; })
+      .join("") + "</tbody></table></section>";
+
+  document.getElementById("app").innerHTML = h;
+  wire(n, bs);
+}
+
+function fillBest() {
+  const n = buildNight(S.bid, "on");
+  const ex = exhaustive(n);
+  const best = ex.rows.slice().sort((a, b) => a.total - b.total)[0];
+  S.slotAction = new Array(n.slots).fill(-1);
+  best.plan.forEach(([d, s]) => { S.slotAction[s] = d; });
+  S.helpCi = best.ci;
+  S.curSlot = Math.min(n.slots - 1, best.plan.length);
+}
+
+function wire(n, bs) {
+  document.querySelectorAll("[data-bld]").forEach(el => el.onclick = () => {
+    S.bid = el.dataset.bld; reset(); render();
+  });
+  document.querySelectorAll("[data-slot]").forEach(el => el.onclick = () => {
+    S.curSlot = +el.dataset.slot; render();
+  });
+  document.querySelectorAll("[data-door]").forEach(el => el.onclick = () => {
+    const d = +el.dataset.door;
+    S.slotAction[S.curSlot] = S.slotAction[S.curSlot] === d ? -1 : d;
+    // 돕기는 엿듣기 뒤에 온다 — 계획이 바뀌면 다시 맞춘다
+    if (S.helpCi >= 0 && !help(n, beliefs(n, listensOf()), S.helpCi, helpStart())) S.helpCi = -1;
+    for (let s = S.curSlot + 1; s < n.slots; s++) if (S.slotAction[s] < 0) { S.curSlot = s; break; }
+    render();
+  });
+  document.querySelectorAll("[data-help]").forEach(el => el.onclick = () => {
+    S.helpCi = +el.dataset.help; render();
+  });
+  document.querySelectorAll("[data-fill]").forEach(el => el.onclick = () => {
+    if (el.dataset.fill === "best") fillBest(); else reset();
+    render();
+  });
+}
+
+function reset() {
+  S.slotAction = new Array(D.bal.day.slotCount).fill(-1);
+  S.helpCi = -1;
+  S.curSlot = 0;
+}
+
+load().then(() => {
+  applyPalette();
+  document.title = PAL.name + " — last-tenants";
+  S.bid = D.buildings[0].id;
+  reset();
+  fillBest();   // 문을 열면 곧바로 핵이 보이게 — 최선 계획을 넣어 둔다
+  render();
+}).catch(e => {
+  document.getElementById("boot").textContent =
+    "데이터를 읽지 못했다: " + e + " — python -m http.server 8101 로 열어야 한다 (fetch 는 file:// 에서 막힌다)";
+});
+</script>
+</body>
+</html>

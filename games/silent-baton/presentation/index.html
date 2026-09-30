@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>오선지 위에 붙은 신문 조각 — silent-baton</title>
+<!--
+  연출 목업 겸 **한 박씩 직접 지휘하는 플레이 화면.**
+  data/ 의 실제 JSON을 읽고 규칙까지 `engine.js` 로 다시 계산한다 —
+  그 계산이 C# 과 같은 수를 내는지는 박 단위로 대조한다:
+      C:/Users/PSI/.dotnet/dotnet.exe test games/silent-baton/tests/silent-baton.Tests.csproj
+      node games/silent-baton/tests/browser-parity.js      → 468회 연주 / 7,956박 일치
+
+  이 게임은 **무음이 컨셉이다.** 청각을 잃은 지휘자이므로 플레이어도 듣지 못한다.
+  대신 화면이 감각을 전부 짊어진다 — 음표 크기(호흡) · 기울기(활) · 획(표정) ·
+  잔상(누적 어긋남) · 지휘봉 고리(지금 보는 곳) · 신문 조각(결과).
+
+  fetch 는 file:// 에서 막힌다. 저장소 뿌리에서:
+      python -m http.server 8000
+      → http://localhost:8000/games/silent-baton/presentation/index.html
+-->
+<style>
+@font-face{font-family:"NotoSerifKR"; src:url("assets/fonts/NotoSerifKR-Subset.ttf") format("truetype"); font-display:swap;}
+@font-face{font-family:"BodoniModa"; src:url("assets/fonts/BodoniModa-Subset.ttf") format("truetype"); font-display:swap;}
+@font-face{font-family:"BodoniModa"; src:url("assets/fonts/BodoniModa-Italic-Subset.ttf") format("truetype"); font-style:italic; font-display:swap;}
+</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="../../../docs/poc-gallery/index.html">← PoC 갤러리</a>
+  <span>The Silent Season / 01</span>
+  <button id="reset">처음부터</button>
+</header>
+
+<main>
+  <div class="intro">
+    <div>
+      <small>소리 대신 몸을 읽는 지휘자</small>
+      <h1>오선지 위에<br><em>붙은 신문 조각</em></h1>
+    </div>
+    <p>객석은 어둠 속에 있다. 지금 보이는 것은 <b>호흡·활 각도·표정</b> 셋뿐이고
+    <b>소리는 나지 않는다.</b> 연주가 잘되었는지는 <b>다음 날 아침 신문</b>에야 도착한다.</p>
+  </div>
+
+  <section class="sheet">
+    <span class="label" id="sheetLabel">오선지</span>
+    <svg id="staff" viewBox="0 0 1040 300" role="img"
+         aria-label="오선지. 각 단원 무리가 자기 줄 위의 음표로 보인다"></svg>
+  </section>
+
+  <section class="desk">
+    <div>
+      <label for="piece">오늘의 악보</label>
+      <select id="piece"></select>
+    </div>
+    <div>
+      <small>지금</small>
+      <p class="now" id="bar">불러오는 중…</p>
+      <div id="beats"></div>
+    </div>
+    <span class="stamp">공연 중<br>평론 비공개</span>
+  </section>
+
+  <section id="stage" aria-label="단원 무리 고르기"></section>
+
+  <section class="controls">
+    <div>
+      <small>한 박에 한 무리만 — 지휘봉은 한 곳을 가리킨다</small>
+      <h2 id="target">현에 지휘를 보낸다</h2>
+      <p class="hint">음표가 <b>커지면 늦고</b> 작아지면 앞선다(호흡). 머리를 지나는 선의
+      <b>기울기가 벌어지는 속도</b>다(활 — 목관·금관은 활이 없다). 머리 위의
+      <b>획이 굵고 위로 뻗으면 너무 크게</b>, 가늘고 아래면 너무 작게 연주하고 있다(표정).
+      흐린 잔상은 <b>지난 여섯 박의 궤적</b>이다.</p>
+    </div>
+    <div id="cues"></div>
+  </section>
+
+  <p class="hint" id="status" role="status" aria-live="polite">단원 무리를 고르고 동작을 누르면 한 박이 진행됩니다.</p>
+
+  <section id="review" hidden>
+    <span class="tape l"></span><span class="tape r"></span>
+    <small id="reviewKicker">다음 날 아침 · 문화면</small>
+    <h2 id="headline"></h2>
+    <p id="reviewBody"></p>
+    <p class="verdict" id="verdict"></p>
+    <div id="notes"></div>
+    <!-- 이 버튼의 이름은 kit/tools/verify_takeover.js 가 집는다. 바꾸면 그 검증이 깨진다 -->
+    <button id="again">평론을 기억하고 다시 지휘하기</button>
+  </section>
+
+  <aside id="previous" hidden></aside>
+
+  <footer>
+    한 박씩 눌러 지휘하는 <b>무음</b> PoC. 실제 속도의 리듬 판정은 구현하지 않았다 —
+    이 화면은 규칙과 연출을 사람이 판정하기 위한 것이고, 재미는 아직 미확인이다(README 판정 칸).
+  </footer>
+</main>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

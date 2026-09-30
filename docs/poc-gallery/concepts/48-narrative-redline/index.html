@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>붉은 펜으로 남긴 것</title>
+<style>
+:root{--desk:#b9a07c;--desk2:#8f7453;--paper:#faf6ec;--paper2:#efe7d6;--ink:#292723;--red:#ad413d;--red2:#d0534c;--blue:#3a5f8f;--muted:#71675e;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Noto Serif CJK KR","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --hand:"Nanum Pen Script","Nanum Brush Script","Gaegu","Noto Serif KR",cursive}
+html,body{margin:0;height:100%;overflow:hidden;background:#1a1510}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;font-family:var(--serif);color:var(--ink);
+  background:
+   repeating-linear-gradient(92deg, rgba(90,60,30,.10) 0 3px, transparent 3px 11px, rgba(255,240,210,.05) 11px 13px, transparent 13px 29px),
+   linear-gradient(170deg,#c7ad86,#a88a63 55%,#8a6d4b)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+.light{position:absolute;inset:0;pointer-events:none;z-index:40;
+  background:radial-gradient(1100px 800px at 30% 20%,rgba(255,244,214,.35),transparent 60%),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(40,20,5,.55) 100%)}
+.leaves{position:absolute;inset:0;pointer-events:none;z-index:39;opacity:.16;mix-blend-mode:multiply;animation:leaf 9s ease-in-out infinite alternate}
+@keyframes leaf{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(14px,6px) rotate(.6deg)}}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.2;mix-blend-mode:multiply;z-index:41;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .55 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+/* manuscript */
+.ms{position:absolute;background:linear-gradient(180deg,var(--paper),var(--paper2));box-shadow:0 2px 0 #ddd3bf,0 4px 0 #efe6d2,0 5px 0 #d8ccb3,0 30px 60px rgba(40,20,0,.45);}
+.ms::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 45px,rgba(120,150,190,.14) 45px 46px);pointer-events:none}
+.ms .margin{position:absolute;top:0;bottom:0;left:92px;width:1.5px;background:rgba(200,80,80,.28)}
+.mshead{position:absolute;left:120px;right:60px;top:40px;display:flex;justify-content:space-between;font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:2px}
+.mstitle{position:absolute;left:120px;top:78px;font-size:30px;font-weight:700;letter-spacing:2px}
+.para{position:absolute;left:120px;right:70px;font-size:21px;line-height:46px;transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .3s}
+.para .num{position:absolute;left:-74px;top:0;font-family:var(--sans);font-size:12px;color:var(--muted);width:50px;text-align:right}
+.sent{cursor:pointer;position:relative;border-radius:2px;transition:background .15s}
+.sent:hover{background:rgba(173,65,61,.08)}
+.sent.del{color:#9a8f82}
+.sent.del::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:3px;background:var(--red);border-radius:3px;transform:rotate(-1deg);box-shadow:0 0 .5px var(--red)}
+.sent.del.anim::after{animation:scr .28s ease-out}
+@keyframes scr{from{right:100%}to{right:-4px}}
+.rep{position:relative;display:inline-block}
+.rep s{text-decoration:none;position:relative;color:#9a8f82}
+.rep s::after{content:"";position:absolute;left:-3px;right:-3px;top:52%;height:2.5px;background:var(--red);transform:rotate(-2deg)}
+.caret{position:absolute;left:0;top:-38px;white-space:nowrap;font-family:var(--hand);font-size:30px;color:var(--red);transform:rotate(-2deg)}
+.caret::before{content:"∧";position:absolute;left:22px;top:28px;font-family:var(--sans);font-size:18px}
+.drag{box-shadow:0 18px 40px rgba(40,20,0,.35);background:rgba(250,246,236,.97);outline:2px dashed rgba(173,65,61,.6);outline-offset:8px;transform:translate(10px,-6px) rotate(-.6deg)}
+.dropline{position:absolute;left:100px;right:60px;height:3px;background:var(--red);border-radius:3px;box-shadow:0 0 12px rgba(173,65,61,.5)}
+.dropline::before{content:"";position:absolute;left:-8px;top:-5px;border:6px solid transparent;border-left:10px solid var(--red)}
+.arrow{position:absolute;pointer-events:none}
+.sticky{position:absolute;width:230px;padding:18px 18px 22px;font-family:var(--hand);font-size:25px;line-height:1.35;box-shadow:0 12px 24px rgba(40,20,0,.3);z-index:5}
+.sticky small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:2px;margin-bottom:6px;opacity:.7}
+.y{background:linear-gradient(180deg,#fbe79a,#f3d875);transform:rotate(3deg);color:#3a3020}
+.g{background:linear-gradient(180deg,#d9e6c9,#c4d6b0);transform:rotate(-2.5deg);color:#2c3822}
+.tape{position:absolute;top:-12px;left:80px;width:80px;height:24px;background:rgba(255,255,255,.45);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+/* tools */
+.tools{position:absolute;left:40px;top:180px;width:150px;z-index:10}
+.tool{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:10px;background:rgba(250,246,236,.92);border-radius:4px;box-shadow:0 6px 14px rgba(40,20,0,.25);cursor:pointer;font-family:var(--sans);font-size:14px;color:var(--ink);transition:transform .12s}
+.tool:hover{transform:translateX(4px)}
+.tool i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--muted);font-style:normal;font-family:var(--serif);font-size:16px}
+.tool.on{background:var(--red);color:#fff4ee}
+.tool.on i{border-color:#ffd6cf}
+.tool small{display:block;font-size:10px;opacity:.7}
+.pen{position:absolute;z-index:12;pointer-events:none;transition:left .25s ease, top .25s ease}
+/* right panel */
+.panel{position:absolute;right:36px;top:40px;width:300px;z-index:10;font-family:var(--sans)}
+.brand{background:#292723;color:#f7f2e8;padding:18px 20px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.brand b{display:block;font-family:var(--serif);font-size:24px;letter-spacing:3px}
+.brand small{font-size:10px;letter-spacing:4px;color:#c9b9a5}
+.meters{background:rgba(247,242,232,.95);padding:18px 20px;box-shadow:0 12px 30px rgba(40,20,0,.3)}
+.meters h4{margin:0 0 12px;font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:600}
+.m{margin-bottom:14px}
+.m .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.m .t b{font-family:var(--serif);font-size:18px}
+.m .bar{height:8px;background:#e1d7c4;border-radius:4px;overflow:hidden}
+.m .bar i{display:block;height:100%;border-radius:4px;transition:width .5s}
+.m .bar.c i{background:#5d7a8c}
+.m .bar.v i{background:var(--red)}
+.m p{margin:6px 0 0;font-size:11px;color:var(--muted)}
+.list{background:rgba(247,242,232,.95);margin-top:12px;padding:14px 20px;box-shadow:0 12px 30px rgba(40,20,0,.3);font-size:13px;line-height:1.9}
+.list h4{margin:0 0 6px;font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:600}
+.list div{display:flex;gap:8px}
+.list .r{color:var(--red)}
+.send{position:absolute;right:36px;bottom:40px;width:300px;height:84px;border:none;background:var(--red);color:#fff6ef;font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:2px;cursor:pointer;box-shadow:0 10px 24px rgba(120,30,20,.45),inset 0 -4px 0 rgba(0,0,0,.2);z-index:10;transition:transform .1s}
+.send small{display:block;font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:1px;opacity:.8;margin-top:4px}
+.send:active{transform:translateY(2px)}
+.foot{position:absolute;left:40px;top:490px;width:150px;line-height:1.7;font-family:var(--sans);font-size:12px;color:#3d2d1c;z-index:10;opacity:.85}
+.foot kbd{border:1px solid #6b5536;border-radius:3px;padding:0 5px}
+/* B */
+.env{position:absolute;left:830px;top:90px;width:520px;height:330px;background:linear-gradient(180deg,#e8dcc2,#d9c9a8);transform:rotate(6deg);box-shadow:0 24px 50px rgba(40,20,0,.4);z-index:2}
+.env::before{content:"";position:absolute;left:0;right:0;top:0;height:170px;background:linear-gradient(180deg,#dccfb1,#cdbd99);clip-path:polygon(0 0,100% 0,50% 100%)}
+.env .stampm{position:absolute;right:26px;top:22px;width:70px;height:84px;background:repeating-linear-gradient(45deg,#c24a3f 0 6px,#b03d34 6px 12px);border:4px dotted #e8dcc2;outline:1px solid #b03d34}
+.env .addr{position:absolute;left:40px;bottom:36px;font-family:var(--hand);font-size:30px;color:#2c2a40;line-height:1.2}
+.letter{position:absolute;left:760px;top:250px;width:560px;height:640px;background:linear-gradient(180deg,#fdfaf2,#f3ecdc);transform:rotate(-2.5deg);box-shadow:0 30px 60px rgba(40,20,0,.45);z-index:4;padding:56px 56px;box-sizing:border-box}
+.letter::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 43px,rgba(58,95,143,.18) 43px 44px);background-position:0 36px}
+.letter .body{position:relative;font-family:var(--hand);font-size:26px;line-height:44px;color:#26314a}
+.letter .sig{position:absolute;right:60px;bottom:50px;font-family:var(--hand);font-size:34px;color:#26314a}
+.letter .fold{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.08);box-shadow:0 1px 0 rgba(255,255,255,.7)}
+.bl{color:var(--blue);font-family:var(--hand);font-size:28px}
+.stet{position:absolute;font-family:var(--hand);font-size:28px;color:var(--blue);transform:rotate(-4deg)}
+.resultcard{position:absolute;left:40px;bottom:40px;width:640px;background:#292723;color:#f7f2e8;padding:22px 28px;box-shadow:0 20px 40px rgba(0,0,0,.4);z-index:10;font-family:var(--sans)}
+.resultcard small{font-size:11px;letter-spacing:4px;color:#c9b9a5}
+.resultcard h2{margin:6px 0 12px;font-family:var(--serif);font-size:32px;letter-spacing:3px}
+.resultcard .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;font-size:12px;color:#c9b9a5}
+.resultcard .cols b{display:block;font-family:var(--serif);font-size:22px;color:#fff;margin-top:4px}
+.resultcard .cols b em{font-style:normal;font-size:13px;color:#9fc3a0;margin-left:4px}
+.resultcard .cols b em.n{color:#e89a92}
+.tabs{position:absolute;right:14px;bottom:8px;display:flex;gap:6px;z-index:60}
+.tabs button{background:rgba(41,39,35,.85);border:1px solid rgba(255,255,255,.2);color:#e9e1d2;font:600 11px var(--sans);padding:4px 9px;cursor:pointer}
+.tabs button.on{background:var(--red);border-color:var(--red)}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<svg class="leaves" viewBox="0 0 1600 1000" preserveAspectRatio="none">
+  <g fill="#3a2a10">
+    <ellipse cx="1500" cy="80" rx="90" ry="30" transform="rotate(30 1500 80)"/><ellipse cx="1420" cy="160" rx="70" ry="22" transform="rotate(-20 1420 160)"/>
+    <ellipse cx="1560" cy="240" rx="80" ry="26" transform="rotate(60 1560 240)"/><ellipse cx="1340" cy="40" rx="60" ry="20" transform="rotate(10 1340 40)"/>
+    <path d="M1600 0 L1300 300" stroke="#3a2a10" stroke-width="10"/>
+    <ellipse cx="80" cy="920" rx="90" ry="28" transform="rotate(-30 80 920)"/><ellipse cx="170" cy="980" rx="70" ry="22" transform="rotate(15 170 980)"/>
+  </g>
+</svg>
+
+<!-- ============ A ============ -->
+<section class="scr" id="A">
+  <div class="ms" style="left:230px;top:40px;width:900px;height:930px;transform:rotate(-.6deg)">
+    <div class="margin"></div>
+    <div class="mshead"><span>서윤의 초고 · 바다가 접히는 밤</span><span>1차 교정 · 3 / 12</span></div>
+    <div class="mstitle">바다가 접히는 밤</div>
+
+    <div class="dropline" style="top:196px"></div>
+    <svg class="arrow" style="left:40px;top:196px" width="80" height="560" viewBox="0 0 80 560"><path d="M60 530 C0 420 0 120 52 6" stroke="#ad413d" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/><path d="M40 20 L54 2 L62 24" stroke="#ad413d" stroke-width="3" fill="none"/></svg>
+
+    <div class="para" id="p1" style="top:240px">
+      <span class="num">¶ 1</span>
+      그날 저녁, <span class="rep"><span class="caret">해가 저물었다</span><s>바다가 접혔다</s></span>. <span class="sent">나는 식탁에 두 개의 그릇을 놓았다.</span>
+      <span class="sent">그릇 하나는 뚜껑을 덮었고, 하나는 덮지 않았다.</span>
+      <span class="sent del">창밖의 파도는 오래된 이불처럼 개켜지고 있었다.</span>
+    </div>
+
+    <div class="para" id="p2" style="top:470px">
+      <span class="num">¶ 2</span>
+      <span class="sent">어머니는 늘 말했다.</span> <span class="sent" style="background:rgba(245,215,110,.35)">돌아오는 사람의 밥은 식혀 두지 않는 거라고.</span>
+      <span class="sent">그 말을 할 때마다 어머니는 밥솥 뚜껑을 한 번 더 눌렀다.</span>
+    </div>
+
+    <div class="para drag" id="p3" style="top:680px;left:112px;right:40px;padding:10px 20px">
+      <span class="num">¶ 3</span>
+      <span class="sent">어머니가 죽은 지 사흘째였다.</span> <span class="sent">나는 아직 한 사람의 저녁을 차릴 줄 몰랐다.</span>
+      <div style="font-family:var(--sans);font-size:12px;color:var(--red);line-height:1.6;margin-top:4px">↑ 마지막 문단을 앞으로 · 죽음의 사실을 먼저 밝힙니다</div>
+    </div>
+  </div>
+
+  <div class="sticky y" style="left:1080px;top:520px;width:200px"><div class="tape"></div><small>작가 메모</small>이 문장만은 남겨 주세요. 어머니는 정말 그렇게 말했어요.</div>
+  <div class="sticky g" style="left:960px;top:128px;width:200px;font-size:22px"><small>출판사</small>첫 문단에 사건이 드러나야 합니다.</div>
+
+  <div class="tools" id="tools">
+    <div class="tool on" data-t="del"><i>—</i><div>삭제선<small>문장에 실제 삭제선</small></div></div>
+    <div class="tool" data-t="rep"><i>⇄</i><div>교체<small>표현을 바꿉니다</small></div></div>
+    <div class="tool" data-t="mov"><i>↕</i><div>순서 이동<small>문단을 옮깁니다</small></div></div>
+    <div class="tool" data-t="undo"><i>↺</i><div>되돌리기<small>원래 표현 복구</small></div></div>
+  </div>
+
+  <svg class="pen" id="pen" style="left:760px;top:250px" width="260" height="60" viewBox="0 0 260 60">
+    <defs><linearGradient id="pb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d0534c"/><stop offset=".5" stop-color="#9d322e"/><stop offset="1" stop-color="#6f1f1c"/></linearGradient></defs>
+    <g transform="rotate(-28 10 50)"><ellipse cx="130" cy="58" rx="120" ry="6" fill="#000" opacity=".18"/>
+    <path d="M10 50 L36 42 L36 58Z" fill="#c9c2b4"/><path d="M4 50 L14 47 L14 53Z" fill="#ad413d"/>
+    <rect x="36" y="40" width="200" height="20" rx="8" fill="url(#pb)"/><rect x="36" y="40" width="30" height="20" fill="#2a2522"/><rect x="170" y="36" width="60" height="5" rx="2" fill="#d8d0c0"/></g>
+  </svg>
+
+  <aside class="panel">
+    <div class="brand"><small>WHAT THE RED PEN LEFT</small><b>붉은 펜으로 남긴 것</b></div>
+    <div class="meters">
+      <h4>두 가지는 같은 점수가 아닙니다</h4>
+      <div class="m"><div class="t"><span>이해도 · 독자</span><b id="mc">62</b></div><div class="bar c"><i id="bc" style="width:62%"></i></div><p>사건이 첫 문단에 드러나는가</p></div>
+      <div class="m"><div class="t"><span>목소리 · 작가</span><b id="mv">78</b></div><div class="bar v"><i id="bv" style="width:78%"></i></div><p>고유한 말투와 핵심 문장이 남았는가</p></div>
+    </div>
+    <div class="list">
+      <h4>교정 기록</h4>
+      <div><span class="r">⇄</span>바다가 접혔다 → 해가 저물었다</div>
+      <div><span class="r">—</span>파도 비유 문장 삭제</div>
+      <div><span class="r">↕</span>마지막 문단을 앞으로 <span style="color:var(--muted)">(이동 중)</span></div>
+    </div>
+  </aside>
+  <button class="send" id="send">수정 원고 돌려보내기<small>작가가 받아들인 수정과 거절한 수정을 확인</small></button>
+  <div class="foot">문장을 누르면 삭제선을 긋고, 다시 누르면 지웁니다 · <kbd>1</kbd> <kbd>2</kbd> 화면 전환</div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="scr" id="B">
+  <div class="ms" style="left:70px;top:50px;width:680px;height:720px;transform:rotate(-2deg)">
+    <div class="margin" style="left:70px"></div>
+    <div class="mshead" style="left:96px"><span>2차 원고 · 작가 회신</span><span>서윤</span></div>
+    <div class="mstitle" style="left:96px;font-size:26px">바다가 접히는 밤</div>
+    <div class="para" style="top:150px;left:96px;font-size:19px;line-height:42px">
+      <span class="num" style="left:-60px">¶ 3→1</span>어머니가 죽은 지 사흘째였다. 나는 아직 한 사람의 저녁을 차릴 줄 몰랐다.
+    </div>
+    <div class="para" style="top:300px;left:96px;font-size:19px;line-height:42px">
+      <span class="num" style="left:-60px">¶ 1</span>그날 저녁, <span style="position:relative"><span style="background:rgba(58,95,143,.12)">바다가 접혔다</span><span class="stet" style="left:10px;top:-34px">살림 ✓</span></span>. 나는 식탁에 두 개의 그릇을 놓았다. 그릇 하나는 뚜껑을 덮었고, 하나는 덮지 않았다.
+    </div>
+    <div class="para" style="top:510px;left:96px;font-size:19px;line-height:42px">
+      <span class="num" style="left:-60px">¶ 2</span>어머니는 늘 말했다. <span style="border-bottom:3px double var(--blue)">돌아오는 사람의 밥은 식혀 두지 않는 거라고.</span>
+    </div>
+    <span class="stet" style="left:330px;top:650px;font-size:24px;white-space:nowrap">이건 제 문장이에요 — 서윤</span>
+  </div>
+
+  <div class="env"><div class="stampm"></div><div class="addr">편집자님께<br><span style="font-size:22px">서윤 드림</span></div></div>
+  <div class="letter">
+    <div class="fold"></div>
+    <div class="body">편집자님,<br>
+      끝 문장을 앞으로 옮기니<br>제가 왜 이 이야기를 썼는지 알겠어요.<br>
+      '바다가 접혔다'는 이상한 문장이지만,<br>그날 정말 그렇게 보였어요.<br>
+      어머니의 말투를 남겨 줘서<br>고맙습니다.</div>
+    <div class="sig">— 서윤</div>
+  </div>
+
+  <div class="resultcard">
+    <small>작가의 답장 · 결말</small>
+    <h2>작가가 다시 보낸 목소리</h2>
+    <div class="cols">
+      <div>받아들인 수정<b>문단 순서 <em>↑1</em></b></div>
+      <div>되돌린 수정<b>원래 표현 복구 <em class="n">1</em></b></div>
+      <div>이해도 · 목소리<b>84 · 92 <em>+22 · +14</em></b></div>
+    </div>
+  </div>
+  <svg class="pen" style="left:1180px;top:820px" width="260" height="60" viewBox="0 0 260 60"><g transform="rotate(8 130 30)"><ellipse cx="130" cy="58" rx="120" ry="6" fill="#000" opacity=".18"/><path d="M10 50 L36 42 L36 58Z" fill="#c9c2b4"/><rect x="36" y="40" width="200" height="20" rx="8" fill="#9d322e"/><rect x="36" y="40" width="30" height="20" fill="#2a2522"/></g></svg>
+  <svg class="pen" style="left:1320px;top:120px" width="230" height="60" viewBox="0 0 230 60"><g transform="rotate(-58 115 30)"><path d="M10 30 L36 22 L36 38Z" fill="#e6c79a"/><path d="M4 30 L14 27 L14 33Z" fill="#3a5f8f"/><rect x="36" y="20" width="180" height="20" fill="#3a5f8f"/><rect x="36" y="20" width="180" height="6" fill="#5a82b6"/></g></svg>
+</section>
+
+<div class="light"></div><div class="grain"></div>
+<nav class="tabs"><button data-k="a">A 교정</button><button data-k="b">B 답장</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  show(location.hash.replace('#','')||'a');
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function scratch(){var a=ctx();if(!a)return;var t=a.currentTime,len=.22;
+    var n=a.createBufferSource(),b=a.createBuffer(1,Math.floor(a.sampleRate*len),a.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<d.length;i++){var x=i/d.length;d[i]=(Math.random()*2-1)*(1-x)*(0.6+0.4*Math.sin(x*60));}
+    var f=a.createBiquadFilter();f.type='bandpass';f.frequency.setValueAtTime(2400,t);f.frequency.linearRampToValueAtTime(4200,t+len);f.Q.value=1.2;
+    var g=a.createGain();g.gain.value=.5;n.buffer=b;n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
+
+  var mc=document.getElementById('mc'),mv=document.getElementById('mv'),bc=document.getElementById('bc'),bv=document.getElementById('bv');
+  var c=62,v=78;
+  function upd(){mc.textContent=c;mv.textContent=v;bc.style.width=c+'%';bv.style.width=v+'%';}
+  var pen=document.getElementById('pen');
+  var sents=document.querySelectorAll('#A .sent');
+  for(var j=0;j<sents.length;j++){sents[j].addEventListener('click',function(e){
+    var on=this.className.indexOf('del')<0;
+    this.className=on?'sent del anim':'sent';scratch();
+    var key=this.textContent.indexOf('식혀 두지')>=0;
+    if(on){c=Math.min(99,c+3);v=Math.max(5,v-(key?40:6));}else{c=Math.max(5,c-3);v=Math.min(99,v+(key?40:6));}
+    upd();
+    var r=this.getBoundingClientRect(),sr=st.getBoundingClientRect(),sc=sr.width/1600;
+    pen.style.left=((r.right-sr.left)/sc-10)+'px';pen.style.top=((r.top-sr.top)/sc-24)+'px';
+  });}
+  var tools=document.querySelectorAll('.tool');
+  for(var k=0;k<tools.length;k++){tools[k].addEventListener('click',function(){for(var q=0;q<tools.length;q++)tools[q].className='tool';this.className='tool on';});}
+  document.getElementById('send').addEventListener('click',function(){scratch();setTimeout(function(){show('b');},250);});
+})();
+</script>
+</body>
+</html>

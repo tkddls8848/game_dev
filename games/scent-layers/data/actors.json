@@ -1,0 +1,57 @@
+{
+  "_": "사람마다 향 지문이 있다. permille 의 합은 1000이다 — DataValidator 가 본다.",
+  "_표지": "marker 는 그 사람만 가진 잔향이다. 알아보는 것(누가)은 이것으로 늦게라도 늘 된다.",
+  "_되짚기": "시각(언제)은 머리향(top)으로만 잰다. 머리향은 남들과 겹치고 먼저 사라진다 — 그게 이 게임이다.",
+  "actors": [
+    {
+      "id": "a_housekeeper", "ko": "가정부 윤씨", "role": "집을 건사하는 사람",
+      "marker": "n_wax",
+      "profile": [
+        { "note": "n_wax",     "permille": 300 },
+        { "note": "n_citrus",  "permille": 250 },
+        { "note": "n_alcohol", "permille": 290 },
+        { "note": "n_musk",    "permille": 160 }
+      ]
+    },
+    {
+      "id": "a_gardener", "ko": "정원사 배씨", "role": "온실을 맡은 사람",
+      "marker": "n_soil",
+      "profile": [
+        { "note": "n_soil",  "permille": 340 },
+        { "note": "n_grass", "permille": 330 },
+        { "note": "n_oil",   "permille": 150 },
+        { "note": "n_musk",  "permille": 180 }
+      ]
+    },
+    {
+      "id": "a_cook", "ko": "찬모 한씨", "role": "부엌을 맡은 사람",
+      "marker": "n_ash",
+      "profile": [
+        { "note": "n_ash",    "permille": 280 },
+        { "note": "n_citrus", "permille": 260 },
+        { "note": "n_smoke",  "permille": 300 },
+        { "note": "n_oil",    "permille": 160 }
+      ]
+    },
+    {
+      "id": "a_doctor", "ko": "왕진 온 의사", "role": "그날 밤 불려 온 사람",
+      "marker": "n_ether",
+      "profile": [
+        { "note": "n_ether",   "permille": 320 },
+        { "note": "n_alcohol", "permille": 320 },
+        { "note": "n_iron",    "permille": 180 },
+        { "note": "n_citrus",  "permille": 180 }
+      ]
+    },
+    {
+      "id": "a_son", "ko": "집주인의 아들", "role": "그날 돌아온 사람",
+      "marker": "n_leather",
+      "profile": [
+        { "note": "n_leather", "permille": 290 },
+        { "note": "n_alcohol", "permille": 300 },
+        { "note": "n_smoke",   "permille": 200 },
+        { "note": "n_musk",    "permille": 210 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "_": "신이 나눠 줄 수 있는 것. 영역마다 **세상에 있는 총량이 정해져 있고 늘지 않는다** — 들어준 만큼이 정확히 어딘가에서 빠진다. ConservationHolds 가 그것을 본다.",
+  "_고통": "부족분 x hardshipPerUnit 이 기본이고, 견딜 수 있는 한도(toleranceUnits)를 넘은 몫에는 severeExtraPerUnit 이 더 붙는다. 그래서 고통은 **볼록하다** — 조금 모자란 사람에게서 빼서 많이 모자란 사람에게 주면 세상의 고통이 줄고, 반대면 는다. 비서의 일이 그 계산이다.",
+  "domains": [
+    { "id": "d_rain",   "name": "비",   "unitName": "동이", "hardshipPerUnit": 3, "severeExtraPerUnit": 4, "note": "논과 우물. 모자라면 마을 전체가 같이 마른다" },
+    { "id": "d_breath", "name": "숨",   "unitName": "숨",   "hardshipPerUnit": 5, "severeExtraPerUnit": 9, "note": "앓는 사람의 몫. 가장 아프게 모자라고 가장 크게 넘친다" },
+    { "id": "d_grain",  "name": "곡식", "unitName": "되",   "hardshipPerUnit": 4, "severeExtraPerUnit": 5, "note": "한 해 먹을 것. 빌려 갈 수는 있어도 없던 것이 생기지는 않는다" }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "_": "복원해야 할 마지막 하루. **이 파일이 정답이다** — 플레이어는 이것을 보지 못한다.",
+  "_시각": "분은 자정부터 센 것이다. 1005 = 16:45. 전부 decayStepMin(15분) 격자 위에 있다 — DataValidator 가 본다.",
+  "_진하기": "strengthPercent 는 그날 얼마나 진하게 남겼는가다. **플레이어는 이 값을 모른다** — 그래서 절대 세기로는 시각을 못 재고 비율로만 잰다.",
+  "seed": 40721,
+  "depositUnits": 1000000,
+  "dayStartMin": 900,
+  "dayEndMin": 1320,
+  "visits": [
+    { "id": "v01", "actor": "a_gardener",    "room": "r_greenhouse",   "atMin": 960, "strengthPercent": 100, "ko": "16:00 정원사가 온실 문을 닫았다" },
+    { "id": "v02", "actor": "a_doctor",      "room": "r_porch",        "atMin": 1005, "strengthPercent": 100, "ko": "16:45 의사가 현관으로 들어섰다" },
+    { "id": "v03", "actor": "a_housekeeper", "room": "r_kitchen",      "atMin": 1020, "strengthPercent": 100, "ko": "17:00 가정부가 부엌을 훔쳤다" },
+    { "id": "v04", "actor": "a_doctor",      "room": "r_cellar",       "atMin": 1035, "strengthPercent": 100, "ko": "17:15 의사가 지하 저장실로 내려갔다" },
+    { "id": "v05", "actor": "a_doctor",      "room": "r_study",        "atMin": 1050, "strengthPercent": 100, "ko": "17:30 의사가 서재에 오래 머물렀다" },
+    { "id": "v06", "actor": "a_housekeeper", "room": "r_bath",         "atMin": 1080, "strengthPercent": 100, "ko": "18:00 가정부가 욕실을 치웠다" },
+    { "id": "v07", "actor": "a_son",         "room": "r_porch",        "atMin": 1095, "strengthPercent": 100, "ko": "18:15 아들이 현관으로 돌아왔다" },
+    { "id": "v08", "actor": "a_cook",        "room": "r_kitchen",      "atMin": 1110, "strengthPercent": 100, "ko": "18:30 찬모가 저녁을 올렸다" },
+    { "id": "v09", "actor": "a_cook",        "room": "r_cellar",       "atMin": 1125, "strengthPercent": 100, "ko": "18:45 찬모가 저장실에서 무언가를 꺼냈다" },
+    { "id": "v10", "actor": "a_son",         "room": "r_study",        "atMin": 1140, "strengthPercent": 100, "ko": "19:00 아들이 서재로 들어갔다" },
+    { "id": "v11", "actor": "a_son",         "room": "r_bath",         "atMin": 1170, "strengthPercent": 100, "ko": "19:30 아들이 욕실에 오래 있었다" },
+    { "id": "v12", "actor": "a_gardener",    "room": "r_cellar",       "atMin": 1215, "strengthPercent": 100, "ko": "20:15 정원사가 저장실에 내려갔다" },
+    { "id": "v13", "actor": "a_housekeeper", "room": "r_greenhouse",   "atMin": 1230, "strengthPercent": 100, "ko": "20:30 가정부가 온실을 지났다" },
+    { "id": "v14", "actor": "a_gardener",    "room": "r_porch",        "atMin": 1290, "strengthPercent": 100, "ko": "21:30 정원사가 마지막으로 현관을 밟았다" }
+  ],
+  "ambient": {
+    "_": "집 자체의 잡내. **사실이 아니라 방해물이다** — 복원 대상에 들어가지 않는다.",
+    "_왜_이른가": "머리향 잡내는 조사가 시작되기 전에 이미 역치 아래로 내려간다. 남는 것은 중간향·잔향이고, 그림을 탁하게 만들고 알아보기를 방해하지만 되짚기는 막지 못한다.",
+    "_표지는_쓰지_않는다": "notePool 에 표지 잔향(밀랍·흙·재·에테르·가죽)이 하나도 없다. 있으면 씨드에 따라 사람을 영영 못 알아볼 수 있다 — DecayIsFair 가 이것을 본다.",
+    "notePool": [ "n_smoke", "n_oil", "n_musk", "n_citrus", "n_alcohol" ],
+    "perRoomMin": 1,
+    "perRoomMax": 3,
+    "strengthMin": 3000,
+    "strengthMax": 12000,
+    "atMinMin": 885,
+    "atMinMax": 1005
+  }
+}

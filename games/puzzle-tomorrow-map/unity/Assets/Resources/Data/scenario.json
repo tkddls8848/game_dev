@@ -1,0 +1,39 @@
+{
+  "slug": "puzzle-tomorrow-map",
+  "kind": "map",
+  "title": "내일의 지도",
+  "english": "TOMORROW, AS DRAWN",
+  "tagline": "이 선을 지우면, 내일 누군가의 문이 사라진다.",
+  "instructions": "골목을 넓히고 병원 입구를 연결하세요. 누락된 민원을 읽고 지하 세입자의 출입구를 이전한 뒤 도면을 승인합니다.",
+  "question": "통행 퍼즐을 해결하면서 지도에서 누락된 주민도 살피게 되는가?",
+  "values": [
+    3
+  ],
+  "items": [
+    {
+      "id": "hospital",
+      "title": "중앙 병원",
+      "text": "구급차 진입 필요",
+      "detail": "북쪽 담장에 출입구가 없다."
+    },
+    {
+      "id": "tenant",
+      "title": "지하 03호",
+      "text": "미등록 거주",
+      "detail": "도로 확장선 안에 계단이 있다."
+    },
+    {
+      "id": "road",
+      "title": "서쪽 골목",
+      "text": "폭 1.8m",
+      "detail": "구급차가 지나가려면 확장이 필요하다."
+    }
+  ],
+  "palette": {
+    "background": "#14272d",
+    "surface": "#1e363d",
+    "paper": "#eee9d8",
+    "accent": "#e7b77c",
+    "muted": "#b1c0bc"
+  }
+}

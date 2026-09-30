@@ -1,0 +1,4579 @@
+# 컨셉별 에셋 전체 목록 (자동 생성)
+
+`kit/tools/asset-collect/build_concept_index.py`가 각 `SOURCE.json`·`sources.json`의 `usedFor`에서 만든다. 손으로 고치지 말 것.
+큐레이션한 요약은 `INDEX.md`.
+
+## 1번 — 항목 93개 · 파일 26,958개 · 545 MB
+
+**fonts** (24)
+
+- `fonts/terminal-mono/d2coding` — 5개, OFL-1.1
+- `fonts/terminal-mono/departure-mono` — 6개, OFL-1.1
+- `fonts/terminal-mono/firacode` — 4개, OFL-1.1
+- `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
+- `fonts/terminal-mono/ibmplexmono` — 17개, OFL-1.1
+- `fonts/terminal-mono/jetbrainsmono` — 5개, OFL-1.1
+- `fonts/terminal-mono/majormonodisplay` — 4개, OFL-1.1
+- `fonts/terminal-mono/monaspace` — 7개, OFL-1.1
+- `fonts/terminal-mono/nanumgothiccoding` — 5개, OFL-1.1
+- `fonts/terminal-mono/neodgm` — 3개, OFL-1.1
+- `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
+- `fonts/terminal-mono/pressstart2p` — 5개, OFL-1.1
+- `fonts/terminal-mono/sharetechmono` — 4개, OFL-1.1
+- `fonts/terminal-mono/silkscreen` — 5개, OFL-1.1
+- `fonts/terminal-mono/spacemono` — 7개, OFL-1.1
+- `fonts/terminal-mono/vt323` — 4개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (24)
+
+- `shaders/crt/Cathode-Retro` — 82개, BSL-1.0
+- `shaders/crt/Flowerwall-CRT-shader-for-Godot` — 19개, MIT
+- `shaders/crt/Godot-3-2D-CRT-Shader` — 8개, MIT
+- `shaders/crt/Simple-CRT-Shader` — 12개, MIT
+- `shaders/crt/SimpleGodotCRTShader` — 14개, MIT
+- `shaders/crt/URP_RetroCRTShader` — 10개, MIT
+- `shaders/crt/Unity_CRTEffect` — 21개, BSD-3-Clause
+- `shaders/crt/godot-crt-lottes-shader` — 5개, Unlicense
+- `shaders/crt/godotshaders-com/4-3-scanline` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/animal-well-inspired-crt-effect` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/crt-display-shader-pixel-mask-scanlines-glow-godot-4-4-1` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/crt-video-like-shader` — 2개, MIT
+- `shaders/crt/godotshaders-com/crt-with-luminance-preservation-no-scanlines` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/semi-realistic-crt-emulation` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/simple-crt-bulge` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/test-crt-vcr` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/vhs-scanline-color-fuzz` — 2개, CC0-1.0
+- `shaders/crt/gpl-reference/libretro` — 13개, GPL-2.0-or-later (crt-geom, zfast_crt, crt-pi) / GPL (crt-easymode, version unspecified)
+- `shaders/crt/libretro-glsl-permissive` — 47개, Mixed per file: Public Domain / CC0 / MIT
+- `shaders/crt/libretro-slang-permissive` — 57개, Mixed per file: Public Domain / CC0 / MIT
+- `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
+- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/libretro-permissive` — 14개, Mixed per file: CC0-1.0 / Public Domain / MIT / CC-BY-3.0 (film-grain.slang)
+
+**audio** (18)
+
+- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
+- `audio/kenney-audio/sci-fi-sounds` — 78개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/sfx-ui-typing/50-cc0-sci-fi-sfx` — 52개, CC0
+- `audio/sfx-ui-typing/60-cc0-sci-fi-sfx` — 62개, CC0
+- `audio/sfx-ui-typing/9-sci-fi-computer-sounds-and-beeps` — 11개, CC-BY 3.0
+- `audio/sfx-ui-typing/beep-tone-sound-sfx` — 2개, CC0
+- `audio/sfx-ui-typing/commons-typewriter-keyboard` — 2개, mixed per file: CC0
+- `audio/sfx-ui-typing/glitch-music` — 2개, CC0
+- `audio/sfx-ui-typing/keyboard-soundpack-1-typing-and-single-keystrokes` — 53개, CC0
+- `audio/sfx-ui-typing/keyboard-typing` — 12개, CC-BY-SA 4.0
+- `audio/sfx-ui-typing/mechanical-keyboard-sound` — 3개, CC-BY 3.0
+- `audio/sfx-ui-typing/short-alarm` — 2개, CC0
+- `audio/sfx-ui-typing/single-key-press-sounds` — 32개, CC-BY 3.0
+- `audio/sfx-ui-typing/typewriter-sounds` — 9개, CC0
+- `audio/sfx-ui-typing/typing-soundeffect` — 2개, CC0
+- `audio/sfx-ui-typing/ui-sound-effects-pack` — 14개, CC-BY 3.0
+
+**images** (1)
+
+- `images/overlays` — 34개, CC0 1.0 34
+
+**models** (15)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/Television_01` — 5개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/gamepad` — 5개, CC0-1.0
+- `models/polyhaven/measuring_tape_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_01` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_02` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/vintage_video_camera` — 5개, CC0-1.0
+- `models/quaternius/cyberpunkgamekit` — 287개, CC0-1.0
+- `models/quaternius/sci-fi-essentials-kit` — 181개, CC0-1.0
+
+**icons** (11)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/ui-pack-sci-fi` — 1119개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/tabler` — 6224개, MIT
+
+## 2번 — 항목 80개 · 파일 16,727개 · 937 MB
+
+**fonts** (24)
+
+- `fonts/signage/dseg` — 156개, OFL-1.1
+- `fonts/terminal-mono/d2coding` — 5개, OFL-1.1
+- `fonts/terminal-mono/departure-mono` — 6개, OFL-1.1
+- `fonts/terminal-mono/firacode` — 4개, OFL-1.1
+- `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
+- `fonts/terminal-mono/ibmplexmono` — 17개, OFL-1.1
+- `fonts/terminal-mono/jetbrainsmono` — 5개, OFL-1.1
+- `fonts/terminal-mono/majormonodisplay` — 4개, OFL-1.1
+- `fonts/terminal-mono/nanumgothiccoding` — 5개, OFL-1.1
+- `fonts/terminal-mono/neodgm` — 3개, OFL-1.1
+- `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
+- `fonts/terminal-mono/pressstart2p` — 5개, OFL-1.1
+- `fonts/terminal-mono/sharetechmono` — 4개, OFL-1.1
+- `fonts/terminal-mono/silkscreen` — 5개, OFL-1.1
+- `fonts/terminal-mono/spacemono` — 7개, OFL-1.1
+- `fonts/terminal-mono/vt323` — 4개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (20)
+
+- `shaders/crt/Cathode-Retro` — 82개, BSL-1.0
+- `shaders/crt/Flowerwall-CRT-shader-for-Godot` — 19개, MIT
+- `shaders/crt/Godot-3-2D-CRT-Shader` — 8개, MIT
+- `shaders/crt/Simple-CRT-Shader` — 12개, MIT
+- `shaders/crt/SimpleGodotCRTShader` — 14개, MIT
+- `shaders/crt/URP_RetroCRTShader` — 10개, MIT
+- `shaders/crt/Unity_CRTEffect` — 21개, BSD-3-Clause
+- `shaders/crt/godot-crt-lottes-shader` — 5개, Unlicense
+- `shaders/crt/godotshaders-com/4-3-scanline` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/animal-well-inspired-crt-effect` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/crt-display-shader-pixel-mask-scanlines-glow-godot-4-4-1` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/crt-video-like-shader` — 2개, MIT
+- `shaders/crt/godotshaders-com/crt-with-luminance-preservation-no-scanlines` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/semi-realistic-crt-emulation` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/simple-crt-bulge` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/test-crt-vcr` — 2개, CC0-1.0
+- `shaders/crt/godotshaders-com/vhs-scanline-color-fuzz` — 2개, CC0-1.0
+- `shaders/crt/gpl-reference/libretro` — 13개, GPL-2.0-or-later (crt-geom, zfast_crt, crt-pi) / GPL (crt-easymode, version unspecified)
+- `shaders/crt/libretro-glsl-permissive` — 47개, Mixed per file: Public Domain / CC0 / MIT
+- `shaders/crt/libretro-slang-permissive` — 57개, Mixed per file: Public Domain / CC0 / MIT
+
+**audio** (21)
+
+- `audio/kenney-audio/sci-fi-sounds` — 78개, CC0-1.0
+- `audio/radio-static-noise/100-cc0-sfx` — 102개, CC0
+- `audio/radio-static-noise/commons-radio` — 2개, mixed per file: CC0
+- `audio/radio-static-noise/dark-ambience-soundscapes` — 9개, CC-BY-SA 3.0
+- `audio/radio-static-noise/female-soldier-voice` — 17개, CC-BY 3.0
+- `audio/radio-static-noise/frequency-static-sound-effects` — 11개, CC0
+- `audio/radio-static-noise/mysterious-radio-signal` — 2개, CC-BY 3.0
+- `audio/radio-static-noise/radio-call` — 2개, CC-BY 4.0
+- `audio/radio-static-noise/static` — 2개, CC0
+- `audio/radio-static-noise/zombie-news-in-radio` — 2개, CC0
+- `audio/voice-publicdomain/Apollo11Audio` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/Apollo13Audio` — 2개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/EDIS-SRP-0199-05` — 2개, Public Domain
+- `audio/voice-publicdomain/EDIS-SRP-0206-01` — 2개, Public Domain
+- `audio/voice-publicdomain/eves_diary_librivox` — 4개, Public Domain
+- `audio/voice-publicdomain/extracts_adams_diary` — 6개, Public Domain
+- `audio/voice-publicdomain/lettersfromacat_1309_librivox` — 5개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/mladytele1915` — 4개, Public Domain
+- `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
+- `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
+
+**images** (2)
+
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/photos-rooms-places/radio_station` — 20개, Public domain 16, CC0 4
+
+**models** (5)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/Barrel_01` — 5개, CC0-1.0
+- `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+
+**icons** (8)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 3번 — 항목 364개 · 파일 21,330개 · 1,986 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (15)
+
+- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
+- `shaders/flashlight-darkness/2D-Volumetric-Lighting` — 9개, CC0-1.0
+- `shaders/flashlight-darkness/Unity-URP-Volumetric-Light` — 34개, MIT
+- `shaders/flashlight-darkness/VolumetricLights` — 20개, BSD-3-Clause
+- `shaders/flashlight-darkness/godotshaders-com/2d-retro-dithered-lighting-fog-of-war` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/2d-sdf-lighting-shader-without-shadows-or-light-occlusion` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/additive-volume-integral` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/fake-godrays-godot-4-2` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/field-of-view-circular-cone-rectangle-mask-shader` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/god-rays` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/scary-dark-vignette` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/screen-space-god-rays-godot-4-3` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/shooting-cone` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/spatial-light-shaft` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/visionconeenergy` — 2개, CC0-1.0
+
+**audio** (48)
+
+- `audio/breathing-heartbeat/breathing-tired` — 2개, CC0
+- `audio/breathing-heartbeat/dreaming` — 2개, CC-BY 3.0
+- `audio/breathing-heartbeat/ghost-breath` — 2개, CC0
+- `audio/breathing-heartbeat/goblin-breathing` — 2개, CC-BY 3.0
+- `audio/breathing-heartbeat/heartbeat-single-sound` — 2개, CC0
+- `audio/breathing-heartbeat/heartbeat-sounds` — 6개, CC0
+- `audio/breathing-heartbeat/nhfea-sound` — 36개, CC0
+- `audio/breathing-heartbeat/silly-me` — 2개, CC0
+- `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
+- `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
+- `audio/footsteps/different-steps-on-wood-stone-leaves-gravel-and-mud` — 10개, CC0
+- `audio/footsteps/fantozzis-footsteps-grasssand-stone` — 26개, CC0
+- `audio/footsteps/footsteps` — 2개, CC-BY 3.0
+- `audio/footsteps/footsteps-0` — 7개, CC0
+- `audio/footsteps/footsteps-leather-cloth-armor` — 14개, CC0
+- `audio/footsteps/footsteps-on-different-surfaces` — 90개, CC-BY 3.0
+- `audio/footsteps/grass-foot-step-sounds-yo-frankie` — 3개, CC-BY 3.0
+- `audio/footsteps/metal-footsteps-on-concrete` — 27개, CC0
+- `audio/footsteps/platformer-sounds-terminal-interaction-door-shots-bang-and-footsteps` — 15개, CC0
+- `audio/footsteps/stepping-sounds` — 11개, CC-BY 3.0
+- `audio/footsteps/stone-stair-steps` — 2개, CC-BY-SA 3.0
+- `audio/footsteps/walking-in-and-out-through-wooden-stairs` — 6개, CC-BY-SA 3.0
+- `audio/footsteps/walking-on-snow-sound` — 4개, CC0
+- `audio/footsteps/water-splash-and-sand-footsteps` — 5개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
+
+**images** (50)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/silhouettes/sitting` — 9개, CC0 1.0 9
+- `images/silhouettes/standing` — 32개, CC0 1.0 32
+- `images/silhouettes/waiting` — 2개, CC0 1.0 2
+- `images/silhouettes/walking` — 11개, CC0 1.0 11
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (235)
+
+- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animatedzombie` — 4개, CC0-1.0
+- `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/graveyard-kit` — 467개, CC0-1.0
+- `models/kenney/light-masks` — 462개, CC0-1.0
+- `models/kenney/mini-dungeon` — 164개, CC0-1.0
+- `models/kenney/modular-buildings` — 556개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
+- `models/kenney/particle-pack` — 197개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/smoke-particles` — 82개, CC0-1.0
+- `models/kenney/survival-kit` — 414개, CC0-1.0
+- `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
+- `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_03` — 6개, CC0-1.0
+- `models/polyhaven/ClassicConsole_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicNightstand_01` — 5개, CC0-1.0
+- `models/polyhaven/CoffeeCart_01` — 8개, CC0-1.0
+- `models/polyhaven/CoffeeTable_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicBed_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCommode_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Lantern_01` — 5개, CC0-1.0
+- `models/polyhaven/Ottoman_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolChair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_02` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_03` — 5개, CC0-1.0
+- `models/polyhaven/adjustable_wrench` — 5개, CC0-1.0
+- `models/polyhaven/alarm_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/ammo_box` — 5개, CC0-1.0
+- `models/polyhaven/bananas` — 5개, CC0-1.0
+- `models/polyhaven/bar_chair_round_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/binoculars` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/brass_blowtorch` — 5개, CC0-1.0
+- `models/polyhaven/brass_candleholders` — 15개, CC0-1.0
+- `models/polyhaven/brass_diya_lantern` — 5개, CC0-1.0
+- `models/polyhaven/bronze_ray_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_shark_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_whale_statue` — 5개, CC0-1.0
+- `models/polyhaven/bunsen_burner` — 5개, CC0-1.0
+- `models/polyhaven/caged_hanging_light` — 6개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/cement_bag` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_pot` — 5개, CC0-1.0
+- `models/polyhaven/chemistry_set` — 5개, CC0-1.0
+- `models/polyhaven/chess_set` — 11개, CC0-1.0
+- `models/polyhaven/chinese_armchair` — 5개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_chandelier` — 5개, CC0-1.0
+- `models/polyhaven/chinese_commode` — 5개, CC0-1.0
+- `models/polyhaven/chinese_console_table` — 5개, CC0-1.0
+- `models/polyhaven/chinese_sofa` — 5개, CC0-1.0
+- `models/polyhaven/chinese_tea_table` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_case` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_pack` — 5개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/classic_laptop` — 5개, CC0-1.0
+- `models/polyhaven/clipboard` — 5개, CC0-1.0
+- `models/polyhaven/coffee_table_round_01` — 5개, CC0-1.0
+- `models/polyhaven/combination_wrench` — 5개, CC0-1.0
+- `models/polyhaven/cross_pein_hammer` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/digital_wrist_watch` — 5개, CC0-1.0
+- `models/polyhaven/dining_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/drawer_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/drill_press_01` — 5개, CC0-1.0
+- `models/polyhaven/dustpan` — 5개, CC0-1.0
+- `models/polyhaven/filmstrip_projector_8mm` — 5개, CC0-1.0
+- `models/polyhaven/fire_alarm` — 5개, CC0-1.0
+- `models/polyhaven/fish_knife` — 5개, CC0-1.0
+- `models/polyhaven/fishermans_hat` — 5개, CC0-1.0
+- `models/polyhaven/folding_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_chair` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_statue` — 5개, CC0-1.0
+- `models/polyhaven/hamburger_buns` — 5개, CC0-1.0
+- `models/polyhaven/hand_truck` — 5개, CC0-1.0
+- `models/polyhaven/hanging_industrial_lamp` — 7개, CC0-1.0
+- `models/polyhaven/industrial_caged_sconce` — 6개, CC0-1.0
+- `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/industrial_microscope` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pastic_container` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pipe_lamp` — 6개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/industrial_wall_lamp` — 9개, CC0-1.0
+- `models/polyhaven/industrial_wall_sconce` — 6개, CC0-1.0
+- `models/polyhaven/lantern_chandelier_01` — 9개, CC0-1.0
+- `models/polyhaven/lemon` — 5개, CC0-1.0
+- `models/polyhaven/life_jacket` — 5개, CC0-1.0
+- `models/polyhaven/lifebuoy` — 5개, CC0-1.0
+- `models/polyhaven/lightbulb_01` — 6개, CC0-1.0
+- `models/polyhaven/lightbulb_led` — 5개, CC0-1.0
+- `models/polyhaven/long_life_food` — 5개, CC0-1.0
+- `models/polyhaven/mantel_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_box` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan_green` — 5개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_01` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_02` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_03` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/mid_century_lounge_chair` — 5개, CC0-1.0
+- `models/polyhaven/modern_arm_chair_01` — 8개, CC0-1.0
+- `models/polyhaven/modern_ceiling_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_02` — 8개, CC0-1.0
+- `models/polyhaven/modern_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/modified_thermos` — 5개, CC0-1.0
+- `models/polyhaven/modular_street_seating` — 14개, CC0-1.0
+- `models/polyhaven/mounted_fluorescent_lights` — 6개, CC0-1.0
+- `models/polyhaven/ocean_buoy` — 6개, CC0-1.0
+- `models/polyhaven/office_notepads` — 5개, CC0-1.0
+- `models/polyhaven/oil_tin` — 5개, CC0-1.0
+- `models/polyhaven/old_bed_frame` — 5개, CC0-1.0
+- `models/polyhaven/old_drill_press` — 5개, CC0-1.0
+- `models/polyhaven/old_gas_mask` — 5개, CC0-1.0
+- `models/polyhaven/old_military_compressor` — 5개, CC0-1.0
+- `models/polyhaven/old_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/outdoor_table_chair_set_01` — 8개, CC0-1.0
+- `models/polyhaven/overhead_crane` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_nightstand` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_sofa` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/pastic_torch_6v` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/plastic_broom` — 5개, CC0-1.0
+- `models/polyhaven/plastic_container` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_03` — 5개, CC0-1.0
+- `models/polyhaven/plastic_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/plastic_monobloc_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_thermos` — 5개, CC0-1.0
+- `models/polyhaven/pliers` — 5개, CC0-1.0
+- `models/polyhaven/pocket_watch` — 6개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/portable_generator` — 6개, CC0-1.0
+- `models/polyhaven/portable_searchlight` — 5개, CC0-1.0
+- `models/polyhaven/portable_welding_cart` — 5개, CC0-1.0
+- `models/polyhaven/projector_screen` — 8개, CC0-1.0
+- `models/polyhaven/propane_tank` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch_02` — 5개, CC0-1.0
+- `models/polyhaven/pull_chain_light_socket` — 5개, CC0-1.0
+- `models/polyhaven/retro_multimeter` — 5개, CC0-1.0
+- `models/polyhaven/round_spectacles` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/rubber_boots` — 8개, CC0-1.0
+- `models/polyhaven/rusted_hacksaw` — 5개, CC0-1.0
+- `models/polyhaven/screwdriver` — 5개, CC0-1.0
+- `models/polyhaven/screwdrivers_02` — 5개, CC0-1.0
+- `models/polyhaven/seadogs_compass` — 5개, CC0-1.0
+- `models/polyhaven/security_light` — 5개, CC0-1.0
+- `models/polyhaven/service_pistol` — 5개, CC0-1.0
+- `models/polyhaven/side_table_01` — 5개, CC0-1.0
+- `models/polyhaven/side_table_tall_01` — 5개, CC0-1.0
+- `models/polyhaven/signal_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/small_lpg_tank` — 5개, CC0-1.0
+- `models/polyhaven/small_plastic_torch` — 5개, CC0-1.0
+- `models/polyhaven/small_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/sofa_02` — 5개, CC0-1.0
+- `models/polyhaven/sofa_03` — 5개, CC0-1.0
+- `models/polyhaven/stationery_supplies` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_02` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/polyhaven/sweet_potato` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/tongue_groove_pliers` — 5개, CC0-1.0
+- `models/polyhaven/tool_cart` — 5개, CC0-1.0
+- `models/polyhaven/trashbag` — 5개, CC0-1.0
+- `models/polyhaven/vintage_binocular` — 5개, CC0-1.0
+- `models/polyhaven/vintage_cabinet_01` — 9개, CC0-1.0
+- `models/polyhaven/vintage_day_bed` — 5개, CC0-1.0
+- `models/polyhaven/vintage_electric_kettle` — 5개, CC0-1.0
+- `models/polyhaven/vintage_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/vintage_lighter` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microscope` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microwave` — 5개, CC0-1.0
+- `models/polyhaven/vintage_oil_lamp` — 9개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_spacecraft_instrument` — 5개, CC0-1.0
+- `models/polyhaven/vintage_stapler` — 5개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+- `models/polyhaven/vintage_wooden_drawer_01` — 5개, CC0-1.0
+- `models/polyhaven/wall_clock` — 6개, CC0-1.0
+- `models/polyhaven/wheelchair_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_broom` — 6개, CC0-1.0
+- `models/polyhaven/wooden_candlestick` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_lantern_01` — 8개, CC0-1.0
+- `models/polyhaven/wooden_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
+- `models/polyhaven/wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
+- `models/polyhaven/yellow_onion` — 5개, CC0-1.0
+- `models/quaternius/furniture` — 25개, CC0-1.0
+- `models/quaternius/survival` — 55개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+- `models/quaternius/ultimatemonsters` — 57개, CC0-1.0
+- `models/quaternius/zombieapocalypsekit` — 68개, CC0-1.0
+
+**icons** (8)
+
+- `icons/kenney-2d/crosshair-pack` — 2015개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 4번 — 항목 154개 · 파일 13,245개 · 954 MB
+
+**fonts** (24)
+
+- `fonts/handwriting/songmyung` — 4개, OFL-1.1
+- `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (28)
+
+- `shaders/crt/URP_RetroCRTShader` — 10개, MIT
+- `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
+- `shaders/film-grain-vhs/Godot-Hi-8-Demo` — 14개, MIT
+- `shaders/film-grain-vhs/KinoFringe` — 12개, MIT
+- `shaders/film-grain-vhs/VHS-Effect` — 8개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/aberration-phasmophobia-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/adjustable-chromatic-aberration` — 2개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/advanced-side-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/bit-depth-posterize-post-process-with-optional-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camcorder-horror-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camera-vignette-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-for-3d-post-processing` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/classic-dithering-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/colour-correction-grading` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/crt-vhs-simple` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/darkness-weighted-film-grain-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/film-grain-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/pixelated-horror-vignette-dot-matrix-downres` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/radial-chromatic-aberration` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/realistic-photography-camera` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/retro-luma-color-reduction-quantization-posterize-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-crt-broadcast` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-scanline-glitch` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-tape-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/libretro-permissive` — 14개, Mixed per file: CC0-1.0 / Public Domain / MIT / CC-BY-3.0 (film-grain.slang)
+
+**audio** (65)
+
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/commons-projector-camera-tape` — 4개, mixed per file: CC BY 4.0, CC BY-SA 3.0, Public domain
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+
+**images** (9)
+
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/overlays/scanned_film` — 3개, CC0 3
+- `images/overlays/scanned_paper` — 3개, CC0 2, Public domain 1
+- `images/photos-bw-vintage/crime` — 13개, Public domain 12, CC0 1.0 1
+- `images/photos-bw-vintage/family` — 90개, CC0 1.0 54, Public domain 36
+- `images/photos-bw-vintage/group` — 27개, CC0 1.0 17, Public domain 10
+- `images/photos-bw-vintage/interior` — 17개, Public domain 16, CC0 1.0 1
+- `images/photos-bw-vintage/portrait` — 67개, CC0 1.0 37, Public domain 20, CC0 9, No restrictions 1
+- `images/photos-bw-vintage/street` — 52개, CC0 1.0 26, Public domain 26
+
+**models** (21)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/Camera_01` — 11개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
+- `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/magnifying_glass_01` — 6개, CC0-1.0
+- `models/polyhaven/metal_stool_02` — 5개, CC0-1.0
+- `models/polyhaven/old_bed_frame` — 5개, CC0-1.0
+- `models/polyhaven/projector_screen` — 8개, CC0-1.0
+- `models/polyhaven/round_spectacles` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_01` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_02` — 5개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_03` — 8개, CC0-1.0
+- `models/polyhaven/vintage_video_camera` — 5개, CC0-1.0
+
+**icons** (7)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 5번 — 항목 160개 · 파일 23,768개 · 1,886 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (111)
+
+- `audio/audience/applause` — 2개, CC-BY 3.0
+- `audio/audience/applause-in-a-large-hall-or-church` — 2개, CC0
+- `audio/audience/boo-voice-pack-female-tomboyish-low-tone-voice-over-vocal-sound-for-character` — 13개, CC-BY 3.0
+- `audio/audience/character-quotes` — 24개, CC-BY 3.0
+- `audio/audience/commons-audience` — 3개, mixed per file: CC0, Public domain
+- `audio/audience/evil-laugh` — 2개, CC0
+- `audio/audience/evil-laughter-0` — 2개, CC0
+- `audio/audience/fireworks-with-applause-happy-people` — 2개, CC0
+- `audio/audience/free-crowd-cheering-sounds` — 13개, CC-BY 4.0
+- `audio/audience/happy-halloween-group` — 2개, CC0
+- `audio/audience/well-done` — 3개, CC0
+- `audio/audience/witch-cackle` — 2개, CC0
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/kenney-audio/casino-audio` — 59개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/music-jingles` — 90개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/kenney-audio/voiceover-pack` — 100개, CC0-1.0
+- `audio/kenney-audio/voiceover-pack-fighter` — 51개, CC0-1.0
+- `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
+- `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
+- `audio/music/bossa-nova` — 2개, CC0
+- `audio/music/calm-bgm` — 3개, CC-BY 3.0
+- `audio/music/childrens-march-theme` — 6개, CC0
+- `audio/music/chill-lofi-inspired` — 3개, CC0
+- `audio/music/circus-dilemma` — 2개, CC-BY 3.0
+- `audio/music/cyberpunk-moonlight-sonata` — 3개, CC0
+- `audio/music/death-is-just-another-path` — 4개, CC-BY 3.0
+- `audio/music/deliciously-sour` — 2개, CC-BY 3.0
+- `audio/music/forest-ambience` — 2개, CC0
+- `audio/music/free-music-pack` — 8개, CC0
+- `audio/music/in-the-circus-psg-version` — 2개, CC-BY 3.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/music/lofi-compilation` — 10개, CC0
+- `audio/music/mysterious-ambience-song21` — 2개, CC0
+- `audio/music/mystical-theme` — 2개, CC-BY 3.0
+- `audio/music/november-snow` — 2개, CC0
+- `audio/music/one` — 2개, CC-BY 3.0
+- `audio/music/rain-and-thunders` — 2개, CC0
+- `audio/music/school-of-quirks` — 2개, CC-BY 3.0
+- `audio/music/shop-theme` — 6개, CC0
+- `audio/music/sleep-talking-loop-fantasy-rpg-sci-fi` — 3개, CC0
+- `audio/music/snowfall` — 3개, CC0
+- `audio/music/snowland-town` — 4개, CC-BY 3.0
+- `audio/music/soliloquy` — 2개, CC-BY 3.0
+- `audio/music/talking-cute-chiptune` — 2개, CC0
+- `audio/music/the-field-of-dreams` — 4개, CC0
+- `audio/music/trouble-makers-coolriff-jazz` — 4개, CC-BY 3.0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
+
+**images** (4)
+
+- `images/paper-puppets-reference/paper_cutouts` — 10개, CC0 1.0 9, Public domain 1
+- `images/paper-puppets-reference/puppet_theatre` — 13개, Public domain 8, CC0 1.0 5
+- `images/paper-puppets-reference/shadow_puppets` — 42개, CC0 1.0 14, Public domain 10, CC0 8, CC BY 3.0 5, CC BY 2.0 3, CC BY 4.0 2
+- `images/paper-puppets-reference/toy_theatre` — 38개, Public domain 20, CC0 1.0 15, CC0 2, CC BY 2.0 1
+
+**models** (24)
+
+- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
+- `models/kenney/blocky-characters` — 152개, CC0-1.0
+- `models/kenney/castle-kit` — 399개, CC0-1.0
+- `models/kenney/cube-pets` — 131개, CC0-1.0
+- `models/kenney/fantasy-town-kit` — 849개, CC0-1.0
+- `models/kenney/holiday-kit` — 511개, CC0-1.0
+- `models/kenney/mini-characters` — 141개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/toy-car-kit` — 806개, CC0-1.0
+- `models/polyhaven/american_football` — 5개, CC0-1.0
+- `models/polyhaven/baseball_01` — 5개, CC0-1.0
+- `models/polyhaven/baseball_bat` — 5개, CC0-1.0
+- `models/polyhaven/dartboard` — 5개, CC0-1.0
+- `models/polyhaven/dirty_football` — 5개, CC0-1.0
+- `models/polyhaven/football` — 5개, CC0-1.0
+- `models/polyhaven/hand_truck` — 5개, CC0-1.0
+- `models/polyhaven/rubber_duck_toy` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/quaternius/cutemonsters` — 44개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/farmanimal` — 9개, CC0-1.0
+- `models/quaternius/ultimateanimatedanimals` — 15개, CC0-1.0
+
+**icons** (13)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/background-elements-remastered` — 173개, CC0-1.0
+- `icons/kenney-2d/board-game-icons` — 776개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/emotes-pack` — 536개, CC0-1.0
+- `icons/kenney-2d/googly-eyes` — 14개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/playing-cards-pack` — 293개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 6번 — 항목 185개 · 파일 32,506개 · 1,883 MB
+
+**fonts** (17)
+
+- `fonts/signage/b612` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/dseg` — 156개, OFL-1.1
+- `fonts/signage/orbitron` — 4개, OFL-1.1
+- `fonts/signage/oswald` — 5개, OFL-1.1
+- `fonts/signage/overpass` — 5개, OFL-1.1
+- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
+- `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (1)
+
+- `shaders/flashlight-darkness/VolumetricLights` — 20개, BSD-3-Clause
+
+**audio** (94)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+
+**images** (48)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/photos-rooms-places/abandoned` — 18개, CC0 12, CC BY 2.0 4, CC BY 4.0 1, CC BY 3.0 1
+- `images/photos-rooms-places/corridor` — 8개, CC0 8
+- `images/photos-rooms-places/elevator` — 13개, CC0 9, Public domain 4
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (13)
+
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/graveyard-kit` — 467개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
+- `models/kenney/modular-space-kit` — 216개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/smoke-particles` — 82개, CC0-1.0
+- `models/kenney/space-kit` — 1696개, CC0-1.0
+- `models/kenney/space-station-kit` — 499개, CC0-1.0
+- `models/quaternius/cyberpunkgamekit` — 287개, CC0-1.0
+- `models/quaternius/sci-fi-essentials-kit` — 181개, CC0-1.0
+- `models/quaternius/ultimatemodularscifi` — 93개, CC0-1.0
+- `models/quaternius/zombieapocalypsekit` — 68개, CC0-1.0
+
+**icons** (12)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/minimap-pack` — 170개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/ui-pack-sci-fi` — 1119개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/tabler` — 6224개, MIT
+
+## 7번 — 항목 71개 · 파일 51,973개 · 271 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (3)
+
+- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+
+**models** (32)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/CheeseBox_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/cardboard_box_01` — 5개, CC0-1.0
+- `models/polyhaven/classic_laptop` — 5개, CC0-1.0
+- `models/polyhaven/clipboard` — 5개, CC0-1.0
+- `models/polyhaven/crowbar_01` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/flathead_screwdriver` — 5개, CC0-1.0
+- `models/polyhaven/garden_sprinkler_01` — 5개, CC0-1.0
+- `models/polyhaven/hand_plane_no4` — 5개, CC0-1.0
+- `models/polyhaven/handsaw_wood` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pipe_lamp` — 6개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/office_notepads` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/postcard_set_01` — 5개, CC0-1.0
+- `models/polyhaven/stationery_supplies` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/vintage_hand_drill` — 5개, CC0-1.0
+- `models/polyhaven/wine_bottles_01` — 14개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_stool_02` — 5개, CC0-1.0
+
+**icons** (28)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/1-bit-pack` — 26개, CC0-1.0
+- `icons/kenney-2d/animal-pack-remastered` — 286개, CC0-1.0
+- `icons/kenney-2d/board-game-icons` — 776개, CC0-1.0
+- `icons/kenney-2d/board-game-info` — 870개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/flag-pack` — 702개, CC0-1.0
+- `icons/kenney-2d/game-icons` — 436개, CC0-1.0
+- `icons/kenney-2d/game-icons-expansion` — 812개, CC0-1.0
+- `icons/kenney-2d/generic-items` — 341개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/map-pack` — 200개, CC0-1.0
+- `icons/kenney-2d/micro-roguelike` — 334개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/monochrome-rpg` — 436개, CC0-1.0
+- `icons/kenney-2d/rune-pack` — 694개, CC0-1.0
+- `icons/kenney-2d/tiny-dungeon` — 144개, CC0-1.0
+- `icons/kenney-2d/tiny-town` — 143개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/ui-pack-rpg-expansion` — 96개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/openmoji` — 9000개, CC-BY-SA-4.0
+- `icons/phosphor` — 9076개, MIT
+- `icons/tabler` — 6224개, MIT
+- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+
+## 8번 — 항목 204개 · 파일 19,967개 · 1,379 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (18)
+
+- `shaders/water-refraction/InteractiveStylizedWater` — 28개, MIT
+- `shaders/water-refraction/Stylized-Water-Shader` — 3개, CC0-1.0
+- `shaders/water-refraction/URP-WaterShaders` — 10개, MIT
+- `shaders/water-refraction/URPUnderwaterEffects` — 90개, MIT
+- `shaders/water-refraction/godotshaders-com/2d-water-distortion-effect-godot-4` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/3d-low-distortion-refraction-low-poly-glass` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/absorption-based-stylized-water` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/chaep-caustics-unshade` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/realistic-animated-shader-with-foamdropletscausticswaves` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/realistic-water-with-traced-and-simple-reflection-and-refraction-v2` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/screen-space-refraction-shader` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/sine-wave-camera-view-shader` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/snells-window` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/transparent-water-shader-supporting-ssr` — 2개, MIT
+- `shaders/water-refraction/godotshaders-com/underwater-camera-effect` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/water-shader-3d-godot-4-3` — 2개, CC0-1.0
+- `shaders/water-refraction/godotshaders-com/water-with-caustics` — 2개, CC0-1.0
+- `shaders/water-refraction/unity-water-shader2d` — 16개, MIT
+
+**audio** (108)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
+- `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
+- `audio/footsteps/different-steps-on-wood-stone-leaves-gravel-and-mud` — 10개, CC0
+- `audio/footsteps/fantozzis-footsteps-grasssand-stone` — 26개, CC0
+- `audio/footsteps/footsteps` — 2개, CC-BY 3.0
+- `audio/footsteps/footsteps-0` — 7개, CC0
+- `audio/footsteps/footsteps-leather-cloth-armor` — 14개, CC0
+- `audio/footsteps/footsteps-on-different-surfaces` — 90개, CC-BY 3.0
+- `audio/footsteps/grass-foot-step-sounds-yo-frankie` — 3개, CC-BY 3.0
+- `audio/footsteps/metal-footsteps-on-concrete` — 27개, CC0
+- `audio/footsteps/platformer-sounds-terminal-interaction-door-shots-bang-and-footsteps` — 15개, CC0
+- `audio/footsteps/stepping-sounds` — 11개, CC-BY 3.0
+- `audio/footsteps/stone-stair-steps` — 2개, CC-BY-SA 3.0
+- `audio/footsteps/walking-in-and-out-through-wooden-stairs` — 6개, CC-BY-SA 3.0
+- `audio/footsteps/walking-on-snow-sound` — 4개, CC0
+- `audio/footsteps/water-splash-and-sand-footsteps` — 5개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+
+**images** (51)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/photos-rooms-places/flooded` — 6개, Public domain 6
+- `images/silhouettes/sitting` — 9개, CC0 1.0 9
+- `images/silhouettes/standing` — 32개, CC0 1.0 32
+- `images/silhouettes/waiting` — 2개, CC0 1.0 2
+- `images/silhouettes/walking` — 11개, CC0 1.0 11
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (11)
+
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/city-kit-suburban` — 218개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/modular-buildings` — 556개, CC0-1.0
+- `models/kenney/nature-kit` — 3620개, CC0-1.0
+- `models/kenney/pirate-kit` — 372개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/watercraft-kit` — 241개, CC0-1.0
+- `models/quaternius/animatedfish` — 8개, CC0-1.0
+- `models/quaternius/cutefish` — 54개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+
+**icons** (8)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/fish-pack` — 389개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 9번 — 항목 179개 · 파일 35,776개 · 1,177 MB
+
+**fonts** (46)
+
+- `fonts/handwriting/caveat` — 4개, OFL-1.1
+- `fonts/handwriting/cedarvillecursive` — 4개, OFL-1.1
+- `fonts/handwriting/cutefont` — 4개, OFL-1.1
+- `fonts/handwriting/dawningofanewday` — 4개, OFL-1.1
+- `fonts/handwriting/dokdo` — 4개, OFL-1.1
+- `fonts/handwriting/eastseadokdo` — 4개, OFL-1.1
+- `fonts/handwriting/gaegu` — 6개, OFL-1.1
+- `fonts/handwriting/gamjaflower` — 4개, OFL-1.1
+- `fonts/handwriting/himelody` — 4개, OFL-1.1
+- `fonts/handwriting/homemadeapple` — 4개, Apache-2.0
+- `fonts/handwriting/kiranghaerang` — 4개, OFL-1.1
+- `fonts/handwriting/kristi` — 4개, OFL-1.1
+- `fonts/handwriting/labelleaurore` — 4개, OFL-1.1
+- `fonts/handwriting/mrssaintdelafield` — 4개, OFL-1.1
+- `fonts/handwriting/nanumbrushscript` — 4개, OFL-1.1
+- `fonts/handwriting/nanumpenscript` — 4개, OFL-1.1
+- `fonts/handwriting/nothingyoucoulddo` — 4개, OFL-1.1
+- `fonts/handwriting/poorstory` — 4개, OFL-1.1
+- `fonts/handwriting/reeniebeanie` — 4개, OFL-1.1
+- `fonts/handwriting/singleday` — 4개, OFL-1.1
+- `fonts/handwriting/songmyung` — 4개, OFL-1.1
+- `fonts/handwriting/stylish` — 4개, OFL-1.1
+- `fonts/handwriting/yeonsung` — 4개, OFL-1.1
+- `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (85)
+
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/sfx-ui-typing/50-cc0-sci-fi-sfx` — 52개, CC0
+- `audio/sfx-ui-typing/60-cc0-sci-fi-sfx` — 62개, CC0
+- `audio/sfx-ui-typing/9-sci-fi-computer-sounds-and-beeps` — 11개, CC-BY 3.0
+- `audio/sfx-ui-typing/beep-tone-sound-sfx` — 2개, CC0
+- `audio/sfx-ui-typing/commons-typewriter-keyboard` — 2개, mixed per file: CC0
+- `audio/sfx-ui-typing/glitch-music` — 2개, CC0
+- `audio/sfx-ui-typing/keyboard-soundpack-1-typing-and-single-keystrokes` — 53개, CC0
+- `audio/sfx-ui-typing/keyboard-typing` — 12개, CC-BY-SA 4.0
+- `audio/sfx-ui-typing/mechanical-keyboard-sound` — 3개, CC-BY 3.0
+- `audio/sfx-ui-typing/short-alarm` — 2개, CC0
+- `audio/sfx-ui-typing/single-key-press-sounds` — 32개, CC-BY 3.0
+- `audio/sfx-ui-typing/typewriter-sounds` — 9개, CC0
+- `audio/sfx-ui-typing/typing-soundeffect` — 2개, CC0
+- `audio/sfx-ui-typing/ui-sound-effects-pack` — 14개, CC-BY 3.0
+- `audio/voice-publicdomain/eves_diary_librivox` — 4개, Public Domain
+- `audio/voice-publicdomain/extracts_adams_diary` — 6개, Public Domain
+- `audio/voice-publicdomain/lettersfromacat_1309_librivox` — 5개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
+- `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
+
+**images** (2)
+
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/overlays/scanned_paper` — 3개, CC0 2, Public domain 1
+
+**models** (32)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/CheeseBox_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/cardboard_box_01` — 5개, CC0-1.0
+- `models/polyhaven/classic_laptop` — 5개, CC0-1.0
+- `models/polyhaven/clipboard` — 5개, CC0-1.0
+- `models/polyhaven/crowbar_01` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/flathead_screwdriver` — 5개, CC0-1.0
+- `models/polyhaven/garden_sprinkler_01` — 5개, CC0-1.0
+- `models/polyhaven/hand_plane_no4` — 5개, CC0-1.0
+- `models/polyhaven/handsaw_wood` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pipe_lamp` — 6개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/office_notepads` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/postcard_set_01` — 5개, CC0-1.0
+- `models/polyhaven/stationery_supplies` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/vintage_hand_drill` — 5개, CC0-1.0
+- `models/polyhaven/wine_bottles_01` — 14개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_stool_02` — 5개, CC0-1.0
+
+**icons** (14)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/fantasy-ui-borders` — 288개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-adventure` — 395개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/kenney-2d/ui-pack-rpg-expansion` — 96개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/phosphor` — 9076개, MIT
+- `icons/tabler` — 6224개, MIT
+
+## 10번 — 항목 110개 · 파일 23,015개 · 1,107 MB
+
+**fonts** (16)
+
+- `fonts/signage/b612` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/dseg` — 156개, OFL-1.1
+- `fonts/signage/orbitron` — 4개, OFL-1.1
+- `fonts/signage/oswald` — 5개, OFL-1.1
+- `fonts/signage/overpass` — 5개, OFL-1.1
+- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/terminal-mono/oldschool-pc-fonts` — 648개, CC-BY-SA-4.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (78)
+
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/commons-telephone` — 38개, mixed per file: CC BY 3.0, CC BY 4.0, CC BY-SA 3.0, CC BY-SA 4.0, CC0, Public Domain, Public domain
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+- `audio/voice-publicdomain/Apollo11Audio` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/Apollo13Audio` — 2개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/EDIS-SRP-0199-05` — 2개, Public Domain
+- `audio/voice-publicdomain/EDIS-SRP-0206-01` — 2개, Public Domain
+- `audio/voice-publicdomain/eves_diary_librivox` — 4개, Public Domain
+- `audio/voice-publicdomain/extracts_adams_diary` — 6개, Public Domain
+- `audio/voice-publicdomain/lettersfromacat_1309_librivox` — 5개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/mladytele1915` — 4개, Public Domain
+- `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
+- `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
+
+**images** (1)
+
+- `images/photos-rooms-places/switchboard` — 37개, Public domain 30, CC0 6, No restrictions 1
+
+**models** (6)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
+- `models/polyhaven/korean_public_payphone_01` — 5개, CC0-1.0
+- `models/polyhaven/power_box_01` — 5개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+
+**icons** (9)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/tabler` — 6224개, MIT
+
+## 11번 — 항목 415개 · 파일 17,685개 · 1,961 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (39)
+
+- `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
+- `shaders/film-grain-vhs/Godot-Hi-8-Demo` — 14개, MIT
+- `shaders/film-grain-vhs/KinoFringe` — 12개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/aberration-phasmophobia-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/adjustable-chromatic-aberration` — 2개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/advanced-side-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/bit-depth-posterize-post-process-with-optional-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camcorder-horror-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camera-vignette-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-for-3d-post-processing` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/classic-dithering-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/colour-correction-grading` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/crt-vhs-simple` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/darkness-weighted-film-grain-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/film-grain-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/pixelated-horror-vignette-dot-matrix-downres` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/radial-chromatic-aberration` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/realistic-photography-camera` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/retro-luma-color-reduction-quantization-posterize-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-crt-broadcast` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-scanline-glitch` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-tape-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/libretro-permissive` — 14개, Mixed per file: CC0-1.0 / Public Domain / MIT / CC-BY-3.0 (film-grain.slang)
+- `shaders/flashlight-darkness/2D-Volumetric-Lighting` — 9개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/2d-retro-dithered-lighting-fog-of-war` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/2d-sdf-lighting-shader-without-shadows-or-light-occlusion` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/additive-volume-integral` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/fake-godrays-godot-4-2` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/field-of-view-circular-cone-rectangle-mask-shader` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/god-rays` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/scary-dark-vignette` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/screen-space-god-rays-godot-4-3` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/shooting-cone` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/spatial-light-shaft` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/visionconeenergy` — 2개, CC0-1.0
+
+**audio** (93)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+
+**images** (48)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/photos-rooms-places/corridor` — 8개, CC0 8
+- `images/photos-rooms-places/interior` — 30개, Public domain 21, CC0 9
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (219)
+
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/light-masks` — 462개, CC0-1.0
+- `models/kenney/modular-dungeon-kit` — 211개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
+- `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_03` — 6개, CC0-1.0
+- `models/polyhaven/ClassicConsole_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicNightstand_01` — 5개, CC0-1.0
+- `models/polyhaven/CoffeeCart_01` — 8개, CC0-1.0
+- `models/polyhaven/CoffeeTable_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicBed_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCommode_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Lantern_01` — 5개, CC0-1.0
+- `models/polyhaven/Ottoman_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolChair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_02` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_03` — 5개, CC0-1.0
+- `models/polyhaven/adjustable_wrench` — 5개, CC0-1.0
+- `models/polyhaven/alarm_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/ammo_box` — 5개, CC0-1.0
+- `models/polyhaven/bananas` — 5개, CC0-1.0
+- `models/polyhaven/bar_chair_round_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/binoculars` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/brass_blowtorch` — 5개, CC0-1.0
+- `models/polyhaven/brass_candleholders` — 15개, CC0-1.0
+- `models/polyhaven/brass_diya_lantern` — 5개, CC0-1.0
+- `models/polyhaven/bronze_ray_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_shark_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_whale_statue` — 5개, CC0-1.0
+- `models/polyhaven/bunsen_burner` — 5개, CC0-1.0
+- `models/polyhaven/caged_hanging_light` — 6개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/cement_bag` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_pot` — 5개, CC0-1.0
+- `models/polyhaven/chemistry_set` — 5개, CC0-1.0
+- `models/polyhaven/chess_set` — 11개, CC0-1.0
+- `models/polyhaven/chinese_armchair` — 5개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_chandelier` — 5개, CC0-1.0
+- `models/polyhaven/chinese_commode` — 5개, CC0-1.0
+- `models/polyhaven/chinese_console_table` — 5개, CC0-1.0
+- `models/polyhaven/chinese_sofa` — 5개, CC0-1.0
+- `models/polyhaven/chinese_tea_table` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_case` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_pack` — 5개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/classic_laptop` — 5개, CC0-1.0
+- `models/polyhaven/clipboard` — 5개, CC0-1.0
+- `models/polyhaven/coffee_table_round_01` — 5개, CC0-1.0
+- `models/polyhaven/combination_wrench` — 5개, CC0-1.0
+- `models/polyhaven/cross_pein_hammer` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/digital_wrist_watch` — 5개, CC0-1.0
+- `models/polyhaven/dining_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/drawer_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/drill_press_01` — 5개, CC0-1.0
+- `models/polyhaven/dustpan` — 5개, CC0-1.0
+- `models/polyhaven/filmstrip_projector_8mm` — 5개, CC0-1.0
+- `models/polyhaven/fire_alarm` — 5개, CC0-1.0
+- `models/polyhaven/fish_knife` — 5개, CC0-1.0
+- `models/polyhaven/fishermans_hat` — 5개, CC0-1.0
+- `models/polyhaven/folding_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_chair` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_statue` — 5개, CC0-1.0
+- `models/polyhaven/hamburger_buns` — 5개, CC0-1.0
+- `models/polyhaven/hand_truck` — 5개, CC0-1.0
+- `models/polyhaven/hanging_industrial_lamp` — 7개, CC0-1.0
+- `models/polyhaven/industrial_caged_sconce` — 6개, CC0-1.0
+- `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/industrial_microscope` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pastic_container` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pipe_lamp` — 6개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/industrial_wall_lamp` — 9개, CC0-1.0
+- `models/polyhaven/industrial_wall_sconce` — 6개, CC0-1.0
+- `models/polyhaven/lantern_chandelier_01` — 9개, CC0-1.0
+- `models/polyhaven/lemon` — 5개, CC0-1.0
+- `models/polyhaven/life_jacket` — 5개, CC0-1.0
+- `models/polyhaven/lifebuoy` — 5개, CC0-1.0
+- `models/polyhaven/lightbulb_01` — 6개, CC0-1.0
+- `models/polyhaven/lightbulb_led` — 5개, CC0-1.0
+- `models/polyhaven/long_life_food` — 5개, CC0-1.0
+- `models/polyhaven/mantel_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_box` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan_green` — 5개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_01` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_02` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_03` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/mid_century_lounge_chair` — 5개, CC0-1.0
+- `models/polyhaven/modern_arm_chair_01` — 8개, CC0-1.0
+- `models/polyhaven/modern_ceiling_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_02` — 8개, CC0-1.0
+- `models/polyhaven/modern_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/modified_thermos` — 5개, CC0-1.0
+- `models/polyhaven/modular_street_seating` — 14개, CC0-1.0
+- `models/polyhaven/mounted_fluorescent_lights` — 6개, CC0-1.0
+- `models/polyhaven/ocean_buoy` — 6개, CC0-1.0
+- `models/polyhaven/office_notepads` — 5개, CC0-1.0
+- `models/polyhaven/oil_tin` — 5개, CC0-1.0
+- `models/polyhaven/old_bed_frame` — 5개, CC0-1.0
+- `models/polyhaven/old_drill_press` — 5개, CC0-1.0
+- `models/polyhaven/old_gas_mask` — 5개, CC0-1.0
+- `models/polyhaven/old_military_compressor` — 5개, CC0-1.0
+- `models/polyhaven/old_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/outdoor_table_chair_set_01` — 8개, CC0-1.0
+- `models/polyhaven/overhead_crane` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_nightstand` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_sofa` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/pastic_torch_6v` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/plastic_broom` — 5개, CC0-1.0
+- `models/polyhaven/plastic_container` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_03` — 5개, CC0-1.0
+- `models/polyhaven/plastic_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/plastic_monobloc_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_thermos` — 5개, CC0-1.0
+- `models/polyhaven/pliers` — 5개, CC0-1.0
+- `models/polyhaven/pocket_watch` — 6개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/portable_generator` — 6개, CC0-1.0
+- `models/polyhaven/portable_searchlight` — 5개, CC0-1.0
+- `models/polyhaven/portable_welding_cart` — 5개, CC0-1.0
+- `models/polyhaven/projector_screen` — 8개, CC0-1.0
+- `models/polyhaven/propane_tank` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch_02` — 5개, CC0-1.0
+- `models/polyhaven/pull_chain_light_socket` — 5개, CC0-1.0
+- `models/polyhaven/retro_multimeter` — 5개, CC0-1.0
+- `models/polyhaven/round_spectacles` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/rubber_boots` — 8개, CC0-1.0
+- `models/polyhaven/rusted_hacksaw` — 5개, CC0-1.0
+- `models/polyhaven/screwdriver` — 5개, CC0-1.0
+- `models/polyhaven/screwdrivers_02` — 5개, CC0-1.0
+- `models/polyhaven/seadogs_compass` — 5개, CC0-1.0
+- `models/polyhaven/security_light` — 5개, CC0-1.0
+- `models/polyhaven/service_pistol` — 5개, CC0-1.0
+- `models/polyhaven/side_table_01` — 5개, CC0-1.0
+- `models/polyhaven/side_table_tall_01` — 5개, CC0-1.0
+- `models/polyhaven/signal_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/small_lpg_tank` — 5개, CC0-1.0
+- `models/polyhaven/small_plastic_torch` — 5개, CC0-1.0
+- `models/polyhaven/small_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/sofa_02` — 5개, CC0-1.0
+- `models/polyhaven/sofa_03` — 5개, CC0-1.0
+- `models/polyhaven/stationery_supplies` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_02` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/polyhaven/sweet_potato` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/tongue_groove_pliers` — 5개, CC0-1.0
+- `models/polyhaven/tool_cart` — 5개, CC0-1.0
+- `models/polyhaven/trashbag` — 5개, CC0-1.0
+- `models/polyhaven/vintage_binocular` — 5개, CC0-1.0
+- `models/polyhaven/vintage_cabinet_01` — 9개, CC0-1.0
+- `models/polyhaven/vintage_day_bed` — 5개, CC0-1.0
+- `models/polyhaven/vintage_electric_kettle` — 5개, CC0-1.0
+- `models/polyhaven/vintage_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/vintage_lighter` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microscope` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microwave` — 5개, CC0-1.0
+- `models/polyhaven/vintage_oil_lamp` — 9개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_spacecraft_instrument` — 5개, CC0-1.0
+- `models/polyhaven/vintage_stapler` — 5개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+- `models/polyhaven/vintage_wooden_drawer_01` — 5개, CC0-1.0
+- `models/polyhaven/wall_clock` — 6개, CC0-1.0
+- `models/polyhaven/wheelchair_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_broom` — 6개, CC0-1.0
+- `models/polyhaven/wooden_candlestick` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_lantern_01` — 8개, CC0-1.0
+- `models/polyhaven/wooden_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
+- `models/polyhaven/wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
+- `models/polyhaven/yellow_onion` — 5개, CC0-1.0
+- `models/quaternius/furniture` — 25개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+
+**icons** (8)
+
+- `icons/kenney-2d/crosshair-pack` — 2015개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 12번 — 항목 135개 · 파일 22,617개 · 1,751 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (50)
+
+- `audio/kenney-audio/music-jingles` — 90개, CC0-1.0
+- `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
+- `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
+- `audio/music/bossa-nova` — 2개, CC0
+- `audio/music/calm-bgm` — 3개, CC-BY 3.0
+- `audio/music/childrens-march-theme` — 6개, CC0
+- `audio/music/chill-lofi-inspired` — 3개, CC0
+- `audio/music/circus-dilemma` — 2개, CC-BY 3.0
+- `audio/music/cyberpunk-moonlight-sonata` — 3개, CC0
+- `audio/music/death-is-just-another-path` — 4개, CC-BY 3.0
+- `audio/music/deliciously-sour` — 2개, CC-BY 3.0
+- `audio/music/forest-ambience` — 2개, CC0
+- `audio/music/free-music-pack` — 8개, CC0
+- `audio/music/in-the-circus-psg-version` — 2개, CC-BY 3.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/music/lofi-compilation` — 10개, CC0
+- `audio/music/mysterious-ambience-song21` — 2개, CC0
+- `audio/music/mystical-theme` — 2개, CC-BY 3.0
+- `audio/music/november-snow` — 2개, CC0
+- `audio/music/one` — 2개, CC-BY 3.0
+- `audio/music/rain-and-thunders` — 2개, CC0
+- `audio/music/school-of-quirks` — 2개, CC-BY 3.0
+- `audio/music/shop-theme` — 6개, CC0
+- `audio/music/sleep-talking-loop-fantasy-rpg-sci-fi` — 3개, CC0
+- `audio/music/snowfall` — 3개, CC0
+- `audio/music/snowland-town` — 4개, CC-BY 3.0
+- `audio/music/soliloquy` — 2개, CC-BY 3.0
+- `audio/music/talking-cute-chiptune` — 2개, CC0
+- `audio/music/the-field-of-dreams` — 4개, CC0
+- `audio/music/trouble-makers-coolriff-jazz` — 4개, CC-BY 3.0
+- `audio/radio-static-noise/100-cc0-sfx` — 102개, CC0
+- `audio/radio-static-noise/commons-radio` — 2개, mixed per file: CC0
+- `audio/radio-static-noise/dark-ambience-soundscapes` — 9개, CC-BY-SA 3.0
+- `audio/radio-static-noise/female-soldier-voice` — 17개, CC-BY 3.0
+- `audio/radio-static-noise/frequency-static-sound-effects` — 11개, CC0
+- `audio/radio-static-noise/mysterious-radio-signal` — 2개, CC-BY 3.0
+- `audio/radio-static-noise/radio-call` — 2개, CC-BY 4.0
+- `audio/radio-static-noise/static` — 2개, CC0
+- `audio/radio-static-noise/zombie-news-in-radio` — 2개, CC0
+- `audio/voice-publicdomain/Apollo11Audio` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/Apollo13Audio` — 2개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/EDIS-SRP-0199-05` — 2개, Public Domain
+- `audio/voice-publicdomain/EDIS-SRP-0206-01` — 2개, Public Domain
+- `audio/voice-publicdomain/eves_diary_librivox` — 4개, Public Domain
+- `audio/voice-publicdomain/extracts_adams_diary` — 6개, Public Domain
+- `audio/voice-publicdomain/lettersfromacat_1309_librivox` — 5개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/mladytele1915` — 4개, Public Domain
+- `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
+- `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
+
+**images** (48)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/photos-rooms-places/abandoned` — 18개, CC0 12, CC BY 2.0 4, CC BY 4.0 1, CC BY 3.0 1
+- `images/photos-rooms-places/radio_station` — 20개, Public domain 16, CC0 4
+- `images/photos-rooms-places/school` — 28개, Public domain 25, CC0 3
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (20)
+
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
+- `models/polyhaven/Barrel_01` — 5개, CC0-1.0
+- `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
+- `models/polyhaven/Television_01` — 5개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/gamepad` — 5개, CC0-1.0
+- `models/polyhaven/measuring_tape_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_01` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_02` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_video_camera` — 5개, CC0-1.0
+
+**icons** (9)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/tabler` — 6224개, MIT
+
+## 13번 — 항목 309개 · 파일 53,392개 · 1,453 MB
+
+**fonts** (23)
+
+- `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (65)
+
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/kenney-audio/casino-audio` — 59개, CC0-1.0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+
+**images** (36)
+
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/overlays/scanned_paper` — 3개, CC0 2, Public domain 1
+- `images/photos-bw-vintage/family` — 90개, CC0 1.0 54, Public domain 36
+- `images/photos-bw-vintage/group` — 27개, CC0 1.0 17, Public domain 10
+- `images/photos-bw-vintage/portrait` — 67개, CC0 1.0 37, Public domain 20, CC0 9, No restrictions 1
+- `images/photos-objects/books` — 6개, CC0 1.0 6
+- `images/photos-objects/bottles` — 15개, CC0 1.0 15
+- `images/photos-objects/boxes` — 10개, CC0 1.0 10
+- `images/photos-objects/clothing` — 22개, CC0 1.0 22
+- `images/photos-objects/desk` — 11개, CC0 1.0 11
+- `images/photos-objects/everyday_bottles` — 5개, CC0 5
+- `images/photos-objects/everyday_clothing` — 24개, CC0 24
+- `images/photos-objects/everyday_desk` — 8개, CC0 7, Public domain 1
+- `images/photos-objects/everyday_electronics` — 20개, CC0 20
+- `images/photos-objects/everyday_glasses` — 7개, CC0 7
+- `images/photos-objects/everyday_household` — 15개, CC0 15
+- `images/photos-objects/everyday_jewelry` — 6개, CC0 6
+- `images/photos-objects/everyday_keys` — 6개, CC0 6
+- `images/photos-objects/everyday_letters` — 7개, CC0 7
+- `images/photos-objects/everyday_misc` — 8개, CC0 7, Public domain 1
+- `images/photos-objects/everyday_parcels` — 4개, CC0 4
+- `images/photos-objects/everyday_personal` — 14개, CC0 14
+- `images/photos-objects/everyday_shoes` — 11개, CC0 11
+- `images/photos-objects/everyday_tools` — 23개, CC0 23
+- `images/photos-objects/everyday_toys` — 19개, CC0 19
+- `images/photos-objects/everyday_watches` — 9개, CC0 9
+- `images/photos-objects/glasses` — 10개, CC0 1.0 10
+- `images/photos-objects/household` — 17개, CC0 1.0 17
+- `images/photos-objects/jewelry` — 16개, CC0 1.0 16
+- `images/photos-objects/keys` — 39개, CC0 1.0 39
+- `images/photos-objects/letters` — 8개, CC0 1.0 8
+- `images/photos-objects/misc` — 23개, CC0 1.0 23
+- `images/photos-objects/shoes` — 11개, CC0 1.0 11
+- `images/photos-objects/tools` — 17개, CC0 1.0 17
+- `images/photos-objects/toys` — 21개, CC0 1.0 21
+- `images/photos-objects/watches` — 49개, CC0 1.0 49
+
+**models** (170)
+
+- `models/kenney/city-kit-industrial` — 203개, CC0-1.0
+- `models/kenney/factory-kit` — 729개, CC0-1.0
+- `models/kenney/food-kit` — 1011개, CC0-1.0
+- `models/kenney/holiday-kit` — 511개, CC0-1.0
+- `models/kenney/mini-market` — 116개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/toy-car-kit` — 806개, CC0-1.0
+- `models/polyhaven/Barrel_01` — 5개, CC0-1.0
+- `models/polyhaven/Barrel_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_03` — 6개, CC0-1.0
+- `models/polyhaven/CheeseBox_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicConsole_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicNightstand_01` — 5개, CC0-1.0
+- `models/polyhaven/CoffeeTable_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicBed_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCommode_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/alarm_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/all_purpose_cleaner` — 5개, CC0-1.0
+- `models/polyhaven/ammo_box` — 5개, CC0-1.0
+- `models/polyhaven/antique_ceramic_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/antique_estoc` — 5개, CC0-1.0
+- `models/polyhaven/barrel_03` — 5개, CC0-1.0
+- `models/polyhaven/barrel_stove` — 5개, CC0-1.0
+- `models/polyhaven/bleach_bottle` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/brass_candleholders` — 15개, CC0-1.0
+- `models/polyhaven/brass_diya_lantern` — 5개, CC0-1.0
+- `models/polyhaven/brass_goblets` — 11개, CC0-1.0
+- `models/polyhaven/brass_pan_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_pot_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_pot_02` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_02` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_03` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_04` — 5개, CC0-1.0
+- `models/polyhaven/bronze_ray_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_shark_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_whale_statue` — 5개, CC0-1.0
+- `models/polyhaven/bull_head` — 5개, CC0-1.0
+- `models/polyhaven/can_rusted` — 5개, CC0-1.0
+- `models/polyhaven/cannon_01` — 5개, CC0-1.0
+- `models/polyhaven/cardboard_box_01` — 5개, CC0-1.0
+- `models/polyhaven/carved_wooden_elephant` — 5개, CC0-1.0
+- `models/polyhaven/carved_wooden_plate` — 5개, CC0-1.0
+- `models/polyhaven/cement_bag` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_pot` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_02` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_03` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_04` — 5개, CC0-1.0
+- `models/polyhaven/chess_set` — 11개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_chandelier` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_case` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_pack` — 5개, CC0-1.0
+- `models/polyhaven/cleaner_tin_01` — 5개, CC0-1.0
+- `models/polyhaven/compost_bag_02` — 5개, CC0-1.0
+- `models/polyhaven/compost_bags` — 6개, CC0-1.0
+- `models/polyhaven/concrete_cat_statue` — 5개, CC0-1.0
+- `models/polyhaven/dartboard` — 5개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/gamepad` — 5개, CC0-1.0
+- `models/polyhaven/gaming_console` — 6개, CC0-1.0
+- `models/polyhaven/garden_gnome` — 5개, CC0-1.0
+- `models/polyhaven/gothic_statue` — 5개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
+- `models/polyhaven/horse_head` — 5개, CC0-1.0
+- `models/polyhaven/horse_statue_01` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pastic_container` — 5개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/industrial_wall_sconce` — 6개, CC0-1.0
+- `models/polyhaven/jug_01` — 5개, CC0-1.0
+- `models/polyhaven/katana_stand_01` — 5개, CC0-1.0
+- `models/polyhaven/lambis_shell` — 5개, CC0-1.0
+- `models/polyhaven/lantern_chandelier_01` — 9개, CC0-1.0
+- `models/polyhaven/leather_cleaner_can` — 5개, CC0-1.0
+- `models/polyhaven/lion_head` — 5개, CC0-1.0
+- `models/polyhaven/long_life_food` — 5개, CC0-1.0
+- `models/polyhaven/lubricant_spray` — 5개, CC0-1.0
+- `models/polyhaven/mantel_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/marble_bust_01` — 5개, CC0-1.0
+- `models/polyhaven/measuring_tape_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_box` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan_green` — 5개, CC0-1.0
+- `models/polyhaven/metal_jug` — 5개, CC0-1.0
+- `models/polyhaven/metal_tool_chest` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/metal_trash_can` — 8개, CC0-1.0
+- `models/polyhaven/modern_ceiling_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/modified_thermos` — 5개, CC0-1.0
+- `models/polyhaven/multi_cleaner_5_litre` — 5개, CC0-1.0
+- `models/polyhaven/multi_cleaner_bottle` — 5개, CC0-1.0
+- `models/polyhaven/oil_tin` — 5개, CC0-1.0
+- `models/polyhaven/old_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/old_tyre` — 5개, CC0-1.0
+- `models/polyhaven/ornate_mirror_01` — 5개, CC0-1.0
+- `models/polyhaven/overhead_crane` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_01` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_02` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_03` — 5개, CC0-1.0
+- `models/polyhaven/planter_pot_clay` — 5개, CC0-1.0
+- `models/polyhaven/plastic_bottle_gallon` — 5개, CC0-1.0
+- `models/polyhaven/plastic_container` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_03` — 5개, CC0-1.0
+- `models/polyhaven/plastic_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/plastic_thermos` — 5개, CC0-1.0
+- `models/polyhaven/portable_welding_cart` — 5개, CC0-1.0
+- `models/polyhaven/pot_enamel_01` — 5개, CC0-1.0
+- `models/polyhaven/potted_plant_01` — 8개, CC0-1.0
+- `models/polyhaven/potted_plant_02` — 8개, CC0-1.0
+- `models/polyhaven/potted_plant_04` — 5개, CC0-1.0
+- `models/polyhaven/power_box_01` — 5개, CC0-1.0
+- `models/polyhaven/propane_tank` — 5개, CC0-1.0
+- `models/polyhaven/rubber_duck_toy` — 5개, CC0-1.0
+- `models/polyhaven/russian_food_cans_01` — 5개, CC0-1.0
+- `models/polyhaven/seadogs_compass` — 5개, CC0-1.0
+- `models/polyhaven/seeding_tray_01` — 5개, CC0-1.0
+- `models/polyhaven/small_lpg_tank` — 5개, CC0-1.0
+- `models/polyhaven/spray_paint_bottles` — 8개, CC0-1.0
+- `models/polyhaven/standing_chalkboard_01` — 8개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/sungka_board` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/polyhaven/tea_set_01` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/throw_pillows_01` — 5개, CC0-1.0
+- `models/polyhaven/trashbag` — 5개, CC0-1.0
+- `models/polyhaven/treasure_chest` — 5개, CC0-1.0
+- `models/polyhaven/vintage_electric_kettle` — 5개, CC0-1.0
+- `models/polyhaven/vintage_grandfather_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/vintage_oil_lamp` — 9개, CC0-1.0
+- `models/polyhaven/vintage_suitcase` — 8개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+- `models/polyhaven/wall_clock` — 6개, CC0-1.0
+- `models/polyhaven/watering_can_metal_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_02` — 5개, CC0-1.0
+- `models/polyhaven/wine_barrel_01` — 5개, CC0-1.0
+- `models/polyhaven/wine_bottles_01` — 14개, CC0-1.0
+- `models/polyhaven/wooden_barrels_01` — 11개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bowl_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bowl_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bucket_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bucket_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_candlestick` — 5개, CC0-1.0
+- `models/polyhaven/wooden_crate_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_military_crate` — 5개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/junkfood` — 18개, CC0-1.0
+- `models/quaternius/ultimatefood` — 105개, CC0-1.0
+
+**icons** (15)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/generic-items` — 341개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/rpg-urban-pack` — 497개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/lucide` — 2122개, ISC
+- `icons/openmoji` — 9000개, CC-BY-SA-4.0
+- `icons/phosphor` — 9076개, MIT
+- `icons/tabler` — 6224개, MIT
+- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+
+## 14번 — 항목 52개 · 파일 27,386개 · 324 MB
+
+**fonts** (15)
+
+- `fonts/comic/bangers` — 4개, OFL-1.1
+- `fonts/comic/blackhansans` — 4개, OFL-1.1
+- `fonts/comic/comicneue` — 9개, OFL-1.1
+- `fonts/comic/dohyeon` — 4개, OFL-1.1
+- `fonts/comic/dongle` — 6개, OFL-1.1
+- `fonts/comic/gugi` — 4개, OFL-1.1
+- `fonts/comic/jua` — 4개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (3)
+
+- `audio/kenney-audio/digital-audio` — 68개, CC0-1.0
+- `audio/kenney-audio/interface-sounds` — 104개, CC0-1.0
+- `audio/kenney-audio/ui-audio` — 56개, CC0-1.0
+
+**images** (15)
+
+- `images/comics-panels/alphonse_gaston` — 4개, Public domain 4
+- `images/comics-panels/buster_brown` — 8개, Public domain 8
+- `images/comics-panels/golden_age` — 13개, Public domain 13
+- `images/comics-panels/golden_age_pages` — 39개, Public domain 39
+- `images/comics-panels/happy_hooligan` — 6개, Public domain 6
+- `images/comics-panels/katzenjammer` — 4개, Public domain 4
+- `images/comics-panels/krazy_kat` — 12개, Public domain 12
+- `images/comics-panels/little_nemo` — 14개, Public domain 14
+- `images/comics-panels/misc_strips` — 1개, Public domain 1
+- `images/comics-panels/mutt_and_jeff` — 5개, Public domain 5
+- `images/comics-panels/newspaper_strips` — 24개, Public domain 23, CC0 1
+- `images/comics-panels/panels` — 269개, Public domain 269
+- `images/comics-panels/rarebit_fiend` — 5개, Public domain 5
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/overlays/scanned_paper` — 3개, CC0 2, Public domain 1
+
+**models** (1)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+
+**icons** (18)
+
+- `icons/kenney-2d/background-elements-remastered` — 173개, CC0-1.0
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/emotes-pack` — 536개, CC0-1.0
+- `icons/kenney-2d/fantasy-ui-borders` — 288개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/scribble-dungeons` — 285개, CC0-1.0
+- `icons/kenney-2d/shape-characters` — 221개, CC0-1.0
+- `icons/kenney-2d/sketch-town` — 358개, CC0-1.0
+- `icons/kenney-2d/splat-pack` — 115개, CC0-1.0
+- `icons/kenney-2d/toon-characters` — 700개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-adventure` — 395개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+- `icons/openmoji` — 9000개, CC-BY-SA-4.0
+- `icons/twemoji` — 3724개, CC-BY-4.0 (graphics); MIT (code)
+
+## 15번 — 항목 204개 · 파일 14,722개 · 2,126 MB
+
+**fonts** (16)
+
+- `fonts/signage/b612` — 7개, OFL-1.1
+- `fonts/signage/b612mono` — 7개, OFL-1.1
+- `fonts/signage/dseg` — 156개, OFL-1.1
+- `fonts/signage/orbitron` — 4개, OFL-1.1
+- `fonts/signage/oswald` — 5개, OFL-1.1
+- `fonts/signage/overpass` — 5개, OFL-1.1
+- `fonts/signage/overpassmono` — 4개, OFL-1.1
+- `fonts/terminal-mono/galmuri` — 19개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (13)
+
+- `shaders/ice-crack/Godot-Glass-Break-Effect` — 5개, MIT
+- `shaders/ice-crack/unity-frosted-glass` — 22개, MIT
+- `shaders/reflection/AdamPlaneReflection` — 19개, MIT
+- `shaders/reflection/Godot-SSPR` — 21개, MIT
+- `shaders/reflection/UnityURP-MobileScreenSpacePlanarReflection` — 34개, MIT
+- `shaders/reflection/godotshaders-com/2d-mirror-effect` — 2개, CC0-1.0
+- `shaders/reflection/godotshaders-com/procedural-window-rain-drop-shader` — 2개, MIT
+- `shaders/reflection/godotshaders-com/rain-on-glass` — 2개, MIT
+- `shaders/reflection/godotshaders-com/rain-puddles-with-screen-space-reflections` — 2개, CC0-1.0
+- `shaders/reflection/godotshaders-com/realistic-glass-with-traced-and-simple-reflection-and-refraction` — 2개, CC0-1.0
+- `shaders/reflection/godotshaders-com/simple-zoom-reflections-mirrors` — 2개, CC0-1.0
+- `shaders/reflection/kMirrors` — 10개, MIT
+- `shaders/reflection/planar-reflections-unity` — 46개, MIT
+
+**audio** (93)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+
+**images** (52)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/overlays/scanned_film` — 3개, CC0 3
+- `images/photos-rooms-places/subway_train` — 34개, Public domain 31, CC0 3
+- `images/silhouettes/sitting` — 9개, CC0 1.0 9
+- `images/silhouettes/standing` — 32개, CC0 1.0 32
+- `images/silhouettes/waiting` — 2개, CC0 1.0 2
+- `images/silhouettes/walking` — 11개, CC0 1.0 11
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (22)
+
+- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/animated-characters-retro` — 14개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animatedmen` — 11개, CC0-1.0
+- `models/characters-animated/animatedwomen` — 10개, CC0-1.0
+- `models/characters-animated/animatedzombie` — 4개, CC0-1.0
+- `models/characters-animated/ultimatedanimatedcharacter` — 54개, CC0-1.0
+- `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
+- `models/kenney/blocky-characters` — 152개, CC0-1.0
+- `models/kenney/mini-characters` — 141개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
+- `models/kenney/skyboxes` — 14개, CC0-1.0
+- `models/kenney/train-kit` — 529개, CC0-1.0
+- `models/quaternius/backgroundposedhumans` — 30개, CC0-1.0
+- `models/quaternius/modulartrain` — 16개, CC0-1.0
+- `models/quaternius/publictransport` — 14개, CC0-1.0
+- `models/quaternius/ultimatemonsters` — 57개, CC0-1.0
+
+**icons** (8)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/monster-builder-pack` — 369개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 16번 — 항목 199개 · 파일 18,283개 · 1,384 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (13)
+
+- `shaders/ice-crack/Godot-Glass-Break-Effect` — 5개, MIT
+- `shaders/ice-crack/Unity-URP-ShaderGraph-Ice-Shader` — 22개, MIT
+- `shaders/ice-crack/cracked-ice` — 175개, MIT
+- `shaders/ice-crack/godotshaders-com/frostbite` — 2개, CC0-1.0
+- `shaders/ice-crack/godotshaders-com/frosted-glass-fast` — 2개, CC0-1.0
+- `shaders/ice-crack/godotshaders-com/frosted-glass-gaussian-blur` — 2개, CC0-1.0
+- `shaders/ice-crack/godotshaders-com/ice-covering` — 2개, MIT
+- `shaders/ice-crack/godotshaders-com/impact-glass-shader` — 2개, MIT
+- `shaders/ice-crack/godotshaders-com/improved-frosted-glass` — 2개, CC0-1.0
+- `shaders/ice-crack/godotshaders-com/screen-space-frost-with-volumetric-snow` — 2개, MIT
+- `shaders/ice-crack/phase-transition` — 42개, MIT
+- `shaders/ice-crack/shaders-ice` — 23개, MIT
+- `shaders/ice-crack/unity-frosted-glass` — 22개, MIT
+
+**audio** (117)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
+- `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
+- `audio/footsteps/different-steps-on-wood-stone-leaves-gravel-and-mud` — 10개, CC0
+- `audio/footsteps/fantozzis-footsteps-grasssand-stone` — 26개, CC0
+- `audio/footsteps/footsteps` — 2개, CC-BY 3.0
+- `audio/footsteps/footsteps-0` — 7개, CC0
+- `audio/footsteps/footsteps-leather-cloth-armor` — 14개, CC0
+- `audio/footsteps/footsteps-on-different-surfaces` — 90개, CC-BY 3.0
+- `audio/footsteps/grass-foot-step-sounds-yo-frankie` — 3개, CC-BY 3.0
+- `audio/footsteps/metal-footsteps-on-concrete` — 27개, CC0
+- `audio/footsteps/platformer-sounds-terminal-interaction-door-shots-bang-and-footsteps` — 15개, CC0
+- `audio/footsteps/stepping-sounds` — 11개, CC-BY 3.0
+- `audio/footsteps/stone-stair-steps` — 2개, CC-BY-SA 3.0
+- `audio/footsteps/walking-in-and-out-through-wooden-stairs` — 6개, CC-BY-SA 3.0
+- `audio/footsteps/walking-on-snow-sound` — 4개, CC0
+- `audio/footsteps/water-splash-and-sand-footsteps` — 5개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/ice/35-wooden-crackshitsdestructions` — 37개, CC0
+- `audio/ice/4-dry-snow-steps` — 7개, CC0
+- `audio/ice/41-snow-shoe-steps` — 44개, CC0
+- `audio/ice/5-break-crunch-impacts` — 7개, CC0
+- `audio/ice/9-wet-snow-steps` — 12개, CC0
+- `audio/ice/cracking-sounds` — 3개, CC-BY 4.0
+- `audio/ice/ice-breakingshattering` — 7개, CC0
+- `audio/ice/leaves-cracking-and-crumbling` — 82개, CC-BY 3.0
+- `audio/ice/water-flowing-sound` — 2개, CC-BY 3.0
+
+**images** (46)
+
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/photos-rooms-places/ice` — 4개, Public domain 4
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (8)
+
+- `models/kenney/holiday-kit` — 511개, CC0-1.0
+- `models/kenney/nature-kit` — 3620개, CC0-1.0
+- `models/kenney/particle-pack` — 197개, CC0-1.0
+- `models/kenney/platformer-kit` — 779개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/skyboxes` — 14개, CC0-1.0
+- `models/kenney/survival-kit` — 414개, CC0-1.0
+- `models/quaternius/survival` — 55개, CC0-1.0
+
+**icons** (7)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 17번 — 항목 496개 · 파일 24,038개 · 3,018 MB
+
+**fonts** (23)
+
+- `fonts/typewriter-serif/courierprime` — 7개, OFL-1.1
+- `fonts/typewriter-serif/cutivemono` — 5개, OFL-1.1
+- `fonts/typewriter-serif/ebgaramond` — 5개, OFL-1.1
+- `fonts/typewriter-serif/gowunbatang` — 5개, OFL-1.1
+- `fonts/typewriter-serif/hahmlet` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfelldoublepica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfelldwpica` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglish` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellenglishsc` — 4개, OFL-1.1
+- `fonts/typewriter-serif/imfellfrenchcanon` — 5개, OFL-1.1
+- `fonts/typewriter-serif/imfellgreatprimer` — 5개, OFL-1.1
+- `fonts/typewriter-serif/librebaskerville` — 6개, OFL-1.1
+- `fonts/typewriter-serif/nanummyeongjo` — 6개, OFL-1.1
+- `fonts/typewriter-serif/notoserifkr` — 4개, OFL-1.1
+- `fonts/typewriter-serif/specialelite` — 4개, Apache-2.0
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (201)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
+- `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
+- `audio/footsteps/different-steps-on-wood-stone-leaves-gravel-and-mud` — 10개, CC0
+- `audio/footsteps/fantozzis-footsteps-grasssand-stone` — 26개, CC0
+- `audio/footsteps/footsteps` — 2개, CC-BY 3.0
+- `audio/footsteps/footsteps-0` — 7개, CC0
+- `audio/footsteps/footsteps-leather-cloth-armor` — 14개, CC0
+- `audio/footsteps/footsteps-on-different-surfaces` — 90개, CC-BY 3.0
+- `audio/footsteps/grass-foot-step-sounds-yo-frankie` — 3개, CC-BY 3.0
+- `audio/footsteps/metal-footsteps-on-concrete` — 27개, CC0
+- `audio/footsteps/platformer-sounds-terminal-interaction-door-shots-bang-and-footsteps` — 15개, CC0
+- `audio/footsteps/stepping-sounds` — 11개, CC-BY 3.0
+- `audio/footsteps/stone-stair-steps` — 2개, CC-BY-SA 3.0
+- `audio/footsteps/walking-in-and-out-through-wooden-stairs` — 6개, CC-BY-SA 3.0
+- `audio/footsteps/walking-on-snow-sound` — 4개, CC0
+- `audio/footsteps/water-splash-and-sand-footsteps` — 5개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
+- `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
+- `audio/music/bossa-nova` — 2개, CC0
+- `audio/music/calm-bgm` — 3개, CC-BY 3.0
+- `audio/music/childrens-march-theme` — 6개, CC0
+- `audio/music/chill-lofi-inspired` — 3개, CC0
+- `audio/music/circus-dilemma` — 2개, CC-BY 3.0
+- `audio/music/cyberpunk-moonlight-sonata` — 3개, CC0
+- `audio/music/death-is-just-another-path` — 4개, CC-BY 3.0
+- `audio/music/deliciously-sour` — 2개, CC-BY 3.0
+- `audio/music/forest-ambience` — 2개, CC0
+- `audio/music/free-music-pack` — 8개, CC0
+- `audio/music/in-the-circus-psg-version` — 2개, CC-BY 3.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/music/lofi-compilation` — 10개, CC0
+- `audio/music/mysterious-ambience-song21` — 2개, CC0
+- `audio/music/mystical-theme` — 2개, CC-BY 3.0
+- `audio/music/november-snow` — 2개, CC0
+- `audio/music/one` — 2개, CC-BY 3.0
+- `audio/music/rain-and-thunders` — 2개, CC0
+- `audio/music/school-of-quirks` — 2개, CC-BY 3.0
+- `audio/music/shop-theme` — 6개, CC0
+- `audio/music/sleep-talking-loop-fantasy-rpg-sci-fi` — 3개, CC0
+- `audio/music/snowfall` — 3개, CC0
+- `audio/music/snowland-town` — 4개, CC-BY 3.0
+- `audio/music/soliloquy` — 2개, CC-BY 3.0
+- `audio/music/talking-cute-chiptune` — 2개, CC0
+- `audio/music/the-field-of-dreams` — 4개, CC0
+- `audio/music/trouble-makers-coolriff-jazz` — 4개, CC-BY 3.0
+
+**images** (77)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/photos-objects/books` — 6개, CC0 1.0 6
+- `images/photos-objects/bottles` — 15개, CC0 1.0 15
+- `images/photos-objects/boxes` — 10개, CC0 1.0 10
+- `images/photos-objects/clothing` — 22개, CC0 1.0 22
+- `images/photos-objects/desk` — 11개, CC0 1.0 11
+- `images/photos-objects/everyday_bottles` — 5개, CC0 5
+- `images/photos-objects/everyday_clothing` — 24개, CC0 24
+- `images/photos-objects/everyday_desk` — 8개, CC0 7, Public domain 1
+- `images/photos-objects/everyday_electronics` — 20개, CC0 20
+- `images/photos-objects/everyday_glasses` — 7개, CC0 7
+- `images/photos-objects/everyday_household` — 15개, CC0 15
+- `images/photos-objects/everyday_jewelry` — 6개, CC0 6
+- `images/photos-objects/everyday_keys` — 6개, CC0 6
+- `images/photos-objects/everyday_letters` — 7개, CC0 7
+- `images/photos-objects/everyday_misc` — 8개, CC0 7, Public domain 1
+- `images/photos-objects/everyday_parcels` — 4개, CC0 4
+- `images/photos-objects/everyday_personal` — 14개, CC0 14
+- `images/photos-objects/everyday_shoes` — 11개, CC0 11
+- `images/photos-objects/everyday_tools` — 23개, CC0 23
+- `images/photos-objects/everyday_toys` — 19개, CC0 19
+- `images/photos-objects/everyday_watches` — 9개, CC0 9
+- `images/photos-objects/glasses` — 10개, CC0 1.0 10
+- `images/photos-objects/household` — 17개, CC0 1.0 17
+- `images/photos-objects/jewelry` — 16개, CC0 1.0 16
+- `images/photos-objects/keys` — 39개, CC0 1.0 39
+- `images/photos-objects/letters` — 8개, CC0 1.0 8
+- `images/photos-objects/misc` — 23개, CC0 1.0 23
+- `images/photos-objects/shoes` — 11개, CC0 1.0 11
+- `images/photos-objects/tools` — 17개, CC0 1.0 17
+- `images/photos-objects/toys` — 21개, CC0 1.0 21
+- `images/photos-objects/watches` — 49개, CC0 1.0 49
+- `images/photos-rooms-places/museum` — 16개, CC0 15, Public domain 1
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (187)
+
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/castle-kit` — 399개, CC0-1.0
+- `models/kenney/city-kit-commercial` — 221개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/mini-arcade` — 116개, CC0-1.0
+- `models/kenney/mini-market` — 116개, CC0-1.0
+- `models/kenney/modular-buildings` — 556개, CC0-1.0
+- `models/kenney/pirate-kit` — 372개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
+- `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_03` — 6개, CC0-1.0
+- `models/polyhaven/ClassicConsole_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicNightstand_01` — 5개, CC0-1.0
+- `models/polyhaven/CoffeeCart_01` — 8개, CC0-1.0
+- `models/polyhaven/CoffeeTable_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicBed_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCommode_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Ottoman_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolChair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_02` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_03` — 5개, CC0-1.0
+- `models/polyhaven/adjustable_wrench` — 5개, CC0-1.0
+- `models/polyhaven/alarm_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/antique_ceramic_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/antique_estoc` — 5개, CC0-1.0
+- `models/polyhaven/bar_chair_round_01` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/brass_candleholders` — 15개, CC0-1.0
+- `models/polyhaven/brass_diya_lantern` — 5개, CC0-1.0
+- `models/polyhaven/brass_goblets` — 11개, CC0-1.0
+- `models/polyhaven/brass_pan_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_pot_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_pot_02` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_02` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_03` — 5개, CC0-1.0
+- `models/polyhaven/brass_vase_04` — 5개, CC0-1.0
+- `models/polyhaven/bronze_ray_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_shark_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_whale_statue` — 5개, CC0-1.0
+- `models/polyhaven/bull_head` — 5개, CC0-1.0
+- `models/polyhaven/carved_wooden_elephant` — 5개, CC0-1.0
+- `models/polyhaven/carved_wooden_plate` — 5개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/ceramic_pot` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_01` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_02` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_03` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_vase_04` — 5개, CC0-1.0
+- `models/polyhaven/chess_set` — 11개, CC0-1.0
+- `models/polyhaven/chinese_armchair` — 5개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_chandelier` — 5개, CC0-1.0
+- `models/polyhaven/chinese_commode` — 5개, CC0-1.0
+- `models/polyhaven/chinese_console_table` — 5개, CC0-1.0
+- `models/polyhaven/chinese_sofa` — 5개, CC0-1.0
+- `models/polyhaven/chinese_tea_table` — 5개, CC0-1.0
+- `models/polyhaven/coffee_table_round_01` — 5개, CC0-1.0
+- `models/polyhaven/concrete_cat_statue` — 5개, CC0-1.0
+- `models/polyhaven/dartboard` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/dining_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/drawer_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/fancy_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/folding_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_chair` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_table` — 5개, CC0-1.0
+- `models/polyhaven/garden_gnome` — 5개, CC0-1.0
+- `models/polyhaven/gothic_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_statue` — 5개, CC0-1.0
+- `models/polyhaven/hand_truck` — 5개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_02` — 8개, CC0-1.0
+- `models/polyhaven/hanging_picture_frame_03` — 9개, CC0-1.0
+- `models/polyhaven/horse_head` — 5개, CC0-1.0
+- `models/polyhaven/horse_statue_01` — 5개, CC0-1.0
+- `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/industrial_wall_sconce` — 6개, CC0-1.0
+- `models/polyhaven/jug_01` — 5개, CC0-1.0
+- `models/polyhaven/katana_stand_01` — 5개, CC0-1.0
+- `models/polyhaven/lambis_shell` — 5개, CC0-1.0
+- `models/polyhaven/lantern_chandelier_01` — 9개, CC0-1.0
+- `models/polyhaven/lemon` — 5개, CC0-1.0
+- `models/polyhaven/life_jacket` — 5개, CC0-1.0
+- `models/polyhaven/lion_head` — 5개, CC0-1.0
+- `models/polyhaven/lubricant_spray` — 5개, CC0-1.0
+- `models/polyhaven/mantel_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/marble_bust_01` — 5개, CC0-1.0
+- `models/polyhaven/metal_jug` — 5개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/mid_century_lounge_chair` — 5개, CC0-1.0
+- `models/polyhaven/modern_arm_chair_01` — 8개, CC0-1.0
+- `models/polyhaven/modern_ceiling_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_02` — 8개, CC0-1.0
+- `models/polyhaven/modern_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/modular_street_seating` — 14개, CC0-1.0
+- `models/polyhaven/old_bed_frame` — 5개, CC0-1.0
+- `models/polyhaven/ornate_mirror_01` — 5개, CC0-1.0
+- `models/polyhaven/outdoor_table_chair_set_01` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_nightstand` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_sofa` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_01` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_02` — 5개, CC0-1.0
+- `models/polyhaven/planter_box_03` — 5개, CC0-1.0
+- `models/polyhaven/planter_pot_clay` — 5개, CC0-1.0
+- `models/polyhaven/plastic_monobloc_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/portable_generator` — 6개, CC0-1.0
+- `models/polyhaven/portable_searchlight` — 5개, CC0-1.0
+- `models/polyhaven/portable_welding_cart` — 5개, CC0-1.0
+- `models/polyhaven/pot_enamel_01` — 5개, CC0-1.0
+- `models/polyhaven/potted_plant_01` — 8개, CC0-1.0
+- `models/polyhaven/potted_plant_02` — 8개, CC0-1.0
+- `models/polyhaven/potted_plant_04` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/rubber_duck_toy` — 5개, CC0-1.0
+- `models/polyhaven/seadogs_compass` — 5개, CC0-1.0
+- `models/polyhaven/side_table_01` — 5개, CC0-1.0
+- `models/polyhaven/side_table_tall_01` — 5개, CC0-1.0
+- `models/polyhaven/signal_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/small_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/sofa_02` — 5개, CC0-1.0
+- `models/polyhaven/sofa_03` — 5개, CC0-1.0
+- `models/polyhaven/spray_paint_bottles` — 8개, CC0-1.0
+- `models/polyhaven/standing_chalkboard_01` — 8개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_01` — 8개, CC0-1.0
+- `models/polyhaven/standing_picture_frame_02` — 7개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/polyhaven/sweet_potato` — 5개, CC0-1.0
+- `models/polyhaven/tea_set_01` — 5개, CC0-1.0
+- `models/polyhaven/throw_pillows_01` — 5개, CC0-1.0
+- `models/polyhaven/tongue_groove_pliers` — 5개, CC0-1.0
+- `models/polyhaven/tool_cart` — 5개, CC0-1.0
+- `models/polyhaven/treasure_chest` — 5개, CC0-1.0
+- `models/polyhaven/vintage_cabinet_01` — 9개, CC0-1.0
+- `models/polyhaven/vintage_day_bed` — 5개, CC0-1.0
+- `models/polyhaven/vintage_electric_kettle` — 5개, CC0-1.0
+- `models/polyhaven/vintage_grandfather_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/vintage_oil_lamp` — 9개, CC0-1.0
+- `models/polyhaven/vintage_suitcase` — 8개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+- `models/polyhaven/vintage_wooden_drawer_01` — 5개, CC0-1.0
+- `models/polyhaven/wall_clock` — 6개, CC0-1.0
+- `models/polyhaven/wheelchair_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bowl_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bowl_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_candlestick` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
+- `models/polyhaven/wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/yellow_onion` — 5개, CC0-1.0
+- `models/quaternius/fantasy-props-megakit` — 316개, CC0-1.0
+- `models/quaternius/farmanimal` — 9개, CC0-1.0
+- `models/quaternius/furniture` — 25개, CC0-1.0
+- `models/quaternius/ultimateanimatedanimals` — 15개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+
+**icons** (8)
+
+- `icons/game-icons` — 4248개, CC-BY-3.0 (Zeromancer folder CC0)
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 18번 — 항목 166개 · 파일 13,499개 · 1,674 MB
+
+**fonts** (9)
+
+- `fonts/signage/dseg` — 156개, OFL-1.1
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (30)
+
+- `shaders/crt/Cathode-Retro` — 82개, BSL-1.0
+- `shaders/crt/URP_RetroCRTShader` — 10개, MIT
+- `shaders/film-grain-vhs/CrowFX-Unity-Image-Effects` — 95개, MIT
+- `shaders/film-grain-vhs/Godot-Hi-8-Demo` — 14개, MIT
+- `shaders/film-grain-vhs/KinoFringe` — 12개, MIT
+- `shaders/film-grain-vhs/KinoGlitch` — 24개, MIT
+- `shaders/film-grain-vhs/VHS-Effect` — 8개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/aberration-phasmophobia-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/adjustable-chromatic-aberration` — 2개, MIT
+- `shaders/film-grain-vhs/godotshaders-com/advanced-side-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/bit-depth-posterize-post-process-with-optional-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camcorder-horror-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/camera-vignette-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-for-3d-post-processing` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/chromatic-aberration-vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/classic-dithering-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/colour-correction-grading` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/crt-vhs-simple` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/darkness-weighted-film-grain-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/film-grain-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/pixelated-horror-vignette-dot-matrix-downres` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/radial-chromatic-aberration` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/realistic-photography-camera` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/retro-luma-color-reduction-quantization-posterize-dithering` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-crt-broadcast` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-scanline-glitch` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-shader` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vhs-tape-effect` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/godotshaders-com/vignette` — 2개, CC0-1.0
+- `shaders/film-grain-vhs/libretro-permissive` — 14개, Mixed per file: CC0-1.0 / Public Domain / MIT / CC-BY-3.0 (film-grain.slang)
+
+**audio** (103)
+
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/commons-projector-camera-tape` — 4개, mixed per file: CC BY 4.0, CC BY-SA 3.0, Public domain
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/radio-static-noise/100-cc0-sfx` — 102개, CC0
+- `audio/radio-static-noise/commons-radio` — 2개, mixed per file: CC0
+- `audio/radio-static-noise/dark-ambience-soundscapes` — 9개, CC-BY-SA 3.0
+- `audio/radio-static-noise/female-soldier-voice` — 17개, CC-BY 3.0
+- `audio/radio-static-noise/frequency-static-sound-effects` — 11개, CC0
+- `audio/radio-static-noise/mysterious-radio-signal` — 2개, CC-BY 3.0
+- `audio/radio-static-noise/radio-call` — 2개, CC-BY 4.0
+- `audio/radio-static-noise/static` — 2개, CC0
+- `audio/radio-static-noise/zombie-news-in-radio` — 2개, CC0
+- `audio/voice-publicdomain/Apollo11Audio` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/Apollo13Audio` — 2개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/EDIS-SRP-0199-05` — 2개, Public Domain
+- `audio/voice-publicdomain/EDIS-SRP-0206-01` — 2개, Public Domain
+- `audio/voice-publicdomain/eves_diary_librivox` — 4개, Public Domain
+- `audio/voice-publicdomain/extracts_adams_diary` — 6개, Public Domain
+- `audio/voice-publicdomain/lettersfromacat_1309_librivox` — 5개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/mladytele1915` — 4개, Public Domain
+- `audio/voice-publicdomain/radiocop_2502_librivox` — 7개, Public Domain (PDM 1.0)
+- `audio/voice-publicdomain/shortpoetry_002_librivox` — 23개, Public Domain
+- `audio/voice-publicdomain/shortpoetry_024_librivox` — 21개, Public Domain
+
+**models** (17)
+
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/Barrel_01` — 5개, CC0-1.0
+- `models/polyhaven/Megaphone_01` — 5개, CC0-1.0
+- `models/polyhaven/Television_01` — 5개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/gamepad` — 5개, CC0-1.0
+- `models/polyhaven/measuring_tape_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_01` — 5개, CC0-1.0
+- `models/polyhaven/security_camera_02` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_video_camera` — 5개, CC0-1.0
+
+**icons** (7)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 19번 — 항목 398개 · 파일 19,702개 · 2,500 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**audio** (110)
+
+- `audio/breathing-heartbeat/breathing-tired` — 2개, CC0
+- `audio/breathing-heartbeat/dreaming` — 2개, CC-BY 3.0
+- `audio/breathing-heartbeat/ghost-breath` — 2개, CC0
+- `audio/breathing-heartbeat/goblin-breathing` — 2개, CC-BY 3.0
+- `audio/breathing-heartbeat/heartbeat-single-sound` — 2개, CC0
+- `audio/breathing-heartbeat/heartbeat-sounds` — 6개, CC0
+- `audio/breathing-heartbeat/nhfea-sound` — 36개, CC0
+- `audio/breathing-heartbeat/silly-me` — 2개, CC0
+- `audio/foley-props/10-book-page-flips` — 12개, CC0
+- `audio/foley-props/100-cc0-metal-and-wood-sfx` — 102개, CC0
+- `audio/foley-props/16-button-clicks` — 18개, CC0
+- `audio/foley-props/202-more-sound-effects` — 204개, CC0
+- `audio/foley-props/4-door-closes` — 6개, CC0
+- `audio/foley-props/4-metal-dingsrings` — 6개, CC0
+- `audio/foley-props/51-ui-sound-effects-buttons-switches-and-clicks` — 54개, CC0
+- `audio/foley-props/75-cc0-breaking-falling-hit-sfx` — 77개, CC0
+- `audio/foley-props/80-cc0-rpg-sfx` — 82개, CC0
+- `audio/foley-props/beep-sound` — 2개, CC0
+- `audio/foley-props/breaking-bottle` — 2개, CC-BY 3.0
+- `audio/foley-props/cabinet-lock-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/camera` — 2개, CC0
+- `audio/foley-props/camerashudder` — 2개, CC0
+- `audio/foley-props/cardoorsfx` — 3개, CC0
+- `audio/foley-props/church-bell` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/crank-movie-telephone-ringtone` — 2개, CC0
+- `audio/foley-props/creaky-light-wooden-door` — 2개, CC-BY 3.0
+- `audio/foley-props/cup-on-table-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/dialog-vocal-samples` — 34개, CC0
+- `audio/foley-props/door-open-door-close-set` — 38개, CC0
+- `audio/foley-props/doorbell-ring` — 2개, CC0
+- `audio/foley-props/double-click-mouse-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/elevator-ding` — 2개, CC0
+- `audio/foley-props/elevatordoor` — 2개, CC0
+- `audio/foley-props/equipment-clicks-iii` — 2개, CC0
+- `audio/foley-props/fantasy-accessory-sfx-library` — 159개, CC0
+- `audio/foley-props/fantasy-sound-effects-tinysized-sfx` — 100개, CC0
+- `audio/foley-props/glass-break` — 2개, CC0
+- `audio/foley-props/gui-sound-effects` — 15개, CC0
+- `audio/foley-props/horror-cinema-8` — 2개, CC-BY-SA 3.0
+- `audio/foley-props/impact` — 12개, CC0
+- `audio/foley-props/interface-sounds` — 105개, CC0
+- `audio/foley-props/inventory-sound-effects` — 8개, CC-BY 3.0
+- `audio/foley-props/item-handling` — 13개, CC-BY 3.0
+- `audio/foley-props/light-switch-on-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/menu-selection-click` — 2개, CC-BY 3.0
+- `audio/foley-props/metal-interactions` — 7개, CC0
+- `audio/foley-props/modern-ringtone-chirptone` — 2개, CC0
+- `audio/foley-props/office-chair-roll-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/old-elevator-door` — 2개, CC0
+- `audio/foley-props/opening-and-closing-a-map-sounds` — 3개, CC0
+- `audio/foley-props/page-turning-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/paper-crumple-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pen-click-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/foley-props/pencil-sounds` — 7개, CC0
+- `audio/foley-props/point-bell` — 2개, CC0
+- `audio/foley-props/random-sfx` — 56개, CC0
+- `audio/foley-props/random-sound-effects` — 2개, CC0
+- `audio/foley-props/rpg-sound-pack` — 98개, CC0
+- `audio/foley-props/scissors` — 2개, CC0
+- `audio/foley-props/shears` — 7개, CC-BY 3.0
+- `audio/foley-props/sound-effects-pack` — 163개, CC0
+- `audio/foley-props/super-foley-pack` — 14개, CC-BY 3.0
+- `audio/foley-props/tape-recorder-opening-and-closing-sound-effects` — 3개, CC0
+- `audio/foley-props/thunder` — 3개, CC-BY 3.0
+- `audio/foley-props/various-scissors` — 6개, CC0
+- `audio/foley-props/various-sound-effects` — 29개, CC0
+- `audio/foley-props/vinyl` — 2개, CC0
+- `audio/foley-props/writing-scribbles` — 18개, CC-BY-SA 4.0
+- `audio/foley-props/yucchis-assorted-sounds-1` — 34개, CC-BY 3.0
+- `audio/foley-props/zipper` — 3개, CC0
+- `audio/footsteps/100-cc0-sfx-2` — 102개, CC0
+- `audio/footsteps/42-snow-and-gravel-footsteps` — 45개, CC0
+- `audio/footsteps/different-steps-on-wood-stone-leaves-gravel-and-mud` — 10개, CC0
+- `audio/footsteps/fantozzis-footsteps-grasssand-stone` — 26개, CC0
+- `audio/footsteps/footsteps` — 2개, CC-BY 3.0
+- `audio/footsteps/footsteps-0` — 7개, CC0
+- `audio/footsteps/footsteps-leather-cloth-armor` — 14개, CC0
+- `audio/footsteps/footsteps-on-different-surfaces` — 90개, CC-BY 3.0
+- `audio/footsteps/grass-foot-step-sounds-yo-frankie` — 3개, CC-BY 3.0
+- `audio/footsteps/metal-footsteps-on-concrete` — 27개, CC0
+- `audio/footsteps/platformer-sounds-terminal-interaction-door-shots-bang-and-footsteps` — 15개, CC0
+- `audio/footsteps/stepping-sounds` — 11개, CC-BY 3.0
+- `audio/footsteps/stone-stair-steps` — 2개, CC-BY-SA 3.0
+- `audio/footsteps/walking-in-and-out-through-wooden-stairs` — 6개, CC-BY-SA 3.0
+- `audio/footsteps/walking-on-snow-sound` — 4개, CC0
+- `audio/footsteps/water-splash-and-sand-footsteps` — 5개, CC0
+- `audio/horror-drones/25-spooky-sound-effects` — 28개, CC-BY 3.0
+- `audio/horror-drones/a-kinda-cool-sound-effect` — 2개, CC0
+- `audio/horror-drones/a-lotta-bones-sound-fx` — 2개, CC-BY 3.0
+- `audio/horror-drones/ambientguitar001` — 2개, CC-BY 3.0
+- `audio/horror-drones/dark-factory` — 2개, CC-BY 3.0
+- `audio/horror-drones/day-1-cinematic-transition-sound` — 4개, CC-BY 3.0
+- `audio/horror-drones/dreamscape-drone` — 2개, CC-BY 3.0
+- `audio/horror-drones/ghost-monster-voice-moaning-growling` — 12개, CC0
+- `audio/horror-drones/horror-ambient` — 4개, CC-BY 3.0
+- `audio/horror-drones/horror-scream1` — 2개, CC0
+- `audio/horror-drones/horror-screams-drone` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/horror-sound-effects-library` — 139개, CC-BY 3.0
+- `audio/horror-drones/i-see-you-voice` — 2개, CC0
+- `audio/horror-drones/is-anybody-home` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/realization` — 2개, CC-BY-SA 3.0
+- `audio/horror-drones/soled-bad-memory` — 2개, CC-BY-SA 4.0
+- `audio/horror-drones/the-chaos-has-risen` — 4개, CC-BY 3.0
+- `audio/horror-drones/wind` — 8개, CC0
+- `audio/horror-drones/zombies-sound-pack` — 26개, CC0
+- `audio/kenney-audio/impact-sounds` — 134개, CC0-1.0
+- `audio/kenney-audio/rpg-audio` — 56개, CC0-1.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/voice-sfx/voice-clip-packs-for-visual-novels-and-rpgs` — 134개, CC0
+- `audio/voice-sfx/voices-sound-effects-library` — 911개, CC-BY 3.0
+
+**images** (46)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/photos-rooms-places/interior` — 30개, Public domain 21, CC0 9
+- `images/textures/ambientcg_Cardboard002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Cardboard004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet012` — 3개, CC0 1.0
+- `images/textures/ambientcg_Carpet016` — 3개, CC0 1.0
+- `images/textures/ambientcg_Concrete034` — 3개, CC0 1.0
+- `images/textures/ambientcg_Fabric081C` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice002` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice003` — 3개, CC0 1.0
+- `images/textures/ambientcg_Ice004` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal049A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Metal063` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper005` — 3개, CC0 1.0
+- `images/textures/ambientcg_Paper006` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow013` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow014` — 3개, CC0 1.0
+- `images/textures/ambientcg_Snow015` — 3개, CC0 1.0
+- `images/textures/ambientcg_SurfaceImperfections001` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles139` — 3개, CC0 1.0
+- `images/textures/ambientcg_Tiles141` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper001A` — 3개, CC0 1.0
+- `images/textures/ambientcg_Wallpaper002A` — 3개, CC0 1.0
+- `images/textures/polyhaven_asphalt_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_beige_wall_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_book_pattern` — 2개, CC0 1.0
+- `images/textures/polyhaven_cobblestone_floor_04` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_floor_worn_001` — 3개, CC0 1.0
+- `images/textures/polyhaven_concrete_layers_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_dirty_carpet` — 3개, CC0 1.0
+- `images/textures/polyhaven_fabric_pattern_07` — 2개, CC0 1.0
+- `images/textures/polyhaven_floor_tiles_06` — 3개, CC0 1.0
+- `images/textures/polyhaven_green_metal_rust` — 3개, CC0 1.0
+- `images/textures/polyhaven_laminate_floor_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_leather_red_02` — 2개, CC0 1.0
+- `images/textures/polyhaven_marble_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_metal_plate` — 3개, CC0 1.0
+- `images/textures/polyhaven_painted_plaster_wall` — 3개, CC0 1.0
+- `images/textures/polyhaven_red_brick` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_01` — 3개, CC0 1.0
+- `images/textures/polyhaven_snow_02` — 3개, CC0 1.0
+- `images/textures/polyhaven_weathered_brown_planks` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_cabinet_worn_long` — 3개, CC0 1.0
+- `images/textures/polyhaven_wood_floor` — 3개, CC0 1.0
+
+**models** (227)
+
+- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
+- `models/kenney/building-kit` — 409개, CC0-1.0
+- `models/kenney/cube-pets` — 131개, CC0-1.0
+- `models/kenney/food-kit` — 1011개, CC0-1.0
+- `models/kenney/furniture-kit` — 1548개, CC0-1.0
+- `models/kenney/light-masks` — 462개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
+- `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_01` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_02` — 5개, CC0-1.0
+- `models/polyhaven/Chandelier_03` — 6개, CC0-1.0
+- `models/polyhaven/ClassicConsole_01` — 5개, CC0-1.0
+- `models/polyhaven/ClassicNightstand_01` — 5개, CC0-1.0
+- `models/polyhaven/CoffeeCart_01` — 8개, CC0-1.0
+- `models/polyhaven/CoffeeTable_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicBed_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCommode_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Lantern_01` — 5개, CC0-1.0
+- `models/polyhaven/Ottoman_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolChair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Shelf_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_02` — 5개, CC0-1.0
+- `models/polyhaven/WoodenTable_03` — 5개, CC0-1.0
+- `models/polyhaven/adjustable_wrench` — 5개, CC0-1.0
+- `models/polyhaven/alarm_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/ammo_box` — 5개, CC0-1.0
+- `models/polyhaven/bananas` — 5개, CC0-1.0
+- `models/polyhaven/bar_chair_round_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/binoculars` — 5개, CC0-1.0
+- `models/polyhaven/book_encyclopedia_set_01` — 8개, CC0-1.0
+- `models/polyhaven/boombox` — 7개, CC0-1.0
+- `models/polyhaven/brass_blowtorch` — 5개, CC0-1.0
+- `models/polyhaven/brass_candleholders` — 15개, CC0-1.0
+- `models/polyhaven/brass_diya_lantern` — 5개, CC0-1.0
+- `models/polyhaven/bronze_ray_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_shark_statue` — 5개, CC0-1.0
+- `models/polyhaven/bronze_whale_statue` — 5개, CC0-1.0
+- `models/polyhaven/bunsen_burner` — 5개, CC0-1.0
+- `models/polyhaven/caged_hanging_light` — 6개, CC0-1.0
+- `models/polyhaven/cassette_player` — 8개, CC0-1.0
+- `models/polyhaven/cement_bag` — 5개, CC0-1.0
+- `models/polyhaven/ceramic_pot` — 5개, CC0-1.0
+- `models/polyhaven/chemistry_set` — 5개, CC0-1.0
+- `models/polyhaven/chess_set` — 11개, CC0-1.0
+- `models/polyhaven/chinese_armchair` — 5개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_chandelier` — 5개, CC0-1.0
+- `models/polyhaven/chinese_commode` — 5개, CC0-1.0
+- `models/polyhaven/chinese_console_table` — 5개, CC0-1.0
+- `models/polyhaven/chinese_sofa` — 5개, CC0-1.0
+- `models/polyhaven/chinese_tea_table` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_case` — 5개, CC0-1.0
+- `models/polyhaven/cigarette_pack` — 5개, CC0-1.0
+- `models/polyhaven/circuit_board` — 5개, CC0-1.0
+- `models/polyhaven/classic_laptop` — 5개, CC0-1.0
+- `models/polyhaven/clipboard` — 5개, CC0-1.0
+- `models/polyhaven/coffee_table_round_01` — 5개, CC0-1.0
+- `models/polyhaven/combination_wrench` — 5개, CC0-1.0
+- `models/polyhaven/cross_pein_hammer` — 5개, CC0-1.0
+- `models/polyhaven/desk_lamp_arm_01` — 5개, CC0-1.0
+- `models/polyhaven/digital_wrist_watch` — 5개, CC0-1.0
+- `models/polyhaven/dining_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/dining_table` — 5개, CC0-1.0
+- `models/polyhaven/drawer_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/drill_press_01` — 5개, CC0-1.0
+- `models/polyhaven/dustpan` — 5개, CC0-1.0
+- `models/polyhaven/filmstrip_projector_8mm` — 5개, CC0-1.0
+- `models/polyhaven/fire_alarm` — 5개, CC0-1.0
+- `models/polyhaven/fish_knife` — 5개, CC0-1.0
+- `models/polyhaven/fishermans_hat` — 5개, CC0-1.0
+- `models/polyhaven/folding_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_chair` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/gothic_statue` — 5개, CC0-1.0
+- `models/polyhaven/hamburger_buns` — 5개, CC0-1.0
+- `models/polyhaven/hand_truck` — 5개, CC0-1.0
+- `models/polyhaven/hanging_industrial_lamp` — 7개, CC0-1.0
+- `models/polyhaven/industrial_caged_sconce` — 6개, CC0-1.0
+- `models/polyhaven/industrial_coffee_table` — 5개, CC0-1.0
+- `models/polyhaven/industrial_microscope` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pastic_container` — 5개, CC0-1.0
+- `models/polyhaven/industrial_pipe_lamp` — 6개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/industrial_wall_lamp` — 9개, CC0-1.0
+- `models/polyhaven/industrial_wall_sconce` — 6개, CC0-1.0
+- `models/polyhaven/lantern_chandelier_01` — 9개, CC0-1.0
+- `models/polyhaven/lemon` — 5개, CC0-1.0
+- `models/polyhaven/life_jacket` — 5개, CC0-1.0
+- `models/polyhaven/lifebuoy` — 5개, CC0-1.0
+- `models/polyhaven/lightbulb_01` — 6개, CC0-1.0
+- `models/polyhaven/lightbulb_led` — 5개, CC0-1.0
+- `models/polyhaven/long_life_food` — 5개, CC0-1.0
+- `models/polyhaven/mantel_clock_01` — 5개, CC0-1.0
+- `models/polyhaven/medical_box` — 5개, CC0-1.0
+- `models/polyhaven/medical_tape` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/metal_jerrycan_green` — 5개, CC0-1.0
+- `models/polyhaven/metal_office_desk` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_01` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_02` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_03` — 5개, CC0-1.0
+- `models/polyhaven/metal_toolbox` — 5개, CC0-1.0
+- `models/polyhaven/mid_century_lounge_chair` — 5개, CC0-1.0
+- `models/polyhaven/modern_arm_chair_01` — 8개, CC0-1.0
+- `models/polyhaven/modern_ceiling_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_01` — 5개, CC0-1.0
+- `models/polyhaven/modern_coffee_table_02` — 8개, CC0-1.0
+- `models/polyhaven/modern_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/modified_thermos` — 5개, CC0-1.0
+- `models/polyhaven/modular_street_seating` — 14개, CC0-1.0
+- `models/polyhaven/mounted_fluorescent_lights` — 6개, CC0-1.0
+- `models/polyhaven/ocean_buoy` — 6개, CC0-1.0
+- `models/polyhaven/office_notepads` — 5개, CC0-1.0
+- `models/polyhaven/oil_tin` — 5개, CC0-1.0
+- `models/polyhaven/old_bed_frame` — 5개, CC0-1.0
+- `models/polyhaven/old_drill_press` — 5개, CC0-1.0
+- `models/polyhaven/old_gas_mask` — 5개, CC0-1.0
+- `models/polyhaven/old_military_compressor` — 5개, CC0-1.0
+- `models/polyhaven/old_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/outdoor_table_chair_set_01` — 8개, CC0-1.0
+- `models/polyhaven/overhead_crane` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_nightstand` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_sofa` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_table` — 5개, CC0-1.0
+- `models/polyhaven/pastic_torch_6v` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/plastic_broom` — 5개, CC0-1.0
+- `models/polyhaven/plastic_container` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_03` — 5개, CC0-1.0
+- `models/polyhaven/plastic_jerrycan` — 5개, CC0-1.0
+- `models/polyhaven/plastic_monobloc_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/plastic_thermos` — 5개, CC0-1.0
+- `models/polyhaven/pliers` — 5개, CC0-1.0
+- `models/polyhaven/pocket_watch` — 6개, CC0-1.0
+- `models/polyhaven/portable_cassette_player` — 5개, CC0-1.0
+- `models/polyhaven/portable_generator` — 6개, CC0-1.0
+- `models/polyhaven/portable_searchlight` — 5개, CC0-1.0
+- `models/polyhaven/portable_welding_cart` — 5개, CC0-1.0
+- `models/polyhaven/projector_screen` — 8개, CC0-1.0
+- `models/polyhaven/propane_tank` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch` — 5개, CC0-1.0
+- `models/polyhaven/propane_torch_02` — 5개, CC0-1.0
+- `models/polyhaven/pull_chain_light_socket` — 5개, CC0-1.0
+- `models/polyhaven/retro_multimeter` — 5개, CC0-1.0
+- `models/polyhaven/round_spectacles` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/round_wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/rubber_boots` — 8개, CC0-1.0
+- `models/polyhaven/rusted_hacksaw` — 5개, CC0-1.0
+- `models/polyhaven/screwdriver` — 5개, CC0-1.0
+- `models/polyhaven/screwdrivers_02` — 5개, CC0-1.0
+- `models/polyhaven/seadogs_compass` — 5개, CC0-1.0
+- `models/polyhaven/security_light` — 5개, CC0-1.0
+- `models/polyhaven/service_pistol` — 5개, CC0-1.0
+- `models/polyhaven/side_table_01` — 5개, CC0-1.0
+- `models/polyhaven/side_table_tall_01` — 5개, CC0-1.0
+- `models/polyhaven/signal_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/small_lpg_tank` — 5개, CC0-1.0
+- `models/polyhaven/small_plastic_torch` — 5개, CC0-1.0
+- `models/polyhaven/small_wooden_table_01` — 5개, CC0-1.0
+- `models/polyhaven/sofa_02` — 5개, CC0-1.0
+- `models/polyhaven/sofa_03` — 5개, CC0-1.0
+- `models/polyhaven/stationery_supplies` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/steel_frame_shelves_02` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_02` — 5개, CC0-1.0
+- `models/polyhaven/sungka_board_02` — 5개, CC0-1.0
+- `models/polyhaven/sweet_potato` — 5개, CC0-1.0
+- `models/polyhaven/television_02` — 5개, CC0-1.0
+- `models/polyhaven/tongue_groove_pliers` — 5개, CC0-1.0
+- `models/polyhaven/tool_cart` — 5개, CC0-1.0
+- `models/polyhaven/trashbag` — 5개, CC0-1.0
+- `models/polyhaven/vintage_binocular` — 5개, CC0-1.0
+- `models/polyhaven/vintage_cabinet_01` — 9개, CC0-1.0
+- `models/polyhaven/vintage_day_bed` — 5개, CC0-1.0
+- `models/polyhaven/vintage_electric_kettle` — 5개, CC0-1.0
+- `models/polyhaven/vintage_flashlight` — 5개, CC0-1.0
+- `models/polyhaven/vintage_lighter` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microscope` — 5개, CC0-1.0
+- `models/polyhaven/vintage_microwave` — 5개, CC0-1.0
+- `models/polyhaven/vintage_oil_lamp` — 9개, CC0-1.0
+- `models/polyhaven/vintage_radio_transceiver` — 8개, CC0-1.0
+- `models/polyhaven/vintage_spacecraft_instrument` — 5개, CC0-1.0
+- `models/polyhaven/vintage_stapler` — 5개, CC0-1.0
+- `models/polyhaven/vintage_telephone_wall_clock` — 5개, CC0-1.0
+- `models/polyhaven/vintage_wooden_drawer_01` — 5개, CC0-1.0
+- `models/polyhaven/wall_clock` — 6개, CC0-1.0
+- `models/polyhaven/wheelchair_01` — 5개, CC0-1.0
+- `models/polyhaven/wicker_basket_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_bookshelf_worn` — 5개, CC0-1.0
+- `models/polyhaven/wooden_broom` — 6개, CC0-1.0
+- `models/polyhaven/wooden_candlestick` — 5개, CC0-1.0
+- `models/polyhaven/wooden_display_shelves_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder` — 5개, CC0-1.0
+- `models/polyhaven/wooden_ladder_02` — 5개, CC0-1.0
+- `models/polyhaven/wooden_lantern_01` — 8개, CC0-1.0
+- `models/polyhaven/wooden_military_crate` — 5개, CC0-1.0
+- `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
+- `models/polyhaven/wooden_table_02` — 5개, CC0-1.0
+- `models/polyhaven/worn_metal_rack` — 5개, CC0-1.0
+- `models/polyhaven/yellow_onion` — 5개, CC0-1.0
+- `models/quaternius/furniture` — 25개, CC0-1.0
+- `models/quaternius/ultimatefurniture` — 22개, CC0-1.0
+- `models/quaternius/ultimatehomeinterior` — 125개, CC0-1.0
+
+**icons** (7)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0
+
+## 20번 — 항목 234개 · 파일 21,824개 · 2,236 MB
+
+**fonts** (8)
+
+- `fonts/ui-sans/gowundodum` — 4개, OFL-1.1
+- `fonts/ui-sans/ibmplexsanskr` — 10개, OFL-1.1
+- `fonts/ui-sans/inter` — 5개, OFL-1.1
+- `fonts/ui-sans/nanumgothic` — 6개, OFL-1.1
+- `fonts/ui-sans/notosanskr` — 4개, OFL-1.1
+- `fonts/ui-sans/orbit` — 4개, OFL-1.1
+- `fonts/ui-sans/pretendard` — 11개, OFL-1.1
+- `fonts/ui-sans/sunflower` — 6개, OFL-1.1
+
+**shaders** (14)
+
+- `shaders/film-grain-vhs/KinoBloom` — 42개, MIT
+- `shaders/flashlight-darkness/Unity-URP-Volumetric-Light` — 34개, MIT
+- `shaders/flashlight-darkness/VolumetricLights` — 20개, BSD-3-Clause
+- `shaders/flashlight-darkness/godotshaders-com/2d-retro-dithered-lighting-fog-of-war` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/2d-sdf-lighting-shader-without-shadows-or-light-occlusion` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/additive-volume-integral` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/fake-godrays-godot-4-2` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/field-of-view-circular-cone-rectangle-mask-shader` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/god-rays` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/scary-dark-vignette` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/screen-space-god-rays-godot-4-3` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/shooting-cone` — 2개, MIT
+- `shaders/flashlight-darkness/godotshaders-com/spatial-light-shaft` — 2개, CC0-1.0
+- `shaders/flashlight-darkness/godotshaders-com/visionconeenergy` — 2개, CC0-1.0
+
+**audio** (102)
+
+- `audio/ambience/30-cc0-sfx-loops` — 32개, CC0
+- `audio/ambience/4-atmospheric-ghostly-loops` — 6개, CC0
+- `audio/ambience/68-workshop-sounds` — 69개, CC0
+- `audio/ambience/accident-%F0%9F%94%89` — 2개, CC-BY-SA 4.0
+- `audio/ambience/ambient-bird-cricket-and-frog` — 6개, CC-BY 3.0
+- `audio/ambience/ambient-bird-sounds` — 2개, CC0
+- `audio/ambience/ambient-mountain-river-wind-and-forest-and-waterfall` — 8개, CC-BY 3.0
+- `audio/ambience/ambient-pulse-noise` — 2개, CC-BY-SA 3.0
+- `audio/ambience/ambient-spaceship-hums` — 3개, CC-BY 3.0
+- `audio/ambience/atmospheric-interaction-sound-pack` — 45개, CC0
+- `audio/ambience/background-rumble-noise` — 4개, CC-BY 3.0
+- `audio/ambience/bird-chirping-sounds` — 3개, CC0
+- `audio/ambience/birdcricketfrog-and-mosquito-sounds` — 9개, CC0
+- `audio/ambience/bubble-sound-effects` — 6개, CC0
+- `audio/ambience/bubbles-pop` — 2개, CC0
+- `audio/ambience/car-engine-start-01` — 3개, CC0
+- `audio/ambience/chain-winch-sounds` — 11개, CC0
+- `audio/ambience/chirp-loop` — 2개, CC-BY 3.0
+- `audio/ambience/clock-tick-0` — 2개, CC0
+- `audio/ambience/clock-ticking` — 2개, CC-BY 3.0
+- `audio/ambience/clock-wind-sounds` — 7개, CC0
+- `audio/ambience/cricket-chirping-loopable` — 6개, CC-BY-SA 4.0
+- `audio/ambience/crickets` — 2개, CC-BY 3.0
+- `audio/ambience/crickets-ambient-noise-loopable` — 2개, CC0
+- `audio/ambience/dark-ambiences` — 7개, CC0
+- `audio/ambience/dripping-water` — 2개, CC-BY 3.0
+- `audio/ambience/dripping-water-loop` — 2개, CC0
+- `audio/ambience/dry-bushes` — 5개, CC-BY-SA 3.0
+- `audio/ambience/engine-sound` — 3개, CC-BY 3.0
+- `audio/ambience/equipment-clicks-ii` — 2개, CC0
+- `audio/ambience/fire-crackling` — 3개, CC0
+- `audio/ambience/fireplace-sound-loop` — 2개, CC0
+- `audio/ambience/force-field-electric-hum` — 2개, CC-BY 4.0
+- `audio/ambience/forest-bird-sounds` — 17개, CC0
+- `audio/ambience/free-general-ambience-sounds` — 46개, CC-BY-SA 4.0
+- `audio/ambience/fridge-loop-1` — 4개, CC0
+- `audio/ambience/ghost` — 2개, CC0
+- `audio/ambience/ghostly-humming` — 2개, CC0
+- `audio/ambience/gull-sounds` — 9개, CC-BY-SA 3.0
+- `audio/ambience/high-traffic-road-sounds` — 2개, CC0
+- `audio/ambience/kitchen-ambience-sfx` — 6개, CC-BY 4.0
+- `audio/ambience/loopable-dungeon-ambience` — 2개, CC0
+- `audio/ambience/nature-sounds-pack` — 25개, CC-BY 4.0
+- `audio/ambience/rain-and-thunder-loop` — 2개, CC-BY 3.0
+- `audio/ambience/rain-gutter-loop` — 2개, CC0
+- `audio/ambience/rain-long-thunder` — 2개, CC0
+- `audio/ambience/rain-loopable` — 11개, CC0
+- `audio/ambience/reversing-time-stuck-in-time` — 3개, CC0
+- `audio/ambience/scary-echoey-horn-esque-sound` — 4개, CC-BY 4.0
+- `audio/ambience/sci-fi-ambience-sfx` — 3개, CC0
+- `audio/ambience/sci-fi-background-noise` — 2개, CC0
+- `audio/ambience/sci-fi-drone-loop` — 2개, CC-BY 3.0
+- `audio/ambience/scifi-city-ambient-loop` — 3개, CC0
+- `audio/ambience/ship-sinking` — 2개, CC0
+- `audio/ambience/sirens-and-alarm-noise` — 2개, CC0
+- `audio/ambience/skippy-fish-water-sound-collection` — 19개, CC0
+- `audio/ambience/slow-clock-ticking-seamless-looping-sfx-sound-effect` — 2개, CC-BY 4.0
+- `audio/ambience/steam-boiler-sound-loop` — 2개, CC0
+- `audio/ambience/storm-arwen-2022` — 2개, CC-BY 4.0
+- `audio/ambience/storm-siren` — 3개, CC0
+- `audio/ambience/swamp-environment-audio` — 22개, CC0
+- `audio/ambience/the-shop` — 7개, CC0
+- `audio/ambience/thunder-lightning-ambience-field-recording` — 2개, CC-BY 4.0
+- `audio/ambience/thunder-very-close-rain-01` — 2개, CC-BY 3.0
+- `audio/ambience/tick-and-tock` — 3개, CC0
+- `audio/ambience/ticking-clock` — 7개, CC0
+- `audio/ambience/ticking-clock-0` — 4개, CC0
+- `audio/ambience/underwater-or-space-engine-rumble` — 5개, CC0
+- `audio/ambience/upside-down-grin-freaky-ambient` — 2개, CC0
+- `audio/ambience/ventilation-version2` — 2개, CC-BY 3.0
+- `audio/ambience/ventilationvariant1` — 2개, CC-BY 3.0
+- `audio/ambience/water-harp` — 10개, CC-BY-SA 3.0
+- `audio/ambience/wind1` — 6개, CC0
+- `audio/music/a-cloudy-morning-jazz` — 2개, CC-BY 3.0
+- `audio/music/a-conversation-with-saul-jazzblues-shuffle` — 2개, CC-BY 3.0
+- `audio/music/bossa-nova` — 2개, CC0
+- `audio/music/calm-bgm` — 3개, CC-BY 3.0
+- `audio/music/childrens-march-theme` — 6개, CC0
+- `audio/music/chill-lofi-inspired` — 3개, CC0
+- `audio/music/circus-dilemma` — 2개, CC-BY 3.0
+- `audio/music/cyberpunk-moonlight-sonata` — 3개, CC0
+- `audio/music/death-is-just-another-path` — 4개, CC-BY 3.0
+- `audio/music/deliciously-sour` — 2개, CC-BY 3.0
+- `audio/music/forest-ambience` — 2개, CC0
+- `audio/music/free-music-pack` — 8개, CC0
+- `audio/music/in-the-circus-psg-version` — 2개, CC-BY 3.0
+- `audio/music/kevin-macleod-incompetech` — 27개, CC-BY 4.0
+- `audio/music/lofi-compilation` — 10개, CC0
+- `audio/music/mysterious-ambience-song21` — 2개, CC0
+- `audio/music/mystical-theme` — 2개, CC-BY 3.0
+- `audio/music/november-snow` — 2개, CC0
+- `audio/music/one` — 2개, CC-BY 3.0
+- `audio/music/rain-and-thunders` — 2개, CC0
+- `audio/music/school-of-quirks` — 2개, CC-BY 3.0
+- `audio/music/shop-theme` — 6개, CC0
+- `audio/music/sleep-talking-loop-fantasy-rpg-sci-fi` — 3개, CC0
+- `audio/music/snowfall` — 3개, CC0
+- `audio/music/snowland-town` — 4개, CC-BY 3.0
+- `audio/music/soliloquy` — 2개, CC-BY 3.0
+- `audio/music/talking-cute-chiptune` — 2개, CC0
+- `audio/music/the-field-of-dreams` — 4개, CC0
+- `audio/music/trouble-makers-coolriff-jazz` — 4개, CC-BY 3.0
+
+**images** (7)
+
+- `images/hdri` — 9개, CC0 1.0 9
+- `images/overlays` — 34개, CC0 1.0 34
+- `images/photos-rooms-places/bus_stop` — 34개, CC0 18, Public domain 16
+- `images/silhouettes/sitting` — 9개, CC0 1.0 9
+- `images/silhouettes/standing` — 32개, CC0 1.0 32
+- `images/silhouettes/waiting` — 2개, CC0 1.0 2
+- `images/silhouettes/walking` — 11개, CC0 1.0 11
+
+**models** (93)
+
+- `models/characters-animated/animated-characters-protagonists` — 18개, CC0-1.0
+- `models/characters-animated/animated-characters-retro` — 14개, CC0-1.0
+- `models/characters-animated/animated-characters-survivors` — 19개, CC0-1.0
+- `models/characters-animated/animatedmen` — 11개, CC0-1.0
+- `models/characters-animated/animatedwomen` — 10개, CC0-1.0
+- `models/characters-animated/ultimatedanimatedcharacter` — 54개, CC0-1.0
+- `models/characters-animated/ultimatemodularcharacters` — 63개, CC0-1.0
+- `models/characters-animated/ultimatemodularwomen` — 57개, CC0-1.0
+- `models/characters-animated/universal-animation-library` — 10개, CC0-1.0
+- `models/characters-animated/universal-animation-library-2` — 14개, CC0-1.0
+- `models/characters-animated/universal-base-characters` — 112개, CC0-1.0
+- `models/kenney/3d-road-tiles` — 917개, CC0-1.0
+- `models/kenney/blocky-characters` — 152개, CC0-1.0
+- `models/kenney/car-kit` — 261개, CC0-1.0
+- `models/kenney/city-kit-commercial` — 221개, CC0-1.0
+- `models/kenney/city-kit-roads` — 489개, CC0-1.0
+- `models/kenney/city-kit-suburban` — 218개, CC0-1.0
+- `models/kenney/mini-characters` — 141개, CC0-1.0
+- `models/kenney/modular-buildings` — 556개, CC0-1.0
+- `models/kenney/nature-kit` — 3620개, CC0-1.0
+- `models/kenney/prototype-kit` — 742개, CC0-1.0
+- `models/kenney/retro-urban-kit` — 695개, CC0-1.0
+- `models/kenney/skyboxes` — 14개, CC0-1.0
+- `models/polyhaven/ArmChair_01` — 5개, CC0-1.0
+- `models/polyhaven/BarberShopChair_01` — 5개, CC0-1.0
+- `models/polyhaven/GothicCabinet_01` — 5개, CC0-1.0
+- `models/polyhaven/GreenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/Ottoman_01` — 5개, CC0-1.0
+- `models/polyhaven/Rockingchair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolChair_01` — 5개, CC0-1.0
+- `models/polyhaven/SchoolDesk_01` — 5개, CC0-1.0
+- `models/polyhaven/Sofa_01` — 5개, CC0-1.0
+- `models/polyhaven/WoodenChair_01` — 5개, CC0-1.0
+- `models/polyhaven/bar_chair_round_01` — 5개, CC0-1.0
+- `models/polyhaven/bench_vice_01` — 5개, CC0-1.0
+- `models/polyhaven/binder_notebook` — 5개, CC0-1.0
+- `models/polyhaven/binoculars` — 5개, CC0-1.0
+- `models/polyhaven/chinese_armchair` — 5개, CC0-1.0
+- `models/polyhaven/chinese_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/chinese_commode` — 5개, CC0-1.0
+- `models/polyhaven/chinese_sofa` — 5개, CC0-1.0
+- `models/polyhaven/chinese_stool` — 5개, CC0-1.0
+- `models/polyhaven/combination_wrench` — 5개, CC0-1.0
+- `models/polyhaven/dining_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/drain_cleaner` — 5개, CC0-1.0
+- `models/polyhaven/drawer_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/folding_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/gallinera_chair` — 5개, CC0-1.0
+- `models/polyhaven/industrial_storage_cart` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_01` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_02` — 5개, CC0-1.0
+- `models/polyhaven/metal_stool_03` — 5개, CC0-1.0
+- `models/polyhaven/metal_trash_can` — 8개, CC0-1.0
+- `models/polyhaven/mid_century_lounge_chair` — 5개, CC0-1.0
+- `models/polyhaven/modern_arm_chair_01` — 8개, CC0-1.0
+- `models/polyhaven/modern_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/modular_street_seating` — 14개, CC0-1.0
+- `models/polyhaven/old_drill_press` — 5개, CC0-1.0
+- `models/polyhaven/outdoor_table_chair_set_01` — 8개, CC0-1.0
+- `models/polyhaven/painted_wooden_bench` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_cabinet_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_chair_02` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_sofa` — 5개, CC0-1.0
+- `models/polyhaven/painted_wooden_stool` — 5개, CC0-1.0
+- `models/polyhaven/pipe_wrench` — 5개, CC0-1.0
+- `models/polyhaven/plastic_container` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_02` — 5개, CC0-1.0
+- `models/polyhaven/plastic_crate_03` — 5개, CC0-1.0
+- `models/polyhaven/plastic_monobloc_chair_01` — 5개, CC0-1.0
+- `models/polyhaven/pliers` — 5개, CC0-1.0
+- `models/polyhaven/plunger` — 5개, CC0-1.0
+- `models/polyhaven/sofa_02` — 5개, CC0-1.0
+- `models/polyhaven/sofa_03` — 5개, CC0-1.0
+- `models/polyhaven/spray_paint_bottles_02` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_01` — 5개, CC0-1.0
+- `models/polyhaven/street_lamp_02` — 5개, CC0-1.0
+- `models/polyhaven/street_rat` — 5개, CC0-1.0
+- `models/polyhaven/tool_cart` — 5개, CC0-1.0
+- `models/polyhaven/trashbag` — 5개, CC0-1.0
+- `models/polyhaven/vintage_binocular` — 5개, CC0-1.0
+- `models/polyhaven/vintage_cabinet_01` — 9개, CC0-1.0
+- `models/polyhaven/vintage_day_bed` — 5개, CC0-1.0
+- `models/polyhaven/vintage_wooden_drawer_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_picnic_table` — 8개, CC0-1.0
+- `models/polyhaven/wooden_stool_01` — 5개, CC0-1.0
+- `models/polyhaven/wooden_stool_02` — 5개, CC0-1.0
+- `models/quaternius/backgroundposedhumans` — 30개, CC0-1.0
+- `models/quaternius/downtown-city-megakit` — 528개, CC0-1.0
+- `models/quaternius/modularstreets` — 27개, CC0-1.0
+- `models/quaternius/publictransport` — 14개, CC0-1.0
+- `models/quaternius/simplebuildings` — 18개, CC0-1.0
+
+**icons** (10)
+
+- `icons/kenney-2d/cursor-pack` — 1098개, CC0-1.0
+- `icons/kenney-2d/cursor-pixel-pack` — 229개, CC0-1.0
+- `icons/kenney-2d/input-prompts` — 4668개, CC0-1.0
+- `icons/kenney-2d/input-prompts-pixel` — 825개, CC0-1.0
+- `icons/kenney-2d/mobile-controls` — 1437개, CC0-1.0
+- `icons/kenney-2d/rpg-urban-pack` — 497개, CC0-1.0
+- `icons/kenney-2d/shape-characters` — 221개, CC0-1.0
+- `icons/kenney-2d/toon-characters` — 700개, CC0-1.0
+- `icons/kenney-2d/ui-pack` — 1317개, CC0-1.0
+- `icons/kenney-2d/ui-pack-pixel-adventure` — 521개, CC0-1.0

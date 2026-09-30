@@ -1,0 +1,120 @@
+{
+  "_": "카드는 표본이다. 밭에서만 나오고 — 카드 상점은 없다 — 쓰지 않으면 다시 밭으로 돌아간다.",
+  "_sown": "밤에 한 번도 놓지 않은 카드를 밭에 심으면 다음 해에 이것이 된다. type 셋뿐이다:",
+  "_sown_grow": "grow — 자란다. becomes 카드 한 장으로 바뀐다 (더 좋은 것)",
+  "_sown_split": "split — 갈라져 둘이 된다. becomes 카드 amount 장 (양이 는다)",
+  "_sown_seedfall": "seedfall — 씨앗만 남는다. 카드는 남지 않고 씨앗 amount 가 생긴다",
+  "_sownTurns": "봄에 그 밭칸을 묶는 턴 수. 이것이 덱 → 밭 경로의 값이다.",
+  "cards": [
+    {
+      "id": "card_sprout",
+      "nameKo": "어린싹",
+      "nameEn": "Sprout",
+      "cost": 1,
+      "sortWeight": 10,
+      "sownTurns": 1,
+      "labelKo": "씨무릇 · 첫해",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 4,
+          "target": "enemy"
+        }
+      ],
+      "sown": {
+        "type": "grow",
+        "becomes": "card_bramble",
+        "amount": 1,
+        "seeds": -1
+      }
+    },
+    {
+      "id": "card_bramble",
+      "nameKo": "가시덤불",
+      "nameEn": "Bramble",
+      "cost": 2,
+      "sortWeight": 30,
+      "sownTurns": 2,
+      "labelKo": "씨무릇 · 두해살이",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 9,
+          "target": "enemy"
+        }
+      ],
+      "sown": {
+        "type": "split",
+        "becomes": "card_sprout",
+        "amount": 2,
+        "seeds": -1
+      }
+    },
+    {
+      "id": "card_broadleaf",
+      "nameKo": "넓은잎",
+      "nameEn": "Broadleaf",
+      "cost": 2,
+      "sortWeight": 20,
+      "sownTurns": 1,
+      "labelKo": "넓은잎 · 첫해",
+      "effects": [
+        {
+          "type": "block",
+          "amount": 9,
+          "target": "self"
+        }
+      ],
+      "sown": {
+        "type": "grow",
+        "becomes": "card_thicket",
+        "amount": 1,
+        "seeds": -1
+      }
+    },
+    {
+      "id": "card_thicket",
+      "nameKo": "덤불벽",
+      "nameEn": "Thicket",
+      "cost": 2,
+      "sortWeight": 40,
+      "sownTurns": 2,
+      "labelKo": "넓은잎 · 세해살이",
+      "effects": [
+        {
+          "type": "block",
+          "amount": 18,
+          "target": "self"
+        }
+      ],
+      "sown": {
+        "type": "split",
+        "becomes": "card_broadleaf",
+        "amount": 2,
+        "seeds": -1
+      }
+    },
+    {
+      "id": "card_ember",
+      "nameKo": "불꽃씨",
+      "nameEn": "Emberseed",
+      "cost": 1,
+      "sortWeight": 15,
+      "sownTurns": 1,
+      "labelKo": "불꽃씨 · 마른 꼬투리",
+      "effects": [
+        {
+          "type": "burn",
+          "amount": 4,
+          "target": "enemy"
+        }
+      ],
+      "sown": {
+        "type": "seedfall",
+        "becomes": "",
+        "amount": 0,
+        "seeds": 3
+      }
+    }
+  ]
+}

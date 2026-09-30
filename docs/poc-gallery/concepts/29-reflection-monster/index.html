@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>창문 속 괴물</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#e8f3ec}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:#0b0f0e}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;inset:0}
+.tabs{position:absolute;right:20px;bottom:20px;z-index:60;display:flex;gap:4px}
+.tabs button{font:700 12px/1 inherit;font-family:inherit;padding:8px 12px;background:rgba(10,16,14,.8);color:#9fb8aa;border:1px solid #2f4a3e;cursor:pointer;letter-spacing:1px}
+.tabs button.on{background:#1fa05a;color:#051;color:#04130b;border-color:#1fa05a}
+/* HUD top */
+.hud{position:absolute;left:0;right:0;top:0;height:92px;z-index:30;display:flex;align-items:center;padding:0 34px;gap:26px;
+ background:linear-gradient(#050807 0%,rgba(5,8,7,.92) 70%,rgba(5,8,7,0));}
+.line{width:54px;height:54px;border-radius:50%;background:#1fa05a;display:grid;place-items:center;font-weight:900;font-size:30px;color:#fff;box-shadow:0 0 0 4px #0b0f0e,0 0 0 6px #1fa05a}
+.st small{display:block;font-size:13px;letter-spacing:3px;color:#7f9b8c;font-weight:700}
+.st b{font-size:34px;font-weight:900;letter-spacing:-1px}
+.st b em{font-style:normal;font-size:18px;color:#7f9b8c;margin-left:10px;font-weight:700}
+.route{flex:1;height:54px;position:relative}
+.route .rail{position:absolute;left:0;right:0;top:26px;height:5px;background:#1fa05a;border-radius:3px}
+.route .dot{position:absolute;top:19px;width:19px;height:19px;border-radius:50%;background:#0b0f0e;border:4px solid #1fa05a;transform:translateX(-50%)}
+.route .dot.done{background:#1fa05a}
+.route .dot.now{border-color:#fff;background:#fff;box-shadow:0 0 14px #9ff5c4;animation:blink 1s infinite}
+.route .dot i{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;color:#7f9b8c;white-space:nowrap}
+@keyframes blink{50%{opacity:.35}}
+.stat{text-align:right}
+.stat small{display:block;font-size:12px;letter-spacing:3px;color:#7f9b8c;font-weight:700}
+.stat b{font-size:30px;font-weight:900;font-variant-numeric:tabular-nums}
+.ring{width:66px;height:66px;position:relative}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:900}
+/* bottom panel */
+.inspect{position:absolute;left:34px;bottom:30px;width:560px;z-index:30;background:linear-gradient(180deg,rgba(8,14,12,.92),rgba(4,8,7,.96));border:1px solid #2c463a;border-left:4px solid #1fa05a;padding:16px 20px;box-shadow:0 20px 40px rgba(0,0,0,.6)}
+.inspect h4{font-size:12px;letter-spacing:3px;color:#7f9b8c;margin-bottom:6px}
+.inspect .nm{font-size:26px;font-weight:900;margin-bottom:10px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cmp div{background:#0c1512;border:1px solid #213a30;padding:8px 10px;font-size:14px;line-height:1.55;color:#b8cfc2}
+.cmp div b{display:block;font-size:11px;letter-spacing:2px;color:#6d897a;margin-bottom:2px}
+.cmp div.bad{border-color:#b33a3a;color:#ffb3a8;background:#1a0c0c}
+.act{display:flex;gap:10px}
+.btn{flex:1;padding:13px 0;text-align:center;font-weight:900;font-size:17px;border:1px solid #1fa05a;color:#c9f5dc;background:#0e2419;cursor:pointer;transition:.12s;letter-spacing:1px}
+.btn:hover{background:#1fa05a;color:#04130b}
+.btn:active{transform:scale(.97)}
+.btn kbd{font:inherit;font-size:12px;opacity:.7;margin-left:6px;border:1px solid currentColor;padding:1px 5px}
+.btn.alt{border-color:#3b5a4c;color:#9fb8aa;background:transparent}
+.log{position:absolute;right:34px;bottom:74px;width:380px;z-index:30;font-size:14px;line-height:1.8;color:#9fb8aa;text-align:right;text-shadow:0 1px 2px #000}
+.log b{color:#fff}
+.log .r{color:#ff8a7a}
+.announce{position:absolute;left:50%;top:112px;transform:translateX(-50%);z-index:30;background:#050807;border:1px solid #1fa05a;color:#7df0ad;padding:7px 22px;font-size:17px;font-weight:700;letter-spacing:1px;white-space:nowrap;overflow:hidden}
+.announce span{display:inline-block;animation:marq 9s linear infinite}
+@keyframes marq{from{transform:translateX(30%)}to{transform:translateX(-30%)}}
+.flash{position:absolute;inset:0;z-index:40;pointer-events:none;opacity:0;transition:opacity .4s}
+.pas{cursor:pointer}
+.pas:hover .body{filter:brightness(1.25)}
+.pas.sel .selring{opacity:1}
+.selring{opacity:0;transition:.2s}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:20;background:radial-gradient(ellipse 75% 70% at 50% 55%,transparent 55%,rgba(0,0,0,.75))}
+.scan{position:absolute;inset:0;pointer-events:none;z-index:21;opacity:.12;background:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 3px)}
+.flicker{animation:flk 5s infinite}
+@keyframes flk{0%,93%,100%{opacity:1}94%{opacity:.55}95%{opacity:1}97%{opacity:.7}}
+/* B */
+#b .hud{background:linear-gradient(#120404 0%,rgba(18,4,4,.92) 70%,rgba(18,4,4,0))}
+#b .line{background:#c42b2b;box-shadow:0 0 0 4px #120404,0 0 0 6px #c42b2b}
+.warn{position:absolute;left:50%;top:420px;transform:translate(-50%,-50%);z-index:35;text-align:center;pointer-events:none}
+.warn b{display:block;font-size:84px;font-weight:900;letter-spacing:-3px;color:#ff4d3d;text-shadow:0 0 30px rgba(255,40,20,.8),0 0 2px #fff;animation:shake .12s infinite}
+.warn span{display:inline-block;margin-top:8px;font-size:20px;letter-spacing:4px;color:#ffc2b8;background:rgba(40,0,0,.7);padding:6px 16px}
+@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}}
+.redpulse{position:absolute;inset:0;z-index:19;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(255,30,10,.08),rgba(90,0,0,.55));animation:rp 1.6s ease-in-out infinite}
+@keyframes rp{50%{opacity:.55}}
+.meter{display:flex;gap:6px}
+.meter i{width:26px;height:34px;background:#3a1010;border:1px solid #6a1d1d}
+.meter i.on{background:#ff4d3d;box-shadow:0 0 12px #ff4d3d}
+</style>
+</head>
+<body>
+<div id="stage">
+<nav class="tabs"><button data-s="a">1 · 정차 중</button><button data-s="b">2 · 놓쳤다</button></nav>
+
+<section class="screen" id="a">
+ <svg class="scene" id="sceneA" viewBox="0 0 1600 1000"></svg>
+ <div class="vig"></div><div class="scan"></div>
+ <div class="hud">
+  <div class="line">2</div>
+  <div class="st"><small>막차 · 정차 중</small><b>을지로3가<em>7 / 12</em></b></div>
+  <div class="route" id="routeA"></div>
+  <div class="stat"><small>하차시킨 괴물</small><b>3</b></div>
+  <div class="stat"><small>잘못 내린 승객</small><b style="color:#ffb35c">1</b></div>
+  <div class="ring"><svg viewBox="0 0 66 66"><circle cx="33" cy="33" r="28" fill="none" stroke="#1c2d25" stroke-width="6"/><circle id="ringA" cx="33" cy="33" r="28" fill="none" stroke="#9ff5c4" stroke-width="6" stroke-dasharray="176" stroke-dashoffset="60" stroke-linecap="round"/></svg><b id="tA">12</b></div>
+ </div>
+ <div class="announce"><span>이번 역은 을지로3가 · 내리실 문은 오른쪽입니다 · 반사를 확인하십시오 · 문이 닫히기 전에 한 명을 내리게 하십시오</span></div>
+ <div class="inspect">
+  <h4>선택한 승객 · 비교</h4>
+  <div class="nm" id="pname">7번 자리 · 베이지 트렌치코트</div>
+  <div class="cmp">
+   <div><b>실제</b><span id="pReal">고개 숙임 · 휴대폰을 봄 · 왼손에 우산</span></div>
+   <div class="bad" id="pRefBox"><b>창문 반사</b><span id="pRef">정면을 봄 · 웃고 있음 · 손바닥이 유리에 붙음</span></div>
+  </div>
+  <div class="act"><div class="btn" id="eject">이 승객 내리게 하기<kbd>E</kbd></div><div class="btn alt" id="look">다시 보기<kbd>Q</kbd></div></div>
+ </div>
+ <div class="log" id="logA">20:51 시청 — <b>2번 자리</b> 하차 · 반사 사라짐<br>20:54 을지로입구 — <span class="r">잘못 내림</span> · 평범한 학생<br>20:57 을지로3가 — 탑승 3명</div>
+ <div class="flash" id="flashA"></div>
+</section>
+
+<section class="screen" id="b">
+ <svg class="scene" id="sceneB" viewBox="0 0 1600 1000"></svg>
+ <div class="redpulse"></div><div class="vig"></div><div class="scan"></div>
+ <div class="hud">
+  <div class="line">2</div>
+  <div class="st"><small style="color:#d98a80">터널 · 운행 중 · 비상등</small><b>동대문역사문화공원<em>8 / 12</em></b></div>
+  <div class="route" id="routeB"></div>
+  <div class="stat"><small style="color:#d98a80">반사 번짐</small><div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+  <div class="stat"><small style="color:#d98a80">다음 정차</small><b style="color:#ff8a7a">0:41</b></div>
+ </div>
+ <div class="warn"><b>놓쳤다</b><span>빈 자리에 반사만 앉아 있다</span></div>
+ <div class="inspect" style="border-left-color:#c42b2b;border-color:#5a1c1c">
+  <h4 style="color:#d98a80">7번 자리 · 비어 있음</h4>
+  <div class="nm">아무도 없다. 반사는 있다.</div>
+  <div class="cmp">
+   <div><b>실제</b>빈 좌석 · 젖은 우산 자국</div>
+   <div class="bad"><b>창문 반사</b>트렌치코트 · 고개가 이쪽으로 돌아감 · 다른 반사들도 따라 봄</div>
+  </div>
+  <div class="act"><div class="btn" style="border-color:#c42b2b;background:#2a0a0a;color:#ffc2b8" id="shut">창문 가리기 (1회)<kbd>E</kbd></div><div class="btn alt">다음 역까지 버티기</div></div>
+ </div>
+ <div class="log"><span class="r">20:58 을지로3가 — 문 닫힘 · 괴물 잔류</span><br>20:58 조명 이상 · 3호차<br><b>반사가 네 칸 앞으로 옮겨 왔다</b></div>
+ <div class="flash" id="flashB"></div>
+</section>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var k=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+addEventListener('resize',fit);fit();
+var NS='http://www.w3.org/2000/svg';
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+var AC=null;function ac(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){AC=null}return AC;}
+function tone(f,d,type,v,t0){var c=ac();if(!c)return;var t=c.currentTime+(t0||0),o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v||.1,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.05);}
+function chime(){tone(880,.5,'sine',.12);tone(698,.7,'sine',.12,.28);}
+function hum(){tone(120,.35,'sawtooth',.03);tone(60,.4,'square',.02);}
+function buzz(){tone(90,.5,'sawtooth',.12);tone(93,.5,'sawtooth',.1);}
+
+var stations=['시청','을지로입구','을지로3가','동대문역사문화공원','신당','상왕십리','왕십리','한양대','뚝섬','성수','건대입구','종점'];
+function route(id,now){var r=document.getElementById(id);var h='<div class="rail"></div>';var show=[0,1,2,3,4,5,6];for(var i=0;i<7;i++){var idx=i+4;var x=(i/6*100);h+='<div class="dot '+(idx<now?'done':idx===now?'now':'')+'" style="left:'+x+'%"><i>'+stations[Math.min(idx-4+ (now-6),11)]+'</i></div>';}r.innerHTML=h;}
+// simpler route labels
+function route2(id,now,col){var r=document.getElementById(id);var h='<div class="rail" style="background:'+col+'"></div>';for(var i=0;i<6;i++){var s=now-2+i;var cls=s<now?'done':s===now?'now':'';h+='<div class="dot '+cls+'" style="left:'+(4+i*18.4)+'%;border-color:'+col+';'+(s<now?'background:'+col:'')+'"><i>'+(stations[s]||'')+'</i></div>';}r.innerHTML=h;}
+route2('routeA',2,'#1fa05a');route2('routeB',3,'#c42b2b');
+
+var P=[
+ {x:140,coat:'#3d4a5c',hair:'short',acc:'phone',skin:'#d9b99b',nm:'1번 자리 · 남색 점퍼',real:'졸고 있음 · 이어폰',ref:'같음'},
+ {x:290,coat:'#6b2f3a',hair:'long',acc:'bag',skin:'#e6c3a6',nm:'2번 자리 · 버건디 니트',real:'창밖을 봄 · 쇼핑백',ref:'같음'},
+ {x:440,coat:'#2f3833',hair:'cap',acc:'none',skin:'#c9a17f',nm:'3번 자리 · 야구모자',real:'팔짱 · 눈 감음',ref:'같음'},
+ {x:660,coat:'#5b5f66',hair:'bald',acc:'paper',skin:'#d4ac8c',nm:'4번 자리 · 회색 양복',real:'신문을 읽음',ref:'같음'},
+ {x:820,coat:'#274a6b',hair:'bob',acc:'phone',skin:'#ebc9ae',nm:'5번 자리 · 교복',real:'휴대폰 · 웃음을 참음',ref:'같음'},
+ {x:1200,coat:'#b39a72',hair:'long2',acc:'umbrella',skin:'#e0bd9f',nm:'7번 자리 · 베이지 트렌치코트',real:'고개 숙임 · 휴대폰을 봄 · 왼손에 우산',ref:'정면을 봄 · 웃고 있음 · 손바닥이 유리에 붙음',bad:1},
+ {x:980,coat:'#44503b',hair:'short2',acc:'bag',skin:'#c69c7a',nm:'6번 자리 · 등산복',real:'배낭을 안고 있음',ref:'같음'},
+ {x:1400,coat:'#2b2b33',hair:'hood',acc:'phone',skin:'#d8b597',nm:'8번 자리 · 후드티',real:'게임 중 · 화면 불빛',ref:'같음'}];
+
+function person(g,p,o){ // o: {ref:bool, stare:bool, monster:bool, empty:bool, tint}
+ var x=p.x,hy=o.ref?318:505,sc=o.ref?.86:1;
+ var gg=el('g',{transform:'translate('+x+','+hy+') scale('+(o.ref?-sc:sc)+','+sc+')'},g);
+ if(o.empty)return gg;
+ var coat=p.coat,skin=p.skin,hair='#17130f';
+ // body
+ var body=el('g',{'class':'body'},gg);
+ el('path',{d:'M-62 70 C-66 40 -44 30 0 28 C44 30 66 40 62 70 L66 236 L-66 236Z',fill:coat},body);
+ el('path',{d:'M-62 70 C-66 40 -44 30 0 28 L0 250 L-70 250Z',fill:'rgba(255,255,255,.07)'},body);
+ el('path',{d:'M-14 30 L0 70 L14 30',fill:'none',stroke:'rgba(0,0,0,.35)','stroke-width':4},body);
+ // legs
+ el('path',{d:'M-60 222 L60 222 L64 290 L-64 290Z',fill:'#23262c'},body);el('path',{d:'M-60 272 L60 272 L64 290 L-64 290Z',fill:'rgba(255,255,255,.08)'},body);el('path',{d:'M-56 288 L-50 370 L-20 370 L-12 288Z M56 288 L50 370 L20 370 L12 288Z',fill:'#16181c'},body);
+ el('ellipse',{cx:-36,cy:372,rx:24,ry:8,fill:'#0c0c0e'},body);el('ellipse',{cx:36,cy:372,rx:24,ry:8,fill:'#0c0c0e'},body);
+ // neck + head
+ el('rect',{x:-12,y:6,width:24,height:26,fill:skin},body);
+ var headRot=o.stare?0:(p.acc==='phone'||p.bad?14:(p.acc==='paper'?10:0));
+ var h=el('g',{transform:'rotate('+headRot+')'},body);
+ el('ellipse',{cx:0,cy:-22,rx:31,ry:37,fill:skin},h);
+ el('ellipse',{cx:10,cy:-18,rx:18,ry:28,fill:'rgba(0,0,0,.12)'},h);
+ // hair
+ var hp={short:'M-32 -26 C-34 -62 32 -66 33 -28 C20 -44 -10 -48 -32 -26Z',long:'M-34 -20 C-40 -70 40 -70 36 -20 L40 40 L22 40 L26 -30 C0 -46 -22 -40 -26 -30 L-22 40 L-40 40Z',cap:'M-34 -28 C-34 -66 34 -66 34 -28Z M20 -30 L58 -24 L34 -20Z',bald:'M-31 -18 C-34 -40 -26 -44 -24 -30 M31 -18 C34 -40 26 -44 24 -30',bob:'M-35 -20 C-40 -72 40 -72 35 -20 L36 8 L20 8 L22 -32 C0 -42 -20 -40 -22 -32 L-20 8 L-36 8Z',long2:'M-36 -24 C-44 -74 44 -74 36 -24 L44 60 L24 60 L24 -34 C0 -46 -20 -44 -24 -34 L-26 60 L-44 60Z',short2:'M-33 -22 C-38 -64 36 -66 33 -22 C24 -40 -8 -48 -33 -22Z',hood:'M-48 30 C-56 -30 -40 -72 0 -72 C40 -72 56 -30 48 30 L30 30 C34 -20 20 -50 0 -50 C-20 -50 -34 -20 -30 30Z'};
+ var hc=p.hair==='hood'?coat:(p.hair==='cap'?'#8a2a2a':hair);
+ el('path',{d:hp[p.hair]||hp.short,fill:p.hair==='bald'?'none':hc,stroke:p.hair==='bald'?hair:'none','stroke-width':6},h);
+ if(o.stare){ // facing us: eyes + too-wide smile
+  el('ellipse',{cx:-11,cy:-22,rx:6,ry:7,fill:'#f4fff8'},h);el('ellipse',{cx:11,cy:-22,rx:6,ry:7,fill:'#f4fff8'},h);
+  el('circle',{cx:-11,cy:-21,r:2.2,fill:'#000'},h);el('circle',{cx:11,cy:-21,r:2.2,fill:'#000'},h);
+  if(o.monster){el('path',{d:'M-22 0 Q0 22 22 0 Q0 12 -22 0Z',fill:'#200',stroke:'#f4fff8','stroke-width':1.5},h);
+   for(var i=-18;i<=18;i+=6)el('line',{x1:i,y1:2+Math.abs(i)*-.05,x2:i,y2:8,stroke:'#f4fff8','stroke-width':1.5},h);}
+ }
+ // accessories
+ if(p.acc==='phone'||p.bad){el('rect',{x:-8,y:84,width:22,height:36,rx:4,fill:'#111'},body);el('rect',{x:-6,y:86,width:18,height:30,rx:3,fill:'#bfe8ff',opacity:.9},body);el('path',{d:'M-30 -10 L30 -10 L20 110 L-20 110Z',fill:'rgba(170,220,255,.08)'},body);}
+ if(p.acc==='bag')el('path',{d:'M-50 150 L50 150 L56 240 L-56 240Z',fill:'#c9b58a',stroke:'rgba(0,0,0,.3)','stroke-width':3},body);
+ if(p.acc==='paper')el('path',{d:'M-70 70 L70 60 L74 170 L-66 176Z',fill:'#e6e1d3',stroke:'#9a9483','stroke-width':2},body);
+ if(p.acc==='umbrella')el('path',{d:'M58 120 L66 360 M60 118 C50 150 74 170 72 230',stroke:'#1a2430','stroke-width':8,fill:'none','stroke-linecap':'round'},body);
+ if(o.monster&&o.hand){el('path',{d:'M-80 -60 l-10 -46 m10 46 l-2 -54 m2 54 l8 -52 m-8 52 l18 -40 m-18 40 c-10 20 -30 24 -40 0',stroke:'#e9fff1','stroke-width':8,'stroke-linecap':'round',fill:'none',opacity:.8},gg);}
+ // select ring (real only)
+ return gg;
+}
+
+function scene(svg,mode){
+ var red=mode==='b';
+ var d=el('defs',{},svg);
+ var lg=el('linearGradient',{id:'wall'+mode,x1:0,y1:0,x2:0,y2:1},d);
+ el('stop',{offset:0,'stop-color':red?'#3a1512':'#c9d9cc'},lg);el('stop',{offset:1,'stop-color':red?'#1e0a09':'#8fa597'},lg);
+ var gl=el('linearGradient',{id:'glass'+mode,x1:0,y1:0,x2:0,y2:1},d);
+ el('stop',{offset:0,'stop-color':red?'#0a0202':'#050b0d'},gl);el('stop',{offset:1,'stop-color':red?'#1a0505':'#0d1a1d'},gl);
+ var cp=el('clipPath',{id:'win'+mode},d);
+ var wins=[[80,150,440,340],[580,150,440,340],[1080,150,440,340]];
+ wins.forEach(function(w){el('rect',{x:w[0],y:w[1],width:w[2],height:w[3],rx:26},cp)});
+ var bl=el('filter',{id:'blur'+mode},d);el('feGaussianBlur',{stdDeviation:1.4},bl);
+ var tint=el('filter',{id:'tint'+mode},d);el('feColorMatrix',{type:'matrix',values:red?'0.6 0.2 0 0 0.1  0.1 0.2 0.1 0 0  0.1 0.1 0.2 0 0  0 0 0 0.6 0':'0.25 0.3 0.2 0 0  0.25 0.4 0.3 0 0.02  0.3 0.45 0.55 0 0.05  0 0 0 0.55 0'},tint);
+ var ceil=el('linearGradient',{id:'ceil'+mode,x1:0,y1:0,x2:0,y2:1},d);el('stop',{offset:0,'stop-color':red?'#200808':'#e9f3ea'},ceil);el('stop',{offset:1,'stop-color':red?'#3a1410':'#a8bcae'},ceil);
+ // wall
+ el('rect',{width:1600,height:1000,fill:'url(#wall'+mode+')'},svg);
+ // ceiling & lights
+ el('rect',{width:1600,height:130,fill:'url(#ceil'+mode+')'},svg);
+ var lights=el('g',{'class':red?'':'flicker'},svg);
+ [200,600,1000,1400].forEach(function(x,i){var on=!red||i===1;el('rect',{x:x-150,y:96,width:300,height:16,rx:8,fill:on?(red?'#ff5040':'#fbfff6'):'#2a1a18'},lights);if(on)el('rect',{x:x-190,y:84,width:380,height:44,rx:22,fill:red?'rgba(255,60,40,.35)':'rgba(240,255,245,.5)',filter:'url(#blur'+mode+')'},lights);});
+ // ad strip
+ for(var i=0;i<6;i++){var ax=40+i*260;el('rect',{x:ax,y:118,width:240,height:26,fill:red?'#2b0f0d':'#f2f5ee',stroke:red?'#401a17':'#9aaa9f'},svg);}
+ var ads=['창문을 믿지 마세요 · 서울교통','치과 · 을지로3가 2번 출구','막차 이후 안전 귀가 1577','잃어버린 물건 센터 B2','반사가 다르면 신고하세요','종점 방향 · 뒤쪽 칸 비어 있음'];
+ ads.forEach(function(t,i){var tx=el('text',{x:52+i*260,y:136,'font-size':12,'font-weight':700,fill:red?'#8a4a44':'#4d5d53'},svg);tx.textContent=t;});
+ // windows glass
+ wins.forEach(function(w){el('rect',{x:w[0]-10,y:w[1]-10,width:w[2]+20,height:w[3]+20,rx:34,fill:red?'#2a0e0c':'#6c7f73'},svg);el('rect',{x:w[0],y:w[1],width:w[2],height:w[3],rx:26,fill:'url(#glass'+mode+')'},svg);});
+ // tunnel streaks inside windows
+ var tg=el('g',{'clip-path':'url(#win'+mode+')'},svg);
+ for(var s=0;s<9;s++){var y=170+s*37+(s%3)*9;var r=el('rect',{x:-400,y:y,width:260+s*20,height:2+(s%2)*2,fill:red?'rgba(255,90,60,.5)':'rgba(255,220,150,.55)'},tg);
+  var an=el('animate',{attributeName:'x',from:1700,to:-600,dur:(0.6+s%4*0.25)+'s',repeatCount:'indefinite',begin:(s*0.17)+'s'},r);}
+ // reflections
+ var rg=el('g',{'clip-path':'url(#win'+mode+')',filter:'url(#tint'+mode+')'},svg);
+ var reflHandles=[];
+ P.forEach(function(p,i){var monster=!!p.bad;var o={ref:true,stare:monster||(red),monster:monster,hand:monster};
+  var g=el('g',{opacity:monster?.95:.75},rg);person(g,p,o);reflHandles.push(g);});
+ // extra: big close face in B
+ if(red){var big=el('g',{'clip-path':'url(#win'+mode+')',opacity:.55},svg);
+  var bg=el('g',{transform:'translate(800,300) scale(3.2)',filter:'url(#blur'+mode+')'},big);
+  el('ellipse',{cx:0,cy:0,rx:31,ry:37,fill:'#6a2a22'},bg);el('ellipse',{cx:-11,cy:-4,rx:6,ry:7,fill:'#ffe8e0'},bg);el('ellipse',{cx:11,cy:-4,rx:6,ry:7,fill:'#ffe8e0'},bg);el('path',{d:'M-22 16 Q0 38 22 16 Q0 28 -22 16Z',fill:'#100',stroke:'#ffe8e0'},bg);}
+ // glass glare
+ wins.forEach(function(w){el('path',{d:'M'+(w[0]+40)+' '+(w[1]+w[3])+' L'+(w[0]+140)+' '+w[1]+' L'+(w[0]+190)+' '+w[1]+' L'+(w[0]+90)+' '+(w[1]+w[3])+'Z',fill:'rgba(255,255,255,.05)'},svg);});
+ // poles and straps
+ [560,1060].forEach(function(x){el('rect',{x:x-7,y:120,width:14,height:880,fill:red?'#6a3a34':'#dfe6e0'},svg);el('rect',{x:x-7,y:120,width:5,height:880,fill:'rgba(255,255,255,.5)'},svg);});
+ el('rect',{x:0,y:150,width:1600,height:7,fill:red?'#6a3a34':'#cfd8d1'},svg);
+ for(var k=0;k<11;k++){var sx=90+k*140;el('line',{x1:sx,y1:157,x2:sx,y2:205,stroke:red?'#3a1a16':'#3d4a44','stroke-width':4},svg);el('ellipse',{cx:sx,cy:220,rx:14,ry:18,fill:'none',stroke:red?'#b04a3a':'#ebe9dc','stroke-width':6},svg);}
+ // bench
+ el('rect',{x:30,y:600,width:1540,height:140,rx:16,fill:red?'#3a100d':'#2a5f73'},svg);
+ el('rect',{x:30,y:600,width:1540,height:14,rx:7,fill:'rgba(255,255,255,.14)'},svg);
+ for(var q=1;q<8;q++)el('line',{x1:30+q*192,y1:612,x2:30+q*192,y2:736,stroke:'rgba(0,0,0,.25)','stroke-width':3},svg);
+ el('rect',{x:20,y:730,width:1560,height:24,rx:10,fill:red?'#56201a':'#3b7c93'},svg);
+ el('rect',{x:20,y:752,width:1560,height:56,rx:8,fill:red?'#240908':'#1c3f4c'},svg);
+ // floor
+ var fl=el('linearGradient',{id:'floor'+mode,x1:0,y1:0,x2:0,y2:1},d);el('stop',{offset:0,'stop-color':red?'#1a0808':'#5b6660'},fl);el('stop',{offset:1,'stop-color':red?'#070202':'#2b322f'},fl);
+ el('rect',{x:0,y:860,width:1600,height:140,fill:'url(#floor'+mode+')'},svg);
+ for(var f=0;f<30;f++)el('circle',{cx:30+f*55,cy:930,r:3,fill:'rgba(0,0,0,.25)'},svg);
+ // passengers real
+ var reals=[];
+ P.forEach(function(p,i){var g=el('g',{'class':'pas','data-i':i},svg);
+  var empty=red&&p.bad;
+  el('ellipse',{'class':'selring',cx:p.x,cy:880,rx:84,ry:16,fill:'none',stroke:'#9ff5c4','stroke-width':3},g);
+  person(g,p,{empty:empty});
+  if(empty){el('path',{d:'M'+(p.x-40)+' 690 q40 -14 80 0',stroke:'rgba(150,180,200,.35)','stroke-width':6,fill:'none'},g);el('ellipse',{cx:p.x+50,cy:880,rx:26,ry:6,fill:'rgba(140,170,200,.25)'},g);}
+  reals.push(g);});
+ // highlight link line A
+ if(!red){var bad=P[5];el('circle',{id:'mark',cx:bad.x-18,cy:300,r:66,fill:'none',stroke:'#ff5a4a','stroke-width':3,'stroke-dasharray':'8 7'},svg);
+  var lt=el('text',{x:bad.x-18,y:392,'text-anchor':'middle','font-size':15,'font-weight':900,fill:'#ff8a7a'},svg);lt.textContent='반사 불일치';}
+ return {reals:reals,refl:reflHandles};
+}
+var A=scene(document.getElementById('sceneA'),'a');
+scene(document.getElementById('sceneB'),'b');
+
+// select in A
+var sel=5;function pick(i){sel=i;A.reals.forEach(function(g,j){g.classList.toggle('sel',j===i)});A.refl.forEach(function(g,j){g.setAttribute('opacity',j===i?1:(P[j].bad?.95:.6))});
+ var p=P[i];document.getElementById('pname').textContent=p.nm;document.getElementById('pReal').textContent=p.real;document.getElementById('pRef').textContent=p.ref;document.getElementById('pRefBox').classList.toggle('bad',!!p.bad);hum();}
+A.reals.forEach(function(g,i){g.addEventListener('click',function(){pick(i)})});
+pick(5);
+function flash(c){var f=document.getElementById('flashA');f.style.background=c;f.style.opacity=.5;setTimeout(function(){f.style.opacity=0},180);}
+function eject(){var p=P[sel],g=A.reals[sel];if(!g||g.getAttribute('data-gone'))return;chime();
+ if(p.bad){flash('rgba(120,255,170,.35)');g.style.transition='opacity .8s, transform .8s';g.style.opacity=0;g.setAttribute('data-gone',1);A.refl[sel].style.transition='opacity 1.2s';A.refl[sel].style.opacity=0;var m=document.getElementById('mark');if(m)m.style.display='none';document.getElementById('logA').innerHTML+='<br><b>20:58 을지로3가 — 7번 자리 하차 · 반사가 비었다</b>';}
+ else{flash('rgba(255,60,40,.45)');buzz();document.getElementById('logA').innerHTML+='<br><span class="r">20:58 — '+p.nm.split(' · ')[0]+' 잘못 내림</span>';}}
+document.getElementById('eject').onclick=eject;
+document.getElementById('look').onclick=function(){pick((sel+1)%P.length)};
+document.getElementById('shut').onclick=function(){buzz();var f=document.getElementById('flashB');f.style.background='#000';f.style.opacity=.9;setTimeout(function(){f.style.opacity=0},600)};
+// timer
+var t=12;setInterval(function(){t=t<=0?12:t-1;var e=document.getElementById('tA');if(e)e.textContent=t;var r=document.getElementById('ringA');if(r)r.setAttribute('stroke-dashoffset',176-176*t/12);},1000);
+
+var tabs=document.querySelectorAll('.tabs button');
+function show(id){if(id!=='a'&&id!=='b')id='a';document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});tabs.forEach(function(b){b.classList.toggle('on',b.dataset.s===id)});if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}
+tabs.forEach(function(b){b.onclick=function(){hum();show(b.dataset.s)}});
+addEventListener('hashchange',function(){show(location.hash.slice(1))});
+addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');else if(e.key==='e'||e.key==='E')eject();else if(e.key==='q'||e.key==='Q')pick((sel+1)%P.length);else if(e.key==='ArrowRight')pick((sel+1)%P.length);else if(e.key==='ArrowLeft')pick((sel+P.length-1)%P.length);});
+show(location.hash.slice(1)||'a');
+})();
+</script>
+</body>
+</html>

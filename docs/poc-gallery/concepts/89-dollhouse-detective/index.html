@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인형의 집 탐정</title>
+<style>
+:root{
+  --walnut:#5a3a24; --walnut-d:#3a2416; --cream:#f3ead8; --paper:#f7f0de; --ink:#3a2a20; --ink2:#7a6450;
+  --rose:#c96f6a; --sage:#8aa37f; --mustard:#d9a83a; --brass:#c9a25a; --brass-l:#f0d79a; --night:#141a2a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0c0806;overflow:hidden}
+body{font-family:"Noto Sans KR","Apple SD Gothic Neo",sans-serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:var(--walnut-d)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.serif{font-family:"Noto Serif KR","Noto Serif CJK KR",serif}
+.layer{position:absolute;inset:0;pointer-events:none}
+canvas.layer{width:1600px;height:1000px}
+.grain{opacity:.14;mix-blend-mode:overlay}
+.tilt{position:absolute;left:0;right:0;pointer-events:none;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.tilt.t{top:0;height:150px;-webkit-mask-image:linear-gradient(#000 20%,transparent);mask-image:linear-gradient(#000 20%,transparent)}
+.tilt.b{bottom:0;height:130px;-webkit-mask-image:linear-gradient(transparent,#000 70%);mask-image:linear-gradient(transparent,#000 70%)}
+
+/* HUD */
+.title{position:absolute;left:30px;top:22px;z-index:6;color:var(--cream);text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.title h1{font-size:30px;font-weight:800;letter-spacing:.02em}
+.title small{display:block;font-size:13px;color:var(--brass-l);letter-spacing:.2em;margin-top:2px}
+.case{position:absolute;left:300px;top:28px;z-index:6;display:flex;gap:10px}
+.case span{padding:7px 12px;border-radius:14px;background:rgba(30,18,10,.7);color:var(--cream);font-size:13.5px;border:1px solid rgba(240,215,154,.35)}
+.case span b{color:var(--brass-l)}
+
+.note{position:absolute;right:30px;top:84px;width:440px;bottom:34px;z-index:6;background:var(--paper);border-radius:4px 10px 10px 4px;padding:26px 26px 20px 40px;
+  box-shadow:0 26px 50px rgba(0,0,0,.55),inset 0 0 40px rgba(160,120,60,.18);
+  background-image:repeating-linear-gradient(transparent 0 33px,rgba(90,120,160,.18) 33px 34px),linear-gradient(var(--paper),#efe4c8)}
+.note::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:2px;background:rgba(200,90,90,.35)}
+.rings{position:absolute;left:-12px;top:30px;bottom:30px;display:flex;flex-direction:column;justify-content:space-around}
+.rings i{width:24px;height:12px;border-radius:6px;background:linear-gradient(#e9e2d0,#9d937e);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.note h2{font-size:13px;letter-spacing:.3em;color:var(--ink2);font-weight:600}
+.note h3{font-size:24px;margin:4px 0 12px}
+.pips{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--ink2);margin-bottom:14px}
+.pips i{width:26px;height:10px;border-radius:5px;background:#dccfb0;box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
+.pips i.on{background:linear-gradient(90deg,#c9a25a,#e6c47a);box-shadow:0 0 6px rgba(201,162,90,.7)}
+.pips i.cur{background:#e6c47a;animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:.4}to{opacity:1}}
+.testi{position:relative;background:#fffaf0;border:1px solid #e0d2b0;border-radius:8px;padding:14px 14px 14px 94px;box-shadow:0 6px 14px rgba(90,60,30,.15);margin-bottom:14px;min-height:112px}
+.testi .pt{position:absolute;left:12px;top:14px;width:68px;height:84px;border-radius:6px;background:#efe3c8;overflow:hidden}
+.testi b{font-size:15px}
+.testi .old{display:block;font-size:14.5px;color:#a89a86;text-decoration:line-through;text-decoration-color:#c96f6a;margin-top:6px}
+.testi .new{display:block;font-size:16.5px;color:var(--ink);margin-top:4px;line-height:1.5}
+.badge{position:absolute;right:10px;top:10px;font-size:11.5px;font-weight:800;color:#fff;background:#c96f6a;padding:3px 8px;border-radius:10px;letter-spacing:.05em;animation:pop 1.6s infinite}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.list{list-style:none;font-size:14.5px}
+.list li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed #d8c9a8}
+.list li .ck{width:20px;height:20px;border-radius:4px;border:2px solid #b89a6a;flex:none;display:grid;place-items:center;font-size:13px;font-weight:900;color:#fff}
+.list li.done .ck{background:#8aa37f;border-color:#8aa37f}
+.list li.now{color:#8a5a1a;font-weight:700}
+.list li.now .ck{border-color:#d9a83a;background:#fff3d0;color:#d9a83a}
+.list li small{margin-left:auto;font-size:12px;color:var(--ink2);font-weight:400}
+.tools{position:absolute;left:40px;right:26px;bottom:18px;display:flex;gap:8px}
+.tools div{flex:1;text-align:center;padding:8px 4px;border-radius:6px;background:#3a2a1c;color:#f0e2c4;font-size:12.5px;box-shadow:0 3px 0 #1e140c;cursor:pointer}
+.tools div b{display:block;font-size:15px;color:var(--brass-l);margin-bottom:2px}
+.tools div.on{background:#6a4a26;outline:2px solid var(--brass-l)}
+
+.label{position:absolute;z-index:5;font-size:13px;color:#fff6e0;background:rgba(40,24,12,.72);padding:4px 10px;border-radius:12px;border:1px solid rgba(240,215,154,.4);white-space:nowrap}
+.speech{position:absolute;z-index:5;background:#fffaf0;color:var(--ink);font-size:15px;padding:9px 13px;border-radius:12px;box-shadow:0 8px 18px rgba(0,0,0,.4);max-width:250px;line-height:1.45}
+.speech::after{content:"";position:absolute;left:20px;bottom:-9px;border:9px solid transparent;border-top-color:#fffaf0;border-bottom:0}
+.speech small{display:block;font-size:11px;color:#a07a50;letter-spacing:.1em;margin-bottom:2px}
+.wallhint{position:absolute;z-index:5;padding:8px 12px;border-radius:8px;background:rgba(30,18,10,.8);color:var(--cream);font-size:13.5px;border:1px dashed var(--brass-l);cursor:pointer}
+.wallhint b{color:var(--brass-l)}
+
+.cast{margin-top:18px}
+.cast h4{font-size:12px;letter-spacing:.26em;color:var(--ink2);font-weight:600;margin-bottom:8px}
+.cg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cc{background:#fffaf0;border:1px solid #e0d2b0;border-radius:8px;padding:10px 6px 8px;text-align:center;font-size:13.5px;line-height:1.3}
+.cc i{display:block;width:30px;height:30px;border-radius:50%;margin:0 auto 6px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.15),0 0 0 3px #f5dcc4}
+.cc small{display:block;font-size:11px;color:var(--ink2);margin-top:2px}
+.cc.chg{border-color:#c96f6a;box-shadow:0 0 0 2px rgba(201,111,106,.2)}
+.cc.chg small{color:#c96f6a;font-weight:700}
+.cc.mute{opacity:.7;border-style:dashed}
+.ev{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:14px;font-size:12.5px}
+.ev span{font-size:11.5px;letter-spacing:.2em;color:var(--ink2);margin-right:4px}
+.ev em{font-style:normal;padding:4px 10px;border-radius:12px;background:#efe3c8;border:1px solid #d8c498;color:#5a4030}
+.cast p{margin-top:14px;font-size:15px;color:#7a6450;line-height:1.7}
+/* B */
+.diary{position:absolute;left:40px;top:96px;width:720px;height:860px;z-index:3;transform:rotate(-3deg)}
+.diary .pg{position:absolute;inset:0;background:#fbf6e6;border-radius:6px;box-shadow:0 30px 60px rgba(0,0,0,.7),inset 0 0 60px rgba(180,140,80,.25);
+  background-image:repeating-linear-gradient(transparent 0 51px,rgba(110,150,200,.3) 51px 53px),linear-gradient(#fbf6e6,#f1e6c8)}
+.diary .spiral{position:absolute;left:0;right:0;top:-14px;display:flex;justify-content:space-around;padding:0 30px}
+.diary .spiral i{width:14px;height:34px;border-radius:7px;background:linear-gradient(90deg,#8a8a90,#e8e8ee,#7a7a80);box-shadow:0 3px 4px rgba(0,0,0,.4)}
+.hw{position:absolute;left:56px;font-size:34px;color:#39406a;white-space:nowrap;font-weight:500}
+.hw span{display:inline-block}
+.hw.head{font-size:26px;color:#6a5a4a}
+.erased{position:absolute;left:40px;width:610px;height:60px;border-radius:30px;background:radial-gradient(ellipse at center,rgba(230,215,190,.95),rgba(230,215,190,.0) 72%)}
+.lens{position:absolute;z-index:6;width:270px;height:270px;border-radius:50%;overflow:hidden;
+  box-shadow:0 0 0 14px #2a1a10,0 0 0 18px var(--brass),0 0 0 22px #2a1a10,0 26px 40px rgba(0,0,0,.7)}
+.lens .in{position:absolute;inset:0;background:#f4ecd4;background-image:repeating-linear-gradient(transparent 0 101px,rgba(110,150,200,.3) 101px 105px)}
+.lens .ghost{position:absolute;left:0;right:0;top:72px;text-align:center;line-height:1.35;font-size:44px;color:rgba(70,80,120,.32);letter-spacing:.02em;filter:blur(.6px)}
+.lens .ghost em{font-style:normal;color:rgba(160,60,50,.55)}
+.lens .sheen{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 40%)}
+.lens-h{position:absolute;z-index:5;width:40px;height:220px;border-radius:14px;background:linear-gradient(90deg,#3a2210,#7a4a24,#3a2210);transform-origin:top center}
+.verdict{position:absolute;left:800px;right:30px;bottom:30px;height:250px;z-index:6;border-radius:12px;padding:20px 24px;
+  background:linear-gradient(180deg,rgba(40,26,16,.92),rgba(24,16,10,.95));border:1px solid rgba(240,215,154,.4);box-shadow:0 24px 50px rgba(0,0,0,.6);color:var(--cream)}
+.verdict h3{font-size:13px;letter-spacing:.28em;color:var(--brass-l);font-weight:600}
+.verdict .big{font-size:26px;margin:8px 0 14px;font-weight:700}
+.verdict .big em{font-style:normal;color:#f0a090}
+.conf{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px}
+.conf div{padding:9px 12px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);line-height:1.5}
+.conf div b{color:#f0a090}
+.conf div.ok b{color:#b5d3a5}
+.acts{display:flex;gap:10px;margin-top:14px}
+.acts div{flex:1;padding:11px;text-align:center;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;background:#3a2a1c;border:1px solid #6a4a2a}
+.acts div.pri{background:linear-gradient(#e6c47a,#c9a25a);color:#2a1a0a;border-color:#f0d79a}
+.tabs{position:absolute;right:14px;bottom:8px;z-index:50;display:flex;gap:6px}
+.tabs button{font:600 12px/1 "Noto Sans KR",sans-serif;padding:6px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);color:#eee;cursor:pointer}
+.tabs button.on{background:var(--brass-l);color:#2a1a0a;border-color:var(--brass-l)}
+.float{animation:fl 2.6s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-6px)}}
+.twinkle{animation:tw 1.4s ease-in-out infinite}
+@keyframes tw{50%{opacity:.25}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= A ================= -->
+<section class="screen" id="a">
+  <svg class="layer" id="svgA" width="1600" height="1000" viewBox="0 0 1600 1000"></svg>
+  <canvas class="layer grain"></canvas>
+  <div class="tilt t"></div><div class="tilt b"></div>
+  <div class="layer" style="background:radial-gradient(ellipse 70% 70% at 35% 52%,transparent 50%,rgba(20,10,4,.6))"></div>
+
+  <div class="title"><h1>인형의 집 탐정</h1><small>제3장 · 유리 새가 깨진 밤</small></div>
+  <div class="case"><span>뗀 벽 <b>3 / 4</b></span><span>핀셋 <b>서연의 의자</b></span></div>
+
+  <div class="speech serif" style="left:640px;top:208px"><small>할머니 인형 · 증언이 바뀜</small>…그러고 보니, 선반 밑에서 삐걱 소리가 났단다.</div>
+  <div class="label" style="left:404px;top:512px">① 의자 자국 — 원래 자리</div>
+  <div class="label" style="left:790px;top:552px">② 여기로 옮기면?</div>
+  <div class="wallhint" id="wall" style="left:660px;top:720px"><b>W</b> · 부엌 벽 떼어내기</div>
+
+  <aside class="note">
+    <div class="rings"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <h2>탐정 수첩</h2>
+    <h3 class="serif">유리 새는 누가 떨어뜨렸나</h3>
+    <div class="pips">재현 <i class="on"></i><i class="on"></i><i class="on"></i><i class="cur"></i><i></i> 3 / 5 일치</div>
+    <div class="testi">
+      <div class="pt"><svg viewBox="0 0 68 84" width="68" height="84"><rect width="68" height="84" fill="#efe3c8"/><path d="M14 84 Q14 52 34 50 Q54 52 54 84Z" fill="#7a5a8a"/><circle cx="34" cy="34" r="18" fill="#f5dcc4"/><path d="M16 30 Q18 12 34 12 Q50 12 52 30 Q46 22 34 22 Q22 22 16 30Z" fill="#dcdcd6"/><circle cx="34" cy="13" r="7" fill="#dcdcd6"/><circle cx="28" cy="35" r="1.8" fill="#3a2a20"/><circle cx="40" cy="35" r="1.8" fill="#3a2a20"/><circle cx="24" cy="41" r="3" fill="#f0a0a0" opacity=".6"/><circle cx="44" cy="41" r="3" fill="#f0a0a0" opacity=".6"/><path d="M30 43 q4 3 8 0" stroke="#9a5a4a" stroke-width="1.4" fill="none"/><circle cx="28" cy="35" r="5" fill="none" stroke="#9a8a6a"/><circle cx="40" cy="35" r="5" fill="none" stroke="#9a8a6a"/></svg></div>
+      <span class="badge">증언 변화</span>
+      <b>할머니 인형</b>
+      <span class="old serif">“밤새 흔들의자에서 곤히 잤단다.”</span>
+      <span class="new serif">“…그러고 보니, 선반 밑에서 삐걱 소리가 났단다.”</span>
+    </div>
+    <ul class="list">
+      <li class="done"><span class="ck">✓</span>흔들의자 — 창가 쪽으로<small>할머니 방</small></li>
+      <li class="done"><span class="ck">✓</span>고양이 뭉치 — 부엌 문 밖<small>1층</small></li>
+      <li class="done"><span class="ck">✓</span>거실 스탠드 — 꺼진 상태<small>거실</small></li>
+      <li class="now"><span class="ck">↗</span>서연의 의자 — 아이 방 → 선반 아래<small>이동 중</small></li>
+      <li><span class="ck"></span>부엌 — 벽 뒤 미확인<small>잠김</small></li>
+    </ul>
+    <div class="cast">
+      <h4>인형들의 상태</h4>
+      <div class="cg">
+        <div class="cc chg"><i style="background:#7a5a8a"></i><b>할머니</b><small>증언 바뀜</small></div>
+        <div class="cc"><i style="background:#5a7aa0"></i><b>아빠</b><small>“거실에 있었다”</small></div>
+        <div class="cc"><i style="background:#d98a5a"></i><b>엄마</b><small>“스탠드를 껐다”</small></div>
+        <div class="cc mute"><i style="background:#e98aa8"></i><b>서연</b><small>말이 없다</small></div>
+      </div>
+      <div class="ev"><span>증거</span><em>유리 조각 4개</em><em>선반 먼지 자국</em><em>의자 다리 자국</em><em>닫힌 부엌 문</em></div>
+      <p class="serif">“가구가 제자리에 가까워질수록, 인형들은 조금씩 다른 말을 한다.”</p>
+    </div>
+    <div class="tools">
+      <div class="on"><b>핀셋</b>드래그</div><div><b>돋보기</b>우클릭</div><div><b>벽 떼기</b>W</div><div><b>되돌리기</b>Z</div>
+    </div>
+  </aside>
+</section>
+
+<!-- ================= B ================= -->
+<section class="screen" id="b">
+  <svg class="layer" id="svgB" width="1600" height="1000" viewBox="0 0 1600 1000"></svg>
+  <canvas class="layer grain"></canvas>
+
+  <div class="diary">
+    <div class="pg"></div>
+    <div class="spiral"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="hw head" data-t="7월 12일 토요일 · 날씨: 비 ☂" style="top:60px"></div>
+    <div class="hw" data-t="할머니의 유리 새가 깨졌다." style="top:150px"></div>
+    <div class="hw" data-t="뭉치가 선반에 올라가서" style="top:254px"></div>
+    <div class="hw" data-t="떨어뜨린 거다. 나쁜 고양이!" style="top:306px"></div>
+    <div class="erased" style="top:404px"></div>
+    <div class="hw" data-t="나는 내 방에서 자고 있었다." style="top:462px"></div>
+    <svg style="position:absolute;left:60px;top:560px" width="600" height="260" viewBox="0 0 600 260">
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 220 Q70 140 130 130 Q190 128 200 200 Q200 230 170 232 L90 232 Q60 232 60 220Z" stroke="#555" stroke-width="5" fill="#9a9aa4" fill-opacity=".35"/>
+        <path d="M100 130 L92 96 L118 122 M150 128 L166 96 L168 128" stroke="#555" stroke-width="5"/>
+        <circle cx="112" cy="160" r="4" fill="#333"/><circle cx="150" cy="160" r="4" fill="#333"/>
+        <path d="M200 200 Q250 190 240 150" stroke="#555" stroke-width="5"/>
+        <path d="M320 80 q30 -30 60 0 q-10 30 -40 30 q-30 0 -20 -30Z" stroke="#3a8ab0" stroke-width="5" fill="#9ad4f0" fill-opacity=".5"/>
+        <path d="M378 80 l24 -10 l-14 22" stroke="#e0a030" stroke-width="5"/>
+        <path d="M300 170 l10 18 M340 190 l-6 20 M380 176 l14 14 M420 196 l-4 18" stroke="#3a8ab0" stroke-width="5"/>
+        <text x="440" y="120" font-size="30" fill="#c04040" stroke="none" font-family="Noto Sans CJK KR" transform="rotate(-6 440 120)">쨍그랑!</text>
+      </g>
+    </svg>
+    <div style="position:absolute;right:40px;bottom:30px;font-size:15px;color:#9a8a70">— 서연이 일기장 · 12쪽</div>
+  </div>
+
+  <div class="lens" style="left:360px;top:370px"><div class="in"><div class="ghost">내 의자를<br><em>가져갔다</em>…</div></div><div class="sheen"></div></div>
+  <div class="lens-h" style="left:590px;top:600px;transform:rotate(-38deg)"></div>
+
+  <div class="title" style="left:auto;right:30px;text-align:right"><h1>인형의 집 탐정</h1><small>일기장이 숨긴 것</small></div>
+
+  <div class="speech serif" style="left:880px;top:176px"><small>할머니 인형</small>삐걱 소리 다음에, 작은 발소리가 났지.</div>
+  <div class="speech serif" style="left:1196px;top:404px"><small>서연 인형</small>……. (고개를 돌린다)</div>
+  <div class="label" style="left:120px;top:512px;transform:rotate(-3deg)">지우개 자국 — 한 줄이 지워졌다</div>
+  <div class="label" style="left:1110px;top:600px">재현 완료 · 선반 아래 서연의 의자</div>
+
+  <div class="verdict">
+    <h3>재현과 일기의 대조</h3>
+    <div class="big serif">배치는 5 / 5 일치. 일기와는 <em>두 군데</em>가 어긋난다.</div>
+    <div class="conf">
+      <div><b>✗ 일기</b> “뭉치가 선반에 올라가서” → 부엌 문이 닫혀 있었다</div>
+      <div><b>✗ 일기</b> “내 방에서 자고 있었다” → 의자가 방에 없다</div>
+    </div>
+    <div class="acts"><div class="pri">서연이에게 말 걸기</div><div>뭉치를 지목한다</div><div>한 번 더 재현</div></div>
+  </div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 재현</button><button data-s="b">2 · 일기장</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transformOrigin='50% 50%';stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){if(k!=='a'&&k!=='b')k='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id===k);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var t=0;t<tb.length;t++)tb[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');if(e.key==='w'||e.key==='W')openWall();});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  show((location.hash||'#a').slice(1));
+
+  // grain once
+  var src=document.createElement('canvas');src.width=src.height=256;var sx=src.getContext('2d'),id=sx.createImageData(256,256);
+  for(var p=0;p<id.data.length;p+=4){var v=Math.random()*255|0;id.data[p]=id.data[p+1]=id.data[p+2]=v;id.data[p+3]=255;}sx.putImageData(id,0,0);
+  document.querySelectorAll('canvas.grain').forEach(function(c){c.width=1600;c.height=1000;var g=c.getContext('2d');g.fillStyle=g.createPattern(src,'repeat');g.fillRect(0,0,1600,1000);});
+
+  // ---------- dollhouse generator ----------
+  function defs(P,night){return ''+
+   '<linearGradient id="'+P+'tbl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+(night?'#24160e':'#6a4228')+'"/><stop offset="1" stop-color="'+(night?'#120a06':'#3a2214')+'"/></linearGradient>'+
+   '<pattern id="'+P+'grain" width="400" height="24" patternUnits="userSpaceOnUse"><rect width="400" height="24" fill="none"/><path d="M0 6 Q100 2 200 8 T400 6 M0 17 Q120 21 240 15 T400 18" stroke="#000" stroke-opacity=".12" fill="none"/></pattern>'+
+   '<pattern id="'+P+'stripe" width="22" height="10" patternUnits="userSpaceOnUse"><rect width="22" height="10" fill="#f2c9c4"/><rect width="8" height="10" fill="#f8dcd6"/><circle cx="15" cy="5" r="1.4" fill="#fff" opacity=".7"/></pattern>'+
+   '<pattern id="'+P+'flor" width="36" height="36" patternUnits="userSpaceOnUse"><rect width="36" height="36" fill="#b9c9a6"/><circle cx="9" cy="9" r="3.4" fill="#e7d9b0"/><circle cx="9" cy="9" r="1.3" fill="#c96f6a"/><circle cx="27" cy="27" r="3.4" fill="#e7d9b0"/><circle cx="27" cy="27" r="1.3" fill="#c96f6a"/><path d="M12 12 q6 4 12 12" stroke="#7a9a6a" fill="none"/></pattern>'+
+   '<pattern id="'+P+'dam" width="40" height="48" patternUnits="userSpaceOnUse"><rect width="40" height="48" fill="#d9b664"/><path d="M20 6 q10 10 0 20 q-10 -10 0 -20Z M0 30 q10 10 0 20 M40 30 q-10 10 0 20" fill="#c9a24a"/></pattern>'+
+   '<pattern id="'+P+'tile" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#dfe8ef"/><rect width="15" height="15" fill="#9ab4c9"/><rect x="15" y="15" width="15" height="15" fill="#9ab4c9"/></pattern>'+
+   '<pattern id="'+P+'plank" width="60" height="12" patternUnits="userSpaceOnUse"><rect width="60" height="12" fill="#b07a48"/><path d="M0 11.5H60M30 0V12" stroke="#7a4e28" stroke-width="1"/><path d="M4 5 H26" stroke="#c89060" stroke-opacity=".5"/></pattern>'+
+   '<pattern id="'+P+'shing" width="40" height="22" patternUnits="userSpaceOnUse"><rect width="40" height="22" fill="#8a4a3a"/><path d="M0 21 H40 M20 0 V11 M0 11 H40 M0 11 V22 M40 11 V22" stroke="#5a2a20" stroke-width="2"/><path d="M2 2 h16" stroke="#a45a48"/></pattern>'+
+   '<pattern id="'+P+'siding" width="30" height="18" patternUnits="userSpaceOnUse"><rect width="30" height="18" fill="#e7ddc8"/><path d="M0 17 H30" stroke="#b9a988" stroke-width="2"/></pattern>'+
+   '<radialGradient id="'+P+'bulb" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff0c0" stop-opacity=".85"/><stop offset=".4" stop-color="#ffc870" stop-opacity=".28"/><stop offset="1" stop-color="#ffb050" stop-opacity="0"/></radialGradient>'+
+   '<linearGradient id="'+P+'steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6a6e76"/><stop offset=".35" stop-color="#f4f6fa"/><stop offset=".6" stop-color="#a8adb6"/><stop offset="1" stop-color="#4a4e56"/></linearGradient>'+
+   '<filter id="'+P+'soft"><feGaussianBlur stdDeviation="6"/></filter><filter id="'+P+'soft2"><feGaussianBlur stdDeviation="16"/></filter>';}
+
+  function room(P,x,y,w,h,wall,floor,dark){var d=38,t=24,fd=62,s='';
+    s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="#2a1a10"/>';
+    s+='<rect x="'+(x+d)+'" y="'+(y+t)+'" width="'+(w-2*d)+'" height="'+(h-t-fd)+'" fill="url(#'+P+wall+')"/>';
+    s+='<polygon points="'+x+','+y+' '+(x+d)+','+(y+t)+' '+(x+d)+','+(y+h-fd)+' '+x+','+(y+h)+'" fill="url(#'+P+wall+')"/><polygon points="'+x+','+y+' '+(x+d)+','+(y+t)+' '+(x+d)+','+(y+h-fd)+' '+x+','+(y+h)+'" fill="#000" opacity=".3"/>';
+    s+='<polygon points="'+(x+w)+','+y+' '+(x+w-d)+','+(y+t)+' '+(x+w-d)+','+(y+h-fd)+' '+(x+w)+','+(y+h)+'" fill="url(#'+P+wall+')"/><polygon points="'+(x+w)+','+y+' '+(x+w-d)+','+(y+t)+' '+(x+w-d)+','+(y+h-fd)+' '+(x+w)+','+(y+h)+'" fill="#000" opacity=".22"/>';
+    s+='<polygon points="'+x+','+y+' '+(x+w)+','+y+' '+(x+w-d)+','+(y+t)+' '+(x+d)+','+(y+t)+'" fill="#e8dcc4"/><polygon points="'+x+','+y+' '+(x+w)+','+y+' '+(x+w-d)+','+(y+t)+' '+(x+d)+','+(y+t)+'" fill="#000" opacity=".35"/>';
+    s+='<polygon points="'+(x+d)+','+(y+h-fd)+' '+(x+w-d)+','+(y+h-fd)+' '+(x+w)+','+(y+h)+' '+x+','+(y+h)+'" fill="url(#'+P+floor+')"/>';
+    s+='<rect x="'+(x+d)+'" y="'+(y+h-fd-8)+'" width="'+(w-2*d)+'" height="8" fill="#f3ead8" opacity=".8"/>';
+    // pendant bulb + glow
+    var cx=x+w/2;s+='<path d="M'+cx+' '+(y+t-4)+' V'+(y+t+36)+'" stroke="#2a1a10" stroke-width="1.5"/><path d="M'+(cx-14)+' '+(y+t+44)+' L'+(cx-8)+' '+(y+t+34)+' H'+(cx+8)+' L'+(cx+14)+' '+(y+t+44)+'Z" fill="#6a4a2a"/><circle cx="'+cx+'" cy="'+(y+t+46)+'" r="6" fill="#fff4c8"/>';
+    s+='<ellipse cx="'+cx+'" cy="'+(y+h*.55)+'" rx="'+(w*.6)+'" ry="'+(h*.62)+'" fill="url(#'+P+'bulb)" opacity="'+(dark?.35:.9)+'" style="mix-blend-mode:screen"/>';
+    return s;}
+  function doll(x,y,o){ // x,y = feet
+    var c=o.c||'#6a8ab0',hh=o.h||70,s='<g transform="translate('+x+' '+y+')'+(o.flip?' scale(-1 1)':'')+'">';
+    s+='<ellipse cx="0" cy="2" rx="18" ry="5" fill="#000" opacity=".35"/>';
+    s+='<path d="M-14 0 Q-16 -'+(hh*.55)+' 0 -'+(hh*.6)+' Q16 -'+(hh*.55)+' 14 0Z" fill="'+c+'"/>';
+    s+='<path d="M-14 0 Q-16 -'+(hh*.55)+' 0 -'+(hh*.6)+'" stroke="#fff" stroke-opacity=".25" stroke-width="3" fill="none"/>';
+    s+='<circle cx="0" cy="-'+(hh*.6+12)+'" r="13" fill="#f5dcc4"/>';
+    s+='<path d="M-13 -'+(hh*.6+14)+' Q-12 -'+(hh*.6+28)+' 0 -'+(hh*.6+27)+' Q12 -'+(hh*.6+28)+' 13 -'+(hh*.6+14)+' Q6 -'+(hh*.6+20)+' -13 -'+(hh*.6+14)+'Z" fill="'+(o.hair||'#3a2418')+'"/>';
+    if(o.bun)s+='<circle cx="0" cy="-'+(hh*.6+28)+'" r="6" fill="'+o.hair+'"/>';
+    if(o.pig)s+='<circle cx="-14" cy="-'+(hh*.6+8)+'" r="5" fill="'+o.hair+'"/><circle cx="14" cy="-'+(hh*.6+8)+'" r="5" fill="'+o.hair+'"/>';
+    s+='<circle cx="-4.5" cy="-'+(hh*.6+11)+'" r="1.6" fill="#2a1a10"/><circle cx="4.5" cy="-'+(hh*.6+11)+'" r="1.6" fill="#2a1a10"/><circle cx="-8" cy="-'+(hh*.6+6)+'" r="2.4" fill="#f09a9a" opacity=".6"/><circle cx="8" cy="-'+(hh*.6+6)+'" r="2.4" fill="#f09a9a" opacity=".6"/>';
+    if(o.glass)s+='<circle cx="-5" cy="-'+(hh*.6+11)+'" r="4" fill="none" stroke="#8a7a5a" stroke-width="1"/><circle cx="5" cy="-'+(hh*.6+11)+'" r="4" fill="none" stroke="#8a7a5a" stroke-width="1"/>';
+    return s+'</g>';}
+  function chair(x,y,col,sc){sc=sc||1;return '<g transform="translate('+x+' '+y+') scale('+sc+')"><rect x="-16" y="-58" width="4" height="58" fill="'+col+'"/><rect x="12" y="-58" width="4" height="58" fill="'+col+'"/><rect x="-16" y="-58" width="32" height="6" fill="'+col+'"/><rect x="-16" y="-44" width="32" height="4" fill="'+col+'"/><rect x="-19" y="-28" width="38" height="7" rx="2" fill="'+col+'"/><rect x="-18" y="-21" width="4" height="21" fill="'+col+'"/><rect x="14" y="-21" width="4" height="21" fill="'+col+'"/><rect x="-19" y="-28" width="38" height="2" fill="#fff" opacity=".3"/></g>';}
+
+  function house(P,st){var s='';
+    // roof
+    s+='<polygon points="70,262 560,36 1050,262" fill="url(#'+P+'shing)"/><polygon points="70,262 560,36 1050,262" fill="none" stroke="#e9dfcf" stroke-width="14" stroke-linejoin="round"/>';
+    s+='<circle cx="560" cy="170" r="42" fill="#e9dfcf"/><circle cx="560" cy="170" r="32" fill="'+(st.night?'#ffd78a':'#2a1a10')+'"/><path d="M560 138 V202 M528 170 H592" stroke="#e9dfcf" stroke-width="5"/>';
+    if(st.night)s+='<circle cx="560" cy="170" r="70" fill="url(#'+P+'bulb)"/>';
+    // body frame
+    s+='<rect x="100" y="250" width="920" height="680" fill="#efe6d6"/><rect x="100" y="250" width="920" height="680" fill="url(#'+P+'grain)"/>';
+    // rooms
+    s+=room(P,120,270,430,290,'stripe','plank',st.dark);
+    s+=room(P,570,270,430,290,'flor','plank',false);
+    s+=room(P,120,580,430,330,'dam','plank',st.dark);
+    // cut edges highlight (exposed wall thickness)
+    s+='<path d="M100 250 H1020 V930 H100Z M120 270 V560 H550 V270Z M570 270 V560 H1000 V270Z M120 580 V910 H550 V580Z M570 580 V910 H1000 V580Z" fill="none"/>';
+    s+='<rect x="550" y="270" width="20" height="640" fill="#d9b88a"/><rect x="120" y="560" width="880" height="20" fill="#d9b88a"/><path d="M552 270 V910 M122 566 H1000" stroke="#b08a5a" stroke-opacity=".6" stroke-dasharray="30 8"/>';
+    s+='<rect x="80" y="928" width="960" height="30" rx="3" fill="#8a5a34"/><rect x="80" y="928" width="960" height="6" fill="#b07a48"/>';
+
+    // --- 서연의 방 (2F left) ---
+    s+='<rect x="190" y="330" width="80" height="64" fill="#cfe6f2" stroke="#fff" stroke-width="5"/><path d="M230 330 V394 M190 362 H270" stroke="#fff" stroke-width="3"/><path d="M182 326 q20 40 6 72 M278 326 q-20 40 -6 72" stroke="#e98a8a" stroke-width="10" fill="none"/>';
+    s+='<rect x="170" y="440" width="190" height="58" rx="6" fill="#fff4f0"/><rect x="170" y="456" width="190" height="42" rx="6" fill="#e98a8a"/><path d="M180 470 h170 M180 484 h170" stroke="#fff" stroke-opacity=".5" stroke-dasharray="8 6"/><rect x="170" y="420" width="14" height="80" rx="4" fill="#b07a48"/><rect x="350" y="430" width="14" height="70" rx="4" fill="#b07a48"/><ellipse cx="206" cy="452" rx="24" ry="12" fill="#fff"/>';
+    s+='<rect x="400" y="370" width="100" height="130" fill="#c89060"/><rect x="406" y="376" width="88" height="36" fill="#7a4e28"/><rect x="406" y="418" width="88" height="36" fill="#7a4e28"/><circle cx="420" cy="398" r="9" fill="#e0c040"/><rect x="436" y="388" width="14" height="20" fill="#6aa0d0"/><rect x="456" y="384" width="10" height="24" fill="#e06a6a"/><path d="M420 440 l10 -18 l10 18Z" fill="#8ac070"/><rect x="450" y="428" width="30" height="22" rx="3" fill="#f0e0a0"/>';
+    // desk without chair + scuff marks
+    s+='<rect x="300" y="408" width="90" height="10" fill="#b07a48"/><rect x="304" y="418" width="6" height="80" fill="#8a5a34"/><rect x="380" y="418" width="6" height="80" fill="#8a5a34"/><rect x="330" y="396" width="36" height="12" fill="#fff" transform="rotate(-6 348 402)"/>';
+    s+='<g opacity=".9"><path d="M318 520 l10 2 M348 518 l10 2 M314 540 l12 3 M352 538 l12 3" stroke="#5a3a1a" stroke-width="3" stroke-linecap="round"/></g>';
+    if(st.chairInRoom)s+=chair(340,540,'#d9a83a');
+    s+=st.dollsTurned?'':doll(250,470,{c:'#e98aa8',hair:'#3a2418',pig:1,h:56});
+    // --- 할머니 방 (2F right) ---
+    s+='<rect x="630" y="320" width="110" height="96" fill="'+(st.night?'#1a2440':'#243458')+'" stroke="#f3ead8" stroke-width="6"/><path d="M685 320 V416 M630 368 H740" stroke="#f3ead8" stroke-width="3"/><circle cx="712" cy="346" r="12" fill="#fff4c8"/><circle cx="706" cy="342" r="11" fill="'+(st.night?'#1a2440':'#243458')+'"/>';
+    s+='<rect x="820" y="318" width="96" height="180" fill="#8a5a34"/><rect x="826" y="324" width="84" height="170" fill="#6a4226"/><rect x="826" y="372" width="84" height="6" fill="#b07a48"/><rect x="826" y="428" width="84" height="6" fill="#b07a48"/>';
+    s+='<ellipse cx="868" cy="372" rx="18" ry="3" fill="#000" opacity=".25"/><path d="M852 372 l6 -10 h20 l6 10" stroke="#e0c890" stroke-dasharray="3 3" fill="none"/>';
+    s+='<rect x="840" y="408" width="14" height="20" fill="#c9a25a"/><rect x="860" y="412" width="12" height="16" fill="#9ab4c9"/><circle cx="890" cy="418" r="9" fill="#e7d9b0"/><rect x="836" y="452" width="60" height="10" fill="#c96f6a"/><rect x="838" y="462" width="56" height="10" fill="#8aa37f"/>';
+    // shards on floor
+    s+='<g class="twinkle"><path d="M846 530 l10 -6 l4 8Z M866 540 l8 -8 l6 6Z M884 528 l6 -4 l2 7Z M856 546 l12 -2 l-4 6Z" fill="#cfefff" stroke="#fff" stroke-width=".8"/></g><circle cx="868" cy="536" r="30" fill="#cfefff" opacity=".12"/>';
+    // rocking chair
+    s+='<g transform="translate(680 540)"><path d="M-40 0 Q0 14 40 0" stroke="#8a5a34" stroke-width="5" fill="none"/><rect x="-26" y="-90" width="6" height="84" fill="#8a5a34" transform="rotate(-8)"/><rect x="18" y="-60" width="6" height="56" fill="#8a5a34"/><rect x="-30" y="-40" width="56" height="10" rx="3" fill="#a06a3a"/><rect x="-32" y="-92" width="14" height="56" rx="5" fill="#c96f6a" transform="rotate(-8)"/><path d="M-26 -60 h40" stroke="#8a5a34" stroke-width="4"/></g>';
+    s+=doll(760,544,{c:'#7a5a8a',hair:'#dcdcd6',bun:1,h:66,glass:1});
+    // chair being moved / placed under shelf
+    if(st.chairTarget)s+='<g opacity=".7"><rect x="840" y="486" width="46" height="60" rx="3" fill="none" stroke="#ffe8a0" stroke-width="2.5" stroke-dasharray="7 5"/><path d="M846 546 v-18 M880 546 v-18" stroke="#ffe8a0" stroke-width="2" stroke-dasharray="4 4"/></g>';
+    if(st.chairPlaced)s+='<ellipse cx="864" cy="548" rx="44" ry="10" fill="#ffe08a" opacity=".45"/>'+chair(864,548,'#d9a83a');
+    if(st.dollsTurned){s+=doll(800,548,{c:'#e98aa8',hair:'#3a2418',pig:1,h:56,flip:1});}
+
+    // --- 1F left 거실 ---
+    s+='<g><rect x="200" y="660" width="70" height="56" fill="#f3ead8" stroke="#8a5a34" stroke-width="5"/><path d="M210 706 l18 -22 l14 14 l10 -8 l12 16Z" fill="#8aa37f"/><rect x="380" y="664" width="46" height="60" fill="#f3ead8" stroke="#8a5a34" stroke-width="5"/><circle cx="403" cy="688" r="10" fill="#c96f6a" opacity=".7"/></g>';
+    s+='<ellipse cx="330" cy="880" rx="160" ry="22" fill="#8a2e34"/><ellipse cx="330" cy="880" rx="140" ry="16" fill="none" stroke="#e0b060" stroke-width="3" stroke-dasharray="6 4"/>';
+    s+='<g><rect x="200" y="780" width="220" height="44" rx="12" fill="#6f8a64"/><rect x="190" y="800" width="240" height="44" rx="10" fill="#809c74"/><rect x="180" y="790" width="30" height="58" rx="10" fill="#6f8a64"/><rect x="410" y="790" width="30" height="58" rx="10" fill="#6f8a64"/><rect x="198" y="846" width="8" height="10" fill="#4a3020"/><rect x="414" y="846" width="8" height="10" fill="#4a3020"/></g>';
+    s+='<g transform="translate(486 846)"><rect x="-2" y="-120" width="4" height="120" fill="#3a2a1a"/><path d="M-22 -120 L-14 -150 H14 L22 -120Z" fill="#f0d79a" opacity="'+(st.night?.6:1)+'"/><ellipse cx="0" cy="0" rx="14" ry="4" fill="#3a2a1a"/></g>';
+    s+=doll(270,836,{c:'#5a7aa0',hair:'#2a1a10',h:70});s+=doll(360,836,{c:'#d98a5a',hair:'#5a3020',bun:1,h:66});
+    // --- 1F right: kitchen (wall still on) ---
+    if(!st.kitchenOpen){
+      s+='<rect x="570" y="580" width="430" height="330" fill="url(#'+P+'siding)"/><rect x="570" y="580" width="430" height="330" fill="#000" opacity=".08"/>';
+      s+='<rect x="640" y="640" width="120" height="110" fill="#ffd98a"/><rect x="640" y="640" width="120" height="110" fill="none" stroke="#6a8a9a" stroke-width="8"/><path d="M700 640 V750 M640 695 H760" stroke="#6a8a9a" stroke-width="5"/><rect x="630" y="750" width="140" height="10" fill="#6a8a9a"/>';
+      s+='<ellipse cx="700" cy="696" rx="110" ry="100" fill="url(#'+P+'bulb)" opacity=".6"/><path d="M660 700 q20 -30 40 -4 q10 -20 30 0" stroke="#7a5a3a" stroke-width="3" fill="none" opacity=".5"/>';
+      s+='<rect x="840" y="700" width="90" height="210" rx="4" fill="#6a8a9a"/><rect x="852" y="714" width="66" height="80" fill="#5a7a8a"/><rect x="852" y="806" width="66" height="90" fill="#5a7a8a"/><circle cx="914" cy="800" r="5" fill="#e0c060"/>';
+      s+='<rect x="572" y="582" width="426" height="326" fill="none" stroke="#ffe8a0" stroke-width="3" stroke-dasharray="12 8" opacity=".9" class="twinkle"/>';
+    }
+    return s;}
+
+  var A=document.getElementById('svgA');
+  var sa='<defs>'+defs('a',false)+'</defs>';
+  // table + wallpaper room background
+  sa+='<rect width="1600" height="1000" fill="#2a1a12"/><rect width="1600" height="560" fill="#3a2a22"/><rect width="1600" height="560" fill="url(#astripe)" opacity=".08"/>';
+  sa+='<rect y="540" width="1600" height="460" fill="url(#atbl)"/><rect y="540" width="1600" height="460" fill="url(#agrain)"/><rect y="540" width="1600" height="4" fill="#8a5a34"/>';
+  sa+='<ellipse cx="560" cy="960" rx="560" ry="40" fill="#000" opacity=".45" filter="url(#asoft2)"/>';
+  sa+='<g id="houseA">'+house('a',{chairTarget:1,dark:false})+'</g>';
+  // giant props for scale: pencil + thimble
+  sa+='<g transform="translate(20 980) rotate(-8)"><rect x="0" y="-26" width="420" height="26" fill="#f0c23a"/><rect x="0" y="-26" width="420" height="8" fill="#ffe07a"/><path d="M420 -26 L470 -13 L420 0Z" fill="#f0d0a0"/><path d="M455 -17 L470 -13 L455 -9Z" fill="#333"/><rect x="-40" y="-26" width="40" height="26" fill="#e98a9a"/></g>';
+  // magnifier over kid room scuff marks
+  sa+='<clipPath id="lensA"><circle cx="336" cy="500" r="74"/></clipPath>';
+  sa+='<g clip-path="url(#lensA)"><rect x="200" y="380" width="300" height="260" fill="#2a1a10"/><g transform="translate(336 500) scale(2.2) translate(-336 -530)"><use href="#houseA"/></g></g>';
+  sa+='<circle cx="336" cy="500" r="74" fill="none" stroke="#2a1a10" stroke-width="10"/><circle cx="336" cy="500" r="80" fill="none" stroke="url(#asteel)" stroke-width="6"/><circle cx="336" cy="500" r="74" fill="url(#abulb)" opacity=".15"/><path d="M290 460 a60 60 0 0 1 50 -26" stroke="#fff" stroke-width="5" opacity=".5" fill="none"/>';
+  sa+='<path d="M392 556 L470 630" stroke="#3a2210" stroke-width="22" stroke-linecap="round"/><path d="M392 556 L470 630" stroke="#7a4a24" stroke-width="12" stroke-linecap="round"/>';
+  // tweezers holding chair (above target)
+  sa+='<g class="float" style="filter:drop-shadow(0 0 5px rgba(255,232,160,.9))"><ellipse cx="864" cy="548" rx="30" ry="6" fill="#000" opacity=".35"/>'+chair(864,470,'#d9a83a',1.05)+'</g>';
+  sa+='<g><path d="M1240 -40 L884 408 L878 404 L1224 -52Z" fill="url(#asteel)" stroke="#3a3e46" stroke-width="1.5"/><path d="M1276 -24 L894 412 L888 406 L1262 -38Z" fill="url(#asteel)" stroke="#3a3e46" stroke-width="1.5"/><rect x="1150" y="40" width="70" height="14" rx="4" fill="#3a3e46" transform="rotate(-49 1185 47)" opacity=".7"/><path d="M1080 150 L1120 110" stroke="#fff" stroke-width="2" opacity=".6"/></g>';
+  sa+='<path d="M1240 -40 L884 408" stroke="#000" stroke-width="20" opacity=".12" filter="url(#asoft)" transform="translate(30 40)"/>';
+  A.innerHTML=sa;
+
+  var B=document.getElementById('svgB');
+  var sb='<defs>'+defs('b',true)+'</defs>';
+  sb+='<rect width="1600" height="1000" fill="url(#btbl)"/><rect width="1600" height="1000" fill="url(#bgrain)"/>';
+  sb+='<radialGradient id="lampB" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf80" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf80" stop-opacity="0"/></radialGradient>';
+  sb+='<ellipse cx="420" cy="420" rx="620" ry="560" fill="url(#lampB)"/>';
+  // zoomed grandma room + kid room partial
+  sb+='<clipPath id="clipB"><rect x="790" y="96" width="790" height="540" rx="10"/></clipPath>';
+  sb+='<g clip-path="url(#clipB)"><rect x="790" y="96" width="790" height="540" fill="#1a0f08"/><g transform="translate(790 96) scale(1.78) translate(-555 -250)">'+house('b',{chairPlaced:1,dollsTurned:1,night:1,dark:true,kitchenOpen:0})+'</g></g>';
+  sb+='<rect x="790" y="96" width="790" height="540" rx="10" fill="none" stroke="#f0d79a" stroke-opacity=".5" stroke-width="2"/>';
+  B.innerHTML=sb;
+
+  // diary handwriting wobble
+  var seed=7;function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+  document.querySelectorAll('.hw').forEach(function(h){var t=h.getAttribute('data-t'),o='';
+    for(var i=0;i<t.length;i++){var ch=t[i];if(ch===' '){o+='<span style="width:.35em"></span>';continue;}
+      o+='<span style="transform:rotate('+((rnd()-.5)*10).toFixed(1)+'deg) translateY('+((rnd()-.5)*5).toFixed(1)+'px) scale('+(0.92+rnd()*.16).toFixed(2)+')">'+ch+'</span>';}
+    h.innerHTML=o;});
+  // strike-throughs on the lie lines
+  var st=document.createElement('div');st.style.cssText='position:absolute;left:50px;top:486px;width:470px;height:3px;background:#39406a;opacity:.25;transform:rotate(-1deg)';
+  document.querySelector('.diary').appendChild(st);
+
+  // audio + interaction
+  var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function tick(f){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=f||1800;g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.08);}
+  function wood(){var c=ac();if(!c)return;var t=c.currentTime;[420,630].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.25,t+i*.05);g.gain.exponentialRampToValueAtTime(.001,t+i*.05+.18);o.connect(g).connect(c.destination);o.start(t+i*.05);o.stop(t+i*.05+.2);});}
+  function openWall(){var w=document.getElementById('wall');w.innerHTML='<b>W</b> · 벽이 떨어졌다 — 부엌 조사 가능';wood();}
+  document.getElementById('wall').addEventListener('click',openWall);
+  document.getElementById('svgA').style.pointerEvents='auto';
+  document.getElementById('svgA').addEventListener('click',function(){tick(2200);setTimeout(function(){tick(1500);},60);});
+  document.querySelectorAll('.tools div,.acts div').forEach(function(d){d.addEventListener('click',function(){tick(900);});});
+})();
+</script>
+</body>
+</html>

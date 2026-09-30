@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기적 배정과</title>
+<style>
+:root{--sky:#dce7e6;--cream:#f3f3e9;--ink:#203b43;--copper:#a7683f;--muted:#627c7e;--cel:#9fc2b8;--cel2:#6f9f94;--rain:#5e8fa8;--sun:#e8b75a;--warn:#c0573f;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Noto Serif CJK KR","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+html,body{margin:0;height:100%;overflow:hidden;background:#b8c8c6}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;font-family:var(--sans);color:var(--ink);
+  background:radial-gradient(1200px 700px at 40% 0%,#f7faf6,transparent 70%),linear-gradient(180deg,#e6efed,#cfdedb)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:multiply;z-index:40;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .4 0 0 0 0 .4 0 0 0 .6 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+.halo{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse at 45% 40%,transparent 55%,rgba(32,59,67,.28) 100%)}
+.head{position:absolute;left:40px;right:40px;top:26px;height:64px;display:flex;align-items:center;gap:20px;z-index:20;border-bottom:2px solid var(--ink)}
+.head .mark{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--serif);font-size:20px;font-weight:700;position:relative}
+.head .mark::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px dashed var(--copper)}
+.head b{font-family:var(--serif);font-size:30px;letter-spacing:8px}
+.head small{display:block;font-size:10px;letter-spacing:5px;color:var(--muted)}
+.head .desk{margin-left:auto;font-size:13px;color:var(--muted);letter-spacing:2px}
+.head .desk b{font-family:var(--sans);font-size:15px;letter-spacing:1px;color:var(--ink);margin-left:8px}
+.chips{display:flex;gap:8px}
+.chip{font-size:12px;padding:6px 12px;border-radius:14px;border:1.5px solid var(--ink);background:var(--cream);display:flex;gap:6px;align-items:center}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--cel2)}
+.chip.w{border-color:var(--warn);color:var(--warn)} .chip.w i{background:var(--warn);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+/* map */
+.mapwrap{position:absolute;left:40px;top:112px;width:980px;height:600px;border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px rgba(32,59,67,.3),0 30px 50px rgba(32,59,67,.25);background:#e9eee0}
+.mapwrap svg{position:absolute;inset:0}
+.maplabel{position:absolute;font-size:12px;font-weight:700;letter-spacing:1px;background:var(--cream);border:1.5px solid var(--ink);padding:4px 10px;border-radius:3px;white-space:nowrap;box-shadow:2px 2px 0 rgba(32,59,67,.2)}
+.maplabel em{font-style:normal;font-weight:500;color:var(--muted);margin-left:6px}
+.maplabel.w{border-color:var(--warn);color:#fff;background:var(--warn);animation:lp 1.2s infinite}
+@keyframes lp{50%{box-shadow:0 0 0 6px rgba(192,87,63,.25)}}
+.cloud{transition:opacity .5s}
+.rainl line{animation:rain .6s linear infinite}
+@keyframes rain{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
+.sunr{animation:spin 30s linear infinite;transform-origin:center;transform-box:fill-box}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flood{animation:flood 1.6s ease-in-out infinite}
+@keyframes flood{50%{opacity:.35}}
+.compass{position:absolute;right:16px;top:14px;font-size:11px;color:var(--muted);letter-spacing:2px;text-align:right}
+/* form */
+.form{position:absolute;left:40px;top:730px;width:980px;height:236px;background:var(--cream);box-shadow:0 0 0 1px rgba(32,59,67,.35),0 16px 30px rgba(32,59,67,.18);z-index:10}
+.form .fh{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-bottom:1.5px solid var(--ink);font-size:12px;letter-spacing:3px}
+.form .fh b{font-family:var(--serif);font-size:18px;letter-spacing:4px}
+.slots{display:grid;grid-template-columns:150px 1fr 1fr;height:180px}
+.slots .lab{border-right:1.5px solid var(--ink);padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.8}
+.slots .lab b{display:block;font-family:var(--serif);font-size:16px;color:var(--ink)}
+.slot{position:relative;border-right:1px dashed rgba(32,59,67,.35);padding:14px 18px}
+.slot h5{margin:0 0 10px;font-size:13px;letter-spacing:3px;display:flex;justify-content:space-between}
+.slot h5 span{color:var(--muted);font-weight:500;letter-spacing:1px}
+.tokens{display:flex;gap:10px}
+.tok{flex:1;height:96px;border:1.5px solid rgba(32,59,67,.4);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:14px;font-weight:700;background:#fff;transition:transform .12s,box-shadow .2s,border-color .2s}
+.tok svg{width:44px;height:36px}
+.tok:hover{transform:translateY(-3px)}
+.tok:active{transform:scale(.97)}
+.tok.on.r{background:linear-gradient(180deg,#e3eef3,#cfe0e8);border-color:var(--rain);box-shadow:0 0 0 3px rgba(94,143,168,.25)}
+.tok.on.s{background:linear-gradient(180deg,#fbf1d8,#f4e2b4);border-color:var(--sun);box-shadow:0 0 0 3px rgba(232,183,90,.3)}
+.tok small{font-size:11px;font-weight:500;color:var(--muted)}
+/* inbox */
+.inbox{position:absolute;left:1050px;top:112px;width:510px;z-index:10}
+.inbox h4{margin:0 0 10px;font-size:11px;letter-spacing:4px;color:var(--muted);display:flex;justify-content:space-between}
+.letter{position:relative;background:#fffdf5;padding:16px 20px 16px 64px;margin-bottom:12px;box-shadow:0 0 0 1px rgba(32,59,67,.18),0 8px 16px rgba(32,59,67,.1);cursor:pointer;transition:transform .15s}
+.letter:hover{transform:translateX(-4px)}
+.letter .ic{position:absolute;left:16px;top:18px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--ink);font-family:var(--serif);font-weight:700}
+.letter small{font-size:11px;color:var(--muted);letter-spacing:2px}
+.letter b{display:block;font-family:var(--serif);font-size:18px;margin:2px 0 6px}
+.letter p{margin:0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#2f4a52}
+.letter .need{margin-top:8px;display:inline-block;font-size:12px;padding:3px 9px;border-radius:10px;background:var(--sky);color:var(--ink)}
+.letter .ok{position:absolute;right:16px;top:14px;font-size:11px;font-weight:700;color:var(--cel2);border:1.5px solid var(--cel2);padding:2px 8px;border-radius:10px}
+.letter .no{position:absolute;right:16px;top:14px;font-size:11px;font-weight:700;color:var(--warn);border:1.5px solid var(--warn);padding:2px 8px;border-radius:10px}
+.letter.seal{background:linear-gradient(180deg,#f0e6d2,#e6d8bb)}
+.letter.seal .wax{position:absolute;right:22px;bottom:18px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c9794a,#8e4a26);box-shadow:0 2px 4px rgba(0,0,0,.3);display:grid;place-items:center;color:#f3dcc0;font-family:var(--serif);font-size:18px}
+.gate{margin-top:6px;display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fffdf5;box-shadow:0 0 0 1px rgba(32,59,67,.18)}
+.gate b{font-family:var(--serif);font-size:16px;flex:1}
+.gate b small{display:block;font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:500}
+.sw{width:74px;height:34px;border-radius:17px;background:#c9d4d2;position:relative;cursor:pointer;transition:background .2s}
+.sw::after{content:"";position:absolute;left:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:left .2s}
+.sw.on{background:var(--cel2)} .sw.on::after{left:44px}
+.prev{margin-top:12px;padding:14px 18px;background:rgba(255,253,245,.7);border:1.5px dashed rgba(32,59,67,.4)}
+.prev h5{margin:0 0 8px;font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:600}
+.pr{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(32,59,67,.1);font-size:13px;color:var(--muted)}
+.pr b{color:var(--cel2);font-weight:700}.pr b.bad{color:var(--warn)}
+.send{position:absolute;left:1050px;right:40px;bottom:34px;height:92px;border:none;background:var(--ink);color:var(--cream);font-family:var(--serif);font-size:24px;letter-spacing:6px;cursor:pointer;z-index:10;box-shadow:0 12px 24px rgba(32,59,67,.3);transition:transform .1s}
+.send small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:2px;opacity:.7;margin-top:6px}
+.send:active{transform:translateY(2px)}
+.stamp{position:absolute;right:120px;top:40px;width:180px;height:180px;border:5px double var(--copper);border-radius:50%;color:var(--copper);display:grid;place-items:center;text-align:center;font-family:var(--serif);font-weight:900;font-size:24px;line-height:1.2;transform:rotate(-14deg) scale(2);opacity:0;pointer-events:none;z-index:30}
+.stamp.hit{animation:st .5s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes st{60%{opacity:.9;transform:rotate(-14deg) scale(.95)}100%{opacity:.85;transform:rotate(-14deg) scale(1)}}
+/* B */
+.btitle{position:absolute;left:40px;top:112px;z-index:20}
+.btitle small{font-size:11px;letter-spacing:5px;color:var(--muted)}
+.btitle h1{margin:4px 0 0;font-family:var(--serif);font-size:44px;letter-spacing:6px}
+.fan{position:absolute;right:30px;top:120px;width:540px;height:760px;z-index:10}
+.fan .letter{position:absolute;width:420px;box-sizing:border-box}
+.fan .letter p{font-size:16px}
+.appoint{position:absolute;left:40px;bottom:34px;width:560px;padding:16px 20px;background:#fffdf5;box-shadow:0 0 0 1px rgba(32,59,67,.25);font-family:var(--serif);font-size:15px;line-height:1.7;z-index:10}
+.appoint small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:3px;color:var(--copper)}
+.tabs{position:absolute;right:14px;bottom:8px;display:flex;gap:6px;z-index:60}
+.tabs button{background:var(--cream);border:1.5px solid var(--ink);color:var(--ink);font:600 11px var(--sans);padding:4px 9px;cursor:pointer}
+.tabs button.on{background:var(--ink);color:var(--cream)}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="icRain" viewBox="0 0 44 36"><path d="M10 20 a8 8 0 0 1 2-15 a10 10 0 0 1 19 3 a7 7 0 0 1 3 12z" fill="#8fb2c4"/><g stroke="#5e8fa8" stroke-width="2.5" stroke-linecap="round"><path d="M14 25 l-2 7"/><path d="M22 25 l-2 7"/><path d="M30 25 l-2 7"/></g></symbol>
+  <symbol id="icSun" viewBox="0 0 44 36"><circle cx="22" cy="18" r="8" fill="#e8b75a"/><g stroke="#e8b75a" stroke-width="2.5" stroke-linecap="round"><path d="M22 2v5M22 29v5M6 18h5M33 18h5M11 7l3 3M30 26l3 3M11 29l3-3M30 10l3-3"/></g></symbol>
+  <pattern id="field" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)"><rect width="12" height="12" fill="#c8d59a"/><path d="M0 6 H12" stroke="#a9ba74" stroke-width="3"/></pattern>
+  <pattern id="fieldWet" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)"><rect width="12" height="12" fill="#9fc27a"/><path d="M0 6 H12" stroke="#6f9a52" stroke-width="3"/></pattern>
+  <pattern id="topo" width="200" height="200" patternUnits="userSpaceOnUse"><path d="M0 40 C60 20 120 60 200 30 M0 100 C70 80 130 120 200 90 M0 160 C60 140 140 180 200 150" stroke="#cbd6c0" stroke-width="1.2" fill="none"/></pattern>
+  <linearGradient id="riv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fa3b8"/><stop offset="1" stop-color="#4f8298"/></linearGradient>
+</defs></svg>
+
+<!-- ============ A ============ -->
+<section class="scr" id="A">
+  <header class="head">
+    <div class="mark">奇</div>
+    <div><b>기적 배정과</b><small>THE MIRACLE ALLOCATION OFFICE</small></div>
+    <div class="chips" style="margin-left:40px">
+      <span class="chip w" id="chipGate"><i></i>수문 · 닫힘</span>
+      <span class="chip"><i></i>안전</span>
+      <span class="chip"><i></i>공연 · 오후</span>
+    </div>
+    <div class="desk">날씨 담당 · 접수함 03<b>내일 · 1일분</b></div>
+  </header>
+
+  <div class="mapwrap">
+    <svg viewBox="0 0 980 600" id="map">
+      <rect width="980" height="600" fill="#e9eee0"/><rect width="980" height="600" fill="url(#topo)"/>
+      <g fill="#9fb58a" stroke="#6f8a5f" stroke-width="1"><circle cx="330" cy="120" r="12"/><circle cx="350" cy="135" r="10"/><circle cx="318" cy="140" r="9"/><circle cx="420" cy="440" r="11"/><circle cx="440" cy="455" r="9"/><circle cx="700" cy="250" r="12"/><circle cx="720" cy="262" r="10"/><circle cx="690" cy="272" r="8"/><circle cx="920" cy="360" r="11"/><circle cx="940" cy="380" r="9"/><circle cx="360" cy="520" r="10"/><circle cx="600" cy="540" r="11"/><circle cx="622" cy="552" r="8"/></g>
+      <path d="M180 200 C260 190 380 140 480 160 C560 176 640 120 760 140 C840 152 900 220 980 230" stroke="#d9cfb4" stroke-width="7" fill="none"/><path d="M180 200 C260 190 380 140 480 160 C560 176 640 120 760 140 C840 152 900 220 980 230" stroke="#bfb393" stroke-width="1" fill="none" stroke-dasharray="6 6"/>
+      <!-- mountains -->
+      <g fill="#c2cfb4" stroke="#9fb095" stroke-width="1.5"><path d="M0 0 H360 L300 60 L240 40 L180 110 L110 80 L40 140 L0 120Z"/></g>
+      <g fill="none" stroke="#aebea2" stroke-width="1"><path d="M40 60 C100 40 160 70 220 30"/><path d="M20 100 C80 80 150 110 200 70"/></g>
+      <!-- river -->
+      <path d="M150 40 C220 140 170 220 300 280 C420 336 470 300 560 360 C640 410 700 470 820 500 C880 515 940 540 980 560" stroke="url(#riv)" stroke-width="30" fill="none" stroke-linecap="round"/>
+      <path d="M150 40 C220 140 170 220 300 280 C420 336 470 300 560 360 C640 410 700 470 820 500 C880 515 940 540 980 560" stroke="#a9cfdc" stroke-width="3" fill="none" stroke-dasharray="10 16"><animate attributeName="stroke-dashoffset" from="0" to="-52" dur="1.6s" repeatCount="indefinite"/></path>
+      <!-- farm fields -->
+      <g id="fields">
+        <path d="M60 240 L230 210 L260 320 L90 350Z" fill="url(#field)" stroke="#8a9a5f" stroke-width="2"/>
+        <path d="M90 360 L262 330 L290 430 L120 460Z" fill="url(#field)" stroke="#8a9a5f" stroke-width="2"/>
+      </g>
+      <g><rect x="140" y="170" width="44" height="30" fill="#f3eee0" stroke="#203b43" stroke-width="1.5"/><path d="M134 172 L162 150 L190 172Z" fill="#a7683f"/></g>
+      <!-- stage -->
+      <g transform="translate(560 170)">
+        <path d="M-90 60 A90 50 0 0 1 90 60Z" fill="#f3eee0" stroke="#203b43" stroke-width="1.5"/>
+        <path d="M-60 60 A60 30 0 0 1 60 60" fill="#e8b75a" opacity=".6"/>
+        <g fill="#203b43" opacity=".55"><circle cx="-50" cy="86" r="3"/><circle cx="-36" cy="92" r="3"/><circle cx="-20" cy="96" r="3"/><circle cx="-4" cy="98" r="3"/><circle cx="12" cy="97" r="3"/><circle cx="28" cy="94" r="3"/><circle cx="44" cy="88" r="3"/><circle cx="-28" cy="106" r="3"/><circle cx="-10" cy="110" r="3"/><circle cx="8" cy="110" r="3"/><circle cx="26" cy="106" r="3"/></g>
+      </g>
+      <!-- sluice gate -->
+      <g transform="translate(700 452) rotate(26)">
+        <rect x="-10" y="-40" width="20" height="80" fill="#6b5a48"/><rect x="-26" y="-46" width="52" height="10" fill="#203b43"/>
+        <rect id="gateBar" x="-6" y="-32" width="12" height="64" fill="#a7683f"/>
+      </g>
+      <!-- downstream village -->
+      <g id="village">
+        <ellipse id="floodzone" cx="860" cy="470" rx="120" ry="60" fill="#5e8fa8" opacity="0" class="flood"/>
+        <g fill="#f3eee0" stroke="#203b43" stroke-width="1.5">
+          <rect x="800" y="420" width="30" height="22"/><rect x="842" y="410" width="30" height="22"/><rect x="884" y="424" width="30" height="22"/><rect x="826" y="452" width="30" height="22"/><rect x="870" y="458" width="30" height="22"/>
+        </g>
+        <g fill="#c0573f"><path d="M796 422 L815 408 L834 422Z"/><path d="M838 412 L857 398 L876 412Z"/><path d="M880 426 L899 412 L918 426Z"/><path d="M822 454 L841 440 L860 454Z"/><path d="M866 460 L885 446 L904 460Z"/></g>
+      </g>
+      <!-- weather overlays: AM cloud over farm, PM sun over stage -->
+      <g id="amCloud" class="cloud">
+        <g transform="translate(170 250)"><path d="M-80 20 a34 34 0 0 1 20 -60 a44 44 0 0 1 82 6 a30 30 0 0 1 20 54z" fill="#f7fafb" opacity=".92" stroke="#8fb2c4" stroke-width="2"/>
+          <g class="rainl" stroke="#5e8fa8" stroke-width="2.5" stroke-linecap="round"><line x1="-50" y1="34" x2="-56" y2="54"/><line x1="-20" y1="34" x2="-26" y2="54"/><line x1="10" y1="34" x2="4" y2="54"/><line x1="40" y1="34" x2="34" y2="54"/><line x1="-35" y1="60" x2="-41" y2="80"/><line x1="25" y1="60" x2="19" y2="80"/></g>
+          <text x="0" y="-8" font-family="Pretendard,sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#203b43">오전 · 비</text></g>
+      </g>
+      <g id="pmSun" class="cloud">
+        <g transform="translate(560 90)"><circle r="30" fill="#f3d58f" opacity=".6"/><circle r="20" fill="#e8b75a"/>
+          <g class="sunr" stroke="#e8b75a" stroke-width="3" stroke-linecap="round"><path d="M0 -44v10M0 34v10M-44 0h10M34 0h10M-31 -31l7 7M24 24l7 7M-31 31l7 -7M24 -24l7 -7"/></g>
+          <text x="58" y="5" font-family="Pretendard,sans-serif" font-size="13" font-weight="700" fill="#203b43">오후 · 맑음</text></g>
+      </g>
+    </svg>
+    <div class="maplabel" style="left:70px;top:470px">농부의 밭<em>비 1회 필요</em></div>
+    <div class="maplabel" style="left:470px;top:290px">야외 공연장<em>오후 맑음</em></div>
+    <div class="maplabel w" id="lblGate" style="left:600px;top:500px">수문 닫힘<em style="color:#ffe">오전 강우 시 역류</em></div>
+    <div class="maplabel" style="left:790px;top:380px">하류 마을</div>
+    <div class="compass">유역도 · 제7 유역<br>N ↑</div>
+  </div>
+
+  <div class="form">
+    <div class="fh"><b>기적 배정표</b><span>양식 奇-12 · 하루 두 칸</span></div>
+    <div class="slots">
+      <div class="lab"><b>세 사람의 하루</b>오전과 오후의 날씨를 나누어 배정할 수 있습니다.</div>
+      <div class="slot" data-s="am"><h5>오전 <span>06 – 12시</span></h5>
+        <div class="tokens"><div class="tok r on" data-v="r"><svg><use href="#icRain"/></svg>비<small>밭 적심</small></div><div class="tok s" data-v="s"><svg><use href="#icSun"/></svg>맑음<small>—</small></div></div></div>
+      <div class="slot" data-s="pm"><h5>오후 <span>12 – 18시</span></h5>
+        <div class="tokens"><div class="tok r" data-v="r"><svg><use href="#icRain"/></svg>비<small>공연 취소</small></div><div class="tok s on" data-v="s"><svg><use href="#icSun"/></svg>맑음<small>공연</small></div></div></div>
+    </div>
+  </div>
+
+  <aside class="inbox">
+    <h4><span>접수된 기도 · 3</span><span>유역 7</span></h4>
+    <div class="letter"><div class="ic">農</div><span class="ok" id="okFarm">충족</span><small>농부의 기도</small><b>하루 중 한 번만 비를</b><p>“오늘 하루 중 한 번만 비를 내려 주세요.”</p><span class="need">오전 또는 오후에 비</span></div>
+    <div class="letter"><div class="ic">樂</div><span class="ok" id="okStage">충족</span><small>공연자의 기도</small><b>오후 공연 때만큼은</b><p>“오후 공연 때만큼은 하늘이 맑았으면 해요.”</p><span class="need">오후 맑음</span></div>
+    <div class="letter seal" id="down"><div class="ic">流</div><span class="no" id="noDown">미확인</span><small>하류에서 온 편지 · 미개봉</small><b>같은 유역에서 도착</b><p id="downText">같은 비를 두고도 원하는 것은 다를 수 있습니다.</p><div class="wax">封</div></div>
+    <div class="gate"><b>비 오기 전 수문 열기<small>사전 조정으로 하류 침수 예방</small></b><div class="sw" id="sw"></div></div>
+    <div class="prev"><h5>배정 미리보기 · 내일의 대가</h5>
+      <div class="pr"><span>농부의 밭</span><b id="pvFarm">오전 비 · 해갈</b></div>
+      <div class="pr"><span>야외 공연</span><b id="pvStage">오후 맑음 · 개최</b></div>
+      <div class="pr"><span>하류 마을</span><b id="pvDown" class="bad">수문 닫힘 · 침수 위험</b></div>
+    </div>
+  </aside>
+  <button class="send" id="send">기적 배정표 발송<small>다음 날의 감사 · 항의 편지 확인</small></button>
+  <div class="stamp" id="stamp">承認<br>奇蹟</div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="scr" id="B">
+  <header class="head">
+    <div class="mark">奇</div>
+    <div><b>기적 배정과</b><small>THE MIRACLE ALLOCATION OFFICE</small></div>
+    <div class="chips" style="margin-left:40px"><span class="chip"><i></i>수문 · 열림</span><span class="chip"><i></i>안전</span><span class="chip"><i></i>공연 · 성황</span></div>
+    <div class="desk">다음 날 아침 · 회신함<b>3통 도착</b></div>
+  </header>
+  <div class="btitle"><small>배정 결과 · 제7 유역</small><h1>세 통의 감사 편지</h1></div>
+  <div class="mapwrap" style="top:210px;width:980px;height:600px">
+    <svg viewBox="0 0 980 600">
+      <rect width="980" height="600" fill="#e3ecd8"/><rect width="980" height="600" fill="url(#topo)"/>
+      <g fill="#c2cfb4" stroke="#9fb095" stroke-width="1.5"><path d="M0 0 H360 L300 60 L240 40 L180 110 L110 80 L40 140 L0 120Z"/></g>
+      <path d="M150 40 C220 140 170 220 300 280 C420 336 470 300 560 360 C640 410 700 470 820 500 C880 515 940 540 980 560" stroke="url(#riv)" stroke-width="34" fill="none" stroke-linecap="round"/>
+      <path d="M150 40 C220 140 170 220 300 280 C420 336 470 300 560 360 C640 410 700 470 820 500 C880 515 940 540 980 560" stroke="#cfe6ee" stroke-width="3" fill="none" stroke-dasharray="10 16"><animate attributeName="stroke-dashoffset" from="0" to="-52" dur="1s" repeatCount="indefinite"/></path>
+      <path d="M60 240 L230 210 L260 320 L90 350Z" fill="url(#fieldWet)" stroke="#5f7f3f" stroke-width="2"/>
+      <path d="M90 360 L262 330 L290 430 L120 460Z" fill="url(#fieldWet)" stroke="#5f7f3f" stroke-width="2"/>
+      <g fill="#6f9a52"><circle cx="120" cy="280" r="3"/><circle cx="160" cy="300" r="3"/><circle cx="200" cy="270" r="3"/><circle cx="150" cy="400" r="3"/><circle cx="210" cy="390" r="3"/><circle cx="240" cy="410" r="3"/></g>
+      <g><rect x="140" y="170" width="44" height="30" fill="#f3eee0" stroke="#203b43" stroke-width="1.5"/><path d="M134 172 L162 150 L190 172Z" fill="#a7683f"/></g>
+      <g transform="translate(560 170)"><path d="M-90 60 A90 50 0 0 1 90 60Z" fill="#f3eee0" stroke="#203b43" stroke-width="1.5"/><path d="M-60 60 A60 30 0 0 1 60 60" fill="#e8b75a"/>
+        <g fill="#203b43" opacity=".75"><circle cx="-70" cy="84" r="3"/><circle cx="-56" cy="92" r="3"/><circle cx="-40" cy="98" r="3"/><circle cx="-24" cy="102" r="3"/><circle cx="-8" cy="104" r="3"/><circle cx="8" cy="104" r="3"/><circle cx="24" cy="102" r="3"/><circle cx="40" cy="98" r="3"/><circle cx="56" cy="92" r="3"/><circle cx="70" cy="84" r="3"/><circle cx="-44" cy="112" r="3"/><circle cx="-26" cy="116" r="3"/><circle cx="-8" cy="118" r="3"/><circle cx="10" cy="118" r="3"/><circle cx="28" cy="116" r="3"/><circle cx="46" cy="112" r="3"/></g>
+        <g fill="#c0573f"><rect x="-80" y="0" width="4" height="4" transform="rotate(20)"/><rect x="40" y="-10" width="4" height="4" transform="rotate(-30)"/><rect x="-20" y="-20" width="4" height="4"/></g></g>
+      <g transform="translate(560 90)"><circle r="40" fill="#f3d58f" opacity=".5"/><circle r="22" fill="#e8b75a"/></g>
+      <g transform="translate(700 452) rotate(26)"><rect x="-10" y="-40" width="20" height="80" fill="#6b5a48"/><rect x="-26" y="-46" width="52" height="10" fill="#203b43"/><rect x="-6" y="-78" width="12" height="40" fill="#a7683f"/></g>
+      <path d="M720 470 C760 500 780 540 760 600" stroke="#6fa3b8" stroke-width="12" fill="none" opacity=".8"/>
+      <g fill="#f3eee0" stroke="#203b43" stroke-width="1.5"><rect x="800" y="420" width="30" height="22"/><rect x="842" y="410" width="30" height="22"/><rect x="884" y="424" width="30" height="22"/><rect x="826" y="452" width="30" height="22"/><rect x="870" y="458" width="30" height="22"/></g>
+      <g fill="#c0573f"><path d="M796 422 L815 408 L834 422Z"/><path d="M838 412 L857 398 L876 412Z"/><path d="M880 426 L899 412 L918 426Z"/><path d="M822 454 L841 440 L860 454Z"/><path d="M866 460 L885 446 L904 460Z"/></g>
+      <g fill="#ffe7a8"><rect x="808" y="428" width="6" height="6"/><rect x="850" y="418" width="6" height="6"/><rect x="892" y="432" width="6" height="6"/></g>
+      <!-- timeline strip -->
+      <g transform="translate(40 540)"><rect width="420" height="40" rx="4" fill="#fffdf5" stroke="#203b43" stroke-width="1.5"/><rect x="2" y="2" width="208" height="36" fill="#dbe8ee"/><rect x="210" y="2" width="208" height="36" fill="#fbf1d8"/>
+        <text x="105" y="26" font-family="Pretendard,sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#203b43">오전 · 비</text><text x="315" y="26" font-family="Pretendard,sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#203b43">오후 · 맑음</text></g>
+    </svg>
+    <div class="maplabel" style="left:60px;top:462px">밭 · 적셔짐</div>
+    <div class="maplabel" style="left:440px;top:300px">공연 · 맑음</div>
+    <div class="maplabel" style="left:600px;top:500px">수문 · 먼저 열림</div>
+    <div class="maplabel" style="left:790px;top:370px">하류 · 안전</div>
+  </div>
+  <div class="fan">
+    <div class="letter" style="left:120px;top:0;transform:rotate(3deg)"><div class="ic">農</div><span class="ok">감사</span><small>농부 · 새벽 발송</small><b>밭이 목을 축였습니다</b><p>“오전 비에 싹이 일어섰어요. 딱 한 번이면 된다고 했는데, 정말 딱 한 번이었어요.”</p></div>
+    <div class="letter" style="left:40px;top:220px;transform:rotate(-2deg)"><div class="ic">樂</div><span class="ok">감사</span><small>공연자 · 공연 후</small><b>오후 내내 하늘이 열려 있었어요</b><p>“젖은 흙 냄새가 나는 공연장이었어요. 관객석이 가득 찼습니다.”</p></div>
+    <div class="letter" style="left:100px;top:440px;transform:rotate(1.5deg)"><div class="ic">流</div><span class="ok">감사</span><small>하류 주민 · 동틀 녘</small><b>물이 넘치지 않았습니다</b><p>“비가 오기 전에 수문이 열렸더군요. 누가 먼저 편지를 읽어 주셨나 봐요.”</p></div>
+  </div>
+  <div class="appoint"><small>보관함 · 전임자의 서류</small>“이 일을 대신 맡아 줄 사람이 오게 해 주세요.” — 전임자의 기도는 승인되어 있었습니다.</div>
+</section>
+
+<div class="halo"></div><div class="grain"></div>
+<nav class="tabs"><button data-k="a">A 배정</button><button data-k="b">B 회신</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  show(location.hash.replace('#','')||'a');
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function chime(f){var a=ctx();if(!a)return;var t=a.currentTime;[f,f*1.5].forEach(function(fr,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=fr;
+    g.gain.setValueAtTime(0,t+i*.06);g.gain.linearRampToValueAtTime(.12,t+i*.06+.01);g.gain.exponentialRampToValueAtTime(.001,t+i*.06+.9);o.connect(g);g.connect(a.destination);o.start(t+i*.06);o.stop(t+1.2);});}
+  function thud(){var a=ctx();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(50,t+.2);
+    g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.35);}
+
+  var S={am:'r',pm:'s',gate:false,read:false};
+  function $(id){return document.getElementById(id);}
+  function render(){
+    $('amCloud').style.opacity=S.am==='r'?1:0.0;
+    $('pmSun').style.opacity=S.pm==='s'?1:0.0;
+    var farm=(S.am==='r')||(S.pm==='r'),stage=(S.pm==='s'),risk=(S.am==='r'&&!S.gate);
+    $('okFarm').textContent=farm?'충족':'미충족';$('okFarm').className=farm?'ok':'no';
+    $('okStage').textContent=stage?'충족':'미충족';$('okStage').className=stage?'ok':'no';
+    $('floodzone').setAttribute('opacity',risk?'.55':'0');
+    $('lblGate').className='maplabel'+(risk?' w':'');$('lblGate').innerHTML=S.gate?'수문 열림<em>하류 안전</em>':'수문 닫힘<em style="color:#ffe">오전 강우 시 역류</em>';
+    $('chipGate').className='chip'+(S.gate?'':' w');$('chipGate').innerHTML='<i></i>수문 · '+(S.gate?'열림':'닫힘');
+    $('gateBar').setAttribute('y',S.gate?'-78':'-32');$('gateBar').setAttribute('height',S.gate?'40':'64');
+    $('sw').className='sw'+(S.gate?' on':'');
+    $('pvFarm').textContent=farm?((S.am==='r'?'오전':'오후')+' 비 · 해갈'):'비 없음 · 가뭄';$('pvFarm').className=farm?'':'bad';
+    $('pvStage').textContent=stage?'오후 맑음 · 개최':'오후 비 · 공연 취소';$('pvStage').className=stage?'':'bad';
+    $('pvDown').textContent=risk?'수문 닫힘 · 침수 위험':'하류 안전';$('pvDown').className=risk?'bad':'';
+    $('noDown').textContent=S.read?(risk?'위험':'안전'):'미확인';$('noDown').className=S.read&&!risk?'ok':'no';
+    var slots=document.querySelectorAll('.slot');
+    for(var i=0;i<slots.length;i++){var k=slots[i].getAttribute('data-s'),t=slots[i].querySelectorAll('.tok');
+      for(var j=0;j<t.length;j++){var v=t[j].getAttribute('data-v');t[j].className='tok '+v+(S[k]===v?' on':'');}}
+  }
+  var toks=document.querySelectorAll('.tok');
+  for(var q=0;q<toks.length;q++)toks[q].addEventListener('click',function(){var k=this.parentNode.parentNode.getAttribute('data-s');S[k]=this.getAttribute('data-v');chime(S[k]==='r'?392:587);render();});
+  $('sw').addEventListener('click',function(){S.gate=!S.gate;thud();render();});
+  $('down').addEventListener('click',function(){S.read=true;this.className='letter';this.querySelector('small').textContent='하류에서 온 편지 · 개봉';
+    $('downText').textContent='“오전에 비가 오면 닫힌 수문 탓에 물이 넘칩니다. 비가 오기 전에 수문을 열어 주세요.”';var w=this.querySelector('.wax');if(w)w.style.display='none';chime(330);render();});
+  $('send').addEventListener('click',function(){var s=$('stamp');s.className='stamp';void s.offsetWidth;s.className='stamp hit';thud();setTimeout(function(){show('b');},900);});
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "_": "결말은 '누가 이겼나'가 아니라 **무엇이 오해로 남았는가**로 갈린다. priority 오름차순으로 훑어 처음 맞는 것이 결말이다.",
+  "_읽는_법": "-1 은 '따지지 않는다'. requiresSigned 는 1=조인됐어야 한다 · 0=아니어야 한다 · -1=따지지 않는다.",
+
+  "endings": [
+    {
+      "id": "e_burned", "priority": 10,
+      "name": "통역이 탄다",
+      "text": "조약은 남았지만 이 방의 두 사람은 이제 당신을 통해 말하지 않는다. 다음 회담의 통역은 다른 사람이다.",
+      "requiresSigned": -1, "suspicionMin": 62, "exposedMin": 2
+    },
+    {
+      "id": "e_caught", "priority": 20,
+      "name": "낱말 하나가 드러났다",
+      "text": "낭독 중에 걸렸다. 두 대표가 동시에 당신을 본다. 조문은 고쳐 쓰였고, 고친 자리가 남았다.",
+      "requiresSigned": -1, "exposedMin": 1, "suspicionMin": 34
+    },
+    {
+      "id": "e_collapse_loud", "priority": 30,
+      "name": "회담이 소리를 내며 깨졌다",
+      "text": "누군가 의자를 밀고 일어섰다. 조문은 한 줄도 남지 않았고, 두 나라는 각자 자기가 옳았다고 기억한다.",
+      "requiresSigned": 0, "tensionMin": 88
+    },
+    {
+      "id": "e_collapse_quiet", "priority": 40,
+      "name": "아무도 서명하지 않았다",
+      "text": "고함은 없었다. 다만 아무도 펜을 들지 않았고, 사흘째 오후가 그대로 끝났다.",
+      "requiresSigned": 0
+    },
+    {
+      "id": "e_unfinished", "priority": 50,
+      "name": "비워 둔 조약",
+      "text": "서명은 했다. 다만 조문 여럿이 '따로 정한다'로 끝난다. 따로 정할 자리는 잡혀 있지 않다.",
+      "requiresSigned": 1, "unsetClauseMin": 2
+    },
+    {
+      "id": "e_paper_peace", "priority": 60,
+      "name": "종이 위의 평화",
+      "text": "두 나라가 같은 종이에 서명했고, 서로 다른 조약을 들고 돌아간다. 어긋난 낱말은 아래에 적혀 있다.",
+      "requiresSigned": 1, "standingMin": 3
+    },
+    {
+      "id": "e_one_sided", "priority": 70,
+      "name": "한쪽으로 기운 조약",
+      "text": "조문은 맑다. 다만 한쪽이 거의 전부를 가져갔고, 진 쪽은 그것을 조인 뒤에 천천히 읽는다.",
+      "requiresSigned": 1, "favorGapMin": 70
+    },
+    {
+      "id": "e_crack", "priority": 80,
+      "name": "금이 하나 남은 평화",
+      "text": "거의 맑다. 어긋난 낱말이 하나나 둘 남았고, 그것이 어느 봄에 무엇이 될지는 아무도 모른다.",
+      "requiresSigned": 1, "standingMin": 1
+    },
+    {
+      "id": "e_clear", "priority": 90,
+      "name": "맑은 조약",
+      "text": "두 나라가 같은 것을 읽었다. 통역은 아무 데도 이름이 남지 않는다 — 그것이 잘한 일의 모양이다.",
+      "requiresSigned": 1, "standingMax": 0
+    }
+  ]
+}

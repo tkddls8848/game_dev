@@ -1,0 +1,105 @@
+{
+  "_": "의뢰인의 기억망. 날은 태어난 날부터 센 일(day) 이고 전부 정수다. 값 없는 int 는 -1 (설계 원칙 3).",
+  "_정서거리": "moodDistance 는 moods 순서대로 6x6 을 평평하게 편 것. 대각 0, 대칭. DataValidator 가 지킨다.",
+
+  "people": [
+    { "id": "p-mother",  "name": "어머니",      "presentFromDay": 0,    "presentUntilDay": 14202, "note": "요양원에서 떠났다" },
+    { "id": "p-father",  "name": "아버지",      "presentFromDay": 0,    "presentUntilDay": 8402,  "note": "여덟 살 반 무렵" },
+    { "id": "p-sister",  "name": "누나",        "presentFromDay": 0,    "presentUntilDay": -1,    "note": "지금도 있다" },
+    { "id": "p-teacher", "name": "담임 선생",   "presentFromDay": 2400, "presentUntilDay": 6200,  "note": "초등학교 여섯 해" },
+    { "id": "p-seonhwa", "name": "선화",        "presentFromDay": 5800, "presentUntilDay": 12400, "note": "떠난 뒤로 소식이 없다" },
+    { "id": "p-mingi",   "name": "민기",        "presentFromDay": 11600,"presentUntilDay": -1,    "note": "사무실 동료" },
+
+    { "id": "p-brother",    "name": "형",        "presentFromDay": 0,     "presentUntilDay": -1, "note": "selfnet 쪽 — 시술자 자신의 사람" },
+    { "id": "p-supervisor", "name": "감독관",     "presentFromDay": 15200, "presentUntilDay": -1, "note": "selfnet 쪽" }
+  ],
+
+  "places": [
+    { "id": "pl-house",      "name": "개항로 집",      "existsFromDay": 0,     "existsUntilDay": 13800, "note": "13800일에 헐렸다" },
+    { "id": "pl-school",     "name": "초등학교 운동장", "existsFromDay": 0,     "existsUntilDay": 17000, "note": "" },
+    { "id": "pl-pier",       "name": "3부두 창고",     "existsFromDay": 0,     "existsUntilDay": -1,    "note": "" },
+    { "id": "pl-hospital",   "name": "시립 병원",      "existsFromDay": 9000,  "existsUntilDay": -1,    "note": "9000일에 지어졌다" },
+    { "id": "pl-office",     "name": "사무실",         "existsFromDay": 11500, "existsUntilDay": -1,    "note": "" },
+    { "id": "pl-sanatorium", "name": "요양원",         "existsFromDay": 13000, "existsUntilDay": -1,    "note": "" },
+
+    { "id": "pl-alley",  "name": "골목",     "existsFromDay": 0,     "existsUntilDay": -1, "note": "selfnet 쪽 — 시술자 자신의 장소" },
+    { "id": "pl-dorm",   "name": "기숙사",   "existsFromDay": 15000, "existsUntilDay": -1, "note": "selfnet 쪽" },
+    { "id": "pl-clinic", "name": "시술실",   "existsFromDay": 16000, "existsUntilDay": -1, "note": "selfnet 쪽" }
+  ],
+
+  "moods": [
+    { "id": "mood-calm",    "name": "안온" },
+    { "id": "mood-longing", "name": "그리움" },
+    { "id": "mood-elation", "name": "들뜸" },
+    { "id": "mood-shame",   "name": "수치" },
+    { "id": "mood-anger",   "name": "분노" },
+    { "id": "mood-dread",   "name": "공포" }
+  ],
+
+  "moodDistance": [
+     0, 25, 30, 70, 85, 90,
+    25,  0, 45, 55, 65, 70,
+    30, 45,  0, 75, 70, 80,
+    70, 55, 75,  0, 40, 45,
+    85, 65, 70, 40,  0, 50,
+    90, 70, 80, 45, 50,  0
+  ],
+
+  "subjects": [
+    {
+      "id": "subj-hanwoo",
+      "name": "한우진 (54)",
+      "note": "의뢰인이 셋이다. 셋 다 이 사람의 기억 한 자리를 바꾸고 싶어 한다.",
+      "surfacedAtStart": ["m-rain-roof", "m-schoolyard", "m-seonhwa-first", "m-fathers-death", "m-desk-lamp"],
+      "distortedPerSession": 2,
+
+      "memories": [
+        { "id": "m-rain-roof",     "name": "비 새는 천장",        "dayIndex": 2600,  "spanDays": 2,  "placeId": "pl-house",      "peopleIds": ["p-mother"],              "moodId": "mood-calm",    "intensityPercent": 45, "fixityPercent": 60, "note": "양동이 소리" },
+        { "id": "m-fathers-shoes", "name": "아버지의 구두",       "dayIndex": 3100,  "spanDays": 1,  "placeId": "pl-house",      "peopleIds": ["p-father"],              "moodId": "mood-longing", "intensityPercent": 55, "fixityPercent": 70, "note": "" },
+        { "id": "m-schoolyard",    "name": "운동장에서 넘어졌다",  "dayIndex": 3400,  "spanDays": 1,  "placeId": "pl-school",     "peopleIds": ["p-teacher"],             "moodId": "mood-shame",   "intensityPercent": 70, "fixityPercent": 55, "note": "" },
+        { "id": "m-hairpin",       "name": "누나의 머리핀",       "dayIndex": 4200,  "spanDays": 1,  "placeId": "pl-house",      "peopleIds": ["p-sister"],              "moodId": "mood-elation", "intensityPercent": 40, "fixityPercent": 40, "note": "" },
+        { "id": "m-pier-smell",    "name": "부두의 냄새",         "dayIndex": 4800,  "spanDays": 3,  "placeId": "pl-pier",       "peopleIds": ["p-father"],              "moodId": "mood-dread",   "intensityPercent": 60, "fixityPercent": 65, "distortable": true,  "truePlaceId": "pl-house", "trueMoodId": "mood-shame", "note": "부두라고 기억하지만 집이었다" },
+        { "id": "m-report-card",   "name": "성적표",             "dayIndex": 5400,  "spanDays": 1,  "placeId": "pl-house",      "peopleIds": ["p-mother", "p-father"],  "moodId": "mood-shame",   "intensityPercent": 65, "fixityPercent": 50, "distortable": true,  "truePlaceId": "pl-school", "note": "집에서 받았다고 기억하지만 교무실에서 받았다" },
+        { "id": "m-seonhwa-first", "name": "선화를 처음 봤다",     "dayIndex": 6100,  "spanDays": 1,  "placeId": "pl-school",     "peopleIds": ["p-seonhwa"],             "moodId": "mood-elation", "intensityPercent": 80, "fixityPercent": 75, "note": "" },
+        { "id": "m-fathers-death", "name": "아버지가 떠난 날",     "dayIndex": 8400,  "spanDays": 2,  "placeId": "pl-house",      "peopleIds": ["p-mother", "p-sister"],  "moodId": "mood-dread",   "intensityPercent": 95, "fixityPercent": 95, "note": "가장 굳은 자리" },
+        { "id": "m-seonhwa-letter","name": "선화의 편지",         "dayIndex": 9200,  "spanDays": 1,  "placeId": "pl-pier",       "peopleIds": ["p-seonhwa"],             "moodId": "mood-longing", "intensityPercent": 85, "fixityPercent": 70, "note": "" },
+        { "id": "m-hospital-hall", "name": "병원 복도",           "dayIndex": 9600,  "spanDays": 4,  "placeId": "pl-hospital",   "peopleIds": ["p-mother"],              "moodId": "mood-dread",   "intensityPercent": 75, "fixityPercent": 80, "distortable": true,  "trueMoodId": "mood-calm", "note": "무서웠다고 기억하지만 아무 느낌도 없었다" },
+        { "id": "m-first-wage",    "name": "첫 월급",            "dayIndex": 11800, "spanDays": 1,  "placeId": "pl-office",     "peopleIds": ["p-mingi"],               "moodId": "mood-elation", "intensityPercent": 60, "fixityPercent": 45, "note": "" },
+        { "id": "m-seonhwa-gone",  "name": "선화가 떠났다",       "dayIndex": 12300, "spanDays": 2,  "placeId": "pl-pier",       "peopleIds": ["p-seonhwa"],             "moodId": "mood-longing", "intensityPercent": 90, "fixityPercent": 85, "note": "" },
+        { "id": "m-mother-forgets","name": "어머니가 이름을 잊었다","dayIndex": 13340, "spanDays": 6, "placeId": "pl-sanatorium", "peopleIds": ["p-mother", "p-sister"],  "moodId": "mood-dread",   "intensityPercent": 85, "fixityPercent": 90, "note": "" },
+        { "id": "m-house-gone",    "name": "집이 헐렸다",         "dayIndex": 13800, "spanDays": 1,  "placeId": "pl-house",      "peopleIds": ["p-sister"],              "moodId": "mood-longing", "intensityPercent": 70, "fixityPercent": 80, "note": "" },
+        { "id": "m-mothers-death", "name": "어머니가 떠난 날",     "dayIndex": 14200, "spanDays": 2,  "placeId": "pl-sanatorium", "peopleIds": ["p-sister"],              "moodId": "mood-dread",   "intensityPercent": 95, "fixityPercent": 95, "note": "" },
+        { "id": "m-desk-lamp",     "name": "사무실 책상 등",      "dayIndex": 18600, "spanDays": 10, "placeId": "pl-office",     "peopleIds": ["p-mingi"],               "moodId": "mood-calm",    "intensityPercent": 30, "fixityPercent": 35, "note": "지금" }
+      ],
+
+      "links": [
+        { "a": "m-rain-roof",     "b": "m-fathers-shoes",  "kind": "place",  "probeCost": 3 },
+        { "a": "m-fathers-shoes", "b": "m-hairpin",        "kind": "place",  "probeCost": 3 },
+        { "a": "m-hairpin",       "b": "m-report-card",    "kind": "place",  "probeCost": 3 },
+        { "a": "m-report-card",   "b": "m-fathers-death",  "kind": "place",  "probeCost": 4 },
+        { "a": "m-fathers-death", "b": "m-house-gone",     "kind": "place",  "probeCost": 4 },
+        { "a": "m-schoolyard",    "b": "m-seonhwa-first",  "kind": "place",  "probeCost": 3 },
+        { "a": "m-pier-smell",    "b": "m-seonhwa-letter", "kind": "place",  "probeCost": 4 },
+        { "a": "m-seonhwa-letter","b": "m-seonhwa-gone",   "kind": "place",  "probeCost": 3 },
+        { "a": "m-mother-forgets","b": "m-mothers-death",  "kind": "place",  "probeCost": 3 },
+        { "a": "m-first-wage",    "b": "m-desk-lamp",      "kind": "place",  "probeCost": 3 },
+
+        { "a": "m-fathers-shoes", "b": "m-pier-smell",     "kind": "person", "probeCost": 5 },
+        { "a": "m-rain-roof",     "b": "m-hospital-hall",  "kind": "person", "probeCost": 6 },
+        { "a": "m-hospital-hall", "b": "m-mother-forgets", "kind": "person", "probeCost": 4 },
+        { "a": "m-mother-forgets","b": "m-house-gone",     "kind": "person", "probeCost": 4 },
+        { "a": "m-seonhwa-first", "b": "m-seonhwa-letter", "kind": "person", "probeCost": 4 },
+
+        { "a": "m-schoolyard",    "b": "m-report-card",    "kind": "time",   "probeCost": 4 },
+        { "a": "m-fathers-death", "b": "m-seonhwa-letter", "kind": "time",   "probeCost": 5 },
+        { "a": "m-seonhwa-gone",  "b": "m-mother-forgets", "kind": "time",   "probeCost": 5 },
+        { "a": "m-house-gone",    "b": "m-mothers-death",  "kind": "time",   "probeCost": 3 },
+        { "a": "m-first-wage",    "b": "m-seonhwa-gone",   "kind": "time",   "probeCost": 5 },
+
+        { "a": "m-pier-smell",    "b": "m-fathers-death",  "kind": "cause",  "probeCost": 6 },
+        { "a": "m-report-card",   "b": "m-seonhwa-first",  "kind": "cause",  "probeCost": 5 },
+        { "a": "m-hospital-hall", "b": "m-mothers-death",  "kind": "cause",  "probeCost": 6 }
+      ]
+    }
+  ]
+}

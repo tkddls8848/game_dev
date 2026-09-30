@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>잠금 화면 — locked-phone</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 밀려남·배터리·증거 딱지·사실·정답을 여기서 다시 계산한다.
+  씨드 난수(System.Random)까지 옮겨서 잡음 알림이 검사기와 같은 시각에 들어온다.
+  그림과 검사기가 어긋나면 그것 자체가 고장이다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/locked-phone && python -m http.server 8098
+      → http://localhost:8098/presentation/index.html
+-->
+<style>
+@font-face { font-family:"GothicA1Thin";  src:url("assets/fonts/GothicA1-Thin.ttf")  format("truetype"); font-weight:100; font-display:swap; }
+@font-face { font-family:"GothicA1Light"; src:url("assets/fonts/GothicA1-Light.ttf") format("truetype"); font-weight:300; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --void:#000000; --glass:#15181D; --glassLit:#1C2026; --hair:#2A2F37;
+  --t1:#F3F5F8; --t2:#8C939D; --t3:#565C66; --t4:#343943;
+  --amber:#C8A23C; --ember:#C2554B; --battOk:#4C8C5A; --battLow:#C2554B; --battTrack:#23262C; --wipe:#7A3E38;
+  --pw:252px; --ph:528px; --prad:30px; --padX:16px; --clockTop:54px;
+  --cardH:40px; --cardGap:6px; --cardRad:12px;
+  --sClock:62px; --sDate:13px; --sTitle:44px; --sHead:22px; --sBody:15px;
+  --sApp:10px; --sFrom:12px; --sCard:11px; --sExif:8px; --sHint:12px; --trkClock:-2px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--void); color:var(--t1);
+  font-family:"GothicA1Light","GothicA1Thin",system-ui,sans-serif; font-weight:300;
+  font-size:var(--sBody); line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+main{max-width:1180px; margin:0 auto; padding:44px 20px 100px}
+section{margin:0 0 46px; padding:0 0 10px; border-bottom:1px solid var(--hair)}
+section:last-child{border-bottom:0}
+
+h1{font-family:"GothicA1Thin"; font-weight:100; font-size:var(--sTitle); letter-spacing:-1px; margin:0 0 6px}
+h1 .sub{display:block; font-size:var(--sBody); letter-spacing:0; color:var(--t2); margin-top:12px; max-width:70ch}
+h2{font-family:"GothicA1Thin"; font-weight:100; font-size:var(--sHead); margin:0 0 8px; letter-spacing:-.3px}
+h2 .no{color:var(--amber); margin-right:12px; font-size:calc(var(--sHead)*.6)}
+h3{font-size:var(--sBody); color:var(--t2); font-weight:300; margin:20px 0 6px}
+p{margin:6px 0 14px; max-width:78ch; color:var(--t1)}
+.hint{font-size:var(--sHint); color:var(--t2)}
+em{font-style:normal; color:var(--amber)}
+b,strong{font-weight:300; color:#fff; border-bottom:1px solid var(--amber)}
+code{font-family:"GothicA1Light",monospace; color:var(--amber); font-size:var(--sHint)}
+
+table{border-collapse:collapse; width:100%; font-size:var(--sHint); margin:10px 0}
+th,td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--hair); color:var(--t1)}
+th{color:var(--t2); font-weight:300}
+td.n,th.n{text-align:right; font-variant-numeric:tabular-nums}
+tr.hi td{background:rgba(200,162,60,.08)}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:10px 30px}
+
+/* ── 잠금 화면 그 자체 ─────────────────────────────────────────────── */
+.phones{display:flex; flex-wrap:wrap; gap:18px; padding:6px 0 16px}
+.phone{flex:0 0 auto; width:var(--pw)}
+.screen{
+  position:relative; width:var(--pw); height:var(--ph); background:var(--void);
+  border:1px solid var(--hair); border-radius:var(--prad); padding:0 var(--padX);
+  overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,.03) inset;
+}
+.screen.dead{opacity:.35}
+.statusbar{display:flex; justify-content:space-between; align-items:center; padding:10px 2px 0; font-size:var(--sApp); color:var(--t2)}
+.clock{font-family:"GothicA1Thin"; font-weight:100; font-size:var(--sClock); letter-spacing:var(--trkClock);
+       line-height:1; margin-top:calc(var(--clockTop) - 40px); text-align:center; color:var(--t1)}
+.date{font-size:var(--sDate); color:var(--t2); text-align:center; margin:6px 0 18px}
+.cards{display:flex; flex-direction:column; gap:var(--cardGap)}
+.card{background:var(--glass); border:1px solid var(--hair); border-radius:var(--cardRad); padding:6px 9px; position:relative}
+.card.needed{border-color:rgba(200,162,60,.5)}
+.card.leaving{opacity:.22; border-style:dashed; border-color:var(--ember)}
+.card .row1{display:flex; justify-content:space-between; align-items:baseline; gap:6px}
+.card .app{font-size:var(--sApp); color:var(--t3); letter-spacing:.4px}
+.card .at{font-size:var(--sApp); color:var(--t3); font-variant-numeric:tabular-nums}
+.card .from{font-size:var(--sFrom); color:var(--t1); margin-top:1px}
+.card .body{font-size:var(--sCard); color:var(--t2); margin-top:1px;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.35}
+.card .exif{font-size:var(--sExif); color:var(--t3); margin-top:2px; letter-spacing:.2px}
+.card .mark{position:absolute; right:-7px; top:-7px; width:13px; height:13px; border-radius:7px;
+            background:var(--amber); color:#000; font-size:8px; line-height:13px; text-align:center}
+.gone{font-size:var(--sHint); color:var(--t4); text-align:center; padding:8px 0}
+.caption{font-size:var(--sHint); color:var(--t2); text-align:center; margin:8px 0 0}
+.caption b{border:0; color:var(--amber)}
+.wipeflag{color:var(--ember)}
+.legend{display:flex; flex-wrap:wrap; gap:10px 22px; font-size:var(--sHint); color:var(--t2); margin:6px 0 14px}
+.sw{display:inline-block; width:22px; height:9px; border-radius:2px; margin-right:6px; vertical-align:0; border:1px solid var(--hair)}
+svg{display:block; max-width:100%; height:auto; overflow:visible}
+.err{color:var(--ember)}
+.kpi{display:flex; flex-wrap:wrap; gap:14px 34px; margin:12px 0 6px}
+.kpi div{min-width:150px}
+.kpi b{display:block; font-family:"GothicA1Thin"; font-weight:100; font-size:34px; border:0; color:var(--t1); line-height:1.15}
+.kpi span{font-size:var(--sHint); color:var(--t2)}
+</style>
+</head>
+<body>
+<main id="app"><p class="err" id="boot">화면을 깨우는 중… (fetch 가 막혔다면 <code>python -m http.server 8098</code> 로 열어야 한다)</p></main>
+<script>
+"use strict";
+
+const FILES = ["phone", "notifications", "locked", "case", "balance"];
+async function load(){
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+function applyPalette(p){
+  const c = p.color, t = p.type, ph = p.phone, r = document.documentElement.style;
+  const set = (k, v) => r.setProperty(k, v);
+  set("--void",c.void); set("--glass",c.glass); set("--glassLit",c.glassLit); set("--hair",c.hairline);
+  set("--t1",c.textPrimary); set("--t2",c.textSecondary); set("--t3",c.textTertiary); set("--t4",c.textGhost);
+  set("--amber",c.amber); set("--ember",c.ember); set("--battOk",c.batteryOk);
+  set("--battLow",c.batteryLow); set("--battTrack",c.batteryTrack); set("--wipe",c.wipe);
+  set("--pw",ph.widthPx+"px"); set("--ph",ph.heightPx+"px"); set("--prad",ph.radiusPx+"px");
+  set("--padX",ph.padXPx+"px"); set("--clockTop",ph.clockTopPx+"px");
+  set("--cardH",ph.cardHeightPx+"px"); set("--cardGap",ph.cardGapPx+"px"); set("--cardRad",ph.cardRadiusPx+"px");
+  set("--sClock",t.sizeClock+"px"); set("--sDate",t.sizeDate+"px"); set("--sTitle",t.sizeTitle+"px");
+  set("--sHead",t.sizeHeading+"px"); set("--sBody",t.sizeBody+"px"); set("--sApp",t.sizeCardApp+"px");
+  set("--sFrom",t.sizeCardFrom+"px"); set("--sCard",t.sizeCardBody+"px"); set("--sExif",t.sizeExif+"px");
+  set("--sHint",t.sizeHint+"px"); set("--trkClock",t.trackingClock+"px");
+}
+
+// ═══ 규칙 — src/ 의 C# 을 그대로 옮긴 것 ═══════════════════════════════════
+
+/** .NET 의 씨앗 있는 Random. 잡음 알림이 검사기와 같은 시각에 들어오게 하려면 수열이 같아야 한다. */
+function randomCs(seed){
+  const MBIG = 2147483647, sa = new Int32Array(56);
+  let mj = 161803398 - Math.abs(seed | 0); sa[55] = mj; let mk = 1;
+  for (let i = 1; i < 55; i++){ const ii = (21*i)%55; sa[ii] = mk; mk = mj - mk; if (mk < 0) mk += MBIG; mj = sa[ii]; }
+  for (let k = 1; k < 5; k++) for (let i = 1; i < 56; i++){ let x = sa[i] - sa[1+(i+30)%55]; if (x < 0) x += MBIG; sa[i] = x; }
+  let a = 0, b = 21;
+  const sample = () => { if (++a >= 56) a = 1; if (++b >= 56) b = 1;
+    let r = sa[a] - sa[b]; if (r === MBIG) r--; if (r < 0) r += MBIG; sa[a] = r; return r * (1/MBIG); };
+  return { next: n => Math.floor(sample() * n) };
+}
+
+const LOCKSCREEN = { pushOut:true,  preview:true,  unlocked:false };
+const NOPUSH     = { pushOut:false, preview:true,  unlocked:false };
+const NOPREVIEW  = { pushOut:true,  preview:false, unlocked:false };
+const UNLOCKED   = { pushOut:false, preview:true,  unlocked:true  };
+
+function buildScreen(D){
+  const all = D.notifications.notifications.slice();
+  const ns = D.phone.noise, rng = randomCs(D.phone.seed);
+  const count = ns.countMin + rng.next(ns.countMax - ns.countMin + 1);
+  const slots = Math.floor((ns.toMin - ns.fromMin) / ns.gridMin);
+  for (let i = 0; i < count; i++){
+    const line = ns.lines[rng.next(ns.lines.length)];
+    const at = ns.fromMin + rng.next(slots + 1) * ns.gridMin;
+    all.push({ id:"n_noise_" + String(i+1).padStart(2,"0"), kind:"noise", app:line.app, fromKo:line.from,
+               previewKo:line.previewKo, arriveMin:at, exifAtMin:-1, exifPlaceKo:null, investigation:true });
+  }
+  all.sort((x,y) => x.arriveMin - y.arriveMin || (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
+  const byId = Object.fromEntries(all.map(n => [n.id, n]));
+  const authored = Object.fromEntries(D.notifications.notifications.map(n => [n.id, n]));
+  return { D, cards:all, byId, authored,
+           fact:Object.fromEntries(D.case.facts.map(f => [f.id, f])),
+           lockedIds:new Set(D.locked.locked.map(l => l.id)) };
+}
+
+/** t 분에 화면에 남아 있는 알림 (새것이 위). 넘치면 오래된 것부터 사라진다. */
+function visible(S, at, w){
+  const cap = S.D.phone.stack.capacity, out = [];
+  for (let i = 0; i < S.cards.length; i++){
+    if (S.cards[i].arriveMin > at) continue;
+    if (w.pushOut){
+      let newer = 0;
+      for (let j = i+1; j < S.cards.length; j++) if (S.cards[j].arriveMin <= at) newer++;
+      if (newer >= cap) continue;
+    }
+    out.push(S.cards[i]);
+  }
+  return out.reverse();
+}
+
+function windowOf(S, id, w){
+  const i = S.cards.findIndex(c => c.id === id);
+  if (i < 0) return null;
+  const from = S.cards[i].arriveMin;
+  if (!w.pushOut) return [from, S.D.phone.lastMinuteMin + 1];
+  const cap = S.D.phone.stack.capacity; let newer = 0;
+  for (let j = i+1; j < S.cards.length; j++){ newer++; if (newer >= cap) return [from, S.cards[j].arriveMin]; }
+  return [from, S.D.phone.lastMinuteMin + 1];
+}
+
+function batteryAt(S, at, wakes){
+  const b = S.D.phone.battery;
+  return b.startPermille - b.idleDrainPermillePerStep * Math.floor((at - S.D.phone.foundAtMin) / b.drainStepMin)
+       - b.wakeCostPermille * wakes;
+}
+function lastLiving(S, wakes){
+  const b = S.D.phone.battery, slack = b.startPermille - b.wakeCostPermille * wakes;
+  if (slack <= 0) return S.D.phone.foundAtMin - 1;
+  const steps = Math.floor((slack - 1) / b.idleDrainPermillePerStep);
+  return Math.min(S.D.phone.foundAtMin + steps * b.drainStepMin + (b.drainStepMin - 1), S.D.phone.lastMinuteMin);
+}
+
+const BATTERY_TOKEN = "battery@rate";
+function tokensOf(S, seen, rate, w){
+  const t = new Set();
+  seen.forEach(id => {
+    t.add(id + "@card");
+    if (!w.preview) return;
+    const n = S.authored[id];
+    if (!n) return;                                  // 씨드가 만든 잡음 — 사실을 주지 않는다
+    if (n.previewKo) t.add(id + "@preview");
+    if (n.exifAtMin >= 0) t.add(id + "@exif");
+  });
+  if (rate) t.add(BATTERY_TOKEN);
+  if (w.unlocked) S.lockedIds.forEach(x => t.add(x));
+  return t;
+}
+const covers = (have, need) => need && need.length > 0 && need.every(x => have.has(x));
+function factsOf(S, tok, w){
+  const got = new Set();
+  S.D.case.facts.forEach(f => {
+    if (covers(tok, f.needs)) got.add(f.id);
+    else if (w.unlocked && covers(tok, f.altNeedsUnlocked)) got.add(f.id);
+  });
+  return got;
+}
+function stands(S, v, facts){
+  if (!v.supports.every(s => facts.has(s))) return false;
+  return v.options.every(o => o.id === v.correct
+    || (o.refutedBy && o.refutedBy.length > 0 && o.refutedBy.every(r => facts.has(r))));
+}
+function verdictsOf(S, facts){ return S.D.case.verdicts.filter(v => stands(S, v, facts)).map(v => v.id); }
+
+function runSession(S, times, w){
+  let n = 0, first = null, last = null;
+  const seen = new Set(), wakes = [];
+  for (const t of times){
+    if (t < S.D.phone.foundAtMin || t > S.D.phone.lastMinuteMin) continue;
+    const level = batteryAt(S, t, n);
+    if (level <= 0) break;
+    n++;
+    const cards = visible(S, t, w);
+    wakes.push({ at:t, level, cards });
+    cards.forEach(c => seen.add(c.id));
+    if (first === null) first = t;
+    last = t;
+  }
+  const rate = wakes.length >= 2 && (last - first) >= S.D.phone.battery.rateMinGapMin;
+  const tok = tokensOf(S, seen, rate, w);
+  const facts = factsOf(S, tok, w);
+  return { wakes, seen, rate, facts, verdicts:verdictsOf(S, facts) };
+}
+
+function neededNotifs(S){
+  const out = new Set();
+  S.D.case.verdicts.forEach(v => {
+    const fids = new Set(v.supports);
+    v.options.forEach(o => { if (o.id !== v.correct) (o.refutedBy || []).forEach(r => fids.add(r)); });
+    fids.forEach(fid => S.fact[fid].needs.forEach(tok => {
+      const head = tok.split("@")[0];
+      if (head !== "battery") out.add(head);
+    }));
+  });
+  return [...out].sort();
+}
+
+function planWithin(S, k, w){
+  const need = neededNotifs(S), ceiling = lastLiving(S, k - 1);
+  const spans = [];
+  need.forEach(id => {
+    const win = windowOf(S, id, w); if (!win) return;
+    const from = Math.max(win[0], S.D.phone.foundAtMin), to = Math.min(win[1] - 1, ceiling);
+    if (to >= from) spans.push([from, to]);
+  });
+  spans.sort((a,b) => a[1] - b[1]);
+  const picks = [];
+  spans.forEach(sp => { if (!picks.some(p => p >= sp[0] && p <= sp[1])) picks.push(sp[1]); });
+  picks.sort((a,b) => a-b);
+  const gap = S.D.phone.battery.rateMinGapMin;
+  if (picks.length === 0) picks.push(S.D.phone.foundAtMin);
+  if (picks.length === 1 || picks[picks.length-1] - picks[0] < gap){
+    let extra = Math.max(S.D.phone.foundAtMin, picks[0] - gap);
+    if (picks.includes(extra)) extra = Math.min(S.D.phone.lastMinuteMin, picks[picks.length-1] + gap);
+    if (!picks.includes(extra)) picks.push(extra);
+    picks.sort((a,b) => a-b);
+  }
+  return runSession(S, picks, w);
+}
+function minimalSession(S, w){
+  let fallback = null;
+  for (let k = 1; k <= S.D.balance.checkers.maxPlanWakes; k++){
+    const r = planWithin(S, k, w);
+    if (!fallback || r.verdicts.length > fallback.verdicts.length) fallback = r;
+    if (r.wakes.length <= k && r.verdicts.length === S.D.case.verdicts.length) return r;
+  }
+  return fallback;
+}
+
+// ── 그리기 ────────────────────────────────────────────────────────────────
+const clock = m => String(Math.floor(m/60)%24).padStart(2,"0") + ":" + String(m%60).padStart(2,"0");
+const esc = s => String(s == null ? "" : s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function ring(pct, pal){
+  const r = pal.phone.ringRadiusPx, w = pal.phone.ringWidthPx, c = 2*Math.PI*r, s = 2*(r+w)+2;
+  const col = pct <= 20 ? pal.color.batteryLow : pal.color.batteryOk;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" style="vertical-align:-4px">
+    <circle cx="${s/2}" cy="${s/2}" r="${r}" fill="none" stroke="${pal.color.batteryTrack}" stroke-width="${w}"/>
+    <circle cx="${s/2}" cy="${s/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${w}"
+      stroke-dasharray="${(c*pct/100).toFixed(2)} ${c.toFixed(2)}" stroke-linecap="round"
+      transform="rotate(-90 ${s/2} ${s/2})"/></svg>`;
+}
+
+function phoneAt(S, pal, at, wakesBefore, note, needSet){
+  const level = batteryAt(S, at, wakesBefore);
+  const dead = level <= 0;
+  const cards = dead ? [] : visible(S, at, LOCKSCREEN);
+  const soon = new Set();
+  if (!dead) visible(S, at + 12, LOCKSCREEN).forEach(c => soon.add(c.id));
+  const rows = cards.map(c => {
+    const leaving = !soon.has(c.id);
+    const need = needSet.has(c.id);
+    const exif = c.exifAtMin >= 0
+      ? `<div class="exif">촬영 ${clock(c.exifAtMin)} · ${esc(c.exifPlaceKo)}</div>` : "";
+    return `<div class="card${need ? " needed" : ""}${leaving ? " leaving" : ""}">
+      ${need ? '<div class="mark">!</div>' : ""}
+      <div class="row1"><span class="app">${esc(c.app)}</span><span class="at">${clock(c.arriveMin)}</span></div>
+      <div class="from">${esc(c.fromKo)}</div>
+      <div class="body">${esc(c.previewKo)}</div>${exif}</div>`;
+  }).join("");
+  const gone = S.cards.filter(c => c.arriveMin <= at).length - cards.length;
+  return `<div class="phone">
+    <div class="screen${dead ? " dead" : ""}">
+      <div class="statusbar"><span>잠김</span><span>${dead ? "꺼짐" : Math.max(0,Math.floor(level/10)) + "%"} ${dead ? "" : ring(Math.max(0,level/10), pal)}</span></div>
+      <div class="clock">${clock(at)}</div>
+      <div class="date">3월 14일 ${at >= 1440 ? "(다음 날)" : ""}</div>
+      ${dead ? '<div class="gone">배터리가 나갔다.<br>여기까지가 전부다.</div>'
+             : `<div class="cards">${rows}</div>
+                ${gone > 0 ? `<div class="gone">밀려 사라진 알림 ${gone}장 — 돌아오지 않는다</div>` : ""}`}
+    </div>
+    <div class="caption">${note}</div></div>`;
+}
+
+function secTitle(S, pal){
+  const D = S.D;
+  return `<section><h1>잠금 화면<span class="sub">${esc(pal.oneLine)}<br><br>
+    ${esc(D.case.ko)} 잠금 화면에 남은 알림 · 부재중 전화 · 배터리 잔량 · 사진 메타데이터,
+    <b>그것만으로</b> 마지막 하루를 다시 세운다. 화면을 깨울 때마다 배터리가 줄고,
+    그동안에도 알림은 들어와 <em>오래된 것을 밀어낸다</em>.</span></h1>
+    <p class="hint">이 화면의 수치는 전부 <code>data/*.json</code> 을 읽어 여기서 다시 계산한 것이다.
+    밀려남·배터리·증거 딱지·사실·정답을 <code>src/</code> 의 C# 과 같은 정수 연산으로 옮겼고,
+    씨드 난수까지 옮겨서 잡음 알림이 검사기와 같은 시각에 들어온다.</p></section>`;
+}
+
+/** ★ 핵 화면 — 하루 중 여러 시각의 잠금 화면을 나란히. */
+function secPhones(S, pal, plan){
+  const D = S.D, need = new Set(neededNotifs(S));
+  const stops = [];
+  stops.push([D.phone.foundAtMin, "주운 순간", 0]);
+  plan.wakes.forEach((k, i) => stops.push([k.at, "깨우기 " + (i+1), i]));
+  // 마지막 깨우기 뒤에 전화기가 꺼지는 순간이 있으면 그 화면도 보여 준다 (없으면 밤이 먼저 끝난 것이다)
+  const lastWake = plan.wakes.length ? plan.wakes[plan.wakes.length - 1].at : D.phone.foundAtMin;
+  for (let t = lastWake + 1; t <= D.phone.lastMinuteMin; t++)
+    if (batteryAt(S, t, plan.wakes.length) <= 0) { stops.push([t, "그 뒤", plan.wakes.length]); break; }
+
+  const frames = stops.map(([t, label, n]) => {
+    const lvl = batteryAt(S, t, n);
+    const note = `<b>${clock(t)}</b> · ${esc(label)}` + (lvl > 0 ? ` · 잔량 ${Math.floor(lvl/10)}%` : " · 꺼짐");
+    return phoneAt(S, pal, t, n, note, need);
+  }).join("");
+
+  return `<section><h2><span class="no">01</span>하루 중 여러 시각의 잠금 화면</h2>
+    <p>같은 전화기다. 시각만 다르다. 칸이 <b>${D.phone.stack.capacity}장</b>뿐이라
+    새 알림이 들어올 때마다 맨 아래가 밀려 나가고, <em>잠금을 풀 수 없으니 밀려난 것은 영영 못 본다</em>.
+    이 여섯 장이 이 게임의 전부다 — 여기 보이지 않는 것은 플레이어에게도 없다.</p>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--glass);border-color:rgba(200,162,60,.5)"></span>정답의 근거가 되는 알림 (목업이 붙인 주석. 실제 화면에는 이런 표시가 없다)</span>
+      <span><span class="sw" style="background:transparent;border:1px dashed var(--ember)"></span>12분 안에 밀려 나갈 알림</span>
+    </div>
+    <div class="phones">${frames}</div>
+    <p class="hint">작은 글씨(<code>촬영 20:06 · 자택 계단참</code>)가
+    사진의 메타데이터다 — <b>읽으라고 만든 크기가 아니다.</b></p></section>`;
+}
+
+function secRules(S, pal){
+  const D = S.D, b = D.phone.battery;
+  const lockedRows = D.locked.locked.map(l =>
+    `<tr><td>${esc(l.ko)}</td><td class="hint">${esc(l.whyKo)}</td></tr>`).join("");
+  const factRows = D.case.facts.map(f =>
+    `<tr><td>${esc(f.ko)}</td><td class="hint">${f.needs.map(esc).join(" + ")}</td></tr>`).join("");
+  return `<section><h2><span class="no">02</span>보이는 것과 보이지 않는 것</h2>
+    <div class="grid2">
+      <div><h3>할 수 있는 일 — 화면을 깨우는 것 하나</h3>
+      <p>깨울 때마다 잔량이 <code>${b.wakeCostPermille}‰</code> 준다. 가만히 둬도 <code>${b.drainStepMin}분마다 ${b.idleDrainPermillePerStep}‰</code> 준다.
+      주운 순간이 <code>${b.startPermille}‰</code> 다.
+      잔량 감소율을 알아내려면 <b>${b.rateMinGapMin}분 이상 벌려 두 번</b> 읽어야 한다 —
+      그 감소율이 있어야 "20:12 이후 화면이 한 번도 켜지지 않았다"를 말할 수 있다.</p>
+      <h3>잠금 화면이 주는 사실 ${D.case.facts.length}개</h3>
+      <table><tr><th>사실</th><th>무엇이 있어야 하는가</th></tr>${factRows}</table></div>
+      <div><h3>잠금을 풀어야 보이는 것 — 이 게임에서는 절대 못 본다</h3>
+      <p class="hint">여기에는 <b>답이 통째로</b> 들어 있다. 그래야 "잠금 화면만으로 충분하다"가
+      공짜로 참이 되지 않는다 — 검사기 <code>LockscreenSuffices</code> 의 대조군이다.</p>
+      <table><tr><th>잠긴 것</th><th>잠금 화면은 무엇만 보여 주는가</th></tr>${lockedRows}</table></div>
+    </div></section>`;
+}
+
+function secVerdicts(S, pal, plan){
+  const D = S.D;
+  const rows = D.case.verdicts.map(v => {
+    const opts = v.options.map(o => o.id === v.correct
+      ? `<b>${esc(o.ko)}</b>`
+      : `<span style="color:var(--t4);text-decoration:line-through">${esc(o.ko)}</span>`).join(" · ");
+    const fids = new Set(v.supports);
+    v.options.forEach(o => { if (o.id !== v.correct) (o.refutedBy||[]).forEach(r => fids.add(r)); });
+    const notifs = new Set();
+    let batt = false;
+    fids.forEach(f => S.fact[f].needs.forEach(t => {
+      const h = t.split("@")[0]; if (h === "battery") batt = true; else notifs.add(h); }));
+    return `<tr class="${plan.verdicts.includes(v.id) ? "hi" : ""}"><td>${esc(v.questionKo)}</td>
+      <td>${opts}</td><td class="n">${notifs.size}${batt ? " + 잔량" : ""}</td></tr>`;
+  }).join("");
+  return `<section><h2><span class="no">03</span>세워야 하는 것 ${D.case.verdicts.length}개</h2>
+    <p>굵은 것이 정답이고, 그어 놓은 것은 <b>지워야</b> 하는 선택지다.
+    선택지 하나를 지우려면 그 선택지를 지우는 사실을 <em>전부</em> 쥐어야 한다 —
+    그래서 <code>NoSingleNotificationGivesItAway</code> 가 하나씩 빼 보면 반드시 무너진다.</p>
+    <table><tr><th>물음</th><th>선택지</th><th class="n">드는 알림</th></tr>${rows}</table></section>`;
+}
+
+function secWorlds(S, pal, table){
+  const rows = table.map(r => `<tr class="${r.on ? "hi" : ""}"><td>${r.label}</td>
+    <td class="n">${r.verdicts}/${S.D.case.verdicts.length}</td><td class="n">${r.facts}/${S.D.case.facts.length}</td>
+    <td class="n">${r.wakes}</td><td class="n">${r.one}/${S.D.case.verdicts.length}</td>
+    <td class="hint">${r.note}</td></tr>`).join("");
+  return `<section><h2><span class="no">04</span>네 세계 — 무엇이 실제로 일하고 있는가</h2>
+    <p>같은 사건·같은 씨드로 네 번 푼다. <em>마지막 줄이 이 검사기의 이빨이다</em> —
+    미리보기를 끄면 알림이 왔다는 것만 남고, 그러면 아무것도 서지 않는다.
+    일하고 있는 것은 알림의 <b>개수</b>가 아니라 표면에 뜬 <b>내용</b>이다.</p>
+    <table><tr><th>세계</th><th class="n">세운 정답</th><th class="n">쥔 사실</th>
+      <th class="n">필요한 깨우기</th><th class="n">한 번만 깨우면</th><th>무엇을 보여 주는가</th></tr>${rows}</table></section>`;
+}
+
+/** 밀려남의 지도 — 알림마다 화면에 있었던 구간. */
+function secTimeline(S, pal, plan){
+  const D = S.D, tl = pal.timeline;
+  const t0 = D.phone.foundAtMin, t1 = D.phone.lastMinuteMin, span = t1 - t0;
+  const need = new Set(neededNotifs(S));
+  const rows = S.cards.filter(c => {
+    const w = windowOf(S, c.id, LOCKSCREEN);
+    return w[1] > t0;
+  });
+  const H = 30 + rows.length * (tl.rowHeightPx + tl.rowGapPx) + 24;
+  const X = m => tl.labelWidthPx + (Math.max(t0, Math.min(t1, m)) - t0) / span * tl.barWidthPx;
+  let g = "";
+  for (let t = t0 - (t0 % 60) + 60; t <= t1; t += 60){
+    g += `<line x1="${X(t)}" y1="16" x2="${X(t)}" y2="${22 + rows.length*(tl.rowHeightPx+tl.rowGapPx)}" stroke="${pal.color.hairline}"/>`;
+    g += `<text x="${X(t)}" y="12" font-size="9" fill="${pal.color.textTertiary}" text-anchor="middle">${clock(t)}</text>`;
+  }
+  // 소식이 퍼지는 순간 — 칸 수만큼 몰려 들어와 화면이 통째로 쓸리는 자리
+  const cap = D.phone.stack.capacity;
+  for (let t = t0; t <= t1 - 12; t++){
+    const before = visible(S, t, LOCKSCREEN).map(c => c.id);
+    const after = new Set(visible(S, t + 12, LOCKSCREEN).map(c => c.id));
+    const drop = before.filter(id => !after.has(id)).length;
+    if (drop >= cap - 1)
+      g += `<rect x="${X(t)}" y="16" width="${Math.max(2, X(t+12)-X(t))}" height="${6 + rows.length*(tl.rowHeightPx+tl.rowGapPx)}" fill="${tl.wipeColor}" fill-opacity=".30"/>`;
+  }
+  rows.forEach((c, i) => {
+    const y = 22 + i * (tl.rowHeightPx + tl.rowGapPx);
+    const w = windowOf(S, c.id, LOCKSCREEN);
+    const from = Math.max(w[0], t0), to = Math.min(w[1] - 1, t1);
+    const col = need.has(c.id) ? tl.neededColor : tl.spareColor;
+    g += `<rect x="${tl.labelWidthPx}" y="${y}" width="${tl.barWidthPx}" height="${tl.rowHeightPx}" fill="${pal.color.glass}"/>`;
+    if (to >= from)
+      g += `<rect x="${X(from)}" y="${y}" width="${Math.max(2, X(to)-X(from))}" height="${tl.rowHeightPx}" fill="${col}" fill-opacity="${need.has(c.id) ? .95 : .45}"><title>${esc(c.fromKo)} · ${clock(w[0])}~${w[1] > t1 ? "끝" : clock(w[1])}</title></rect>`;
+    g += `<text x="${tl.labelWidthPx - 8}" y="${y + tl.rowHeightPx - 2}" font-size="9" text-anchor="end"
+       fill="${need.has(c.id) ? pal.color.textPrimary : pal.color.textTertiary}">${esc(c.fromKo)} ${clock(c.arriveMin)}</text>`;
+  });
+  plan.wakes.forEach((k, i) => {
+    g += `<line x1="${X(k.at)}" y1="18" x2="${X(k.at)}" y2="${22 + rows.length*(tl.rowHeightPx+tl.rowGapPx)}" stroke="${tl.wakeColor}" stroke-width="1.5"/>`;
+    g += `<text x="${X(k.at)}" y="${34 + rows.length*(tl.rowHeightPx+tl.rowGapPx)}" font-size="9" fill="${tl.wakeColor}" text-anchor="middle">${i+1}</text>`;
+  });
+  return `<section><h2><span class="no">05</span>밀려남의 지도</h2>
+    <p>가로줄 하나가 알림 하나다. 칠해진 구간이 <b>그 알림이 화면에 있었던 시간</b>이고,
+    <span style="color:${tl.neededColor}">호박색</span>이 정답에 필요한 알림이다.
+    세로 흰 줄이 <b>고른 일정이 실제로 화면을 깨운 순간</b>,
+    <span class="wipeflag">붉은 띠</span>가 문자가 칸 수만큼 몰려 들어와 <em>화면이 통째로 쓸린</em> 자리다.</p>
+    <svg viewBox="0 0 ${tl.labelWidthPx + tl.barWidthPx + 20} ${H}" width="${tl.labelWidthPx + tl.barWidthPx + 20}" height="${H}">${g}</svg>
+    <div class="kpi">
+      <div><b>${plan.wakes.length}</b><span>전부 세우는 데 필요한 깨우기</span></div>
+      <div><b>${need.size}</b><span>정답에 필요한 알림 (전체 ${S.cards.length}장 중)</span></div>
+      <div><b>${S.cards.filter(c => windowOf(S,c.id,LOCKSCREEN)[1] <= t0).length}</b><span>주웠을 때 이미 밀려나 있던 알림</span></div>
+      <div><b>${Math.floor(batteryAt(S, plan.wakes[plan.wakes.length-1].at, plan.wakes.length-1)/10)}%</b><span>마지막 깨우기 때 남은 잔량</span></div>
+    </div></section>`;
+}
+
+function secVerdict(){
+  return `<section><h2><span class="no">06</span>기계가 본 것과 사람만 볼 수 있는 것</h2>
+    <div class="grid2">
+      <div><h3>기계가 판정했다 — 통과</h3><ul class="hint">
+        <li>정답 셋이 잠금 화면에 뜬 것만으로 선다. 잠금을 풀어도 답이 달라지지 않는다</li>
+        <li>잠긴 쪽만으로도 셋이 다 선다 — 대조군이 비어서 이긴 것이 아니다</li>
+        <li>미리보기를 끄면 하나도 서지 않는다 — 일하는 것은 표면에 뜬 내용이다</li>
+        <li>알림 한 장으로도, 두 장으로도 정답이 서지 않는다</li>
+        <li>필요한 알림은 어느 하나만 빠져도 정답이 무너진다 (군더더기 0)</li>
+        <li>밀려남을 끄면 두 번, 켜면 네 번 깨워야 한다. 한 번만 깨우면 0개</li>
+      </ul></div>
+      <div><h3>사람만 볼 수 있다 — <b>미확인</b></h3><ul class="hint">
+        <li><b>잠금 화면 하나만 보는 것이 답답한가, 숨 막히는가.</b> 이 PoC의 생사다</li>
+        <li>밀려 사라진 알림을 봤을 때 아까운가, 억울한가</li>
+        <li>죽은 사람에게 계속 오는 문자가 견딜 만한가 — 여기가 가장 위험한 자리다</li>
+        <li>8px EXIF 를 들여다보는 일이 몰입인가 불편인가</li>
+        <li>배터리가 줄어드는 것이 긴장인가 스트레스인가</li>
+      </ul></div>
+    </div></section>`;
+}
+
+(async function main(){
+  let D;
+  try { D = await load(); }
+  catch(e){ document.getElementById("boot").textContent = "data/ 를 읽지 못했다: " + e + " — python -m http.server 8098 로 열어야 한다"; return; }
+  applyPalette(D.palette);
+  const S = buildScreen(D);
+  const plan = minimalSession(S, LOCKSCREEN);
+
+  const worlds = [
+    { label:"잠금 풀림", w:UNLOCKED,   note:"모든 것을 본다. 답이 애초에 있다는 확인" },
+    { label:"잠긴 쪽만", w:null,       note:"알림을 하나도 못 본다. 대조군이 비어 있지 않다는 증거" },
+    { label:"밀려남 끔", w:NOPUSH,     note:"알림이 전부 남는다. 기다렸다 한 번 보면 거의 끝난다" },
+    { label:"잠금 화면 (이 게임)", w:LOCKSCREEN, note:"칸 8장. 밀려난 것은 영영 못 본다", on:true },
+    { label:"미리보기 끔", w:NOPREVIEW, note:"알림이 왔다는 것만 본다. ★ 이 줄이 검사기의 이빨이다" }
+  ];
+  const table = worlds.map(x => {
+    if (!x.w){
+      const tok = tokensOf(S, new Set(), false, UNLOCKED);
+      const fa = factsOf(S, tok, UNLOCKED);
+      return { label:x.label, note:x.note, verdicts:verdictsOf(S, fa).length, facts:fa.size, wakes:"—", one:"—" };
+    }
+    const r = minimalSession(S, x.w);
+    let one = 0;
+    for (let t = D.phone.foundAtMin; t <= D.phone.lastMinuteMin; t += 1){
+      const z = runSession(S, [t], x.w);
+      if (z.wakes.length === 0) break;
+      if (z.verdicts.length > one) one = z.verdicts.length;
+    }
+    return { label:x.label, note:x.note, on:!!x.on, verdicts:r.verdicts.length, facts:r.facts.size,
+             wakes:r.wakes.length, one };
+  });
+
+  document.getElementById("app").innerHTML =
+      secTitle(S, D.palette) + secPhones(S, D.palette, plan) + secRules(S, D.palette)
+    + secVerdicts(S, D.palette, plan) + secWorlds(S, D.palette, table)
+    + secTimeline(S, D.palette, plan) + secVerdict();
+})();
+</script>
+</body>
+</html>

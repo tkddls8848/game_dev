@@ -1,0 +1,18 @@
+{
+ "num": 97,
+ "slug": "giant-back-village",
+ "title": "거인의 등 위 마을",
+ "version": 2,
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 걷는 날 — 6번 계단에 무엇을 심을까",
+   "prompt": "Actual gameplay view, not poster, no device frame. Side-view turn-based farming survival game, soft painterly storybook style, bright summer morning. A colossal moss-covered stone giant walks right through a sea of clouds; only its broad curved back, bowed sleeping face and one hanging arm are visible. The back fills the left two-thirds: eight dense stepped rice-paddy terraces with dry-stone retaining walls, a hilltop village of cream houses with red roofs, chimney smoke, a water wheel and tiny farmers. Each terrace wall carries a small cream plate with a big number 1 to 8 and '물' and '흙' values. Blue water channels cascade from terrace 3 down to 8, labeled '물 2', '물 4', '물 4 · 흙 1'; brown soil grains ride the streams; a waterfall spills off terrace 8 over the shoulder, tagged in red '물 4 유실'. Terrace 6 is empty and outlined with a glowing dashed line, a dotted leader to a parchment callout '6번 계단 · 감자 미리보기'. Right cream panel '6번 계단에 무엇을?' lists 비워 둠, 벼, 보리, 감자 (highlighted), 메밀, 돌둑 with small icons and food numbers 99, 99, 75, 75, 107, 75. Top ribbon of six forecast cells: '앞으로 +1', '비 +3', '뒤로 -1'. Grey rain curtain ahead. Bottom chips: '주민 36', '식량 64', '흙 14'. Correction: all numbers must match the game exactly; no other numbers. Choice list food values: 비워 둠 99, 벼 99, 보리 75, 감자 75 (highlighted), 메밀 107, 돌둑 75. Terrace plates 1→8: 1 '물 3 · 흙 6', 2 '물 4 · 흙 8', 3 '물 4 · 흙 9', 4 '물 6 · 흙 10', 5 '물 7 · 흙 9', 6 '물 6 · 흙 8' (empty, outlined), 7 '물 8 · 흙 6', 8 '물 9 · 흙 4'. Six forecast cells in order: '걸음 32 앞으로 +1 맑음', '걸음 33 앞으로 +1 비 +3', '걸음 34 수평 0 비 +3', '걸음 35 수평 0 비 +3', '걸음 36 뒤로 −1 맑음', '걸음 37 뒤로 −1 마름 −1'. Bottom chips: '주민 36', '식량 64', '흙 60'."
+  },
+  {
+   "id": "b",
+   "screen": "B · 거인이 멈춘 날 — 복기와 결말 선택",
+   "prompt": "Actual gameplay view, not poster, no device frame. Ending screen of a farming survival game, soft painterly storybook style, violet-to-orange sunset with first stars. The moss-covered stone giant has stopped and lies down low: knees folded, its huge sleeping head resting cheek-down on a green valley floor at the right, eyes closed, flowers in its mossy hair. One arm reaches down from the shoulder and lays an open palm flat on the valley ground; a line of lanterns and tiny villagers with packs walks down the forearm toward a winding river glowing gold. On the now-level back, eight terraces hold still flat water reflecting the sky, golden rice and barley, white buckwheat, lantern strings over a small lit village. Terrace 7 is withered stubble, terrace 8 is bare cracked grey rock; red pin tags read '7번 · 걸음 35 벼 고사' and '8번 · 걸음 47 맨바위'. Large centered serif title '거인이 멈췄다', subtitle '기울기 0°'. Left cream card '여정 결산' with '주민 32', '식량 132', '감자 0'. Right cream card '복기' with three loss entries. Bottom: three cream choice cards, '내려가, 골짜기에 뿌리내린다' ('12걸음'), '등에 남아, 멈춘 거인 위에서 산다' ('+1/걸음'), and a greyed locked card '둘로 나눠 등과 골짜기를 잇는다' marked '잠김'. Correction: the '복기' card lists exactly these three losses and nothing else: '7번 · 걸음 35 · 벼 고사 (흙 부족) — 원인: 걸음 31 · 6번 감자 파종', '8번 · 걸음 47 · 맨바위 (흙 0) — 원인: 걸음 33~35 비 + 8번 돌둑 없음', '3번 · 걸음 44 · 감자 멸종 — 원인: 걸음 38~43 마른 고원'. No storms, no villager deaths, no other steps or numbers; the only population figure is '주민 32'."
+  }
+ ]
+}

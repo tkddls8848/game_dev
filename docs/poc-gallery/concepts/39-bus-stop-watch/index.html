@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>버스 정류장 관찰</title>
+<style>
+:root{
+  --sky1:#1e2f55; --sky2:#e98c6f; --sky3:#ffd2a1; --asph:#1a2033; --led:#ffb43a; --blue:#2f63d6; --green:#3fae4a; --red:#e2463f;
+  --card:#f6f1e7; --ink:#18203a; --ok:#2fb67c; --ng:#e2463f;
+  --sans:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"D2Coding","JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0b0f1c;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;overflow:hidden;font-family:var(--sans);color:var(--ink);background:#10172a}
+.screen{position:absolute;inset:0;display:none}.screen.on{display:block}
+svg.scene{position:absolute;inset:0}
+.rain{position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:repeating-linear-gradient(104deg,transparent 0 14px,rgba(210,225,255,.35) 14px 15px,transparent 15px 40px);background-size:200px 200px;animation:rain .35s linear infinite}
+@keyframes rain{to{background-position:-40px 200px}}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* top bar */
+.top{position:absolute;left:0;right:0;top:0;height:74px;display:flex;align-items:center;padding:0 36px;gap:22px;background:linear-gradient(180deg,rgba(9,13,26,.92),rgba(9,13,26,.6));border-bottom:1px solid rgba(255,255,255,.08);color:#eef2ff}
+.brand{font-weight:900;font-size:26px;letter-spacing:-1px;display:flex;align-items:center;gap:12px}
+.brand i{display:inline-block;width:34px;height:34px;border-radius:9px;background:var(--blue);position:relative}
+.brand i:after{content:"";position:absolute;left:8px;top:7px;width:18px;height:14px;border-radius:3px;border:3px solid #fff;border-bottom-width:6px}
+.day{font-size:14px;color:#b9c3e0;padding:6px 12px;border:1px solid rgba(255,255,255,.14);border-radius:20px}
+.day b{color:#fff}
+.streak{margin-left:auto;display:flex;gap:18px;font-size:13px;color:#b9c3e0;align-items:center}
+.streak b{font-size:20px;color:#fff;margin-left:6px}
+.led{position:absolute;left:36px;top:96px;width:420px;background:#0a0a0c;border:3px solid #2a2d38;border-radius:6px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 0 20px rgba(255,160,40,.08)}
+.led .r{display:flex;align-items:center;gap:12px;font-family:var(--mono);color:var(--led);font-size:19px;padding:4px 0;text-shadow:0 0 8px rgba(255,170,50,.8);letter-spacing:1px}
+.led .r span.n{display:inline-block;min-width:62px;padding:1px 6px;border-radius:3px;color:#fff;text-shadow:none;font-weight:700;text-align:center;font-family:var(--sans)}
+.led .r em{margin-left:auto;font-style:normal}
+.led .r.blink em{animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+.led:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.55) 1px,transparent 1.4px);background-size:4px 4px;pointer-events:none}
+
+/* inspect panel */
+.panel{position:absolute;right:36px;top:96px;width:430px;background:var(--card);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden}
+.panel .hd{background:var(--ink);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.panel .hd b{font-size:20px}
+.panel .hd small{font-size:12px;color:#9fb0da}
+.panel .hd .no{width:34px;height:34px;border-radius:50%;background:var(--led);color:#1a1200;display:grid;place-items:center;font-weight:900}
+.panel .bd{padding:16px 20px 18px}
+.clues{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.clue{font-size:13px;padding:6px 10px;border-radius:6px;background:#e9e1d1;color:#3a3325;display:flex;gap:6px;align-items:center}
+.clue i{width:6px;height:6px;border-radius:50%;background:#c28a2c}
+.clue.new{background:#ffe6b0;box-shadow:0 0 0 2px #ffb43a inset;animation:pop .6s ease}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.08)}}
+.q{font-size:12px;font-weight:700;color:#7a6f5a;letter-spacing:2px;margin:12px 0 8px}
+.opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.opt{border:2px solid #d9cfbb;background:#fff;border-radius:9px;padding:10px 8px;text-align:center;font-size:15px;font-weight:700;cursor:pointer;transition:transform .1s,border-color .15s,background .15s}
+.opt small{display:block;font-weight:500;font-size:11px;color:#8a806c;margin-top:2px}
+.opt:hover{border-color:var(--ink);transform:translateY(-2px)}
+.opt:active{transform:translateY(1px)}
+.opt.sel{border-color:var(--ink);background:var(--ink);color:#fff}
+.opt.sel small{color:#aab6d8}
+.rt{display:inline-block;padding:1px 7px;border-radius:4px;color:#fff;font-size:12px;margin-right:4px}
+.lock{margin-top:16px;width:100%;border:0;border-radius:10px;padding:14px;font-family:var(--sans);font-size:17px;font-weight:800;background:var(--led);color:#231600;cursor:pointer;box-shadow:0 4px 0 #b97a12;transition:transform .08s}
+.lock:active{transform:translateY(3px);box-shadow:0 1px 0 #b97a12}
+.people{position:absolute;left:36px;bottom:26px;display:flex;gap:10px}
+.pp{width:112px;height:66px;border-radius:10px;background:rgba(10,15,30,.78);border:1px solid rgba(255,255,255,.14);color:#dfe6fb;font-size:12px;padding:8px 10px;cursor:pointer;transition:all .15s}
+.pp b{display:block;font-size:15px;margin-bottom:2px}
+.pp.cur{border-color:var(--led);box-shadow:0 0 0 2px var(--led)}
+.pp.done{color:#8fe0b8}
+.pp:hover{transform:translateY(-3px)}
+.hintbar{position:absolute;right:36px;bottom:30px;font-size:13px;color:#c8d2ee;background:rgba(10,15,30,.7);padding:10px 14px;border-radius:8px}
+.key{display:inline-block;min-width:20px;padding:0 5px;border:1px solid #6a78a0;border-bottom-width:3px;border-radius:4px;font-family:var(--mono);font-size:11px;text-align:center}
+.lens-cap{position:absolute;font-size:12px;color:#fff;background:var(--ink);padding:4px 8px;border-radius:4px;white-space:nowrap}
+
+/* result (B) */
+.res{position:absolute;right:36px;top:96px;width:560px;background:var(--card);border-radius:16px;box-shadow:0 30px 70px rgba(0,0,0,.55);overflow:hidden}
+.res .hd{padding:18px 24px;background:var(--ink);color:#fff;display:flex;align-items:flex-end;gap:16px}
+.res .hd .sc{font-size:54px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--led)}
+.res .hd .sc small{font-size:22px;color:#8fa0cc}
+.res .hd div.t{font-size:14px;color:#b9c3e0;line-height:1.5}
+.res .hd div.t b{color:#fff;font-size:18px}
+.rows{padding:10px 18px 4px}
+.row{display:grid;grid-template-columns:50px 1fr 1fr;gap:10px;align-items:center;padding:9px 6px;border-bottom:1px dashed #d9cfbb;opacity:0;transform:translateX(20px);animation:rin .45s ease forwards}
+.row:nth-child(1){animation-delay:.1s}.row:nth-child(2){animation-delay:.25s}.row:nth-child(3){animation-delay:.4s}.row:nth-child(4){animation-delay:.55s}.row:nth-child(5){animation-delay:.7s}
+@keyframes rin{to{opacity:1;transform:none}}
+.row .av{width:44px;height:44px;border-radius:10px;background:#1c2744;display:grid;place-items:center;color:var(--led);font-weight:900}
+.cell{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.cell small{font-weight:500;color:#8a806c;font-size:12px;display:block}
+.mk{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;color:#fff;font-size:14px;flex:none}
+.mk.o{background:var(--ok)}.mk.x{background:var(--ng)}
+.share{display:flex;align-items:center;gap:14px;padding:14px 22px 20px}
+.grid{display:grid;grid-template-columns:repeat(5,18px);gap:4px}
+.grid i{width:18px;height:18px;border-radius:4px}
+.share button{margin-left:auto;border:0;border-radius:10px;padding:12px 18px;font-family:var(--sans);font-weight:800;font-size:15px;background:var(--ink);color:#fff;cursor:pointer}
+.story{position:absolute;left:36px;bottom:30px;width:640px;background:rgba(246,241,231,.96);border-radius:12px;padding:16px 20px;box-shadow:0 20px 40px rgba(0,0,0,.45)}
+.story b{font-size:12px;letter-spacing:2px;color:#8a6a2a}
+.story p{font-size:16px;line-height:1.6;margin-top:6px;color:#2a2f45}
+.tabs{position:absolute;left:50%;transform:translateX(-50%);top:22px;display:flex;gap:6px;z-index:60}
+.tabs button{font-family:var(--sans);font-size:12px;background:rgba(255,255,255,.08);color:#b9c3e0;border:1px solid rgba(255,255,255,.18);padding:5px 10px;border-radius:14px;cursor:pointer}
+.tabs button.on{background:var(--led);color:#1a1200;border-color:var(--led)}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2f55"/><stop offset=".55" stop-color="#6f5e8a"/><stop offset=".8" stop-color="#e98c6f"/><stop offset="1" stop-color="#ffd2a1"/></linearGradient>
+  <linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3150"/><stop offset="1" stop-color="#121728"/></linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd6ff" stop-opacity=".22"/><stop offset=".5" stop-color="#9fd6ff" stop-opacity=".06"/><stop offset="1" stop-color="#9fd6ff" stop-opacity=".18"/></linearGradient>
+  <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffb48a"/><stop offset="1" stop-color="#ffb48a" stop-opacity="0"/></linearGradient>
+  <filter id="rimf" x="-10%" y="-10%" width="120%" height="120%"><feOffset in="SourceAlpha" dx="3.5" dy="2" result="o"/><feComposite in="SourceAlpha" in2="o" operator="out" result="edge"/><feFlood flood-color="#ffb48a"/><feComposite in2="edge" operator="in" result="rim"/><feGaussianBlur in="rim" stdDeviation=".6" result="rb"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="rb"/></feMerge></filter>
+  <filter id="selF" x="-15%" y="-10%" width="130%" height="120%"><feMorphology in="SourceAlpha" operator="dilate" radius="4" result="d"/><feComposite in="d" in2="SourceAlpha" operator="out" result="ring"/><feFlood flood-color="#ffb43a"/><feComposite in2="ring" operator="in" result="r2"/><feGaussianBlur in="r2" stdDeviation="3" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="r2"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="silG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2140"/><stop offset="1" stop-color="#0a0e1d"/></linearGradient>
+  <filter id="bl3"><feGaussianBlur stdDeviation="3"/></filter>
+  <filter id="bl12"><feGaussianBlur stdDeviation="12"/></filter>
+  <radialGradient id="lensG" cx=".5" cy=".5" r=".5"><stop offset=".85" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></radialGradient>
+  <!-- silhouettes (seen from behind) -->
+  <g id="p1"><!-- nurse: bun, long coat, lanyard strap, tote, crocs -->
+    <ellipse cx="0" cy="-322" rx="26" ry="29"/><circle cx="0" cy="-352" r="13"/>
+    <path d="M-16 -296 L16 -296 L22 -284 C52 -276 60 -250 62 -200 L66 -40 L-66 -40 L-62 -200 C-60 -250 -52 -276 -22 -284Z"/>
+    <path d="M-40 -40 L-36 -4 L-14 -4 L-12 -40Z M12 -40 L14 -4 L36 -4 L40 -40Z"/>
+    <path d="M-44 -4 h34 v10 h-34z M10 -4 h34 v10 h-34z"/>
+    <path d="M60 -210 L96 -160 L92 -90 L52 -90 L50 -160Z"/>
+  </g>
+  <g id="p2"><!-- baker: big backpack with rolled knife bag, cap -->
+    <ellipse cx="0" cy="-330" rx="27" ry="30"/><path d="M-30 -338 Q0 -372 30 -338 L40 -334 L-30 -332Z"/>
+    <path d="M-50 -290 C-20 -302 20 -302 50 -290 L58 -120 L-58 -120Z"/>
+    <rect x="-46" y="-282" width="92" height="120" rx="18"/><rect x="-60" y="-250" width="120" height="22" rx="11"/>
+    <path d="M-50 -120 L-42 -4 L-8 -4 L-4 -120Z M4 -120 L8 -4 L42 -4 L50 -120Z"/>
+    <path d="M-50 -6 h46 v12 h-46z M4 -6 h46 v12 h-46z"/>
+  </g>
+  <g id="p3"><!-- student with guitar case -->
+    <ellipse cx="0" cy="-300" rx="24" ry="27"/>
+    <path d="M-40 -270 C-18 -280 18 -280 40 -270 L44 -150 L-44 -150Z"/>
+    <path d="M-38 -150 L-32 -4 L-6 -4 L-4 -150Z M4 -150 L6 -4 L32 -4 L38 -150Z"/>
+    <path d="M30 -380 C58 -390 72 -370 66 -330 L60 -250 C80 -230 84 -160 70 -110 C58 -80 20 -80 12 -110 C0 -160 6 -230 26 -250 L20 -330 C18 -360 20 -375 30 -380Z"/>
+  </g>
+  <g id="p4"><!-- worker: hard hat clipped to bag, boots -->
+    <ellipse cx="0" cy="-340" rx="29" ry="31"/>
+    <path d="M-58 -302 C-24 -316 24 -316 58 -302 L64 -150 L-64 -150Z"/>
+    <path d="M-54 -150 L-50 -18 L-8 -18 L-6 -150Z M6 -150 L8 -18 L50 -18 L54 -150Z"/>
+    <path d="M-56 -22 h50 v24 h-50z M6 -22 h52 v24 h-52z"/>
+    <path d="M-60 -230 C-60 -262 -20 -268 -14 -236 L-10 -222 L-64 -222Z"/>
+  </g>
+  <g id="p5"><!-- grandmother with shopping cart -->
+    <ellipse cx="0" cy="-250" rx="24" ry="25"/><path d="M-22 -262 Q0 -290 22 -262Z"/>
+    <path d="M-36 -226 C-14 -236 14 -236 36 -226 L52 -60 L-52 -60Z"/>
+    <path d="M-30 -60 L-26 -4 L-6 -4 L-6 -60Z M6 -60 L6 -4 L26 -4 L30 -60Z"/>
+    <path d="M58 -170 L64 -170 L64 -150 L110 -150 L106 -30 L66 -30Z"/><circle cx="72" cy="-18" r="12"/><circle cx="102" cy="-18" r="12"/>
+  </g>
+</defs></svg>
+
+<!-- =================== SCREEN A : 관찰 =================== -->
+<section class="screen" id="sa">
+<svg class="scene" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="620" fill="url(#sky)"/>
+  <!-- far city -->
+  <g fill="#2a2d4d" opacity=".9">
+    <rect x="0" y="300" width="120" height="320"/><rect x="110" y="250" width="90" height="370"/><rect x="200" y="330" width="140" height="290"/><rect x="340" y="220" width="80" height="400"/><rect x="420" y="290" width="160" height="330"/><rect x="580" y="260" width="110" height="360"/><rect x="690" y="330" width="130" height="290"/><rect x="820" y="200" width="90" height="420"/><rect x="910" y="300" width="170" height="320"/><rect x="1080" y="250" width="100" height="370"/><rect x="1180" y="320" width="150" height="300"/><rect x="1330" y="240" width="110" height="380"/><rect x="1440" y="300" width="160" height="320"/>
+  </g>
+  <g fill="#ffd28a" opacity=".55"><rect x="130" y="270" width="8" height="10"/><rect x="150" y="300" width="8" height="10"/><rect x="360" y="250" width="8" height="10"/><rect x="600" y="290" width="8" height="10"/><rect x="840" y="230" width="8" height="10"/><rect x="860" y="270" width="8" height="10"/><rect x="1100" y="280" width="8" height="10"/><rect x="1350" y="270" width="8" height="10"/><rect x="1370" y="300" width="8" height="10"/><rect x="940" y="330" width="8" height="10"/></g>
+  <!-- road + wet reflections -->
+  <rect y="600" width="1600" height="400" fill="url(#road)"/>
+  <rect y="600" width="1600" height="14" fill="#444c6c"/>
+  <g opacity=".35"><rect x="80" y="640" width="1440" height="4" fill="#ffd2a1" filter="url(#bl3)"/><ellipse cx="400" cy="720" rx="140" ry="24" fill="#e98c6f" filter="url(#bl12)"/><ellipse cx="980" cy="700" rx="110" ry="20" fill="#ffb43a" filter="url(#bl12)"/><rect x="1362" y="620" width="6" height="260" fill="#ffd2a1" opacity=".4" filter="url(#bl3)"/></g>
+  <g stroke="#e8e2cf" stroke-width="6" stroke-dasharray="80 60" opacity=".35"><line x1="0" y1="900" x2="1600" y2="900"/></g>
+  <!-- bus shelter -->
+  <g>
+    <rect x="200" y="150" width="1100" height="24" rx="4" fill="#1b2340"/>
+    <rect x="200" y="150" width="1100" height="6" fill="#ffb48a" opacity=".6"/>
+    <rect x="220" y="174" width="12" height="440" fill="#22294a"/><rect x="1268" y="174" width="12" height="440" fill="#22294a"/>
+    <rect x="232" y="180" width="1036" height="380" fill="url(#glass)"/>
+    <line x1="232" y1="420" x2="1268" y2="420" stroke="#9fd6ff" stroke-opacity=".25"/>
+    <!-- ad panel -->
+    <rect x="1120" y="190" width="140" height="360" fill="#f2e6d0"/><rect x="1128" y="198" width="124" height="220" fill="#3fae4a" opacity=".85"/><text x="1190" y="460" text-anchor="middle" font-size="16" font-weight="800" fill="#1a2033" font-family="sans-serif">한빛 우유</text>
+    <!-- bench -->
+    <rect x="300" y="500" width="360" height="16" rx="4" fill="#3a2c22"/><rect x="320" y="516" width="10" height="60" fill="#2a2030"/><rect x="630" y="516" width="10" height="60" fill="#2a2030"/>
+    <!-- stop sign pole -->
+    <rect x="1360" y="120" width="10" height="490" fill="#3a4262"/>
+    <rect x="1320" y="120" width="90" height="120" rx="10" fill="#2f63d6"/><text x="1365" y="170" text-anchor="middle" font-size="16" fill="#fff" font-weight="800" font-family="sans-serif">한빛</text><text x="1365" y="194" text-anchor="middle" font-size="16" fill="#fff" font-weight="800" font-family="sans-serif">사거리</text><text x="1365" y="222" text-anchor="middle" font-size="11" fill="#cfe0ff" font-family="monospace">14-214</text>
+  </g>
+  <!-- people from behind, lined on the curb -->
+  <g fill="url(#silG)" filter="url(#rimf)">
+    <use href="#p2" x="540" y="610"/>
+    <use href="#p3" x="720" y="610"/>
+    <use href="#p4" x="900" y="610"/>
+    <use href="#p5" x="1060" y="610"/>
+  </g>
+  <g fill="url(#silG)" filter="url(#selF)"><use href="#p1" x="360" y="610"/></g>
+  <!-- clue accents on the silhouettes -->
+  <g>
+    <path d="M345 -300 q15 10 30 0" transform="translate(0,610)" stroke="#3d7bff" stroke-width="3" fill="none"/>
+    <g transform="translate(360,610)"><rect x="-44" y="-4" width="34" height="10" rx="4" fill="#7fd1c7"/><rect x="10" y="-4" width="34" height="10" rx="4" fill="#7fd1c7"/></g>
+    <g transform="translate(540,610)"><rect x="-40" y="-276" width="80" height="12" rx="6" fill="#6b4a36"/><rect x="-48" y="-252" width="10" height="60" rx="4" fill="#8a6a4a"/><path d="M-30 -6 h26 M8 -6 h26" stroke="#e8e0d0" stroke-width="3" opacity=".7"/></g>
+    <g transform="translate(720,610)"><path d="M30 -380 C58 -390 72 -370 66 -330 L60 -250 C80 -230 84 -160 70 -110 C58 -80 20 -80 12 -110 C0 -160 6 -230 26 -250 L20 -330 C18 -360 20 -375 30 -380Z" fill="#232c52"/><rect x="34" y="-200" width="22" height="8" rx="3" fill="#c9a05a"/></g>
+    <g transform="translate(900,610)"><path d="M-60 -230 C-60 -262 -20 -268 -14 -236 L-10 -222 L-64 -222Z" fill="#f2c230"/><path d="M-56 -150 h112" stroke="#d6ff5a" stroke-width="5" opacity=".6"/></g>
+    <g transform="translate(1060,610)"><rect x="66" y="-148" width="38" height="112" fill="#7a2f3a"/><path d="M66 -120 h38 M66 -90 h38 M66 -60 h38 M78 -148 v112 M92 -148 v112" stroke="#b25060" stroke-width="2"/></g>
+    <ellipse cx="360" cy="614" rx="80" ry="12" fill="#ffb43a" opacity=".3"/>
+  </g>
+  <!-- reflections of people in wet road -->
+  <g fill="#0d1224" opacity=".16" transform="translate(0,1228) scale(1,-1)" filter="url(#bl3)"><use href="#p1" x="360" y="610"/><use href="#p2" x="540" y="610"/><use href="#p3" x="720" y="610"/><use href="#p4" x="900" y="610"/><use href="#p5" x="1060" y="610"/></g>
+  <!-- number chips above heads -->
+  <g font-family="sans-serif" font-weight="900" font-size="16" text-anchor="middle">
+    <g transform="translate(360,236)"><circle r="17" fill="#ffb43a"/><text y="6" fill="#1a1200">1</text></g>
+    <g transform="translate(540,248)"><circle r="17" fill="#2fb67c"/><text y="6" fill="#fff">2</text></g>
+    <g transform="translate(720,178)"><circle r="17" fill="#1b2340" stroke="#fff" stroke-opacity=".4"/><text y="6" fill="#fff">3</text></g>
+    <g transform="translate(900,238)"><circle r="17" fill="#1b2340" stroke="#fff" stroke-opacity=".4"/><text y="6" fill="#fff">4</text></g>
+    <g transform="translate(1060,326)"><circle r="17" fill="#1b2340" stroke="#fff" stroke-opacity=".4"/><text y="6" fill="#fff">5</text></g>
+  </g>
+  <!-- MAGNIFIER on nurse: detailed insert -->
+  <g id="lens" transform="translate(360,470)">
+    <line x1="80" y1="80" x2="150" y2="150" stroke="#2a2f45" stroke-width="18" stroke-linecap="round"/>
+    <line x1="80" y1="80" x2="150" y2="150" stroke="#565e80" stroke-width="6" stroke-linecap="round"/>
+    <clipPath id="lc"><circle r="104"/></clipPath>
+    <g clip-path="url(#lc)">
+      <rect x="-110" y="-110" width="220" height="220" fill="#3b3f5c"/>
+      <!-- zoomed: coat back, lanyard strap + crocs & white socks -->
+      <path d="M-120 -110 L120 -110 L130 120 L-130 120Z" fill="#8b93ae"/>
+      <path d="M-120 -110 L120 -110 L130 120 L-130 120Z" fill="#1d2440" opacity=".55"/>
+      <path d="M-30 -110 C-20 -60 20 -60 30 -110" stroke="#2f63d6" stroke-width="8" fill="none"/>
+      <rect x="-12" y="-70" width="24" height="8" fill="#e6e6e6"/>
+      <path d="M40 -20 q40 10 60 60" stroke="#6a4a3a" stroke-width="10" fill="none"/>
+      <g transform="translate(-40,50)"><rect x="-26" y="0" width="52" height="34" rx="14" fill="#7fd1c7"/><circle cx="-10" cy="14" r="3" fill="#3a7a72"/><circle cx="6" cy="10" r="3" fill="#3a7a72"/><rect x="-20" y="-24" width="40" height="26" fill="#f3f3f3"/></g>
+      <g transform="translate(40,50)"><rect x="-26" y="0" width="52" height="34" rx="14" fill="#7fd1c7"/><circle cx="-6" cy="14" r="3" fill="#3a7a72"/><rect x="-20" y="-24" width="40" height="26" fill="#f3f3f3"/></g>
+      <rect x="-110" y="-110" width="220" height="220" fill="url(#lensG)"/>
+    </g>
+    <circle r="104" fill="none" stroke="#2a2f45" stroke-width="12"/>
+    <circle r="104" fill="none" stroke="#c9d2ee" stroke-width="2"/>
+    <path d="M-70 -60 A92 92 0 0 1 -20 -92" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".6"/>
+  </g>
+</svg>
+<div class="rain"></div><div class="grain"></div>
+<div class="lens-cap" style="left:250px;top:592px">돋보기 · 신발과 목줄</div>
+
+<div class="top">
+  <div class="brand"><i></i>버스 정류장 관찰</div>
+  <div class="day">오늘의 정류장 <b>#214</b> · 한빛사거리 · 07:42</div>
+  <div class="streak">연속 관찰<b>12일</b><span style="opacity:.3">|</span>남은 돋보기<b id="lensN">2</b></div>
+</div>
+
+<div class="led">
+  <div class="r"><span class="n" style="background:var(--blue)">402</span>한빛병원 <em>곧 도착</em></div>
+  <div class="r blink"><span class="n" style="background:var(--green)">7016</span>중앙시장 <em>3분</em></div>
+  <div class="r"><span class="n" style="background:var(--red)">N13</span>남부공단 <em>9분</em></div>
+</div>
+
+<div class="panel">
+  <div class="hd"><div class="no">1</div><div><b>뒷모습 1</b><br><small>버스가 오기 전까지 · 앞모습은 볼 수 없다</small></div></div>
+  <div class="bd">
+    <div class="clues">
+      <span class="clue"><i></i>머리를 단단히 올려 묶음</span>
+      <span class="clue"><i></i>무릎까지 오는 외투</span>
+      <span class="clue new"><i></i>파란 목줄 · 사원증</span>
+      <span class="clue new"><i></i>민트색 고무 신발 · 흰 양말</span>
+      <span class="clue"><i></i>07:42 · 퇴근이 아니라 출근?</span>
+    </div>
+    <div class="q">직업</div>
+    <div class="opts" data-g="job">
+      <div class="opt sel">간호사<small>교대 근무</small></div>
+      <div class="opt">제빵사<small>새벽 출근</small></div>
+      <div class="opt">교사<small>8시 조회</small></div>
+    </div>
+    <div class="q">행선지</div>
+    <div class="opts" data-g="dst">
+      <div class="opt sel"><span class="rt" style="background:var(--blue)">402</span><small>한빛병원</small></div>
+      <div class="opt"><span class="rt" style="background:var(--green)">7016</span><small>중앙시장</small></div>
+      <div class="opt"><span class="rt" style="background:var(--red)">N13</span><small>남부공단</small></div>
+    </div>
+    <button class="lock" id="lockBtn">추리 확정 · 다음 뒷모습</button>
+  </div>
+</div>
+
+<div class="people">
+  <div class="pp cur"><b>1 · 외투</b>간호사 → 402</div>
+  <div class="pp done"><b>2 · 배낭</b>제빵사 → 7016</div>
+  <div class="pp"><b>3 · 기타</b>미정</div>
+  <div class="pp"><b>4 · 작업화</b>미정</div>
+  <div class="pp"><b>5 · 장바구니</b>미정</div>
+</div>
+<div class="hintbar">버스가 서면 정답이 공개된다 · 클릭 = 돋보기 · 탭 전환 <span class="key">1</span> <span class="key">2</span></div>
+</section>
+
+<!-- =================== SCREEN B : 버스 도착 · 공개 =================== -->
+<section class="screen" id="sb">
+<svg class="scene" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="620" fill="url(#sky)"/>
+  <rect width="1600" height="620" fill="#ffd2a1" opacity=".18"/>
+  <g fill="#2f3258" opacity=".85"><rect x="0" y="300" width="120" height="320"/><rect x="110" y="250" width="90" height="370"/><rect x="200" y="330" width="140" height="290"/><rect x="340" y="220" width="80" height="400"/><rect x="420" y="290" width="160" height="330"/><rect x="580" y="260" width="110" height="360"/><rect x="690" y="330" width="130" height="290"/><rect x="820" y="200" width="90" height="420"/></g>
+  <rect y="600" width="1600" height="400" fill="url(#road)"/>
+  <rect y="600" width="1600" height="14" fill="#444c6c"/>
+  <!-- blue trunk bus 402 arriving, doors open -->
+  <g id="bus" transform="translate(-40,300)">
+    <rect x="0" y="300" width="900" height="30" fill="#000" opacity=".4" filter="url(#bl12)"/>
+    <rect x="0" y="0" width="880" height="300" rx="26" fill="#2f63d6"/>
+    <rect x="0" y="230" width="880" height="70" rx="10" fill="#1e46a8"/>
+    <rect x="0" y="0" width="880" height="16" rx="8" fill="#5b86ea"/>
+    <rect x="120" y="-26" width="220" height="28" rx="8" fill="#23479e"/>
+    <rect x="0" y="196" width="880" height="12" fill="#ffffff" opacity=".85"/>
+    <text x="590" y="262" font-family="sans-serif" font-weight="900" font-size="26" fill="#fff">402 한빛병원</text><text x="40" y="262" font-family="sans-serif" font-weight="700" font-size="20" fill="#cfe0ff">간선 · 시청 ↔ 한빛병원</text>
+    <path d="M800 10 Q876 14 880 90 L880 200 L790 200 Z" fill="#0e1a3a"/>
+    <path d="M810 30 Q860 40 866 100" stroke="#9fd6ff" stroke-width="5" opacity=".4" fill="none"/>
+    <rect x="30" y="40" width="760" height="140" rx="10" fill="#0e1a3a"/>
+    <g fill="#ffd9a8" opacity=".75"><rect x="40" y="50" width="170" height="120" rx="6"/><rect x="220" y="50" width="170" height="120" rx="6"/><rect x="580" y="50" width="200" height="120" rx="6"/></g>
+    <!-- silhouettes boarding seen through windows -->
+    <g fill="#1b2340"><ellipse cx="110" cy="100" rx="18" ry="20"/><path d="M80 170 C80 130 140 130 140 170Z"/><ellipse cx="300" cy="96" rx="18" ry="20"/><path d="M270 170 C270 128 330 128 330 170Z"/><ellipse cx="660" cy="104" rx="18" ry="20"/><path d="M630 170 C630 132 690 132 690 170Z"/></g>
+    <!-- open door -->
+    <rect x="402" y="32" width="166" height="262" fill="#1e46a8"/><rect x="410" y="40" width="150" height="250" fill="#ffe6c0"/>
+    <rect x="410" y="40" width="150" height="250" fill="#ffb43a" opacity=".25"/>
+    <g transform="translate(486,290)" fill="#0d1224"><use href="#p1" transform="scale(.62)"/></g>
+    <rect x="680" y="-24" width="100" height="44" rx="6" fill="#0a0a0c"/><text x="730" y="10" text-anchor="middle" font-family="monospace" font-size="30" font-weight="700" fill="#ffb43a">402</text>
+    <circle cx="160" cy="300" r="48" fill="#0d0f18"/><circle cx="160" cy="300" r="20" fill="#5a6280"/><circle cx="720" cy="300" r="48" fill="#0d0f18"/><circle cx="720" cy="300" r="20" fill="#5a6280"/>
+    <rect x="860" y="200" width="24" height="30" rx="6" fill="#fff4c8"/>
+  </g>
+  <!-- headlight flare -->
+  <ellipse cx="840" cy="515" rx="220" ry="40" fill="#fff0c0" opacity=".25" filter="url(#bl12)"/>
+  <!-- remaining people on the curb -->
+  <g fill="url(#silG)" filter="url(#rimf)"><use href="#p2" x="925" y="620"/></g>
+  <!-- reflection -->
+  <g opacity=".13" transform="translate(0,1240) scale(1,-1)" filter="url(#bl12)"><rect x="-40" y="320" width="880" height="280" rx="26" fill="#2f63d6"/></g>
+</svg>
+<div class="rain" style="opacity:.25"></div><div class="grain"></div>
+
+<div class="top">
+  <div class="brand"><i></i>버스 정류장 관찰</div>
+  <div class="day">오늘의 정류장 <b>#214</b> · 한빛사거리 · 07:45</div>
+  <div class="streak">연속 관찰<b>13일</b><span style="opacity:.3">|</span>오늘 순위<b>상위 18%</b></div>
+</div>
+
+<div class="res">
+  <div class="hd"><div class="sc">8<small>/10</small></div><div class="t"><b>402번이 섰다 — 정답 공개</b><br>앞모습이 보이는 순간, 당신의 추리가 맞춰진다.</div></div>
+  <div class="rows">
+    <div class="row"><div class="av">1</div><div class="cell"><span class="mk o">✓</span><div>간호사<small>한빛병원 병동 · 야간 교대 전</small></div></div><div class="cell"><span class="mk o">✓</span><div>402 한빛병원<small>문이 열리자 먼저 탔다</small></div></div></div>
+    <div class="row"><div class="av">2</div><div class="cell"><span class="mk o">✓</span><div>제빵사<small>시장 입구 빵집 · 칼 가방</small></div></div><div class="cell"><span class="mk o">✓</span><div>7016 중앙시장<small>아직 기다린다</small></div></div></div>
+    <div class="row"><div class="av">3</div><div class="cell"><span class="mk x">✗</span><div>음대생 → <b>악기 수리공</b><small>케이스 안은 고칠 기타</small></div></div><div class="cell"><span class="mk o">✓</span><div>402 한빛병원 앞<small>공방이 병원 옆 골목</small></div></div></div>
+    <div class="row"><div class="av">4</div><div class="cell"><span class="mk o">✓</span><div>현장 작업자<small>안전모 · 작업화</small></div></div><div class="cell"><span class="mk x">✗</span><div>N13 → <b>7016</b><small>오늘 현장은 시장 재건축</small></div></div></div>
+    <div class="row"><div class="av">5</div><div class="cell"><span class="mk o">✓</span><div>장 보러 가는 할머니<small>빈 장바구니</small></div></div><div class="cell"><span class="mk o">✓</span><div>7016 중앙시장<small>수요일은 반찬 장날</small></div></div></div>
+  </div>
+  <div class="share">
+    <div class="grid" id="g"></div>
+    <div style="font-size:13px;color:#6a6250;line-height:1.5">내일 07:40<br><b style="color:#18203a">새 정류장 #215</b></div>
+    <button id="shareBtn">결과 공유</button>
+  </div>
+</div>
+<div class="story"><b>뒷모습의 사연 · 3</b><p>"기타 케이스를 멘 사람은 학생이 아니었다. 줄이 끊어진 딸의 기타를 고치러 가는 길이었다."</p></div>
+</section>
+
+<div class="tabs"><button data-t="a">1 · 관찰</button><button data-t="b">2 · 공개</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate('+((innerWidth-1600*s)/2)+'px,'+((innerHeight-1000*s)/2)+'px) scale('+s+')';}
+  addEventListener('resize',fit);fit();
+  var cur='a';
+  function show(k){cur=(k==='b')?'b':'a';document.getElementById('sa').className='screen'+(cur==='a'?' on':'');document.getElementById('sb').className='screen'+(cur==='b'?' on':'');
+    var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].className=bs[i].getAttribute('data-t')===cur?'on':'';}
+  function fromHash(){show((location.hash||'#a').replace('#',''));}
+  addEventListener('hashchange',fromHash);fromHash();
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-t');});
+
+  var ac=null;
+  function audio(){if(ac)return ac;try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;}return ac;}
+  function blip(f,d,g,type){var a=audio();if(!a)return;try{var o=a.createOscillator(),gg=a.createGain();o.type=type||'square';o.frequency.value=f;gg.gain.setValueAtTime(g,a.currentTime);gg.gain.exponentialRampToValueAtTime(.0001,a.currentTime+d);o.connect(gg);gg.connect(a.destination);o.start();o.stop(a.currentTime+d);}catch(e){}}
+  function ding(){blip(988,.35,.05,'sine');setTimeout(function(){blip(1319,.5,.05,'sine');},120);}
+
+  // option selection
+  var groups=document.querySelectorAll('.opts');
+  for(var gi=0;gi<groups.length;gi++){(function(g){var os=g.querySelectorAll('.opt');for(var k=0;k<os.length;k++)os[k].addEventListener('click',function(e){audio();for(var m=0;m<os.length;m++)os[m].classList.remove('sel');e.currentTarget.classList.add('sel');blip(660,.06,.03);});})(groups[gi]);}
+  var lb=document.getElementById('lockBtn');if(lb)lb.addEventListener('click',function(){audio();ding();lb.textContent='확정됨 · 버스를 기다린다';});
+  // magnifier follows pointer in A
+  var lens=document.getElementById('lens');var svgA=document.querySelector('#sa svg');
+  if(svgA&&lens){svgA.addEventListener('pointermove',function(e){var r=svgA.getBoundingClientRect();var x=(e.clientX-r.left)/r.width*1600,y=(e.clientY-r.top)/r.height*1000;if(y>250&&y<700&&x>200&&x<1150){lens.setAttribute('transform','translate('+x.toFixed(0)+','+y.toFixed(0)+')');}});
+    svgA.addEventListener('click',function(){audio();blip(420,.08,.04,'triangle');var n=document.getElementById('lensN');if(n){var v=Math.max(0,(+n.textContent)-1);n.textContent=v;}});}
+  // share grid
+  var pat='ooooooxoxooo'.split('');var res=['o','o','o','o','x','o','o','x','o','o'];var g=document.getElementById('g');
+  if(g){var h='';for(var r=0;r<2;r++)for(var c=0;c<5;c++){var v=res[c*2+r];h+='<i style="background:'+(v==='o'?'#2fb67c':'#e2463f')+'"></i>';}g.innerHTML=h;}
+  var sb=document.getElementById('shareBtn');if(sb)sb.addEventListener('click',function(){audio();ding();sb.textContent='복사됨 ✓';});
+  // bus rolling in on B
+  var t0=0;function loop(t){if(!t0)t0=t;var bus=document.getElementById('bus');if(bus&&cur==='b'){var p=Math.min(1,(t-t0)/1400);var e=1-Math.pow(1-p,3);bus.setAttribute('transform','translate('+(-700+660*e).toFixed(1)+',300)');}
+    requestAnimationFrame(loop);}
+  addEventListener('hashchange',function(){t0=0;if(cur==='b'){audio();}});
+  requestAnimationFrame(loop);
+  addEventListener('keydown',function(e){audio();if(e.key==='1')location.hash='a';if(e.key==='2'){location.hash='b';}});
+})();
+</script>
+</body>
+</html>

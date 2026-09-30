@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자수 지도 — tactics-whisper-map</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 그래야 다른 PoC와 견줄 수 있고, 데이터를 고치면 화면이 따라온다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/tactics-whisper-map && python -m http.server 8099
+      → http://localhost:8099/presentation/index.html
+-->
+<style>
+@font-face { font-family: "Gaegu"; src: url("assets/fonts/Gaegu-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "GowunDodum"; src: url("assets/fonts/GowunDodum-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+
+:root {
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  /* 표제 글꼴 Gaegu 는 손글씨라 기호(- 줄표 · 가운뎃점 …)가 없다. 본문 글꼴을 바로 뒤에 세워 그 자리를 메운다 */
+  --linen:#D9CCAE; --linenLit:#E6DCC3; --linenDim:#C3B492; --linenShade:#A99A78;
+  --indigo:#31486B; --earth:#7A5B38; --red:#A0473C; --knotBack:#B7A582;
+  --ink:#2B2318; --inkSoft:#5A4B37;
+  --sTitle:58px; --sHead:27px; --sBody:16px; --sHint:13px; --sNum:14px;
+  --stitchW:2px; --weavePitch:4px;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--linen);
+  color: var(--ink);
+  font-family: "GowunDodum", system-ui, sans-serif;
+  font-size: var(--sBody);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+/* 아마천 결 — 이미지를 받지 않고 겹친 그라디언트로 짠다 */
+body::before {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, rgba(43,35,24,var(--warpA)) 0 var(--threadW), transparent var(--threadW) var(--weavePitch)),
+    repeating-linear-gradient(0deg,  rgba(43,35,24,var(--weftA)) 0 var(--threadW), transparent var(--threadW) var(--weavePitch)),
+    repeating-linear-gradient(90deg, rgba(43,35,24,var(--slubA)) 0 3px, transparent 3px var(--slubPitch));
+}
+body::after {
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(43,35,24,var(--vig)) 100%);
+}
+main { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:40px 20px 90px; }
+
+/* 천 조각 — 가장자리가 풀린 헝겊 */
+.cloth {
+  position:relative; background:
+    linear-gradient(180deg, var(--linenLit), var(--linen) 40%, var(--linenDim));
+  border:var(--selvage) solid var(--linenShade);
+  border-radius:2px;
+  padding:22px 24px 26px;
+  margin:0 0 30px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 -1px 0 rgba(43,35,24,.12) inset,
+              0 3px 10px rgba(43,35,24,.10);
+}
+.cloth::after {  /* 시접의 홈질 */
+  content:""; position:absolute; inset:5px; pointer-events:none;
+  border:1px dashed rgba(122,91,56,.42);
+}
+h1 {
+  font-family:"Gaegu", "GowunDodum", cursive; font-weight:700; font-size:var(--sTitle);
+  margin:0 0 2px; letter-spacing:var(--trkTitle); line-height:1.05; color:var(--ink);
+}
+h1 .sub { display:block; font-size:calc(var(--sHead) * .72); color:var(--inkSoft); letter-spacing:0; }
+h2 {
+  font-family:"Gaegu", "GowunDodum", cursive; font-weight:700; font-size:var(--sHead);
+  margin:0 0 4px; color:var(--ink);
+}
+h2 .no { color:var(--red); margin-right:10px; }
+h3 { font-size:var(--sBody); margin:18px 0 6px; color:var(--inkSoft); font-weight:400; }
+p { margin:6px 0 12px; max-width:74ch; }
+.hint { font-size:var(--sHint); color:var(--inkSoft); }
+.lede { font-size:calc(var(--sBody) + 2px); }
+b, strong { color:var(--ink); }
+em { font-style:normal; border-bottom:2px solid var(--red); }
+code { font-family:"GowunDodum", monospace; font-size:var(--sNum); color:var(--earth); }
+
+table { border-collapse:collapse; width:100%; font-size:var(--sNum); margin:8px 0 6px; }
+th, td { text-align:left; padding:5px 8px; border-bottom:1px dashed rgba(122,91,56,.35); }
+th { font-family:"Gaegu", "GowunDodum", cursive; font-size:calc(var(--sNum) + 3px); color:var(--indigo); font-weight:700; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+tr.hi td { background:rgba(160,71,60,.09); }
+.tag {
+  display:inline-block; font-size:var(--sHint); padding:1px 7px; border-radius:9px;
+  border:1px solid currentColor; margin-right:4px;
+}
+.tag.ind { color:var(--indigo); } .tag.ear { color:var(--earth); } .tag.red { color:var(--red); }
+.grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px 26px; }
+svg { display:block; max-width:100%; height:auto; overflow:visible; }
+.legend { display:flex; flex-wrap:wrap; gap:14px 22px; align-items:center; font-size:var(--sHint); margin:10px 0 2px; }
+.legend i { display:inline-block; width:56px; height:0; border-top:var(--stitchW) solid; margin-right:7px; vertical-align:middle; }
+.err { color:var(--red); font-family:"Gaegu", "GowunDodum", cursive; font-size:var(--sHead); }
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">천을 펴는 중… (fetch 가 막혔다면 <code>python -m http.server 8099</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ──────────────────────────
+const FILES = ["map", "patrols", "squad", "village", "mission", "balance"];
+
+async function load() {
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+// ── palette.json 을 CSS 변수로 옮긴다. 색을 코드에 적지 않는다 ──────────────
+function applyPalette(p) {
+  const r = document.documentElement.style;
+  const c = p.color, t = p.type, w = p.weave, s = p.stitch;
+  r.setProperty("--linen", c.linen); r.setProperty("--linenLit", c.linenLit);
+  r.setProperty("--linenDim", c.linenDim); r.setProperty("--linenShade", c.linenShade);
+  r.setProperty("--indigo", c.threadIndigo); r.setProperty("--earth", c.threadEarth);
+  r.setProperty("--red", c.threadRedFaded); r.setProperty("--knotBack", c.knotBack);
+  r.setProperty("--ink", c.ink); r.setProperty("--inkSoft", c.inkSoft);
+  r.setProperty("--sTitle", t.sizeTitle + "px"); r.setProperty("--sHead", t.sizeHeading + "px");
+  r.setProperty("--sBody", t.sizeBody + "px"); r.setProperty("--sHint", t.sizeHint + "px");
+  r.setProperty("--sNum", t.sizeNumeral + "px");
+  r.setProperty("--trkTitle", t.trackingTitle + "px");
+  r.setProperty("--weavePitch", w.pitchPx + "px"); r.setProperty("--threadW", w.threadWidthPx + "px");
+  r.setProperty("--warpA", w.warpOpacity / 100); r.setProperty("--weftA", w.weftOpacity / 100);
+  r.setProperty("--slubA", w.slubOpacity / 100); r.setProperty("--slubPitch", w.slubEveryPx + "px");
+  r.setProperty("--selvage", w.selvageWidthPx + "px");
+  r.setProperty("--stitchW", s.widthPx + "px");
+  r.setProperty("--vig", p.grade.vignette);
+}
+
+const esc = s => String(s).replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m]));
+const dash = a => a[1] === 0 ? "none" : a.join(" ");
+
+// ── 소음 전파. src/NoiseModel.cs 와 같은 규칙을 map.json 만 읽어 다시 계산한다 ──
+function propagate(map, balance, origin, loudness) {
+  const nb = balance.noise;
+  const adj = {}, extra = {};
+  map.zones.forEach(z => adj[z.id] = []);
+  map.links.forEach(l => { adj[l.a].push(l.b); adj[l.b].push(l.a); });
+  (map.noiseBlocked || []).forEach(b => extra[[b.a, b.b].sort().join("|")] = b.extraAttenuation);
+  const cost = { [origin]: 0 }, done = {}, reach = {};
+  for (;;) {
+    let cur = null, best = Infinity;
+    for (const k in cost) if (!done[k] && cost[k] < best) { cur = k; best = cost[k]; }
+    if (cur === null) break;
+    done[cur] = true;
+    const arrival = loudness - best;
+    if (arrival < nb.hearingThresholdPercent) continue;
+    reach[cur] = arrival;
+    for (const n of adj[cur]) {
+      const e = extra[[cur, n].sort().join("|")] || 0;
+      const step = best + nb.hopAttenuation + e;
+      if (cost[n] === undefined || step < cost[n]) cost[n] = step;
+    }
+  }
+  return reach;
+}
+
+// ── 순찰 구간. src/PatrolModel.cs 와 같은 규칙 (교대 없는 단순판 + 교대 한 번) ──
+function windows(guard, phaseMs, lengthMs, shifts) {
+  const cycle = guard.legs.reduce((a, l) => a + l.dwellMs, 0);
+  const starts = []; let acc = 0;
+  guard.legs.forEach(l => { starts.push(acc); acc += l.dwellMs; });
+  const legAt = local => { for (let i = guard.legs.length - 1; i >= 0; i--) if (local >= starts[i]) return i; return 0; };
+  const segStart = [0], segPhase = [((phaseMs % cycle) + cycle) % cycle];
+  shifts.filter(s => s.guardId === guard.id && s.atMs > 0 && s.atMs < lengthMs)
+        .sort((a, b) => a.atMs - b.atMs)
+        .forEach(s => { segStart.push(s.atMs); segPhase.push(((s.newPhaseMs % cycle) + cycle) % cycle); });
+  const out = [];
+  for (let seg = 0; seg < segStart.length; seg++) {
+    const from = segStart[seg], to = seg + 1 < segStart.length ? segStart[seg + 1] : lengthMs;
+    let t = from;
+    while (t < to) {
+      const local = (segPhase[seg] + (t - from)) % cycle;
+      const i = legAt(local);
+      const end = Math.min(to, t + (starts[i] + guard.legs[i].dwellMs - local));
+      const last = out[out.length - 1];
+      if (last && last.zone === guard.legs[i].zone && last.to === t) last.to = end;
+      else out.push({ zone: guard.legs[i].zone, from: t, to: end });
+      t = end;
+    }
+  }
+  return out;
+}
+
+// ── §01 천 위의 마을. 좌표는 palette.layout 이 정한다 (map.json 에는 없다) ──
+function clothMap(D, mode) {
+  const map = D.map.maps[0], P = D.palette, L = P.layout.zones, S = P.stitch;
+  const W = 760, H = 460, pad = 52;
+  const xy = id => [pad + L[id][0] / 100 * (W - pad * 2), pad + L[id][1] / 100 * (H - pad * 2)];
+  const parts = [];
+
+  // 뒷면 매듭이 비쳐 보이는 두께
+  parts.push(`<defs><filter id="back" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="2.1"/></filter>
+    <pattern id="patch" width="${P.patch.hatchPitchPx}" height="${P.patch.hatchPitchPx}"
+      patternTransform="rotate(${P.patch.hatchAngleDeg})" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="${P.patch.hatchPitchPx}" stroke="${P.patch.threadColor}"
+        stroke-width="${P.patch.hatchWidthPx}" stroke-opacity=".55"/></pattern></defs>`);
+
+  // 쪽빛 — 인접(지형). 끊기지 않는 한 줄
+  map.links.forEach(l => {
+    const [x1, y1] = xy(l.a), [x2, y2] = xy(l.b);
+    parts.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${P.color.threadIndigo}"
+      stroke-width="${S.widthPx}" stroke-dasharray="${dash(S.terrain)}" stroke-linecap="round" opacity=".92"/>`);
+  });
+
+  // 흙빛 — 시야(역시 지형이지만 방향이 있다). 화살 끝을 땀 셋으로 표시한다
+  if (mode !== "links") map.sightLines.forEach(s => s.sees.forEach(to => {
+    if (to === s.from) return;
+    const [x1, y1] = xy(s.from), [x2, y2] = xy(to);
+    const mx = x1 + (x2 - x1) * .62, my = y1 + (y2 - y1) * .62;
+    parts.push(`<line x1="${x1}" y1="${y1}" x2="${mx}" y2="${my}" stroke="${P.color.threadEarth}"
+      stroke-width="${S.widthPx - .5}" stroke-dasharray="${dash(S.single)}" opacity=".7"/>`);
+  }));
+
+  // 순찰이 밟는 구역 — 바랜 붉은실로 한 바퀴 두른다
+  const trodden = new Set();
+  D.patrols.guards.forEach(g => g.legs.forEach(l => trodden.add(l.zone)));
+
+  map.zones.forEach(z => {
+    const [x, y] = xy(z.id);
+    const seen = map.sightLines.filter(s => s.from !== z.id && s.sees.includes(z.id)).length;
+    const hidden = seen === 0;
+    parts.push(`<circle cx="${x + S.knotBackOffsetPx}" cy="${y + S.knotBackOffsetPx}"
+      r="${S.knotRadiusPx + 1}" fill="${P.color.knotBack}" filter="url(#back)" opacity=".85"/>`);
+    if (trodden.has(z.id))
+      parts.push(`<circle cx="${x}" cy="${y}" r="${S.knotRadiusPx + 6}" fill="none"
+        stroke="${P.color.threadRedFaded}" stroke-width="${S.widthPx}" stroke-dasharray="${dash(S.rumor)}"/>`);
+    if (hidden)
+      parts.push(`<rect x="${x - 26}" y="${y - 26}" width="52" height="52" rx="4" fill="url(#patch)"
+        opacity=".22" stroke="${P.patch.threadColor}" stroke-dasharray="${dash(P.patch.borderDash)}"
+        stroke-opacity=".5"/>`);
+    parts.push(`<circle cx="${x}" cy="${y}" r="${S.knotRadiusPx}" fill="${P.color.ink}"/>`);
+    parts.push(`<text x="${x}" y="${y - 14}" text-anchor="middle" font-family="Gaegu"
+      font-size="20" fill="${P.color.ink}">${esc(z.name)}</text>`);
+    parts.push(`<text x="${x}" y="${y + 24}" text-anchor="middle" font-family="GowunDodum"
+      font-size="12" fill="${P.color.inkSoft}">엄폐 ${z.coverPercent} · 보복 ${z.reprisalWeightPercent}</text>`);
+  });
+
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="마을 끝 자수 지도">${parts.join("")}</svg>`;
+}
+
+// ── 시간축 한 줄. 위상 하나의 순찰 구간을 바늘땀으로 놓는다 ─────────────────
+function timeline(D, guard, phaseMs, density) {
+  const P = D.palette, m = D.mission.missions[0], S = P.stitch;
+  const W = 640, H = 26, pad = 2;
+  const zoneColor = { z_belfry: P.color.threadIndigo, z_lane: P.color.threadRedFaded,
+                      z_checkpoint: P.color.threadEarth };
+  const ws = windows(guard, phaseMs, m.lengthMs, D.patrols.shiftChanges);
+  const parts = ws.map(w => {
+    const x1 = pad + w.from / m.lengthMs * (W - pad * 2);
+    const x2 = pad + w.to / m.lengthMs * (W - pad * 2);
+    const col = zoneColor[w.zone] || P.color.inkSoft;
+    return `<line x1="${x1}" y1="${H / 2}" x2="${x2}" y2="${H / 2}" stroke="${col}"
+      stroke-width="${S.widthPx + 4}" stroke-dasharray="${dash(density)}" stroke-linecap="butt"/>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}">${parts.join("")}</svg>`;
+}
+
+// ── 화면을 짠다 ───────────────────────────────────────────────────────────
+function render(D) {
+  const map = D.map.maps[0], P = D.palette, S = P.stitch, B = D.balance;
+  const zone = id => map.zones.find(z => z.id === id);
+  const html = [];
+
+  html.push(`<section class="cloth">
+    <h1>${esc(P.name)}<span class="sub">${esc(P.oneLine)}</span></h1>
+    <p class="lede">정찰은 사람에게서 온다. 순찰 경로·교대 시각·초소 배치를 알려면 <em>물어야</em> 하고,
+      묻는 것은 <em>마을의 신뢰를 쓴다</em>. 신뢰가 바닥나면 아무도 말해 주지 않고, 눈이 먼다.</p>
+    <p class="hint">이 화면의 모든 수치는 <code>data/</code> 의 JSON을 그 자리에서 읽은 것이다 —
+      손으로 옮겨 적은 값이 없다. 색·크기·바늘땀 밀도는 <code>presentation/palette.json</code> 이 정한다.</p>
+    <div class="legend">
+      <span><i style="border-color:${P.color.threadIndigo};border-top-style:solid"></i>쪽빛 — 지형(공짜)</span>
+      <span><i style="border-color:${P.color.threadEarth};border-top-style:dashed"></i>흙빛 — 사람에게서 온 것</span>
+      <span><i style="border-color:${P.color.threadRedFaded};border-top-style:dotted"></i>바랜 붉은실 — 순찰(사야 안다)</span>
+    </div>
+  </section>`);
+
+  // §01 천 위의 마을
+  html.push(`<section class="cloth">
+    <h2><span class="no">01</span>천 위의 마을</h2>
+    <p>구역 ${map.zones.length}개와 인접 관계만 있다 — <b>좌표가 없다</b>(설계 원칙 3).
+      매듭 자리는 <code>palette.json</code> 의 <code>layout.zones</code> 가 정하고, 이은 실은 <code>map.json</code> 이 정한다.
+      매듭마다 뒷면 매듭이 비쳐 보인다.</p>
+    ${clothMap(D, "all")}
+    <p class="hint">기워 덮인 네모는 <b>아무 데서도 보이지 않는 구역</b>이다.
+      붉은 원은 순찰이 밟는 구역. 흙빛 짧은 땀은 시선의 방향이다.</p>
+  </section>`);
+
+  // §02 물어야 아는 것
+  const rows = D.village.items.map(it => {
+    const src = D.village.villagers.filter(v => (v.knows || []).includes(it.id));
+    const density = src.length >= 3 ? S.confirmed : (src.length === 2 ? S.single : S.rumor);
+    return `<tr${src.length < 2 ? ' class="hi"' : ""}>
+      <td>${esc(it.name)}<br><code>${esc(it.id)}</code></td>
+      <td><span class="tag ${it.kind === "route" ? "red" : it.kind === "post" ? "red" : "ear"}">${esc(it.kind)}</span></td>
+      <td>${src.map(v => esc(v.name)).join(" · ")}</td>
+      <td class="n">${src.length}</td>
+      <td style="width:150px"><svg viewBox="0 0 140 10"><line x1="2" y1="5" x2="138" y2="5"
+        stroke="${P.color.threadRedFaded}" stroke-width="${S.widthPx + 1}"
+        stroke-dasharray="${dash(density)}"/></svg></td>
+      <td>${src.length >= 3 ? "셋에게 물으면 <b>다수가 참</b>이다"
+            : src.length === 2 ? "갈리면 <b>못 쓴다</b>(거짓은 드러난다)"
+            : "겹쳐 물을 수 없다 — <b>넣지 않는다</b>"}</td></tr>`;
+  }).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">02</span>물어야 아는 것</h2>
+    <p>마을 사람 ${D.village.villagers.length}명이 아는 것은 <b>${D.village.items.length}가지</b>뿐이다.
+      지형은 눈으로 보이니 공짜고, <b>시각</b>만 사야 한다.
+      틀릴 수 있는 항목은 반드시 <b>출처가 둘 이상</b>이다 — 겹쳐 물을 수 없는 거짓은 불공정하기 때문이다.</p>
+    <table><thead><tr><th>알아야 하는 것</th><th>종류</th><th>아는 사람</th><th class="n">출처</th>
+      <th>바늘땀</th><th>겹쳐 물으면</th></tr></thead><tbody>${rows}</tbody></table>
+    <h3>사람마다 값이 다르고, 위험이 다르다</h3>
+    <table><thead><tr><th>사람</th><th>사는 이야기</th><th class="n">기본값(신뢰%)</th>
+      <th class="n">한 번 물을 때 쌓이는 위험</th><th class="n">아는 것</th></tr></thead><tbody>
+      ${D.village.villagers.map(v => `<tr><td>${esc(v.name)}</td><td class="hint">${esc(v.note)}</td>
+        <td class="n">${v.baseCostPercent}</td><td class="n">${v.exposureRiskPercent}</td>
+        <td class="n">${(v.knows || []).length}</td></tr>`).join("")}
+    </tbody></table>
+    <p class="hint">위험이 <b>${B.ask.silenceThresholdPercent}</b> 를 넘으면 그 사람은
+      <b>${B.ask.silenceMissions}회차</b> 동안 입을 닫는다. 값이 싼 종지기 아이가 가장 빨리 사라진다 —
+      싼 것이 싼 것이 아니다.</p>
+  </section>`);
+
+  // §03 아홉 세계
+  const phaseRows = D.patrols.guards.map(g => `
+    <h3>${esc(g.name)} <span class="hint">— 주기 ${g.legs.reduce((a, l) => a + l.dwellMs, 0) / 1000}초 ·
+      오늘 밤은 이 ${g.phaseOptionsMs.length} 중 하나다</span></h3>
+    ${g.phaseOptionsMs.map(p => `<div style="display:flex;align-items:center;gap:10px">
+      <code style="min-width:82px">위상 ${p / 1000}초</code>
+      <div style="flex:1">${timeline(D, g, p, S.unknown)}</div></div>`).join("")}`).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">03</span>아홉 세계 — 묻지 않으면 어느 것인지 모른다</h2>
+    <p>순찰 ${D.patrols.guards.length}인의 위상 선택지가 각각
+      ${D.patrols.guards.map(g => g.phaseOptionsMs.length).join(" x ")} =
+      <b>${D.patrols.guards.reduce((a, g) => a * g.phaseOptionsMs.length, 1)}가지</b>다.
+      묻지 않은 플레이어에게는 오늘 밤이 그중 어느 것인지 알 방법이 없다.
+      그래서 이 PoC에서 <b>「정보를 하나도 사지 않고 깬다」</b>는 말은 정확히
+      <em>아홉 세계 전부에서 이기는 한 계획이 있다</em>는 뜻이고, 검사기가 그것을 아홉 번 돌린다.</p>
+    <p class="hint">아래 땀이 거의 없는 것은 일부러다 — <b>묻지 않은 것의 바늘땀 밀도</b>다.
+      물으면 촘촘해진다(§02의 바늘땀 열).</p>
+    ${phaseRows}
+    <p class="hint">교대(<code>${esc(D.patrols.shiftChanges[0].id)}</code>)는
+      ${D.patrols.shiftChanges[0].atMs / 1000}초에 위상을 갈아탄다.
+      ${esc(D.patrols.shiftChanges[0].note)}</p>
+  </section>`);
+
+  // §04 소리가 닿는 곳
+  const shot = D.squad.members.find(m => m.actions.some(a => a.kind === "Shoot"))
+                 .actions.find(a => a.kind === "Shoot").noisePercent;
+  const noiseRows = map.zones.map(z => {
+    const reach = propagate(map, B, z.id, shot);
+    const others = Object.keys(reach).filter(k => k !== z.id);
+    return `<tr${others.length === 0 ? ' class="hi"' : ""}><td>${esc(z.name)}</td>
+      <td class="n">${others.length}</td>
+      <td>${others.length === 0 ? "<b>아무도 듣지 않는다</b>"
+            : others.map(k => esc(zone(k).name) + " " + reach[k]).join(" · ")}</td></tr>`;
+  }).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">04</span>소리가 닿는 곳 — 과수원이 축이다</h2>
+    <p>소리는 거리가 아니라 <b>인접 홉</b>으로 죽는다. 한 홉에 ${B.noise.hopAttenuation},
+      차폐를 건너면 ${B.noise.blockedExtraAttenuation} 이 더 깎이고,
+      도착 음량이 ${B.noise.hearingThresholdPercent} 미만이면 들리지 않는다.
+      총성 ${shot} 이 어디까지 가는지를 <code>map.json</code> 만 읽어 다시 계산한 표다.</p>
+    <table><thead><tr><th>쏜 자리</th><th class="n">듣는 구역 수</th><th>도착 음량</th></tr></thead>
+      <tbody>${noiseRows}</tbody></table>
+    <p class="hint">${map.noiseBlocked.length}개의 차폐가 전부 과수원에 걸려 있다.
+      그래서 <b>과수원에서 쏘면 총성이 제자리에 남는다</b> — 위상을 몰라도 쓸 수 있는 자리이고,
+      눈먼 계획이 여기에 기대고 있다.</p>
+  </section>`);
+
+  // §05 은폐 셈
+  const floor = B.vision.concealFloorPercent;
+  const concealRows = D.squad.members.map(m => {
+    const cells = map.zones.map(z => {
+      const c = (map.concealment || []).filter(c => c.zone === z.id)
+                  .reduce((a, c) => Math.max(a, c.hideBonusPercent), 0);
+      const bare = m.stealthPercent + z.coverPercent;
+      const settled = bare + c;
+      const ok = settled >= floor, bareOk = bare >= floor;
+      return `<td class="n" style="color:${ok ? P.color.threadIndigo : P.color.threadRedFaded}">
+        ${bare}${c ? " / " + settled : ""}${bareOk ? " ●" : ok ? " ○" : ""}</td>`;
+    }).join("");
+    return `<tr><td>${esc(m.name)} <span class="hint">은밀 ${m.stealthPercent}</span></td>${cells}</tr>`;
+  }).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">05</span>보이는가 — 정수 하나로 판정한다</h2>
+    <p><code>은밀 + 엄폐 + 은폐지점(묻었을 때) − 노출(수행 중) − 같은구역벌점 ≥ ${floor}</code>
+      이면 보이지 않는다. 경계를 ${floor}에 둔 덕에
+      <em>엄폐 ${zone("z_granary").coverPercent} + 공병의 은밀
+      ${D.squad.members.find(m => m.id === "m_sapper").stealthPercent} = 딱 ${floor}</em> 을 손으로 읽는다.</p>
+    <table><thead><tr><th>분대원</th>${map.zones.map(z => `<th class="n">${esc(z.name)}</th>`).join("")}</tr></thead>
+      <tbody>${concealRows}</tbody></table>
+    <p class="hint">칸은 <b>맨몸 / 묻고</b>다. ● 은 걸어 들어가는 것까지 보이지 않는 자리,
+      ○ 은 몸을 묻어야 보이지 않는 자리다. 묻는 데 시간이 드는 것이 값이다 —
+      ${(map.concealment || []).map(c => esc(zone(c.zone).name) + " " + c.settleMs / 1000 + "초").join(" · ")}.</p>
+  </section>`);
+
+  // §06 신뢰의 바늘땀
+  const sur = B.ask.repeatSurchargePercent;
+  const costRows = D.village.villagers.map(v => {
+    const cells = sur.map(s => `<td class="n">${Math.floor(v.baseCostPercent * s / 100)}</td>`).join("");
+    return `<tr><td>${esc(v.name)}</td><td class="n">${v.baseCostPercent}</td>${cells}
+      <td class="n">${Math.floor(v.baseCostPercent * B.ask.repeatSurchargeBeyondPercent / 100)}</td></tr>`;
+  }).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">06</span>신뢰의 바늘땀 — 두 층이 붙는 자리</h2>
+    <div class="grid2">
+      <div>
+        <h3>묻는 값은 누적으로 오른다</h3>
+        <table><thead><tr><th>사람</th><th class="n">기본</th>
+          ${sur.map((s, i) => `<th class="n">${i + 1}번째<br>${s}%</th>`).join("")}
+          <th class="n">그 뒤<br>${B.ask.repeatSurchargeBeyondPercent}%</th></tr></thead>
+          <tbody>${costRows}</tbody></table>
+        <p class="hint">백분율 곱셈의 <b>나머지는 버리지 않고 누적</b>한다(설계 원칙 4).
+          부동소수를 쓰면 40회차 뒤에 경제가 다른 곳에 있다.</p>
+      </div>
+      <div>
+        <h3>신뢰가 오르고 내리는 값</h3>
+        <table><tbody>
+          <tr><td>시작</td><td class="n">${B.trust.startPercent}%</td></tr>
+          <tr><td>천장 / 바닥</td><td class="n">${B.trust.ceilingPercent} / ${B.trust.floorPercent}%</td></tr>
+          <tr class="hi"><td><b>말문이 트이는 선</b></td><td class="n">${B.trust.askFloorPercent}%</td></tr>
+          <tr><td>임무 성공</td><td class="n">+${B.trust.gainOnSuccess}</td></tr>
+          <tr><td>임무 실패</td><td class="n">−${B.trust.lossOnFailure}</td></tr>
+          <tr><td>보복 100점당</td><td class="n">−${B.reprisal.trustPerHundredPoints}</td></tr>
+          <tr><td>들킨 자리의 가중치</td><td class="n">${map.zones.map(z => z.reprisalWeightPercent).sort((a, b) => a - b)[0]}
+            ~ ${map.zones.map(z => z.reprisalWeightPercent).sort((a, b) => b - a)[0]}</td></tr>
+        </tbody></table>
+        <p class="hint">보복은 <b>들킨 자리</b>가 정한다 —
+          ${esc(zone("z_lane").name)}(마을 안) ${zone("z_lane").reprisalWeightPercent} 대
+          ${esc(zone("z_orchard").name)} ${zone("z_orchard").reprisalWeightPercent}.
+          마을 안에서 들키면 마을이 값을 치른다.</p>
+      </div>
+    </div>
+    <p>신뢰가 ${B.trust.askFloorPercent}% 밑으로 내려가면 아무도 말해 주지 않는다.
+      그때도 임무를 깰 수 있어야 <b>되돌아올 길</b>이 있고, 그것이 핵 검사기 둘이 서로를 붙잡는 방식이다.</p>
+  </section>`);
+
+  // §07 임무 셋
+  const missionRows = D.mission.missions.map(m => {
+    const win = [];
+    if (m.downAllGuards) win.push("순찰 " + m.guardIds.length + "인 제거");
+    if (m.destroyTargetId) win.push(esc(D.mission.targets.find(t => t.id === m.destroyTargetId).name) + " 폭파");
+    if (m.stealDocumentId) win.push(esc(D.mission.documents.find(t => t.id === m.stealDocumentId).name) + " 탈취");
+    if (m.noGuardsDowned) win.push("<b>아무도 쓰러뜨리지 않는다</b>");
+    if (m.requireExtraction) win.push("아마밭으로 귀환");
+    return `<tr><td>${esc(m.name)}<br><code>${esc(m.id)}</code></td>
+      <td>${win.join(" · ")}</td><td class="n">${m.alarmLimit}</td>
+      <td class="n">${m.lengthMs / 1000}초</td><td class="hint">${esc(m.note)}</td></tr>`;
+  }).join("");
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">07</span>임무 ${D.mission.missions.length}개 — 한 지도, 다른 질문</h2>
+    <table><thead><tr><th>임무</th><th>승리 조건</th><th class="n">경보 임계</th>
+      <th class="n">길이</th><th>왜 이 수치인가</th></tr></thead><tbody>${missionRows}</tbody></table>
+    <p class="hint">셋인 이유: 둘이면 <code>NoDominantOrder</code> 가 판정할 것이 생기고,
+      셋이어야 세 사람 전부에 대해 <b>이 사람이 없으면 못 하는 일이 있다</b>를 보일 수 있다.</p>
+    <table><thead><tr><th>분대원</th><th class="n">은밀</th><th class="n">한 구역 이동</th>
+      <th>수단</th><th>제약</th></tr></thead><tbody>
+      ${D.squad.members.map(m => `<tr><td>${esc(m.name)}</td><td class="n">${m.stealthPercent}</td>
+        <td class="n">${m.moveMsPerZone / 1000}초</td>
+        <td>${m.actions.map(a => `<span class="tag ind">${esc(a.kind)}</span>`).join("")}</td>
+        <td class="hint">${esc(m.note)}</td></tr>`).join("")}
+    </tbody></table>
+  </section>`);
+
+  // §08 검사기
+  const C = B.checkers;
+  html.push(`<section class="cloth">
+    <h2><span class="no">08</span>검사기 여덟 — 기계가 판정한 것</h2>
+    <table><thead><tr><th>검사기</th><th>무엇을 판정하는가</th><th>깨졌을 때</th></tr></thead><tbody>
+      <tr><td>TickDeterminism</td><td>같은 씨드·같은 명령 = 같은 결과</td><td>아래 전부가 무의미해진다</td></tr>
+      <tr><td>AmbushSolvability</td><td>적어도 한 계획이 경보 없이 초소를 지운다</td><td>풀 수 없는 임무</td></tr>
+      <tr class="hi"><td><b>DetectionFairness</b></td>
+        <td>실패 원인이 <b>산 정보 + 틀린 정보</b>로 설명되는가.
+          틀린 정보로 지는 것은 <b>겹쳐 물을 수 있었으면 공정</b>하다</td>
+        <td>알 길 없는 것으로 죽는다 → 저장·불러오기 게임</td></tr>
+      <tr class="hi"><td><b>BlindSolvability</b></td>
+        <td>정보를 하나도 사지 않고 깰 수 있는가 =
+          위상 ${D.patrols.guards.reduce((a, g) => a * g.phaseOptionsMs.length, 1)}가지 전부에서 이긴다</td>
+        <td>정보가 선택이 아니라 관문이 된다</td></tr>
+      <tr class="hi"><td><b>IntelEconomy</b></td>
+        <td>신뢰가 발산하지도 영구 고갈하지도 않는가 (${C.economyMissions}회차 시뮬레이션)</td>
+        <td>정보가 공짜가 되거나 되돌릴 수 없이 막힌다</td></tr>
+      <tr><td>NoDominantOrder</td><td>모든 임무를 같은 순서·같은 분대원으로 풀 수 없다</td>
+        <td>전술이 외운 절차가 된다 (퍼즐화 위험)</td></tr>
+      <tr><td>NoiseReachability</td><td>소리가 닿는 범위가 <code>map.json</code> 의 인접과 맞는다</td>
+        <td>소음이 규칙이 아니라 장식이 된다</td></tr>
+      <tr><td>FalseIntelIsCheckable</td>
+        <td>틀린 정보가 겹쳐 물으면 반드시 드러난다 (씨드 ${C.falseIntelSeedSweep}개 전수)</td>
+        <td>DetectionFairness 가 무너진다</td></tr>
+    </tbody></table>
+    <p class="hint">검사기가 여덟 다 통과한다는 것은 <b>풀 수 있고 · 지배 전략이 없고 ·
+      알 길 없는 것으로 죽지 않는다</b>는 뜻일 뿐, 재미있다는 뜻이 아니다
+      (<code>docs/POC_FACTORY.md</code> §5). 재미는 아직 사람이 보지 않았다.</p>
+  </section>`);
+
+  html.push(`<section class="cloth">
+    <h2><span class="no">09</span>이 천에 대하여</h2>
+    <p>글꼴은 <b>${esc(P.type.family)}</b>(표제) · <b>${esc(P.type.familyBody)}</b>(본문), 둘 다 SIL OFL 1.1.
+      라이선스 전문을 <code>presentation/assets/fonts/</code> 에 같이 실었다.
+      천 결·바늘땀·매듭·기운 자리는 받은 이미지가 없고 전부 SVG·CSS로 짰다 — <code>CREDITS.md</code>.</p>
+    <p class="hint">${esc(P.reference)}</p>
+    <p class="hint">${esc(P._겹침_확인)}</p>
+  </section>`);
+
+  document.getElementById("app").innerHTML = html.join("");
+}
+
+load().then(D => { applyPalette(D.palette); render(D); })
+      .catch(e => {
+        document.getElementById("boot").textContent =
+          "data/ 를 읽지 못했다: " + e.message + " — 작은 서버로 열어야 한다 (python -m http.server 8099)";
+      });
+</script>
+</body>
+</html>

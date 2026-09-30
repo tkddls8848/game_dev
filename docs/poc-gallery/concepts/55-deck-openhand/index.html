@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>공개 덱 — 펼쳐진 운명</title>
+<style>
+:root{
+  --void:#0b0406; --velvet:#3a0c14; --velvet2:#56121d; --gilt:#d9b46a; --gilt2:#8f6b2c;
+  --paper:#efe2c2; --paper2:#d9c49a; --ink:#1b120c; --red:#b3261e; --candle:#ffb14a;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Batang","AppleMyungjo",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:var(--serif);color:var(--paper)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;
+  background:radial-gradient(ellipse 70% 60% at 50% 58%,#5e1520 0%,#3a0c14 45%,#1a0509 80%,#0b0406 100%)}
+.screen{position:absolute;inset:0;opacity:0;visibility:hidden}
+.screen.on{opacity:1;visibility:visible}
+/* velvet fold texture */
+.velvet{position:absolute;inset:0;background:
+  repeating-linear-gradient(97deg,rgba(0,0,0,.0) 0 38px,rgba(0,0,0,.18) 38px 60px,rgba(255,120,120,.035) 60px 74px,rgba(0,0,0,0) 74px 120px),
+  radial-gradient(ellipse 90% 40% at 50% 100%,rgba(0,0,0,.6),transparent 70%);mix-blend-mode:multiply}
+.candlelight{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 8% 88%,rgba(255,170,70,.28),transparent 28%),radial-gradient(circle at 93% 84%,rgba(255,170,70,.22),transparent 26%);
+  animation:flick 3.2s infinite steps(24)}
+@keyframes flick{0%{opacity:.9}17%{opacity:1}33%{opacity:.82}50%{opacity:.97}66%{opacity:.86}83%{opacity:1}100%{opacity:.9}}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 52%,transparent 55%,rgba(0,0,0,.85) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.13;mix-blend-mode:overlay}
+/* HUD top */
+.topbar{position:absolute;left:40px;right:40px;top:26px;height:54px;display:flex;align-items:center;justify-content:space-between;
+  font-size:17px;letter-spacing:3px;color:var(--gilt)}
+.topbar .run{display:flex;gap:18px;align-items:center}
+.pip{width:14px;height:14px;transform:rotate(45deg);border:1.5px solid var(--gilt);display:inline-block}
+.pip.done{background:var(--gilt)} .pip.cur{background:var(--red);box-shadow:0 0 12px var(--red)}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gilt2),transparent);position:absolute;left:120px;right:120px;top:84px}
+/* enemy */
+.enemy{position:absolute;left:0;top:100px;width:1600px;height:300px}
+.bigcard{position:absolute;left:705px;top:0;width:190px;height:264px;border-radius:10px;background:var(--paper);
+  box-shadow:0 0 0 2px var(--gilt2),0 0 0 7px #140507,0 0 0 8px var(--gilt2),0 30px 60px rgba(0,0,0,.7),0 0 70px rgba(255,170,80,.15);
+  overflow:hidden;animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{50%{transform:translateY(-4px)}}
+.bigcard svg{display:block;width:100%;height:100%}
+.ename{position:absolute;left:940px;top:120px;text-align:left;font-size:34px;letter-spacing:10px;color:var(--paper);text-shadow:0 2px 10px #000}
+.hp{position:absolute;left:940px;width:280px;top:180px;height:14px;background:#150306;border:1px solid var(--gilt2)}
+.hp i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#d24a3a,#7e1610);box-shadow:0 0 10px rgba(210,70,50,.6)}
+.hp b{position:absolute;left:0;top:22px;font-size:18px;color:var(--paper);font-weight:400}
+/* fate row */
+.fate{position:absolute;left:190px;right:150px;top:452px;height:200px}
+.fate .label{position:absolute;left:0;top:-62px;font-size:18px;letter-spacing:6px;color:var(--gilt)}
+.fate .label em{font-style:normal;color:var(--paper2);letter-spacing:1px;font-size:15px;margin-left:14px}
+.thread{position:absolute;left:0;right:0;top:90px;height:2px;background:linear-gradient(90deg,var(--gilt) 0,var(--gilt) 86%,transparent);opacity:.7;box-shadow:0 0 8px var(--gilt)}
+.slot{position:absolute;top:0;width:140px;height:190px;transition:left .55s cubic-bezier(.6,-0.3,.3,1.3),transform .3s}
+.ic{width:140px;height:190px;border-radius:8px;background:linear-gradient(160deg,#f6ecd2,#e2cea4);color:var(--ink);position:relative;
+  box-shadow:0 0 0 1.5px var(--gilt2),0 14px 26px rgba(0,0,0,.55);overflow:hidden}
+.ic .ord{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:14px;letter-spacing:4px;color:#5a4424}
+.ic .num{position:absolute;bottom:32px;left:0;right:0;text-align:center;font-size:44px;font-weight:700;line-height:1}
+.ic .nm{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:15px;letter-spacing:5px}
+.ic svg{position:absolute;left:25px;top:28px;width:90px;height:90px}
+.ic.atk .num{color:var(--red)}
+.slot.next .ic{box-shadow:0 0 0 2px var(--gilt),0 0 0 6px rgba(217,180,106,.25),0 0 40px rgba(255,180,90,.45),0 14px 26px rgba(0,0,0,.55)}
+.slot.next::after{content:"다음";position:absolute;top:-30px;left:0;right:0;text-align:center;color:var(--candle);font-size:16px;letter-spacing:6px}
+.slot.hidden .ic{background:repeating-linear-gradient(45deg,#2a0a10 0 6px,#35101a 6px 12px);box-shadow:0 0 0 1.5px #5a3a1a;opacity:.7}
+.slot.hidden .ic .q{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:60px;color:var(--gilt2)}
+.slot.lit .ic{transform:translateY(-10px);box-shadow:0 0 0 2px var(--red),0 0 36px rgba(179,38,30,.7)}
+.slot.veiled .ic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,2,4,.2),rgba(10,2,4,.92)),repeating-linear-gradient(115deg,rgba(0,0,0,.4) 0 3px,transparent 3px 9px);animation:veil .9s ease-out both}
+@keyframes veil{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-14deg);border:3px solid var(--red);color:var(--red);padding:4px 12px;font-size:26px;letter-spacing:6px;font-weight:700;z-index:3;background:rgba(239,226,194,.85);display:none}
+.slot.veiled .stamp{display:block;animation:stampin .35s .6s both cubic-bezier(.2,2,.4,1)}
+@keyframes stampin{from{transform:translate(-50%,-50%) rotate(-14deg) scale(2.4);opacity:0}to{opacity:1}}
+.swaparc{position:absolute;left:0;top:-60px;pointer-events:none;opacity:0;transition:opacity .3s}
+.swaparc.on{opacity:1}
+.forecast{position:absolute;left:190px;right:190px;top:664px;display:flex;justify-content:space-between;font-size:17px;color:var(--paper2);letter-spacing:1px}
+.forecast b{color:var(--candle);font-weight:400;font-size:22px}
+/* player */
+.player{position:absolute;left:40px;bottom:36px;width:300px}
+.player .who{font-size:15px;letter-spacing:6px;color:var(--gilt)}
+.player .hpn{font-size:44px;color:var(--paper);margin-top:6px}
+.player .hpn small{font-size:20px;color:var(--paper2)}
+.player .bar{height:10px;background:#150306;border:1px solid var(--gilt2);margin-top:8px;position:relative}
+.player .bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#e7c27a,#9b6c24)}
+.player .blk{margin-top:12px;font-size:17px;color:var(--paper2)}
+.player .blk b{color:#cfe0f0;font-size:24px;font-weight:400}
+.candles{position:absolute;right:40px;bottom:40px;display:flex;gap:20px;align-items:flex-end}
+.cndl{width:30px;position:relative;height:120px}
+.cndl .wax{position:absolute;bottom:0;left:4px;width:22px;height:82px;background:linear-gradient(90deg,#b99f78,#f2e6c9 40%,#c9b28a);border-radius:3px 3px 2px 2px}
+.cndl .fl{position:absolute;bottom:80px;left:6px;width:18px;height:34px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(ellipse at 50% 75%,#fff6d0 0,#ffc85a 35%,rgba(255,120,30,.8) 60%,transparent 72%);filter:blur(.4px);
+  animation:fl 1.3s infinite ease-in-out;transform-origin:50% 100%;box-shadow:0 0 30px 10px rgba(255,160,60,.35)}
+.cndl.out .fl{opacity:0;box-shadow:none}
+.cndl.out .wax::before{content:"";position:absolute;left:10px;top:-22px;width:2px;height:22px;background:linear-gradient(transparent,rgba(200,200,200,.35));filter:blur(1px)}
+@keyframes fl{0%,100%{transform:scaleY(1) skewX(0)}30%{transform:scaleY(1.08) skewX(3deg)}60%{transform:scaleY(.94) skewX(-3deg)}}
+.candles .cap{position:absolute;bottom:-30px;right:0;left:0;text-align:center;font-size:14px;letter-spacing:5px;color:var(--gilt)}
+.piles{position:absolute;right:230px;bottom:48px;font-size:14px;color:var(--paper2);letter-spacing:2px;text-align:right;line-height:1.8}
+.piles b{color:var(--paper);font-size:18px;font-weight:400}
+/* hand */
+.hand{position:absolute;left:390px;right:390px;bottom:4px;height:230px}
+.card{position:absolute;bottom:0;width:158px;height:226px;border-radius:10px;cursor:pointer;
+  background:linear-gradient(170deg,#f7eed6,#e3cfa3);color:var(--ink);transform-origin:50% 140%;
+  box-shadow:0 0 0 1.5px var(--gilt2),0 0 0 5px #1a0609,0 0 0 6px var(--gilt2),0 18px 30px rgba(0,0,0,.6);
+  transition:transform .22s cubic-bezier(.3,1.6,.5,1),box-shadow .2s,filter .2s}
+.card:hover{z-index:9}
+.card .cost{position:absolute;left:-10px;top:-10px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffe3a0,#d08b2a 60%,#6d3a0c);
+  color:#2b1405;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(255,170,60,.7)}
+.card .cn{position:absolute;top:12px;left:0;right:0;text-align:center;font-size:20px;letter-spacing:6px;font-weight:700}
+.card .art{position:absolute;left:14px;right:14px;top:44px;height:88px;border:1px solid #6b5230;background:repeating-linear-gradient(45deg,#e8d7ae 0 3px,#ddc796 3px 5px);overflow:hidden}
+.card .tx{position:absolute;left:14px;right:14px;top:140px;font-size:13.5px;line-height:1.45;text-align:center;font-style:italic;color:#3a2a18}
+.card .tag{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:4px;color:#7a5e34}
+.card.order .cn{color:var(--red)}
+.card.used{opacity:.25;filter:grayscale(1);pointer-events:none}
+.tip{position:absolute;left:50%;top:704px;transform:translateX(-50%);font-size:15px;color:var(--paper2);letter-spacing:2px;opacity:.85;white-space:nowrap}
+.tip kbd{font-family:inherit;border:1px solid var(--gilt2);padding:0 6px;color:var(--gilt)}
+.toast{position:absolute;left:50%;top:300px;transform:translate(-50%,0);font-size:34px;letter-spacing:8px;color:var(--candle);text-shadow:0 0 20px rgba(255,160,60,.8);opacity:0;pointer-events:none}
+.toast.go{animation:toast 1.4s ease-out}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,10px)}20%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-20px)}}
+/* B screen specifics */
+#b{background:radial-gradient(ellipse 80% 70% at 50% 40%,#2b0a14 0%,#12040a 60%,#050103 100%)}
+#b .storm{position:absolute;inset:0;background:radial-gradient(ellipse 40% 50% at 50% 26%,rgba(200,210,255,.25),transparent 70%);opacity:0;animation:bolt 5.5s infinite}
+@keyframes bolt{0%,86%,100%{opacity:0}87%{opacity:1}88%{opacity:.1}90%{opacity:.8}93%{opacity:0}}
+#b .enemy{top:96px}
+#b .bigcard{left:700px;width:200px;height:278px}
+#b .ename{top:110px;font-size:44px}
+#b .hp{top:180px}
+.warn{position:absolute;left:50%;top:392px;transform:translateX(-50%);font-size:18px;letter-spacing:5px;color:#ff8a70;text-shadow:0 0 12px rgba(255,60,40,.6);white-space:nowrap}
+.lowhp .hpn{color:#ff7a66;animation:pulse 1s infinite}
+@keyframes pulse{50%{text-shadow:0 0 18px rgba(255,60,40,.9)}}
+.heartbeat{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 160px rgba(160,0,0,.55);animation:hb 1s infinite}
+@keyframes hb{0%,100%{opacity:.4}12%{opacity:1}24%{opacity:.5}36%{opacity:.85}}
+.tabs{position:absolute;right:18px;top:92px;display:flex;gap:6px;z-index:50}
+.tabs button{font-family:var(--serif);background:rgba(20,5,8,.8);color:var(--gilt);border:1px solid var(--gilt2);padding:4px 12px;font-size:13px;letter-spacing:2px;cursor:pointer}
+.tabs button.on{background:var(--gilt);color:#1b0a06}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#1b120c" stroke-width="1.2"/></pattern>
+    <pattern id="hatch2" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><line x1="0" y1="0" x2="0" y2="4" stroke="#1b120c" stroke-width=".8"/></pattern>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="1.6"/></filter>
+    <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0"/></filter>
+  </defs>
+</svg>
+
+<!-- ================= SCREEN A ================= -->
+<section class="screen" id="a">
+  <div class="velvet"></div>
+  <div class="topbar">
+    <div class="run">제 1 막 · <span class="pip done"></span><span class="pip cur"></span><span class="pip"></span><span class="pip"></span> · 보스 「탑」까지 두 걸음</div>
+    <div>공 개 덱 　·　 셋째 차례</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="enemy">
+    <div class="bigcard">
+      <svg width="216" height="300" viewBox="0 0 216 300">
+        <rect x="8" y="8" width="200" height="284" fill="none" stroke="#1b120c" stroke-width="2"/>
+        <rect x="14" y="14" width="188" height="272" fill="none" stroke="#1b120c" stroke-width=".8"/>
+        <text x="108" y="36" text-anchor="middle" font-size="16" fill="#1b120c" letter-spacing="4" font-family="Georgia,serif">V</text>
+        <!-- arch -->
+        <path d="M30 262 V110 Q108 40 186 110 V262" fill="url(#hatch2)" stroke="#1b120c" stroke-width="1.5" opacity=".55"/>
+        <!-- pillars -->
+        <rect x="32" y="112" width="24" height="150" fill="#efe2c2" stroke="#1b120c" stroke-width="1.5"/>
+        <rect x="32" y="112" width="10" height="150" fill="url(#hatch)"/>
+        <rect x="160" y="112" width="24" height="150" fill="#efe2c2" stroke="#1b120c" stroke-width="1.5"/>
+        <rect x="174" y="112" width="10" height="150" fill="url(#hatch)"/>
+        <!-- figure -->
+        <path d="M70 262 Q74 170 108 150 Q142 170 146 262 Z" fill="#b3261e" stroke="#1b120c" stroke-width="1.5"/>
+        <path d="M90 262 Q96 190 108 172 Q120 190 126 262" fill="url(#hatch)" opacity=".7"/>
+        <path d="M100 172 L108 262 L116 172" fill="#efe2c2" stroke="#1b120c"/>
+        <circle cx="108" cy="130" r="15" fill="#efe2c2" stroke="#1b120c" stroke-width="1.5"/>
+        <path d="M100 138 Q108 150 116 138" fill="url(#hatch)" stroke="#1b120c" stroke-width=".8"/>
+        <!-- tiara -->
+        <path d="M95 118 L96 92 Q108 70 120 92 L121 118 Z" fill="#d9b46a" stroke="#1b120c" stroke-width="1.4"/>
+        <line x1="96" y1="100" x2="120" y2="100" stroke="#1b120c"/><line x1="95.5" y1="109" x2="120.5" y2="109" stroke="#1b120c"/>
+        <!-- raised hand + staff -->
+        <line x1="150" y1="90" x2="150" y2="250" stroke="#1b120c" stroke-width="2.5"/>
+        <path d="M142 96 H158 M144 104 H156 M146 112 H154" stroke="#1b120c" stroke-width="2"/>
+        <path d="M70 196 q-10 -24 4 -34" fill="none" stroke="#1b120c" stroke-width="1.6"/>
+        <!-- keys -->
+        <g stroke="#1b120c" stroke-width="1.8" fill="none"><path d="M86 276 L130 252"/><circle cx="82" cy="278" r="5"/><path d="M130 276 L86 252"/><circle cx="134" cy="278" r="5"/></g>
+        <text x="108" y="292" text-anchor="middle" font-size="9" fill="#1b120c" letter-spacing="3" font-family="Georgia,serif">THE HIEROPHANT</text>
+      </svg>
+    </div>
+    <div class="ename">사 제</div>
+    <div class="hp"><i style="width:60%"></i><b>31 / 52</b></div>
+  </div>
+
+  <div class="fate" id="fateA">
+    <div class="label">운명의 다섯 수 <em>— 적은 난수를 쓰지 않는다. 적힌 대로만 온다</em></div>
+    <div class="thread"></div>
+    <svg class="swaparc" id="arcA" width="340" height="60" style="left:0"><path d="M75 58 Q163 -4 251 58" fill="none" stroke="#ffb14a" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M243 48 L252 59 L238 58" fill="none" stroke="#ffb14a" stroke-width="2.5"/></svg>
+  </div>
+  <div class="forecast" id="fcA"></div>
+
+  <div class="tip">카드를 눌러 내 보라 · <kbd>역순</kbd> 은 다음 두 수를 뒤바꾼다 · <kbd>대비</kbd> 는 다음 수만큼 막는다</div>
+  <div class="toast" id="toastA"></div>
+
+  <div class="player" id="plA">
+    <div class="who">점 술 사</div>
+    <div class="hpn">38 <small>/ 50</small></div>
+    <div class="bar"><i style="width:76%"></i></div>
+    <div class="blk">방어 <b id="blkA">0</b></div>
+  </div>
+  <div class="piles">뽑을 더미 <b>4</b><br>버린 더미 <b>1</b><br>덱 <b>10</b></div>
+  <div class="candles" id="candA"><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cap">기 력</div></div>
+  <div class="hand" id="handA"></div>
+  <div class="candlelight"></div>
+</section>
+
+<!-- ================= SCREEN B ================= -->
+<section class="screen" id="b">
+  <div class="velvet"></div>
+  <div class="storm"></div>
+  <div class="topbar">
+    <div class="run">제 1 막 · <span class="pip done"></span><span class="pip done"></span><span class="pip done"></span><span class="pip cur"></span> · 보 스</div>
+    <div>공 개 덱 　·　 열한째 차례</div>
+  </div>
+  <div class="rule"></div>
+  <div class="enemy">
+    <div class="bigcard">
+      <svg width="236" height="328" viewBox="0 0 236 328">
+        <rect x="0" y="0" width="236" height="328" fill="#2a2030"/>
+        <rect x="0" y="0" width="236" height="328" fill="url(#hatch2)" opacity=".35"/>
+        <rect x="8" y="8" width="220" height="312" fill="none" stroke="#d9b46a" stroke-width="1.5"/>
+        <text x="118" y="34" text-anchor="middle" font-size="16" fill="#efe2c2" letter-spacing="4" font-family="Georgia,serif">XVI</text>
+        <path d="M60 50 L96 110 L84 112 L118 170" fill="none" stroke="#fff6d0" stroke-width="3" style="filter:drop-shadow(0 0 6px #cfd8ff)"/>
+        <!-- crag -->
+        <path d="M8 320 L40 270 L70 262 L110 250 L160 258 L196 270 L228 320 Z" fill="#1b120c"/>
+        <!-- tower -->
+        <path d="M86 256 L92 118 L148 118 L154 256 Z" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/>
+        <path d="M130 118 L148 118 L154 256 L134 256 Z" fill="url(#hatch)"/>
+        <rect x="108" y="150" width="12" height="20" fill="#ff9a3a" stroke="#1b120c"/>
+        <rect x="100" y="196" width="12" height="20" fill="#ff9a3a" stroke="#1b120c"/>
+        <rect x="126" y="206" width="12" height="20" fill="#ff9a3a" stroke="#1b120c"/>
+        <!-- crown blown off -->
+        <path d="M128 92 L132 70 L140 82 L148 64 L154 82 L162 70 L164 94 Z" fill="#d9b46a" stroke="#1b120c" stroke-width="1.5" transform="rotate(24 146 80)"/>
+        <!-- flames -->
+        <g fill="#ff7a2a" stroke="#1b120c" stroke-width="1"><path d="M96 118 q6 -24 14 -6 q6 -22 14 -4 q8 -20 16 -2 q6 -12 8 12 z"/><path d="M112 150 q4 -12 8 0"/></g>
+        <!-- falling figures -->
+        <g fill="#efe2c2" stroke="#1b120c" stroke-width="1.2"><path d="M50 170 l10 18 l-6 4 l8 16 M56 186 l-12 6"/><circle cx="48" cy="166" r="5"/><path d="M186 190 l-10 20 l6 2 l-6 18 M178 206 l14 4"/><circle cx="188" cy="186" r="5"/></g>
+        <g fill="#d9b46a"><circle cx="30" cy="120" r="2"/><circle cx="200" cy="140" r="2"/><circle cx="60" cy="230" r="2"/><circle cx="180" cy="100" r="2"/><circle cx="210" cy="230" r="2"/></g>
+        <text x="118" y="312" text-anchor="middle" font-size="9" fill="#d9b46a" letter-spacing="3" font-family="Georgia,serif">THE TOWER</text>
+      </svg>
+    </div>
+    <div class="ename">탑</div>
+    <div class="hp"><i style="width:16%"></i><b>20 / 124</b></div>
+  </div>
+  <div class="warn" id="warnB">⚠ 다음 수 공격 24 + 힘 4 = 28 · 체력 9 · 막을 방어가 없다</div>
+
+  <div class="fate" id="fateB" style="top:490px">
+    <div class="label">운명의 다섯 수 <em>— 지울 수는 있다. 없던 일로 칠 수는 있다</em></div>
+    <div class="thread"></div>
+  </div>
+  <div class="forecast" id="fcB" style="top:696px"></div>
+  <div class="toast" id="toastB"></div>
+
+  <div class="player lowhp">
+    <div class="who">점 술 사</div>
+    <div class="hpn">9 <small>/ 50</small></div>
+    <div class="bar"><i style="width:18%;background:linear-gradient(#ff7a66,#8a1a12)"></i></div>
+    <div class="blk">방어 <b>0</b> · 약화 <b style="color:#ff9a7a">2</b></div>
+  </div>
+  <div class="piles">뽑을 더미 <b>2</b><br>버린 더미 <b>7</b><br>덱 <b>13</b></div>
+  <div class="candles" id="candB"><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cndl"><div class="wax"></div><div class="fl"></div></div><div class="cap">기 력</div></div>
+  <div class="hand" id="handB"></div>
+  <div class="heartbeat"></div>
+  <div class="candlelight"></div>
+</section>
+
+<svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#noise)"/></svg>
+<div class="vignette"></div>
+<div class="tabs"><button data-s="a">1 · 순서를 읽다</button><button data-s="b">2 · 운명을 지우다</button></div>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);fit();
+
+/* ---------- audio (only after user gesture) ---------- */
+var AC=null;function ac(){try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C();}}catch(e){}return AC;}
+function slide(){var c=ac();if(!c)return;var n=c.sampleRate*.18,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+  var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=.8;var g=c.createGain();g.gain.value=.25;s.connect(f);f.connect(g);g.connect(c.destination);s.start();}
+function chime(base){var c=ac();if(!c)return;[1,2.01,3.02].forEach(function(m,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=base*m;g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.12/(i+1),c.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+1.6);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+1.7);});}
+function thud(){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(120,c.currentTime);o.frequency.exponentialRampToValueAtTime(40,c.currentTime+.4);g.gain.setValueAtTime(.5,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.5);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.55);}
+
+/* ---------- intent icons ---------- */
+var ICON={
+ attack:'<svg width="100" height="100" viewBox="0 0 100 100"><g stroke="#1b120c" stroke-width="2" fill="#efe2c2"><path d="M50 6 L58 20 L56 66 L44 66 L42 20 Z"/><path d="M50 10 L50 64" stroke-width="1"/><path d="M46 20 L46 64" stroke="url(#hatch)"/><rect x="30" y="66" width="40" height="8" fill="#d9b46a"/><rect x="46" y="74" width="8" height="16" fill="#6b4a2a"/><circle cx="50" cy="94" r="5" fill="#d9b46a"/></g></svg>',
+ block:'<svg width="100" height="100" viewBox="0 0 100 100"><path d="M50 8 L86 20 Q86 66 50 92 Q14 66 14 20 Z" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/><path d="M50 8 L86 20 Q86 66 50 92 Z" fill="url(#hatch)"/><path d="M50 22 V78 M28 40 H72" stroke="#1b120c" stroke-width="2"/></svg>',
+ heal:'<svg width="100" height="100" viewBox="0 0 100 100"><g stroke="#1b120c" stroke-width="2"><path d="M24 18 H76 Q76 52 50 58 Q24 52 24 18 Z" fill="#d9b46a"/><path d="M50 58 V80" /><path d="M32 86 H68 L62 80 H38 Z" fill="#d9b46a"/><path d="M30 26 Q50 34 70 26" fill="none"/></g><path d="M50 4 q6 8 0 12 q-6 -4 0 -12" fill="#b3261e"/></svg>',
+ weak:'<svg width="100" height="100" viewBox="0 0 100 100"><g stroke="#1b120c" stroke-width="2" fill="#efe2c2"><path d="M20 80 L46 50 L52 56 L26 86 Z"/><path d="M56 44 L80 14 L86 20 L62 50 Z"/><path d="M46 50 l4 -2 l2 6 l4 -4 l2 4" fill="none" stroke="#b3261e"/></g><circle cx="83" cy="17" r="5" fill="#d9b46a" stroke="#1b120c"/></svg>',
+ strengthen:'<svg width="100" height="100" viewBox="0 0 100 100"><path d="M50 8 Q70 34 62 52 Q76 44 74 30 Q92 58 70 86 Q50 96 30 86 Q10 62 30 36 Q30 52 40 56 Q30 30 50 8Z" fill="#ff8a3a" stroke="#1b120c" stroke-width="2"/><path d="M50 48 Q60 62 54 78 Q44 82 40 70 Q40 58 50 48Z" fill="#ffe3a0" stroke="#1b120c"/></svg>'
+};
+var NAME={attack:'공 격',block:'방 어',heal:'회 복',weak:'약 화',strengthen:'힘'};
+var ORD=['I','II','III','IV','V'];
+function renderFate(el,list,hiddenLabel){
+  var olds=el.querySelectorAll('.slot');for(var i=0;i<olds.length;i++)olds[i].parentNode.removeChild(olds[i]);
+  list.forEach(function(it,i){
+    var s=document.createElement('div');s.className='slot'+(i===0?' next':'')+(it.veiled?' veiled':'');s.style.left=(i*190)+'px';s.dataset.idx=i;
+    s.innerHTML='<div class="ic '+(it.t==='attack'?'atk':'')+'"><div class="ord">'+ORD[i]+'</div>'+ICON[it.t]+'<div class="num">'+it.a+'</div><div class="nm">'+NAME[it.t]+'</div><div class="stamp">지 움</div></div>';
+    el.appendChild(s);
+  });
+  var h=document.createElement('div');h.className='slot hidden';h.style.left=(5*190)+'px';h.innerHTML='<div class="ic"><div class="q">?</div><div class="ord" style="color:#8f6b2c">VI</div><div class="nm" style="color:#8f6b2c">'+(hiddenLabel||'창 밖')+'</div></div>';el.appendChild(h);
+}
+function forecast(el,list,extra){
+  var dmg=0,atk=0;list.forEach(function(it){if(it.t==='attack'&&!it.veiled){dmg+=it.a+(extra||0);atk++;}});
+  var nx=list[0];
+  el.innerHTML='<span>다음 수 · <b>'+NAME[nx.t].replace(/ /g,'')+' '+nx.a+'</b></span><span>보이는 공격 <b>'+atk+'</b>회 · 합계 <b>'+dmg+'</b></span><span>보이지 않는 여섯째 수부터는 아직 모른다</span>';
+}
+function toast(id,msg){var t=document.getElementById(id);t.textContent=msg;t.classList.remove('go');void t.offsetWidth;t.classList.add('go');}
+
+/* ---------- SCREEN A ---------- */
+var fateA=[{t:'attack',a:14},{t:'weak',a:2},{t:'attack',a:9},{t:'heal',a:5},{t:'attack',a:16}];
+var energyA=3,blockA=0;
+var handA=[
+ {n:'대비',c:1,tx:'다음 수가 공격이면 그 값만큼 막고, 2를 더 막는다.',tag:'순서를 읽는다',k:'brace',o:1,art:'block'},
+ {n:'역순',c:1,tx:'적의 다음 두 수의 자리를 바꾼다. 큰 수를 뒤로 미룬다.',tag:'순서를 바꾼다',k:'invert',o:1,art:'swap'},
+ {n:'칼날',c:1,tx:'피해 6. 가장 단순한 수다.',tag:'공격',k:'blade',art:'attack'},
+ {n:'메아리',c:1,tx:'보이는 다섯 수 중 공격 하나마다 피해 3.',tag:'순서를 읽는다',k:'echo',o:1,art:'echo'},
+ {n:'외투',c:1,tx:'방어 6.',tag:'방어',k:'mantle',art:'block'}
+];
+var ART={
+ block:'<svg width="130" height="88" viewBox="0 0 130 88"><path d="M65 8 L92 16 Q92 52 65 80 Q38 52 38 16 Z" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/><path d="M65 8 L92 16 Q92 52 65 80Z" fill="url(#hatch)"/></svg>',
+ swap:'<svg width="130" height="88" viewBox="0 0 130 88"><rect x="20" y="22" width="30" height="44" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/><rect x="80" y="22" width="30" height="44" fill="#b3261e" stroke="#1b120c" stroke-width="2"/><path d="M36 16 Q65 -4 94 16" fill="none" stroke="#1b120c" stroke-width="2"/><path d="M88 10 L95 17 L86 19" fill="none" stroke="#1b120c" stroke-width="2"/><path d="M94 72 Q65 92 36 72" fill="none" stroke="#1b120c" stroke-width="2"/><path d="M42 78 L35 71 L44 69" fill="none" stroke="#1b120c" stroke-width="2"/></svg>',
+ attack:'<svg width="130" height="88" viewBox="0 0 130 88"><path d="M20 76 L100 10 L108 16 L28 82 Z" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/><path d="M26 70 L36 80" stroke="#1b120c" stroke-width="6"/><path d="M60 44 L100 10" stroke="url(#hatch)" stroke-width="4"/></svg>',
+ echo:'<svg width="130" height="88" viewBox="0 0 130 88"><g fill="none" stroke="#1b120c" stroke-width="2"><circle cx="65" cy="44" r="8" fill="#b3261e"/><circle cx="65" cy="44" r="18"/><circle cx="65" cy="44" r="28" stroke-dasharray="4 4"/><circle cx="65" cy="44" r="38" stroke-dasharray="2 6"/></g></svg>'
+};
+function renderHand(el,hand,onPlay){
+  el.innerHTML='';var n=hand.length;
+  hand.forEach(function(c,i){
+    var d=document.createElement('div');var off=i-(n-1)/2;var rot=off*6,x=410+off*150-79,y=Math.abs(off)*off*0+off*off*8;
+    d.className='card'+(c.o?' order':'')+(c.used?' used':'');d.style.left=x+'px';d.style.transform='translateY('+y+'px) rotate('+rot+'deg)';
+    d.dataset.base='translateY('+y+'px) rotate('+rot+'deg)';
+    d.innerHTML='<div class="cost">'+c.c+'</div><div class="cn">'+c.n+'</div><div class="art">'+(ART[c.art]||'')+'</div><div class="tx">'+c.tx+'</div><div class="tag">'+c.tag+'</div>';
+    d.addEventListener('mouseenter',function(){d.style.transform='translateY(-70px) rotate(0deg) scale(1.12)';slide();if(onPlay.hover)onPlay.hover(c,true);});
+    d.addEventListener('mouseleave',function(){d.style.transform=d.dataset.base;if(onPlay.hover)onPlay.hover(c,false);});
+    d.addEventListener('click',function(){onPlay(c,d);});
+    el.appendChild(d);
+  });
+}
+function setCandles(id,n){var cs=document.getElementById(id).querySelectorAll('.cndl');for(var i=0;i<cs.length;i++)cs[i].classList.toggle('out',i>=n);}
+var fateElA=document.getElementById('fateA'),fcA=document.getElementById('fcA'),arcA=document.getElementById('arcA');
+function drawA(){renderFate(fateElA,fateA,'창 밖');forecast(fcA,fateA);}
+function playA(c){
+  if(c.used)return;if(energyA<c.c){toast('toastA','기력이 모자란다');return;}
+  energyA-=c.c;c.used=true;setCandles('candA',energyA);
+  if(c.k==='invert'){var s=fateElA.querySelectorAll('.slot');s[0].style.left='190px';s[1].style.left='0px';chime(392);
+    setTimeout(function(){var t=fateA[0];fateA[0]=fateA[1];fateA[1]=t;drawA();toast('toastA','역순 — 공격 14가 한 칸 밀렸다');},560);}
+  else if(c.k==='brace'){var nx=fateA[0];var v=nx.t==='attack'?nx.a+2:2;blockA+=v;chime(523);toast('toastA','대비 — 방어 +'+v);}
+  else if(c.k==='echo'){var cnt=0,s2=fateElA.querySelectorAll('.slot');fateA.forEach(function(it,i){if(it.t==='attack'){cnt++;s2[i].classList.add('lit');}});chime(330);toast('toastA','메아리 — 공격 '+cnt+'개 × 3 = 피해 '+(cnt*3));setTimeout(function(){for(var i=0;i<s2.length;i++)s2[i].classList.remove('lit');},1300);}
+  else if(c.k==='mantle'){blockA+=6;thud();toast('toastA','방어 +6');}
+  else {thud();toast('toastA','피해 6');}
+  document.getElementById('blkA').textContent=blockA;
+  renderHand(document.getElementById('handA'),handA,playA);
+}
+playA.hover=function(c,on){
+  var s=fateElA.querySelectorAll('.slot');
+  if(c.k==='invert'&&!c.used){arcA.classList.toggle('on',on);}
+  if(c.k==='echo'&&!c.used){fateA.forEach(function(it,i){if(it.t==='attack'&&s[i])s[i].classList.toggle('lit',on);});}
+};
+drawA();renderHand(document.getElementById('handA'),handA,playA);
+
+/* ---------- SCREEN B ---------- */
+var fateB=[{t:'attack',a:24},{t:'strengthen',a:4},{t:'attack',a:12},{t:'attack',a:17},{t:'block',a:14}];
+var energyB=3;
+var handB=[
+ {n:'칼날',c:1,tx:'피해 6. 가장 단순한 수다.',tag:'공격',k:'blade',art:'attack'},
+ {n:'가림막',c:2,tx:'적의 다음 한 수를 지운다. 일어나지 않은 것으로 친다.',tag:'순서를 지운다 · 희귀',k:'veil',o:1,art:'veil'},
+ {n:'메아리',c:1,tx:'보이는 다섯 수 중 공격 하나마다 피해 3.',tag:'순서를 읽는다',k:'echo',o:1,art:'echo'},
+ {n:'칼날',c:1,tx:'피해 6. 가장 단순한 수다.',tag:'공격',k:'blade2',art:'attack'}
+];
+ART.veil='<svg width="130" height="88" viewBox="0 0 130 88"><rect x="46" y="12" width="38" height="60" fill="#efe2c2" stroke="#1b120c" stroke-width="2"/><text x="65" y="52" text-anchor="middle" font-size="22" fill="#b3261e" font-family="Georgia">24</text><path d="M20 6 Q70 30 112 4 L112 60 Q70 86 20 70 Z" fill="#1b120c" opacity=".78"/><path d="M20 6 Q70 30 112 4" fill="none" stroke="#d9b46a" stroke-width="1.5"/></svg>';
+var fateElB=document.getElementById('fateB'),fcB=document.getElementById('fcB');
+function drawB(){renderFate(fateElB,fateB,'창 밖');forecast(fcB,fateB,4);}
+function playB(c){
+  if(c.used)return;if(energyB<c.c){toast('toastB','기력이 모자란다');return;}
+  energyB-=c.c;c.used=true;setCandles('candB',energyB);
+  if(c.k==='veil'){fateB[0].veiled=true;drawB();thud();setTimeout(function(){chime(196);},600);
+    document.getElementById('warnB').textContent='지워졌다 — 공격 24는 일어나지 않은 것으로 친다';document.getElementById('warnB').style.color='#ffd08a';
+    setTimeout(function(){toast('toastB','살아남는다');},900);}
+  else if(c.k==='echo'){var n=0;fateB.forEach(function(it){if(it.t==='attack'&&!it.veiled)n++;});chime(330);toast('toastB','메아리 — 피해 '+(n*3));}
+  else {thud();toast('toastB','피해 6');}
+  renderHand(document.getElementById('handB'),handB,playB);
+}
+playB.hover=function(c,on){var s=fateElB.querySelectorAll('.slot');if(c.k==='veil'&&!c.used&&s[0])s[0].classList.toggle('lit',on);};
+drawB();renderHand(document.getElementById('handB'),handB,playB);
+
+/* ---------- screen switching ---------- */
+var btns=document.querySelectorAll('.tabs button');
+function show(id){['a','b'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});for(var i=0;i<btns.length;i++)btns[i].classList.toggle('on',btns[i].dataset.s===id);}
+for(var i=0;i<btns.length;i++)btns[i].addEventListener('click',function(){show(this.dataset.s);try{history.replaceState(null,'','#'+this.dataset.s);}catch(e){}});
+window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+window.addEventListener('hashchange',function(){show(location.hash==='#b'?'b':'a');});
+show(location.hash==='#b'?'b':'a');
+})();
+</script>
+</body>
+</html>

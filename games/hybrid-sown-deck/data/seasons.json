@@ -1,0 +1,54 @@
+{
+  "_": "한 해 = 봄·여름·가을(심기) + 겨울 하룻밤. 겨울에는 심지 못한다.",
+  "_봄": "봄만 sowOccupies 가 true 다 — 지난 겨울에 밭으로 돌아간 카드가 이때 돋아난다. 그 칸은 그동안 묶인다.",
+  "seasons": [
+    {
+      "id": "season_spring",
+      "nameKo": "봄",
+      "nameEn": "Spring",
+      "order": 0,
+      "turns": 5,
+      "waterBudget": 12,
+      "seedBudget": 6,
+      "plantable": true,
+      "isNight": false,
+      "sowOccupies": true
+    },
+    {
+      "id": "season_summer",
+      "nameKo": "여름",
+      "nameEn": "Summer",
+      "order": 1,
+      "turns": 5,
+      "waterBudget": 14,
+      "seedBudget": 6,
+      "plantable": true,
+      "isNight": false,
+      "sowOccupies": false
+    },
+    {
+      "id": "season_autumn",
+      "nameKo": "가을",
+      "nameEn": "Autumn",
+      "order": 2,
+      "turns": 6,
+      "waterBudget": 16,
+      "seedBudget": 7,
+      "plantable": true,
+      "isNight": false,
+      "sowOccupies": false
+    },
+    {
+      "id": "season_winter",
+      "nameKo": "겨울",
+      "nameEn": "Winter",
+      "order": 3,
+      "turns": 0,
+      "waterBudget": 0,
+      "seedBudget": 0,
+      "plantable": false,
+      "isNight": true,
+      "sowOccupies": false
+    }
+  ]
+}

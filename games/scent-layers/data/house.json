@@ -1,0 +1,24 @@
+{
+  "_": "방과 도보 시간. 좌표는 없다 — 배치는 연출이 정한다(presentation/palette.json 의 layout).",
+  "ko": "능내동 삼거리 언덕집",
+  "entry": "r_porch",
+  "rooms": [
+    { "id": "r_porch",      "ko": "현관" },
+    { "id": "r_kitchen",    "ko": "부엌" },
+    { "id": "r_study",      "ko": "서재" },
+    { "id": "r_cellar",     "ko": "지하 저장실" },
+    { "id": "r_greenhouse", "ko": "온실" },
+    { "id": "r_bath",       "ko": "욕실" }
+  ],
+  "edges": [
+    { "a": "r_porch",   "b": "r_kitchen",    "walkMin": 2 },
+    { "a": "r_porch",   "b": "r_study",      "walkMin": 3 },
+    { "a": "r_porch",   "b": "r_bath",       "walkMin": 5 },
+    { "a": "r_kitchen", "b": "r_cellar",     "walkMin": 2 },
+    { "a": "r_kitchen", "b": "r_greenhouse", "walkMin": 4 },
+    { "a": "r_kitchen", "b": "r_bath",       "walkMin": 4 },
+    { "a": "r_study",   "b": "r_bath",       "walkMin": 2 },
+    { "a": "r_study",   "b": "r_greenhouse", "walkMin": 3 },
+    { "a": "r_cellar",  "b": "r_greenhouse", "walkMin": 5 }
+  ]
+}

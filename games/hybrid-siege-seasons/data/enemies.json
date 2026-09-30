@@ -1,0 +1,94 @@
+{
+  "_": "등불 밖에서 오는 것들. 행동은 pattern 을 순환한다 — 난수 없이 결정적이다.",
+  "_pattern": "{type, amount}. attack=공격(방어로 깎인다) · block=방어 · ramp=이후 공격에 더할 값",
+  "enemies": [
+    {
+      "id": "enemy_cur",
+      "nameKo": "서리 들개",
+      "nameEn": "Frost Cur",
+      "hp": 16,
+      "glyph": "cur",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 7
+        },
+        {
+          "type": "attack",
+          "amount": 7
+        },
+        {
+          "type": "block",
+          "amount": 4
+        }
+      ]
+    },
+    {
+      "id": "enemy_crow",
+      "nameKo": "얼음 까마귀",
+      "nameEn": "Ice Crow",
+      "hp": 20,
+      "glyph": "crow",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "attack",
+          "amount": 5
+        },
+        {
+          "type": "attack",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "enemy_bear",
+      "nameKo": "눈사태 곰",
+      "nameEn": "Avalanche Bear",
+      "hp": 24,
+      "glyph": "bear",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 10
+        },
+        {
+          "type": "block",
+          "amount": 6
+        },
+        {
+          "type": "attack",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "enemy_captain",
+      "nameKo": "겨울 장수",
+      "nameEn": "Winter Captain",
+      "hp": 30,
+      "glyph": "captain",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "ramp",
+          "amount": 4
+        },
+        {
+          "type": "attack",
+          "amount": 12
+        }
+      ]
+    }
+  ]
+}

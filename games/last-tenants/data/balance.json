@@ -1,0 +1,70 @@
+{
+  "_": "수치는 전부 정수. 배율은 백분율 정수이고 나머지는 누적한다(뿌리 CLAUDE.md 설계 원칙 3·4).",
+
+  "day": {
+    "slotCount": 6,
+    "slotMinutes": 240,
+    "dayMinutes": 1440,
+    "startHour": 6,
+    "slotNames": ["아침", "낮", "오후", "저녁", "밤", "새벽"],
+    "_": "24시간을 네 시간짜리 여섯 칸으로 쪼갠다. 한 칸에 한 가지만 한다 — 문 하나에 귀를 대거나, 돕거나, 아무것도 하지 않거나."
+  },
+
+  "help": {
+    "reliefPercentByLevel": [0, 15, 85, 100],
+    "_단계": "0 = 아무것도 모른다 · 1 = 뭔가 있다는 것만 안다 · 2 = 필요한 것을 안다 · 3 = 얼마나 급한지까지 안다",
+    "wrongNeedReliefPercent": 5,
+    "_틀린_도움": "엉뚱한 것을 들고 가면 5%만 건지고 유예는 그대로 빠진다 — 틀린 도움도 나머지를 밀어낸다",
+    "blindGraceCost": 2,
+    "blindSlotsRequired": 2,
+    "_모르고_돕기": "무엇이 필요한지 모른 채 문을 두드리면 시간대 둘과 유예 이틀이 든다. 아무것도 못 건져도 유예는 빠진다"
+  },
+
+  "spillover": {
+    "perGraceFlat": 3,
+    "_": "한 집에 유예 하루를 쓰면 나머지 세대의 손실이 각각 (3 x 그 집 가중치%) 만큼 오른다. 나머지는 누적한다.",
+    "_왜_이것이_핵인가": "이 값이 0이면 「고르면 다 잘 되는」 선택지가 생기고 딜레마가 사라진다. EveryChoiceCostsTheOthers 가 그것을 막는다"
+  },
+
+  "silence": {
+    "gateEnabled": true,
+    "_": "true = 이 PoC의 세계. 소리 없는 칸에 대한 이웃의 말은 그 문에 직접 귀를 대 침묵을 확인한 뒤에야 need/stakes 로 올라간다. 확인하지 않으면 소문(hint)에 그친다.",
+    "_대조_세계": "false 로 뒤집으면 침묵한 칸도 자기 문에서 자기 사정을 말하고 게이트가 없다 — 침묵이 소리 있는 칸과 똑같아진다. SilenceIsInformation 이 두 세계를 같은 씨드로 돌려 비교한다. 데이터의 값은 true 이고, 검사기가 복사본에서만 뒤집는다."
+  },
+
+  "night": {
+    "lieCountPerBuilding": 1,
+    "seedSweep": 16,
+    "_": "씨드가 하는 일 둘. (1) 소리마다 slotOptions 중 하나를 고른다 (2) falsifiable 인 소리 중 lieCountPerBuilding 개를 거짓으로 뽑는다. 그 밖에 난수는 쓰지 않는다."
+  },
+
+  "policy": {
+    "hintEstimate": 10,
+    "_": "뭔가 있다는 것만 아는 집(Level 1)을 정책이 얼마로 짐작하는가. 정책 비교에만 쓰고 규칙에는 쓰지 않는다."
+  },
+
+  "checkers": {
+    "_기준값을_정한_방법": "전부 실제로 재고 나서 관측된 최소값보다 낮게 잡았다. 통과시키려고 내린 값은 없다 — 관측값은 README 의 표에 그대로 적었다.",
+
+    "paretoFrontMin": 2,
+    "_paretoFrontMin": "「그 집이 건진 것」과 「나머지에게 물린 값」 두 축에서 지배되지 않는 선택지의 수. **1 이면 지배적 최선이 있다는 뜻이므로 2 가 이 주장의 의미 그대로다.** 3 이나 4 로 올리는 것은 주장을 강하게 만드는 것이 아니라 다른 주장을 하는 것이다.",
+    "paretoFrontMeanTenths": 25,
+    "_paretoFrontMeanTenths": "앞면 크기의 평균 x 10. 2.5 개 이상이어야 한다 — 최소 조건(2)만으로는 겨우 걸치는 데이터도 통과하므로 평균을 따로 본다.",
+
+    "silenceIgnoreGapMin": 12,
+    "_silenceIgnoreGapMin": "침묵한 문에 귀를 대지 못하게 막으면 그 칸을 고른 최선 결과가 최소 몇 점 나빠져야 하는가. 관측 13~51.",
+    "silenceKindGapMin": 12,
+    "_silenceKindGapMin": "같은 건물에서 unable 칸의 최선과 gone 칸의 최선이 최소 몇 점 달라야 하는가. 관측 15·47.",
+    "silenceGoneVsNothingMin": 8,
+    "_silenceGoneVsNothingMin": "gone 칸을 돕는 것이 아무도 돕지 않는 것보다 최소 몇 점 나빠야 하는가 — 침묵이 내용 없음일 수도 있다는 것에 값이 물려야 한다. 관측 10·10·11.",
+    "silenceWorldGapMin": 8,
+    "_silenceWorldGapMin": "침묵을 소리로 바꾼 대조 세계가 켠 세계보다 최소 몇 점 나아야 하는가(적어도 한 씨드에서). 관측 10·15.",
+    "silencePolicyGapMin": 10,
+    "_silencePolicyGapMin": "침묵을 내용 없음으로 취급하는 정책이 이웃의 말을 따라가는 정책보다 최소 몇 점 나쁜 건물이 있어야 하는가. 관측 14.",
+
+    "minDistinctBestChoices": 3,
+    "_minDistinctBestChoices": "건물마다 최선 선택이 같으면 지배 전략이다. 서로 다른 세대가 최소 몇 개 나와야 하는가. 관측 3(302 침묵 · 101 가장 작은 소리 · 201 가장 큰 소리)."
+  },
+
+  "seed": 20260927
+}

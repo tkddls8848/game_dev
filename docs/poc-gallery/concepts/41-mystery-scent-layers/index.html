@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>잔향 감식실</title>
+<style>
+:root{
+  --bg:#050f13; --glass:#0e2228; --line:#2c4d52; --paper:#e7eee8; --muted:#8fa6a6; --mint:#93dbb8;
+  --soil:#7fcf8a; --tob:#e7a95a; --perf:#b59bf0;
+  --serif:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"JetBrains Mono","D2Coding","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;transform:translate(-50%,-50%);overflow:hidden;font-family:var(--sans);color:var(--paper);
+  background:
+    radial-gradient(ellipse 60% 45% at 45% 8%, rgba(147,219,184,.16), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 45% 62%, rgba(40,90,95,.35), transparent 70%),
+    linear-gradient(180deg,#081a1f 0%,#040c10 100%);}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay;z-index:50;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+.vignette{position:absolute;inset:0;pointer-events:none;z-index:49;background:radial-gradient(ellipse 75% 70% at 48% 50%,transparent 55%,rgba(0,0,0,.75) 100%)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+@keyframes fadein{from{opacity:.001}to{opacity:1}}
+.tabs{position:absolute;right:18px;top:16px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px var(--mono);letter-spacing:.08em;color:var(--muted);background:rgba(10,30,34,.8);border:1px solid var(--line);padding:5px 10px;border-radius:3px;cursor:pointer}
+.tabs button.on{color:#04150f;background:var(--mint);border-color:var(--mint)}
+/* ---------- header ---------- */
+.brand{position:absolute;left:44px;top:34px}
+.brand h1{font:300 44px/1 var(--serif);letter-spacing:.16em;color:var(--paper);text-shadow:0 0 24px rgba(147,219,184,.35)}
+.brand .en{font:500 12px var(--mono);letter-spacing:.42em;color:var(--mint);margin-top:10px;opacity:.85}
+.brand .case{font:12px var(--mono);color:var(--muted);margin-top:6px;letter-spacing:.1em}
+/* ---------- glass panel ---------- */
+.panel{position:absolute;background:linear-gradient(160deg,rgba(24,52,58,.72),rgba(8,22,26,.82));border:1px solid rgba(147,219,184,.18);border-radius:6px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 20px 50px rgba(0,0,0,.55);backdrop-filter:blur(6px)}
+.panel h3{font:600 12px var(--mono);letter-spacing:.24em;color:var(--mint);padding:14px 18px 10px;border-bottom:1px solid rgba(147,219,184,.12)}
+.panel .bd{padding:14px 18px}
+/* A: left case card */
+.caseCard{left:44px;top:170px;width:300px}
+.caseCard .t{font:500 22px/1.35 var(--serif);margin-bottom:10px}
+.caseCard p{font-size:13.5px;line-height:1.7;color:#c7d6d3}
+.claim{margin-top:14px;border-left:2px solid var(--perf);padding:8px 12px;background:rgba(181,155,240,.08);font-size:13px;line-height:1.6;color:#ddd3f7}
+.claim b{display:block;font:600 11px var(--mono);letter-spacing:.2em;color:var(--perf);margin-bottom:4px}
+.notes{left:44px;top:520px;width:300px}
+.note{display:grid;grid-template-columns:86px 1fr 40px;align-items:center;gap:10px;font-size:13px;margin:9px 0}
+.note .bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.note .bar i{display:block;height:100%;border-radius:3px}
+.note .v{font:12px var(--mono);color:var(--muted);text-align:right}
+.spark{margin-top:12px;height:70px}
+/* center scene */
+.viewer{position:absolute;left:370px;top:118px;width:830px;height:690px}
+.viewer svg{position:absolute;inset:0}
+.slabel{position:absolute;font:600 12px var(--mono);letter-spacing:.2em;padding:4px 9px;border-radius:2px}
+/* right vials */
+.vials{left:1228px;top:118px;width:330px}
+.vrow{display:flex;justify-content:space-between;padding:6px 6px 0}
+.vial{width:86px;text-align:center;cursor:pointer}
+.vial .tube{position:relative;margin:0 auto;width:40px;height:190px;border-radius:6px 6px 20px 20px;border:1.5px solid rgba(220,240,235,.35);
+  background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 40%,rgba(255,255,255,.1) 70%,rgba(255,255,255,.03));overflow:hidden;box-shadow:inset 0 0 12px rgba(0,0,0,.5)}
+.vial .cap{width:48px;height:14px;margin:0 auto -2px;border-radius:3px;background:linear-gradient(#3b4f52,#1a282b);border:1px solid #4d6769}
+.vial .liq{position:absolute;left:0;right:0;bottom:0;transition:height 1.6s cubic-bezier(.3,.7,.2,1)}
+.vial .liq::before{content:"";position:absolute;left:0;right:0;top:-3px;height:6px;border-radius:50%;background:inherit;filter:brightness(1.4)}
+.vial .glowv{position:absolute;inset:0;pointer-events:none}
+.vial .n{font:600 13px var(--mono);margin-top:10px}
+.vial .d{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4;height:32px}
+.bub{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.5);animation:bub 2.4s linear infinite}
+@keyframes bub{from{transform:translateY(0);opacity:.8}to{transform:translateY(-120px);opacity:0}}
+.record{left:1228px;top:530px;width:330px}
+.record .ts{font:600 12px var(--mono);color:var(--tob);letter-spacing:.14em}
+.record p{font:15px/1.7 var(--serif);color:#e8e3d6;margin-top:6px}
+.stats{display:flex;gap:10px;margin-top:14px}
+.stat{flex:1;border:1px solid rgba(147,219,184,.15);border-radius:4px;padding:8px 10px;background:rgba(0,0,0,.2)}
+.stat .k{font:11px var(--mono);color:var(--muted);letter-spacing:.12em}
+.stat .v{font:600 22px var(--mono);margin-top:2px}
+/* timeline */
+.timeline{position:absolute;left:370px;right:400px;top:830px;height:130px}
+.track{position:absolute;left:30px;right:30px;top:40px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--soil),var(--tob),var(--perf));opacity:.55}
+.tick{position:absolute;top:22px;transform:translateX(-50%);text-align:center;cursor:pointer}
+.tick .dot{width:18px;height:18px;border-radius:50%;margin:10px auto 0;border:2px solid currentColor;background:#061216;transition:transform .2s}
+.tick .lab{font:600 18px var(--mono);margin-top:10px}
+.tick .loc{font-size:12px;color:var(--muted);margin-top:2px}
+.tick.on .dot{background:currentColor;transform:scale(1.25);box-shadow:0 0 0 6px rgba(231,169,90,.15),0 0 24px currentColor}
+.tick:hover .dot{transform:scale(1.2)}
+.btnSample{position:absolute;right:44px;top:880px;width:330px;height:64px;border-radius:4px;cursor:pointer;border:1px solid var(--tob);
+  background:linear-gradient(180deg,rgba(231,169,90,.28),rgba(231,169,90,.08));color:#ffe4bd;font:600 19px var(--sans);letter-spacing:.06em;
+  box-shadow:0 0 30px rgba(231,169,90,.22),inset 0 1px 0 rgba(255,255,255,.15);transition:transform .08s,box-shadow .2s}
+.btnSample small{display:block;font:11px var(--mono);letter-spacing:.2em;color:#d8b485;margin-top:3px}
+.btnSample:hover{box-shadow:0 0 44px rgba(231,169,90,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+.btnSample:active{transform:translateY(2px) scale(.99)}
+.btnSample.done{border-color:var(--mint);color:var(--mint);background:rgba(147,219,184,.08);box-shadow:none}
+.hint{position:absolute;right:44px;top:952px;width:330px;text-align:center;font:11px var(--mono);color:var(--muted);letter-spacing:.14em}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-6px)}}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:.9}}
+.breathe{animation:breathe 3.6s ease-in-out infinite}
+.floaty{animation:drift 6s ease-in-out infinite}
+/* ---------- B ---------- */
+.bTitle{position:absolute;left:44px;top:150px;width:520px}
+.bTitle .k{font:600 12px var(--mono);letter-spacing:.3em;color:var(--mint)}
+.bTitle h2{font:400 48px/1.2 var(--serif);margin-top:12px;letter-spacing:.06em;text-shadow:0 0 30px rgba(147,219,184,.25)}
+.bTitle p{font:16px/1.85 var(--serif);color:#cfdcd8;margin-top:18px}
+.coreWrap{position:absolute;left:44px;top:470px;width:1080px;height:300px}
+.plan{position:absolute;left:640px;top:110px;width:500px;height:360px}
+.verdict{left:1180px;top:120px;width:378px}
+.verdict .q{font:15px/1.7 var(--serif);color:#ddd3f7}
+.stamp{margin:22px auto 6px;width:230px;height:92px;border:3px double #9fe3c3;color:#9fe3c3;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-7deg);
+  font:700 26px var(--serif);letter-spacing:.2em;border-radius:6px;text-shadow:0 0 12px rgba(159,227,195,.5);box-shadow:0 0 20px rgba(159,227,195,.15),inset 0 0 20px rgba(159,227,195,.1);animation:stampIn .6s cubic-bezier(.2,1.6,.4,1) both .3s}
+.stamp small{font:600 10px var(--mono);letter-spacing:.3em;margin-top:4px}
+@keyframes stampIn{from{transform:rotate(-7deg) scale(2.2);opacity:0}to{transform:rotate(-7deg) scale(1);opacity:1}}
+.choice{display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:11px 12px;margin-top:10px;font-size:14px;cursor:pointer;transition:background .2s}
+.choice .r{width:14px;height:14px;border-radius:50%;border:2px solid var(--muted);flex:none}
+.choice.sel{border-color:var(--mint);background:rgba(147,219,184,.1)}
+.choice.sel .r{border-color:var(--mint);background:radial-gradient(var(--mint) 40%,transparent 45%)}
+.choice.x{opacity:.5;text-decoration:line-through;text-decoration-color:rgba(255,120,120,.6)}
+.bFoot{position:absolute;left:44px;right:44px;top:880px;height:80px;display:flex;align-items:center;gap:26px;border-top:1px solid rgba(147,219,184,.15);padding-top:14px}
+.mini{display:flex;align-items:center;gap:10px;font-size:13px;color:#cfdcd8}
+.mini i{width:14px;height:40px;border-radius:3px 3px 8px 8px;border:1px solid rgba(255,255,255,.3);display:block}
+.bFoot .sum{margin-left:auto;font:600 13px var(--mono);letter-spacing:.14em;color:var(--mint)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="tabs"><button data-h="a">1 · 채취</button><button data-h="b">2 · 판정</button></div>
+
+  <!-- ================= SCREEN A ================= -->
+  <section class="screen" id="sa">
+    <div class="brand"><h1>잔향 감식실</h1><div class="en">THE SCENT ARCHIVE</div><div class="case">사건 0927-B · 블랙우드 저택 서재</div></div>
+
+    <div class="panel caseCard">
+      <h3>감식 대상</h3>
+      <div class="bd">
+        <div class="t">서재에서 발견된<br>외투</div>
+        <p>세 시간층에서 흔적을 채취하세요. 냄새가 묻은 순서와 외투의 이동을 비교해 진술을 판정합니다.</p>
+        <div class="claim"><b>검토할 진술</b>“꽃향기가 났어요. 온실에 들어간 건 서기예요.” — 정원 하녀</div>
+      </div>
+    </div>
+
+    <div class="panel notes">
+      <h3>현재 층 · 향 성분</h3>
+      <div class="bd">
+        <div class="note"><span>마른 담배</span><span class="bar"><i style="width:62%;background:var(--tob)"></i></span><span class="v">62</span></div>
+        <div class="note"><span>모직 외투</span><span class="bar"><i style="width:21%;background:#d9c9a6"></i></span><span class="v">21</span></div>
+        <div class="note"><span>젖은 흙 (하층)</span><span class="bar"><i style="width:17%;background:var(--soil)"></i></span><span class="v">17</span></div>
+        <svg class="spark" viewBox="0 0 264 70" width="264" height="70">
+          <defs><linearGradient id="sg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e7a95a" stop-opacity=".55"/><stop offset="1" stop-color="#e7a95a" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 62 L20 58 L36 60 L52 44 L66 50 L80 30 L96 36 L110 14 L124 22 L140 18 L156 34 L170 28 L186 46 L204 40 L220 54 L240 50 L264 58 L264 70 L0 70Z" fill="url(#sg)"/>
+          <path d="M0 62 L20 58 L36 60 L52 44 L66 50 L80 30 L96 36 L110 14 L124 22 L140 18 L156 34 L170 28 L186 46 L204 40 L220 54 L240 50 L264 58" fill="none" stroke="#e7a95a" stroke-width="1.5"/>
+          <line x1="0" x2="264" y1="69" y2="69" stroke="#2c4d52"/>
+          <text x="264" y="10" text-anchor="end" fill="#8fa6a6" font-size="9" font-family="monospace">GC 스펙트럼 · 18:40</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- viewer -->
+    <div class="viewer">
+      <svg viewBox="0 0 830 690" width="830" height="690">
+        <defs>
+          <linearGradient id="paneGlass" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#9fe3c3" stop-opacity=".10"/><stop offset=".5" stop-color="#9fe3c3" stop-opacity=".03"/><stop offset="1" stop-color="#9fe3c3" stop-opacity=".08"/></linearGradient>
+          <radialGradient id="warm" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#e7a95a" stop-opacity=".45"/><stop offset="1" stop-color="#e7a95a" stop-opacity="0"/></radialGradient>
+          <radialGradient id="tableLight" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#cfeee0" stop-opacity=".55"/><stop offset=".6" stop-color="#6fb7a0" stop-opacity=".12"/><stop offset="1" stop-color="#6fb7a0" stop-opacity="0"/></radialGradient>
+          <linearGradient id="coat" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#4a4038"/><stop offset=".5" stop-color="#2e2722"/><stop offset="1" stop-color="#1b1714"/></linearGradient>
+          <filter id="soft"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <filter id="blurBig"><feGaussianBlur stdDeviation="10"/></filter>
+          <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <path id="plume" d="M372 470 C 360 400, 440 380, 470 330 S 580 250, 650 250 S 720 200, 742 172"/>
+          <path id="plume2" d="M420 480 C 430 420, 500 410, 530 350 S 610 280, 670 262 S 725 205, 742 172"/>
+          <path id="plume3" d="M330 500 C 300 430, 380 380, 440 360 S 560 300, 640 280 S 720 210, 742 172"/>
+        </defs>
+
+        <!-- back pane 19:05 -->
+        <g transform="translate(120,20) skewY(-4)" opacity=".42">
+          <rect x="0" y="0" width="560" height="360" rx="4" fill="rgba(181,155,240,.06)" stroke="#b59bf0" stroke-opacity=".35"/>
+          <g fill="#b59bf0" opacity=".35">
+            <rect x="30" y="40" width="120" height="260"/><rect x="40" y="60" width="100" height="4"/><rect x="40" y="120" width="100" height="4"/><rect x="40" y="180" width="100" height="4"/>
+            <rect x="380" y="230" width="140" height="10"/><rect x="440" y="200" width="6" height="30"/>
+          </g>
+          <circle cx="443" cy="196" r="10" fill="#ffd9a0" opacity=".6" filter="url(#soft)"/>
+        </g>
+        <!-- mid pane 18:40 : active -->
+        <g transform="translate(70,70) skewY(-4)" id="paneMid">
+          <rect x="0" y="0" width="600" height="380" rx="4" fill="url(#paneGlass)" stroke="#e7a95a" stroke-opacity=".7" stroke-width="1.5"/>
+          <rect x="0" y="0" width="600" height="380" rx="4" fill="url(#warm)"/>
+          <!-- entrance hall ghost -->
+          <g fill="#e7a95a">
+            <rect x="250" y="50" width="120" height="250" rx="60" ry="60" opacity=".12"/>
+            <path d="M250 300 L250 110 A60 60 0 0 1 370 110 L370 300" fill="none" stroke="#e7a95a" stroke-opacity=".55" stroke-width="2"/>
+            <rect x="0" y="300" width="600" height="2" opacity=".35"/>
+            <!-- coat rack -->
+            <rect x="470" y="130" width="4" height="170" opacity=".45"/><rect x="452" y="130" width="40" height="3" opacity=".45"/>
+            <!-- figure 1 (관리인) -->
+            <g opacity=".62" class="breathe">
+              <circle cx="170" cy="150" r="17"/><path d="M146 300 L150 200 Q152 172 170 170 Q190 172 192 200 L196 300Z"/>
+              <path d="M190 200 L238 214 L236 222 L188 212Z"/>
+            </g>
+            <!-- coat handed -->
+            <path d="M232 204 Q262 196 270 214 L276 270 Q256 278 236 270Z" fill="#f2c27f" opacity=".75"/>
+            <!-- figure 2 (서기) -->
+            <g opacity=".48">
+              <circle cx="320" cy="146" r="16"/><path d="M296 300 L300 196 Q304 170 320 168 Q338 170 340 196 L344 300Z"/>
+              <path d="M300 204 L272 214 L274 222 L302 212Z"/>
+            </g>
+          </g>
+          <text x="170" y="330" fill="#f0c890" font-size="13" text-anchor="middle" font-family="sans-serif" opacity=".85">관리인</text>
+          <text x="320" y="330" fill="#f0c890" font-size="13" text-anchor="middle" font-family="sans-serif" opacity=".7">서기</text>
+          <rect x="0" y="0" width="600" height="380" rx="4" fill="none" stroke="#fff" stroke-opacity=".12"/>
+          <path d="M0 0 L140 0 L20 380 L0 380Z" fill="#fff" opacity=".035"/>
+        </g>
+        <!-- front pane 18:10 faint -->
+        <g transform="translate(20,150) skewY(-4)" opacity=".3">
+          <rect x="0" y="0" width="300" height="260" rx="4" fill="rgba(127,207,138,.05)" stroke="#7fcf8a" stroke-opacity=".5"/>
+          <g fill="#7fcf8a" opacity=".5">
+            <path d="M40 240 Q60 150 70 240Z"/><path d="M80 240 Q110 120 120 240Z"/><path d="M150 240 Q170 170 180 240Z"/>
+            <ellipse cx="120" cy="244" rx="100" ry="8" opacity=".6"/>
+          </g>
+        </g>
+
+        <!-- evidence light table -->
+        <ellipse cx="400" cy="560" rx="330" ry="110" fill="url(#tableLight)"/>
+        <path d="M110 520 L690 520 L760 640 L40 640Z" fill="#0b1c20" stroke="#2c4d52"/>
+        <path d="M110 520 L690 520 L700 537 L100 537Z" fill="#9fe3c3" opacity=".13"/>
+        <g stroke="#2c4d52" stroke-width="1" opacity=".7">
+          <path d="M160 520 L120 640"/><path d="M260 520 L240 640"/><path d="M360 520 L360 640"/><path d="M460 520 L480 640"/><path d="M560 520 L600 640"/>
+          <path d="M84 580 L716 580"/>
+        </g>
+        <!-- coat on table -->
+        <g filter="url(#soft)" opacity=".6"><ellipse cx="400" cy="585" rx="220" ry="26" fill="#000"/></g>
+        <!-- wool overcoat laid flat, sleeves spread -->
+        <path d="M318 462 L250 486 Q214 500 196 540 L176 588 Q190 600 214 594 L244 546 L262 530 Z" fill="url(#coat)" stroke="#6b5b4d" stroke-width="1"/>
+        <path d="M482 462 L550 486 Q586 500 604 540 L624 588 Q610 600 586 594 L556 546 L538 530 Z" fill="url(#coat)" stroke="#6b5b4d" stroke-width="1"/>
+        <path d="M176 588 Q190 600 214 594 L212 584 Q192 588 180 578Z" fill="#1a1512"/><path d="M624 588 Q610 600 586 594 L588 584 Q608 588 620 578Z" fill="#1a1512"/>
+        <path d="M318 456 L352 450 L400 478 L448 450 L482 456 L500 470 L520 596 Q400 612 280 596 L300 470 Z" fill="url(#coat)" stroke="#6b5b4d" stroke-width="1"/>
+        <path d="M352 450 L338 470 L372 520 L400 478Z" fill="#3a322b" stroke="#7a6a58" stroke-width="1"/><path d="M448 450 L462 470 L428 520 L400 478Z" fill="#2a241f" stroke="#7a6a58" stroke-width="1"/>
+        <path d="M400 478 L396 600" stroke="#1a1512" stroke-width="2"/>
+        <circle cx="408" cy="534" r="3.4" fill="#b89a70"/><circle cx="408" cy="562" r="3.4" fill="#b89a70"/>
+        <path d="M312 556 L356 552 L356 562 L312 566Z M444 552 L488 556 L488 566 L444 562Z" fill="#1d1916" stroke="#5b4d42"/>
+        <path d="M330 480 Q340 540 320 590 M470 480 Q458 540 482 590" stroke="#1d1916" stroke-width="2" fill="none" opacity=".8"/>
+        <path d="M300 470 L318 456 L352 450" stroke="#93dbb8" stroke-width="1.2" fill="none" opacity=".6"/>
+        <path d="M250 486 Q214 500 196 540" stroke="#93dbb8" stroke-width="1.2" fill="none" opacity=".45"/>
+        <!-- inner lining peek (soil) -->
+        <path d="M386 486 L400 520 L414 486 Q400 480 386 486Z" fill="#3f5a35" opacity=".85"/>
+        <!-- sampling reticle -->
+        <g transform="translate(372,470)">
+          <circle r="34" fill="none" stroke="#e7a95a" stroke-width="1.2" stroke-dasharray="4 5" opacity=".9"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="14s" repeatCount="indefinite"/></circle>
+          <circle r="14" fill="none" stroke="#e7a95a" stroke-width="1.5"/>
+          <path d="M-46 0 L-24 0 M24 0 L46 0 M0 -46 L0 -24 M0 24 L0 46" stroke="#e7a95a" stroke-width="1.5"/>
+          <text x="44" y="-38" fill="#f0c890" font-size="11" font-family="monospace">좌측 어깨 · 외피</text>
+        </g>
+        <!-- plume -->
+        <g id="plumeG" filter="url(#glow)">
+          <use href="#plume" fill="none" stroke="#e7a95a" stroke-opacity=".18" stroke-width="22" filter="url(#blurBig)"/>
+          <use href="#plume" fill="none" stroke="#e7a95a" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 8"/>
+        </g>
+        <g id="parts"></g>
+        <!-- pipette / nozzle -->
+        <g transform="translate(742,172) rotate(38)">
+          <rect x="-7" y="-180" width="14" height="178" rx="3" fill="rgba(220,240,235,.12)" stroke="rgba(220,240,235,.55)"/>
+          <rect x="-5" y="-110" width="10" height="106" rx="2" fill="#e7a95a" opacity=".55" id="pipFill"><animate attributeName="opacity" values=".35;.7;.35" dur="1.4s" repeatCount="indefinite"/></rect>
+          <path d="M-7 -2 L0 18 L7 -2Z" fill="rgba(220,240,235,.4)" stroke="rgba(220,240,235,.7)"/>
+          <rect x="-12" y="-200" width="24" height="24" rx="4" fill="#243a3e" stroke="#4d6769"/>
+          <circle cx="0" cy="18" r="10" fill="#e7a95a" opacity=".5" filter="url(#soft)"><animate attributeName="r" values="7;13;7" dur="1.2s" repeatCount="indefinite"/></circle>
+        </g>
+      </svg>
+      <div class="slabel" style="left:548px;top:12px;color:#b59bf0;border:1px solid rgba(181,155,240,.4)">19:05 · 서재</div>
+      <div class="slabel" style="left:90px;top:40px;color:#1a1208;background:#e7a95a;box-shadow:0 0 18px rgba(231,169,90,.55)">18:40 · 현관 — 복원 중</div>
+      <div class="slabel" style="left:26px;top:430px;color:#7fcf8a;border:1px solid rgba(127,207,138,.4)">18:10 · 온실</div>
+    </div>
+
+    <!-- vials -->
+    <div class="panel vials">
+      <h3>채취 기록 · 시간층 바이알</h3>
+      <div class="bd">
+        <div class="vrow">
+          <div class="vial" data-i="0"><div class="cap"></div><div class="tube"><div class="liq" style="height:86%;background:linear-gradient(180deg,#9fe0a6,#3f8a4d)"></div></div><div class="n" style="color:var(--soil)">18:10</div><div class="d">젖은 흙과<br>흰 꽃향기</div></div>
+          <div class="vial" data-i="1"><div class="cap" style="background:linear-gradient(#6a5130,#2a2014);border-color:#e7a95a"></div><div class="tube" style="border-color:rgba(231,169,90,.7);box-shadow:0 0 22px rgba(231,169,90,.25),inset 0 0 12px rgba(0,0,0,.5)"><div class="liq" id="liqMid" style="height:38%;background:linear-gradient(180deg,#f7c783,#a8641f)"></div><span class="bub" style="left:12px;bottom:10px"></span><span class="bub" style="left:24px;bottom:4px;animation-delay:.8s"></span><span class="bub" style="left:17px;bottom:0;animation-delay:1.6s"></span></div><div class="n" style="color:var(--tob)">18:40</div><div class="d" id="dMid">채취 중…<br>마른 담배</div></div>
+          <div class="vial" data-i="2"><div class="cap"></div><div class="tube"><div class="liq" style="height:0%;background:linear-gradient(180deg,#d4c3fa,#6d53b4)"></div></div><div class="n" style="color:var(--perf)">19:05</div><div class="d">미채취</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel record">
+      <h3>복원 기록</h3>
+      <div class="bd">
+        <div class="ts">18:40 · 현관</div>
+        <p>관리인이 서기에게 외투를 빌려줬다. 담배 냄새가 흙 냄새 <em style="color:var(--tob);font-style:normal">위에</em> 얹혔다.</p>
+        <div class="stats">
+          <div class="stat"><div class="k">복원 시각</div><div class="v" style="color:var(--tob)">18:40</div></div>
+          <div class="stat"><div class="k">채취</div><div class="v" id="cnt">1 / 3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="track"></div>
+      <div class="tick" data-t="0" style="left:12%;color:var(--soil)"><div class="dot"></div><div class="lab">18:10</div><div class="loc">온실</div></div>
+      <div class="tick on" data-t="1" style="left:50%;color:var(--tob)"><div class="dot"></div><div class="lab">18:40</div><div class="loc">현관</div></div>
+      <div class="tick" data-t="2" style="left:88%;color:var(--perf)"><div class="dot"></div><div class="lab">19:05</div><div class="loc">서재</div></div>
+    </div>
+    <button class="btnSample" id="btnSample">이 층의 냄새 채취<small>SPACE · 마른 담배와 외투의 잔향</small></button>
+    <div class="hint">시간층 이동 · 채취 기록은 남습니다</div>
+  </section>
+
+  <!-- ================= SCREEN B ================= -->
+  <section class="screen" id="sb">
+    <div class="brand"><h1>잔향 감식실</h1><div class="en">THE SCENT ARCHIVE</div><div class="case">사건 0927-B · 판정</div></div>
+    <div class="bTitle">
+      <div class="k">복원 완료 · 기록한 흔적 3 / 3</div>
+      <h2>외투가 옮긴 냄새</h2>
+      <p>온실의 흙은 관리인의 외투에 먼저 묻었다. 서기는 그 외투를 빌려 서재로 갔다. 서기를 온실 침입자로 지목한 증언은 성립하지 않는다.</p>
+    </div>
+
+    <!-- floor plan with route -->
+    <svg class="plan" viewBox="0 0 500 360" width="500" height="360">
+      <defs><filter id="g2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#2c4d52" stroke-width="1"/></pattern></defs>
+      <rect x="4" y="4" width="492" height="352" fill="rgba(6,20,24,.6)" stroke="#2c4d52"/>
+      <g fill="rgba(14,34,40,.9)" stroke="#9fe3c3" stroke-opacity=".45" stroke-width="1.5">
+        <rect x="24" y="30" width="150" height="130"/><rect x="190" y="30" width="120" height="300"/><rect x="326" y="30" width="150" height="190"/>
+        <rect x="24" y="176" width="150" height="154" fill="url(#hatch)"/>
+      </g>
+      <g font-family="sans-serif" font-size="14" fill="#cfe7de"><text x="99" y="56" text-anchor="middle">온실</text><text x="250" y="56" text-anchor="middle">현관</text><text x="401" y="56" text-anchor="middle">서재</text></g>
+      <g font-family="monospace" font-size="10" fill="#8fa6a6"><text x="99" y="72" text-anchor="middle">18:10</text><text x="250" y="72" text-anchor="middle">18:40</text><text x="401" y="72" text-anchor="middle">19:05</text></g>
+      <!-- routes -->
+      <path d="M99 120 C 140 130, 170 160, 240 180" fill="none" stroke="#7fcf8a" stroke-width="3" filter="url(#g2)"/>
+      <path d="M260 186 C 300 170, 340 150, 400 140" fill="none" stroke="#b59bf0" stroke-width="3" filter="url(#g2)"/>
+      <path d="M99 120 C 140 130, 170 160, 240 180 L260 186 C 300 170, 340 150, 400 140" fill="none" stroke="#e7a95a" stroke-width="2" stroke-dasharray="6 7">
+        <animate attributeName="stroke-dashoffset" from="52" to="0" dur="1.4s" repeatCount="indefinite"/></path>
+      <circle r="6" fill="#ffe0b0" filter="url(#g2)"><animateMotion dur="4s" repeatCount="indefinite" path="M99 120 C 140 130, 170 160, 240 180 L260 186 C 300 170, 340 150, 400 140"/></circle>
+      <g font-family="sans-serif" font-size="12">
+        <circle cx="99" cy="120" r="7" fill="#7fcf8a"/><text x="99" y="146" fill="#7fcf8a" text-anchor="middle">관리인</text>
+        <circle cx="250" cy="183" r="9" fill="none" stroke="#e7a95a" stroke-width="2"/><text x="250" y="212" fill="#e7a95a" text-anchor="middle">외투 인계</text>
+        <circle cx="400" cy="140" r="7" fill="#b59bf0"/><text x="400" y="166" fill="#b59bf0" text-anchor="middle">서기 · 외투 발견</text>
+      </g>
+      <text x="99" y="260" text-anchor="middle" fill="#6d8a88" font-family="sans-serif" font-size="11">서기 동선 없음</text>
+      <g font-family="monospace" font-size="10" fill="#8fa6a6"><rect x="330" y="280" width="12" height="3" fill="#7fcf8a"/><text x="348" y="285">관리인</text><rect x="330" y="296" width="12" height="3" fill="#b59bf0"/><text x="348" y="301">서기</text><rect x="330" y="312" width="12" height="3" fill="#e7a95a"/><text x="348" y="317">외투</text></g>
+    </svg>
+
+    <!-- strata core -->
+    <div class="coreWrap">
+      <svg viewBox="0 0 1080 300" width="1080" height="300">
+        <defs>
+          <linearGradient id="cyl" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".25" stop-color="#fff" stop-opacity=".05"/><stop offset=".8" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient>
+          <pattern id="fib" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 3 Q1.5 0 3 3 T6 3" stroke="#000" stroke-opacity=".25" fill="none"/></pattern>
+          <filter id="g3"><feGaussianBlur stdDeviation="6"/></filter>
+        </defs>
+        <text x="0" y="22" fill="#93dbb8" font-family="monospace" font-size="12" letter-spacing="3">외투 섬유 단면 · 냄새 층서</text>
+        <text x="0" y="276" fill="#8fa6a6" font-family="sans-serif" font-size="12">← 안감 (먼저 묻음)</text>
+        <text x="600" y="276" fill="#8fa6a6" font-family="sans-serif" font-size="12" text-anchor="end">겉면 (나중에 묻음) →</text>
+        <g transform="translate(0,70)">
+          <ellipse cx="300" cy="80" rx="310" ry="95" fill="#000" opacity=".5" filter="url(#g3)"/>
+          <rect x="0" y="0" width="200" height="150" fill="#3f8a4d"/><rect x="0" y="0" width="200" height="150" fill="url(#fib)"/>
+          <rect x="200" y="0" width="200" height="150" fill="#b0702a"/><rect x="200" y="0" width="200" height="150" fill="url(#fib)"/>
+          <rect x="400" y="0" width="200" height="150" fill="#6d53b4"/><rect x="400" y="0" width="200" height="150" fill="url(#fib)"/>
+          <!-- soil bleeding through -->
+          <path d="M200 30 Q260 40 300 60 Q260 70 200 80Z" fill="#3f8a4d" opacity=".55"/>
+          <path d="M400 70 Q440 76 470 88 Q440 100 400 104Z" fill="#3f8a4d" opacity=".35"/>
+          <rect x="0" y="0" width="600" height="150" fill="url(#cyl)"/>
+          <ellipse cx="600" cy="75" rx="20" ry="75" fill="#8a73cc" stroke="#d4c3fa" stroke-opacity=".6"/>
+          <rect x="0" y="0" width="600" height="150" fill="none" stroke="#dcefe7" stroke-opacity=".35"/>
+          <g font-family="sans-serif" fill="#fff">
+            <text x="100" y="72" text-anchor="middle" font-size="17" font-weight="600">젖은 흙 · 흰 꽃</text><text x="100" y="94" text-anchor="middle" font-size="12" opacity=".8" font-family="monospace">18:10 · 온실</text>
+            <text x="300" y="72" text-anchor="middle" font-size="17" font-weight="600">마른 담배</text><text x="300" y="94" text-anchor="middle" font-size="12" opacity=".8" font-family="monospace">18:40 · 현관</text>
+            <text x="500" y="72" text-anchor="middle" font-size="17" font-weight="600">향수 · 촛농</text><text x="500" y="94" text-anchor="middle" font-size="12" opacity=".8" font-family="monospace">19:05 · 서재</text>
+          </g>
+          <!-- scanning beam -->
+          <rect x="0" y="-8" width="4" height="166" fill="#cff5e4" opacity=".8"><animate attributeName="x" values="0;596;0" dur="6s" repeatCount="indefinite"/></rect>
+          <!-- analysis notes -->
+          <g font-family="sans-serif" font-size="14" fill="#cfdcd8">
+            <path d="M260 50 L660 -30" stroke="#7fcf8a" stroke-dasharray="3 4" fill="none"/><circle cx="260" cy="50" r="4" fill="#7fcf8a"/>
+            <text x="672" y="-34" fill="#7fcf8a" font-family="monospace" font-size="11">관찰 01</text>
+            <text x="672" y="-14">흙이 담배층 아래로 스며 있다 — 먼저 묻었다</text>
+            <path d="M300 130 L660 60" stroke="#e7a95a" stroke-dasharray="3 4" fill="none"/><circle cx="300" cy="130" r="4" fill="#e7a95a"/>
+            <text x="672" y="56" fill="#e7a95a" font-family="monospace" font-size="11">관찰 02</text>
+            <text x="672" y="76">담배는 관리인의 것, 외투는 현관에서 넘어갔다</text>
+            <path d="M540 120 L660 150" stroke="#b59bf0" stroke-dasharray="3 4" fill="none"/><circle cx="540" cy="120" r="4" fill="#b59bf0"/>
+            <text x="672" y="146" fill="#b59bf0" font-family="monospace" font-size="11">관찰 03</text>
+            <text x="672" y="166">향수는 겉면에만 — 서기는 온실에 없었다</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="panel verdict">
+      <h3>진술 판정</h3>
+      <div class="bd">
+        <div class="q">“꽃향기가 났어요. 온실에 들어간 건 서기예요.”<br><span style="font:12px var(--sans);color:var(--muted)">— 정원 하녀의 진술</span></div>
+        <div class="stamp">불성립<small>STATEMENT REJECTED</small></div>
+        <div class="choice x" data-c="0"><span class="r"></span>향기의 주인 = 온실 침입자 (서기)</div>
+        <div class="choice sel" data-c="1"><span class="r"></span>흙은 외투가 옮겼다 · 관리인 → 서기</div>
+        <p style="font:13px/1.7 var(--serif);color:#aac3bd;margin-top:16px">향기는 사람의 이름이 아니다. 흙과 향수는 서로 다른 시간에 묻었다.</p>
+      </div>
+    </div>
+
+    <div class="bFoot">
+      <div class="mini"><i style="background:linear-gradient(#9fe0a6,#3f8a4d)"></i>18:10 온실<br>젖은 흙</div>
+      <div class="mini"><i style="background:linear-gradient(#f7c783,#a8641f)"></i>18:40 현관<br>마른 담배</div>
+      <div class="mini"><i style="background:linear-gradient(#d4c3fa,#6d53b4)"></i>19:05 서재<br>향수와 촛농</div>
+      <div class="sum">기록한 흔적 3 / 3 · 판정 완료</div>
+    </div>
+  </section>
+
+  <div class="vignette"></div>
+  <div class="grain"></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(){
+    var h=(location.hash||'#a').replace('#','');if(h!=='b')h='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id==='s'+h);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-h')===h);
+  }
+  window.addEventListener('hashchange',show);show();
+  var tb=document.querySelectorAll('.tabs button');
+  for(var k=0;k<tb.length;k++)tb[k].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-h');});
+
+  /* audio: lazily, only on gesture */
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}if(ac&&ac.state==='suspended')ac.resume();}catch(e){ac=null;}return ac;}
+  function tone(f,d,type,g,slide){var a=ctx();if(!a)return;try{var o=a.createOscillator(),v=a.createGain(),t=a.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);v.gain.setValueAtTime(0.0001,t);v.gain.exponentialRampToValueAtTime(g||0.08,t+0.02);v.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(v);v.connect(a.destination);o.start(t);o.stop(t+d+0.05);}catch(e){}}
+  function hiss(d,g){var a=ctx();if(!a)return;try{var n=Math.floor(a.sampleRate*d),b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);for(var i=0;i<n;i++)x[i]=(Math.random()*2-1)*(1-i/n);var s=a.createBufferSource(),f=a.createBiquadFilter(),v=a.createGain();f.type='bandpass';f.frequency.value=2400;f.Q.value=0.8;v.gain.value=g||0.05;s.buffer=b;s.connect(f);f.connect(v);v.connect(a.destination);s.start();}catch(e){}}
+
+  /* particles along plume */
+  var NS='http://www.w3.org/2000/svg',parts=document.getElementById('parts');
+  var paths=['#plume','#plume2','#plume3'];
+  try{
+    for(var i=0;i<34;i++){
+      var c=document.createElementNS(NS,'circle');
+      var r=1.2+((i*37)%10)/4;c.setAttribute('r',r);
+      c.setAttribute('fill',i%7===0?'#9fe0a6':'#f3c07a');c.setAttribute('opacity',(0.35+((i*13)%10)/16).toFixed(2));
+      var m=document.createElementNS(NS,'animateMotion');var dur=(3.2+((i*29)%20)/10);
+      m.setAttribute('dur',dur+'s');m.setAttribute('repeatCount','indefinite');m.setAttribute('begin',(-((i*0.37)%dur)).toFixed(2)+'s');
+      var mp=document.createElementNS(NS,'mpath');mp.setAttribute('href',paths[i%3]);m.appendChild(mp);c.appendChild(m);parts.appendChild(c);
+    }
+  }catch(e){}
+
+  /* sampling interaction */
+  var sampled=false,btn=document.getElementById('btnSample');
+  function sample(){
+    if(sampled){tone(220,.2,'triangle',.04);return;}
+    sampled=true;hiss(1.2,.05);tone(520,1.3,'sine',.05,880);
+    setTimeout(function(){tone(1320,.9,'sine',.06);tone(1980,.7,'sine',.03);},1300);
+    var l=document.getElementById('liqMid');if(l)l.style.height='84%';
+    setTimeout(function(){document.getElementById('cnt').textContent='2 / 3';document.getElementById('dMid').innerHTML='마른 담배와<br>외투의 잔향';btn.classList.add('done');btn.innerHTML='채취 완료 · 18:40<small>다음 층으로 이동하세요</small>';},1500);
+  }
+  btn.addEventListener('click',sample);
+  var ticks=document.querySelectorAll('.tick');
+  for(var t=0;t<ticks.length;t++)ticks[t].addEventListener('click',function(e){
+    for(var q=0;q<ticks.length;q++)ticks[q].classList.remove('on');e.currentTarget.classList.add('on');
+    var idx=+e.currentTarget.getAttribute('data-t');tone([392,466,554][idx]||440,.5,'sine',.05);hiss(.3,.02);
+  });
+  var ch=document.querySelectorAll('.choice');
+  for(var c2=0;c2<ch.length;c2++)ch[c2].addEventListener('click',function(e){
+    for(var q=0;q<ch.length;q++)ch[q].classList.remove('sel');e.currentTarget.classList.add('sel');
+    var ok=e.currentTarget.getAttribute('data-c')==='1';if(ok){tone(660,.5,'sine',.05);tone(990,.6,'sine',.03);}else{tone(160,.5,'sawtooth',.03,110);}
+  });
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1'){location.hash='a';tone(440,.12,'sine',.03);}
+    else if(e.key==='2'){location.hash='b';tone(587,.12,'sine',.03);}
+    else if(e.code==='Space'&&(location.hash||'#a')!=='#b'){e.preventDefault();sample();}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "_": "지휘 동작 아홉. **한 박에 한 무리만** 볼 수 있다 — 지휘봉은 한 곳을 가리킨다.",
+  "_아홉인_이유": "한때 ±130ms 동작 둘을 더 두었는데 `NoDominantStrategy`의 「쓸모없는 동작이 없다」가 자동 지휘자가 그 둘을 한 번도 쓰지 않는다고 잡아냈다. 지워도 검사기 전부가 통과했으므로 지웠다.",
+  "_부호": "tempoNudgeMs 가 양수면 당긴다(늦은 무리를 앞으로), 음수면 늘린다. 어긋남(offsetMs)이 양수면 늦었다는 뜻이다.",
+  "_반응": "실제로 움직이는 양은 tempoNudgeMs * 그 무리의 responsivenessPercent / 100 이고 나머지는 누적한다.",
+
+  "cues": [
+    { "id": "c_hold",  "name": "박만 준다",        "gesture": "지휘봉을 수직으로 내린다",        "tempoNudgeMs": 0,   "dynamicNudge": 0 },
+    { "id": "c_pull_s","name": "살짝 당긴다",      "gesture": "손목만 앞으로",                   "tempoNudgeMs": 30,  "dynamicNudge": 0 },
+    { "id": "c_pull_m","name": "당긴다",           "gesture": "팔꿈치까지 앞으로",               "tempoNudgeMs": 60,  "dynamicNudge": 0 },
+    { "id": "c_pull_l","name": "세게 당긴다",      "gesture": "상체를 기울여 끌어온다",           "tempoNudgeMs": 90,  "dynamicNudge": 0 },
+    { "id": "c_ease_s","name": "살짝 늘린다",      "gesture": "손바닥을 아래로 눕힌다",           "tempoNudgeMs": -30, "dynamicNudge": 0 },
+    { "id": "c_ease_m","name": "늘린다",           "gesture": "팔을 옆으로 벌린다",              "tempoNudgeMs": -60, "dynamicNudge": 0 },
+    { "id": "c_ease_l","name": "세게 늘린다",      "gesture": "두 손으로 눌러 잡는다",            "tempoNudgeMs": -90, "dynamicNudge": 0 },
+    { "id": "c_swell", "name": "크게",             "gesture": "손을 펴서 올린다",                "tempoNudgeMs": 0,   "dynamicNudge": 24 },
+    { "id": "c_hush",  "name": "작게",             "gesture": "손등으로 누른다",                 "tempoNudgeMs": 0,   "dynamicNudge": -24 }
+  ]
+}

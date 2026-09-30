@@ -1,0 +1,623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="09f0133a-1e99-4300-923b-942db33ca8f2" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:50:11" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:50:11.8111510+09:00" queuing="2026-09-27T20:50:11.8111516+09:00" start="2026-09-27T20:50:11.0328714+09:00" finish="2026-09-27T20:50:11.8500482+09:00" />
+  <TestSettings name="default" id="0afd2511-2d24-4e6f-b20b-82e60d3d0e62">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_50_11" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="cc40ad80-cda2-4800-80ea-01d75edd30df" testId="3ab403de-cbe9-6b4c-3211-1d65c583f0c4" testName="네_세계를_견준다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0040640" startTime="2026-09-27T20:50:11.7333381+09:00" endTime="2026-09-27T20:50:11.7374013+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc40ad80-cda2-4800-80ea-01d75edd30df">
+      <Output>
+        <StdOut>잠금품·밀려남x·미리보기o              정답 3/3 · 사실 13/13 · 깨우기 2 (00:15(10%) &gt; 01:00(6%))&#xD;
+잠김·밀려남x·미리보기o               정답 3/3 · 사실 13/13 · 깨우기 2 (00:15(10%) &gt; 01:00(6%))&#xD;
+잠김·밀려남o·미리보기o               정답 3/3 · 사실 13/13 · 깨우기 4 (20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%))&#xD;
+잠김·밀려남o·미리보기x               정답 0/3 · 사실 1/13 · 깨우기 4 (20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%))&#xD;
+잠긴 쪽만                       정답 3/3 · 사실 13/13</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7b7253c8-d1da-4880-88a3-990048a30886" testId="d6905c6b-8a01-a504-cd07-0d3a1f6d5281" testName="소식이_퍼지는_순간_화면이_통째로_쓸린다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0050200" startTime="2026-09-27T20:50:11.7770633+09:00" endTime="2026-09-27T20:50:11.7820833+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b7253c8-d1da-4880-88a3-990048a30886">
+      <Output>
+        <StdOut>22:42부터 10분 사이에 화면에서 8장이 쓸려 나간다 (칸 8장 중)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f620309a-7ac4-44f7-8033-873f6a501caa" testId="4e6b0258-f7f8-ebbe-375c-780cfe2df2b9" testName="예산_안에서_실제로_그_셋을_쥘_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004780" startTime="2026-09-27T20:50:11.7626493+09:00" endTime="2026-09-27T20:50:11.7631270+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f620309a-7ac4-44f7-8033-873f6a501caa">
+      <Output>
+        <StdOut>깨우기 4번으로 3/3 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1792eac8-61d7-4220-b8ce-ca0897a13297" testId="8741d384-bd46-09f2-091a-7f7cbd1e47e1" testName="예산에_여유가_거의_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004740" startTime="2026-09-27T20:50:11.7663562+09:00" endTime="2026-09-27T20:50:11.7668304+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1792eac8-61d7-4220-b8ce-ca0897a13297">
+      <Output>
+        <StdOut>마지막 증거 23:55 까지 살아 있으려면 깨우기는 최대 5번 · 실제로 필요한 것은 4번 (여유 1번)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="13c7915c-ada3-484f-9c51-3ab1138cfba1" testId="fb9bc2bd-6bb0-9aa3-9dd3-c9d8dd24aaa9" testName="잠금_화면만으로_정답_셋이_전부_선다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004730" startTime="2026-09-27T20:50:11.7631368+09:00" endTime="2026-09-27T20:50:11.7636093+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13c7915c-ada3-484f-9c51-3ab1138cfba1">
+      <Output>
+        <StdOut>v_where → 형의 가게 (한섭목공)  (근거 3 · 알림 4장)&#xD;
+v_who → 형 한지섭  (근거 3 · 알림 6장)&#xD;
+v_when → 20시대  (근거 4 · 알림 7장 + 잔량)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ba15fe54-583b-49c3-a893-117966a25df7" testId="9b48df8f-c712-befa-5b9c-fcb0b61629fa" testName="밀려남이_없으면_한두_번으로_끝난다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002720" startTime="2026-09-27T20:50:11.7767832+09:00" endTime="2026-09-27T20:50:11.7770546+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba15fe54-583b-49c3-a893-117966a25df7">
+      <Output>
+        <StdOut>밀려남x: 깨우기 2번으로 3/3 · 00:15(10%) &gt; 01:00(6%)&#xD;
+    (두 번인 이유는 하나뿐이다 — 잔량 감소율을 재려면 벌려서 두 번 읽어야 한다)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ec24660f-1921-4d7a-a3fd-869b33bb7001" testId="6ab14cf6-0356-a7f0-06a7-fd9b29a6070a" testName="같은_씨드는_같은_화면을_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0020260" startTime="2026-09-27T20:50:11.7962039+09:00" endTime="2026-09-27T20:50:11.7982294+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec24660f-1921-4d7a-a3fd-869b33bb7001">
+      <Output>
+        <StdOut>씨드 8개가 두 번씩 같은 화면을 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9a5e4295-208b-4cb2-9556-6c19be25602e" testId="bbc0029e-597e-fdeb-e3b1-8a0e954eccc8" testName="필요한_알림은_전부_예산_안에서_잡을_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005160" startTime="2026-09-27T20:50:11.7639012+09:00" endTime="2026-09-27T20:50:11.7644175+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a5e4295-208b-4cb2-9556-6c19be25602e">
+      <Output>
+        <StdOut>필요한 알림 14장 전부 잡을 수 있다 · 가장 좁은 창 21분 (e_msg_land2)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b7a89f0d-3984-408e-a2dd-8d89b45ccd31" testId="ae410191-1169-6743-a72c-0d4711c6ac71" testName="대조군_둘_잠금을_풀어도_답이_바뀌지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006160" startTime="2026-09-27T20:50:11.7614903+09:00" endTime="2026-09-27T20:50:11.7621064+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7a89f0d-3984-408e-a2dd-8d89b45ccd31">
+      <Output>
+        <StdOut>잠금 화면 3/3 = 잠금 풀림 3/3 — 풀어도 얻는 것이 없다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e34fca64-87ab-4ac7-baf1-3e0c578ae0c3" testId="c866cfa0-1cac-c07d-5d12-cd044d924137" testName="같은_순간을_두_번_깨우는_것은_헛일이다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005950" startTime="2026-09-27T20:50:11.7645356+09:00" endTime="2026-09-27T20:50:11.7651306+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e34fca64-87ab-4ac7-baf1-3e0c578ae0c3">
+      <Output>
+        <StdOut>같은 순간 연타 17번 시험 · 더 본 알림 0장 (배터리만 26‰ 씩 날아간다)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9fe7274b-e3c4-4538-8ca1-2e76bacae089" testId="fad71860-b94e-5a08-d416-7f0648b9c0a4" testName="한_번_깨워서는_밀려남이_있을_때_아무것도_못_세운다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0071610" startTime="2026-09-27T20:50:11.7821022+09:00" endTime="2026-09-27T20:50:11.7892633+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9fe7274b-e3c4-4538-8ca1-2e76bacae089">
+      <Output>
+        <StdOut>한 번 깨워 세우는 정답: 밀려남o 0/3 · 밀려남x 2/3</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d4d7dd54-15a9-41e0-b672-1ec3f7eb2e97" testId="2e3b3690-48c5-188d-7b06-cfaffdf73b11" testName="저전력_알림과_잔량이_서로_맞는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002580" startTime="2026-09-27T20:50:11.7310084+09:00" endTime="2026-09-27T20:50:11.7312658+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4d7dd54-15a9-41e0-b672-1ec3f7eb2e97">
+      <Output>
+        <StdOut>저전력 20:12 200‰ → 주운 시각 20:25 196‰ (대기 1칸)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5a6bcbe8-0fbc-4259-b165-dabe64fc8b26" testId="10cf3486-cadf-7ea3-d693-10d07eb801d7" testName="정답_하나에_드는_알림_수를_실제로_센다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008970" startTime="2026-09-27T20:50:11.7741217+09:00" endTime="2026-09-27T20:50:11.7750181+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a6bcbe8-0fbc-4259-b165-dabe64fc8b26">
+      <Output>
+        <StdOut>v_where: 알림 4장 — e_card_bro, e_msg_bro4, e_msg_shopmate, e_photo_bro&#xD;
+v_who: 알림 6장 — e_card_bro, e_deliv2, e_msg_bro2, e_msg_bro4, e_msg_land, e_msg_land2&#xD;
+v_when: 알림 7장 + 잔량 두 번 — e_call1, e_call2, e_lowpower, e_msg_bro5, e_msg_land2, e_photo_bak, e_step</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c04a530f-d9ce-48a5-92a4-8ced67980486" testId="db1d34b8-507d-4c4e-6239-67b6367ec2c3" testName="정해진_박자로_누르는_것은_거의_전부_진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0055710" startTime="2026-09-27T20:50:11.7668389+09:00" endTime="2026-09-27T20:50:11.7724099+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c04a530f-d9ce-48a5-92a4-8ced67980486">
+      <Output>
+        <StdOut>고정 박자 189가지 중 전부 세운 것 0가지 (0%) · 60분 이하 박자의 최고 성적 2/3</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a0b6bb22-09b2-452d-b95d-bc5f2cd9cea0" testId="20145544-2c1d-646f-6690-917547e3545b" testName="정책별_결과를_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0057090" startTime="2026-09-27T20:50:11.7380773+09:00" endTime="2026-09-27T20:50:11.7437852+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0b6bb22-09b2-452d-b95d-bc5f2cd9cea0">
+      <Output>
+        <StdOut>고른 일정   3/3  20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+바로 몰아치기 0/3  20:25(19%) &gt; 20:30(17%) &gt; 20:35(14%) &gt; 20:40(11%) &gt; 20:45(8%) &gt; 20:50(5%) &gt; 20:55(2%) &gt; 21:00(0%)&#xD;
+참았다 몰아치기 0/3  00:50(9%) &gt; 00:55(6%) &gt; 01:00(3%)&#xD;
+고정 박자 189가지 중 전부 세운 것 0가지 (0%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="62592658-b90f-4333-92c3-2929bc9fe4c1" testId="f8bb24a9-c193-c0c2-bc78-8b0313b968d6" testName="어떤_알림_한_장도_단독으로_정답을_세우지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003620" startTime="2026-09-27T20:50:11.7732899+09:00" endTime="2026-09-27T20:50:11.7736513+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62592658-b90f-4333-92c3-2929bc9fe4c1">
+      <Output>
+        <StdOut>알림 39장 각각 단독 → 정답 0개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ee655b2f-54c6-4522-9894-9e87e32b37b5" testId="cf032283-2e3a-cf7f-13cb-bea5d18fd692" testName="고른_일정은_이긴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003480" startTime="2026-09-27T20:50:11.7651392+09:00" endTime="2026-09-27T20:50:11.7654866+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee655b2f-54c6-4522-9894-9e87e32b37b5">
+      <Output>
+        <StdOut>고른 일정: 깨우기 4번 → 3/3 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7b1fadf9-9b3c-4136-8f5e-7a6d48ced464" testId="861ba38a-efc1-05f1-799a-81da2c5efe36" testName="알림이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0030820" startTime="2026-09-27T20:50:11.7279040+09:00" endTime="2026-09-27T20:50:11.7309857+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b1fadf9-9b3c-4136-8f5e-7a6d48ced464">
+      <Output>
+        <StdOut>알림 37장 · 사람이 적은 것 전부 성립</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8fe93432-dfcc-44aa-92ba-fe4f13f08b3f" testId="1f2388a4-6bff-e50d-2d97-962a00125347" testName="밀려남은_되돌릴_수_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0632400" startTime="2026-09-27T20:50:11.6611454+09:00" endTime="2026-09-27T20:50:11.7243851+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8fe93432-dfcc-44aa-92ba-fe4f13f08b3f">
+      <Output>
+        <StdOut>알림 39장 전부: 한 번 밀려나면 돌아오지 않는다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="033bfa67-d356-4816-a7b5-daf12b59b6e4" testId="548b5adf-7392-de9c-db24-c844cf6f5ef1" testName="알림마다_화면에_남아_있던_구간을_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006250" startTime="2026-09-27T20:50:11.7374359+09:00" endTime="2026-09-27T20:50:11.7380606+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="033bfa67-d356-4816-a7b5-daf12b59b6e4">
+      <Output>
+        <StdOut>주운 시각 20:25 · 칸 8장 · 잔량 19%&#xD;
+알림               도착     밀려남    필요   창(주운 뒤)&#xD;
+e_alarm           07:10   19:10         잡을 수 없다&#xD;
+e_bank            09:40   19:31         잡을 수 없다&#xD;
+e_msg_bro1        11:25   19:58         잡을 수 없다&#xD;
+e_photo_shop      13:02   20:12         잡을 수 없다&#xD;
+e_pharm           15:18   20:41         20:25~20:40&#xD;
+e_photo_bro       17:55   20:52    ★    20:25~20:51&#xD;
+e_card_bro        18:20   21:03    ★    20:25~21:02&#xD;
+e_msg_land        18:44   21:09    ★    20:25~21:08&#xD;
+e_step            19:10   21:30    ★    20:25~21:29&#xD;
+e_deliv1          19:31   22:04         20:25~22:03&#xD;
+e_msg_bro2        19:58   22:15    ★    20:25~22:14&#xD;
+e_lowpower        20:12   22:18    ★    20:25~22:17&#xD;
+e_deliv2          20:41   22:31    ★    20:41~22:30&#xD;
+e_call1           20:52   22:45    ★    20:52~22:44&#xD;
+e_call2           21:03   22:46    ★    21:03~22:45&#xD;
+e_msg_bro3        21:09   22:47         21:09~22:46&#xD;
+e_msg_shopmate    21:30   22:48    ★    21:30~22:47&#xD;
+e_msg_bro4        22:04   22:49    ★    22:04~22:48&#xD;
+n_noise_01        22:15   22:50         22:15~22:49&#xD;
+n_noise_02        22:18   22:51         22:18~22:50&#xD;
+e_msg_land2       22:31   22:52    ★    22:31~22:51&#xD;
+e_burstA_1        22:45   23:15         22:45~23:14&#xD;
+e_burstA_2        22:46   23:35         22:46~23:34&#xD;
+e_burstA_3        22:47   23:36         22:47~23:35&#xD;
+e_burstA_4        22:48   23:37         22:48~23:36&#xD;
+e_burstA_5        22:49   23:38         22:49~23:37&#xD;
+e_burstA_6        22:50   23:39         22:50~23:38&#xD;
+e_burstA_7        22:51   23:40         22:51~23:39&#xD;
+e_burstA_8        22:52   23:41         22:52~23:40&#xD;
+e_photo_bak       23:15   23:42    ★    23:15~23:41&#xD;
+e_burstB_1        23:35   23:55         23:35~23:54&#xD;
+e_burstB_2        23:36     끝까지         23:36~01:00&#xD;
+e_burstB_3        23:37     끝까지         23:37~01:00&#xD;
+e_burstB_4        23:38     끝까지         23:38~01:00&#xD;
+e_burstB_5        23:39     끝까지         23:39~01:00&#xD;
+e_burstB_6        23:40     끝까지         23:40~01:00&#xD;
+e_burstB_7        23:41     끝까지         23:41~01:00&#xD;
+e_burstB_8        23:42     끝까지         23:42~01:00&#xD;
+e_msg_bro5        23:55     끝까지    ★    23:55~01:00&#xD;
+필요한 알림 14장: e_call1, e_call2, e_card_bro, e_deliv2, e_lowpower, e_msg_bro2, e_msg_bro4, e_msg_bro5, e_msg_land, e_msg_land2, e_msg_shopmate, e_photo_bak, e_photo_bro, e_step</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d81b94fe-ec48-49d0-b618-51a3f7724d3e" testId="9cb9a435-0c73-a53f-fbcc-ed4ea698af74" testName="끝까지_아꼈다_몰아_깨워도_못_세운다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004520" startTime="2026-09-27T20:50:11.7654952+09:00" endTime="2026-09-27T20:50:11.7659469+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d81b94fe-ec48-49d0-b618-51a3f7724d3e">
+      <Output>
+        <StdOut>끝에 2번 몰아치기 → 0/3 · 00:55(8%) &gt; 01:00(6%)&#xD;
+끝에 3번 몰아치기 → 0/3 · 00:50(9%) &gt; 00:55(6%) &gt; 01:00(3%)&#xD;
+끝에 4번 몰아치기 → 0/3 · 23:59(11%) &gt; 00:04(8%) &gt; 00:09(5%) &gt; 00:14(3%)&#xD;
+끝에 5번 몰아치기 → 0/3 · 22:54(14%) &gt; 22:59(11%) &gt; 23:04(8%) &gt; 23:09(5%) &gt; 23:14(2%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7a52284c-94d7-4e93-b151-6fd65a2cb72b" testId="f7ee0907-9f78-b58c-be6a-cc0ef0104b1a" testName="알림_두_장으로도_정답이_서지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007429" startTime="2026-09-27T20:50:11.7725366+09:00" endTime="2026-09-27T20:50:11.7732796+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a52284c-94d7-4e93-b151-6fd65a2cb72b">
+      <Output>
+        <StdOut>필요한 알림 14장의 짝 91가지 전부 → 정답 0개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="07b388f2-f0d8-4ed2-bbb3-fea400c49a6e" testId="8bbfc514-516d-42b7-fff2-31ab255cefe1" testName="정답의_근거에_잠긴_것이_하나도_섞여_있지_않다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002740" startTime="2026-09-27T20:50:11.7636185+09:00" endTime="2026-09-27T20:50:11.7638924+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="07b388f2-f0d8-4ed2-bbb3-fea400c49a6e">
+      <Output>
+        <StdOut>정답 3개의 근거가 전부 잠금 화면 쪽에 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8fa28517-51f4-449f-9385-e5a492bc954d" testId="1b66ef34-1021-52d5-65e7-70dba60f261e" testName="데이터의_한국어가_비어_있지_않다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0045290" startTime="2026-09-27T20:50:11.7494028+09:00" endTime="2026-09-27T20:50:11.7539314+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8fa28517-51f4-449f-9385-e5a492bc954d">
+      <Output>
+        <StdOut>데이터의 한국어 원문이 전부 채워져 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5e037eb8-3558-44f3-9b4b-d657e0038631" testId="8b92b2ea-5031-71ca-e98a-5e23ad068d6f" testName="언어를_바꾸면_값이_따라온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003480" startTime="2026-09-27T20:50:11.7539533+09:00" endTime="2026-09-27T20:50:11.7543006+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5e037eb8-3558-44f3-9b4b-d657e0038631" />
+    <UnitTestResult executionId="d777bb7f-b1df-4fdb-a14e-142ab204cb44" testId="315de410-400f-664e-73f3-2f28d9b08fb2" testName="쉬지_않고_깨우면_아무것도_못_세운다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003860" startTime="2026-09-27T20:50:11.7659557+09:00" endTime="2026-09-27T20:50:11.7663412+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d777bb7f-b1df-4fdb-a14e-142ab204cb44">
+      <Output>
+        <StdOut>1분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 20:32&#xD;
+2분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 20:39&#xD;
+5분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 21:00&#xD;
+10분마다 몰아치기: 깨우기 7번 → 0/3 · 마지막 21:25</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="89c5fcfd-40f7-44ee-a598-1711c61d274a" testId="8beac4b7-0193-e616-d12e-38f30efaafd0" testName="사실과_정답이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0034430" startTime="2026-09-27T20:50:11.7244300+09:00" endTime="2026-09-27T20:50:11.7278729+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89c5fcfd-40f7-44ee-a598-1711c61d274a">
+      <Output>
+        <StdOut>사실 13개 · 정답 3개 성립</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="71f6c5dd-a1da-469e-aed2-eead3781045d" testId="43564d19-2420-68f9-118a-d47c111c3272" testName="같은_씨드는_같은_조사_결과를_낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014840" startTime="2026-09-27T20:50:11.7946948+09:00" endTime="2026-09-27T20:50:11.7961785+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71f6c5dd-a1da-469e-aed2-eead3781045d">
+      <Output>
+        <StdOut>네 세계가 두 번씩 같은 일정·같은 결과를 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1f25ba51-8287-4e59-a32e-c207cdceae33" testId="fb2352ef-c136-238c-edab-7643e210d161" testName="밀려나면_훨씬_더_깨워야_한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005330" startTime="2026-09-27T20:50:11.7762413+09:00" endTime="2026-09-27T20:50:11.7767744+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f25ba51-8287-4e59-a32e-c207cdceae33">
+      <Output>
+        <StdOut>밀려남o: 깨우기 4번 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+밀려남x: 깨우기 2번 · 00:15(10%) &gt; 01:00(6%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8b8d6192-2a33-4838-a930-9c041fd55038" testId="a0d1af7b-15b3-170d-96b5-00413840df96" testName="씨드를_바꿔도_핵_검사기의_부호가_뒤집히지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0027410" startTime="2026-09-27T20:50:11.7986412+09:00" endTime="2026-09-27T20:50:11.8013818+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b8d6192-2a33-4838-a930-9c041fd55038">
+      <Output>
+        <StdOut>71904: 밀려남o 4번 3/3 · x 2번 3/3  ·  72517: 밀려남o 5번 3/3 · x 2번 3/3  ·  73130: 밀려남o 5번 3/3 · x 2번 3/3  ·  73743: 밀려남o 5번 3/3 · x 2번 3/3  ·  74356: 밀려남o 4번 3/3 · x 2번 3/3  ·  74969: 밀려남o 5번 3/3 · x 2번 3/3  ·  75582: 밀려남o 5번 3/3 · x 2번 3/3  ·  76195: 밀려남o 5번 3/3 · x 2번 3/3</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ee0cfead-4147-4de6-8053-1a6eb960791c" testId="747ad241-b606-b74c-fd5a-1595c0ef0ebb" testName="자리표시자를_쓰고_조각을_잇지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0068670" startTime="2026-09-27T20:50:11.7543105+09:00" endTime="2026-09-27T20:50:11.7611765+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee0cfead-4147-4de6-8053-1a6eb960791c" />
+    <UnitTestResult executionId="4f98a516-b03c-4e88-8a23-98a5f1c19fbc" testId="9d64c642-0888-4fff-0125-75a1b096df73" testName="대조군_하나_잠긴_쪽에도_답이_통째로_들어_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002660" startTime="2026-09-27T20:50:11.7623753+09:00" endTime="2026-09-27T20:50:11.7626413+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f98a516-b03c-4e88-8a23-98a5f1c19fbc">
+      <Output>
+        <StdOut>잠긴 쪽만: 사실 13/13 · 정답 3/3 — 답은 잠긴 쪽에도 통째로 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2e78cd5a-6b6b-4f13-b89f-a7bb0eb3bf9b" testId="7dd4b401-6d8d-d67e-3bd0-1fa36694fb1c" testName="대조군_셋_미리보기를_끄면_아무것도_서지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002500" startTime="2026-09-27T20:50:11.7621168+09:00" endTime="2026-09-27T20:50:11.7623665+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e78cd5a-6b6b-4f13-b89f-a7bb0eb3bf9b">
+      <Output>
+        <StdOut>미리보기 끔: 사실 1/13 · 정답 0/3</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3bc62e86-6343-45b4-af90-6088c42a9469" testId="4c5e8b50-1146-ba68-dabe-73011fb197f0" testName="다른_씨드는_다른_잡음을_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003750" startTime="2026-09-27T20:50:11.7982500+09:00" endTime="2026-09-27T20:50:11.7986251+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3bc62e86-6343-45b4-af90-6088c42a9469">
+      <Output>
+        <StdOut>씨드 8개가 서로 다른 잡음 8가지를 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="70255965-ccec-4272-9d89-1dbeb0e920d0" testId="a5a63c9c-d936-e84a-a6bc-817f7cc5cb62" testName="표가_없으면_한국어_원문이_그대로_나온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001670" startTime="2026-09-27T20:50:11.7612028+09:00" endTime="2026-09-27T20:50:11.7613695+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="70255965-ccec-4272-9d89-1dbeb0e920d0" />
+    <UnitTestResult executionId="3b89d82d-6eaf-40db-b81e-b5309067466f" testId="f559804b-0f71-072f-4560-b81ee6e542c8" testName="기기와_예산이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0345000" startTime="2026-09-27T20:50:11.6255832+09:00" endTime="2026-09-27T20:50:11.6600180+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b89d82d-6eaf-40db-b81e-b5309067466f">
+      <Output>
+        <StdOut>주운 시각 20:25 · 칸 8장 · 잔량 196‰ · 깨우기 26‰</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5c6f5a29-a708-4433-80a8-448a4233829e" testId="726c45b7-f13b-c5ac-8cbf-cdd51f8536d7" testName="늦게_오는_증거가_실제로_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003080" startTime="2026-09-27T20:50:11.7759239+09:00" endTime="2026-09-27T20:50:11.7762320+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c6f5a29-a708-4433-80a8-448a4233829e">
+      <Output>
+        <StdOut>필요한 알림 14장 중 주운 뒤에 도착하는 것 8장 · 가장 늦은 것은 e_msg_bro5 (23:55)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="65abe506-91ec-4732-8a51-5195145fbb14" testId="52064d59-6761-37c5-673f-34e25c67312a" testName="한_번에_화면에_보이는_필요_알림_수를_센다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0052220" startTime="2026-09-27T20:50:11.7892855+09:00" endTime="2026-09-27T20:50:11.7945067+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="65abe506-91ec-4732-8a51-5195145fbb14">
+      <Output>
+        <StdOut>한 번에 보이는 필요 알림: 밀려남o 최고 7/14 · 밀려남x 14/14</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="91dde064-f961-421f-a199-92efd9b142a3" testId="6af48af7-7f2a-6345-4948-62ba03ee0086" testName="잔량_한_번만_읽어서는_시각을_못_정한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004520" startTime="2026-09-27T20:50:11.7736604+09:00" endTime="2026-09-27T20:50:11.7741124+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91dde064-f961-421f-a199-92efd9b142a3">
+      <Output>
+        <StdOut>잔량을 재지 못하면 2/3 (v_where,v_who)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1165da65-2c2e-48d9-891b-33d0eaad8511" testId="dc2397e4-2d1c-2b15-5322-4fe689bbe966" testName="한_번만_깨우면_무엇이_보이는가" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0052820" startTime="2026-09-27T20:50:11.7438244+09:00" endTime="2026-09-27T20:50:11.7491052+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1165da65-2c2e-48d9-891b-33d0eaad8511">
+      <Output>
+        <StdOut>잠김·밀려남o·미리보기o               한 번 깨워 세우는 정답 최고 0/3 (20:25) · 한 번에 보이는 필요 알림 최고 7/14 (20:41)&#xD;
+잠김·밀려남x·미리보기o               한 번 깨워 세우는 정답 최고 2/3 (22:31) · 한 번에 보이는 필요 알림 최고 14/14 (23:55)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c7cbb414-a502-4178-a18d-7fa2449c0968" testId="5b34618c-4c0e-28a8-a9dc-52a48d4cdf03" testName="필요한_알림은_어느_하나를_빼도_정답이_무너진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007960" startTime="2026-09-27T20:50:11.7750274+09:00" endTime="2026-09-27T20:50:11.7758234+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7cbb414-a502-4178-a18d-7fa2449c0968">
+      <Output>
+        <StdOut>필요한 14장은 전부 하나만 빠져도 무너지고, 나머지 25장은 빠져도 그대로다</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="대조군_셋_미리보기를_끄면_아무것도_서지_않는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="7dd4b401-6d8d-d67e-3bd0-1fa36694fb1c">
+      <Execution id="2e78cd5a-6b6b-4f13-b89f-a7bb0eb3bf9b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="대조군_셋_미리보기를_끄면_아무것도_서지_않는다" />
+    </UnitTest>
+    <UnitTest name="한_번에_화면에_보이는_필요_알림_수를_센다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="52064d59-6761-37c5-673f-34e25c67312a">
+      <Execution id="65abe506-91ec-4732-8a51-5195145fbb14" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="한_번에_화면에_보이는_필요_알림_수를_센다" />
+    </UnitTest>
+    <UnitTest name="데이터의_한국어가_비어_있지_않다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="1b66ef34-1021-52d5-65e7-70dba60f261e">
+      <Execution id="8fa28517-51f4-449f-9385-e5a492bc954d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LocalizationTests" name="데이터의_한국어가_비어_있지_않다" />
+    </UnitTest>
+    <UnitTest name="잠금_화면만으로_정답_셋이_전부_선다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="fb9bc2bd-6bb0-9aa3-9dd3-c9d8dd24aaa9">
+      <Execution id="13c7915c-ada3-484f-9c51-3ab1138cfba1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="잠금_화면만으로_정답_셋이_전부_선다" />
+    </UnitTest>
+    <UnitTest name="어떤_알림_한_장도_단독으로_정답을_세우지_못한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="f8bb24a9-c193-c0c2-bc78-8b0313b968d6">
+      <Execution id="62592658-b90f-4333-92c3-2929bc9fe4c1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoSingleNotificationTests" name="어떤_알림_한_장도_단독으로_정답을_세우지_못한다" />
+    </UnitTest>
+    <UnitTest name="밀려남은_되돌릴_수_없다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="1f2388a4-6bff-e50d-2d97-962a00125347">
+      <Execution id="8fe93432-dfcc-44aa-92ba-fe4f13f08b3f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DataIntegrityTests" name="밀려남은_되돌릴_수_없다" />
+    </UnitTest>
+    <UnitTest name="다른_씨드는_다른_잡음을_만든다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="4c5e8b50-1146-ba68-dabe-73011fb197f0">
+      <Execution id="3bc62e86-6343-45b4-af90-6088c42a9469" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.SeedDeterminismTests" name="다른_씨드는_다른_잡음을_만든다" />
+    </UnitTest>
+    <UnitTest name="필요한_알림은_전부_예산_안에서_잡을_수_있다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="bbc0029e-597e-fdeb-e3b1-8a0e954eccc8">
+      <Execution id="9a5e4295-208b-4cb2-9556-6c19be25602e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="필요한_알림은_전부_예산_안에서_잡을_수_있다" />
+    </UnitTest>
+    <UnitTest name="표가_없으면_한국어_원문이_그대로_나온다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="a5a63c9c-d936-e84a-a6bc-817f7cc5cb62">
+      <Execution id="70255965-ccec-4272-9d89-1dbeb0e920d0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LocalizationTests" name="표가_없으면_한국어_원문이_그대로_나온다" />
+    </UnitTest>
+    <UnitTest name="알림_두_장으로도_정답이_서지_않는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="f7ee0907-9f78-b58c-be6a-cc0ef0104b1a">
+      <Execution id="7a52284c-94d7-4e93-b151-6fd65a2cb72b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoSingleNotificationTests" name="알림_두_장으로도_정답이_서지_않는다" />
+    </UnitTest>
+    <UnitTest name="예산_안에서_실제로_그_셋을_쥘_수_있다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="4e6b0258-f7f8-ebbe-375c-780cfe2df2b9">
+      <Execution id="f620309a-7ac4-44f7-8033-873f6a501caa" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="예산_안에서_실제로_그_셋을_쥘_수_있다" />
+    </UnitTest>
+    <UnitTest name="잔량_한_번만_읽어서는_시각을_못_정한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="6af48af7-7f2a-6345-4948-62ba03ee0086">
+      <Execution id="91dde064-f961-421f-a199-92efd9b142a3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoSingleNotificationTests" name="잔량_한_번만_읽어서는_시각을_못_정한다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드는_같은_조사_결과를_낸다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="43564d19-2420-68f9-118a-d47c111c3272">
+      <Execution id="71f6c5dd-a1da-469e-aed2-eead3781045d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.SeedDeterminismTests" name="같은_씨드는_같은_조사_결과를_낸다" />
+    </UnitTest>
+    <UnitTest name="쉬지_않고_깨우면_아무것도_못_세운다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="315de410-400f-664e-73f3-2f28d9b08fb2">
+      <Execution id="d777bb7f-b1df-4fdb-a14e-142ab204cb44" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="쉬지_않고_깨우면_아무것도_못_세운다" />
+    </UnitTest>
+    <UnitTest name="씨드를_바꿔도_핵_검사기의_부호가_뒤집히지_않는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="a0d1af7b-15b3-170d-96b5-00413840df96">
+      <Execution id="8b8d6192-2a33-4838-a930-9c041fd55038" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.SeedDeterminismTests" name="씨드를_바꿔도_핵_검사기의_부호가_뒤집히지_않는다" />
+    </UnitTest>
+    <UnitTest name="대조군_둘_잠금을_풀어도_답이_바뀌지_않는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="ae410191-1169-6743-a72c-0d4711c6ac71">
+      <Execution id="b7a89f0d-3984-408e-a2dd-8d89b45ccd31" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="대조군_둘_잠금을_풀어도_답이_바뀌지_않는다" />
+    </UnitTest>
+    <UnitTest name="정답의_근거에_잠긴_것이_하나도_섞여_있지_않다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="8bbfc514-516d-42b7-fff2-31ab255cefe1">
+      <Execution id="07b388f2-f0d8-4ed2-bbb3-fea400c49a6e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="정답의_근거에_잠긴_것이_하나도_섞여_있지_않다" />
+    </UnitTest>
+    <UnitTest name="정책별_결과를_찍는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="20145544-2c1d-646f-6690-917547e3545b">
+      <Execution id="a0b6bb22-09b2-452d-b95d-bc5f2cd9cea0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DiagnosticTests" name="정책별_결과를_찍는다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드는_같은_화면을_만든다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="6ab14cf6-0356-a7f0-06a7-fd9b29a6070a">
+      <Execution id="ec24660f-1921-4d7a-a3fd-869b33bb7001" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.SeedDeterminismTests" name="같은_씨드는_같은_화면을_만든다" />
+    </UnitTest>
+    <UnitTest name="밀려남이_없으면_한두_번으로_끝난다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="9b48df8f-c712-befa-5b9c-fcb0b61629fa">
+      <Execution id="ba15fe54-583b-49c3-a893-117966a25df7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="밀려남이_없으면_한두_번으로_끝난다" />
+    </UnitTest>
+    <UnitTest name="한_번_깨워서는_밀려남이_있을_때_아무것도_못_세운다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="fad71860-b94e-5a08-d416-7f0648b9c0a4">
+      <Execution id="9fe7274b-e3c4-4538-8ca1-2e76bacae089" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="한_번_깨워서는_밀려남이_있을_때_아무것도_못_세운다" />
+    </UnitTest>
+    <UnitTest name="정해진_박자로_누르는_것은_거의_전부_진다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="db1d34b8-507d-4c4e-6239-67b6367ec2c3">
+      <Execution id="c04a530f-d9ce-48a5-92a4-8ced67980486" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="정해진_박자로_누르는_것은_거의_전부_진다" />
+    </UnitTest>
+    <UnitTest name="끝까지_아꼈다_몰아_깨워도_못_세운다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="9cb9a435-0c73-a53f-fbcc-ed4ea698af74">
+      <Execution id="d81b94fe-ec48-49d0-b618-51a3f7724d3e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="끝까지_아꼈다_몰아_깨워도_못_세운다" />
+    </UnitTest>
+    <UnitTest name="한_번만_깨우면_무엇이_보이는가" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="dc2397e4-2d1c-2b15-5322-4fe689bbe966">
+      <Execution id="1165da65-2c2e-48d9-891b-33d0eaad8511" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DiagnosticTests" name="한_번만_깨우면_무엇이_보이는가" />
+    </UnitTest>
+    <UnitTest name="저전력_알림과_잔량이_서로_맞는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="2e3b3690-48c5-188d-7b06-cfaffdf73b11">
+      <Execution id="d4d7dd54-15a9-41e0-b672-1ec3f7eb2e97" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DataIntegrityTests" name="저전력_알림과_잔량이_서로_맞는다" />
+    </UnitTest>
+    <UnitTest name="예산에_여유가_거의_없다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="8741d384-bd46-09f2-091a-7f7cbd1e47e1">
+      <Execution id="1792eac8-61d7-4220-b8ce-ca0897a13297" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="예산에_여유가_거의_없다" />
+    </UnitTest>
+    <UnitTest name="같은_순간을_두_번_깨우는_것은_헛일이다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="c866cfa0-1cac-c07d-5d12-cd044d924137">
+      <Execution id="e34fca64-87ab-4ac7-baf1-3e0c578ae0c3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="같은_순간을_두_번_깨우는_것은_헛일이다" />
+    </UnitTest>
+    <UnitTest name="사실과_정답이_성립한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="8beac4b7-0193-e616-d12e-38f30efaafd0">
+      <Execution id="89c5fcfd-40f7-44ee-a598-1711c61d274a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DataIntegrityTests" name="사실과_정답이_성립한다" />
+    </UnitTest>
+    <UnitTest name="밀려나면_훨씬_더_깨워야_한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="fb2352ef-c136-238c-edab-7643e210d161">
+      <Execution id="1f25ba51-8287-4e59-a32e-c207cdceae33" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="밀려나면_훨씬_더_깨워야_한다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓰고_조각을_잇지_않는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="747ad241-b606-b74c-fd5a-1595c0ef0ebb">
+      <Execution id="ee0cfead-4147-4de6-8053-1a6eb960791c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LocalizationTests" name="자리표시자를_쓰고_조각을_잇지_않는다" />
+    </UnitTest>
+    <UnitTest name="늦게_오는_증거가_실제로_있다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="726c45b7-f13b-c5ac-8cbf-cdd51f8536d7">
+      <Execution id="5c6f5a29-a708-4433-80a8-448a4233829e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="늦게_오는_증거가_실제로_있다" />
+    </UnitTest>
+    <UnitTest name="정답_하나에_드는_알림_수를_실제로_센다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="10cf3486-cadf-7ea3-d693-10d07eb801d7">
+      <Execution id="5a6bcbe8-0fbc-4259-b165-dabe64fc8b26" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoSingleNotificationTests" name="정답_하나에_드는_알림_수를_실제로_센다" />
+    </UnitTest>
+    <UnitTest name="기기와_예산이_성립한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="f559804b-0f71-072f-4560-b81ee6e542c8">
+      <Execution id="3b89d82d-6eaf-40db-b81e-b5309067466f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DataIntegrityTests" name="기기와_예산이_성립한다" />
+    </UnitTest>
+    <UnitTest name="알림마다_화면에_남아_있던_구간을_찍는다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="548b5adf-7392-de9c-db24-c844cf6f5ef1">
+      <Execution id="033bfa67-d356-4816-a7b5-daf12b59b6e4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DiagnosticTests" name="알림마다_화면에_남아_있던_구간을_찍는다" />
+    </UnitTest>
+    <UnitTest name="필요한_알림은_어느_하나를_빼도_정답이_무너진다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="5b34618c-4c0e-28a8-a9dc-52a48d4cdf03">
+      <Execution id="c7cbb414-a502-4178-a18d-7fa2449c0968" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoSingleNotificationTests" name="필요한_알림은_어느_하나를_빼도_정답이_무너진다" />
+    </UnitTest>
+    <UnitTest name="소식이_퍼지는_순간_화면이_통째로_쓸린다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="d6905c6b-8a01-a504-cd07-0d3a1f6d5281">
+      <Execution id="7b7253c8-d1da-4880-88a3-990048a30886" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.PushoutForcesWakesTests" name="소식이_퍼지는_순간_화면이_통째로_쓸린다" />
+    </UnitTest>
+    <UnitTest name="알림이_성립한다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="861ba38a-efc1-05f1-799a-81da2c5efe36">
+      <Execution id="7b1fadf9-9b3c-4136-8f5e-7a6d48ced464" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DataIntegrityTests" name="알림이_성립한다" />
+    </UnitTest>
+    <UnitTest name="대조군_하나_잠긴_쪽에도_답이_통째로_들어_있다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="9d64c642-0888-4fff-0125-75a1b096df73">
+      <Execution id="4f98a516-b03c-4e88-8a23-98a5f1c19fbc" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LockscreenSufficesTests" name="대조군_하나_잠긴_쪽에도_답이_통째로_들어_있다" />
+    </UnitTest>
+    <UnitTest name="언어를_바꾸면_값이_따라온다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="8b92b2ea-5031-71ca-e98a-5e23ad068d6f">
+      <Execution id="5e037eb8-3558-44f3-9b4b-d657e0038631" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.LocalizationTests" name="언어를_바꾸면_값이_따라온다" />
+    </UnitTest>
+    <UnitTest name="고른_일정은_이긴다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="cf032283-2e3a-cf7f-13cb-bea5d18fd692">
+      <Execution id="ee655b2f-54c6-4522-9894-9e87e32b37b5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.NoDominantStrategyTests" name="고른_일정은_이긴다" />
+    </UnitTest>
+    <UnitTest name="네_세계를_견준다" storage="c:\users\psi\orca\game\games\locked-phone\testbuild\debug\net8.0\locked-phone.tests.dll" id="3ab403de-cbe9-6b4c-3211-1d65c583f0c4">
+      <Execution id="cc40ad80-cda2-4800-80ea-01d75edd30df" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Phone.Tests.DiagnosticTests" name="네_세계를_견준다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3ab403de-cbe9-6b4c-3211-1d65c583f0c4" executionId="cc40ad80-cda2-4800-80ea-01d75edd30df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d6905c6b-8a01-a504-cd07-0d3a1f6d5281" executionId="7b7253c8-d1da-4880-88a3-990048a30886" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e6b0258-f7f8-ebbe-375c-780cfe2df2b9" executionId="f620309a-7ac4-44f7-8033-873f6a501caa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8741d384-bd46-09f2-091a-7f7cbd1e47e1" executionId="1792eac8-61d7-4220-b8ce-ca0897a13297" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb9bc2bd-6bb0-9aa3-9dd3-c9d8dd24aaa9" executionId="13c7915c-ada3-484f-9c51-3ab1138cfba1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b48df8f-c712-befa-5b9c-fcb0b61629fa" executionId="ba15fe54-583b-49c3-a893-117966a25df7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6ab14cf6-0356-a7f0-06a7-fd9b29a6070a" executionId="ec24660f-1921-4d7a-a3fd-869b33bb7001" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bbc0029e-597e-fdeb-e3b1-8a0e954eccc8" executionId="9a5e4295-208b-4cb2-9556-6c19be25602e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae410191-1169-6743-a72c-0d4711c6ac71" executionId="b7a89f0d-3984-408e-a2dd-8d89b45ccd31" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c866cfa0-1cac-c07d-5d12-cd044d924137" executionId="e34fca64-87ab-4ac7-baf1-3e0c578ae0c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fad71860-b94e-5a08-d416-7f0648b9c0a4" executionId="9fe7274b-e3c4-4538-8ca1-2e76bacae089" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e3b3690-48c5-188d-7b06-cfaffdf73b11" executionId="d4d7dd54-15a9-41e0-b672-1ec3f7eb2e97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10cf3486-cadf-7ea3-d693-10d07eb801d7" executionId="5a6bcbe8-0fbc-4259-b165-dabe64fc8b26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db1d34b8-507d-4c4e-6239-67b6367ec2c3" executionId="c04a530f-d9ce-48a5-92a4-8ced67980486" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20145544-2c1d-646f-6690-917547e3545b" executionId="a0b6bb22-09b2-452d-b95d-bc5f2cd9cea0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f8bb24a9-c193-c0c2-bc78-8b0313b968d6" executionId="62592658-b90f-4333-92c3-2929bc9fe4c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf032283-2e3a-cf7f-13cb-bea5d18fd692" executionId="ee655b2f-54c6-4522-9894-9e87e32b37b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="861ba38a-efc1-05f1-799a-81da2c5efe36" executionId="7b1fadf9-9b3c-4136-8f5e-7a6d48ced464" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1f2388a4-6bff-e50d-2d97-962a00125347" executionId="8fe93432-dfcc-44aa-92ba-fe4f13f08b3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="548b5adf-7392-de9c-db24-c844cf6f5ef1" executionId="033bfa67-d356-4816-a7b5-daf12b59b6e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9cb9a435-0c73-a53f-fbcc-ed4ea698af74" executionId="d81b94fe-ec48-49d0-b618-51a3f7724d3e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7ee0907-9f78-b58c-be6a-cc0ef0104b1a" executionId="7a52284c-94d7-4e93-b151-6fd65a2cb72b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8bbfc514-516d-42b7-fff2-31ab255cefe1" executionId="07b388f2-f0d8-4ed2-bbb3-fea400c49a6e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b66ef34-1021-52d5-65e7-70dba60f261e" executionId="8fa28517-51f4-449f-9385-e5a492bc954d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b92b2ea-5031-71ca-e98a-5e23ad068d6f" executionId="5e037eb8-3558-44f3-9b4b-d657e0038631" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="315de410-400f-664e-73f3-2f28d9b08fb2" executionId="d777bb7f-b1df-4fdb-a14e-142ab204cb44" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8beac4b7-0193-e616-d12e-38f30efaafd0" executionId="89c5fcfd-40f7-44ee-a598-1711c61d274a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43564d19-2420-68f9-118a-d47c111c3272" executionId="71f6c5dd-a1da-469e-aed2-eead3781045d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb2352ef-c136-238c-edab-7643e210d161" executionId="1f25ba51-8287-4e59-a32e-c207cdceae33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a0d1af7b-15b3-170d-96b5-00413840df96" executionId="8b8d6192-2a33-4838-a930-9c041fd55038" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="747ad241-b606-b74c-fd5a-1595c0ef0ebb" executionId="ee0cfead-4147-4de6-8053-1a6eb960791c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d64c642-0888-4fff-0125-75a1b096df73" executionId="4f98a516-b03c-4e88-8a23-98a5f1c19fbc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7dd4b401-6d8d-d67e-3bd0-1fa36694fb1c" executionId="2e78cd5a-6b6b-4f13-b89f-a7bb0eb3bf9b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c5e8b50-1146-ba68-dabe-73011fb197f0" executionId="3bc62e86-6343-45b4-af90-6088c42a9469" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a5a63c9c-d936-e84a-a6bc-817f7cc5cb62" executionId="70255965-ccec-4272-9d89-1dbeb0e920d0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f559804b-0f71-072f-4560-b81ee6e542c8" executionId="3b89d82d-6eaf-40db-b81e-b5309067466f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="726c45b7-f13b-c5ac-8cbf-cdd51f8536d7" executionId="5c6f5a29-a708-4433-80a8-448a4233829e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52064d59-6761-37c5-673f-34e25c67312a" executionId="65abe506-91ec-4732-8a51-5195145fbb14" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6af48af7-7f2a-6345-4948-62ba03ee0086" executionId="91dde064-f961-421f-a199-92efd9b142a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dc2397e4-2d1c-2b15-5322-4fe689bbe966" executionId="1165da65-2c2e-48d9-891b-33d0eaad8511" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b34618c-4c0e-28a8-a9dc-52a48d4cdf03" executionId="c7cbb414-a502-4178-a18d-7fa2449c0968" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="41" executed="41" passed="41" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\locked-phone\TestBuild\Debug\net8.0\locked-phone.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 41 of 41 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+주운 시각 20:25 · 칸 8장 · 잔량 196‰ · 깨우기 26‰&#xD;
+&#xD;
+알림 39장 전부: 한 번 밀려나면 돌아오지 않는다&#xD;
+&#xD;
+사실 13개 · 정답 3개 성립&#xD;
+&#xD;
+알림 37장 · 사람이 적은 것 전부 성립&#xD;
+&#xD;
+저전력 20:12 200‰ → 주운 시각 20:25 196‰ (대기 1칸)&#xD;
+&#xD;
+잠금품·밀려남x·미리보기o              정답 3/3 · 사실 13/13 · 깨우기 2 (00:15(10%) &gt; 01:00(6%))&#xD;
+잠김·밀려남x·미리보기o               정답 3/3 · 사실 13/13 · 깨우기 2 (00:15(10%) &gt; 01:00(6%))&#xD;
+잠김·밀려남o·미리보기o               정답 3/3 · 사실 13/13 · 깨우기 4 (20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%))&#xD;
+잠김·밀려남o·미리보기x               정답 0/3 · 사실 1/13 · 깨우기 4 (20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%))&#xD;
+잠긴 쪽만                       정답 3/3 · 사실 13/13&#xD;
+&#xD;
+주운 시각 20:25 · 칸 8장 · 잔량 19%&#xD;
+알림               도착     밀려남    필요   창(주운 뒤)&#xD;
+e_alarm           07:10   19:10         잡을 수 없다&#xD;
+e_bank            09:40   19:31         잡을 수 없다&#xD;
+e_msg_bro1        11:25   19:58         잡을 수 없다&#xD;
+e_photo_shop      13:02   20:12         잡을 수 없다&#xD;
+e_pharm           15:18   20:41         20:25~20:40&#xD;
+e_photo_bro       17:55   20:52    ★    20:25~20:51&#xD;
+e_card_bro        18:20   21:03    ★    20:25~21:02&#xD;
+e_msg_land        18:44   21:09    ★    20:25~21:08&#xD;
+e_step            19:10   21:30    ★    20:25~21:29&#xD;
+e_deliv1          19:31   22:04         20:25~22:03&#xD;
+e_msg_bro2        19:58   22:15    ★    20:25~22:14&#xD;
+e_lowpower        20:12   22:18    ★    20:25~22:17&#xD;
+e_deliv2          20:41   22:31    ★    20:41~22:30&#xD;
+e_call1           20:52   22:45    ★    20:52~22:44&#xD;
+e_call2           21:03   22:46    ★    21:03~22:45&#xD;
+e_msg_bro3        21:09   22:47         21:09~22:46&#xD;
+e_msg_shopmate    21:30   22:48    ★    21:30~22:47&#xD;
+e_msg_bro4        22:04   22:49    ★    22:04~22:48&#xD;
+n_noise_01        22:15   22:50         22:15~22:49&#xD;
+n_noise_02        22:18   22:51         22:18~22:50&#xD;
+e_msg_land2       22:31   22:52    ★    22:31~22:51&#xD;
+e_burstA_1        22:45   23:15         22:45~23:14&#xD;
+e_burstA_2        22:46   23:35         22:46~23:34&#xD;
+e_burstA_3        22:47   23:36         22:47~23:35&#xD;
+e_burstA_4        22:48   23:37         22:48~23:36&#xD;
+e_burstA_5        22:49   23:38         22:49~23:37&#xD;
+e_burstA_6        22:50   23:39         22:50~23:38&#xD;
+e_burstA_7        22:51   23:40         22:51~23:39&#xD;
+e_burstA_8        22:52   23:41         22:52~23:40&#xD;
+e_photo_bak       23:15   23:42    ★    23:15~23:41&#xD;
+e_burstB_1        23:35   23:55         23:35~23:54&#xD;
+e_burstB_2        23:36     끝까지         23:36~01:00&#xD;
+e_burstB_3        23:37     끝까지         23:37~01:00&#xD;
+e_burstB_4        23:38     끝까지         23:38~01:00&#xD;
+e_burstB_5        23:39     끝까지         23:39~01:00&#xD;
+e_burstB_6        23:40     끝까지         23:40~01:00&#xD;
+e_burstB_7        23:41     끝까지         23:41~01:00&#xD;
+e_burstB_8        23:42     끝까지         23:42~01:00&#xD;
+e_msg_bro5        23:55     끝까지    ★    23:55~01:00&#xD;
+필요한 알림 14장: e_call1, e_call2, e_card_bro, e_deliv2, e_lowpower, e_msg_bro2, e_msg_bro4, e_msg_bro5, e_msg_land, e_msg_land2, e_msg_shopmate, e_photo_bak, e_photo_bro, e_step&#xD;
+&#xD;
+고른 일정   3/3  20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+바로 몰아치기 0/3  20:25(19%) &gt; 20:30(17%) &gt; 20:35(14%) &gt; 20:40(11%) &gt; 20:45(8%) &gt; 20:50(5%) &gt; 20:55(2%) &gt; 21:00(0%)&#xD;
+참았다 몰아치기 0/3  00:50(9%) &gt; 00:55(6%) &gt; 01:00(3%)&#xD;
+고정 박자 189가지 중 전부 세운 것 0가지 (0%)&#xD;
+&#xD;
+잠김·밀려남o·미리보기o               한 번 깨워 세우는 정답 최고 0/3 (20:25) · 한 번에 보이는 필요 알림 최고 7/14 (20:41)&#xD;
+잠김·밀려남x·미리보기o               한 번 깨워 세우는 정답 최고 2/3 (22:31) · 한 번에 보이는 필요 알림 최고 14/14 (23:55)&#xD;
+&#xD;
+데이터의 한국어 원문이 전부 채워져 있다&#xD;
+&#xD;
+잠금 화면 3/3 = 잠금 풀림 3/3 — 풀어도 얻는 것이 없다&#xD;
+&#xD;
+미리보기 끔: 사실 1/13 · 정답 0/3&#xD;
+&#xD;
+잠긴 쪽만: 사실 13/13 · 정답 3/3 — 답은 잠긴 쪽에도 통째로 있다&#xD;
+&#xD;
+깨우기 4번으로 3/3 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+&#xD;
+v_where → 형의 가게 (한섭목공)  (근거 3 · 알림 4장)&#xD;
+v_who → 형 한지섭  (근거 3 · 알림 6장)&#xD;
+v_when → 20시대  (근거 4 · 알림 7장 + 잔량)&#xD;
+&#xD;
+정답 3개의 근거가 전부 잠금 화면 쪽에 있다&#xD;
+&#xD;
+필요한 알림 14장 전부 잡을 수 있다 · 가장 좁은 창 21분 (e_msg_land2)&#xD;
+&#xD;
+같은 순간 연타 17번 시험 · 더 본 알림 0장 (배터리만 26‰ 씩 날아간다)&#xD;
+&#xD;
+고른 일정: 깨우기 4번 → 3/3 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+&#xD;
+끝에 2번 몰아치기 → 0/3 · 00:55(8%) &gt; 01:00(6%)&#xD;
+끝에 3번 몰아치기 → 0/3 · 00:50(9%) &gt; 00:55(6%) &gt; 01:00(3%)&#xD;
+끝에 4번 몰아치기 → 0/3 · 23:59(11%) &gt; 00:04(8%) &gt; 00:09(5%) &gt; 00:14(3%)&#xD;
+끝에 5번 몰아치기 → 0/3 · 22:54(14%) &gt; 22:59(11%) &gt; 23:04(8%) &gt; 23:09(5%) &gt; 23:14(2%)&#xD;
+&#xD;
+1분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 20:32&#xD;
+2분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 20:39&#xD;
+5분마다 몰아치기: 깨우기 8번 → 0/3 · 마지막 21:00&#xD;
+10분마다 몰아치기: 깨우기 7번 → 0/3 · 마지막 21:25&#xD;
+&#xD;
+마지막 증거 23:55 까지 살아 있으려면 깨우기는 최대 5번 · 실제로 필요한 것은 4번 (여유 1번)&#xD;
+&#xD;
+고정 박자 189가지 중 전부 세운 것 0가지 (0%) · 60분 이하 박자의 최고 성적 2/3&#xD;
+&#xD;
+필요한 알림 14장의 짝 91가지 전부 → 정답 0개&#xD;
+&#xD;
+알림 39장 각각 단독 → 정답 0개&#xD;
+&#xD;
+잔량을 재지 못하면 2/3 (v_where,v_who)&#xD;
+&#xD;
+v_where: 알림 4장 — e_card_bro, e_msg_bro4, e_msg_shopmate, e_photo_bro&#xD;
+v_who: 알림 6장 — e_card_bro, e_deliv2, e_msg_bro2, e_msg_bro4, e_msg_land, e_msg_land2&#xD;
+v_when: 알림 7장 + 잔량 두 번 — e_call1, e_call2, e_lowpower, e_msg_bro5, e_msg_land2, e_photo_bak, e_step&#xD;
+&#xD;
+필요한 14장은 전부 하나만 빠져도 무너지고, 나머지 25장은 빠져도 그대로다&#xD;
+&#xD;
+필요한 알림 14장 중 주운 뒤에 도착하는 것 8장 · 가장 늦은 것은 e_msg_bro5 (23:55)&#xD;
+&#xD;
+밀려남o: 깨우기 4번 · 20:51(18%) &gt; 22:44(11%) &gt; 23:41(6%) &gt; 01:00(1%)&#xD;
+밀려남x: 깨우기 2번 · 00:15(10%) &gt; 01:00(6%)&#xD;
+&#xD;
+밀려남x: 깨우기 2번으로 3/3 · 00:15(10%) &gt; 01:00(6%)&#xD;
+    (두 번인 이유는 하나뿐이다 — 잔량 감소율을 재려면 벌려서 두 번 읽어야 한다)&#xD;
+&#xD;
+22:42부터 10분 사이에 화면에서 8장이 쓸려 나간다 (칸 8장 중)&#xD;
+&#xD;
+한 번 깨워 세우는 정답: 밀려남o 0/3 · 밀려남x 2/3&#xD;
+&#xD;
+한 번에 보이는 필요 알림: 밀려남o 최고 7/14 · 밀려남x 14/14&#xD;
+&#xD;
+네 세계가 두 번씩 같은 일정·같은 결과를 냈다&#xD;
+&#xD;
+씨드 8개가 두 번씩 같은 화면을 냈다&#xD;
+&#xD;
+씨드 8개가 서로 다른 잡음 8가지를 냈다&#xD;
+&#xD;
+71904: 밀려남o 4번 3/3 · x 2번 3/3  ·  72517: 밀려남o 5번 3/3 · x 2번 3/3  ·  73130: 밀려남o 5번 3/3 · x 2번 3/3  ·  73743: 밀려남o 5번 3/3 · x 2번 3/3  ·  74356: 밀려남o 4번 3/3 · x 2번 3/3  ·  74969: 밀려남o 5번 3/3 · x 2번 3/3  ·  75582: 밀려남o 5번 3/3 · x 2번 3/3  ·  76195: 밀려남o 5번 3/3 · x 2번 3/3&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

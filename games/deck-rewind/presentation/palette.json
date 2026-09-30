@@ -1,0 +1,77 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는곳": "index.html 이 이 파일을 읽어 CSS 변수로 꽂는다. 여기 없는 색은 목업에도 없다.",
+  "name": "차가운 실험 기록",
+  "oneLine": "되돌릴 수 있다는 것이 기록된 실험처럼 읽혀야 한다. 극적인 것이 아니라 계측된 것.",
+  "reference": "청사진 · 모눈종이 · 실험 노트 · 오실로스코프 격자",
+  "color": {
+    "void": "#080B0F",
+    "ink": "#0D1219",
+    "surface": "#141C26",
+    "surfaceRaised": "#1B2632",
+    "paper": "#C9D6E2",
+    "accent": "#3FD8E4",
+    "accentDim": "#1C7C86",
+    "muted": "#5A6E80",
+    "highlight": "#EAF4F8",
+    "warn": "#D98A3B",
+    "danger": "#C4544A",
+    "grid": "#1F2C3A",
+    "gridMajor": "#2A3B4C",
+    "_격자": "grid 는 모눈, gridMajor 는 다섯 칸마다 오는 굵은 선. 청사진은 이 두 단계로 읽힌다.",
+    "_강조하나": "accent(시안) 하나만 밝다. 둘을 밝게 하면 어디를 봐야 하는지 사라진다."
+  },
+  "rarity": {
+    "common": "#5A6E80",
+    "uncommon": "#3FD8E4",
+    "rare": "#D98A3B",
+    "_": "희귀도 색을 여기 한 곳에 둔다. 카드 스무 장에 흩어지면 고칠 수 없다."
+  },
+  "type": {
+    "family": "JetBrains Mono",
+    "familyFile": "assets/fonts/JetBrainsMono-Variable.ttf",
+    "license": "OFL 1.1",
+    "licenseFile": "assets/fonts/JetBrainsMono-OFL.txt",
+    "_라이선스동봉": "OFL 은 라이선스 전문 동봉이 의무다. 화면이 읽는 파일은 아니지만 함께 배포한다.",
+    "sizeTitle": 40,
+    "sizeHeading": 22,
+    "sizeBody": 14,
+    "sizeHint": 12,
+    "sizeNumber": 28,
+    "letterSpacingTitle": 4,
+    "outlinePx": 0,
+    "_고정폭": "고정폭 하나로 끝낸다. 계측 기록에는 글꼴이 두 벌 필요하지 않다.",
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+  "line": {
+    "hairline": 1,
+    "frame": 1,
+    "radius": 0,
+    "_모서리": "0. 둥근 모서리는 손으로 쥐는 물건의 언어다. 이건 기록지다.",
+    "_선굵기": "1px 하나로 통일한다. 굵기가 두 종류면 도면이 아니라 그림이 된다."
+  },
+  "grade": {
+    "paperTextureOpacity": 0.16,
+    "paperHueRotateDeg": 178,
+    "paperSaturate": 0.45,
+    "paperBrightness": 0.55,
+    "_종이": "에셋(ambientCG Paper001)을 고치지 않고 CSS 필터로 청사진 톤으로 민다. 값 하나로 되돌릴 수 있다.",
+    "saturation": 0.68,
+    "contrast": 1.06,
+    "blackLift": 0.02,
+    "vignette": 0.42,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 필름이 된다."
+  },
+  "motion": {
+    "cardPlaceMs": 120,
+    "rewindMs": 420,
+    "_되감기": "되감기만 느리다. 되감기가 다른 동작과 같은 속도면 그것이 특별한 수라는 것이 전달되지 않는다.",
+    "easing": "cubic-bezier(0.2, 0.0, 0.1, 1.0)"
+  },
+  "sfx": {
+    "cardPlace": "assets/sfx/card_place.ogg",
+    "rewind": "assets/sfx/rewind.ogg",
+    "damage": "assets/sfx/damage.ogg"
+  }
+}

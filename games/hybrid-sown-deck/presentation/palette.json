@@ -1,0 +1,92 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는곳": "presentation/index.html 이 이 파일을 읽어 CSS 변수로 깐다. 색을 고치려면 여기만 고친다.",
+
+  "name": "식물 표본집",
+  "oneLine": "크림색 대지에 눌러 말린 표본 — 한 장을 붙이는 것은 한 해를 붙이는 것이다",
+  "reference": "19세기 식물 표본집(herbarium sheet) · 손으로 적은 라벨 · 실로 꿰어 고정한 마른 줄기 · 바랜 청록 잉크",
+
+  "_규율": "표본은 그림 파일이 아니라 data/ 의 수치로 그린다. 세대가 오르면 줄기가 길고 잎이 많아진다 — '카드가 자란다'가 그림이 아니라 데이터에서 나온다.",
+
+  "color": {
+    "mount": "#E8E0CE",
+    "mountDeep": "#D9CEB6",
+    "mountEdge": "#C9BC9E",
+    "ink": "#2E5A56",
+    "inkFaded": "#6E8F86",
+    "pencil": "#5A5347",
+    "sepia": "#7A6A45",
+    "stem": "#6B7A4A",
+    "bloom": "#9A5F6A",
+    "thread": "#B08A5A",
+    "rule": "#C3B79B",
+    "seal": "#9C4030",
+    "void": "#221E18"
+  },
+
+  "type": {
+    "familyLabel": "Nanum Pen Script",
+    "familyBody": "Song Myung",
+    "sizeTitle": 40,
+    "sizeHeading": 19,
+    "sizeBody": 14,
+    "sizeHint": 11,
+    "sizeLabel": 18,
+    "sizeQuantity": 22,
+    "outlinePx": 0,
+    "letterSpacingTitle": 0.04,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+
+  "grade": {
+    "saturation": 0.62,
+    "contrast": 1.05,
+    "blackLift": 0.0,
+    "vignette": 0.18,
+    "grainStatic": true,
+    "paperTextureOpacity": 0.3,
+    "foxingOpacity": 0.12,
+    "_얼룩": "foxing(종이의 갈색 얼룩)은 정지한 그라디언트로만 준다. 움직이면 종이가 아니라 화면이 된다.",
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 종이가 된다."
+  },
+
+  "specimen": {
+    "_": "표본 한 장을 그리는 수치. 여기를 고치면 표본의 모양이 바뀐다.",
+    "sheetWidthPx": 124,
+    "sheetHeightPx": 168,
+    "stemBasePx": 52,
+    "stemPerGenerationPx": 20,
+    "leafBase": 2,
+    "leafPerGeneration": 2,
+    "leafMax": 9,
+    "strokePx": 1.4,
+    "bloomRadiusPx": 5,
+    "stitchCount": 3,
+    "stitchLengthPx": 13,
+    "stitchTiltDeg": 18
+  },
+
+  "form": {
+    "_": "카드 id → 표본의 형태. kind 는 sprig(가지) · leaf(잎) · pod(꼬투리) 셋뿐이다.",
+    "card_sprout":    { "kind": "sprig", "color": "stem",  "leaves": 2, "thorns": false },
+    "card_bramble":   { "kind": "sprig", "color": "stem",  "leaves": 6, "thorns": true  },
+    "card_broadleaf": { "kind": "leaf",  "color": "sepia", "lobes": 1,  "thorns": false },
+    "card_thicket":   { "kind": "leaf",  "color": "sepia", "lobes": 3,  "thorns": false },
+    "card_ember":     { "kind": "pod",   "color": "bloom", "seeds": 5,  "thorns": false }
+  },
+
+  "sowLabel": {
+    "_": "심었을 때 무엇이 되는가를 라벨에 손글씨로 적는 말.",
+    "grow": "자람",
+    "split": "갈라짐",
+    "seedfall": "씨앗만",
+    "harvest": "씨앗에서"
+  },
+
+  "seasonLabel": {
+    "season_spring": "春",
+    "season_summer": "夏",
+    "season_autumn": "秋",
+    "season_winter": "冬"
+  }
+}

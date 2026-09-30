@@ -1,0 +1,179 @@
+{
+  "_": "효과는 {type, amount, target} 세 필드의 평평한 배열이다 (PLAN_DECKBUILDER §6). 다형성을 쓰지 않는다.",
+  "_수치": "전부 정수. 값 없는 int 는 -1 을 명시한다.",
+  "_규칙": "uses 가 이 PoC의 전부다. -1 은 닳지 않는 상용 활자, 양수는 '이 회차에서 몇 번 더 찍을 수 있는가'. 0 이 되면 그 활자는 녹아 회차에서 사라진다.",
+  "_선명도": "wearPerUsePct 만큼 찍을 때마다 선명도가 떨어지고, 효과가 그 비율로 약해진다. 첫 인쇄가 가장 선명하다 — 그래서 '언제 찍을까'가 결정이 된다.",
+  "_카드수": "10종. PLAN §7 Phase 1~2 규모다. 40종으로 늘리는 것은 이 PoC의 범위가 아니다.",
+  "cards": [
+    {
+      "id": "card_sort",
+      "nameKo": "상용 활자",
+      "textKo": "피해 5. 케이스에 얼마든지 있다. 닳지 않는다.",
+      "cost": 1,
+      "rarity": "common",
+      "uses": -1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 5,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_furniture",
+      "nameKo": "여백재",
+      "textKo": "방어 6. 판을 고여 흔들리지 않게 한다. 닳지 않는다.",
+      "cost": 1,
+      "rarity": "common",
+      "uses": -1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "block",
+          "amount": 6,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_composing",
+      "nameKo": "조판",
+      "textKo": "기력 0. 활자 2장을 집어 온다.",
+      "cost": 0,
+      "rarity": "common",
+      "uses": -1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "draw",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_ink",
+      "nameKo": "잉크 방망이",
+      "textKo": "피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.",
+      "cost": 1,
+      "rarity": "common",
+      "uses": -1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 3,
+          "target": "enemy"
+        },
+        {
+          "type": "smudge",
+          "amount": 2,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_mallet",
+      "nameKo": "다지개",
+      "textKo": "힘 +2. 판을 고르게 다져 이번 전투의 인쇄가 전부 깊어진다.",
+      "cost": 1,
+      "rarity": "common",
+      "uses": -1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "strength",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_woodtype",
+      "nameKo": "대형 목활자",
+      "textKo": "피해 20. 회차에 3번. 찍을 때마다 모서리가 뭉개진다.",
+      "cost": 2,
+      "rarity": "rare",
+      "uses": 3,
+      "wearPerUsePct": 20,
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 20,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_vermilion",
+      "nameKo": "주홍 잉크",
+      "textKo": "피해 8. 번짐 7. 회차에 3번 — 이 인쇄소에 붉은 것은 이것 하나뿐이다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "uses": 3,
+      "wearPerUsePct": 20,
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 8,
+          "target": "enemy"
+        },
+        {
+          "type": "smudge",
+          "amount": 7,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_forme",
+      "nameKo": "조판틀",
+      "textKo": "방어 16. 회차에 3번. 쇠테가 헐거워질 때까지.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "uses": 3,
+      "wearPerUsePct": 20,
+      "effects": [
+        {
+          "type": "block",
+          "amount": 16,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_makeready",
+      "nameKo": "판 고르기",
+      "textKo": "체력 14 회복. 회차에 2번. 받침지를 덧대 압력을 고른다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "uses": 2,
+      "wearPerUsePct": 25,
+      "effects": [
+        {
+          "type": "heal",
+          "amount": 14,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_recast",
+      "nameKo": "활자 재주조",
+      "textKo": "가장 뭉개진 활자를 다시 붓는다 — 남은 횟수 +1, 선명도도 돌아온다. 회차에 1번. 녹아 사라진 것은 돌아오지 않는다.",
+      "cost": 1,
+      "rarity": "rare",
+      "uses": 1,
+      "wearPerUsePct": 0,
+      "effects": [
+        {
+          "type": "recast",
+          "amount": 1,
+          "target": "self"
+        }
+      ]
+    }
+  ]
+}

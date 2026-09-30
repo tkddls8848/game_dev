@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시계탑 수리공</title>
+<style>
+:root{
+  --brass:#c89b4a; --brass-l:#f0cf7e; --brass-d:#6b4a1c; --bronze:#2a1a0c; --soot:#120b05;
+  --amber:#ffd98c; --glass:#ffeec2; --verd:#6fa596; --verd-d:#2f4f48;
+  --paper:#efe2c4; --ink:#2b1d10; --red:#c4412c; --ok:#6fa05a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#070402;overflow:hidden}
+body{font-family:"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--paper)}
+.serif{font-family:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif}
+.mono{font-family:"D2Coding","DejaVu Sans Mono","Courier New",monospace}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:var(--soot)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.fill{position:absolute;inset:0}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:overlay;z-index:40}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse 75% 70% at 48% 45%,transparent 50%,rgba(0,0,0,.72))}
+
+/* HUD */
+.hud{position:absolute;left:0;right:0;top:0;height:72px;z-index:30;display:flex;align-items:center;gap:26px;padding:0 30px;
+  background:linear-gradient(#1c1209f2,#120b06e0);border-bottom:1px solid #5a3e1a;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.hud .title{display:flex;align-items:baseline;gap:12px}
+.hud .title b{font-size:26px;color:var(--brass-l);letter-spacing:.08em;text-shadow:0 0 14px rgba(255,200,110,.35)}
+.hud .title small{font-size:13px;color:#a88a5c;letter-spacing:.2em}
+.sep{width:1px;height:34px;background:linear-gradient(transparent,#6b4a1c,transparent)}
+.st{display:flex;flex-direction:column;line-height:1.15}
+.st span{font-size:11px;letter-spacing:.2em;color:#9b8057}
+.st b{font-size:22px;color:#f6e6c0;font-weight:700}
+.st b.warn{color:#ff9a6a;text-shadow:0 0 12px rgba(255,120,70,.5)}
+.st b.cool{color:#9fe0cf;text-shadow:0 0 12px rgba(120,220,200,.4)}
+.hud .right{margin-left:auto;display:flex;gap:22px;align-items:center}
+.pill{padding:7px 14px;border:1px solid #6b4a1c;border-radius:20px;font-size:13px;color:#e8cf98;background:rgba(80,50,20,.35)}
+
+/* panel */
+.panel{position:absolute;z-index:20;background:linear-gradient(160deg,rgba(38,24,11,.94),rgba(22,14,7,.94));border:1px solid #6b4a1c;border-radius:6px;
+  box-shadow:0 20px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,220,150,.12)}
+.panel h4{font-size:12px;letter-spacing:.24em;color:#b89660;font-weight:700;padding:14px 18px 10px;border-bottom:1px solid rgba(200,155,74,.25);display:flex;justify-content:space-between}
+.panel h4 em{font-style:normal;color:#7e6644}
+.ev{position:relative;margin:10px 14px;padding:11px 12px 11px 70px;background:linear-gradient(#f1e4c6,#e3d2ad);color:var(--ink);border-radius:3px;
+  box-shadow:0 4px 10px rgba(0,0,0,.45);min-height:66px;transition:transform .25s,box-shadow .25s}
+.ev .t{position:absolute;left:10px;top:11px;width:50px;text-align:center;font-weight:800;font-size:16px;color:#3b2812;line-height:1.1}
+.ev .t small{display:block;font-size:10px;font-weight:600;color:#8a6d45;letter-spacing:.05em;margin-top:3px}
+.ev b{font-size:15px;display:block}
+.ev p{font-size:12.5px;color:#5b4631;margin-top:3px;line-height:1.35}
+.ev .tag{position:absolute;right:10px;top:10px;font-size:11px;font-weight:800;padding:3px 7px;border-radius:2px;letter-spacing:.06em}
+.tag.bad{background:var(--red);color:#fff4ea}
+.tag.ok{background:#4f7d45;color:#f1f7e6}
+.tag.risk{background:#d9922b;color:#2b1a05}
+.ev.bad{box-shadow:0 0 0 2px rgba(196,65,44,.8),0 4px 14px rgba(196,65,44,.35)}
+.ev.flash{transform:translateX(-6px)}
+
+/* meter */
+.meter{position:relative;height:118px;margin:12px 14px 4px;border-radius:4px;background:radial-gradient(ellipse at 50% 120%,#3a2812,#1a1008);overflow:hidden;border:1px solid #4a3417}
+.meter .val{position:absolute;right:14px;top:12px;text-align:right}
+.meter .val b{font-size:40px;font-weight:800;color:#ff9a6a;text-shadow:0 0 18px rgba(255,120,70,.55);letter-spacing:.02em}
+.meter .val span{display:block;font-size:11px;letter-spacing:.2em;color:#a58a60}
+
+/* tray */
+.slot{cursor:pointer}
+.slot .rim{transition:stroke .2s}
+.slot:hover .rim{stroke:#fff1c4}
+.slot.pick .rim{stroke:#9fe0cf}
+
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px/1 "Noto Sans KR","Noto Sans CJK KR",sans-serif;padding:7px 10px;border-radius:3px;border:1px solid rgba(255,220,160,.3);background:rgba(0,0,0,.6);color:#e6d3ae;cursor:pointer}
+.tabs button.on{background:var(--brass);color:#1d1206;border-color:var(--brass-l)}
+
+.hint{position:absolute;z-index:25;font-size:13px;color:#e9d5a8;background:rgba(20,12,5,.8);border:1px solid #6b4a1c;padding:7px 12px;border-radius:3px;letter-spacing:.04em}
+.hint kbd{font-family:inherit;background:#c89b4a;color:#1d1206;padding:1px 6px;border-radius:2px;font-weight:800;margin-right:6px}
+.mote{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffe7b0;box-shadow:0 0 6px #ffd98c;opacity:.0;animation:mote linear infinite;z-index:12;pointer-events:none}
+@keyframes mote{0%{opacity:0;transform:translate(0,0)}15%{opacity:.8}85%{opacity:.6}100%{opacity:0;transform:translate(40px,-160px)}}
+
+/* screen B */
+.sum{position:absolute;right:34px;top:100px;width:420px;z-index:20}
+.big{font-size:52px;font-weight:800;color:#9fe0cf;text-shadow:0 0 22px rgba(120,220,200,.45)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:9px 18px;font-size:14px;border-bottom:1px dashed rgba(200,155,74,.2);color:#e6d3ae}
+.row b{font-size:16px}
+.row .g{color:#a8e39a}.row .r{color:#ff8f70}
+.chain{position:absolute;left:30px;right:30px;bottom:26px;height:176px;z-index:22}
+.node{position:absolute;top:44px;width:196px;padding:10px 12px;background:linear-gradient(#f1e4c6,#e0cda5);color:var(--ink);border-radius:3px;box-shadow:0 6px 14px rgba(0,0,0,.5);font-size:12.5px;line-height:1.35}
+.node b{display:block;font-size:14px;margin-bottom:2px}
+.node .tm{position:absolute;top:-30px;left:0;font-weight:800;font-size:15px;color:#f0cf7e;letter-spacing:.04em}
+.node.alt{background:linear-gradient(#3a1a14,#2a120d);color:#f3c4b6;border:1px dashed #c4412c}
+.node.alt .tm{color:#ff8f70}
+.node.key{box-shadow:0 0 0 2px #9fe0cf,0 0 24px rgba(120,220,200,.45),0 6px 14px rgba(0,0,0,.5)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= SCREEN A ================= -->
+<div class="screen" id="a">
+  <svg class="fill" viewBox="0 0 1600 1000" id="svgA">
+    <defs>
+      <radialGradient id="faceGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fff8dc"/>
+        <stop offset=".45" stop-color="#ffe3a0"/>
+        <stop offset=".8" stop-color="#e9a64c"/>
+        <stop offset="1" stop-color="#7a4c18"/>
+      </radialGradient>
+      <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#ffd98c" stop-opacity=".55"/>
+        <stop offset=".6" stop-color="#e69a3c" stop-opacity=".18"/>
+        <stop offset="1" stop-color="#e69a3c" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="brassG" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f7d98e"/><stop offset=".35" stop-color="#c89b4a"/><stop offset=".7" stop-color="#7a5320"/><stop offset="1" stop-color="#3b2710"/>
+      </linearGradient>
+      <linearGradient id="brassDark" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8a6428"/><stop offset=".5" stop-color="#4a3112"/><stop offset="1" stop-color="#1e1307"/>
+      </linearGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffe3a0" stop-opacity=".22"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#24170b"/><stop offset=".6" stop-color="#150d06"/><stop offset="1" stop-color="#0a0603"/>
+      </linearGradient>
+      <filter id="blur8"><feGaussianBlur stdDeviation="8"/></filter>
+      <filter id="blur3"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000" flood-opacity=".7"/></filter>
+      <clipPath id="grateClip"><rect x="0" y="752" width="1110" height="248"/></clipPath>
+    </defs>
+
+    <rect width="1600" height="1000" fill="url(#wall)"/>
+    <!-- brick courses in the dark -->
+    <g opacity=".22" stroke="#4a3017" stroke-width="1" id="bricks"></g>
+    <!-- timber beams -->
+    <rect x="0" y="92" width="1600" height="26" fill="#1d1208"/>
+    <rect x="0" y="116" width="1600" height="3" fill="#3a2410"/>
+    <polygon points="40,118 120,118 360,740 290,740" fill="#170e06" opacity=".9"/>
+
+    <!-- backlit clock face (seen from behind) -->
+    <circle cx="760" cy="420" r="470" fill="url(#halo)"/>
+    <circle cx="760" cy="420" r="352" fill="#3b240d"/>
+    <circle cx="760" cy="420" r="340" fill="url(#faceGlow)"/>
+    <g id="faceMarks"></g>
+    <!-- iron spokes of the dial frame -->
+    <g stroke="#2a190a" stroke-width="10" opacity=".85">
+      <line x1="760" y1="80" x2="760" y2="760"/><line x1="420" y1="420" x2="1100" y2="420"/>
+      <line x1="520" y1="180" x2="1000" y2="660"/><line x1="1000" y1="180" x2="520" y2="660"/>
+    </g>
+    <circle cx="760" cy="420" r="200" fill="none" stroke="#2a190a" stroke-width="8" opacity=".8"/>
+    <!-- silhouette of hands through the glass (mirrored: seen from inside) -->
+    <g id="handsA" opacity=".62" filter="url(#blur3)">
+      <rect id="hourHand" x="752" y="250" width="16" height="180" rx="6" fill="#1c1006" transform="rotate(-62 760 420)"/>
+      <rect id="minHand" x="755" y="130" width="10" height="300" rx="5" fill="#1c1006" transform="rotate(-80 760 420)"/>
+    </g>
+    <!-- light shafts -->
+    <polygon points="560,300 980,300 1300,1000 260,1000" fill="url(#beam)" opacity=".7"/>
+
+    <!-- central arbor -->
+    <circle cx="760" cy="420" r="54" fill="url(#brassDark)" filter="url(#shadow)"/>
+    <circle cx="760" cy="420" r="22" fill="#f0cf7e"/>
+    <circle cx="760" cy="420" r="9" fill="#2a190a"/>
+    <!-- motion works shaft to train -->
+    <rect x="410" y="412" width="350" height="16" fill="url(#brassDark)" filter="url(#shadow)"/>
+
+    <!-- gear train -->
+    <g id="gears"></g>
+
+    <!-- pendulum rod -->
+    <g id="pend">
+      <rect x="226" y="120" width="8" height="560" fill="url(#brassDark)"/>
+      <circle cx="230" cy="690" r="46" fill="url(#brassG)" filter="url(#shadow)"/>
+      <circle cx="230" cy="690" r="30" fill="none" stroke="#5a3e1a" stroke-width="3"/>
+    </g>
+
+    <!-- floor grate w/ plaza below -->
+    <g clip-path="url(#grateClip)">
+      <g id="plaza"></g>
+      <rect x="0" y="752" width="1110" height="248" fill="#ffd98c" opacity=".06"/>
+      <g id="grate"></g>
+      <rect x="0" y="752" width="1110" height="40" fill="url(#wall)" opacity=".55"/>
+    </g>
+    <rect x="0" y="742" width="1110" height="14" fill="#2a190a"/>
+    <rect x="0" y="742" width="1110" height="3" fill="#6b4a1c"/>
+  </svg>
+
+  <div id="motesA"></div>
+
+  <div class="hud">
+    <div class="title serif"><b>시계탑 수리공</b><small>광장 시계 · 동쪽 면</small></div>
+    <div class="sep"></div>
+    <div class="st"><span>오늘</span><b>수요일 · 3일째</b></div>
+    <div class="st"><span>실제 시각</span><b class="mono" id="realClk">07:41:20</b></div>
+    <div class="st"><span>탑 시계</span><b class="mono warn" id="towerClk">07:44:32</b></div>
+    <div class="right">
+      <span class="pill">⚙ 예비 톱니 4</span>
+      <span class="pill">기름통 62%</span>
+    </div>
+  </div>
+
+  <div class="hint" style="left:30px;top:92px"><kbd>클릭</kbd>예비 톱니를 골라 교체 축에 끼운다 — 비율이 도시의 하루를 바꾼다</div>
+
+  <!-- gear readout label near slot -->
+  <div class="hint" id="slotLabel" style="left:560px;top:512px;border-color:#9fe0cf;color:#cfeee6">교체 축 C · <b id="slotTeeth">30</b>톱니 → 비율 <b id="ratio">1.00</b></div>
+
+  <!-- right panel -->
+  <div class="panel" style="right:30px;top:92px;width:400px;height:640px">
+    <h4>시계 오차 <em>분당 편차</em></h4>
+    <div class="meter">
+      <svg width="370" height="118" viewBox="0 0 370 118" style="position:absolute;left:0;top:0">
+        <g id="dial"></g>
+        <line id="needle" x1="110" y1="112" x2="110" y2="26" stroke="#ff9a6a" stroke-width="3" stroke-linecap="round" style="filter:drop-shadow(0 0 4px #ff7a4a)"/>
+        <circle cx="110" cy="112" r="7" fill="#c89b4a"/>
+      </svg>
+      <div class="val"><b class="mono" id="errV">+3:12</b><span id="errS">빠름 · 하루 누적</span></div>
+    </div>
+    <h4 style="border-top:1px solid rgba(200,155,74,.25);margin-top:8px">이 시계에 걸린 약속 <em>오늘 오전</em></h4>
+    <div id="evs">
+      <div class="ev bad" data-k="train"><div class="t">07:58<small>북역</small></div><b>첫차를 놓치는 우편배달부</b><p>탑 시계를 보고 3분 일찍 포기한다. 우편 한 자루가 하루 늦는다.</p><span class="tag bad">어긋남</span></div>
+      <div class="ev bad" data-k="bank"><div class="t">09:00<small>은행</small></div><b>문 닫힌 창구 앞의 빵집 주인</b><p>개점 전에 도착해 돌아간다. 밀가루 대금이 밀린다.</p><span class="tag bad">어긋남</span></div>
+      <div class="ev" data-k="love"><div class="t">12:00<small>분수대</small></div><b>분수대 앞 약속</b><p>재단사 견습생과 꽃집 딸. 둘 다 이 시계를 본다.</p><span class="tag ok">맞음</span></div>
+      <div class="ev" data-k="cart"><div class="t">17:40<small>동문</small></div><b>석탄 수레와 하굣길</b><p>수레가 모퉁이를 도는 시각과 아이들 하교가 겹친다.</p><span class="tag risk">위험</span></div>
+    </div>
+  </div>
+
+  <!-- tray -->
+  <div class="panel" style="right:30px;top:748px;width:400px;height:212px">
+    <h4>예비 톱니 <em>황동 · 모듈 6</em></h4>
+    <svg width="400" height="160" viewBox="0 0 400 160" id="tray"></svg>
+  </div>
+</div>
+
+<!-- ================= SCREEN B ================= -->
+<div class="screen" id="b">
+  <svg class="fill" viewBox="0 0 1600 1000">
+    <defs>
+      <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1d2a3a"/><stop offset=".55" stop-color="#34445a"/><stop offset="1" stop-color="#5a5a66"/>
+      </linearGradient>
+      <radialGradient id="lampPool" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#ffd98c" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98c" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="faceB" cx="50%" cy="100%" r="100%">
+        <stop offset="0" stop-color="#fff2c8"/><stop offset=".5" stop-color="#f0bb62"/><stop offset="1" stop-color="#6d4314"/>
+      </radialGradient>
+      <filter id="bl2"><feGaussianBlur stdDeviation="2"/></filter>
+      <filter id="bl6"><feGaussianBlur stdDeviation="6"/></filter>
+      <filter id="shB"><feDropShadow dx="4" dy="6" stdDeviation="3" flood-color="#000" flood-opacity=".55"/></filter>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ff8f70"/></marker>
+      <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9fe0cf"/></marker>
+    </defs>
+    <rect width="1600" height="1000" fill="url(#dusk)"/>
+    <g id="plazaB"></g>
+  </svg>
+  <div id="motesB"></div>
+
+  <div class="hud">
+    <div class="title serif"><b>시계탑 수리공</b><small>하루의 끝 · 인과 정산</small></div>
+    <div class="sep"></div>
+    <div class="st"><span>오늘</span><b>수요일 · 3일째</b></div>
+    <div class="st"><span>탑 시계</span><b class="mono cool">17:40:00</b></div>
+    <div class="st"><span>실제 시각</span><b class="mono">17:42:00</b></div>
+    <div class="right"><span class="pill" style="border-color:#9fe0cf;color:#cfeee6">의도적 지연 −2분</span></div>
+  </div>
+
+  <div class="panel sum">
+    <h4>오늘의 인과 <em>탑 시계 기준</em></h4>
+    <div style="padding:16px 18px 8px;display:flex;align-items:flex-end;gap:14px">
+      <div class="big mono">1</div>
+      <div style="padding-bottom:10px;font-size:14px;color:#cfeee6;line-height:1.4">막은 사고<br><span style="color:#9b8057;font-size:12px">동문 모퉁이 · 석탄 수레</span></div>
+    </div>
+    <div class="row"><span>지켜진 약속</span><b class="g">14</b></div>
+    <div class="row"><span>어긋난 약속</span><b class="r">3</b></div>
+    <div class="row"><span>일부러 어긋낸 약속</span><b class="r">1 · 분수대</b></div>
+    <div class="row"><span>시장의 불만 편지</span><b>2통</b></div>
+    <div class="row" style="border:0"><span>수리 보수</span><b style="color:#f0cf7e">은화 11닢</b></div>
+    <div style="margin:10px 14px 14px;padding:12px 14px;background:rgba(255,220,150,.07);border-left:3px solid #c89b4a;font-size:13.5px;line-height:1.55;color:#e8d6b0" class="serif">
+      “분수대 앞에서 두 시간을 기다렸대요.<br>그래도 동문 쪽은… 오늘은 조용했답니다.”
+      <div style="font-size:11px;color:#9b8057;margin-top:6px;font-family:inherit">— 종지기 할머니</div>
+    </div>
+    <div style="display:flex;gap:8px;padding:0 14px 16px">
+      <button id="nextDay" style="flex:1;padding:11px;border:0;border-radius:3px;background:linear-gradient(#e7c579,#b8873a);color:#1d1206;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 0 #6b4a1c">다음 날 ▸</button>
+      <button id="replay" style="padding:11px 14px;border:1px solid #6b4a1c;border-radius:3px;background:transparent;color:#e6d3ae;font-weight:700;cursor:pointer">되감기</button>
+    </div>
+  </div>
+
+  <div class="chain" id="chain">
+    <svg width="1540" height="176" style="position:absolute;left:0;top:0" id="chainSvg"></svg>
+    <div class="node" style="left:0"><div class="tm">07:30 ⚙</div><b>C축 30톱니 → 36톱니</b>탑 시계가 하루 동안 2분 늦게 간다.</div>
+    <div class="node" style="left:236px"><div class="tm">12:02</div><b>분수대 약속 어긋남</b>견습생이 늦게 나왔다. 꽃집 딸은 먼저 떠났다.</div>
+    <div class="node" style="left:472px"><div class="tm">16:55</div><b>학교 종이 늦게 울림</b>종지기는 탑 시계를 보고 종을 친다.</div>
+    <div class="node key" style="left:708px"><div class="tm" style="color:#9fe0cf">17:40</div><b>수레가 먼저 지나감</b>아이들이 모퉁이에 닿기 2분 전, 석탄 수레는 이미 골목을 빠져나갔다.</div>
+    <div class="node alt" style="left:944px;top:44px"><div class="tm">만약 맞췄다면</div><b>17:40 · 동문 모퉁이</b>하교 행렬과 수레가 한 모퉁이에서 만났다.</div>
+  </div>
+
+  <div class="hint" style="left:30px;top:92px;border-color:#9fe0cf;color:#cfeee6">시계탑 전망창 아래 · 동문 모퉁이 <b style="color:#fff">17:42</b></div>
+</div>
+
+<canvas id="grain" class="grain" width="800" height="500" style="width:1600px;height:1000px"></canvas>
+<div class="vig"></div>
+<div class="tabs"><button data-s="a">1 · 톱니 교체</button><button data-s="b">2 · 하루의 인과</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){if(k!=='a'&&k!=='b')k='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id===k);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var t=0;t<tb.length;t++)tb[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  show((location.hash||'#a').slice(1));
+
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  // seeded rng
+  var seed=82;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+
+  // grain once
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(800,500);
+    for(var i=0;i<d.data.length;i+=4){var v=110+rnd()*120|0;d.data[i]=v;d.data[i+1]=v*.95|0;d.data[i+2]=v*.85|0;d.data[i+3]=255;}x.putImageData(d,0,0);})();
+
+  // bricks
+  var br=document.getElementById('bricks');
+  for(var y=130;y<740;y+=26){var off=((y/26)|0)%2?0:40;for(var xx=-off;xx<1600;xx+=80){el('rect',{x:xx,y:y,width:78,height:24,fill:'none'},br);}}
+
+  // gear path
+  function gearPath(r,n,h){var d='',step=Math.PI*2/n;
+    for(var i=0;i<n;i++){var a=i*step;
+      var pts=[[r-h*.5,a-step*.5],[r-h*.5,a-step*.28],[r+h*.5,a-step*.16],[r+h*.5,a+step*.16],[r-h*.5,a+step*.28]];
+      for(var j=0;j<pts.length;j++){var p=pts[j];d+=(i===0&&j===0?'M':'L')+(p[0]*Math.cos(p[1])).toFixed(1)+','+(p[0]*Math.sin(p[1])).toFixed(1);}}
+    return d+'Z';}
+  function drawGear(g,r,n,opt){opt=opt||{};var M=6;
+    el('path',{d:gearPath(r,n,M*1.9),fill:opt.fill||'url(#brassG)',stroke:'#3b2710','stroke-width':1.5},g);
+    el('circle',{r:r-M*2.2,fill:opt.inner||'url(#brassDark)'},g);
+    var sp=opt.spokes||5;
+    if(r>50){for(var i=0;i<sp;i++){var a=i*Math.PI*2/sp;var w=Math.max(10,r*.12);
+      var rr=el('rect',{x:-w/2,y:0,width:w,height:r-M*2.4,fill:'url(#brassG)',transform:'rotate('+(a*180/Math.PI)+')'},g);}
+      el('circle',{r:r-M*2.2,fill:'none',stroke:'#e8c070','stroke-width':3,opacity:.6},g);}
+    el('circle',{r:Math.max(12,r*.2),fill:'url(#brassG)',stroke:'#3b2710','stroke-width':2},g);
+    el('circle',{r:5,fill:'#1b1005'},g);
+    // rim light from backlight
+    el('path',{d:gearPath(r,n,M*1.9),fill:'none',stroke:'#ffe3a0','stroke-width':2,opacity:.55,transform:'translate(1,-1)','stroke-dasharray':(r*1.6)+' '+(r*5)},g);
+  }
+
+  // gear train layout
+  var gearsG=document.getElementById('gears');
+  var M=6;
+  var train=[
+    {id:'A',n:60,x:330,y:540,w:1},
+    {id:'B',n:20,ang:-40},
+    {id:'C',n:30,ang:10,slot:true},
+    {id:'D',n:48,ang:-70},
+    {id:'E',n:16,ang:-10}
+  ];
+  var prev=null;
+  train.forEach(function(g){g.r=g.n*M/2;
+    if(prev){var dist=prev.r+g.r+1;var a=g.ang*Math.PI/180;g.x=prev.x+dist*Math.cos(a);g.y=prev.y+dist*Math.sin(a);}
+    g.grp=el('g',{},gearsG);g.inner=el('g',{},g.grp);
+    el('ellipse',{cx:g.x+10,cy:g.y+16,rx:g.r+8,ry:g.r+8,fill:'#000',opacity:.45,filter:'url(#blur8)'},g.grp);
+    g.grp.appendChild(g.inner);g.inner.setAttribute('transform','translate('+g.x+','+g.y+')');
+    g.rot=el('g',{},g.inner);drawGear(g.rot,g.r,g.n,{spokes:g.n>40?6:4});
+    prev=g;});
+  // slot highlight
+  var C=train[2];
+  var slotRing=el('circle',{cx:C.x,cy:C.y,r:C.r+16,fill:'none',stroke:'#9fe0cf','stroke-width':2.5,'stroke-dasharray':'10 8',opacity:.9},gearsG);
+  slotRing.innerHTML='<animateTransform attributeName="transform" type="rotate" from="0 '+C.x+' '+C.y+'" to="360 '+C.x+' '+C.y+'" dur="14s" repeatCount="indefinite"/>';
+  el('circle',{cx:C.x,cy:C.y,r:C.r+26,fill:'none',stroke:'#9fe0cf','stroke-width':1,opacity:.3},gearsG);
+  // escapement wheel near pendulum
+  var esc={x:230,y:170,r:44,n:30};var escG=el('g',{transform:'translate(230,170)'},gearsG);var escR=el('g',{},escG);
+  el('path',{d:gearPath(esc.r,esc.n,10),fill:'url(#brassG)',stroke:'#3b2710'},escR);el('circle',{r:12,fill:'url(#brassDark)'},escR);
+  // anchor
+  var anchor=el('path',{d:'M230,120 L190,185 L200,190 L230,140 L260,190 L270,185 Z',fill:'#8a6428',stroke:'#2a190a','stroke-width':2},gearsG);
+  // connecting shaft from E to arbor
+  var E=train[4];el('line',{x1:E.x,y1:E.y,x2:760,y2:420,stroke:'#5a3e1a','stroke-width':6,opacity:.6},gearsG);
+
+  // face marks mirrored (seen from behind)
+  var fm=document.getElementById('faceMarks');var romans=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+  for(var i=0;i<60;i++){var a=(i*6-90)*Math.PI/180;var big=i%5===0;var r1=big?300:312,r2=326;
+    el('line',{x1:760+r1*Math.cos(a),y1:420+r1*Math.sin(a),x2:760+r2*Math.cos(a),y2:420+r2*Math.sin(a),stroke:'#3b2410','stroke-width':big?6:2,opacity:.55},fm);}
+  for(var h=0;h<12;h++){var a2=(-h*30-90)*Math.PI/180; // mirrored order
+    var tx=760+262*Math.cos(a2),ty=420+262*Math.sin(a2);
+    var t=el('text',{x:0,y:0,'font-size':44,'font-family':'Noto Serif KR,Noto Serif CJK KR,serif','font-weight':700,fill:'#3b2410',opacity:.5,'text-anchor':'middle','dominant-baseline':'central',transform:'translate('+tx+','+ty+') scale(-1,1)'},fm);t.textContent=romans[h];}
+  el('text',{x:0,y:0,'font-size':18,'letter-spacing':6,fill:'#3b2410',opacity:.35,'text-anchor':'middle',transform:'translate(760,300) scale(-1,1)','font-family':'Noto Serif KR,Noto Serif CJK KR,serif'},fm).textContent='광장 시계';
+
+  // plaza view through grate (screen A)
+  var pz=document.getElementById('plaza');
+  el('rect',{x:0,y:752,width:1110,height:248,fill:'#6d6456'},pz);
+  for(var yy=752;yy<1000;yy+=12)for(var x2=((yy/12)|0)%2*9;x2<1110;x2+=18)el('rect',{x:x2,y:yy,width:16,height:10,rx:3,fill:rnd()<.5?'#7a705f':'#665d4f',opacity:.8},pz);
+  el('ellipse',{cx:560,cy:900,rx:110,ry:62,fill:'#5b5346'},pz);el('ellipse',{cx:560,cy:900,rx:92,ry:50,fill:'#5d7f86'},pz);
+  el('ellipse',{cx:560,cy:900,rx:30,ry:16,fill:'#8fb4b6'},pz);
+  // buildings edges
+  el('rect',{x:0,y:752,width:150,height:248,fill:'#4a3a2c'},pz);el('rect',{x:960,y:752,width:150,height:248,fill:'#3f4a4a'},pz);
+  var lbl=function(x,y,s,c){var tt=el('text',{x:x,y:y,'font-size':13,fill:c||'#fff4dc','font-weight':700,'text-anchor':'middle',style:'paint-order:stroke;stroke:#1a1008;stroke-width:4px'},document.getElementById('svgA'));tt.textContent=s;};
+  lbl(90,850,'북역 가는 길');lbl(1040,880,'은행');lbl(560,968,'분수대');
+  for(var tr=0;tr<5;tr++){var tx2=250+tr*170;el('circle',{cx:tx2,cy:830+(tr%2)*120,r:26,fill:'#3f5a36'},pz);el('circle',{cx:tx2-6,cy:824+(tr%2)*120,r:15,fill:'#5d7a45'},pz);}
+  var ppl=[[200,880,'#c4412c'],[310,930,'#e0c080'],[640,850,'#d86a8a'],[700,930,'#4a6a9a'],[880,880,'#e0c080'],[420,800,'#8a5aa0'],[990,850,'#c4412c'],[160,820,'#e8e0d0']];
+  ppl.forEach(function(p){el('ellipse',{cx:p[0]+5,cy:p[1]+6,rx:9,ry:5,fill:'#000',opacity:.35},pz);el('circle',{cx:p[0],cy:p[1],r:8,fill:p[2]},pz);el('circle',{cx:p[0],cy:p[1]-1,r:4,fill:'#2a1a10'},pz);});
+  // event pins on plaza
+  [[160,820,'!'],[1000,850,'!'],[650,850,'♥']].forEach(function(p){el('circle',{cx:p[0],cy:p[1]-28,r:12,fill:p[2]==='♥'?'#6fa05a':'#c4412c',stroke:'#fff4dc','stroke-width':2},pz);var t=el('text',{x:p[0],y:p[1]-23,'font-size':14,'font-weight':800,fill:'#fff','text-anchor':'middle'},pz);t.textContent=p[2];});
+  // grate bars
+  var gr=document.getElementById('grate');
+  for(var gx=0;gx<1110;gx+=58)el('rect',{x:gx,y:752,width:8,height:248,fill:'#140c05'},gr);
+  for(var gy=800;gy<1000;gy+=92)el('rect',{x:0,y:gy,width:1110,height:6,fill:'#140c05'},gr);
+
+  // meter dial
+  var dial=document.getElementById('dial');
+  for(var k=-5;k<=5;k++){var ang=(k*14-90)*Math.PI/180;var r1=70,r2=k%5===0?92:84;
+    el('line',{x1:110+r1*Math.cos(ang),y1:112+r1*Math.sin(ang),x2:110+r2*Math.cos(ang),y2:112+r2*Math.sin(ang),stroke:k===0?'#9fe0cf':'#8a6d45','stroke-width':k===0?3:1.5},dial);}
+  el('text',{x:4,y:112,'font-size':11,fill:'#8a6d45'},dial).textContent='늦음';el('text',{x:186,y:112,'font-size':11,fill:'#8a6d45'},dial).textContent='빠름';
+  el('path',{d:'M42,112 A68,68 0 0 1 178,112',fill:'none',stroke:'#3a2812','stroke-width':10},dial);
+  el('path',{d:'M110,44 A68,68 0 0 1 150,57',fill:'none',stroke:'#c4412c','stroke-width':10,opacity:.8,id:'errArc'},dial);
+
+  // tray
+  var tray=document.getElementById('tray');var opts=[24,30,36,40];var picked=1;
+  opts.forEach(function(n,i){var g=el('g',{class:'slot'+(i===picked?' pick':''),transform:'translate('+(56+i*96)+',62)'},tray);
+    var s=el('g',{transform:'scale(.36)'},g);drawGear(s,n*M/2*1.1,n,{spokes:4});
+    el('circle',{class:'rim',r:42,fill:'none',stroke:'#6b4a1c','stroke-width':2,'stroke-dasharray':'4 4'},g);
+    var t=el('text',{y:66,'text-anchor':'middle','font-size':14,'font-weight':800,fill:'#f0cf7e'},g);t.textContent=n+'톱니';
+    g.addEventListener('click',function(){pick(i);});});
+
+  // model: error depends on slot teeth (30 = current fitting, produces +3:12)
+  var errFor={24:'+9:40',30:'+3:12',36:'−2:00',40:'−5:30'};var degFor={24:62,30:26,36:-18,40:-48};
+  var evState={24:['bad','bad','bad','risk'],30:['bad','bad','ok','risk'],36:['ok','ok','bad','ok'],40:['bad','ok','bad','ok']};
+  var tagTxt={bad:'어긋남',ok:'맞음',risk:'위험'};
+  function pick(i){picked=i;var n=opts[i];
+    var sl=tray.querySelectorAll('.slot');for(var j=0;j<sl.length;j++)sl[j].classList.toggle('pick',j===i);
+    document.getElementById('slotTeeth').textContent=n;
+    document.getElementById('ratio').textContent=(C.nBase/n).toFixed(2);
+    document.getElementById('errV').textContent=errFor[n];
+    document.getElementById('errV').style.color=degFor[n]<0?'#9fe0cf':'#ff9a6a';
+    document.getElementById('errS').textContent=(degFor[n]<0?'늦음':'빠름')+' · 하루 누적';
+    targetDeg=degFor[n];
+    var evs=document.querySelectorAll('.ev');var st=evState[n];
+    for(var e=0;e<evs.length;e++){var tg=evs[e].querySelector('.tag');tg.className='tag '+st[e];tg.textContent=tagTxt[st[e]];evs[e].classList.toggle('bad',st[e]==='bad');
+      (function(ev,d){setTimeout(function(){ev.classList.add('flash');setTimeout(function(){ev.classList.remove('flash');},180);},d);})(evs[e],e*70);}
+    // rebuild slot gear
+    while(C.rot.firstChild)C.rot.removeChild(C.rot.firstChild);drawGear(C.rot,n*M/2*0.98,n,{spokes:4});C.nCur=n;
+    clank();}
+  C.nBase=30;C.nCur=30;
+
+  // animation
+  var targetDeg=26,curDeg=26,t0=performance.now();
+  function frame(now){var t=(now-t0)/1000;
+    var sw=Math.sin(t*Math.PI*0.9);document.getElementById('pend').setAttribute('transform','rotate('+(sw*6)+' 230 120)');
+    anchor.setAttribute('transform','rotate('+(sw*8)+' 230 170)');
+    escR.setAttribute('transform','rotate('+(Math.floor(t*1.8)*12+(t*1.8%1<.15?(t*1.8%1)/.15*12:12))+')');
+    var w=12*t*(C.nBase/C.nCur);
+    train.forEach(function(g,i){var dir=i%2?-1:1;var ratio=train[0].n/g.n;g.rot.setAttribute('transform','rotate('+(dir*w*ratio+(i*7))+')');});
+    curDeg+=(targetDeg-curDeg)*.08+Math.sin(t*9)*.3;
+    var nd=document.getElementById('needle');nd.setAttribute('transform','rotate('+curDeg+' 110 112)');
+    var a=(curDeg-90)*Math.PI/180;document.getElementById('errArc').setAttribute('d','M110,44 A68,68 0 0 '+(curDeg>0?1:0)+' '+(110+68*Math.cos(a)).toFixed(1)+','+(112+68*Math.sin(a)).toFixed(1));
+    document.getElementById('errArc').setAttribute('stroke',curDeg<0?'#6fa596':'#c4412c');
+    document.getElementById('minHand').setAttribute('transform','rotate('+(-80-t*0.8)+' 760 420)');
+    requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+
+  // clocks tick
+  var real=7*3600+41*60+20;
+  setInterval(function(){real++;var off={24:580,30:192,36:-120,40:-330}[opts[picked]];
+    function f(s){var h=Math.floor(s/3600),m=Math.floor(s/60)%60,ss=s%60;return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(ss<10?'0':'')+ss;}
+    document.getElementById('realClk').textContent=f(real);var tc=document.getElementById('towerClk');tc.textContent=f(real+off);tc.className='mono '+(off<0?'cool':'warn');},1000);
+
+  // motes
+  function motes(id,n,x0,x1,y0,y1){var m=document.getElementById(id);for(var i=0;i<n;i++){var d=document.createElement('i');d.className='mote';
+    d.style.left=(x0+rnd()*(x1-x0))+'px';d.style.top=(y0+rnd()*(y1-y0))+'px';d.style.animationDuration=(6+rnd()*8)+'s';d.style.animationDelay=(-rnd()*10)+'s';m.appendChild(d);}}
+  motes('motesA',46,420,1120,120,740);
+
+  // ======== screen B: plaza from the tower at dusk ========
+  var pb=document.getElementById('plazaB');
+  // perspective ground (plaza, top-down-ish oblique)
+  el('polygon',{points:'0,300 1600,300 1600,1000 0,1000',fill:'#4c4a4c'},pb);
+  for(var r=0;r<30;r++){var yy2=300+r*r*0.85+r*6;for(var c=0;c<60;c++){var w2=28+r*1.6;var xx2=c*w2-((r%2)*w2/2);
+    el('rect',{x:xx2,y:yy2,width:w2-3,height:6+r*0.8,rx:2,fill:rnd()<.5?'#595559':'#4f4b50',opacity:.85},pb);}}
+  // buildings far edge
+  var bx=0;var cols=['#2d3242','#383a4a','#2a2e3c','#3a3440','#303646'];
+  for(var b=0;b<12;b++){var bw=110+rnd()*80,bh=140+rnd()*90;var bxx=bx;
+    el('rect',{x:bxx,y:310-bh,width:bw,height:bh,fill:cols[b%5]},pb);
+    el('polygon',{points:bxx+','+(310-bh)+' '+(bxx+bw/2)+','+(310-bh-40)+' '+(bxx+bw)+','+(310-bh),fill:'#22242e'},pb);
+    for(var wy=310-bh+24;wy<290;wy+=34)for(var wx=bxx+14;wx<bxx+bw-20;wx+=30){var lit=rnd()<.55;el('rect',{x:wx,y:wy,width:14,height:20,fill:lit?'#ffcf7a':'#1a1c26',opacity:lit?.9:.8},pb);if(lit)el('rect',{x:wx-6,y:wy-6,width:26,height:32,fill:'#ffcf7a',opacity:.12},pb);}
+    bx+=bw+4;}
+  // street: diagonal lane crossing plaza = 동문 골목
+  el('polygon',{points:'520,300 700,300 1120,1000 560,1000',fill:'#39363a'},pb);
+  el('polygon',{points:'520,300 700,300 1120,1000 560,1000',fill:'none',stroke:'#6a6468','stroke-width':3},pb);
+  // corner building 동문
+  el('polygon',{points:'0,300 360,300 300,1000 0,1000',fill:'#2c2a30'},pb);
+  el('polygon',{points:'360,300 300,1000 330,1000 392,300',fill:'#1c1b20'},pb);
+  for(var q=0;q<6;q++){el('rect',{x:60+q*38,y:360+q*40,width:22,height:30,fill:'#ffcf7a',opacity:.6},pb);}
+  var gate=el('text',{x:150,y:760,'font-size':22,'font-weight':800,fill:'#e6d3ae','text-anchor':'middle',style:'paint-order:stroke;stroke:#141218;stroke-width:5px','font-family':'Noto Serif KR,Noto Serif CJK KR,serif'},pb);gate.textContent='동문 모퉁이';
+  // gas lamps pools
+  [[480,560],[900,440],[760,820],[1260,640]].forEach(function(l){el('ellipse',{cx:l[0],cy:l[1]+30,rx:150,ry:70,fill:'url(#lampPool)'},pb);el('rect',{x:l[0]-3,y:l[1]-70,width:6,height:100,fill:'#1a1a1e'},pb);el('circle',{cx:l[0],cy:l[1]-74,r:10,fill:'#ffe6a8',filter:'url(#bl2)'},pb);el('circle',{cx:l[0],cy:l[1]-74,r:26,fill:'#ffd98c',opacity:.25,filter:'url(#bl6)'},pb);});
+  // coal cart already past (exiting top of lane) with green trail
+  var cart=el('g',{transform:'translate(640,360)'},pb);
+  el('rect',{x:-34,y:-18,width:68,height:36,rx:4,fill:'#2a2016',stroke:'#7a5a30','stroke-width':2,filter:'url(#shB)'},cart);
+  el('rect',{x:-30,y:-24,width:60,height:12,rx:5,fill:'#111'},cart);
+  el('circle',{cx:-22,cy:20,r:8,fill:'#1a1208',stroke:'#7a5a30','stroke-width':2},cart);el('circle',{cx:22,cy:20,r:8,fill:'#1a1208',stroke:'#7a5a30','stroke-width':2},cart);
+  el('path',{d:'M880,930 C 820,760 740,560 660,400',fill:'none',stroke:'#9fe0cf','stroke-width':4,'stroke-dasharray':'2 12','stroke-linecap':'round','marker-end':'url(#arrG)',opacity:.9},pb);
+  // ghost cart at corner (what would have happened) red dashed
+  var ghost=el('g',{transform:'translate(820,690)',opacity:.55},pb);
+  el('rect',{x:-40,y:-22,width:80,height:44,rx:4,fill:'none',stroke:'#ff8f70','stroke-width':2.5,'stroke-dasharray':'6 5'},ghost);
+  el('circle',{cx:-26,cy:24,r:9,fill:'none',stroke:'#ff8f70','stroke-width':2,'stroke-dasharray':'4 4'},ghost);el('circle',{cx:26,cy:24,r:9,fill:'none',stroke:'#ff8f70','stroke-width':2,'stroke-dasharray':'4 4'},ghost);
+  // collision zone
+  el('circle',{cx:760,cy:700,r:120,fill:'#c4412c',opacity:.12},pb);
+  el('circle',{cx:760,cy:700,r:120,fill:'none',stroke:'#ff8f70','stroke-width':2,'stroke-dasharray':'8 8',opacity:.8},pb);
+  var zt=el('text',{x:760,y:596,'font-size':14,'font-weight':800,fill:'#ffb09a','text-anchor':'middle',style:'paint-order:stroke;stroke:#1a1216;stroke-width:4px'},pb);zt.textContent='맞췄다면 · 17:40 충돌 지점';
+  // children procession coming from left (school) along bottom
+  var kids=el('g',{},pb);
+  for(var kd=0;kd<9;kd++){var kx=340+kd*44+(kd%2)*10,ky=740+(kd%3)*18+kd*6;
+    el('ellipse',{cx:kx+6,cy:ky+14,rx:12,ry:5,fill:'#000',opacity:.4},kids);
+    el('rect',{x:kx-8,y:ky-6,width:16,height:20,rx:6,fill:['#c4412c','#e0c080','#4a6a9a','#6fa05a'][kd%4]},kids);
+    el('circle',{cx:kx,cy:ky-12,r:8,fill:'#e8c7a0'},kids);el('path',{d:'M'+(kx-8)+','+(ky-14)+' a8,8 0 0 1 16,0',fill:'#2a1a10'},kids);}
+  el('path',{d:'M330,800 C 480,790 560,760 640,730',fill:'none',stroke:'#e6d3ae','stroke-width':3,'stroke-dasharray':'2 10','stroke-linecap':'round',opacity:.7},pb);
+  // fountain & lovers bench far right, empty bench
+  el('ellipse',{cx:1030,cy:640,rx:100,ry:38,fill:'#3a3a40'},pb);el('ellipse',{cx:1030,cy:636,rx:84,ry:29,fill:'#3d5a66'},pb);el('ellipse',{cx:1030,cy:632,rx:24,ry:8,fill:'#9fc4cc',opacity:.7},pb);
+  el('rect',{x:1022,y:580,width:16,height:52,fill:'#4a4a52'},pb);el('circle',{cx:1030,cy:578,r:10,fill:'#5a5a64'},pb);
+  el('rect',{x:960,y:712,width:90,height:12,rx:3,fill:'#5a3e28'},pb);
+  el('circle',{cx:990,cy:700,r:9,fill:'#e8c7a0'},pb);el('rect',{x:980,y:708,width:20,height:18,rx:5,fill:'#4a6a9a'},pb);
+  var ft=el('text',{x:1010,y:752,'font-size':13,fill:'#e6d3ae','text-anchor':'middle',style:'paint-order:stroke;stroke:#1a1216;stroke-width:4px'},pb);ft.textContent='분수대 · 혼자 남은 견습생';
+  // backlit clock-face rim framing the top (we look through the glass)
+  el('path',{d:'M-40,-20 L1640,-20 L1640,130 Q800,40 -40,130 Z',fill:'#1a1008'},pb);
+  el('path',{d:'M-40,130 Q800,40 1640,130',fill:'none',stroke:'#c89b4a','stroke-width':6},pb);
+  el('path',{d:'M-40,146 Q800,56 1640,146',fill:'none',stroke:'#6b4a1c','stroke-width':3,opacity:.8},pb);
+  // chain arrows
+  var cs=document.getElementById('chainSvg');
+  [[196,236],[432,472],[668,708]].forEach(function(p){el('line',{x1:p[0]+4,y1:96,x2:p[1]-6,y2:96,stroke:'#f0cf7e','stroke-width':3,'marker-end':'url(#arrG)'},cs);});
+  el('line',{x1:904,y1:96,x2:938,y2:96,stroke:'#ff8f70','stroke-width':2,'stroke-dasharray':'4 4'},cs);
+  el('line',{x1:0,y1:170,x2:1150,y2:170,stroke:'#6b4a1c','stroke-width':2},cs);
+  for(var z=0;z<=1150;z+=24)el('line',{x1:z,y1:162,x2:z,y2:170,stroke:'#6b4a1c','stroke-width':2},cs);
+  motes('motesB',20,0,1100,160,700);
+
+  // audio after input
+  var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function clank(){var c=ac();if(!c)return;var t=c.currentTime;
+    [880,1318,2093].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=f*(1+i*.003);g.gain.setValueAtTime(.18/(i+1),t);g.gain.exponentialRampToValueAtTime(.0005,t+.6+i*.2);o.connect(g).connect(c.destination);o.start(t);o.stop(t+1);});
+    var len=c.sampleRate*.05,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+    var n=c.createBufferSource(),f=c.createBiquadFilter();f.type='highpass';f.frequency.value=2000;n.buffer=b;n.connect(f).connect(c.destination);n.start(t);}
+  function bell(){var c=ac();if(!c)return;var t=c.currentTime;[220,440,523,660].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.2/(i+1),t);g.gain.exponentialRampToValueAtTime(.0005,t+2.5);o.connect(g).connect(c.destination);o.start(t);o.stop(t+2.6);});}
+  document.getElementById('nextDay').addEventListener('click',bell);
+  document.getElementById('replay').addEventListener('click',function(){var n=document.querySelector('.node.key');n.style.transform='translateY(-8px)';setTimeout(function(){n.style.transform='';},300);clank();});
+})();
+</script>
+</body>
+</html>

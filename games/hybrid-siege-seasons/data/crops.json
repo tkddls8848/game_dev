@@ -1,0 +1,96 @@
+{
+  "_": "작물. 밭이 덱을 만든다 — 작물→카드 대응은 여기에만 적는다.",
+  "_덱이_영속이다": "이 PoC 의 덱은 한 판이 아니라 해를 넘겨 남는다. 그래서 수확량이 hybrid-harvest-deck 보다 적다 — 쌓이기 때문이다.",
+  "crops": [
+    {
+      "id": "crop_turnip",
+      "nameKo": "순무",
+      "nameEn": "Turnip",
+      "growTurns": 1,
+      "waterPerTurn": 1,
+      "seedCost": 1,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_slash",
+      "cardsPerHarvest": 2,
+      "glyph": "turnip",
+      "sortOrder": 0,
+      "note": "싸고 빨리 는다. 오래 가는 카드를 낸다"
+    },
+    {
+      "id": "crop_pumpkin",
+      "nameKo": "호박",
+      "nameEn": "Pumpkin",
+      "growTurns": 3,
+      "waterPerTurn": 1,
+      "seedCost": 2,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_bulwark",
+      "cardsPerHarvest": 2,
+      "glyph": "pumpkin",
+      "sortOrder": 1,
+      "note": "밭을 오래 묶는다. 방벽은 네 번 쓰면 부서진다"
+    },
+    {
+      "id": "crop_chili",
+      "nameKo": "고추",
+      "nameEn": "Chili",
+      "growTurns": 2,
+      "waterPerTurn": 2,
+      "seedCost": 2,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_ember",
+      "cardsPerHarvest": 2,
+      "glyph": "chili",
+      "sortOrder": 2,
+      "note": "물을 두 배 먹는다 — 계절이 아니라 **물**이 이 작물의 한계다. 봄은 물이 가장 적다"
+    },
+    {
+      "id": "crop_herb",
+      "nameKo": "약초",
+      "nameEn": "Herb",
+      "growTurns": 2,
+      "waterPerTurn": 1,
+      "seedCost": 2,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_sort",
+      "cardsPerHarvest": 2,
+      "glyph": "herb",
+      "sortOrder": 3,
+      "note": "덱이 영속이라 모두 닳아 간다. 손질은 그것을 늦추는 유일한 수단"
+    },
+    {
+      "id": "crop_wheat",
+      "nameKo": "밀",
+      "nameEn": "Wheat",
+      "growTurns": 2,
+      "waterPerTurn": 1,
+      "seedCost": 3,
+      "seasons": [
+        "season_autumn"
+      ],
+      "cardId": "card_harvest",
+      "cardsPerHarvest": 1,
+      "glyph": "wheat",
+      "sortOrder": 4,
+      "note": "가을에만. 가장 세고 가장 빨리 닳는다 — 두 번 쓰면 사라진다"
+    }
+  ],
+  "_수확량": "덱이 얇으면 한 판 안에서 같은 카드가 몇 번이고 돌아 순식간에 닳는다. 한 장이 한 침입에 한 번쯤 나오려면 덱이 스무 장 넘게 있어야 한다.",
+  "_계절_텍스처": "이 변형에서 계절을 가르는 것은 작물 목록이 아니라 **물 예산과 침입의 격화**다. 밀만 가을에 묶여 있다(§3). 봄은 물이 가장 적어 고추를 적게 심는다."
+}

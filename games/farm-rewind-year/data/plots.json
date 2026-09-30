@@ -1,0 +1,137 @@
+{
+  "_": "밭 격자 · 확장 비용 · 토질. 확장은 켜져 있지만 되감으면 사라진다 - 남는 것은 흔적뿐이다.",
+  "gridWidth": 4,
+  "gridHeight": 4,
+  "startActivePlots": 9,
+  "expansion": {
+    "enabled": 1,
+    "costBase": 380,
+    "costPerPlot": 170,
+    "maxExtraPlots": 7,
+    "_": "비용 = costBase + costPerPlot x 이미 산 칸 수. 되감으면 산 칸도 돌려받지 못하고 그냥 없어진다.",
+    "deadlineDayInYear": 28,
+    "_기한": "이 날까지만 칸을 살 수 있다(봄에 땅을 뗀다). 늦게 산 칸은 한 해 안에 값을 못 뽑고, 되감으면 그냥 사라진다."
+  },
+  "rewind": {
+    "soilLossPerRewind": 2,
+    "soilFloor": 5,
+    "maxRewinds": 20,
+    "_흔적": "이 PoC가 고른 흔적은 토질 저하다. 되감을 때마다 모든 칸의 토질이 이만큼 깎이고, 그 값은 되돌지 않는다.",
+    "_왜_토질인가": "값 상승이나 선택지 감소보다 통로가 짧다 - 토질 하나가 성장 속도(soilFactor)와 심을 수 있는 작물(minSoil) 둘을 동시에 좁힌다."
+  },
+  "soilFloorForPlanting": 3,
+  "plots": [
+    {
+      "id": "p0_0",
+      "x": 0,
+      "y": 0,
+      "soil": 40,
+      "startActive": 1
+    },
+    {
+      "id": "p1_0",
+      "x": 1,
+      "y": 0,
+      "soil": 45,
+      "startActive": 1
+    },
+    {
+      "id": "p2_0",
+      "x": 2,
+      "y": 0,
+      "soil": 50,
+      "startActive": 1
+    },
+    {
+      "id": "p3_0",
+      "x": 3,
+      "y": 0,
+      "soil": 42,
+      "startActive": 0
+    },
+    {
+      "id": "p0_1",
+      "x": 0,
+      "y": 1,
+      "soil": 49,
+      "startActive": 1
+    },
+    {
+      "id": "p1_1",
+      "x": 1,
+      "y": 1,
+      "soil": 54,
+      "startActive": 1
+    },
+    {
+      "id": "p2_1",
+      "x": 2,
+      "y": 1,
+      "soil": 59,
+      "startActive": 1
+    },
+    {
+      "id": "p3_1",
+      "x": 3,
+      "y": 1,
+      "soil": 51,
+      "startActive": 0
+    },
+    {
+      "id": "p0_2",
+      "x": 0,
+      "y": 2,
+      "soil": 58,
+      "startActive": 1
+    },
+    {
+      "id": "p1_2",
+      "x": 1,
+      "y": 2,
+      "soil": 63,
+      "startActive": 1
+    },
+    {
+      "id": "p2_2",
+      "x": 2,
+      "y": 2,
+      "soil": 68,
+      "startActive": 1
+    },
+    {
+      "id": "p3_2",
+      "x": 3,
+      "y": 2,
+      "soil": 60,
+      "startActive": 0
+    },
+    {
+      "id": "p0_3",
+      "x": 0,
+      "y": 3,
+      "soil": 67,
+      "startActive": 0
+    },
+    {
+      "id": "p1_3",
+      "x": 1,
+      "y": 3,
+      "soil": 72,
+      "startActive": 0
+    },
+    {
+      "id": "p2_3",
+      "x": 2,
+      "y": 3,
+      "soil": 77,
+      "startActive": 0
+    },
+    {
+      "id": "p3_3",
+      "x": 3,
+      "y": 3,
+      "soil": 69,
+      "startActive": 0
+    }
+  ]
+}

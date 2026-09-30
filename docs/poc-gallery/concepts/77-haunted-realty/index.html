@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유령 부동산</title>
+<style>
+:root{
+  --paper:#efe3c6; --paper2:#e4d3ae; --ink:#3b2a1c; --ink2:#6e5638; --sepia:#8a6a44;
+  --ecto:#8ff5e2; --ecto2:#46d6c0; --warm:#e6a04a; --wine:#6d1f24; --brass:#c9a45a; --brass2:#8c6a2c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#050304;overflow:hidden}
+body{font-family:"Noto Sans CJK KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink)}
+.serif{font-family:"Noto Serif CJK KR","Noto Serif KR","Nanum Myeongjo",serif}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#1a0e0a}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.16;mix-blend-mode:overlay}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px/1 "Noto Sans CJK KR",sans-serif;padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.6);color:#e8dcc4;cursor:pointer}
+.tabs button.on{background:var(--ecto);color:#08221e;border-color:var(--ecto)}
+
+/* desk */
+.desk{position:absolute;inset:0;
+  background:
+   repeating-linear-gradient(88deg,rgba(0,0,0,.10) 0 2px,transparent 2px 9px,rgba(255,200,150,.03) 9px 11px,transparent 11px 23px),
+   repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 1px,transparent 1px 180px),
+   linear-gradient(180deg,#5a2a1c,#4a2016 50%,#3a170f)}
+.lamp{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 60% at 30% 22%,rgba(255,215,140,.38),rgba(255,190,110,.10) 45%,transparent 70%)}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:30;background:radial-gradient(ellipse 78% 72% at 50% 50%,transparent 52%,rgba(8,2,2,.72))}
+
+/* paper sheets */
+.sheet{position:absolute;background:
+   radial-gradient(ellipse at 30% 20%,rgba(255,250,235,.55),transparent 60%),
+   radial-gradient(ellipse at 80% 90%,rgba(150,110,60,.18),transparent 55%),
+   linear-gradient(180deg,var(--paper),var(--paper2));
+  box-shadow:0 2px 0 rgba(255,255,255,.3) inset,0 30px 40px rgba(0,0,0,.55),0 4px 8px rgba(0,0,0,.35)}
+.sheet::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 60px rgba(120,80,30,.28)}
+.plan{left:34px;top:92px;width:940px;height:866px;transform:rotate(-1.1deg)}
+.plan svg{position:absolute;left:0;top:0}
+.titleblk{position:absolute;right:22px;bottom:18px;width:250px;border:2px solid var(--ink);padding:8px 12px;font-size:11px;color:var(--ink2);background:rgba(255,248,230,.4)}
+.titleblk b{display:block;font-size:17px;color:var(--ink);letter-spacing:.06em}
+
+/* HUD */
+.hud{position:absolute;left:0;right:0;top:0;height:72px;z-index:20;display:flex;align-items:center;gap:26px;padding:0 28px;
+  background:linear-gradient(180deg,#1c0f0b,#140a07);border-bottom:2px solid #0a0503;box-shadow:0 8px 20px rgba(0,0,0,.55)}
+.plaque{padding:8px 18px 9px;border-radius:4px;background:linear-gradient(180deg,#e8c97a,#c9a45a 45%,#8c6a2c);color:#2a1a08;
+  box-shadow:inset 0 1px 0 #fff2c4,inset 0 -2px 0 rgba(0,0,0,.3),0 3px 8px rgba(0,0,0,.5);font-size:22px;font-weight:900;letter-spacing:.12em;position:relative}
+.plaque::before,.plaque::after{content:"";position:absolute;top:50%;width:5px;height:5px;border-radius:50%;background:#5a3e14;margin-top:-2px}
+.plaque::before{left:6px}.plaque::after{right:6px}
+.hstat{color:#e8d8b8;line-height:1.15}
+.hstat span{display:block;font-size:11px;color:#a08a6a;letter-spacing:.14em}
+.hstat b{font-size:18px}
+.clock{margin-left:auto;display:flex;align-items:center;gap:14px;color:#f0e2c4}
+.clock svg{width:48px;height:48px}
+.clock b{font-size:26px;letter-spacing:.04em}
+.clock span{display:block;font-size:12px;color:var(--ecto);letter-spacing:.06em}
+
+/* contract */
+.contract{left:994px;top:90px;width:578px;height:880px;transform:rotate(.7deg);padding:30px 36px}
+.contract h1{font-size:28px;text-align:center;letter-spacing:.2em;color:var(--ink);font-weight:900}
+.contract .sub{text-align:center;font-size:12px;color:var(--ink2);margin-top:4px;letter-spacing:.1em}
+.rule{height:0;border-top:3px double var(--ink);margin:12px 0}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;color:var(--ink2)}
+.parties div{border:1px solid rgba(59,42,28,.35);padding:8px 10px;border-radius:2px;background:rgba(255,250,235,.35)}
+.parties b{display:block;font-size:15px;color:var(--ink)}
+.parties .g b{color:#1c6f63}
+.cl{position:relative;display:grid;grid-template-columns:62px 1fr 74px;gap:8px;align-items:center;padding:9px 10px;margin:7px 0;border-radius:3px;cursor:pointer;
+  background:rgba(255,250,235,.55);border:1px solid rgba(59,42,28,.25);border-left:5px solid var(--sepia);font-size:14px;line-height:1.4;transition:transform .15s,box-shadow .15s}
+.cl:hover{transform:translateX(-3px);box-shadow:0 4px 10px rgba(80,50,20,.25)}
+.cl .no{font-weight:900;font-size:13px;color:var(--ink2)}
+.cl .fx{font-size:11px;text-align:right;line-height:1.5;font-weight:700}
+.cl .fx .g{color:#15806f}.cl .fx .h{color:#b0601a}.cl .fx .n{color:#a33}
+.cl.gh{border-left-color:var(--ecto2)}
+.cl.hu{border-left-color:var(--warm)}
+.cl.both{border-left-color:#7a5}
+.cl.off{opacity:.38;text-decoration:line-through;text-decoration-color:rgba(160,40,40,.7)}
+.cl.conflict{background:rgba(255,220,210,.6);border-color:rgba(170,50,50,.55);border-left-color:#b33}
+.meters{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.meter{font-size:12px;color:var(--ink2)}
+.meter .bar{height:12px;border-radius:6px;background:rgba(59,42,28,.18);margin-top:5px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.25)}
+.meter .bar i{display:block;height:100%;border-radius:6px;transition:width .35s}
+.meter b{font-size:18px;color:var(--ink);float:right}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:18px}
+.sign div{border-bottom:1.5px solid var(--ink);height:56px;position:relative;font-size:11px;color:var(--ink2)}
+.sign div span{position:absolute;left:0;bottom:-18px}
+.btnp{display:flex;align-items:center;justify-content:center;height:52px;border-radius:4px;cursor:pointer;font-size:18px;font-weight:900;letter-spacing:.1em;color:#fbeede;
+  background:linear-gradient(180deg,#8a2a2e,#6d1f24 60%,#4a1216);box-shadow:inset 0 1px 0 rgba(255,200,190,.35),0 6px 14px rgba(0,0,0,.4);border:1px solid #3a0a0c}
+
+/* ghost */
+.ghost{position:absolute;pointer-events:auto;cursor:pointer;animation:float 4.2s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(143,245,226,.75)) drop-shadow(0 0 40px rgba(70,214,192,.45))}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
+.ghost .mouth{transition:d .3s}
+.bubble{position:absolute;background:rgba(10,40,38,.86);border:1.5px solid rgba(143,245,226,.7);color:#dffcf6;border-radius:14px;padding:12px 16px;font-size:15px;line-height:1.5;
+  box-shadow:0 0 24px rgba(70,214,192,.35),0 10px 20px rgba(0,0,0,.4)}
+.bubble b{color:var(--ecto)}
+.bubble small{display:block;color:#8fc9bf;font-size:11px;letter-spacing:.1em;margin-bottom:3px}
+.sticky{position:absolute;width:176px;padding:12px 14px 14px;background:linear-gradient(180deg,#ffe98a,#f5d764);color:#4a3a10;font-size:14px;line-height:1.45;
+  box-shadow:0 10px 16px rgba(0,0,0,.35);font-weight:600}
+.sticky::before{content:"";position:absolute;left:50%;top:-8px;width:70px;margin-left:-35px;height:18px;background:rgba(255,255,255,.45);transform:rotate(-3deg)}
+.sticky small{display:block;font-size:10px;letter-spacing:.14em;color:#8a6a10;margin-bottom:4px;font-weight:700}
+.pin{position:absolute;width:190px;padding:10px 12px 11px;background:rgba(214,252,244,.88);border:1px solid rgba(70,214,192,.8);color:#0d4a42;font-size:13.5px;line-height:1.45;
+  box-shadow:0 0 16px rgba(143,245,226,.55),0 8px 14px rgba(0,0,0,.3);font-weight:600;border-radius:2px}
+.pin::before{content:"";position:absolute;left:12px;top:-7px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#dffffa,#2fb3a0);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.pin small{display:block;font-size:10px;letter-spacing:.14em;color:#2a8a7b;margin-bottom:3px}
+.drag{position:absolute;z-index:25;transform:rotate(-4deg);box-shadow:0 26px 30px rgba(0,0,0,.5),0 0 0 2px rgba(143,245,226,.7),0 0 30px rgba(143,245,226,.5)!important;background:#f6ecd4!important}
+canvas.wisp{position:absolute;left:0;top:0;pointer-events:none;z-index:24;mix-blend-mode:screen}
+
+/* screen B */
+#sb .desk{filter:brightness(.42) saturate(.7) hue-rotate(-8deg)}
+.moon{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 40% 45% at 30% 38%,rgba(120,255,230,.30),transparent 65%),
+  radial-gradient(ellipse 30% 30% at 66% 72%,rgba(255,170,80,.30),transparent 70%),
+  linear-gradient(180deg,rgba(10,30,40,.35),rgba(5,5,15,.5))}
+.planB{left:30px;top:120px;width:620px;height:600px;transform:rotate(-4deg);filter:brightness(.55) saturate(.6)}
+.bigc{left:560px;top:100px;width:620px;height:860px;transform:rotate(1.6deg);padding:34px 42px;z-index:6}
+.sigwet{position:absolute;left:0;right:0;bottom:4px;height:60px}
+.seal{position:absolute;width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#d8474a,#a11f27 45%,#6a0f16 80%);box-shadow:0 8px 14px rgba(0,0,0,.5),inset 0 -6px 12px rgba(0,0,0,.35),inset 0 5px 10px rgba(255,160,150,.35);
+  display:flex;align-items:center;justify-content:center;color:#ffd9d4;font-weight:900;font-size:22px;letter-spacing:.08em;text-align:center;line-height:1.15}
+.seal::before{content:"";position:absolute;inset:14px;border-radius:50%;border:2px dashed rgba(255,210,200,.5)}
+.seal.hit{animation:stampd .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes stampd{0%{transform:scale(1.8) rotate(-20deg);opacity:0}100%{transform:scale(1) rotate(-12deg);opacity:1}}
+.result{position:absolute;left:1224px;top:96px;width:350px;height:870px;padding:24px 24px;z-index:7;
+  background:linear-gradient(180deg,rgba(14,34,34,.9),rgba(10,18,22,.92));border:1px solid rgba(143,245,226,.35);border-radius:6px;color:#dff4ee;
+  box-shadow:0 0 40px rgba(70,214,192,.15),0 20px 40px rgba(0,0,0,.6)}
+.result h2{font-size:24px;color:var(--ecto);letter-spacing:.1em}
+.result .k{font-size:11px;color:#86b8ae;letter-spacing:.16em}
+.result .row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px dashed rgba(143,245,226,.2);font-size:14px}
+.result .row b{font-size:22px;color:#fff}
+.quote{margin-top:16px;padding:14px 16px;border-left:3px solid var(--ecto);background:rgba(143,245,226,.06);font-size:15px;line-height:1.7;color:#cfeee8}
+.candle{position:absolute;z-index:8}
+.flame{animation:flick .18s infinite alternate;transform-origin:50% 100%}
+@keyframes flick{from{transform:scaleY(1) skewX(-2deg)}to{transform:scaleY(1.08) skewX(3deg)}}
+.shake{animation:shk .35s}
+@keyframes shk{20%{transform:translate(-4px,1px) rotate(-1.4deg)}40%{transform:translate(4px,-2px) rotate(-.6deg)}60%{transform:translate(-3px,1px) rotate(-1.2deg)}}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <pattern id="hTeal" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="rgba(143,245,226,.16)"/><line x1="0" y1="0" x2="0" y2="10" stroke="rgba(40,170,150,.45)" stroke-width="2.2"/></pattern>
+  <pattern id="hWarm" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="10" height="10" fill="rgba(240,170,80,.12)"/><line x1="0" y1="0" x2="0" y2="10" stroke="rgba(200,120,40,.40)" stroke-width="2"/></pattern>
+  <pattern id="hRed" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="rgba(200,60,60,.10)"/><line x1="0" y1="0" x2="0" y2="12" stroke="rgba(180,40,40,.35)" stroke-width="3"/></pattern>
+  <pattern id="glass" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="none" stroke="rgba(90,110,120,.35)" stroke-width="1"/></pattern>
+  <pattern id="floor" width="16" height="48" patternUnits="userSpaceOnUse"><rect width="16" height="48" fill="none" stroke="rgba(110,86,56,.12)" stroke-width="1"/></pattern>
+  <linearGradient id="gGhost" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8fffa" stop-opacity=".95"/><stop offset=".45" stop-color="#9ff7e6" stop-opacity=".75"/><stop offset="1" stop-color="#46d6c0" stop-opacity="0"/></linearGradient>
+  <radialGradient id="gGlow"><stop offset="0" stop-color="#8ff5e2" stop-opacity=".55"/><stop offset="1" stop-color="#8ff5e2" stop-opacity="0"/></radialGradient>
+  <filter id="blur6"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="blur2"><feGaussianBlur stdDeviation="1.6"/></filter>
+  <!-- ghost figure: elderly piano teacher, shawl, bun, spectacles -->
+  <g id="ghostFig">
+    <ellipse cx="110" cy="150" rx="110" ry="150" fill="url(#gGlow)"/>
+    <path d="M60,120 C50,170 40,230 30,290 C50,280 60,300 78,292 C92,310 108,296 122,306 C138,294 150,310 168,296 C180,300 188,286 196,290 C182,230 170,170 160,120 Z" fill="url(#gGhost)"/>
+    <path d="M52,118 C70,96 150,96 168,118 C176,150 150,170 110,176 C70,170 44,150 52,118 Z" fill="rgba(210,255,248,.75)" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/>
+    <path d="M60,128 C80,150 140,150 160,128" fill="none" stroke="rgba(40,150,135,.5)" stroke-width="1.4" stroke-dasharray="3 4"/>
+    <circle cx="110" cy="72" r="34" fill="rgba(232,255,250,.92)"/>
+    <circle cx="110" cy="34" r="16" fill="rgba(220,255,248,.9)"/>
+    <path d="M78,62 C84,40 136,40 142,62" fill="rgba(200,245,238,.9)"/>
+    <g fill="none" stroke="#1f6d62" stroke-width="2"><circle cx="97" cy="74" r="8"/><circle cx="123" cy="74" r="8"/><line x1="105" y1="74" x2="115" y2="74"/></g>
+    <ellipse cx="97" cy="75" rx="3" ry="3.6" fill="#0d3a34"/><ellipse cx="123" cy="75" rx="3" ry="3.6" fill="#0d3a34"/>
+    <ellipse cx="88" cy="88" rx="5" ry="3" fill="rgba(90,220,200,.35)"/><ellipse cx="132" cy="88" rx="5" ry="3" fill="rgba(90,220,200,.35)"/>
+    <path d="M52,122 C30,150 34,190 60,196" fill="none" stroke="rgba(220,255,248,.8)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M168,122 C196,140 204,170 190,188" fill="none" stroke="rgba(220,255,248,.8)" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="110" cy="112" r="5" fill="#bff" stroke="#2a8" stroke-width="1"/>
+  </g>
+</defs></svg>
+
+<!-- ================= A ================= -->
+<section class="screen" id="sa">
+  <div class="desk"></div><div class="lamp"></div>
+
+  <div class="sheet plan" id="planA">
+    <svg width="940" height="866" viewBox="0 0 940 866" id="planSvgA"></svg>
+    <div class="titleblk"><b class="serif">언덕 위 붉은 지붕 저택</b>1층 평면도 · 축척 1:100 · 매물 13호<br>유령 거주 1 · 방 9 · 온실 1</div>
+  </div>
+
+  <!-- ghost over drawing room -->
+  <svg class="ghost" id="ghostA" style="left:150px;top:318px" width="220" height="310" viewBox="0 0 220 310"><use href="#ghostFig"/><path id="mouthA" d="M100,96 Q110,89 120,96" fill="none" stroke="#1f6d62" stroke-width="2.4" stroke-linecap="round"/></svg>
+  <div class="bubble" style="left:372px;top:300px;width:280px"><small>유령 · 피아노 선생 헬렌 부인</small>“피아노는 <b>거실 창가</b>에 그대로 두렴. 그리고 <b>세 시</b>엔… 조용히 해 주겠니?”</div>
+
+  <div class="pin" style="left:70px;top:672px;width:212px;transform:rotate(-3deg)"><small>유령 조건 1</small>피아노는 거실에,<br>뚜껑은 열어 둘 것</div>
+  <div class="pin" style="left:290px;top:706px;transform:rotate(2deg)"><small>유령 조건 2 · 생전 사연</small>오후 3시엔 정숙 — 마지막 제자가 오지 않던 시각</div>
+  <div class="sticky" style="left:700px;top:140px;transform:rotate(3deg)"><small>매수인 조건 · 한도윤</small>거실에 대형 홈시어터 꼭 넣고 싶어요!</div>
+  <div class="sticky" style="left:760px;top:520px;transform:rotate(-4deg)"><small>매수인 조건 · 서미래</small>평일 오후 2~4시 화상회의 (조용한 방 필요)</div>
+
+  <div class="sheet contract" id="contractA">
+    <h1 class="serif">공동 거주 계약서</h1>
+    <div class="sub">매물 13호 · 매도인 겸 거주 유령 1 · 매수인 2</div>
+    <div class="rule"></div>
+    <div class="parties">
+      <div><b>한도윤 · 서미래</b>매수인 (신혼부부, 고양이 1)</div>
+      <div class="g"><b>헬렌 부인</b>거주 유령 (피아노 교사, 이 집에서 62년)</div>
+    </div>
+    <div id="clauses" style="margin-top:10px">
+      <div class="cl gh" data-g="18" data-h="-4"><span class="no serif">제1조</span><span>거실의 피아노는 창가에 존치한다.</span><span class="fx"><span class="g">유령 +18</span><br><span class="h">입주 −4</span></span></div>
+      <div class="cl conflict" data-g="-22" data-h="16"><span class="no serif">제2조</span><span>홈시어터는 거실 벽면에 설치한다.</span><span class="fx"><span class="n">유령 −22</span><br><span class="h">입주 +16</span></span></div>
+      <div class="cl both" data-g="10" data-h="12"><span class="no serif">제3조</span><span>홈시어터는 식당에, 거실엔 피아노만 둔다.</span><span class="fx"><span class="g">유령 +10</span><br><span class="h">입주 +12</span></span></div>
+      <div class="cl gh" data-g="16" data-h="-8"><span class="no serif">제4조</span><span>매일 오후 3시~3시 30분, 저택 전체 정숙.</span><span class="fx"><span class="g">유령 +16</span><br><span class="n">입주 −8</span></span></div>
+      <div class="cl hu off" data-g="-6" data-h="14"><span class="no serif">제5조</span><span>화상회의는 서재에서, 서재 문은 닫는다.</span><span class="fx"><span class="n">유령 −6</span><br><span class="h">입주 +14</span></span></div>
+      <div class="cl off" data-g="4" data-h="6"><span class="no serif">제6조</span><span>고양이는 다락방에 출입하지 않는다.</span><span class="fx"><span class="g">유령 +4</span><br><span class="h">입주 +6</span></span></div>
+    </div>
+    <div class="meters">
+      <div class="meter">유령 만족 <b id="mg">72%</b><div class="bar"><i id="mgb" style="width:72%;background:linear-gradient(90deg,#2fb3a0,#8ff5e2)"></i></div></div>
+      <div class="meter">입주자 만족 <b id="mh">58%</b><div class="bar"><i id="mhb" style="width:58%;background:linear-gradient(90deg,#c0701a,#f0b85a)"></i></div></div>
+    </div>
+    <div class="sign"><div><span>매수인 서명</span></div><div><span style="color:#1c6f63">유령 서명 (엑토플라즘 가능)</span></div></div>
+    <div class="btnp serif" style="margin-top:34px" id="propose">조항 제시하기</div>
+    <div style="text-align:center;font-size:11px;color:var(--ink2);margin-top:8px">양쪽 모두 70% 이상이면 서명한다 · 충돌 조항 1</div>
+  </div>
+
+  <!-- dragged clause card -->
+  <div class="cl gh drag" style="left:640px;top:760px;width:360px;font-size:14px"><span class="no serif">특약</span><span>금요일 밤 9시, 피아노 연주회를 연다.</span><span class="fx"><span class="g">유령 +14</span><br><span class="h">입주 +6</span></span></div>
+  <svg style="position:absolute;left:968px;top:800px;z-index:26" width="30" height="36" viewBox="0 0 30 36"><path d="M3,2 L3,28 L10,21 L15,33 L20,31 L15,19 L25,19 Z" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>
+
+  <canvas class="wisp" id="wispA" width="1600" height="1000"></canvas>
+  <div class="vig"></div>
+
+  <div class="hud">
+    <div class="plaque serif">유령 부동산</div>
+    <div class="hstat"><span>현재 매물</span><b>13호 · 언덕 위 저택</b></div>
+    <div class="hstat"><span>방문 상담</span><b>2회차 / 3</b></div>
+    <div class="hstat"><span>예상 수수료</span><b style="color:#f0c86a">₩ 3,400,000</b></div>
+    <div class="clock">
+      <svg viewBox="-24 -24 48 48"><circle r="21" fill="#f3e6c8" stroke="#c9a45a" stroke-width="3"/><g stroke="#3b2a1c" stroke-linecap="round"><line y1="0" x2="0" y2="-11" stroke-width="3" transform="rotate(84)"/><line id="minH" y1="0" x2="0" y2="-16" stroke-width="2" transform="rotate(282)"/></g><path d="M0,0 L0,-19 A19,19 0 0 1 17,-8.6 Z" fill="rgba(70,214,192,.35)" transform="rotate(-78)"/><circle r="2" fill="#3b2a1c"/></svg>
+      <div><b id="clkA">오후 2:47</b><span>3시 정숙까지 13분</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="screen" id="sb">
+  <div class="desk"></div>
+  <div class="moon"></div>
+  <div class="sheet planB" style="position:absolute">
+    <svg width="620" height="600" viewBox="0 0 940 866" preserveAspectRatio="none" id="planSvgB"></svg>
+  </div>
+
+  <div class="sheet bigc" id="contractB">
+    <h1 class="serif" style="font-size:32px;text-align:center;letter-spacing:.2em">공동 거주 계약서</h1>
+    <div class="sub" style="text-align:center;font-size:12px;color:var(--ink2);margin-top:4px">매물 13호 · 최종본 · 조항 6 + 특약 1</div>
+    <div class="rule"></div>
+    <div style="font-size:15px;line-height:1.95;color:var(--ink)" class="serif">
+      <div><b>제1조</b> 거실의 피아노는 창가에 존치하며 뚜껑은 열어 둔다.</div>
+      <div><b>제2조</b> 홈시어터는 식당에 설치하고, 거실엔 피아노만 둔다.</div>
+      <div><b>제3조</b> 매일 오후 3시~3시 30분, 저택 전체는 정숙한다.</div>
+      <div><b>제4조</b> 화상회의는 서재에서 하며 서재 문은 닫는다.</div>
+      <div><b>제5조</b> 고양이는 다락방에 출입하지 않는다.</div>
+      <div><b>제6조</b> 다락방 둥근 창은 밤새 열어 둔다.</div>
+      <div style="margin-top:6px;padding:8px 12px;background:rgba(143,245,226,.14);border-left:4px solid var(--ecto2)"><b>특약</b> 금요일 밤 9시, 거실에서 피아노 연주회를 연다. 입주자의 아이가 태어나면 <b>세 시의 수업</b>을 다시 연다.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:34px">
+      <div style="border-bottom:1.5px solid var(--ink);height:86px;position:relative">
+        <svg width="250" height="80" viewBox="0 0 250 80" style="position:absolute;left:0;bottom:2px"><path d="M10,58 C30,20 40,70 60,40 C70,26 74,60 90,50 C110,36 116,20 128,48 C136,66 150,30 170,42 C186,52 200,40 230,36" fill="none" stroke="#1d3a78" stroke-width="3" stroke-linecap="round"/><path d="M40,70 C80,64 140,66 200,60" fill="none" stroke="#1d3a78" stroke-width="1.6"/></svg>
+        <span style="position:absolute;left:0;bottom:-20px;font-size:11px;color:var(--ink2)">매수인 · 한도윤 서미래</span></div>
+      <div style="border-bottom:1.5px solid var(--ink);height:86px;position:relative">
+        <svg width="250" height="90" viewBox="0 0 250 90" style="position:absolute;left:0;bottom:2px;overflow:visible">
+          <path id="ectoSig" d="M12,62 C24,24 44,24 46,52 C48,74 70,70 78,44 C86,20 100,30 104,52 C108,66 124,64 134,46 C142,32 156,34 160,50" fill="none" stroke="#6ff0da" stroke-width="10" stroke-linecap="round" opacity=".35" filter="url(#blur6)"/>
+          <path d="M12,62 C24,24 44,24 46,52 C48,74 70,70 78,44 C86,20 100,30 104,52 C108,66 124,64 134,46 C142,32 156,34 160,50" fill="none" stroke="#1a9c88" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="0" id="sigLine"/>
+          <circle cx="160" cy="50" r="7" fill="#bffcf1" filter="url(#blur2)"/>
+          <g fill="#6ff0da" opacity=".8"><circle cx="30" cy="80" r="2.5"/><circle cx="72" cy="84" r="1.8"/><circle cx="120" cy="78" r="2.2"/><circle cx="150" cy="70" r="1.6"/></g>
+        </svg>
+        <span style="position:absolute;left:0;bottom:-20px;font-size:11px;color:#1c6f63">거주 유령 · 헬렌 부인</span></div>
+    </div>
+    <div style="margin-top:44px;display:grid;grid-template-columns:1fr 150px;gap:20px;font-size:12px;color:var(--ink2);line-height:1.7" class="serif">
+      <div>본 계약은 자정부터 효력이 있으며, 양 당사자는 서로의 시간을 존중한다.<br>분쟁 시 유령 부동산이 중재하되, 문 쾅 닫기·촛불 끄기는 1회 경고로 한다.<br><span style="color:var(--ink)">중개인 · 유령 부동산 (인)</span></div>
+      <div></div>
+    </div>
+    <div class="seal hit serif" id="sealB" style="right:40px;bottom:46px;transform:rotate(-12deg)">계약<br>성립</div>
+  </div>
+
+  <!-- ghost hand signing -->
+  <svg class="ghost" id="ghostB" style="left:250px;top:250px;animation-duration:5.5s" width="420" height="560" viewBox="0 0 220 310"><use href="#ghostFig"/><path d="M98,90 Q110,104 122,90" fill="none" stroke="#1f6d62" stroke-width="2.6" stroke-linecap="round"/><path d="M90,62 Q97,58 104,62 M116,62 Q123,58 130,62" fill="none" stroke="#1f6d62" stroke-width="1.6"/></svg>
+  <svg style="position:absolute;left:540px;top:380px;z-index:9;pointer-events:none;filter:drop-shadow(0 0 14px rgba(143,245,226,.9))" width="540" height="240" viewBox="0 0 540 240">
+    <path d="M15,92 C170,122 340,118 456,146" fill="none" stroke="rgba(210,255,248,.5)" stroke-width="26" stroke-linecap="round"/>
+    <path d="M15,92 C170,122 340,118 456,146" fill="none" stroke="rgba(235,255,252,.75)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M448,136 C460,128 480,132 486,146 C490,160 478,172 462,170 C450,168 442,156 448,136 Z" fill="rgba(235,255,252,.95)"/>
+    <path d="M468,134 C474,126 482,128 484,134" fill="none" stroke="rgba(235,255,252,.95)" stroke-width="7" stroke-linecap="round"/>
+    <line x1="468" y1="148" x2="501" y2="184" stroke="#2b1a0e" stroke-width="6" stroke-linecap="round"/>
+    <line x1="498" y1="181" x2="504" y2="187" stroke="#c9a45a" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <!-- candle -->
+  <svg class="candle" style="left:1100px;top:760px" width="120" height="220" viewBox="0 0 120 220">
+    <ellipse cx="60" cy="40" rx="60" ry="60" fill="rgba(255,180,80,.25)" filter="url(#blur6)"/>
+    <rect x="40" y="70" width="40" height="120" rx="4" fill="#efe3c6"/><path d="M40,74 C46,86 52,74 56,92 C58,100 62,80 66,78 L80,74 L80,70 L40,70Z" fill="#fff7e4"/>
+    <ellipse cx="60" cy="200" rx="54" ry="14" fill="#8c6a2c"/><ellipse cx="60" cy="196" rx="54" ry="12" fill="#c9a45a"/>
+    <line x1="60" y1="70" x2="60" y2="60" stroke="#222" stroke-width="2"/>
+    <g class="flame"><path d="M60,22 C70,40 70,52 60,62 C50,52 50,40 60,22 Z" fill="#ffcf6a"/><path d="M60,36 C65,46 65,54 60,60 C55,54 55,46 60,36 Z" fill="#fff6d0"/></g>
+  </svg>
+
+  <div class="result">
+    <div class="k">계약 결과</div>
+    <h2 class="serif">두 세계, 한 지붕</h2>
+    <div style="margin-top:14px">
+      <div class="row"><span>유령 만족</span><b style="color:var(--ecto)">94%</b></div>
+      <div class="row"><span>입주자 만족</span><b style="color:#f0b85a">88%</b></div>
+      <div class="row"><span>충돌 조항</span><b>0</b></div>
+      <div class="row"><span>수수료</span><b style="color:#f0c86a">+₩ 3,400,000</b></div>
+      <div class="row"><span>평판 · 유령 사회</span><b style="color:var(--ecto)">★★★★☆</b></div>
+    </div>
+    <div class="quote serif">“세 시에 오기로 한 아이는 끝내 오지 않았단다. 이제… 누군가 그 의자에 앉겠구나.”</div>
+    <div style="margin-top:18px;font-size:12px;color:#86b8ae;letter-spacing:.1em">다음 매물</div>
+    <div style="margin-top:8px;padding:12px 14px;border:1px solid rgba(143,245,226,.25);border-radius:4px;font-size:14px;line-height:1.55">
+      <b style="color:#fff">14호 · 폐교 옆 하숙집</b><br><span style="color:#9fc8c0">유령 4 · 조건 11 · 서로 사이가 나쁨</span></div>
+    <div class="btnp serif" style="margin-top:22px;background:linear-gradient(180deg,#2a8a7b,#16594f);border-color:#0a2d28" id="nextB">도장 찍기 · 다음 매물 ▸</div>
+  </div>
+
+  <canvas class="wisp" id="wispB" width="1600" height="1000"></canvas>
+  <div class="vig" style="background:radial-gradient(ellipse 78% 72% at 50% 50%,transparent 45%,rgba(2,4,8,.85))"></div>
+
+  <div class="hud" style="background:linear-gradient(180deg,#0b1112,#070a0b)">
+    <div class="plaque serif">유령 부동산</div>
+    <div class="hstat"><span>매물</span><b>13호 · 서명식</b></div>
+    <div class="hstat"><span>입회</span><b style="color:var(--ecto)">유령 1 · 인간 2 · 고양이 1</b></div>
+    <div class="clock">
+      <svg viewBox="-24 -24 48 48"><circle r="21" fill="#1a2a2a" stroke="#46d6c0" stroke-width="2"/><g stroke="#8ff5e2" stroke-linecap="round"><line y1="0" x2="0" y2="-16" stroke-width="2"/><line y1="0" x2="0" y2="-11" stroke-width="3" transform="rotate(0)"/></g><circle r="2" fill="#8ff5e2"/></svg>
+      <div><b>밤 12:00</b><span>자정 · 유령 서명 유효 시간</span></div>
+    </div>
+  </div>
+</section>
+
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+<div class="tabs"><button data-s="a">1 · 조항 협상</button><button data-s="b">2 · 자정의 서명</button></div>
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(400,250);
+    for(var i=0;i<d.data.length;i+=4){var v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);
+    c.style.width='1600px';c.style.height='1000px';})();
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');
+  for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function txt(p,x,y,s,size,col,anchor,w){var e=el('text',{x:x,y:y,'font-size':size||16,fill:col||'#3b2a1c','text-anchor':anchor||'middle','font-family':'Noto Serif CJK KR,Noto Serif KR,serif','font-weight':w||700,'letter-spacing':'2'},p);e.textContent=s;return e;}
+
+  // ---------- floor plan ----------
+  function plan(svg,mode){
+    var W='#3b2a1c';
+    // grid
+    for(var gx=40;gx<940;gx+=40)el('line',{x1:gx,y1:30,x2:gx,y2:840,stroke:'rgba(90,110,140,.10)'},svg);
+    for(var gy=30;gy<860;gy+=40)el('line',{x1:30,y1:gy,x2:910,y2:gy,stroke:'rgba(90,110,140,.10)'},svg);
+    var O={x:70,y:70,w:800,h:700};
+    // floors
+    el('rect',{x:O.x,y:O.y,width:O.w,height:O.h,fill:'url(#floor)'},svg);
+    // zones
+    function zone(x,y,w,h,f){el('rect',{x:x,y:y,width:w,height:h,fill:'url(#'+f+')'},svg);}
+    if(mode==='a'){zone(70,70,240,220,'hTeal');zone(310,70,230,220,'hWarm');zone(540,70,330,250,'hWarm');zone(70,290,420,280,'hRed');}
+    else{zone(70,70,240,220,'hTeal');zone(70,290,420,280,'hTeal');zone(310,70,230,220,'hWarm');zone(540,70,330,250,'hWarm');zone(650,320,220,250,'hWarm');}
+    // conservatory glass
+    el('rect',{x:70,y:70,width:240,height:220,fill:'url(#glass)'},svg);
+    // bay window on drawing room (left)
+    el('path',{d:'M70,360 L30,380 L30,480 L70,500',fill:'url(#floor)',stroke:W,'stroke-width':6,'stroke-linejoin':'round'},svg);
+    el('path',{d:'M36,384 L36,476',stroke:'#8fb3c4','stroke-width':4},svg);
+    // walls
+    el('rect',{x:O.x,y:O.y,width:O.w,height:O.h,fill:'none',stroke:W,'stroke-width':10},svg);
+    var walls=[[310,70,310,290],[540,70,540,320],[70,290,540,290],[490,290,490,570],[540,320,870,320],[650,320,650,570],[70,570,870,570],[330,570,330,770],[600,570,600,770]];
+    for(var i=0;i<walls.length;i++){var w=walls[i];el('line',{x1:w[0],y1:w[1],x2:w[2],y2:w[3],stroke:W,'stroke-width':6,'stroke-linecap':'square'},svg);}
+    // doors (gap + swing)
+    function door(x,y,dir,len){var c='#ece0c2';
+      if(dir==='h'){el('line',{x1:x,y1:y,x2:x+len,y2:y,stroke:c,'stroke-width':8},svg);el('path',{d:'M'+x+','+y+' L'+x+','+(y+len)+' A'+len+','+len+' 0 0 0 '+(x+len)+','+y,fill:'none',stroke:W,'stroke-width':1.2},svg);}
+      else{el('line',{x1:x,y1:y,x2:x,y2:y+len,stroke:c,'stroke-width':8},svg);el('path',{d:'M'+x+','+y+' L'+(x+len)+','+y+' A'+len+','+len+' 0 0 1 '+x+','+(y+len),fill:'none',stroke:W,'stroke-width':1.2},svg);}}
+    door(200,290,'h',50);door(400,290,'h',46);door(490,420,'v',50);door(650,420,'v',46);door(700,320,'h',46);door(430,570,'h',60);door(330,640,'v',46);door(600,640,'v',46);door(410,770,'h',80);
+    // windows on outer
+    [[120,70,90],[380,70,100],[640,70,140],[120,770,120],[680,770,110],[870,380,110],[870,620,90]].forEach(function(w){
+      if(w[1]===70||w[1]===770)el('line',{x1:w[0],y1:w[1],x2:w[0]+w[2],y2:w[1],stroke:'#8fb3c4','stroke-width':4},svg);
+      else el('line',{x1:w[0],y1:w[1],x2:w[0],y2:w[1]+w[2],stroke:'#8fb3c4','stroke-width':4},svg);});
+    // furniture
+    var f='rgba(59,42,28,.12)',fs='#5a4128';
+    // conservatory plants
+    [[120,130],[180,210],[250,120],[110,240],[260,230]].forEach(function(p){el('circle',{cx:p[0],cy:p[1],r:18,fill:'rgba(90,120,70,.35)',stroke:'#4a5a34','stroke-width':1.2},svg);for(var k=0;k<6;k++){var a=k*1.05;el('line',{x1:p[0],y1:p[1],x2:p[0]+Math.cos(a)*16,y2:p[1]+Math.sin(a)*16,stroke:'#4a5a34','stroke-width':1},svg);}});
+    // study: desk + shelves
+    el('rect',{x:340,y:150,width:110,height:56,fill:f,stroke:fs,'stroke-width':1.5},svg);el('circle',{cx:395,cy:228,r:14,fill:f,stroke:fs},svg);
+    for(var s=0;s<5;s++)el('rect',{x:318,y:82+s*0,width:214,height:16,fill:'rgba(110,70,40,.25)',stroke:fs,'stroke-width':1},svg);
+    // dining table
+    el('rect',{x:600,y:150,width:210,height:74,rx:8,fill:f,stroke:fs,'stroke-width':1.5},svg);
+    for(var c2=0;c2<5;c2++){el('rect',{x:612+c2*40,y:128,width:22,height:16,fill:'none',stroke:fs},svg);el('rect',{x:612+c2*40,y:230,width:22,height:16,fill:'none',stroke:fs},svg);}
+    // drawing room: piano, rug, fireplace, sofa
+    el('rect',{x:140,y:360,width:230,height:150,fill:'rgba(120,40,40,.12)',stroke:'rgba(120,40,40,.4)','stroke-dasharray':'4 3'},svg);
+    el('rect',{x:220,y:548,width:110,height:16,fill:'rgba(80,50,30,.35)',stroke:fs},svg);
+    el('rect',{x:360,y:420,width:40,height:110,rx:10,fill:f,stroke:fs,'stroke-width':1.5},svg);
+    var pg=el('g',{transform:'translate(84,320)'},svg);
+    el('path',{d:'M0,0 L96,0 L96,34 C96,96 62,120 30,130 L0,130 Z',fill:'rgba(30,20,14,.78)',stroke:'#1a100a','stroke-width':2},pg);
+    el('rect',{x:0,y:0,width:96,height:14,fill:'#f5efe0',stroke:'#1a100a'},pg);
+    for(var k=0;k<11;k++)el('rect',{x:4+k*8.4,y:0,width:4,height:8,fill:'#1a100a'},pg);
+    el('rect',{x:30,y:-22,width:36,height:16,rx:3,fill:'none',stroke:fs},pg);
+    // stairs
+    for(var st=0;st<10;st++)el('line',{x1:505,y1:340+st*22,x2:635,y2:340+st*22,stroke:fs,'stroke-width':1.2},svg);
+    el('path',{d:'M570,540 L570,350 M560,362 L570,346 L580,362',fill:'none',stroke:fs,'stroke-width':1.5},svg);
+    // kitchen
+    el('rect',{x:660,y:330,width:200,height:34,fill:f,stroke:fs},svg);el('rect',{x:830,y:330,width:30,height:230,fill:f,stroke:fs},svg);
+    [[690,347],[730,347]].forEach(function(p){el('circle',{cx:p[0],cy:p[1],r:10,fill:'none',stroke:fs},svg);});
+    // bedroom/bath/hall
+    el('rect',{x:120,y:620,width:120,height:120,fill:f,stroke:fs},svg);el('rect',{x:120,y:620,width:120,height:26,fill:'rgba(255,255,255,.3)',stroke:fs},svg);
+    el('rect',{x:700,y:600,width:130,height:60,rx:28,fill:'rgba(140,170,190,.25)',stroke:fs},svg);
+    el('circle',{cx:465,cy:670,r:46,fill:'none',stroke:'rgba(110,70,40,.4)','stroke-dasharray':'3 4'},svg);
+    // labels
+    txt(svg,190,280,'온 실',18);txt(svg,425,272,'서 재',18);txt(svg,705,300,'식 당',18);
+    txt(svg,290,470,'거 실',24,'#6d1f24');txt(svg,570,560,'계단홀',14);txt(svg,760,470,'부 엌',18);
+    txt(svg,200,760,'침 실',16);txt(svg,465,745,'현관홀',16);txt(svg,735,745,'욕 실',16);
+    // dimension line
+    el('line',{x1:70,y1:810,x2:870,y2:810,stroke:W,'stroke-width':1},svg);el('line',{x1:70,y1:800,x2:70,y2:820,stroke:W},svg);el('line',{x1:870,y1:800,x2:870,y2:820,stroke:W},svg);
+    txt(svg,470,830,'24,000',12,'#6e5638');
+    // compass
+    var cg=el('g',{transform:'translate(900,60)'},svg);el('circle',{r:18,fill:'none',stroke:W},cg);el('path',{d:'M0,-16 L6,6 L0,2 L-6,6 Z',fill:W},cg);txt(cg,0,-22,'N',12);
+    if(mode==='a'){
+      // conflict marker in drawing room
+      var cf=el('g',{transform:'translate(432,470)'},svg);
+      el('circle',{r:22,fill:'#b33',opacity:.9},cf);txt(cf,0,7,'!',22,'#fff');
+      txt(svg,432,516,'충돌',15,'#a33');
+      // proposed home theatre (ghost outline) on drawing room wall
+      el('rect',{x:466,y:306,width:16,height:120,fill:'rgba(200,120,40,.45)',stroke:'#b0601a','stroke-dasharray':'5 3'},svg);txt(svg,420,330,'홈시어터?',13,'#b0601a');
+      // legend
+      var lg=el('g',{transform:'translate(40,800)'},svg);
+    } else {
+      el('rect',{x:600,y:128,width:210,height:12,fill:'rgba(200,120,40,.6)'},svg);
+    }
+  }
+  plan(document.getElementById('planSvgA'),'a');
+  plan(document.getElementById('planSvgB'),'b');
+
+  // ---------- wisps ----------
+  function wisps(id,ox,oy,spread){var c=document.getElementById(id),x=c.getContext('2d'),P=[];
+    for(var i=0;i<60;i++)P.push({x:ox+(Math.random()-.5)*spread,y:oy+Math.random()*spread*.8,v:.2+Math.random()*.5,r:1+Math.random()*2.5,p:Math.random()*6});
+    return function(t){x.clearRect(0,0,1600,1000);for(var i=0;i<P.length;i++){var p=P[i];p.y-=p.v;p.x+=Math.sin(t/600+p.p)*.5;
+      if(p.y<oy-spread*.6){p.y=oy+spread*.6;p.x=ox+(Math.random()-.5)*spread;}
+      var a=.25+.35*Math.sin(t/400+p.p);x.fillStyle='rgba(160,255,238,'+Math.max(0,a).toFixed(2)+')';x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);x.fill();}};}
+  var wA=wisps('wispA',360,470,300),wB=wisps('wispB',520,560,440);
+  function frame(t){if(cur==='a')wA(t);else wB(t);requestAnimationFrame(frame);}requestAnimationFrame(frame);
+
+  // ---------- audio ----------
+  var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){AC=null;}}return AC;}
+  function chime(up){var c=ac();if(!c)return;var t=c.currentTime,notes=up?[659,784,988]:[494,415,349];
+    notes.forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t+i*.09);g.gain.linearRampToValueAtTime(.12,t+i*.09+.02);g.gain.exponentialRampToValueAtTime(.001,t+i*.09+1.2);o.connect(g).connect(c.destination);o.start(t+i*.09);o.stop(t+i*.09+1.3);});}
+  function creak(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.type='sawtooth';
+    o.frequency.setValueAtTime(90,t);o.frequency.linearRampToValueAtTime(140,t+.3);o.frequency.linearRampToValueAtTime(70,t+.6);f.type='bandpass';f.frequency.value=900;f.Q.value=8;
+    g.gain.setValueAtTime(.0,t);g.gain.linearRampToValueAtTime(.2,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+.7);o.connect(f).connect(g).connect(c.destination);o.start(t);o.stop(t+.75);}
+  function whoo(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),l=c.createOscillator(),lg=c.createGain(),g=c.createGain();o.type='sine';o.frequency.value=330;l.frequency.value=5;lg.gain.value=18;l.connect(lg).connect(o.frequency);
+    o.frequency.setValueAtTime(260,t);o.frequency.linearRampToValueAtTime(420,t+.8);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.2);g.gain.exponentialRampToValueAtTime(.001,t+1.4);o.connect(g).connect(c.destination);o.start(t);l.start(t);o.stop(t+1.5);l.stop(t+1.5);}
+  function thunk(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(45,t+.2);g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.3);}
+
+  // ---------- clause toggling ----------
+  var cls=document.querySelectorAll('#clauses .cl'),mouth=document.getElementById('mouthA');
+  function recalc(){var g=40,h=40;for(var i=0;i<cls.length;i++){if(cls[i].classList.contains('off'))continue;g+=+cls[i].getAttribute('data-g');h+=+cls[i].getAttribute('data-h');}
+    g=Math.max(0,Math.min(100,g));h=Math.max(0,Math.min(100,h));
+    document.getElementById('mg').textContent=g+'%';document.getElementById('mgb').style.width=g+'%';
+    document.getElementById('mh').textContent=h+'%';document.getElementById('mhb').style.width=h+'%';
+    mouth.setAttribute('d',g>=70?'M100,92 Q110,100 120,92':'M100,96 Q110,89 120,96');return g;}
+  for(var j=0;j<cls.length;j++)cls[j].addEventListener('click',function(){var before=recalc();this.classList.toggle('off');var after=recalc();
+    if(after>=before)chime(true);else{chime(false);creak();var gh=document.getElementById('ghostA');gh.classList.remove('shake');void gh.offsetWidth;gh.classList.add('shake');}});
+  recalc();
+  // fix initial display to match design numbers
+  document.getElementById('mg').textContent='72%';document.getElementById('mgb').style.width='72%';document.getElementById('mh').textContent='58%';document.getElementById('mhb').style.width='58%';
+  document.getElementById('ghostA').addEventListener('click',whoo);
+  document.getElementById('propose').addEventListener('click',function(){creak();var c=document.getElementById('contractA');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');});
+  document.getElementById('ghostB').addEventListener('click',whoo);
+  document.getElementById('nextB').addEventListener('click',function(){var s=document.getElementById('sealB');s.classList.remove('hit');void s.offsetWidth;s.classList.add('hit');thunk();setTimeout(function(){chime(true);},120);});
+  // clock ticking toward 3
+  var m=47;setInterval(function(){if(m<59){m++;document.getElementById('clkA').textContent='오후 2:'+m;document.getElementById('minH').setAttribute('transform','rotate('+(m*6)+')');}},5000);
+
+  show((location.hash||'#a').slice(1));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+
+  "name": "꿈의 배선도",
+  "oneLine": "검푸른 유리판 위에 인광 선으로 그린 배선도. 어긋난 간선이 붉게 떨린다",
+  "reference": "진공관 장비의 배선도 · 현상 중인 유리 건판 · 형광 오실로스코프",
+  "_겹치지않게": "먼저 만든 열두 연출과 겹치지 않는다. 전보 시세판이 검정+황록 인광이었으므로 여기서는 색상을 청록-보라로 옮기고 종이 대신 **유리**를 썼다 — 선이 종이에 인쇄된 것이 아니라 유리 안에서 빛나야 한다.",
+
+  "color": {
+    "void": "#04060D",
+    "deep": "#080D19",
+    "glass": "#0E1728",
+    "glassLit": "#152238",
+    "rail": "#1C2C46",
+    "phosphor": "#74E4FF",
+    "phosphorDim": "#2E6C82",
+    "filament": "#BDF2FF",
+    "violet": "#8E7BD8",
+    "amber": "#FFC26B",
+    "tremor": "#FF4A5A",
+    "tremorDim": "#8E2230",
+    "ink": "#C6DCE7",
+    "inkSoft": "#6E8798",
+    "inkFaint": "#3E5364"
+  },
+
+  "type": {
+    "familyDisplay": "Orbit",
+    "familyBody": "Stylish",
+    "sizeTitle": 54,
+    "sizeHeading": 26,
+    "sizeBody": 16,
+    "sizeHint": 13,
+    "sizeNum": 14,
+    "trackTitle": "0.06em",
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+
+  "wire": {
+    "widthPx": 1,
+    "widthStrongPx": 2,
+    "widthTremorPx": 3,
+    "curve": 0.38,
+    "_굽힘": "간선을 직선으로 그으면 회로도가 아니라 그래프가 된다. 0.38 은 베지에 제어점을 두 끝의 거리에 곱하는 비율이다",
+    "kindDash": {
+      "place": "none",
+      "person": "6 3",
+      "time": "1 4",
+      "cause": "10 3 2 3"
+    },
+    "_점선": "연상의 종류를 색이 아니라 **선의 결**로 나눈다. 색은 떨림(붉음)만을 위해 남겨 둔다"
+  },
+
+  "node": {
+    "radiusPx": 9,
+    "radiusGraftPx": 12,
+    "ringPx": 1,
+    "screenRingDash": "2 3",
+    "_스크린표시": "스크린 기억(겉값과 참값이 다를 수 있는 기억)은 테두리를 점선으로 둔다. 색을 바꾸지 않는다 — 플레이어는 어느 것이 실제로 스크린인지 모른다"
+  },
+
+  "glow": {
+    "blurPx": 6,
+    "blurTremorPx": 10,
+    "opacity": 0.55,
+    "_번짐": "유리 안에서 빛나는 느낌은 blur 한 겹이 전부다. 두 겹 이상 쌓으면 안개가 된다"
+  },
+
+  "tremble": {
+    "amplitudePx": 2,
+    "periodMs": 420,
+    "_떨림": "떨림은 진폭 2px 이 한계다. 더 크면 만화가 된다. periodMs 는 꿈의 호흡으로 맞췄다"
+  },
+
+  "grade": {
+    "vignette": 0.42,
+    "grainStatic": true,
+    "scanlineAlpha": 0.05,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 유리가 된다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리 자료를 하나도 받지 않았다. CC0 이면서 이 연출에 맞는 것(유리·인광·심장)을 원 페이지에서 확인하지 못했다. 없는 것을 있는 척 적지 않는다. CREDITS.md 의 「버린 것」에 같은 사실을 적었다"
+  }
+}

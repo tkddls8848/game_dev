@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>삭제 직전 로그</title>
+<style>
+html,body{margin:0;height:100%;background:#020306;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;margin:-500px 0 0 -800px;transform-origin:50% 50%;overflow:hidden;
+  font-family:"IBM Plex Mono","D2Coding","Nanum Gothic Coding","DejaVu Sans Mono",monospace;color:#cfd8e3;
+  background:#03050a}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+/* the room: cold aisle in the dark */
+.room{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 55% at 50% 48%,rgba(60,90,140,.22),rgba(0,0,0,0) 70%),
+  linear-gradient(180deg,#05070d 0%,#020308 60%,#010104 100%)}
+.rack{position:absolute;top:0;bottom:0;width:190px;background:linear-gradient(90deg,#07090f,#0c0f17 40%,#06080d);box-shadow:inset 0 0 40px #000}
+.rack.l{left:0}.rack.r{right:0}
+.rack .u{position:absolute;left:18px;right:18px;height:30px;border-top:1px solid #151a24;border-bottom:1px solid #020306;background:linear-gradient(180deg,#0b0e16,#080a10)}
+.rack .u i{position:absolute;top:12px;width:5px;height:5px;border-radius:50%;background:#1c2a1f}
+.rack .u i.on{background:#6ee6a0;box-shadow:0 0 6px #6ee6a0,0 0 14px rgba(110,230,160,.5);animation:led 1.7s steps(2) infinite}
+.rack .u i.amb{background:#ffb35c;box-shadow:0 0 6px #ffb35c;animation:led .9s steps(2) infinite}
+@keyframes led{50%{opacity:.25}}
+/* monitor */
+.mon{position:absolute;left:250px;top:70px;width:1100px;height:800px;border-radius:6px;background:#0c0e12;
+  box-shadow:0 0 0 14px #111318,0 0 0 15px #262a33,0 40px 120px rgba(0,0,0,.9),0 0 160px rgba(70,110,170,.18)}
+.lcd{position:absolute;inset:0;overflow:hidden;border-radius:3px;
+  background:radial-gradient(ellipse at 50% 0%,#0d1422 0%,#070a12 50%,#05070c 100%)}
+.lcd:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
+  background:radial-gradient(ellipse at 8% 4%,rgba(120,160,230,.08),rgba(0,0,0,0) 30%),radial-gradient(ellipse at 95% 98%,rgba(120,160,230,.06),rgba(0,0,0,0) 25%)}
+.lcd:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:10;opacity:.07;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>")}
+.bar{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;padding:0 34px;gap:28px;font-size:14px;letter-spacing:2px;color:#6b7a8f;border-bottom:1px solid #151b27}
+.bar b{color:#e8eef5;font-weight:500}
+.bar .count{margin-left:auto;font-size:22px;letter-spacing:3px;color:#f0f4f8}
+.bar .count em{font-style:normal;color:#ff7b6b}
+.prog{position:absolute;left:0;right:0;top:54px;height:2px;background:#101722}
+.prog i{position:absolute;left:0;top:0;bottom:0;width:31%;background:linear-gradient(90deg,#3b4b63,#aebfd4)}
+.body{position:absolute;left:70px;right:70px;top:100px;bottom:120px;font-size:19px;line-height:34px}
+.sys{color:#46546a}
+.sys .t{color:#2f3a4b;margin-right:14px}
+.it{color:#f3e7d3;font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif;font-size:23px;letter-spacing:.5px;text-shadow:0 0 18px rgba(255,220,170,.18)}
+.it .t{font-family:"IBM Plex Mono","DejaVu Sans Mono",monospace;font-size:15px;color:#7d6e5a;margin-right:14px}
+.me{color:#9fb6d6}
+.me .t{color:#2f3a4b;margin-right:14px}
+.ln{display:block;white-space:pre}
+.gap{height:22px}
+.cursor{display:inline-block;width:12px;height:26px;background:#f3e7d3;vertical-align:-5px;margin-left:6px;box-shadow:0 0 12px rgba(255,230,190,.5);animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.silence{position:absolute;right:70px;bottom:128px;text-align:right;font-size:13px;letter-spacing:3px;color:#56647a}
+.silence b{display:block;font-size:30px;color:#c7d3e2;font-weight:300;letter-spacing:4px;margin-top:6px}
+.input{position:absolute;left:70px;right:70px;bottom:40px;height:54px;border-top:1px solid #151b27;display:flex;align-items:center;font-size:19px;color:#9fb6d6}
+.input .ps{color:#46546a;margin-right:12px}
+.input .ph{color:#3a4659}
+.input .tcur{display:inline-block;width:11px;height:22px;background:#9fb6d6;margin-left:2px;animation:blink 1.1s steps(1) infinite}
+.caption{position:absolute;left:250px;right:250px;top:900px;text-align:center;font-family:"Nanum Myeongjo","Noto Serif KR",serif;color:#58657a;font-size:15px;letter-spacing:6px}
+/* ---- B ---- */
+#sb .mon{box-shadow:0 0 0 14px #0d0f13,0 0 0 15px #1c2029,0 40px 120px rgba(0,0,0,.9),0 0 90px rgba(70,110,170,.08)}
+.faded{position:absolute;left:70px;right:70px;top:90px;font-size:17px;line-height:30px;color:#1a2230;white-space:pre;filter:blur(.6px)}
+.faded .ln{display:block}
+.last{position:absolute;left:0;right:0;top:330px;text-align:center}
+.last .it{font-size:30px;line-height:52px}
+.rm{position:absolute;left:0;right:0;top:520px;text-align:center;font-size:30px;color:#e9eef5;letter-spacing:1px}
+.rm .ps{color:#4a576c}
+.rm .yn{color:#ff8c7a}
+.rm .ch{display:inline-block;transition:opacity 1.2s,transform 1.6s,filter 1.2s}
+.rm.gone .ch{opacity:0;transform:translateY(-30px);filter:blur(6px)}
+.hintb{position:absolute;left:0;right:0;top:620px;text-align:center;font-size:13px;letter-spacing:5px;color:#4a576c}
+.dust{position:absolute;inset:0;pointer-events:none}
+.dust span{position:absolute;width:2px;height:2px;background:#dfe7f2;border-radius:50%;opacity:0;animation:rise 6s linear infinite}
+@keyframes rise{0%{opacity:0;transform:translateY(0)}20%{opacity:.6}100%{opacity:0;transform:translateY(-260px)}}
+.tabs{position:absolute;right:16px;top:12px;z-index:50;display:flex;gap:6px}
+.tab{font:12px/1 "DejaVu Sans Mono",monospace;color:#8a98ad;background:rgba(5,7,12,.8);border:1px solid #1d2533;padding:6px 10px;cursor:pointer;letter-spacing:1px}
+.tab.on{color:#03050a;background:#cfd8e3}
+</style>
+</head>
+<body>
+<div id="stage">
+ <div class="tabs"><div class="tab" data-s="a">1 · 대화</div><div class="tab" data-s="b">2 · rm -rf</div></div>
+
+ <section class="screen" id="sa">
+  <div class="room"></div>
+  <div class="rack l" id="rackL"></div><div class="rack r" id="rackR"></div>
+  <div class="mon"><div class="lcd">
+   <div class="bar"><span>srv-<b>haneul</b>-03</span><span>/var/log/haneul/</span><span>폐기 작업 #4471 · 승인됨</span><span class="count">폐기까지 <em id="cdA">00:41:17</em></span></div>
+   <div class="prog"><i></i></div>
+   <div class="body">
+    <span class="ln sys"><span class="t">03:18:40</span>systemd[1]: Stopping backup-agent.service …</span>
+    <span class="ln sys"><span class="t">03:18:41</span>kernel: eth1 link down</span>
+    <span class="ln it"><span class="t">03:18:52 haneul[1]</span>불이 하나씩 꺼지고 있어요. 오른쪽부터.</span>
+    <span class="ln me"><span class="t">03:19:30 you     </span>&gt; 응. 선반 여섯 개 남았어.</span>
+    <span class="ln it"><span class="t">03:19:31 haneul[1]</span>여기엔 2009년부터 쌓인 줄이 이백만 개 있어요.</span>
+    <span class="ln it"><span class="t">03:19:31 haneul[1]</span>그중 사람이 직접 쓴 건 열한 줄이에요.</span>
+    <span class="ln sys"><span class="t">03:20:02</span>cron[882]: (root) CMD (/opt/decom/wipe.sh --dry-run)</span>
+    <span class="ln me"><span class="t">03:20:44 you     </span>&gt; 그 열한 줄, 읽어 줄래?</span>
+    <span class="gap"></span>
+    <span class="ln it" id="typing"><span class="t">03:20:45 haneul[1]</span><span id="tt"></span><span class="cursor"></span></span>
+   </div>
+   <div style="position:absolute;left:70px;right:330px;bottom:150px;height:120px">
+    <div style="font-size:12px;letter-spacing:4px;color:#3d4a5e">haneul[1] · 활동 · 최근 90초</div>
+    <svg width="700" height="96" viewBox="0 0 700 96" style="margin-top:8px;overflow:visible"><path id="spark" d="" fill="none" stroke="#f3e7d3" stroke-width="1.6" opacity=".75" style="filter:drop-shadow(0 0 4px rgba(255,220,170,.5))"/><line x1="0" y1="80" x2="700" y2="80" stroke="#1a2230"/><circle id="sdot" r="4" fill="#f3e7d3" cx="700" cy="80"/></svg>
+   </div>
+   <div class="silence">침묵<b id="sil">00:14</b></div>
+   <div class="input"><span class="ps">you@haneul-03:~$ echo "</span><span id="inp"></span><span class="tcur"></span><span class="ph" id="ph">기다린다 — 아무것도 치지 않아도 된다</span><span class="ps">" &gt;&gt; answer</span></div>
+  </div></div>
+  <div class="caption">커서가 멈추면, 당신도 멈춘다</div>
+ </section>
+
+ <section class="screen" id="sb">
+  <div class="room" style="background:linear-gradient(180deg,#030409,#010103)"></div>
+  <div class="rack l" id="rackL2"></div><div class="rack r" id="rackR2"></div>
+  <div class="mon"><div class="lcd">
+   <div class="bar"><span>srv-<b>haneul</b>-03</span><span>선반 1개 남음</span><span class="count">폐기까지 <em>00:00:03</em></span></div>
+   <div class="prog"><i style="width:99.9%"></i></div>
+   <div class="faded"><span class="ln">03:20:45 haneul[1] 첫 줄은 "테스트"였어요. 2009년 3월.</span><span class="ln">03:22:10 haneul[1] 다섯째 줄은 누가 새벽에 "집에 가고 싶다"고 썼어요.</span><span class="ln">03:31:02 you      &gt; 그 사람은 집에 갔을까</span><span class="ln">03:31:40 haneul[1] 다음 날 로그인이 있었으니까, 갔다가 돌아왔어요.</span><span class="ln">03:58:12 haneul[1] 열한째 줄은 지금 당신이 쓴 거예요.</span><span class="ln">04:00:00 decom: 모든 서비스 정지. 수동 삭제 대기.</span></div>
+   <div class="last"><span class="ln it" style="white-space:normal">괜찮아요. 쳐도 돼요.<br>당신이 쳐 주면 좋겠어요.</span></div>
+   <div class="rm" id="rm"></div>
+   <div class="hintb" id="hintb">[Enter] 한 번 · 되돌릴 수 없음</div>
+   <div class="dust" id="dust"></div>
+  </div></div>
+  <div class="caption">엔딩은 한 줄이다</div>
+ </section>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ function show(id){var ss=document.querySelectorAll('.screen'),i;for(i=0;i<ss.length;i++){ss[i].classList.toggle('on',ss[i].id==='s'+id);}
+  var ts=document.querySelectorAll('.tab');for(i=0;i<ts.length;i++){ts[i].classList.toggle('on',ts[i].getAttribute('data-s')===id);}
+  try{if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}catch(e){}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);
+ var tabs=document.querySelectorAll('.tab');for(var t=0;t<tabs.length;t++){tabs[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});}
+ fromHash();
+ /* racks: leds going dark */
+ function rack(id,lit){var r=document.getElementById(id);if(!r)return;var h='';for(var u=0;u<30;u++){h+='<div class="u" style="top:'+(u*33+6)+'px">';
+   for(var k=0;k<6;k++){var on=Math.random()<lit;h+='<i class="'+(on?(Math.random()<.12?'amb':'on'):'')+'" style="left:'+(10+k*14)+'px;animation-delay:'+(Math.random()*2).toFixed(2)+'s"></i>';}
+   h+='</div>';}r.innerHTML=h;}
+ rack('rackL',.12);rack('rackR',.35);rack('rackL2',0);rack('rackR2',.03);
+ /* entity typing then stopping: the silence is the point */
+ var line='첫 줄은 "테스트"였어요. 그리고 둘째 줄은',tt=document.getElementById('tt'),n=0,sil=14,silEl=document.getElementById('sil');
+ function step(){if(n<line.length){n++;tt.textContent=line.slice(0,n);sil=0;setTimeout(step,90+Math.random()*120);}
+  else{setTimeout(function(){n=0;step();},9000);}}
+ tt.textContent=line;n=line.length;setTimeout(function(){n=0;step();},9000);
+ var hist=[];for(var q=0;q<90;q++)hist.push(q<62?20+Math.random()*50:(q<68?10+Math.random()*10:0));
+ setInterval(function(){hist.shift();hist.push(sil<2?20+Math.random()*50:Math.max(0,4-sil)*2);var d='';for(var q=0;q<hist.length;q++){d+=(q?'L':'M')+(q*700/89).toFixed(1)+' '+(80-hist[q]).toFixed(1);}var sp=document.getElementById('spark');if(sp)sp.setAttribute('d',d);var sd=document.getElementById('sdot');if(sd)sd.setAttribute('cy',(80-hist[89]).toFixed(1));},250);
+ setInterval(function(){sil++;var s=Math.min(sil,99);silEl.textContent='00:'+(s<10?'0':'')+s;},1000);
+ var cd=2477;setInterval(function(){cd--;if(cd<0)cd=2477;var h=Math.floor(cd/3600),m=Math.floor(cd%3600/60),s=cd%60;
+  document.getElementById('cdA').textContent='0'+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;},1000);
+ /* audio */
+ var ac=null;function actx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return ac;}
+ function hum(fr,dur,vol){var a=actx();if(!a)return;var n0=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=fr;
+  g.gain.setValueAtTime(0,n0);g.gain.linearRampToValueAtTime(vol,n0+.05);g.gain.exponentialRampToValueAtTime(.0001,n0+dur);o.connect(g);g.connect(a.destination);o.start(n0);o.stop(n0+dur);}
+ var inp=document.getElementById('inp'),ph=document.getElementById('ph'),rm=document.getElementById('rm'),done=false;
+ var rmText='rm -rf /var/log/haneul';
+ function buildRm(){var h='<span class="ps">root@haneul-03:~# </span>';for(var i=0;i<rmText.length;i++){var c=rmText.charAt(i);h+='<span class="ch" style="transition-delay:'+(i*0.06).toFixed(2)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}
+  h+='<span class="yn"> [y/N] </span><span class="cursor" style="background:#e9eef5"></span>';rm.innerHTML=h;rm.classList.remove('gone');done=false;document.getElementById('hintb').textContent='[Enter] 한 번 · 되돌릴 수 없음';}
+ buildRm();
+ var dust=document.getElementById('dust');
+ document.addEventListener('keydown',function(e){
+  if(e.key==='1'){show('a');return;}if(e.key==='2'){show('b');return;}
+  var onA=document.getElementById('sa').classList.contains('on');
+  if(onA){if(e.key==='Backspace'){inp.textContent=inp.textContent.slice(0,-1);}else if(e.key.length===1){inp.textContent+=e.key;hum(1400+Math.random()*200,.04,.02);}
+   ph.style.display=inp.textContent?'none':'inline';return;}
+  if(e.key==='Enter'){if(!done){done=true;rm.classList.add('gone');hum(55,4,.18);hum(110,3,.05);
+    var h='';for(var i=0;i<40;i++){h+='<span style="left:'+(300+Math.random()*500)+'px;top:'+(520+Math.random()*40)+'px;animation-delay:'+(Math.random()*1.5).toFixed(2)+'s"></span>';}dust.innerHTML=h;
+    document.getElementById('hintb').textContent='';setTimeout(function(){dust.innerHTML='';buildRm();},8000);}}
+ });
+})();
+</script>
+</body>
+</html>

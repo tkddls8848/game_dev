@@ -1,0 +1,78 @@
+{
+  "_": "검사기 한계값과 규칙 상수. 수치는 전부 정수 (PLAN_TACTICS §6).",
+  "_틱": "tickMs 1000. 판정은 틱에서만 내려간다 — 화면이 부드러운 것은 연출이다 (PLAN_TACTICS §8 '실시간의 유혹').",
+  "_은폐바닥": "concealFloorPercent 100. 경계를 100에 둔 덕에 '엄폐 60 + 은밀 45 = 105, 딱 보이지 않는다'를 손으로 읽는다.",
+  "_나머지": "신뢰 비용은 백분율 정수 곱셈이라 나머지가 남는다. 버리지 않고 **누적**한다 (설계 원칙 4).",
+
+  "tickMs": 1000,
+
+  "noise": {
+    "hopAttenuation": 40,
+    "hearingThresholdPercent": 20,
+    "blockedExtraAttenuation": 40
+  },
+
+  "vision": {
+    "concealFloorPercent": 100,
+    "sameZonePenaltyPercent": 60
+  },
+
+  "alarm": {
+    "perSighting": 10,
+    "perNoiseHeard": 15
+  },
+
+  "engagement": {
+    "engageDelayMs": 3000
+  },
+
+  "reprisal": {
+    "_": "보복. 들킨 자리의 reprisalWeightPercent 가 그대로 점수가 되고, 실패하면 flat 이 더 붙는다.",
+    "perSightingBasePercent": 100,
+    "onFailureFlat": 40,
+    "onAlarmBreachFlat": 60,
+    "trustPerHundredPoints": 12,
+    "_환산": "보복 점수 x trustPerHundredPoints / 100 이 신뢰에서 깎인다. 나머지는 누적한다"
+  },
+
+  "trust": {
+    "startPercent": 50,
+    "ceilingPercent": 100,
+    "floorPercent": 0,
+    "askFloorPercent": 8,
+    "gainOnSuccess": 12,
+    "lossOnFailure": 7,
+    "_바닥": "askFloorPercent 밑으로 내려가면 아무도 말해 주지 않는다 — 눈이 먼다. 그때도 임무를 깰 수 있어야 한다는 것이 BlindSolvability 이고, 그래서 신뢰가 되돌아온다"
+  },
+
+  "ask": {
+    "_": "같은 임무 안에서 같은 사람에게 두 번째로 물으면 150%, 세 번째면 200%. 그 사람이 위험해지기 때문이다.",
+    "repeatSurchargePercent": [100, 150, 200],
+    "repeatSurchargeBeyondPercent": 250,
+    "falseChancePercent": 35,
+    "shiftLieDeltaMs": 45000,
+    "exposureDecayPerMission": 2,
+    "silenceThresholdPercent": 9,
+    "silenceMissions": 2
+  },
+
+  "search": {
+    "_": "계획 탐색. 후보 시각은 **믿고 있는** 순찰 구간 경계에서 뽑고 gridMs 격자를 얹는다. 믿는 것이 틀렸으면 틀린 계획이 나온다 — 그게 이 PoC에서 실패 표본이 생기는 방식이다.",
+    "gridMs": 15000,
+    "beamWidth": 16,
+    "maxActions": 3,
+    "seed": 48219
+  },
+
+  "checkers": {
+    "minWinningPlansPerMission": 2,
+    "minDistinctSignaturesPerMission": 1,
+    "failureSampleTarget": 120,
+    "falseIntelSeedSweep": 240,
+    "economyMissions": 40,
+    "trustDriftTolerance": 20,
+    "maxCeilingClampRounds": 14,
+    "maxFloorRecoveryMissions": 6,
+    "blindPhaseCombinationsMin": 9
+  }
+}

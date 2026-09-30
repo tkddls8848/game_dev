@@ -1,0 +1,14 @@
+{
+  "_": "밭. fertility 는 백분율 정수 — 수확량에 곱하고 나머지는 그 밭에 누적한다(부동소수 금지).",
+  "_칸이_모자란_이유": "심은 카드도 이 칸을 먹는다. 덱 → 밭 경로가 실제로 값을 치르는 자리가 여기다.",
+  "startPlots": 5,
+  "maxPlots": 6,
+  "plots": [
+    { "id": "plot_01", "nameKo": "담장 밑",   "fertility": 100, "unlockYear": 1 },
+    { "id": "plot_02", "nameKo": "물길 옆",   "fertility": 120, "unlockYear": 1 },
+    { "id": "plot_03", "nameKo": "남쪽 두렁", "fertility": 100, "unlockYear": 1 },
+    { "id": "plot_04", "nameKo": "마른 자리", "fertility": 80,  "unlockYear": 1 },
+    { "id": "plot_05", "nameKo": "그늘 밭",   "fertility": 90,  "unlockYear": 1 },
+    { "id": "plot_06", "nameKo": "온실 구석", "fertility": 110, "unlockYear": -1 }
+  ]
+}

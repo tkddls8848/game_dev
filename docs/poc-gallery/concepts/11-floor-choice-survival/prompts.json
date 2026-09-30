@@ -1,0 +1,17 @@
+{
+  "num": 11,
+  "slug": "floor-choice-survival",
+  "title": "층 선택 생존",
+  "images": [
+    {
+      "id": "a",
+      "screen": "A · 문 앞 — 47층, 열지 말지 고르는 순간",
+      "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 first-person screenshot of a roguelike elevator survival game. Camera faces the closed stainless-steel elevator doors from inside a cramped cab: brushed-steel walls, a flickering fluorescent tube overhead, diamond-plate floor, an amber seven-segment display above the doors showing a descending arrow and 47 out of 100. Warm orange firelight seeps through the floor gap and the center seam of the doors, a handprint smear and a scratched warning on the steel, hazard stripes at the threshold. An amber audio waveform floats over the door as a subtitle of what is heard beyond. Right side: a real call-button panel with the 47 button lit amber and a red emergency button. Left side: dark HUD panels with resource bars (battery, health, food, key, fear) and a list of floors passed. Two large choice buttons at the bottom. Korean UI: \"층 선택 생존\", \"문을 연다\", \"지나친다\". Gritty industrial realism, cold steel blue-grey against amber, film grain, vignette. The floors-passed list shows only five entries, floors 52, 51, 50, 49 and 48 (all above the current floor 47, since the cab is descending); no floor below 47 is listed as passed."
+    },
+    {
+      "id": "b",
+      "screen": "B · 문 뒤 — 문이 열리고 위험 이벤트가 터진 순간",
+      "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 first-person screenshot of a roguelike elevator survival game at the moment the doors slide open. Through the open steel doors a burnt corridor recedes to a blazing orange doorway, four gaunt black silhouettes stand in it with small glowing red eyes, floating embers. The cab is flooded with pulsing red alarm light from a rotating beacon on the ceiling, the floor display now red. Big floating damage numbers rise over the doorway. Right: a red-bordered event card with a bold title, short description, four loss tiles and two action buttons. Left: resource panel with health and fear bars in the danger zone, and a large circular countdown ring showing the doors closing in 3 seconds. An italic whispered line glows beside the card. Korean UI: \"굶주린 무리\", \"문 닫힘\", \"체력 −24\". Tense survival horror, crimson and black with hot orange, heavy grain and vignette. Text constraints: the only floor numbers shown are \"47 / 100\" in the top-left counter and \"47\" on the floor display; no other floor totals. Stat constraint (same moment as image A on floor 47, before the loss is applied): the health bar reads exactly \"체력 82 / 100\" and the fear bar reads exactly \"공포도 72 / 100\"; do not show 28 or 78."
+    }
+  ]
+}

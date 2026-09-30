@@ -1,0 +1,87 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는곳": "index.html 이 이 파일을 읽어 CSS 변수로 꽂는다. 여기 없는 색은 목업에도 없다.",
+  "name": "목판화 타로",
+  "oneLine": "정해진 운명을 읽는 감각. 놀라는 게임이 아니라 이미 적혀 있는 것을 마주하는 게임.",
+  "reference": "16세기 목판화 · Rider-Waite 타로 · 활판 인쇄 · 검은 해칭",
+  "color": {
+    "void": "#1C1810",
+    "ink": "#17140F",
+    "surface": "#EDE3CC",
+    "surfaceRaised": "#F5EDDA",
+    "paper": "#EDE3CC",
+    "accent": "#A32018",
+    "accentDim": "#6E1912",
+    "muted": "#8A7A5C",
+    "highlight": "#2A2419",
+    "warn": "#8A6A22",
+    "danger": "#A32018",
+    "hatch": "#17140F",
+    "hatchLight": "#6B6250",
+    "_반전": "이 연출은 종이가 바탕이다. surface 가 밝고 ink 가 글자다 — deck-rewind 와 정반대다.",
+    "_강조하나": "붉은색 하나만 쓴다. 활판 인쇄가 두 번째 판을 쓰던 자리이고, 그래서 한 색만 붉다.",
+    "_해칭": "hatch 는 목판의 선. 색이 아니라 선의 밀도로 명암을 만든다."
+  },
+  "rarity": {
+    "common": "#8A7A5C",
+    "uncommon": "#2A2419",
+    "rare": "#A32018",
+    "_": "희귀도 색을 여기 한 곳에 둔다. 카드 스무 장에 흩어지면 고칠 수 없다."
+  },
+  "type": {
+    "family": "EB Garamond",
+    "familyFile": "assets/fonts/EBGaramond-Variable.ttf",
+    "familyItalicFile": "assets/fonts/EBGaramond-Italic-Variable.ttf",
+    "license": "OFL 1.1",
+    "licenseFile": "assets/fonts/EBGaramond-OFL.txt",
+    "_라이선스동봉": "OFL 은 라이선스 전문 동봉이 의무다. 화면이 읽는 파일은 아니지만 함께 배포한다.",
+    "sizeTitle": 52,
+    "sizeHeading": 26,
+    "sizeBody": 17,
+    "sizeHint": 14,
+    "sizeNumber": 30,
+    "letterSpacingTitle": 2,
+    "outlinePx": 0,
+    "smallCaps": true,
+    "_세리프": "세리프 하나로 끝낸다. 활판 인쇄에는 글꼴이 두 벌 필요하지 않다.",
+    "_이탤릭": "이탤릭은 카드 설명에만 쓴다. 예고(운명)는 로만으로 둔다 — 그게 확정된 것의 목소리다.",
+    "_외곽선": "0. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+  "line": {
+    "hairline": 1,
+    "frame": 2,
+    "radius": 0,
+    "hatchSpacingPx": 4,
+    "hatchAngleDeg": 45,
+    "_모서리": "0. 목판에는 둥근 모서리가 없다.",
+    "_테두리": "frame 이 2px 로 hairline 보다 굵다. 목판은 판의 경계가 두껍다."
+  },
+  "grade": {
+    "paperTextureOpacity": 0.34,
+    "paperHueRotateDeg": 8,
+    "paperSaturate": 0.7,
+    "paperBrightness": 1.12,
+    "_종이": "에셋(ambientCG Cardboard004)을 고치지 않고 CSS 필터로 크림 톤으로 올린다. 값 하나로 되돌릴 수 있다.",
+    "artContrast": 1.12,
+    "artSaturate": 0.22,
+    "artSepia": 0.34,
+    "_타로판화": "Rider-Waite 원본은 채색화다. 채도를 걷어 내고 세피아를 얹어 판화 쪽으로 민다. 원본 파일은 건드리지 않는다.",
+    "saturation": 0.55,
+    "contrast": 1.12,
+    "blackLift": 0.0,
+    "vignette": 0.24,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 종이가 된다."
+  },
+  "motion": {
+    "cardPlaceMs": 160,
+    "revealMs": 240,
+    "_느림": "deck-rewind 보다 전체가 느리다. 정해진 것을 읽는 게임이므로 급할 이유가 없다.",
+    "easing": "cubic-bezier(0.3, 0.0, 0.2, 1.0)"
+  },
+  "sfx": {
+    "cardPlace": "assets/sfx/card_place.ogg",
+    "reveal": "assets/sfx/reveal.ogg",
+    "damage": "assets/sfx/damage.ogg"
+  }
+}

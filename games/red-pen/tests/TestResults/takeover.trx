@@ -1,0 +1,752 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c58d2b40-13e4-4926-9b92-db01e47e1ff2" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:52:35" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:52:35.7043543+09:00" queuing="2026-09-27T20:52:35.7043547+09:00" start="2026-09-27T20:52:34.9340812+09:00" finish="2026-09-27T20:52:49.5080536+09:00" />
+  <TestSettings name="default" id="001a6d27-64f0-442d-a326-0cba5f7468b7">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_52_35" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c22e79de-212c-4a53-893b-a5a40620ef00" testId="40a054b2-abbc-7d10-71e0-3c80e1e7f7d3" testName="PrintTrace(&quot;p_gentle&quot;)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002330" startTime="2026-09-27T20:52:35.6281429+09:00" endTime="2026-09-27T20:52:35.6283761+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c22e79de-212c-4a53-893b-a5a40620ef00">
+      <Output>
+        <StdOut>── 늘 관대하게 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독   4 자신감  57 신뢰  54 고집  13 질  46 목소리  57 [normal] 버팀 0/헛0&#xD;
+2회차 혹독   1 자신감  63 신뢰  57 고집   1 질  47 목소리  59 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   0 자신감  70 신뢰  60 고집   0 질  51 목소리  65 [good] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  77 신뢰  63 고집   0 질  53 목소리  71 [good] 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  84 신뢰  66 고집   0 질  58 목소리  77 [good] 버팀 0/헛0&#xD;
+  s1         남음 q 89 v100 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s2         남음 q 55 v 77 [f_bloat] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s3         남음 q 59 v 56 [] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s4         남음 q 77 v 90 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s5         남음 q 55 v 66 [f_inert] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s6         남음 q 61 v 74 [f_order] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s7         남음 q 61 v 86 [f_bloat] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s8         남음 q 85 v 96 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s9         남음 q 57 v 52 [f_inert] 표시 m_query m_query m_praise m_praise m_praise&#xD;
+결말 e_published</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="54108507-7bb8-41c0-b8d1-9218940fc03d" testId="91946856-6142-ed55-b950-a90fb1446239" testName="MissingEnglishFallsBackToKorean" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000800" startTime="2026-09-27T20:52:35.6551199+09:00" endTime="2026-09-27T20:52:35.6551993+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54108507-7bb8-41c0-b8d1-9218940fc03d" />
+    <UnitTestResult executionId="cfdd2fa1-a123-4e9d-9cfe-125e2df1a1e8" testId="f7671757-9900-b31f-fe12-73c2b242664d" testName="TheManuscriptIsNotAlreadyGoodAndNotHopeless" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005590" startTime="2026-09-27T20:52:35.6034873+09:00" endTime="2026-09-27T20:52:35.6040457+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cfdd2fa1-a123-4e9d-9cfe-125e2df1a1e8">
+      <Output>
+        <StdOut>손대지 않은 원고: 질 41 · 목소리 53 · 실을 수 없다&#xD;
+흠 있는 문장 6 · 흠 없는 문장 3</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d737a9a2-9f53-4ef7-b5d2-cc65c4ebad75" testId="1561025e-841a-3c79-6eae-ea858abd0d95" testName="EditsMoveTheManuscript" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0056080" startTime="2026-09-27T20:52:35.6344797+09:00" endTime="2026-09-27T20:52:35.6400875+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d737a9a2-9f53-4ef7-b5d2-cc65c4ebad75">
+      <Output>
+        <StdOut>── 같은 원고, 다른 붉은 펜 (방침 11가지 × 씨드 7개) ──&#xD;
+방침        평균질 평균목소리 자신감 신뢰 걸작합 지움합 결말&#xD;
+p_harsh        79        45     44    47      0      7  e_polished_dead,e_shelved&#xD;
+p_gentle       58        77     84    66      1      0  e_published,e_masterpiece,e_shelved&#xD;
+p_middle       73        80     78    73      7      7  e_masterpiece&#xD;
+p_none         40        53     52    30      0      0  e_stalled&#xD;
+p_leave        40        53     52    30      0      0  e_stalled&#xD;
+p_praise       42        67     87    60      0      0  e_stalled&#xD;
+p_query        51        57     41    40      0      0  e_shelved&#xD;
+p_move         38        43     18    21      0      0  e_stalled&#xD;
+p_cut          45        35      0     9      0      0  e_withdrawn&#xD;
+p_insert       58        29      1    18      0      0  e_silenced&#xD;
+p_delete        0         0     36    42      0     63  e_gutted&#xD;
+★ 벌어진 폭 — 질 79 · 목소리 80 · 자신감 87 · 신뢰 64 · 걸작 7 · 지운 문장 63 · 결말 8가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1072e978-5c35-4fc0-9911-ce6a315ba017" testId="517134f9-d310-beee-dee1-1ea5d7977966" testName="EveryEndingUsedByAPolicyExistsAndEnoughEndingsAreReachable" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0078500" startTime="2026-09-27T20:52:35.5935165+09:00" endTime="2026-09-27T20:52:35.6013668+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1072e978-5c35-4fc0-9911-ce6a315ba017">
+      <Output>
+        <StdOut>방침들이 닿은 결말 8가지: e_polished_dead, e_shelved, e_published, e_masterpiece, e_stalled, e_withdrawn, e_silenced, e_gutted</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="83630bd1-a163-4051-ac7e-6741887c94f2" testId="cd6db2fd-8476-5d1a-2111-37dc15b1ea54" testName="TheTwoExtremesFailInOppositeDirections" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008640" startTime="2026-09-27T20:52:35.6497258+09:00" endTime="2026-09-27T20:52:35.6505889+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83630bd1-a163-4051-ac7e-6741887c94f2">
+      <Output>
+        <StdOut>늘 혹독 — 질 79 목소리 45 자신감 44   /   늘 관대 — 질 58 목소리 77 자신감 84</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e9e65f51-0645-442d-911f-46d6538d51cb" testId="2e50e9f4-09bd-d5ed-f5d5-357500d166d6" testName="EveryFlawIsFixableAndEveryMarkCanDoSomething" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006290" startTime="2026-09-27T20:52:35.6013992+09:00" endTime="2026-09-27T20:52:35.6020278+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e9e65f51-0645-442d-911f-46d6538d51cb" />
+    <UnitTestResult executionId="21baff95-68b9-4c34-9f80-125bd6d19aa7" testId="6dbaca0d-5e85-a10c-3f49-a6c750fb7fce" testName="CuttingTheBelovedSentenceIsNeverOptimal" computerName="DESKTOP-RU6F3DG" duration="00:00:04.4640280" startTime="2026-09-27T20:52:35.6615618+09:00" endTime="2026-09-27T20:52:40.1255894+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21baff95-68b9-4c34-9f80-125bd6d19aa7">
+      <Output>
+        <StdOut>가장 아끼는 문장 s1 (애착 90) 은 어느 자의 최선 교정에서도 살아남는다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b22ce2bb-3768-48b2-a642-766c61852dc9" testId="1712b59e-936a-58f8-8ceb-415b48d86b1f" testName="SeedsActuallyDiffer" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004670" startTime="2026-09-27T20:52:49.4568889+09:00" endTime="2026-09-27T20:52:49.4573554+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b22ce2bb-3768-48b2-a642-766c61852dc9" />
+    <UnitTestResult executionId="ae7fc359-6673-4c87-86ec-bd715efbb4dc" testId="f4204228-53ba-22f0-e37f-2e161ad45337" testName="EveryMarkIsWorthUsingUnderSomeMeasure" computerName="DESKTOP-RU6F3DG" duration="00:00:04.2538770" startTime="2026-09-27T20:52:40.1256459+09:00" endTime="2026-09-27T20:52:44.3795218+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ae7fc359-6673-4c87-86ec-bd715efbb4dc">
+      <Output>
+        <StdOut>부호 7개 중 어느 최선 교정에도 쓰이지 않은 것 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4f95cdae-1b6a-48ea-9672-9e3f5cb4f9e2" testId="362f666a-436d-e785-3aff-242c75090265" testName="ControlWorldWhereTheRedPenIsDecorationChangesNothing" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0058200" startTime="2026-09-27T20:52:35.6286252+09:00" endTime="2026-09-27T20:52:35.6344445+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f95cdae-1b6a-48ea-9672-9e3f5cb4f9e2">
+      <Output>
+        <StdOut>붉은 펜이 장식인 세계에서 벌어진 폭 — 질 0 · 목소리 0 · 자신감 0 · 신뢰 0 · 걸작 0 · 지운 문장 0 · 결말 1가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5a9efd5a-9202-40f3-9749-1db80b75d3a6" testId="9de3e7ba-8110-dc84-9022-ea5b80345f21" testName="BalanceNumbersAreSaneIntegers" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0400430" startTime="2026-09-27T20:52:35.5524421+09:00" endTime="2026-09-27T20:52:35.5924341+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a9efd5a-9202-40f3-9749-1db80b75d3a6" />
+    <UnitTestResult executionId="680a8981-ac2a-419a-ba8a-6b42709dc5eb" testId="a242285f-29dd-dff3-019d-784ceae1bda6" testName="PrintPolicyTable" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0028720" startTime="2026-09-27T20:52:35.6245989+09:00" endTime="2026-09-27T20:52:35.6274707+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="680a8981-ac2a-419a-ba8a-6b42709dc5eb">
+      <Output>
+        <StdOut>── 방침 × 씨드 ────────────────────────────────────────────────&#xD;
+방침        씨드      질  목소리 자신감 신뢰 고집 걸작 지움 붉기 실을수 결말&#xD;
+p_harsh     20260927    82    45    44    47    0    0    1    55     X  e_polished_dead&#xD;
+p_harsh          11    81    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh         404    81    47    43    48    0    0    1    61     X  e_shelved&#xD;
+p_harsh        1848    78    47    43    48    0    0    1    61     X  e_shelved&#xD;
+p_harsh       20261    75    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh         777    76    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh        5150    85    41    41    45    2    0    1    73     X  e_polished_dead&#xD;
+p_gentle    20260927    58    77    84    66    0    0    0     5     O  e_published&#xD;
+p_gentle         11    64    79    84    66    0    1    0     5     O  e_masterpiece&#xD;
+p_gentle        404    61    77    84    66    0    0    0     5     O  e_published&#xD;
+p_gentle       1848    57    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle      20261    55    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle        777    56    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle       5150    56    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_middle    20260927    75    81    78    73    0    1    1    23     O  e_masterpiece&#xD;
+p_middle         11    76    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle        404    76    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle       1848    72    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle      20261    71    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle        777    72    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle       5150    73    81    78    73    0    1    1    24     O  e_masterpiece&#xD;
+p_none      20260927    41    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none           11    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none          404    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none         1848    40    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none        20261    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none          777    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none         5150    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave     20260927    41    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave          11    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave         404    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave        1848    40    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave       20261    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave         777    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave        5150    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_praise    20260927    43    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise         11    46    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise        404    46    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise       1848    42    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise      20261    40    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise        777    41    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise       5150    41    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_query     20260927    52    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query          11    55    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query         404    55    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query        1848    51    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query       20261    49    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query         777    50    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query        5150    50    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_move      20260927    38    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move           11    41    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move          404    41    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move         1848    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move        20261    36    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move          777    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move         5150    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_cut       20260927    48    34     2    11   71    0    0   180     X  e_withdrawn&#xD;
+p_cut            11    47    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut           404    47    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut          1848    43    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut         20261    41    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut           777    42    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut          5150    48    34     2    12   70    0    0   180     X  e_withdrawn&#xD;
+p_insert    20260927    63    28     0    18   91    0    0   270     X  e_silenced&#xD;
+p_insert         11    60    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert        404    59    28     0    17   91    0    0   270     X  e_silenced&#xD;
+p_insert       1848    54    28     0    17   91    0    0   270     X  e_silenced&#xD;
+p_insert      20261    56    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert        777    54    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert       5150    65    26     0    20   89    0    0   270     X  e_silenced&#xD;
+p_delete    20260927     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete         11     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete        404     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete       1848     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete      20261     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete        777     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete       5150     0     0    36    42   15    0    9    81     X  e_gutted</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b677ab4c-078f-4424-901d-c53348a69433" testId="822f1e6d-6132-6cd7-d275-82aedd316ec1" testName="ThePublishersMeasureNeedsAMixedHand" computerName="DESKTOP-RU6F3DG" duration="00:00:00.8516230" startTime="2026-09-27T20:52:48.5974974+09:00" endTime="2026-09-27T20:52:49.4491194+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b677ab4c-078f-4424-901d-c53348a69433">
+      <Output>
+        <StdOut>── o_house 의 최선 교정 (씨드별) ─────────────────────────────&#xD;
+씨드 20260927 점수   173 부호 5가지 · m_praise×34 m_cut×2 m_query×7 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드       11 점수   174 부호 5가지 · m_praise×34 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드      404 점수   175 부호 6가지 · m_praise×33 m_leave×1 m_cut×2 m_query×7 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드     1848 점수   208 부호 5가지 · m_praise×37 m_cut×1 m_query×3 m_move×1 m_delete×1 · 걸작 2 · 결말 e_masterpiece&#xD;
+씨드    20261 점수   171 부호 5가지 · m_praise×35 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드      777 점수   214 부호 5가지 · m_praise×37 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 2 · 결말 e_masterpiece&#xD;
+씨드     5150 점수   173 부호 5가지 · m_praise×31 m_cut×2 m_query×9 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+합계 1288</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2d8111fe-b4f8-46a5-b71e-92e26cd8cbff" testId="6dc25ba9-92dc-9ca2-8ae0-2a2a38f5e043" testName="HarshnessCutsBothWays" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0056650" startTime="2026-09-27T20:52:35.6428622+09:00" endTime="2026-09-27T20:52:35.6485266+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d8111fe-b4f8-46a5-b71e-92e26cd8cbff">
+      <Output>
+        <StdOut>── 두 극단과 중간 (씨드 7개 합계) ──────────────────&#xD;
+자 (누가 재는가)                             p_harsh    p_gentle    p_middle   이긴 쪽&#xD;
+o_quality (편집장)                            502         407         459   p_harsh&#xD;
+o_voice (이 책을 읽을 사람)                       279         541         520   p_gentle&#xD;
+o_author (다음 원고)                           376         623         633   p_middle&#xD;
+o_masterpiece (십 년 뒤의 이 작가)                172         244         633   p_middle&#xD;
+o_house (이 책을 내기로 결정할 사람)                  501         751        1174   p_middle&#xD;
+&#xD;
+혹독이 1개, 관대가 1개를 이겼고 어느 쪽도 전부를 가져가지 못했다&#xD;
+혹독이 관대를 이긴 자 1 · 관대가 혹독을 이긴 자 4</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a9a9edc5-344d-4a1d-9cc5-215f31fcd51c" testId="7c687bdf-e260-e478-c3c8-3b1981e55bac" testName="TheWritersDayDoesNotDependOnWhatTheEditorDid" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0030310" startTime="2026-09-27T20:52:49.4573702+09:00" endTime="2026-09-27T20:52:49.4604004+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9a9edc5-344d-4a1d-9cc5-215f31fcd51c" />
+    <UnitTestResult executionId="342a0da5-10fc-468b-825b-8086d8233cb1" testId="885575cd-6067-69dc-61bb-9f2a445d596f" testName="NoDominantStrategy" computerName="DESKTOP-RU6F3DG" duration="00:00:04.2178930" startTime="2026-09-27T20:52:44.3795612+09:00" endTime="2026-09-27T20:52:48.5974530+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="342a0da5-10fc-468b-825b-8086d8233cb1">
+      <Output>
+        <StdOut>── 자별 최선 교정(탐색) vs 한 부호만 되풀이하기 ───────────────&#xD;
+자                    최선   p_leave  p_praise   p_query    p_move     p_cut  p_insert  p_delete   쓴 부호&#xD;
+o_quality           595       286       299       362       267       316       411      -504      6가지&#xD;
+o_voice             550       371       469       399       301       248       203      -378      5가지&#xD;
+o_author            644       343       616       322        63      -581      -572       280      5가지&#xD;
+o_masterpiece       730       123       149       148       107       107       117         0      5가지&#xD;
+o_house            1288       393       526       455       290      -252      -220      -245      6가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0b6ef3bb-b543-45ee-a694-bb5b068e8cb6" testId="3dd5f518-fe5a-1f5d-9349-6612255645e1" testName="EveryReferenceResolves" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014260" startTime="2026-09-27T20:52:35.6020440+09:00" endTime="2026-09-27T20:52:35.6034695+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b6ef3bb-b543-45ee-a694-bb5b068e8cb6" />
+    <UnitTestResult executionId="cfa6265e-cba8-47cc-a89f-732409870ed9" testId="96338102-5149-8e0c-320d-7445dab2b0b5" testName="KoreanIsTheSource" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001499" startTime="2026-09-27T20:52:35.6549529+09:00" endTime="2026-09-27T20:52:35.6551026+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cfa6265e-cba8-47cc-a89f-732409870ed9" />
+    <UnitTestResult executionId="643b460a-3f08-4489-9258-9dac11a5ce11" testId="70a9935a-7bf1-21fb-64cc-d1f50f2a4ef5" testName="TheWriterActuallyDigsIn" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0027350" startTime="2026-09-27T20:52:35.6506088+09:00" endTime="2026-09-27T20:52:35.6533436+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="643b460a-3f08-4489-9258-9dac11a5ce11">
+      <Output>
+        <StdOut>작가가 버틴 표시 99건 · 원고를 거둬 간 회차 7 · 더 쓰지 못한 회차 7</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="777da27b-cf39-4251-814d-81f59ba52721" testId="ed628727-5a72-9a84-c2cb-e8a9b5917749" testName="PrintTrace(&quot;p_middle&quot;)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000580" startTime="2026-09-27T20:52:35.6283881+09:00" endTime="2026-09-27T20:52:35.6284461+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="777da27b-cf39-4251-814d-81f59ba52721">
+      <Output>
+        <StdOut>── 작가를 읽는다 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독  23 자신감  52 신뢰  51 고집  20 질  56 목소리  58 [normal] 버팀 0/헛0&#xD;
+2회차 혹독   1 자신감  58 신뢰  56 고집   8 질  58 목소리  61 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   1 자신감  64 신뢰  61 고집   0 질  65 목소리  67 [good] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  71 신뢰  67 고집   0 질  70 목소리  76 [good] ★걸작 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  78 신뢰  73 고집   0 질  75 목소리  81 [good] 버팀 0/헛0&#xD;
+  s1         남음 q 89 v100 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s2         남음 q 73 v 69 [] 표시 m_cut m_praise m_praise m_praise m_praise&#xD;
+  s3         남음 q 59 v 56 [] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s4         남음 q 77 v 90 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s5         남음 q 55 v 66 [f_inert] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s6         남음 q 71 v 73 [] 표시 m_move m_praise m_praise m_praise m_praise&#xD;
+  s7         남음 q 87 v 82 [] 표시 m_cut m_query m_query m_praise m_praise&#xD;
+  s8         남음 q 85 v 96 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s9         지움 q 30 v 22 [f_cliche,f_inert,f_vague] 표시 m_delete&#xD;
+  s_gift_3   남음 q 97 v100 [] 표시 m_praise&#xD;
+결말 e_masterpiece</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="19a5dd3b-a865-4141-b3b1-e375ccd9e852" testId="55e33461-3e2d-31e3-87f2-e8f405abe836" testName="PrintObjectiveTable" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0185240" startTime="2026-09-27T20:52:35.6060326+09:00" endTime="2026-09-27T20:52:35.6245564+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19a5dd3b-a865-4141-b3b1-e375ccd9e852">
+      <Output>
+        <StdOut>── 자별 합계 (씨드 7개) ───────────────────────────&#xD;
+방침                o_quality        o_voice       o_author  o_masterpiece        o_house&#xD;
+p_harsh                 502            279            376            172            501&#xD;
+p_gentle                407            541            623            244            751&#xD;
+p_middle                459            520            633            633           1174&#xD;
+p_none                  286            371            343            123            393&#xD;
+p_leave                 286            371            343            123            393&#xD;
+p_praise                299            469            616            149            526&#xD;
+p_query                 362            399            322            148            455&#xD;
+p_move                  267            301             63            107            290&#xD;
+p_cut                   316            248           -581            107           -252&#xD;
+p_insert                411            203           -572            117           -220&#xD;
+p_delete               -504           -378            280              0           -245</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="68efb6ab-afcf-4953-847f-b82b2d4999f4" testId="61b00008-ce66-e117-0560-42ad2219d7db" testName="NeitherExtremeReachesTheMasterpiece" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0011420" startTime="2026-09-27T20:52:35.6485527+09:00" endTime="2026-09-27T20:52:35.6496939+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68efb6ab-afcf-4953-847f-b82b2d4999f4">
+      <Output>
+        <StdOut>걸작 — 늘 혹독 0 · 늘 관대 1 · 작가를 읽는다 7 (씨드 7개)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c18ad5f0-bf45-4176-be22-0f644c31e4d0" testId="58241eba-9d0a-da57-c435-9674e31fb111" testName="ThereIsASentenceWorthKeepingAndOneWorthCutting" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003180" startTime="2026-09-27T20:52:35.6040587+09:00" endTime="2026-09-27T20:52:35.6043764+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c18ad5f0-bf45-4176-be22-0f644c31e4d0">
+      <Output>
+        <StdOut>아껴야 하는 문장 s1 (목소리 82 · 애착 90) · 지워야 하는 문장 s9 (애착 15)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1e7dc2d0-e447-438f-b680-82c6aa87c411" testId="460ffa0a-a77b-58b9-7dbc-7a264925309f" testName="SameSeedSamePolicyGivesTheIdenticalExchange" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0051100" startTime="2026-09-27T20:52:49.4517529+09:00" endTime="2026-09-27T20:52:49.4568627+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e7dc2d0-e447-438f-b680-82c6aa87c411" />
+    <UnitTestResult executionId="2e8f2049-9df1-4f11-be92-eb5a85857c90" testId="c2d50757-4e28-ef29-90a4-360db886360d" testName="EnglishOverwritesAndDoesNotFreeze" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014080" startTime="2026-09-27T20:52:35.6535309+09:00" endTime="2026-09-27T20:52:35.6549385+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e8f2049-9df1-4f11-be92-eb5a85857c90" />
+    <UnitTestResult executionId="4f92a864-d4ae-41b4-b78d-ab76fa6f86ed" testId="810dc431-e910-ba91-5027-0df8769e5357" testName="TheRednessAccumulatesAndDiffersByPen" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0010340" startTime="2026-09-27T20:52:35.6410880+09:00" endTime="2026-09-27T20:52:35.6421220+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f92a864-d4ae-41b4-b78d-ab76fa6f86ed">
+      <Output>
+        <StdOut>── 원고가 얼마나 붉어졌나 (씨드 20260927) ──&#xD;
+p_harsh     붉기   55 · 얹힌 표시  41개&#xD;
+p_gentle    붉기    5 · 얹힌 표시  45개&#xD;
+p_middle    붉기   23 · 얹힌 표시  42개&#xD;
+p_none      붉기    0 · 얹힌 표시  45개&#xD;
+p_leave     붉기    0 · 얹힌 표시  45개&#xD;
+p_praise    붉기    0 · 얹힌 표시  45개&#xD;
+p_query     붉기   45 · 얹힌 표시  45개&#xD;
+p_move      붉기   90 · 얹힌 표시  45개&#xD;
+p_cut       붉기  180 · 얹힌 표시  45개&#xD;
+p_insert    붉기  270 · 얹힌 표시  45개&#xD;
+p_delete    붉기   81 · 얹힌 표시   9개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="509a257b-732f-4083-8cc4-18ea5b909421" testId="304c03de-5a33-2239-a1d0-2ae11248fb6d" testName="RollsAreStableAcrossProcessRuns" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0022630" startTime="2026-09-27T20:52:49.4494729+09:00" endTime="2026-09-27T20:52:49.4517354+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="509a257b-732f-4083-8cc4-18ea5b909421" />
+    <UnitTestResult executionId="c3878f6f-6a7d-4392-aced-86618b45963b" testId="a8adcb5a-9e6d-7aa5-e954-ddf10523bea3" testName="PrintTrace(&quot;p_harsh&quot;)" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005920" startTime="2026-09-27T20:52:35.6275377+09:00" endTime="2026-09-27T20:52:35.6281294+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3878f6f-6a7d-4392-aced-86618b45963b">
+      <Output>
+        <StdOut>── 늘 혹독하게 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독  36 자신감  47 신뢰  48 고집  24 질  61 목소리  50 [normal] 버팀 0/헛0&#xD;
+2회차 혹독  18 자신감  45 신뢰  47 고집  20 질  75 목소리  46 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   7 자신감  44 신뢰  47 고집  13 질  79 목소리  45 [normal] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  44 신뢰  47 고집   5 질  79 목소리  45 [normal] 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  44 신뢰  47 고집   0 질  82 목소리  45 [normal] 버팀 0/헛0&#xD;
+  s1         남음 q 83 v 82 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s2         남음 q 67 v 49 [] 표시 m_cut m_leave m_leave m_leave m_leave&#xD;
+  s3         남음 q100 v  0 [] 표시 m_insert m_insert m_leave m_leave m_leave&#xD;
+  s4         남음 q 71 v 68 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s5         남음 q100 v  0 [] 표시 m_insert m_insert m_insert m_leave m_leave&#xD;
+  s6         남음 q 65 v 53 [] 표시 m_move m_leave m_leave m_leave m_leave&#xD;
+  s7         남음 q 93 v 37 [] 표시 m_insert m_cut m_leave m_leave m_leave&#xD;
+  s8         남음 q 79 v 74 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s9         지움 q 30 v 22 [f_cliche,f_inert,f_vague] 표시 m_delete&#xD;
+결말 e_polished_dead</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3c14fd6d-533e-4927-8e57-5d8cace71f11" testId="bba0708a-dea8-be45-01c3-ce6feebc0ff8" testName="BeingKindAloneIsNotEnough" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005800" startTime="2026-09-27T20:52:35.6422683+09:00" endTime="2026-09-27T20:52:35.6428478+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c14fd6d-533e-4927-8e57-5d8cace71f11">
+      <Output>
+        <StdOut>「늘 관대」가 실을 수 없었던 밤 4 / 7</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e19bd116-f109-4d19-b4c7-fc459d24afad" testId="f939d401-8a24-9a6a-f3ec-c103e4eab915" testName="IndividualSentencesEndUpInDifferentStates" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009470" startTime="2026-09-27T20:52:35.6401162+09:00" endTime="2026-09-27T20:52:35.6410624+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e19bd116-f109-4d19-b4c7-fc459d24afad">
+      <Output>
+        <StdOut>── 문장마다 끝난 자리가 몇 가지인가 (씨드 20260927) ──&#xD;
+  s1 — 7가지&#xD;
+  s2 — 9가지&#xD;
+  s3 — 9가지&#xD;
+  s4 — 7가지&#xD;
+  s5 — 9가지&#xD;
+  s6 — 9가지&#xD;
+  s7 — 10가지&#xD;
+  s8 — 7가지&#xD;
+  s9 — 8가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="10d7389c-394f-4566-827f-a0d1ddf9967a" testId="6c755cbd-3ef4-8bc1-c5b7-3fb0c122e14a" testName="PlaceholdersNotConcatenation" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0062200" startTime="2026-09-27T20:52:35.6552072+09:00" endTime="2026-09-27T20:52:35.6614264+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10d7389c-394f-4566-827f-a0d1ddf9967a" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SeedsActuallyDiffer" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="1712b59e-936a-58f8-8ceb-415b48d86b1f">
+      <Execution id="b22ce2bb-3768-48b2-a642-766c61852dc9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.SeedDeterminismTests" name="SeedsActuallyDiffer" />
+    </UnitTest>
+    <UnitTest name="PrintTrace(&quot;p_gentle&quot;)" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="40a054b2-abbc-7d10-71e0-3c80e1e7f7d3">
+      <Execution id="c22e79de-212c-4a53-893b-a5a40620ef00" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DiagnosticTests" name="PrintTrace(&quot;p_gentle&quot;)" />
+    </UnitTest>
+    <UnitTest name="PrintTrace(&quot;p_middle&quot;)" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="ed628727-5a72-9a84-c2cb-e8a9b5917749">
+      <Execution id="777da27b-cf39-4251-814d-81f59ba52721" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DiagnosticTests" name="PrintTrace(&quot;p_middle&quot;)" />
+    </UnitTest>
+    <UnitTest name="PrintPolicyTable" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="a242285f-29dd-dff3-019d-784ceae1bda6">
+      <Execution id="680a8981-ac2a-419a-ba8a-6b42709dc5eb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DiagnosticTests" name="PrintPolicyTable" />
+    </UnitTest>
+    <UnitTest name="EveryEndingUsedByAPolicyExistsAndEnoughEndingsAreReachable" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="517134f9-d310-beee-dee1-1ea5d7977966">
+      <Execution id="1072e978-5c35-4fc0-9911-ce6a315ba017" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="EveryEndingUsedByAPolicyExistsAndEnoughEndingsAreReachable" />
+    </UnitTest>
+    <UnitTest name="EveryReferenceResolves" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="3dd5f518-fe5a-1f5d-9349-6612255645e1">
+      <Execution id="0b6ef3bb-b543-45ee-a694-bb5b068e8cb6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="EveryReferenceResolves" />
+    </UnitTest>
+    <UnitTest name="PrintTrace(&quot;p_harsh&quot;)" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="a8adcb5a-9e6d-7aa5-e954-ddf10523bea3">
+      <Execution id="c3878f6f-6a7d-4392-aced-86618b45963b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DiagnosticTests" name="PrintTrace(&quot;p_harsh&quot;)" />
+    </UnitTest>
+    <UnitTest name="TheWritersDayDoesNotDependOnWhatTheEditorDid" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="7c687bdf-e260-e478-c3c8-3b1981e55bac">
+      <Execution id="a9a9edc5-344d-4a1d-9cc5-215f31fcd51c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.SeedDeterminismTests" name="TheWritersDayDoesNotDependOnWhatTheEditorDid" />
+    </UnitTest>
+    <UnitTest name="ThePublishersMeasureNeedsAMixedHand" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="822f1e6d-6132-6cd7-d275-82aedd316ec1">
+      <Execution id="b677ab4c-078f-4424-901d-c53348a69433" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.NoDominantStrategyTests" name="ThePublishersMeasureNeedsAMixedHand" />
+    </UnitTest>
+    <UnitTest name="TheRednessAccumulatesAndDiffersByPen" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="810dc431-e910-ba91-5027-0df8769e5357">
+      <Execution id="4f92a864-d4ae-41b4-b78d-ab76fa6f86ed" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.EditsMoveTheManuscriptTests" name="TheRednessAccumulatesAndDiffersByPen" />
+    </UnitTest>
+    <UnitTest name="EnglishOverwritesAndDoesNotFreeze" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="c2d50757-4e28-ef29-90a4-360db886360d">
+      <Execution id="2e8f2049-9df1-4f11-be92-eb5a85857c90" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.LocalizationTests" name="EnglishOverwritesAndDoesNotFreeze" />
+    </UnitTest>
+    <UnitTest name="ControlWorldWhereTheRedPenIsDecorationChangesNothing" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="362f666a-436d-e785-3aff-242c75090265">
+      <Execution id="4f95cdae-1b6a-48ea-9672-9e3f5cb4f9e2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.EditsMoveTheManuscriptTests" name="ControlWorldWhereTheRedPenIsDecorationChangesNothing" />
+    </UnitTest>
+    <UnitTest name="PrintObjectiveTable" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="55e33461-3e2d-31e3-87f2-e8f405abe836">
+      <Execution id="19a5dd3b-a865-4141-b3b1-e375ccd9e852" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DiagnosticTests" name="PrintObjectiveTable" />
+    </UnitTest>
+    <UnitTest name="RollsAreStableAcrossProcessRuns" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="304c03de-5a33-2239-a1d0-2ae11248fb6d">
+      <Execution id="509a257b-732f-4083-8cc4-18ea5b909421" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.SeedDeterminismTests" name="RollsAreStableAcrossProcessRuns" />
+    </UnitTest>
+    <UnitTest name="BeingKindAloneIsNotEnough" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="bba0708a-dea8-be45-01c3-ce6feebc0ff8">
+      <Execution id="3c14fd6d-533e-4927-8e57-5d8cace71f11" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.HarshnessCutsBothWaysTests" name="BeingKindAloneIsNotEnough" />
+    </UnitTest>
+    <UnitTest name="TheTwoExtremesFailInOppositeDirections" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="cd6db2fd-8476-5d1a-2111-37dc15b1ea54">
+      <Execution id="83630bd1-a163-4051-ac7e-6741887c94f2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.HarshnessCutsBothWaysTests" name="TheTwoExtremesFailInOppositeDirections" />
+    </UnitTest>
+    <UnitTest name="EveryFlawIsFixableAndEveryMarkCanDoSomething" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="2e50e9f4-09bd-d5ed-f5d5-357500d166d6">
+      <Execution id="e9e65f51-0645-442d-911f-46d6538d51cb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="EveryFlawIsFixableAndEveryMarkCanDoSomething" />
+    </UnitTest>
+    <UnitTest name="BalanceNumbersAreSaneIntegers" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="9de3e7ba-8110-dc84-9022-ea5b80345f21">
+      <Execution id="5a9efd5a-9202-40f3-9749-1db80b75d3a6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="BalanceNumbersAreSaneIntegers" />
+    </UnitTest>
+    <UnitTest name="EditsMoveTheManuscript" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="1561025e-841a-3c79-6eae-ea858abd0d95">
+      <Execution id="d737a9a2-9f53-4ef7-b5d2-cc65c4ebad75" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.EditsMoveTheManuscriptTests" name="EditsMoveTheManuscript" />
+    </UnitTest>
+    <UnitTest name="TheWriterActuallyDigsIn" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="70a9935a-7bf1-21fb-64cc-d1f50f2a4ef5">
+      <Execution id="643b460a-3f08-4489-9258-9dac11a5ce11" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.HarshnessCutsBothWaysTests" name="TheWriterActuallyDigsIn" />
+    </UnitTest>
+    <UnitTest name="IndividualSentencesEndUpInDifferentStates" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="f939d401-8a24-9a6a-f3ec-c103e4eab915">
+      <Execution id="e19bd116-f109-4d19-b4c7-fc459d24afad" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.EditsMoveTheManuscriptTests" name="IndividualSentencesEndUpInDifferentStates" />
+    </UnitTest>
+    <UnitTest name="ThereIsASentenceWorthKeepingAndOneWorthCutting" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="58241eba-9d0a-da57-c435-9674e31fb111">
+      <Execution id="c18ad5f0-bf45-4176-be22-0f644c31e4d0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="ThereIsASentenceWorthKeepingAndOneWorthCutting" />
+    </UnitTest>
+    <UnitTest name="NeitherExtremeReachesTheMasterpiece" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="61b00008-ce66-e117-0560-42ad2219d7db">
+      <Execution id="68efb6ab-afcf-4953-847f-b82b2d4999f4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.HarshnessCutsBothWaysTests" name="NeitherExtremeReachesTheMasterpiece" />
+    </UnitTest>
+    <UnitTest name="EveryMarkIsWorthUsingUnderSomeMeasure" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="f4204228-53ba-22f0-e37f-2e161ad45337">
+      <Execution id="ae7fc359-6673-4c87-86ec-bd715efbb4dc" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.NoDominantStrategyTests" name="EveryMarkIsWorthUsingUnderSomeMeasure" />
+    </UnitTest>
+    <UnitTest name="HarshnessCutsBothWays" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="6dc25ba9-92dc-9ca2-8ae0-2a2a38f5e043">
+      <Execution id="2d8111fe-b4f8-46a5-b71e-92e26cd8cbff" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.HarshnessCutsBothWaysTests" name="HarshnessCutsBothWays" />
+    </UnitTest>
+    <UnitTest name="PlaceholdersNotConcatenation" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="6c755cbd-3ef4-8bc1-c5b7-3fb0c122e14a">
+      <Execution id="10d7389c-394f-4566-827f-a0d1ddf9967a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.LocalizationTests" name="PlaceholdersNotConcatenation" />
+    </UnitTest>
+    <UnitTest name="NoDominantStrategy" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="885575cd-6067-69dc-61bb-9f2a445d596f">
+      <Execution id="342a0da5-10fc-468b-825b-8086d8233cb1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.NoDominantStrategyTests" name="NoDominantStrategy" />
+    </UnitTest>
+    <UnitTest name="TheManuscriptIsNotAlreadyGoodAndNotHopeless" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="f7671757-9900-b31f-fe12-73c2b242664d">
+      <Execution id="cfdd2fa1-a123-4e9d-9cfe-125e2df1a1e8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.DataIntegrityTests" name="TheManuscriptIsNotAlreadyGoodAndNotHopeless" />
+    </UnitTest>
+    <UnitTest name="KoreanIsTheSource" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="96338102-5149-8e0c-320d-7445dab2b0b5">
+      <Execution id="cfa6265e-cba8-47cc-a89f-732409870ed9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.LocalizationTests" name="KoreanIsTheSource" />
+    </UnitTest>
+    <UnitTest name="SameSeedSamePolicyGivesTheIdenticalExchange" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="460ffa0a-a77b-58b9-7dbc-7a264925309f">
+      <Execution id="1e7dc2d0-e447-438f-b680-82c6aa87c411" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.SeedDeterminismTests" name="SameSeedSamePolicyGivesTheIdenticalExchange" />
+    </UnitTest>
+    <UnitTest name="CuttingTheBelovedSentenceIsNeverOptimal" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="6dbaca0d-5e85-a10c-3f49-a6c750fb7fce">
+      <Execution id="21baff95-68b9-4c34-9f80-125bd6d19aa7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.NoDominantStrategyTests" name="CuttingTheBelovedSentenceIsNeverOptimal" />
+    </UnitTest>
+    <UnitTest name="MissingEnglishFallsBackToKorean" storage="c:\users\psi\orca\game\games\red-pen\testbuild\debug\net8.0\red-pen.tests.dll" id="91946856-6142-ed55-b950-a90fb1446239">
+      <Execution id="54108507-7bb8-41c0-b8d1-9218940fc03d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="RedPen.Tests.LocalizationTests" name="MissingEnglishFallsBackToKorean" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="40a054b2-abbc-7d10-71e0-3c80e1e7f7d3" executionId="c22e79de-212c-4a53-893b-a5a40620ef00" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="91946856-6142-ed55-b950-a90fb1446239" executionId="54108507-7bb8-41c0-b8d1-9218940fc03d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7671757-9900-b31f-fe12-73c2b242664d" executionId="cfdd2fa1-a123-4e9d-9cfe-125e2df1a1e8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1561025e-841a-3c79-6eae-ea858abd0d95" executionId="d737a9a2-9f53-4ef7-b5d2-cc65c4ebad75" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="517134f9-d310-beee-dee1-1ea5d7977966" executionId="1072e978-5c35-4fc0-9911-ce6a315ba017" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd6db2fd-8476-5d1a-2111-37dc15b1ea54" executionId="83630bd1-a163-4051-ac7e-6741887c94f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e50e9f4-09bd-d5ed-f5d5-357500d166d6" executionId="e9e65f51-0645-442d-911f-46d6538d51cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6dbaca0d-5e85-a10c-3f49-a6c750fb7fce" executionId="21baff95-68b9-4c34-9f80-125bd6d19aa7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1712b59e-936a-58f8-8ceb-415b48d86b1f" executionId="b22ce2bb-3768-48b2-a642-766c61852dc9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f4204228-53ba-22f0-e37f-2e161ad45337" executionId="ae7fc359-6673-4c87-86ec-bd715efbb4dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="362f666a-436d-e785-3aff-242c75090265" executionId="4f95cdae-1b6a-48ea-9672-9e3f5cb4f9e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9de3e7ba-8110-dc84-9022-ea5b80345f21" executionId="5a9efd5a-9202-40f3-9749-1db80b75d3a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a242285f-29dd-dff3-019d-784ceae1bda6" executionId="680a8981-ac2a-419a-ba8a-6b42709dc5eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="822f1e6d-6132-6cd7-d275-82aedd316ec1" executionId="b677ab4c-078f-4424-901d-c53348a69433" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6dc25ba9-92dc-9ca2-8ae0-2a2a38f5e043" executionId="2d8111fe-b4f8-46a5-b71e-92e26cd8cbff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c687bdf-e260-e478-c3c8-3b1981e55bac" executionId="a9a9edc5-344d-4a1d-9cc5-215f31fcd51c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="885575cd-6067-69dc-61bb-9f2a445d596f" executionId="342a0da5-10fc-468b-825b-8086d8233cb1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3dd5f518-fe5a-1f5d-9349-6612255645e1" executionId="0b6ef3bb-b543-45ee-a694-bb5b068e8cb6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="96338102-5149-8e0c-320d-7445dab2b0b5" executionId="cfa6265e-cba8-47cc-a89f-732409870ed9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="70a9935a-7bf1-21fb-64cc-d1f50f2a4ef5" executionId="643b460a-3f08-4489-9258-9dac11a5ce11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed628727-5a72-9a84-c2cb-e8a9b5917749" executionId="777da27b-cf39-4251-814d-81f59ba52721" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="55e33461-3e2d-31e3-87f2-e8f405abe836" executionId="19a5dd3b-a865-4141-b3b1-e375ccd9e852" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="61b00008-ce66-e117-0560-42ad2219d7db" executionId="68efb6ab-afcf-4953-847f-b82b2d4999f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58241eba-9d0a-da57-c435-9674e31fb111" executionId="c18ad5f0-bf45-4176-be22-0f644c31e4d0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="460ffa0a-a77b-58b9-7dbc-7a264925309f" executionId="1e7dc2d0-e447-438f-b680-82c6aa87c411" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c2d50757-4e28-ef29-90a4-360db886360d" executionId="2e8f2049-9df1-4f11-be92-eb5a85857c90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="810dc431-e910-ba91-5027-0df8769e5357" executionId="4f92a864-d4ae-41b4-b78d-ab76fa6f86ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="304c03de-5a33-2239-a1d0-2ae11248fb6d" executionId="509a257b-732f-4083-8cc4-18ea5b909421" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a8adcb5a-9e6d-7aa5-e954-ddf10523bea3" executionId="c3878f6f-6a7d-4392-aced-86618b45963b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bba0708a-dea8-be45-01c3-ce6feebc0ff8" executionId="3c14fd6d-533e-4927-8e57-5d8cace71f11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f939d401-8a24-9a6a-f3ec-c103e4eab915" executionId="e19bd116-f109-4d19-b4c7-fc459d24afad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c755cbd-3ef4-8bc1-c5b7-3fb0c122e14a" executionId="10d7389c-394f-4566-827f-a0d1ddf9967a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="32" executed="32" passed="32" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\red-pen\TestBuild\Debug\net8.0\red-pen.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 32 of 32 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+방침들이 닿은 결말 8가지: e_polished_dead, e_shelved, e_published, e_masterpiece, e_stalled, e_withdrawn, e_silenced, e_gutted&#xD;
+&#xD;
+손대지 않은 원고: 질 41 · 목소리 53 · 실을 수 없다&#xD;
+흠 있는 문장 6 · 흠 없는 문장 3&#xD;
+&#xD;
+아껴야 하는 문장 s1 (목소리 82 · 애착 90) · 지워야 하는 문장 s9 (애착 15)&#xD;
+&#xD;
+&#xD;
+── 자별 합계 (씨드 7개) ───────────────────────────&#xD;
+방침                o_quality        o_voice       o_author  o_masterpiece        o_house&#xD;
+p_harsh                 502            279            376            172            501&#xD;
+p_gentle                407            541            623            244            751&#xD;
+p_middle                459            520            633            633           1174&#xD;
+p_none                  286            371            343            123            393&#xD;
+p_leave                 286            371            343            123            393&#xD;
+p_praise                299            469            616            149            526&#xD;
+p_query                 362            399            322            148            455&#xD;
+p_move                  267            301             63            107            290&#xD;
+p_cut                   316            248           -581            107           -252&#xD;
+p_insert                411            203           -572            117           -220&#xD;
+p_delete               -504           -378            280              0           -245&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 방침 × 씨드 ────────────────────────────────────────────────&#xD;
+방침        씨드      질  목소리 자신감 신뢰 고집 걸작 지움 붉기 실을수 결말&#xD;
+p_harsh     20260927    82    45    44    47    0    0    1    55     X  e_polished_dead&#xD;
+p_harsh          11    81    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh         404    81    47    43    48    0    0    1    61     X  e_shelved&#xD;
+p_harsh        1848    78    47    43    48    0    0    1    61     X  e_shelved&#xD;
+p_harsh       20261    75    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh         777    76    47    46    48    0    0    1    43     X  e_shelved&#xD;
+p_harsh        5150    85    41    41    45    2    0    1    73     X  e_polished_dead&#xD;
+p_gentle    20260927    58    77    84    66    0    0    0     5     O  e_published&#xD;
+p_gentle         11    64    79    84    66    0    1    0     5     O  e_masterpiece&#xD;
+p_gentle        404    61    77    84    66    0    0    0     5     O  e_published&#xD;
+p_gentle       1848    57    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle      20261    55    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle        777    56    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_gentle       5150    56    77    84    66    0    0    0     5     X  e_shelved&#xD;
+p_middle    20260927    75    81    78    73    0    1    1    23     O  e_masterpiece&#xD;
+p_middle         11    76    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle        404    76    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle       1848    72    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle      20261    71    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle        777    72    80    79    74    0    1    1    22     O  e_masterpiece&#xD;
+p_middle       5150    73    81    78    73    0    1    1    24     O  e_masterpiece&#xD;
+p_none      20260927    41    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none           11    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none          404    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none         1848    40    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none        20261    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none          777    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_none         5150    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave     20260927    41    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave          11    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave         404    44    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave        1848    40    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave       20261    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave         777    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_leave        5150    39    53    52    30    0    0    0     0     X  e_stalled&#xD;
+p_praise    20260927    43    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise         11    46    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise        404    46    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise       1848    42    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise      20261    40    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise        777    41    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_praise       5150    41    67    87    60    0    0    0     0     X  e_stalled&#xD;
+p_query     20260927    52    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query          11    55    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query         404    55    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query        1848    51    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query       20261    49    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query         777    50    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_query        5150    50    57    41    40    5    0    0    45     X  e_shelved&#xD;
+p_move      20260927    38    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move           11    41    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move          404    41    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move         1848    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move        20261    36    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move          777    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_move         5150    37    43    18    21   33    0    0    90     X  e_stalled&#xD;
+p_cut       20260927    48    34     2    11   71    0    0   180     X  e_withdrawn&#xD;
+p_cut            11    47    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut           404    47    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut          1848    43    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut         20261    41    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut           777    42    36     0     9   74    0    0   180     X  e_withdrawn&#xD;
+p_cut          5150    48    34     2    12   70    0    0   180     X  e_withdrawn&#xD;
+p_insert    20260927    63    28     0    18   91    0    0   270     X  e_silenced&#xD;
+p_insert         11    60    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert        404    59    28     0    17   91    0    0   270     X  e_silenced&#xD;
+p_insert       1848    54    28     0    17   91    0    0   270     X  e_silenced&#xD;
+p_insert      20261    56    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert        777    54    31     4    20   78    0    0   216     X  e_silenced&#xD;
+p_insert       5150    65    26     0    20   89    0    0   270     X  e_silenced&#xD;
+p_delete    20260927     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete         11     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete        404     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete       1848     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete      20261     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete        777     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+p_delete       5150     0     0    36    42   15    0    9    81     X  e_gutted&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 늘 혹독하게 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독  36 자신감  47 신뢰  48 고집  24 질  61 목소리  50 [normal] 버팀 0/헛0&#xD;
+2회차 혹독  18 자신감  45 신뢰  47 고집  20 질  75 목소리  46 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   7 자신감  44 신뢰  47 고집  13 질  79 목소리  45 [normal] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  44 신뢰  47 고집   5 질  79 목소리  45 [normal] 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  44 신뢰  47 고집   0 질  82 목소리  45 [normal] 버팀 0/헛0&#xD;
+  s1         남음 q 83 v 82 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s2         남음 q 67 v 49 [] 표시 m_cut m_leave m_leave m_leave m_leave&#xD;
+  s3         남음 q100 v  0 [] 표시 m_insert m_insert m_leave m_leave m_leave&#xD;
+  s4         남음 q 71 v 68 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s5         남음 q100 v  0 [] 표시 m_insert m_insert m_insert m_leave m_leave&#xD;
+  s6         남음 q 65 v 53 [] 표시 m_move m_leave m_leave m_leave m_leave&#xD;
+  s7         남음 q 93 v 37 [] 표시 m_insert m_cut m_leave m_leave m_leave&#xD;
+  s8         남음 q 79 v 74 [] 표시 m_leave m_leave m_leave m_leave m_leave&#xD;
+  s9         지움 q 30 v 22 [f_cliche,f_inert,f_vague] 표시 m_delete&#xD;
+결말 e_polished_dead&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 늘 관대하게 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독   4 자신감  57 신뢰  54 고집  13 질  46 목소리  57 [normal] 버팀 0/헛0&#xD;
+2회차 혹독   1 자신감  63 신뢰  57 고집   1 질  47 목소리  59 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   0 자신감  70 신뢰  60 고집   0 질  51 목소리  65 [good] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  77 신뢰  63 고집   0 질  53 목소리  71 [good] 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  84 신뢰  66 고집   0 질  58 목소리  77 [good] 버팀 0/헛0&#xD;
+  s1         남음 q 89 v100 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s2         남음 q 55 v 77 [f_bloat] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s3         남음 q 59 v 56 [] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s4         남음 q 77 v 90 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s5         남음 q 55 v 66 [f_inert] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s6         남음 q 61 v 74 [f_order] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s7         남음 q 61 v 86 [f_bloat] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s8         남음 q 85 v 96 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s9         남음 q 57 v 52 [f_inert] 표시 m_query m_query m_praise m_praise m_praise&#xD;
+결말 e_published&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 작가를 읽는다 (씨드 20260927) ─────────────────&#xD;
+1회차 혹독  23 자신감  52 신뢰  51 고집  20 질  56 목소리  58 [normal] 버팀 0/헛0&#xD;
+2회차 혹독   1 자신감  58 신뢰  56 고집   8 질  58 목소리  61 [normal] 버팀 0/헛0&#xD;
+3회차 혹독   1 자신감  64 신뢰  61 고집   0 질  65 목소리  67 [good] 버팀 0/헛0&#xD;
+4회차 혹독   0 자신감  71 신뢰  67 고집   0 질  70 목소리  76 [good] ★걸작 버팀 0/헛0&#xD;
+5회차 혹독   0 자신감  78 신뢰  73 고집   0 질  75 목소리  81 [good] 버팀 0/헛0&#xD;
+  s1         남음 q 89 v100 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s2         남음 q 73 v 69 [] 표시 m_cut m_praise m_praise m_praise m_praise&#xD;
+  s3         남음 q 59 v 56 [] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s4         남음 q 77 v 90 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s5         남음 q 55 v 66 [f_inert] 표시 m_query m_praise m_praise m_praise m_praise&#xD;
+  s6         남음 q 71 v 73 [] 표시 m_move m_praise m_praise m_praise m_praise&#xD;
+  s7         남음 q 87 v 82 [] 표시 m_cut m_query m_query m_praise m_praise&#xD;
+  s8         남음 q 85 v 96 [] 표시 m_praise m_praise m_praise m_praise m_praise&#xD;
+  s9         지움 q 30 v 22 [f_cliche,f_inert,f_vague] 표시 m_delete&#xD;
+  s_gift_3   남음 q 97 v100 [] 표시 m_praise&#xD;
+결말 e_masterpiece&#xD;
+&#xD;
+&#xD;
+붉은 펜이 장식인 세계에서 벌어진 폭 — 질 0 · 목소리 0 · 자신감 0 · 신뢰 0 · 걸작 0 · 지운 문장 0 · 결말 1가지&#xD;
+&#xD;
+&#xD;
+── 같은 원고, 다른 붉은 펜 (방침 11가지 × 씨드 7개) ──&#xD;
+방침        평균질 평균목소리 자신감 신뢰 걸작합 지움합 결말&#xD;
+p_harsh        79        45     44    47      0      7  e_polished_dead,e_shelved&#xD;
+p_gentle       58        77     84    66      1      0  e_published,e_masterpiece,e_shelved&#xD;
+p_middle       73        80     78    73      7      7  e_masterpiece&#xD;
+p_none         40        53     52    30      0      0  e_stalled&#xD;
+p_leave        40        53     52    30      0      0  e_stalled&#xD;
+p_praise       42        67     87    60      0      0  e_stalled&#xD;
+p_query        51        57     41    40      0      0  e_shelved&#xD;
+p_move         38        43     18    21      0      0  e_stalled&#xD;
+p_cut          45        35      0     9      0      0  e_withdrawn&#xD;
+p_insert       58        29      1    18      0      0  e_silenced&#xD;
+p_delete        0         0     36    42      0     63  e_gutted&#xD;
+★ 벌어진 폭 — 질 79 · 목소리 80 · 자신감 87 · 신뢰 64 · 걸작 7 · 지운 문장 63 · 결말 8가지&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 문장마다 끝난 자리가 몇 가지인가 (씨드 20260927) ──&#xD;
+  s1 — 7가지&#xD;
+  s2 — 9가지&#xD;
+  s3 — 9가지&#xD;
+  s4 — 7가지&#xD;
+  s5 — 9가지&#xD;
+  s6 — 9가지&#xD;
+  s7 — 10가지&#xD;
+  s8 — 7가지&#xD;
+  s9 — 8가지&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 원고가 얼마나 붉어졌나 (씨드 20260927) ──&#xD;
+p_harsh     붉기   55 · 얹힌 표시  41개&#xD;
+p_gentle    붉기    5 · 얹힌 표시  45개&#xD;
+p_middle    붉기   23 · 얹힌 표시  42개&#xD;
+p_none      붉기    0 · 얹힌 표시  45개&#xD;
+p_leave     붉기    0 · 얹힌 표시  45개&#xD;
+p_praise    붉기    0 · 얹힌 표시  45개&#xD;
+p_query     붉기   45 · 얹힌 표시  45개&#xD;
+p_move      붉기   90 · 얹힌 표시  45개&#xD;
+p_cut       붉기  180 · 얹힌 표시  45개&#xD;
+p_insert    붉기  270 · 얹힌 표시  45개&#xD;
+p_delete    붉기   81 · 얹힌 표시   9개&#xD;
+&#xD;
+&#xD;
+「늘 관대」가 실을 수 없었던 밤 4 / 7&#xD;
+&#xD;
+&#xD;
+── 두 극단과 중간 (씨드 7개 합계) ──────────────────&#xD;
+자 (누가 재는가)                             p_harsh    p_gentle    p_middle   이긴 쪽&#xD;
+o_quality (편집장)                            502         407         459   p_harsh&#xD;
+o_voice (이 책을 읽을 사람)                       279         541         520   p_gentle&#xD;
+o_author (다음 원고)                           376         623         633   p_middle&#xD;
+o_masterpiece (십 년 뒤의 이 작가)                172         244         633   p_middle&#xD;
+o_house (이 책을 내기로 결정할 사람)                  501         751        1174   p_middle&#xD;
+&#xD;
+혹독이 1개, 관대가 1개를 이겼고 어느 쪽도 전부를 가져가지 못했다&#xD;
+혹독이 관대를 이긴 자 1 · 관대가 혹독을 이긴 자 4&#xD;
+&#xD;
+걸작 — 늘 혹독 0 · 늘 관대 1 · 작가를 읽는다 7 (씨드 7개)&#xD;
+&#xD;
+늘 혹독 — 질 79 목소리 45 자신감 44   /   늘 관대 — 질 58 목소리 77 자신감 84&#xD;
+&#xD;
+작가가 버틴 표시 99건 · 원고를 거둬 간 회차 7 · 더 쓰지 못한 회차 7&#xD;
+&#xD;
+가장 아끼는 문장 s1 (애착 90) 은 어느 자의 최선 교정에서도 살아남는다&#xD;
+&#xD;
+부호 7개 중 어느 최선 교정에도 쓰이지 않은 것 0&#xD;
+&#xD;
+&#xD;
+── 자별 최선 교정(탐색) vs 한 부호만 되풀이하기 ───────────────&#xD;
+자                    최선   p_leave  p_praise   p_query    p_move     p_cut  p_insert  p_delete   쓴 부호&#xD;
+o_quality           595       286       299       362       267       316       411      -504      6가지&#xD;
+o_voice             550       371       469       399       301       248       203      -378      5가지&#xD;
+o_author            644       343       616       322        63      -581      -572       280      5가지&#xD;
+o_masterpiece       730       123       149       148       107       107       117         0      5가지&#xD;
+o_house            1288       393       526       455       290      -252      -220      -245      6가지&#xD;
+&#xD;
+&#xD;
+&#xD;
+── o_house 의 최선 교정 (씨드별) ─────────────────────────────&#xD;
+씨드 20260927 점수   173 부호 5가지 · m_praise×34 m_cut×2 m_query×7 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드       11 점수   174 부호 5가지 · m_praise×34 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드      404 점수   175 부호 6가지 · m_praise×33 m_leave×1 m_cut×2 m_query×7 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드     1848 점수   208 부호 5가지 · m_praise×37 m_cut×1 m_query×3 m_move×1 m_delete×1 · 걸작 2 · 결말 e_masterpiece&#xD;
+씨드    20261 점수   171 부호 5가지 · m_praise×35 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+씨드      777 점수   214 부호 5가지 · m_praise×37 m_cut×2 m_query×6 m_insert×2 m_move×1 · 걸작 2 · 결말 e_masterpiece&#xD;
+씨드     5150 점수   173 부호 5가지 · m_praise×31 m_cut×2 m_query×9 m_insert×2 m_move×1 · 걸작 1 · 결말 e_masterpiece&#xD;
+합계 1288&#xD;
+&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

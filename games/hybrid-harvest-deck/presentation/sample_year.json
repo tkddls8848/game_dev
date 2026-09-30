@@ -1,0 +1,133 @@
+{
+  "_": "src/PresentationSample.cs 가 구운 것. 손으로 고치지 말 것.",
+  "seed": 20260927,
+  "year": 1,
+  "seedsAtStart": 14,
+  "unlockedPlots": 4,
+  "seedsSpent": 14,
+  "waterUsed": 17,
+  "deckSize": 17,
+  "nightWon": true,
+  "battlesCleared": 4,
+  "battlesTotal": 4,
+  "playerHpLeft": 49,
+  "plantings": [
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_01",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_02",
+      "cropId": "crop_pumpkin",
+      "cardId": "card_bulwark",
+      "plantTurn": 0,
+      "harvestTurn": 3,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_03",
+      "cropId": "crop_herb",
+      "cardId": "card_sort",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_01",
+      "cropId": "crop_chili",
+      "cardId": "card_ember",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_02",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_03",
+      "cropId": "crop_pumpkin",
+      "cardId": "card_bulwark",
+      "plantTurn": 0,
+      "harvestTurn": 3,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_autumn",
+      "plotId": "plot_01",
+      "cropId": "crop_wheat",
+      "cardId": "card_harvest",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_autumn",
+      "plotId": "plot_02",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 3,
+      "fertilized": false
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card_slash",
+      "count": 7,
+      "fromCrops": [
+        "crop_turnip"
+      ]
+    },
+    {
+      "cardId": "card_bulwark",
+      "count": 4,
+      "fromCrops": [
+        "crop_pumpkin"
+      ]
+    },
+    {
+      "cardId": "card_ember",
+      "count": 2,
+      "fromCrops": [
+        "crop_chili"
+      ]
+    },
+    {
+      "cardId": "card_sort",
+      "count": 2,
+      "fromCrops": [
+        "crop_herb"
+      ]
+    },
+    {
+      "cardId": "card_harvest",
+      "count": 2,
+      "fromCrops": [
+        "crop_wheat"
+      ]
+    }
+  ]
+}

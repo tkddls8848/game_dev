@@ -1,0 +1,105 @@
+{
+  "_": "구역 + 인접 관계. 좌표가 없다 (PLAN_TACTICS §6). 수치는 전부 백분율 정수.",
+  "_엄폐": "coverPercent + 분대원 stealthPercent - 노출 >= 100 이면 보이지 않는다. balance.json 의 concealFloorPercent 가 100이다.",
+  "_시야": "sightLines 는 방향이 있다. 꺼진 골짜기·암거는 '밖에서도 안 보이고 안에서도 안 보인다' — 그게 이 두 지도의 축이다.",
+  "_정찰": "reconVantages 에서 보이는 구역만 정찰 보고서에 들어간다. 순찰병이 밟는 구역이 전부 여기 들어와야 DetectionFairness 가 통과한다.",
+
+  "maps": [
+    {
+      "id": "map_ridge_post",
+      "name": "능선 초소",
+      "entryZone": "z_treeline",
+      "extractionZone": "z_treeline",
+
+      "zones": [
+        { "id": "z_treeline", "name": "숲 경계",      "coverPercent": 70, "note": "분대가 여기서 들어오고 여기로 빠진다. 초소에서 보이지 않는다" },
+        { "id": "z_gully",    "name": "마른 골짜기",   "coverPercent": 65, "note": "아래로 꺼져 있다. 밖이 보이지 않고 밖에서도 보이지 않는다" },
+        { "id": "z_ridge",    "name": "능선 등성이",   "coverPercent": 55, "note": "여기서 초소와 창고가 내려다보인다. 저격 자리이자 정찰 벤티지" },
+        { "id": "z_track",    "name": "수레길",       "coverPercent": 20, "note": "순찰 통로. 엄폐가 거의 없다" },
+        { "id": "z_post",     "name": "초소",         "coverPercent": 0,  "note": "목표. 엄폐가 없다" },
+        { "id": "z_shed",     "name": "창고",         "coverPercent": 45, "note": "수송 일람표가 여기 있다" }
+      ],
+
+      "links": [
+        { "a": "z_treeline", "b": "z_gully", "extraAttenuation": -1 },
+        { "a": "z_treeline", "b": "z_ridge", "extraAttenuation": -1 },
+        { "a": "z_gully",    "b": "z_track", "extraAttenuation": -1 },
+        { "a": "z_gully",    "b": "z_shed",  "extraAttenuation": -1 },
+        { "a": "z_ridge",    "b": "z_track", "extraAttenuation": -1 },
+        { "a": "z_track",    "b": "z_post",  "extraAttenuation": -1 },
+        { "a": "z_track",    "b": "z_shed",  "extraAttenuation": -1 },
+        { "a": "z_post",     "b": "z_shed",  "extraAttenuation": -1 }
+      ],
+
+      "sightLines": [
+        { "from": "z_treeline", "sees": ["z_treeline", "z_ridge", "z_gully"] },
+        { "from": "z_gully",    "sees": ["z_gully"] },
+        { "from": "z_ridge",    "sees": ["z_ridge", "z_treeline", "z_track", "z_post", "z_shed"] },
+        { "from": "z_track",    "sees": ["z_track", "z_ridge", "z_post", "z_shed"] },
+        { "from": "z_post",     "sees": ["z_post", "z_track", "z_ridge"] },
+        { "from": "z_shed",     "sees": ["z_shed", "z_track"] }
+      ],
+
+      "noiseBlocked": [
+        { "a": "z_gully", "b": "z_treeline", "extraAttenuation": 40 },
+        { "a": "z_gully", "b": "z_track",    "extraAttenuation": 40 },
+        { "a": "z_gully", "b": "z_shed",     "extraAttenuation": 40 }
+      ],
+
+      "concealment": [
+        { "id": "c_ridge_rock",  "zone": "z_ridge", "name": "능선의 바위 그늘",   "hideBonusPercent": 20, "settleMs": 8000 },
+        { "id": "c_shed_crates", "zone": "z_shed",  "name": "창고 뒤 목상자 더미", "hideBonusPercent": 15, "settleMs": 8000 }
+      ],
+
+      "reconVantages": ["z_treeline", "z_ridge"]
+    },
+
+    {
+      "id": "map_rail_siding",
+      "name": "철로 측선",
+      "entryZone": "z_culvert",
+      "extractionZone": "z_culvert",
+
+      "zones": [
+        { "id": "z_culvert",    "name": "배수 암거",   "coverPercent": 80, "note": "분대가 여기서 들어오고 여기로 빠진다. 선로 둑만 내다보인다" },
+        { "id": "z_embankment", "name": "선로 둑",     "coverPercent": 40, "note": "측선·건널목·암거가 한눈에 보인다" },
+        { "id": "z_woodpile",   "name": "침목 더미",   "coverPercent": 60, "note": "측선과 초소 간이막이 보인다. 여기를 보는 자리는 측선뿐이다" },
+        { "id": "z_siding",     "name": "측선",       "coverPercent": 15, "note": "보급 화차가 여기 서 있다" },
+        { "id": "z_watchbox",   "name": "초소 간이막", "coverPercent": 5,  "note": "엄폐가 거의 없다" },
+        { "id": "z_crossing",   "name": "건널목",     "coverPercent": 25, "note": "순찰 통로" }
+      ],
+
+      "links": [
+        { "a": "z_culvert",    "b": "z_embankment", "extraAttenuation": -1 },
+        { "a": "z_culvert",    "b": "z_woodpile",   "extraAttenuation": -1 },
+        { "a": "z_embankment", "b": "z_siding",     "extraAttenuation": -1 },
+        { "a": "z_embankment", "b": "z_crossing",   "extraAttenuation": -1 },
+        { "a": "z_woodpile",   "b": "z_siding",     "extraAttenuation": -1 },
+        { "a": "z_siding",     "b": "z_watchbox",   "extraAttenuation": -1 },
+        { "a": "z_siding",     "b": "z_crossing",   "extraAttenuation": -1 },
+        { "a": "z_watchbox",   "b": "z_crossing",   "extraAttenuation": -1 }
+      ],
+
+      "sightLines": [
+        { "from": "z_culvert",    "sees": ["z_culvert", "z_embankment"] },
+        { "from": "z_embankment", "sees": ["z_embankment", "z_culvert", "z_siding", "z_crossing"] },
+        { "from": "z_woodpile",   "sees": ["z_woodpile", "z_siding", "z_watchbox"] },
+        { "from": "z_siding",     "sees": ["z_siding", "z_embankment", "z_woodpile", "z_watchbox", "z_crossing"] },
+        { "from": "z_watchbox",   "sees": ["z_watchbox", "z_siding", "z_crossing"] },
+        { "from": "z_crossing",   "sees": ["z_crossing", "z_siding", "z_watchbox", "z_embankment"] }
+      ],
+
+      "noiseBlocked": [
+        { "a": "z_culvert", "b": "z_embankment", "extraAttenuation": 40 },
+        { "a": "z_culvert", "b": "z_woodpile",   "extraAttenuation": 40 }
+      ],
+
+      "concealment": [
+        { "id": "c_wagon_under", "zone": "z_siding",   "name": "화차 바퀴 밑",   "hideBonusPercent": 30, "settleMs": 6000 },
+        { "id": "c_sleeper_gap", "zone": "z_woodpile", "name": "침목 사이 틈",   "hideBonusPercent": 20, "settleMs": 6000 }
+      ],
+
+      "reconVantages": ["z_culvert", "z_woodpile", "z_embankment"]
+    }
+  ]
+}

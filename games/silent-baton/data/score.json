@@ -1,0 +1,49 @@
+{
+  "_": "악보 셋. 지휘자에게는 이 표만 있고 **소리는 없다.**",
+  "_수치규율": "전부 정수. 시간은 ms. 값 없는 int 는 -1.",
+  "_기준박": "referenceBeatMs 로 나눠 박의 길이를 배율로 쓴다 — 느린 박에서 몸이 더 벌어진다.",
+
+  "referenceBeatMs": 600,
+  "seasonSeed": 20260927,
+
+  "pieces": [
+    {
+      "id": "p_overture",
+      "name": "서곡 「문을 여는 사람」",
+      "note": "빠르고 짧다. 현이 먼저 들어오고 금관이 마지막에 얹힌다",
+      "seed": 4171,
+      "bars": [
+        { "index": 1, "beats": 4, "beatMs": 520, "requiredDynamic": 55, "enteringSectionIds": ["s_strings", "s_wood"], "note": "현과 목관이 함께 시작한다" },
+        { "index": 2, "beats": 4, "beatMs": 520, "requiredDynamic": 66, "enteringSectionIds": ["s_perc"], "note": "팀파니가 박을 잡는다" },
+        { "index": 3, "beats": 4, "beatMs": 480, "requiredDynamic": 78, "enteringSectionIds": ["s_brass"], "note": "금관이 얹히며 커진다" },
+        { "index": 4, "beats": 4, "beatMs": 560, "requiredDynamic": 62, "enteringSectionIds": [], "note": "숨을 고르고 닫는다" }
+      ]
+    },
+    {
+      "id": "p_adagio",
+      "name": "느린 악장 「물 아래」",
+      "note": "박이 가장 길다. 몸이 더 벌어지고 작은 세기를 맞추기가 어렵다. 넷이 하나씩 차례로 들어온다",
+      "seed": 8823,
+      "bars": [
+        { "index": 1, "beats": 3, "beatMs": 980, "requiredDynamic": 28, "enteringSectionIds": ["s_strings"], "note": "현만" },
+        { "index": 2, "beats": 3, "beatMs": 980, "requiredDynamic": 34, "enteringSectionIds": ["s_wood"], "note": "목관이 스며든다" },
+        { "index": 3, "beats": 3, "beatMs": 1040, "requiredDynamic": 24, "enteringSectionIds": [], "note": "가장 작은 자리" },
+        { "index": 4, "beats": 3, "beatMs": 960, "requiredDynamic": 40, "enteringSectionIds": ["s_brass"], "note": "금관이 아주 낮게" },
+        { "index": 5, "beats": 3, "beatMs": 1020, "requiredDynamic": 31, "enteringSectionIds": ["s_perc"], "note": "팀파니가 마지막에 한 번. 넷이 다 있는데 박이 가장 길다" }
+      ]
+    },
+    {
+      "id": "p_finale",
+      "name": "종악장 「스물넷의 박」",
+      "note": "가장 길고 세기 폭이 크다. 활이 보이지 않는 목관·금관이 첫 소절부터 들어온다",
+      "seed": 1559,
+      "bars": [
+        { "index": 1, "beats": 4, "beatMs": 540, "requiredDynamic": 70, "enteringSectionIds": ["s_strings", "s_wood", "s_brass"], "note": "현·목관·금관이 한꺼번에. 지휘봉은 하나뿐이다" },
+        { "index": 2, "beats": 4, "beatMs": 540, "requiredDynamic": 44, "enteringSectionIds": ["s_perc"], "note": "갑자기 작게 — 표정만 보고 눌러야 하는데 팀파니가 그 자리에 들어온다" },
+        { "index": 3, "beats": 4, "beatMs": 560, "requiredDynamic": 84, "enteringSectionIds": [], "note": "다시 크게" },
+        { "index": 4, "beats": 4, "beatMs": 600, "requiredDynamic": 52, "enteringSectionIds": [], "note": "늘어지는 자리" },
+        { "index": 5, "beats": 4, "beatMs": 520, "requiredDynamic": 92, "enteringSectionIds": [], "note": "끝" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "_": "시의회가 요구하는 것. 목표를 셋 겹쳐 쓴 이유가 있다 — 하나만 두면 한 종류로 덮는 것이 늘 답이 된다.",
+  "_겹친목표": "닿아야 하는 칸(reachCells) · 길에 붙은 건물 수(dwellingMin) · 이어진 광장 크기(plazaMin) · 아무도 갇히지 않기(requireNoTrapped). 전부 길로 덮으면 집이 사라지고, 전부 건물로 덮으면 사람이 갇힌다.",
+
+  "chapters": [
+    {
+      "id": "ch-soft",
+      "name": "무른 구역에 선을 확정한다",
+      "councilNote": "지도가 그리지 않은 아홉 칸을 도시가 제 짐작으로 메우고 있다. 조씨가 그 안에 산다.",
+      "reachCells": [ { "x": 12, "y": 5 } ],
+      "dwellingMin": 58,
+      "plazaMin": -1,
+      "plazaSeed": { "x": -1, "y": -1 },
+      "requireNoTrapped": true,
+      "dayLimit": 60,
+      "permitBudget": 120,
+      "goalReward": 400,
+      "seed": 20260927
+    },
+    {
+      "id": "ch-plaza",
+      "name": "안마당을 광장으로 연다",
+      "councilNote": "한 필지 안에 골목이 있다. 시의회는 그것을 광장으로 만들라고 한다 — 그리고 사람은 그대로 살아야 한다.",
+      "reachCells": [ { "x": 7, "y": 5 } ],
+      "dwellingMin": 54,
+      "plazaMin": 4,
+      "plazaSeed": { "x": 7, "y": 5 },
+      "requireNoTrapped": true,
+      "dayLimit": 60,
+      "permitBudget": 200,
+      "goalReward": 500,
+      "seed": 20261014
+    },
+    {
+      "id": "ch-both",
+      "name": "두 곳을 같은 해에 고친다",
+      "councilNote": "무른 구역과 안마당을 한 해에. 그리고 광장을 두 칸 더 넓힌다. 허가비는 늘지 않는다.",
+      "reachCells": [ { "x": 12, "y": 5 }, { "x": 7, "y": 5 } ],
+      "dwellingMin": 54,
+      "plazaMin": 14,
+      "plazaSeed": { "x": 8, "y": 8 },
+      "requireNoTrapped": true,
+      "dayLimit": 60,
+      "permitBudget": 160,
+      "goalReward": 600,
+      "seed": 20261212
+    }
+  ]
+}

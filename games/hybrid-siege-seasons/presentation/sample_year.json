@@ -1,0 +1,197 @@
+{
+  "_": "src/PresentationSample.cs 가 구운 것. 손으로 고치지 말 것.",
+  "seed": 20260927,
+  "year": 1,
+  "seedsAtStart": 14,
+  "unlockedPlots": 4,
+  "seedsSpent": 14,
+  "waterUsed": 17,
+  "deckAfter": 12,
+  "deckUsesAfter": 54,
+  "harvestLost": 0,
+  "held": true,
+  "plantings": [
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_01",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_02",
+      "cropId": "crop_pumpkin",
+      "cardId": "card_bulwark",
+      "plantTurn": 0,
+      "harvestTurn": 3,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_spring",
+      "plotId": "plot_03",
+      "cropId": "crop_herb",
+      "cardId": "card_sort",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_01",
+      "cropId": "crop_chili",
+      "cardId": "card_ember",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_02",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_summer",
+      "plotId": "plot_03",
+      "cropId": "crop_pumpkin",
+      "cardId": "card_bulwark",
+      "plantTurn": 0,
+      "harvestTurn": 3,
+      "cardsYielded": 2,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_autumn",
+      "plotId": "plot_01",
+      "cropId": "crop_wheat",
+      "cardId": "card_harvest",
+      "plantTurn": 0,
+      "harvestTurn": 2,
+      "cardsYielded": 1,
+      "fertilized": false
+    },
+    {
+      "seasonId": "season_autumn",
+      "plotId": "plot_02",
+      "cropId": "crop_turnip",
+      "cardId": "card_slash",
+      "plantTurn": 0,
+      "harvestTurn": 1,
+      "cardsYielded": 3,
+      "fertilized": false
+    }
+  ],
+  "sieges": [
+    {
+      "seasonId": "season_spring",
+      "enemyId": "enemy_cur",
+      "enemyHp": 16,
+      "isBoss": false,
+      "held": true,
+      "emptyDeck": false,
+      "playerHpLeft": 60,
+      "deckBefore": 6,
+      "cardsBroken": 0,
+      "cardsTidied": 0
+    },
+    {
+      "seasonId": "season_summer",
+      "enemyId": "enemy_crow",
+      "enemyHp": 24,
+      "isBoss": false,
+      "held": true,
+      "emptyDeck": false,
+      "playerHpLeft": 57,
+      "deckBefore": 12,
+      "cardsBroken": 1,
+      "cardsTidied": 0
+    },
+    {
+      "seasonId": "season_autumn",
+      "enemyId": "enemy_bear",
+      "enemyHp": 36,
+      "isBoss": false,
+      "held": true,
+      "emptyDeck": false,
+      "playerHpLeft": 54,
+      "deckBefore": 15,
+      "cardsBroken": 1,
+      "cardsTidied": 0
+    },
+    {
+      "seasonId": "season_winter",
+      "enemyId": "enemy_captain",
+      "enemyHp": 57,
+      "isBoss": true,
+      "held": true,
+      "emptyDeck": false,
+      "playerHpLeft": 19,
+      "deckBefore": 14,
+      "cardsBroken": 1,
+      "cardsTidied": 0
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card_slash",
+      "count": 7,
+      "usesLeft": 45,
+      "usesMax": 70,
+      "wornPct": 35,
+      "fromCrops": [
+        "crop_turnip"
+      ]
+    },
+    {
+      "cardId": "card_bulwark",
+      "count": 3,
+      "usesLeft": 7,
+      "usesMax": 15,
+      "wornPct": 53,
+      "fromCrops": [
+        "crop_pumpkin"
+      ]
+    },
+    {
+      "cardId": "card_ember",
+      "count": 2,
+      "usesLeft": 2,
+      "usesMax": 12,
+      "wornPct": 83,
+      "fromCrops": [
+        "crop_chili"
+      ]
+    },
+    {
+      "cardId": "card_sort",
+      "count": 0,
+      "usesLeft": 0,
+      "usesMax": 0,
+      "wornPct": 0,
+      "fromCrops": [
+        "crop_herb"
+      ]
+    },
+    {
+      "cardId": "card_harvest",
+      "count": 0,
+      "usesLeft": 0,
+      "usesMax": 0,
+      "wornPct": 0,
+      "fromCrops": [
+        "crop_wheat"
+      ]
+    }
+  ]
+}

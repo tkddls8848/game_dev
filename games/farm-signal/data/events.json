@@ -1,0 +1,145 @@
+{
+  "_": "전문(電文). 이 PoC의 콘텐츠 축은 대사가 아니라 '남이 보내오는 전문'이다.",
+  "_ContentBudget": "전문은 (반응 틀 x 작물)의 격자다. 틀 8개 x 작물 8종 = 64통이 8개 분량의 글값으로 나온다. 이것이 이 훅의 콘텐츠 비용 절감이고, ContentBudget 검사기가 그 수를 뽑는다.",
+  "_자리표시자": "{0}=작물 이름 · {1}=수치. 조각을 이어 붙이지 않는다 — 영어는 어순이 다르다(뿌리 CLAUDE.md 설계 원칙 6).",
+
+  "beatIntervalDays": 7,
+  "linesPerEvent": 4,
+  "budgetEventCeiling": 96,
+  "budgetLineCeiling": 384,
+
+  "templates": [
+    {
+      "id": "copyReport", "kind": "copycat", "nameKo": "모방 보고", "nameEn": "Copycat report",
+      "linesKo": [
+        "장터 소식 {1}통 접수",
+        "강 아래 세 집이 {0}을 갈아 넣었다",
+        "네 밭을 보고 정한 것이라 한다",
+        "다음 장 시세는 내려간다"
+      ],
+      "linesEn": [
+        "Market wire, {1} reports received",
+        "Three farms downriver have turned their beds to {0}",
+        "They say they decided after looking at your field",
+        "Next market will price it lower"
+      ]
+    },
+    {
+      "id": "priceFall", "kind": "copycat", "nameKo": "시세 하락", "nameEn": "Price fall",
+      "linesKo": [
+        "시세판 갱신",
+        "{0} 지수 {1}",
+        "작년 이맘때보다 낮다",
+        "물량이 많다는 뜻이다"
+      ],
+      "linesEn": [
+        "Board updated",
+        "{0} index {1}",
+        "Lower than this time last year",
+        "Which means there is too much of it"
+      ]
+    },
+    {
+      "id": "priceRise", "kind": "copycat", "nameKo": "시세 상승", "nameEn": "Price rise",
+      "linesKo": [
+        "시세판 갱신",
+        "{0} 지수 {1}",
+        "올해 아무도 심지 않았다",
+        "값을 부르는 쪽이 사는 쪽이다"
+      ],
+      "linesEn": [
+        "Board updated",
+        "{0} index {1}",
+        "Nobody planted it this year",
+        "The buyer is the one naming the price now"
+      ]
+    },
+    {
+      "id": "thiefWarn", "kind": "theft", "nameKo": "도둑 예고", "nameEn": "Thief warning",
+      "linesKo": [
+        "야경 전문",
+        "{0} 밭을 세는 사람이 있었다",
+        "길가에서 두 번 지나갔다고 한다",
+        "위험도 {1}"
+      ],
+      "linesEn": [
+        "Night watch wire",
+        "Someone was counting your rows of {0}",
+        "Passed the roadside twice, they say",
+        "Risk {1}"
+      ]
+    },
+    {
+      "id": "thiefHit", "kind": "theft", "nameKo": "도둑 침입", "nameEn": "Theft",
+      "linesKo": [
+        "간밤에 밭이 열렸다",
+        "{0} {1}칸이 비었다",
+        "길 쪽부터 걷어 갔다",
+        "무엇이 있는지 알고 온 것이다"
+      ],
+      "linesEn": [
+        "The field was opened last night",
+        "{1} plots of {0} stand empty",
+        "They took from the roadside first",
+        "They came knowing what was there"
+      ]
+    },
+    {
+      "id": "visitorArrive", "kind": "renown", "nameKo": "방문자", "nameEn": "Visitors",
+      "linesKo": [
+        "길에서 온 전문",
+        "{0}을 보러 오는 사람이 늘었다",
+        "오늘 {1}명이 문을 두드렸다",
+        "밭에서 바로 사 간다"
+      ],
+      "linesEn": [
+        "Wire from the road",
+        "More people come to see the {0}",
+        "{1} knocked at the gate today",
+        "They buy straight from the field"
+      ]
+    },
+    {
+      "id": "screenNoticed", "kind": "screen", "nameKo": "가림 간파", "nameEn": "Screen noticed",
+      "linesKo": [
+        "장터 소식",
+        "{0} 뒤에 무엇이 있느냐고 묻는다",
+        "키 큰 것을 길가에 세운 이유를 안다는 사람도 있다",
+        "관측 {1}"
+      ],
+      "linesEn": [
+        "Market talk",
+        "They ask what stands behind the {0}",
+        "Some say they know why the tall crop went to the roadside",
+        "Observed {1}"
+      ]
+    },
+    {
+      "id": "fogCover", "kind": "weather", "nameKo": "안개", "nameEn": "Fog",
+      "linesKo": [
+        "기상 전문",
+        "골짜기에 안개 {1}일",
+        "{0}을 걷는 동안 길에서 보이지 않았다",
+        "이 계절 관측은 낮게 잡힌다"
+      ],
+      "linesEn": [
+        "Weather wire",
+        "Fog in the valley, {1} days",
+        "The {0} came in unseen from the road",
+        "Observation runs low this season"
+      ]
+    }
+  ],
+
+  "events": [
+    { "id": "openBoard",   "nameKo": "시세판 개장",   "onYear": 1,  "onSeason": "spring", "onDay": 1,  "minObserved": -1, "minRenownLevel": -1, "once": 1, "textKo": "시세판을 열었다. 이 판은 네 밭도 셈한다" },
+    { "id": "roadCount",   "nameKo": "길 계수",       "onYear": -1, "onSeason": "",       "onDay": 7,  "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "길 지나는 사람을 세는 날이다" },
+    { "id": "marketDay",   "nameKo": "장날",          "onYear": -1, "onSeason": "",       "onDay": 14, "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "장이 선다. 장에서 남의 밭 이야기를 듣는다" },
+    { "id": "gossip",      "nameKo": "소문",          "onYear": -1, "onSeason": "",       "onDay": 21, "minObserved": 400, "minRenownLevel": -1, "once": 0, "textKo": "네 밭이 장터에서 입에 오른다" },
+    { "id": "seasonClose", "nameKo": "장 마감",       "onYear": -1, "onSeason": "",       "onDay": 28, "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "계절 장이 닫힌다. 시세판이 다시 찍힌다" },
+    { "id": "summerFair",  "nameKo": "여름 장터",     "onYear": -1, "onSeason": "summer", "onDay": 14, "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "여름 장터에 사람이 몰린다. 길이 붐빈다" },
+    { "id": "harvestWire", "nameKo": "수확 전문",     "onYear": -1, "onSeason": "autumn", "onDay": 21, "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "수확 보고가 사방에서 들어온다" },
+    { "id": "quietRoad",   "nameKo": "빈 길",         "onYear": -1, "onSeason": "winter", "onDay": 14, "minObserved": -1, "minRenownLevel": -1, "once": 0, "textKo": "겨울 길에는 아무도 없다. 아무도 보지 않는다" },
+    { "id": "renownWire",  "nameKo": "평판 전문",     "onYear": -1, "onSeason": "",       "onDay": 28, "minObserved": -1, "minRenownLevel": 2,  "once": 0, "textKo": "네 밭 이름이 다른 고을까지 갔다" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "_": "§5 검사기가 쓰는 한계값. 이 파일을 고치면 밸런스 판정선이 움직인다.",
+  "monteCarloRuns": 300,
+  "dominanceRuns": 120,
+  "dominanceMaxWinRatePct": 55,
+  "randomWinRatePctMin": 0,
+  "randomWinRatePctMax": 5,
+  "randomBattleWinRatePctMin": 40,
+  "randomBattleWinRatePctMax": 95,
+  "_무작위구간": "회차 전체를 무작위로 이기는 일은 거의 없어 0%에 붙는다. 아래쪽 경계는 첫 전투 하나로 잰다.",
+  "greedyWinRatePctMin": 40,
+  "greedyWinRatePctMax": 80,
+  "deadCardMinAdoptionPct": 5,
+  "rewardPenaltyMaxPct": 20,
+  "seedBase": 91000,
+  "weakDamagePct": 75
+}

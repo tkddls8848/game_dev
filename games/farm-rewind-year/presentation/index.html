@@ -1,0 +1,369 @@
+<!doctype html>
+<!--
+  farm-rewind-year 연출 목업 — 필사본 달력·연감.
+
+  손으로 그린 그림이 아니다. ../data/ 의 실제 JSON을 읽어서 그린다.
+  날씨는 C#과 같은 알고리즘(.NET System.Random(seed))을 이식해 뽑으므로 화면의 한 해가
+  테스트가 돌린 한 해와 같다 — 이 PoC에서는 그것이 규칙이기도 하다(되감아도 같은 해).
+  색·크기는 palette.json 이 정한다.
+
+  보는 법 (file:// 로 열면 fetch가 막힌다):
+    cd games/farm-rewind-year && python -m http.server 8000
+    http://localhost:8000/presentation/
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>되돌릴 수 있는 한 해 · 연감</title>
+<style>
+  @font-face { font-family:'EBGaramond'; src:url('assets/EBGaramond.ttf') format('truetype'); font-display:swap; }
+  @font-face { font-family:'SongMyung'; src:url('assets/SongMyung-Regular.subset.ttf') format('truetype'); font-display:swap; }
+
+  :root{
+    --void:#070C18; --ink:#0A1226; --surface:#132140; --night:#0F1A33;
+    --paper:#D8CBA8; --gold:#C9A227; --goldLight:#E8CE7A; --goldDeep:#8A6E16;
+    --accent:#9E2B2B; --muted:#4A5A7A; --grid:#243858; --scar:#7A4A52;
+    --dayCell:34px; --moon:18px; --seasonGap:14px;
+    --fTitle:46px; --fHead:22px; --fBody:15px; --fHint:12px; --fCell:11px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--void); color:var(--paper);
+    font-family:'SongMyung','EBGaramond',serif; font-size:var(--fBody); line-height:1.7;
+    padding:24px 16px 64px;
+  }
+  .folio{
+    max-width:1060px; margin:0 auto; position:relative;
+    background:
+      radial-gradient(ellipse at 50% 0%, #1A2A4E 0%, var(--night) 46%, var(--ink) 100%);
+    padding:40px 34px 46px;
+    border:1px solid var(--goldDeep);
+    box-shadow:0 0 0 4px var(--ink), 0 20px 60px rgba(0,0,0,.7);
+  }
+  /* 별 · 양피지 결 · 비네팅 */
+  .folio::before{
+    content:''; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:
+      radial-gradient(1px 1px at 12% 8%, #fff 50%, transparent 50%),
+      radial-gradient(1px 1px at 78% 14%, #fff 50%, transparent 50%),
+      radial-gradient(1px 1px at 33% 21%, #cfe 50%, transparent 50%),
+      radial-gradient(1px 1px at 61% 5%, #fff 50%, transparent 50%),
+      radial-gradient(1px 1px at 90% 30%, #fff 50%, transparent 50%),
+      radial-gradient(1px 1px at 5% 34%, #cfe 50%, transparent 50%),
+      radial-gradient(1px 1px at 47% 11%, #fff 50%, transparent 50%);
+  }
+  .folio::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:url('assets/paper.jpg');
+    background-size:512px 512px; opacity:.14; mix-blend-mode:overlay;
+  }
+  .folio > *{position:relative; z-index:1}
+
+  h1{
+    font-family:'EBGaramond',serif; font-size:var(--fTitle); font-weight:400; margin:0 0 2px;
+    letter-spacing:3px;
+    background:linear-gradient(105deg,var(--goldDeep) 0%,var(--goldLight) 38%,var(--gold) 58%,var(--goldDeep) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  h1 .ko{
+    font-family:'SongMyung',serif; font-size:.56em; display:block; letter-spacing:.06em;
+    -webkit-text-fill-color:var(--muted); color:var(--muted);
+  }
+  h2{
+    font-size:var(--fHead); font-weight:400; margin:38px 0 10px; color:var(--gold);
+    border-bottom:1px solid var(--grid); padding-bottom:4px; letter-spacing:.05em;
+  }
+  h2 small{float:right; font-size:var(--fHint); color:var(--muted); letter-spacing:0}
+  .lede{color:var(--muted); font-size:var(--fHint); margin:0 0 6px}
+  code{color:var(--goldLight); font-family:'EBGaramond',serif}
+
+  /* 달력 */
+  .year{display:flex; gap:var(--seasonGap); flex-wrap:wrap; margin-top:8px}
+  .season{flex:1 1 230px; min-width:214px}
+  .season h3{margin:0 0 6px; font-size:var(--fBody); font-weight:400; letter-spacing:.1em; color:var(--paper)}
+  .season h3 span{color:var(--muted); font-size:var(--fHint); letter-spacing:0}
+  .days{display:grid; grid-template-columns:repeat(7,1fr); gap:3px}
+  .day{
+    height:var(--dayCell); border:1px solid var(--grid); border-radius:2px;
+    display:grid; place-items:center; position:relative; background:rgba(19,33,64,.55);
+  }
+  .day .d{position:absolute; top:1px; left:3px; font-size:9px; color:var(--muted)}
+  .day .w{position:absolute; bottom:0px; right:3px; font-size:10px; color:var(--muted)}
+  .day.storm{border-color:var(--accent)}
+  .day.frost .w{color:#9DC3DE}
+  .day.full{border-color:var(--gold); box-shadow:0 0 10px rgba(201,162,39,.55)}
+  .moon{width:var(--moon); height:var(--moon); display:block}
+
+  /* 밭 */
+  .plots{display:grid; gap:5px; margin-top:8px}
+  .plot{
+    border:1px solid var(--grid); padding:6px 7px; font-size:var(--fCell); line-height:1.4;
+    background:rgba(19,33,64,.5); border-radius:2px;
+  }
+  .plot.bought{border-style:dashed; opacity:.78}
+  .plot b{font-weight:400; color:var(--goldLight); font-family:'EBGaramond',serif; font-size:13px}
+  .plot .top{color:var(--gold)}
+  .plot .cap{color:var(--muted)}
+
+  table{border-collapse:collapse; width:100%; font-size:var(--fHint)}
+  th,td{border-bottom:1px solid var(--grid); padding:5px 7px; text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  th{font-weight:400; color:var(--gold); border-bottom:1px solid var(--goldDeep); letter-spacing:.06em}
+  td.scar{color:var(--scar)}
+  td.ok{color:var(--goldLight)}
+  td.no{color:var(--accent)}
+  .bar{display:inline-block; height:7px; background:var(--gold); vertical-align:middle; border-radius:1px}
+  .bar.low{background:var(--scar)}
+
+  .facts{display:flex; flex-wrap:wrap; gap:0 26px; font-size:var(--fHint); color:var(--muted); margin:8px 0 0}
+  .facts div b{color:var(--goldLight); font-weight:400; font-family:'EBGaramond',serif; font-size:14px}
+  .note{border-left:2px solid var(--accent); padding:2px 0 2px 12px; margin:14px 0 0; font-size:var(--fHint); color:var(--muted)}
+  .err{color:#E08B8B; font-size:var(--fBody)}
+  @media (max-width:640px){
+    :root{--fTitle:30px; --dayCell:28px}
+    .folio{padding:22px 14px 30px}
+  }
+</style>
+</head>
+<body>
+<div class="folio">
+  <h1 id="title">ANNUS REVOLUTUS<span class="ko" id="titleKo">&nbsp;</span></h1>
+  <p class="lede" id="lede">data/ 를 읽는 중…</p>
+  <div id="body"></div>
+</div>
+
+<script>
+// ── .NET System.Random(seed) 이식 ────────────────────────────────────────────
+// 이 PoC에서 이것은 재현성 문제가 아니라 규칙이다: 되감은 해의 날씨가 같아야
+// 플레이어의 기억이 값을 갖는다. 화면과 테스트가 같은 해를 보여야 하므로 그대로 이식했다.
+function NetRandom(seed){
+  const MBIG=2147483647, MSEED=161803398;
+  const S=new Array(56).fill(0);
+  const sub=(seed===-2147483648)?2147483647:Math.abs(seed);
+  let mj=MSEED-sub, mk=1;
+  S[55]=mj;
+  for(let i=1;i<55;i++){ const ii=(21*i)%55; S[ii]=mk; mk=mj-mk; if(mk<0) mk+=MBIG; mj=S[ii]; }
+  for(let k=1;k<5;k++) for(let i=1;i<56;i++){ let n=i+30; if(n>=55) n-=55; S[i]-=S[1+n]; if(S[i]<0) S[i]+=MBIG; }
+  let inext=0, inextp=21;
+  return { next(max){
+    let a=inext,b=inextp;
+    if(++a>=56) a=1;
+    if(++b>=56) b=1;
+    let r=S[a]-S[b];
+    if(r===MBIG) r--;
+    if(r<0) r+=MBIG;
+    S[a]=r; inext=a; inextp=b;
+    return Math.floor(r*(1.0/MBIG)*max);
+  }};
+}
+
+const WEATHER_GLYPH={clear:'·',rain:'╱',storm:'⚡',drought:'△',frost:'✳'};
+
+async function j(p){ const r=await fetch(p); if(!r.ok) throw new Error(p+' → '+r.status); return r.json(); }
+
+function applyPalette(pal){
+  const r=document.documentElement.style;
+  for(const k in pal.color) if(!k.startsWith('_')) r.setProperty('--'+k,pal.color[k]);
+  r.setProperty('--dayCell',pal.almanac.dayCellPx+'px');
+  r.setProperty('--moon',pal.almanac.moonPx+'px');
+  r.setProperty('--seasonGap',pal.almanac.seasonGapPx+'px');
+  r.setProperty('--fTitle',pal.type.sizeTitle+'px');
+  r.setProperty('--fHead',pal.type.sizeHeading+'px');
+  r.setProperty('--fBody',pal.type.sizeBody+'px');
+  r.setProperty('--fHint',pal.type.sizeHint+'px');
+  r.setProperty('--fCell',pal.type.sizeCell+'px');
+}
+
+function weatherYear(cfg,seasons){
+  const rng=NetRandom(cfg.seed+cfg.weatherSeedOffset);
+  const out=[], dps=seasons.daysPerSeason;
+  for(let d=0; d<dps*seasons.seasons.length; d++){
+    const s=seasons.seasons[Math.floor(d/dps)];
+    let total=0; for(const w of s.weatherWeights) total+=w.weight;
+    let roll=rng.next(total), pick=s.weatherWeights[s.weatherWeights.length-1].weatherId;
+    for(const w of s.weatherWeights){ roll-=w.weight; if(roll<0){ pick=w.weatherId; break; } }
+    out.push(pick);
+  }
+  return out;
+}
+
+/// C#의 GameData.MoonOfDay 와 같은 셈: 주기 안의 날짜를 넘지 않는 가장 늦은 위상.
+function moonOfDay(dayInYear,seasons){
+  const inCycle=dayInYear%seasons.moonCycleDays+1;
+  let best=seasons.moonPhases[0];
+  for(const m of seasons.moonPhases) if(m.dayInCycle<=inCycle && m.dayInCycle>=best.dayInCycle) best=m;
+  return best;
+}
+
+/// 위상 id를 조명된 비율(0=삭, 1=망)과 어느 쪽이 밝은지로 옮긴다.
+function moonSvg(phase,px){
+  const map={new:[0,1],waxcres:[0.25,1],firstq:[0.5,1],waxgib:[0.75,1],
+             full:[1,1],wangib:[0.75,-1],lastq:[0.5,-1],wancres:[0.25,-1]};
+  const [lit,side]=map[phase.id]||[0,1];
+  const r=px/2;
+  let inner='';
+  if(lit<=0){
+    inner='<circle cx="'+r+'" cy="'+r+'" r="'+(r-.6)+'" fill="none" stroke="var(--muted)" stroke-width="1"/>';
+  }else if(lit>=1){
+    inner='<circle cx="'+r+'" cy="'+r+'" r="'+(r-.6)+'" fill="var(--goldLight)"/>';
+  }else{
+    // 종결선의 폭을 lit 로 잡아 초승·상현·하현을 한 식으로 그린다.
+    const k=(lit-0.5)*2*r*side;
+    inner='<circle cx="'+r+'" cy="'+r+'" r="'+(r-.6)+'" fill="none" stroke="var(--muted)" stroke-width="1"/>'
+      +'<path d="M'+r+',0.6 A '+(r-.6)+','+(r-.6)+' 0 0 '+(side>0?1:0)+' '+r+','+(px-0.6)
+      +' A '+Math.abs(k||0.1)+','+(r-.6)+' 0 0 '+(k*side>0?0:1)+' '+r+',0.6 Z" fill="var(--gold)"/>';
+  }
+  return '<svg class="moon" viewBox="0 0 '+px+' '+px+'" aria-hidden="true">'+inner+'</svg>';
+}
+
+(async function(){
+  const body=document.getElementById('body');
+  let cfg,seasons,crops,plots,econ,events,pal;
+  try{
+    [pal,cfg,seasons,crops,plots,econ,events]=await Promise.all([
+      j('palette.json'), j('../data/config.json'), j('../data/seasons.json'),
+      j('../data/crops.json'), j('../data/plots.json'), j('../data/economy.json'),
+      j('../data/events.json')]);
+  }catch(e){
+    document.getElementById('lede').innerHTML='<span class="err">data/ 를 읽지 못했다: '+e.message+
+      '<br>file:// 로 열면 브라우저가 fetch를 막는다. PoC 뿌리에서 <code>python -m http.server 8000</code> 을 띄우고 '+
+      '<code>http://localhost:8000/presentation/</code> 로 열 것.</span>';
+    return;
+  }
+  applyPalette(pal);
+  document.title=cfg.titleKo+' · 연감';
+  document.getElementById('titleKo').textContent=cfg.titleKo+' — '+pal.name;
+
+  const W=id=>seasons.weathers.find(x=>x.id===id);
+  const dpy=seasons.daysPerSeason*seasons.seasons.length;
+  const year=weatherYear(cfg,seasons);
+  const html=[];
+
+  document.getElementById('lede').textContent=
+    '씨드 '+cfg.seed+' · 한 해 '+dpy+'일 · 달의 주기 '+seasons.moonCycleDays+'일 · 할당량 '
+    +econ.quotaCoin+' · 되감기 한도 '+plots.rewind.maxRewinds+'회 · '+pal.oneLine;
+
+  // ── 한 해 ─────────────────────────────────────────────────────────────
+  html.push('<h2>한 해 <small>되감아도 이 달력이 다시 온다 — 그래서 기억이 값을 갖는다</small></h2>');
+  html.push('<div class="year">');
+  seasons.seasons.forEach((s,si)=>{
+    html.push('<div class="season"><h3>'+s.nameKo+' <span>전환 토질 −'+s.transitionSoilLoss+'</span></h3><div class="days">');
+    for(let d=0;d<seasons.daysPerSeason;d++){
+      const abs=si*seasons.daysPerSeason+d;
+      const wid=year[abs], m=moonOfDay(abs,seasons);
+      const full=m.id==='full';
+      html.push('<div class="day '+wid+(full?' full':'')+'" title="'+(abs+1)+'일 · '+s.nameKo+' '+(d+1)+'일 · '
+        +W(wid).nameKo+' · 달 '+m.nameKo+'">'
+        +'<span class="d">'+(d+1)+'</span>'+moonSvg(m,pal.almanac.moonPx)
+        +'<span class="w">'+WEATHER_GLYPH[wid]+'</span></div>');
+    }
+    html.push('</div></div>');
+  });
+  html.push('</div>');
+  const tally={};
+  for(const w of year) tally[w]=(tally[w]||0)+1;
+  html.push('<div class="facts">'+seasons.weathers.map(w=>
+    '<div>'+w.nameKo+' <b>'+(tally[w.id]||0)+'</b>일 (성장 '+w.growthPercent+'% · 진행도 −'+w.growthLossPoints+')</div>').join('')
+    +'<div>망 <b>'+seasons.seasons.length+'</b>번</div></div>');
+  html.push('<p class="note">폭풍은 하루 성장률만 낮추는 것이 아니라 <b>쌓아 둔 진행도를 −'
+    +W('storm').growthLossPoints+'점</b> 지운다(하루 이상적 성장 = 100점). '
+    +'언제 오는지는 한 해를 살아 본 사람만 안다 — 되감기가 값을 내는 자리다.</p>');
+
+  // ── 밭 ───────────────────────────────────────────────────────────────
+  html.push('<h2>밭 <small>점선은 사야 하는 칸 · 되감으면 산 칸은 그냥 사라진다</small></h2>');
+  html.push('<div class="plots" style="grid-template-columns:repeat('+plots.gridWidth+',1fr)">');
+  for(let y=0;y<plots.gridHeight;y++)
+    for(let x=0;x<plots.gridWidth;x++){
+      const p=plots.plots.find(q=>q.x===x&&q.y===y);
+      const can=crops.crops.filter(c=>p.soil>=c.minSoil);
+      const top=can.reduce((a,c)=>(!a||c.minSoil>a.minSoil)?c:a,null);
+      html.push('<div class="plot'+(p.startActive?'':' bought')+'">'
+        +'<div><b>'+p.id.replace('p','').replace('_','·')+'</b> 토질 <b>'+p.soil+'</b></div>'
+        +'<div class="top">'+(top?top.nameKo:'—')+'까지</div>'
+        +'<div class="cap">심을 수 있는 작물 '+can.length+'종</div></div>');
+    }
+  html.push('</div>');
+  html.push('<div class="facts">'
+    +'<div>처음부터 가진 칸 <b>'+plots.startActivePlots+'</b></div>'
+    +'<div>살 수 있는 칸 <b>'+plots.expansion.maxExtraPlots+'</b></div>'
+    +'<div>값 <b>'+plots.expansion.costBase+'</b> + '+plots.expansion.costPerPlot+'×산 개수</div>'
+    +'<div>기한 <b>'+plots.expansion.deadlineDayInYear+'일</b>까지</div>'
+    +'<div>시작 현금 <b>'+econ.startMoney+'</b></div>'
+    +'<div>계절마다 살림비 <b>'+econ.livingCostPerSeason+'</b></div>'
+    +'<div>우물 하루 <b>'+econ.wellWaterPerDay+'</b></div></div>');
+
+  // ── 되감기 사다리 ─────────────────────────────────────────────────────
+  const rw=plots.rewind;
+  const ladder=[];
+  for(let k=0;k<=rw.maxRewinds;k++){
+    const soils=plots.plots.map(p=>Math.max(rw.soilFloor,p.soil-k*rw.soilLossPerRewind));
+    const sum=soils.reduce((a,b)=>a+b,0);
+    const row={k:k,sum:sum,hosts:{}};
+    for(const c of crops.crops) row.hosts[c.id]=soils.filter(s=>s>=c.minSoil).length;
+    ladder.push(row);
+  }
+  const maxSum=ladder[0].sum;
+  html.push('<h2>되감기 사다리 <small>흔적 = 되감기마다 모든 칸 토질 −'+rw.soilLossPerRewind
+    +' (바닥 '+rw.soilFloor+') · plots.json 이 정한다</small></h2>');
+  html.push('<table><tr><th>되감기</th><th>봄 토질 합</th><th style="text-align:left">남은 땅</th>'
+    +crops.crops.slice().sort((a,b)=>b.minSoil-a.minSoil).map(c=>'<th>'+c.nameKo+'<br><span style="color:var(--muted)">≥'+c.minSoil+'</span></th>').join('')
+    +'</tr>');
+  const cropsDesc=crops.crops.slice().sort((a,b)=>b.minSoil-a.minSoil);
+  for(const row of ladder){
+    const pct=Math.round(row.sum*100/maxSum);
+    html.push('<tr><td>'+row.k+'</td><td class="'+(pct<50?'scar':'')+'">'+row.sum+'</td>'
+      +'<td style="text-align:left"><span class="bar'+(pct<50?' low':'')+'" style="width:'+pct+'%"></span></td>'
+      +cropsDesc.map(c=>'<td class="'+(row.hosts[c.id]===0?'no':'ok')+'">'+row.hosts[c.id]+'</td>').join('')
+      +'</tr>');
+  }
+  html.push('</table>');
+  html.push('<p class="note">표의 각 열이 <b>작물 사다리</b>다. 되감을수록 값비싼 작물을 받을 수 있는 칸이 줄고, '
+    +'마지막에는 '+cropsDesc[0].nameKo+'를 심을 칸이 하나도 없다. '
+    +'되감기는 날짜와 현금을 돌려주지만 <b>이 열들은 돌려주지 않는다</b>.</p>');
+
+  // ── 작물 ─────────────────────────────────────────────────────────────
+  html.push('<h2>작물 <small>최소 토질이 오르면 총수익도 오른다 — 그래야 사다리가 된다</small></h2>');
+  html.push('<table><tr><th>작물</th><th>계절</th><th>자라는 일수</th><th>물</th><th>수확</th>'
+    +'<th>씨앗값</th><th>판매단가</th><th>총수익</th><th>토질 소모</th><th>최소 토질</th></tr>');
+  for(const c of crops.crops.slice().sort((a,b)=>a.minSoil-b.minSoil)){
+    const sh=econ.shop.find(s=>s.cropId===c.id);
+    html.push('<tr><td>'+c.nameKo+' <span style="color:var(--muted)">'+c.nameEn+'</span></td>'
+      +'<td>'+c.seasons.map(id=>seasons.seasons.find(s=>s.id===id).nameKo).join('·')+'</td>'
+      +'<td>'+c.growDays+'</td><td>'+c.waterPerDay+'</td><td>'+c.yieldUnits+'</td>'
+      +'<td>'+sh.buySeed+'</td><td>'+sh.sellUnit+'</td><td class="ok">'+(c.yieldUnits*sh.sellUnit)+'</td>'
+      +'<td class="scar">−'+c.soilDrain+'</td><td>'+c.minSoil+'</td></tr>');
+  }
+  html.push('</table>');
+  html.push('<p class="note">계절이 바뀌면 그 계절을 못 견디는 작물은 <b>죽는다</b>. 씨앗값과 그 칸의 시간이 같이 사라진다 — '
+    +'이 마감이 있어야 "언제 심는가"가 판단이 되고, 그 판단에 필요한 것이 한 해의 기억이다.</p>');
+
+  // ── 사건 ─────────────────────────────────────────────────────────────
+  html.push('<h2>사건 <small>'+events.events.length+'개 · '+events.beatIntervalDays+'일마다 새 사건 · 사건당 '
+    +events.linesPerEvent+'줄 · 되감기 변주 '+events.rewindVariantLines+'줄</small></h2>');
+  html.push('<table><tr><th>사건</th><th>자리</th><th>조건</th><th style="text-align:left">원문</th></tr>');
+  for(const e of events.events){
+    const where=[e.onSeason?seasons.seasons.find(s=>s.id===e.onSeason).nameKo:'', e.onDay!==-1?e.onDay+'일':'']
+      .filter(Boolean).join(' ')||'조건만';
+    const cond=[e.minRewinds!==-1?'되감기 ≥'+e.minRewinds:'', e.minMoney!==-1?'현금 ≥'+e.minMoney:'']
+      .filter(Boolean).join(' · ')||'—';
+    html.push('<tr><td>'+e.nameKo+'</td><td>'+where+'</td>'
+      +'<td class="'+(e.minRewinds>0?'scar':'')+'">'+cond+'</td>'
+      +'<td style="text-align:left;color:var(--muted)">'+e.textKo+'</td></tr>');
+  }
+  html.push('</table>');
+  html.push('<p class="note">되감기 횟수로 걸리는 사건이 흔적을 <b>문장으로</b> 남기는 자리다. '
+    +'수치로만 남으면 플레이어가 그것을 읽지 못한다. 청구서는 <code>ContentBudget</code>이 뽑는다 — '
+    +'한 해가 전부라 달력이 늘지 않고, 그 결과가 README에 있다.</p>');
+
+  body.innerHTML=html.join('');
+
+  // 날짜를 누르면 책 넘기는 소리, 사다리 줄을 누르면 책 덮는 소리(되감기).
+  const page=new Audio(pal.sfx.pageTurn), rewind=new Audio(pal.sfx.rewind);
+  document.querySelectorAll('.day').forEach(el=>el.addEventListener('click',()=>{ page.currentTime=0; page.play().catch(()=>{}); }));
+  document.querySelectorAll('table tr').forEach(el=>el.addEventListener('click',()=>{ rewind.currentTime=0; rewind.play().catch(()=>{}); }));
+})();
+</script>
+</body>
+</html>

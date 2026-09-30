@@ -1,0 +1,97 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(청사진 · 목판화 · 세피아 측량도 · 필사본 연감 · 크라프트 장부 · 겨울 등불)과 겹치지 않는다. 여기만 **붉은색·검정·크림 셋뿐**이고, 구도가 각진 사선이며, 인쇄 오차(미스레지스터)를 일부러 남긴다.",
+
+  "name": "소비에트 구성주의 포스터",
+  "oneLine": "세 가지 색과 각진 사선으로 밀어붙인 인쇄물. 정보가 장식보다 먼저 온다",
+  "reference": "1920년대 구성주의 포스터 — 붉은색·검정·크림, 대각 격자, 스텐실 글자, 거친 활판 인쇄의 망점과 미스레지스터",
+
+  "color": {
+    "void": "#0B0A0A",
+    "ink": "#161211",
+    "surface": "#1E1A18",
+    "paper": "#EDE3CB",
+    "paperDim": "#D6CAAE",
+    "accent": "#C1272D",
+    "accentDeep": "#8C1519",
+    "muted": "#7A6F5E",
+    "highlight": "#EDE3CB",
+    "_셋뿐": "붉은색(accent) · 검정(void/ink) · 크림(paper) 셋이 전부다. paperDim·accentDeep·muted 는 그 셋의 농도 변형이고 네 번째 색이 아니다"
+  },
+
+  "type": {
+    "family": "Black Han Sans",
+    "familyStencil": "Stardos Stencil",
+    "familyBody": "Nanum Gothic",
+    "_전부_OFL": "세 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256을 적었다",
+    "sizeTitle": 76,
+    "sizeHeading": 34,
+    "sizeBody": 17,
+    "sizeHint": 13,
+    "sizeNumeral": 15,
+    "trackingTitle": -2,
+    "trackingStencil": 2,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "layout": {
+    "_": "지도는 data/map.json 에 좌표가 없다(설계 원칙). 배치는 **연출이 정한다** — 그래서 여기 있다. 격자 칸 번호이고 픽셀이 아니다",
+    "gridColumns": 4,
+    "gridRows": 3,
+    "diagonalDeg": -18,
+    "bandThicknessPx": 14,
+    "zones": {
+      "z_treeline": [0, 2],
+      "z_gully": [1, 2],
+      "z_ridge": [1, 0],
+      "z_track": [2, 1],
+      "z_post": [3, 0],
+      "z_shed": [3, 2],
+      "z_culvert": [0, 1],
+      "z_embankment": [1, 1],
+      "z_woodpile": [1, 2],
+      "z_siding": [2, 1],
+      "z_watchbox": [3, 0],
+      "z_crossing": [3, 2]
+    }
+  },
+
+  "print": {
+    "_": "거친 인쇄 질감. 이 셋이 이 연출의 지문이다",
+    "halftoneDotPx": 3,
+    "halftonePitchPx": 6,
+    "halftoneOpacity": 14,
+    "misregisterPx": 3,
+    "misregisterAngleDeg": -18,
+    "paperTexture": "assets/textures/paper-grain.jpg",
+    "paperTextureOpacity": 22,
+    "ruleThickPx": 6,
+    "ruleThinPx": 2
+  },
+
+  "grade": {
+    "saturation": 0.55,
+    "contrast": 1.35,
+    "blackLift": 0.02,
+    "vignette": 0.2,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 인쇄물이 된다",
+    "_채도": "0.55는 낮은 값이 아니다 — 색이 셋뿐이라 채도를 올려도 화려해지지 않고 붉은색만 비명을 지른다"
+  },
+
+  "motion": {
+    "_": "연출은 부드럽고 **판정은 틱(1000ms)에서만** 내려간다 (PLAN_TACTICS §8). 이 값들은 눈속임이다",
+    "tickMs": 1000,
+    "timelineSweepMs": 240,
+    "panelRevealMs": 160,
+    "easing": "cubic-bezier(.2,.7,.2,1)"
+  },
+
+  "sfx": {
+    "footstep": ["assets/sfx/footstep00.ogg", "assets/sfx/footstep03.ogg"],
+    "plant": "assets/sfx/metalLatch.ogg",
+    "_없는_것": "총성·폭발은 아직 없다. 손에 든 CC0 팩(Kenney rpg-audio)에 없었고, 없는 것을 있는 척 적지 않는다"
+  }
+}

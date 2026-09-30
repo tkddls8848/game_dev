@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1dc31651-6ae4-41fe-b09b-edce1db6ddf1" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:50:03" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:50:03.5612847+09:00" queuing="2026-09-27T20:50:03.5612851+09:00" start="2026-09-27T20:50:02.7201219+09:00" finish="2026-09-27T20:50:05.7712706+09:00" />
+  <TestSettings name="default" id="df42ce51-66da-4bfd-a502-3f3ac294f0d9">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_50_03" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ec731144-cdf0-4282-9a80-a5bc6ced57c4" testId="d191fa75-f148-94cc-9025-cbd5aa4da89f" testName="한_방에_죽치는_것은_최적이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0019160" startTime="2026-09-27T20:50:04.4759249+09:00" endTime="2026-09-27T20:50:04.4778410+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec731144-cdf0-4282-9a80-a5bc6ced57c4">
+      <Output>
+        <StdOut>죽치기 r_porch       3/14&#xD;
+죽치기 r_kitchen     2/14&#xD;
+죽치기 r_study       2/14&#xD;
+죽치기 r_cellar      3/14&#xD;
+죽치기 r_greenhouse  2/14&#xD;
+죽치기 r_bath        1/14&#xD;
+가장 나은 죽치기 r_porch 3/14 · 최적 14/14 (상한 4)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e731b8c6-50b1-4525-84d5-b30bfd8aa05e" testId="90f20096-2128-0316-bbce-2bd222d33e8a" testName="어느_방도_혼자_판을_결정하지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004570" startTime="2026-09-27T20:50:04.4746569+09:00" endTime="2026-09-27T20:50:04.4751139+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e731b8c6-50b1-4525-84d5-b30bfd8aa05e">
+      <Output>
+        <StdOut>r_porch 3 · r_kitchen 2 · r_study 2 · r_cellar 3 · r_greenhouse 2 · r_bath 2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="edb127f5-2888-4568-960d-6a2e849fd230" testId="3387906f-01e0-178e-808e-aadc1c826e76" testName="언어를_바꾸면_값이_따라온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003780" startTime="2026-09-27T20:50:04.4600962+09:00" endTime="2026-09-27T20:50:04.4604740+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="edb127f5-2888-4568-960d-6a2e849fd230" />
+    <UnitTestResult executionId="512d0e35-bd41-4220-9d6f-8ecb431d7562" testId="bfb94fcd-72f0-4b37-67c0-0b579fc74ff6" testName="머리향만이_시각을_말한다는_약속이_수치로_지켜진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004980" startTime="2026-09-27T20:50:03.4063989+09:00" endTime="2026-09-27T20:50:03.4068967+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="512d0e35-bd41-4220-9d6f-8ecb431d7562">
+      <Output>
+        <StdOut>머리향-잔향 간격 283‰ · 허용 오차 110‰ · 중간향은 전부 오차 안</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cc7967a0-8be1-440d-8dc1-5c296d60ff25" testId="dce7ab66-1dfe-6016-021a-ab8a3ba25b27" testName="향_계열이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0033990" startTime="2026-09-27T20:50:03.4095443+09:00" endTime="2026-09-27T20:50:03.4129425+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc7967a0-8be1-440d-8dc1-5c296d60ff25" />
+    <UnitTestResult executionId="e2787406-4812-44f4-bb96-1b6df2393815" testId="ef00e935-9aea-75f9-32df-a844d3a13b4b" testName="사람의_향_지문이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0012760" startTime="2026-09-27T20:50:03.4069084+09:00" endTime="2026-09-27T20:50:03.4081841+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2787406-4812-44f4-bb96-1b6df2393815">
+      <Output>
+        <StdOut>사람 5명 · 표지 5종 · 겹치는 계열 5종</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da12f0ef-b7b6-4154-92f8-a460b3a15a8e" testId="1144832c-cb3b-e2c7-d911-2e9e8580b148" testName="어떤_한_번_훑기로도_잡히지_않는_사실이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003830" startTime="2026-09-27T20:50:04.4685948+09:00" endTime="2026-09-27T20:50:04.4689771+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da12f0ef-b7b6-4154-92f8-a460b3a15a8e">
+      <Output>
+        <StdOut>순열 720가지 어느 것으로도 못 잡는 사실 4개: v08(찬모 한씨·부엌 18:30), v09(찬모 한씨·지하 저장실 18:45), v10(집주인의 아들·서재 19:00), v11(집주인의 아들·욕실 19:30)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d78e97b9-2d43-45d8-a3e5-ff7af80a0528" testId="80749f29-d72f-47c7-f0fe-0906e2c5daed" testName="잡내는_사실을_가려도_영영_묻지는_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003150" startTime="2026-09-27T20:50:03.6122963+09:00" endTime="2026-09-27T20:50:03.6126114+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d78e97b9-2d43-45d8-a3e5-ff7af80a0528">
+      <Output>
+        <StdOut>잡내 계열 5종 중 표지 잔향 0종</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b25ac324-b803-4128-b00d-6a0daf87f15b" testId="99ca4ae1-6f7b-61f6-3358-cd46a18301ef" testName="방마다_층을_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002900" startTime="2026-09-27T20:50:04.3803639+09:00" endTime="2026-09-27T20:50:04.3806535+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b25ac324-b803-4128-b00d-6a0daf87f15b">
+      <Output>
+        <StdOut>r_porch       잡내@15:00  잡내@15:15  a_doctor@16:45  a_son@18:15  a_gardener@21:30&#xD;
+r_kitchen     잡내@16:15  잡내@16:30  a_housekeeper@17:00  a_cook@18:30&#xD;
+r_study       잡내@15:30  잡내@16:45  a_doctor@17:30  a_son@19:00&#xD;
+r_cellar      잡내@16:00  a_doctor@17:15  a_cook@18:45  a_gardener@20:15&#xD;
+r_greenhouse  잡내@15:00  a_gardener@16:00  잡내@16:00  a_housekeeper@20:30&#xD;
+r_bath        잡내@15:45  a_housekeeper@18:00  a_son@19:30</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6bfbcc9d-569c-481b-87f2-d4e15a01f2c8" testId="22f72fb8-f3e9-7aa8-f036-1d00e3e4c4c0" testName="집이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006730" startTime="2026-09-27T20:50:03.4088598+09:00" endTime="2026-09-27T20:50:03.4095325+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6bfbcc9d-569c-481b-87f2-d4e15a01f2c8">
+      <Output>
+        <StdOut>방 6개 · 길 9개 · 전부 이어져 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7ef2a110-e9fa-4003-9ec9-7451ce603499" testId="410b95bc-6499-607f-d603-ffbd5459468d" testName="한쪽만_켠_두_세계도_한_번_훑기를_막지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001689" startTime="2026-09-27T20:50:04.4689916+09:00" endTime="2026-09-27T20:50:04.4691603+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ef2a110-e9fa-4003-9ec9-7451ce603499">
+      <Output>
+        <StdOut>섞임o·감쇠x: 최고 14 · 평균 14&#xD;
+섞임x·감쇠o: 최고 14 · 평균 12&#xD;
+→ 한쪽만으로는 아무것도 막지 못한다. 막는 것은 둘의 맞물림이다.</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6f818159-8de7-4c5f-bfe6-07e56cac5fde" testId="b9ded663-3144-85a0-b88a-56eaa8cc6d8d" testName="방금_맡은_방을_바로_다시_맡는_것은_거의_헛일이다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0047460" startTime="2026-09-27T20:50:04.4698836+09:00" endTime="2026-09-27T20:50:04.4746292+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f818159-8de7-4c5f-bfe6-07e56cac5fde">
+      <Output>
+        <StdOut>제자리 재시도 36번 중 새 사실 0개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="016949b0-609e-4d5a-b768-37d380b5e8d1" testId="bf48aaf7-0447-aaeb-7697-b5499266f2ca" testName="플레이어가_닿기_전에_닫히는_창이_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0783670" startTime="2026-09-27T20:50:03.6990296+09:00" endTime="2026-09-27T20:50:03.7773957+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="016949b0-609e-4d5a-b768-37d380b5e8d1">
+      <Output>
+        <StdOut>창 14개가 모두 실제로 닿을 수 있는 자리에 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9e450a78-b208-41e4-96e6-bf7fd3b96928" testId="4caf9831-44b8-8df0-888e-2708a859ab81" testName="되돌아가면_전부_복원된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003620" startTime="2026-09-27T20:50:04.4676281+09:00" endTime="2026-09-27T20:50:04.4679902+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e450a78-b208-41e4-96e6-bf7fd3b96928">
+      <Output>
+        <StdOut>되짚기: 14/14 · 맡은 횟수 11 · 되돌아간 방 5 · 22:00~01:22&#xD;
+    r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_cellar@1484 &gt; r_bath@1505 &gt; r_study@1522</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f7d337c5-e406-447c-bbf5-ecb67e503d57" testId="a974c0b4-299b-7c5b-2d36-a308b2018e5c" testName="창은_끊기지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0863710" startTime="2026-09-27T20:50:03.6126218+09:00" endTime="2026-09-27T20:50:03.6989912+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f7d337c5-e406-447c-bbf5-ecb67e503d57">
+      <Output>
+        <StdOut>창 14개가 모두 한 덩어리다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="91ec955c-acd9-426a-b248-9d474438bbca" testId="4c21c966-4f2c-ad90-fa06-efd89914b575" testName="조사_설정이_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006510" startTime="2026-09-27T20:50:03.4081963+09:00" endTime="2026-09-27T20:50:03.4088469+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91ec955c-acd9-426a-b248-9d474438bbca">
+      <Output>
+        <StdOut>조사 22:00~02:00 · 맡는 횟수 11 · 한 번에 15분</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e505135e-dfb0-4ea3-9a4c-7e105583ab2b" testId="1acdf5b5-30ff-a106-35a8-7c56f924ce7f" testName="둘_다_켠_세계는_한_번_훑기로_부족하다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002060" startTime="2026-09-27T20:50:04.4681953+09:00" endTime="2026-09-27T20:50:04.4684006+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e505135e-dfb0-4ea3-9a4c-7e105583ab2b">
+      <Output>
+        <StdOut>섞임o·감쇠o: 순열 720가지 중 최고 9/14 · 평균 7 · 모자란 사실 5개&#xD;
+    최고 순서: r_porch &gt; r_kitchen &gt; r_greenhouse &gt; r_cellar &gt; r_study &gt; r_bath</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="67c2f2e2-2462-4bc7-a2c7-b0882def3cfa" testId="79a4c9a8-cb53-7b3b-1a63-e57d274693b3" testName="표가_없으면_한국어_원문이_그대로_나온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001900" startTime="2026-09-27T20:50:04.4672948+09:00" endTime="2026-09-27T20:50:04.4674848+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="67c2f2e2-2462-4bc7-a2c7-b0882def3cfa" />
+    <UnitTestResult executionId="75218a34-a3b3-48c6-81c1-8097ca65a8b9" testId="497fb4ad-215f-1770-9bf3-0ec05083590b" testName="섞임과_감쇠를_끈_세계는_한_번_훑기로_전부_복원된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001750" startTime="2026-09-27T20:50:04.4684102+09:00" endTime="2026-09-27T20:50:04.4685864+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="75218a34-a3b3-48c6-81c1-8097ca65a8b9">
+      <Output>
+        <StdOut>섞임x·감쇠x: 순열 720가지 전부가 14/14</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="787401ac-66b3-4959-96b1-c27e74744c73" testId="a6244781-b964-21f2-54c4-144052cac537" testName="감쇠는_정수이고_단조롭다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0573400" startTime="2026-09-27T20:50:03.3427874+09:00" endTime="2026-09-27T20:50:03.4000703+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="787401ac-66b3-4959-96b1-c27e74744c73">
+      <Output>
+        <StdOut>계열 12종의 감쇠가 정수·단조 · 나이 되돌리기가 전 구간에서 뒤집힌다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c0f7dce9-702d-4033-8ccd-4af59732b920" testId="70b140d1-4627-2958-b5a4-177d7e5ba94d" testName="네_세계의_한_번_훑기를_견준다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.6026140" startTime="2026-09-27T20:50:03.7777021+09:00" endTime="2026-09-27T20:50:04.3803158+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c0f7dce9-702d-4033-8ccd-4af59732b920">
+      <Output>
+        <StdOut>섞임x·감쇠x | 한 번 훑기 최고 14/14 · 평균 14 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:45)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_kitchen@1352 &gt; r_cellar@1369 &gt; r_bath@1390 &gt; r_study@1407 &gt; r_greenhouse@1425&#xD;
+섞임o·감쇠x | 한 번 훑기 최고 14/14 · 평균 14 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:45)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_kitchen@1352 &gt; r_cellar@1369 &gt; r_bath@1390 &gt; r_study@1407 &gt; r_greenhouse@1425&#xD;
+섞임x·감쇠o | 한 번 훑기 최고 14/14 · 평균 12 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:49)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_bath@1412 &gt; r_study@1429&#xD;
+섞임o·감쇠o | 한 번 훑기 최고 9/14 · 평균 7 · 순열 720 | 되짚기 14/14 (맡은 횟수 11 · 되돌아간 방 5 · 끝 01:22)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_cellar@1484 &gt; r_bath@1505 &gt; r_study@1522</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="032b7e04-3f57-4299-bcff-1b734a1dcf62" testId="96d96bff-9588-52b2-7f9f-77bd4ca25737" testName="같은_씨드는_같은_조사_결과를_낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.3948590" startTime="2026-09-27T20:50:04.4836214+09:00" endTime="2026-09-27T20:50:04.8784796+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="032b7e04-3f57-4299-bcff-1b734a1dcf62">
+      <Output>
+        <StdOut>네 세계가 두 번씩 같은 길·같은 복원 수를 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d572b263-233a-4de6-8c4b-9d5f90be26ca" testId="2e481406-a355-6274-a753-53d8e19f2eba" testName="같은_순서로_두_바퀴_도는_것은_최적이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006080" startTime="2026-09-27T20:50:04.4692605+09:00" endTime="2026-09-27T20:50:04.4698684+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d572b263-233a-4de6-8c4b-9d5f90be26ca">
+      <Output>
+        <StdOut>두 바퀴(같은 순서) 13/14 · 최적 14/14&#xD;
+    r_porch@1335 &gt; r_kitchen@1352 &gt; r_greenhouse@1371 &gt; r_cellar@1391 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_greenhouse@1486 &gt; r_cellar@1506 &gt; r_study@1528</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="314c2388-8e80-4790-98f5-1310bd2f2833" testId="e2d05fcd-d641-0c58-5c96-207d85328342" testName="모든_사실은_어느_순간엔가_맡을_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0821440" startTime="2026-09-27T20:50:03.4146791+09:00" endTime="2026-09-27T20:50:03.4968225+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="314c2388-8e80-4790-98f5-1310bd2f2833">
+      <Output>
+        <StdOut>사실 14개 · 가장 좁은 창 45분 (하한 30분)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2a998902-48ef-49f9-b338-638becc4e192" testId="c51f3cb3-879b-ca59-5227-a5a8f92d102f" testName="다른_씨드는_다른_잡내를_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016440" startTime="2026-09-27T20:50:04.8785152+09:00" endTime="2026-09-27T20:50:04.8801584+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a998902-48ef-49f9-b338-638becc4e192">
+      <Output>
+        <StdOut>씨드 8개가 서로 다른 잡내 8가지를 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7025bcc9-3f3b-465c-90ae-d6f7a04c13cb" testId="b36a161b-1178-396d-fe6a-e6d730b6d3fc" testName="데이터의_한국어가_비어_있지_않다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0018220" startTime="2026-09-27T20:50:04.4582547+09:00" endTime="2026-09-27T20:50:04.4600765+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7025bcc9-3f3b-465c-90ae-d6f7a04c13cb">
+      <Output>
+        <StdOut>데이터의 한국어 원문이 전부 채워져 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="379adcf8-1b7e-468c-92a2-5b54b52aa5e7" testId="e059f88a-828b-71fa-d4d1-e27c90a43529" testName="알아보는_것은_되짚는_것보다_늘_쉽다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1153970" startTime="2026-09-27T20:50:03.4968602+09:00" endTime="2026-09-27T20:50:03.6122559+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="379adcf8-1b7e-468c-92a2-5b54b52aa5e7">
+      <Output>
+        <StdOut>사실 14개 전부: 누구인지는 늘 알 수 있고, 어려운 것은 언제인가다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8fcf95b3-01c6-4172-a3a7-5c8d7567ffc6" testId="ba23977c-918a-0128-74dc-2358e9230503" testName="같은_씨드는_같은_냄새_지형을_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0056410" startTime="2026-09-27T20:50:04.4779633+09:00" endTime="2026-09-27T20:50:04.4836042+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8fcf95b3-01c6-4172-a3a7-5c8d7567ffc6">
+      <Output>
+        <StdOut>씨드 8개가 두 번씩 같은 지형을 냈다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="896f7fd1-3eaf-4924-8592-17cae5389566" testId="71fdbf99-596c-3e1e-b533-52698b714c94" testName="되짚기_길에서_늦게_열리는_창이_실제로_늦게_채워진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001789" startTime="2026-09-27T20:50:04.4680065+09:00" endTime="2026-09-27T20:50:04.4681852+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="896f7fd1-3eaf-4924-8592-17cae5389566">
+      <Output>
+        <StdOut>앞쪽 절반이 준 사실 8개 · 뒤쪽 절반이 준 사실 6개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="957920f8-11df-4538-9317-9b41b26246e1" testId="52b85013-5644-c0c0-730e-e0135fd0d6b3" testName="씨드를_바꿔도_핵_검사기의_부호는_뒤집히지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.8408410" startTime="2026-09-27T20:50:04.8801849+09:00" endTime="2026-09-27T20:50:05.7210254+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="957920f8-11df-4538-9317-9b41b26246e1">
+      <Output>
+        <StdOut>40721: 켠 9 / 끈 14  ·  41698: 켠 9 / 끈 14  ·  42675: 켠 9 / 끈 14  ·  43652: 켠 9 / 끈 14  ·  44629: 켠 9 / 끈 14  ·  45606: 켠 9 / 끈 14  ·  46583: 켠 9 / 끈 14  ·  47560: 켠 9 / 끈 14</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bc585948-f681-4f93-8490-5eb54edb116b" testId="b08d89a5-210a-8ba1-9468-bc3873816842" testName="이른_길과_늦은_길_어느_쪽도_혼자_이기지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007860" startTime="2026-09-27T20:50:04.4751245+09:00" endTime="2026-09-27T20:50:04.4759101+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bc585948-f681-4f93-8490-5eb54edb116b">
+      <Output>
+        <StdOut>서두르기 9 · 기다리기 7 · 섞기(최적) 14 / 14</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c41ba27f-5cdd-4660-b0d0-1acd044d7eed" testId="bbccabb7-bfd6-02e7-dd29-fcf4bfea019a" testName="사실마다_맡을_수_있는_창을_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0772660" startTime="2026-09-27T20:50:04.3806632+09:00" endTime="2026-09-27T20:50:04.4579278+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c41ba27f-5cdd-4660-b0d0-1acd044d7eed">
+      <Output>
+        <StdOut>사실 14개 · 섞임o·감쇠o 세계 · 조사 22:00~02:00&#xD;
+id   방            사람          방문     창(열림~닫힘)    분  가장이른도착&#xD;
+v01  r_greenhouse a_gardener     16:00  22:00~22:59       60  22:21&#xD;
+v02  r_porch      a_doctor       16:45  22:00~22:59       60  22:15&#xD;
+v03  r_kitchen    a_housekeeper  17:00  22:00~23:29       90  22:17&#xD;
+v04  r_cellar     a_doctor       17:15  22:00~23:44      105  22:19&#xD;
+v05  r_study      a_doctor       17:30  22:00~23:44      105  22:18&#xD;
+v06  r_bath       a_housekeeper  18:00  22:00~00:29      150  22:20&#xD;
+v07  r_porch      a_son          18:15  00:00~00:44       45  22:15&#xD;
+v08  r_kitchen    a_cook         18:30  00:15~00:59       45  22:17&#xD;
+v09  r_cellar     a_cook         18:45  00:15~01:14       60  22:19&#xD;
+v10  r_study      a_son          19:00  00:45~01:29       45  22:18&#xD;
+v11  r_bath       a_son          19:30  01:00~01:59       60  22:20&#xD;
+v12  r_cellar     a_gardener     20:15  22:00~02:00      241  22:19&#xD;
+v13  r_greenhouse a_housekeeper  20:30  22:00~02:00      241  22:21&#xD;
+v14  r_porch      a_gardener     21:30  22:00~02:00      241  22:15</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a54ac6a8-e31c-4336-bb06-b273b68afc08" testId="1a617812-977f-58de-8f1c-17722ee58ed3" testName="그날의_동선이_걸어서_가능하다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007570" startTime="2026-09-27T20:50:03.4056270+09:00" endTime="2026-09-27T20:50:03.4063832+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a54ac6a8-e31c-4336-bb06-b273b68afc08">
+      <Output>
+        <StdOut>사람 5명의 동선이 전부 걸어서 가능하다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fd7109fc-b0e2-40f2-9625-4855cfa272dc" testId="09d24b3d-520a-653d-c840-05330c4e4aa6" testName="그날_하루가_성립한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0043120" startTime="2026-09-27T20:50:03.4012866+09:00" endTime="2026-09-27T20:50:03.4055987+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fd7109fc-b0e2-40f2-9625-4855cfa272dc">
+      <Output>
+        <StdOut>방문 14건 · 모두 15분 격자 위</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="48c70b4a-d7c8-4faa-88bb-5dfbb14d8ee2" testId="3d4e446f-ff21-f0d2-3ef5-1492f49cd7f4" testName="자리표시자를_쓰고_조각을_잇지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0067660" startTime="2026-09-27T20:50:04.4604896+09:00" endTime="2026-09-27T20:50:04.4672547+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="48c70b4a-d7c8-4faa-88bb-5dfbb14d8ee2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="같은_순서로_두_바퀴_도는_것은_최적이_아니다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="2e481406-a355-6274-a753-53d8e19f2eba">
+      <Execution id="d572b263-233a-4de6-8c4b-9d5f90be26ca" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.NoDominantStrategyTests" name="같은_순서로_두_바퀴_도는_것은_최적이_아니다" />
+    </UnitTest>
+    <UnitTest name="머리향만이_시각을_말한다는_약속이_수치로_지켜진다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="bfb94fcd-72f0-4b37-67c0-0b579fc74ff6">
+      <Execution id="512d0e35-bd41-4220-9d6f-8ecb431d7562" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="머리향만이_시각을_말한다는_약속이_수치로_지켜진다" />
+    </UnitTest>
+    <UnitTest name="알아보는_것은_되짚는_것보다_늘_쉽다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="e059f88a-828b-71fa-d4d1-e27c90a43529">
+      <Execution id="379adcf8-1b7e-468c-92a2-5b54b52aa5e7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DecayIsFairTests" name="알아보는_것은_되짚는_것보다_늘_쉽다" />
+    </UnitTest>
+    <UnitTest name="그날_하루가_성립한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="09d24b3d-520a-653d-c840-05330c4e4aa6">
+      <Execution id="fd7109fc-b0e2-40f2-9625-4855cfa272dc" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="그날_하루가_성립한다" />
+    </UnitTest>
+    <UnitTest name="그날의_동선이_걸어서_가능하다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="1a617812-977f-58de-8f1c-17722ee58ed3">
+      <Execution id="a54ac6a8-e31c-4336-bb06-b273b68afc08" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="그날의_동선이_걸어서_가능하다" />
+    </UnitTest>
+    <UnitTest name="방마다_층을_찍는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="99ca4ae1-6f7b-61f6-3358-cd46a18301ef">
+      <Execution id="b25ac324-b803-4128-b00d-6a0daf87f15b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DiagnosticTests" name="방마다_층을_찍는다" />
+    </UnitTest>
+    <UnitTest name="모든_사실은_어느_순간엔가_맡을_수_있다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="e2d05fcd-d641-0c58-5c96-207d85328342">
+      <Execution id="314c2388-8e80-4790-98f5-1310bd2f2833" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DecayIsFairTests" name="모든_사실은_어느_순간엔가_맡을_수_있다" />
+    </UnitTest>
+    <UnitTest name="네_세계의_한_번_훑기를_견준다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="70b140d1-4627-2958-b5a4-177d7e5ba94d">
+      <Execution id="c0f7dce9-702d-4033-8ccd-4af59732b920" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DiagnosticTests" name="네_세계의_한_번_훑기를_견준다" />
+    </UnitTest>
+    <UnitTest name="언어를_바꾸면_값이_따라온다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="3387906f-01e0-178e-808e-aadc1c826e76">
+      <Execution id="edb127f5-2888-4568-960d-6a2e849fd230" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.LocalizationTests" name="언어를_바꾸면_값이_따라온다" />
+    </UnitTest>
+    <UnitTest name="한_방에_죽치는_것은_최적이_아니다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="d191fa75-f148-94cc-9025-cbd5aa4da89f">
+      <Execution id="ec731144-cdf0-4282-9a80-a5bc6ced57c4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.NoDominantStrategyTests" name="한_방에_죽치는_것은_최적이_아니다" />
+    </UnitTest>
+    <UnitTest name="씨드를_바꿔도_핵_검사기의_부호는_뒤집히지_않는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="52b85013-5644-c0c0-730e-e0135fd0d6b3">
+      <Execution id="957920f8-11df-4538-9317-9b41b26246e1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.SeedDeterminismTests" name="씨드를_바꿔도_핵_검사기의_부호는_뒤집히지_않는다" />
+    </UnitTest>
+    <UnitTest name="방금_맡은_방을_바로_다시_맡는_것은_거의_헛일이다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="b9ded663-3144-85a0-b88a-56eaa8cc6d8d">
+      <Execution id="6f818159-8de7-4c5f-bfe6-07e56cac5fde" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.NoDominantStrategyTests" name="방금_맡은_방을_바로_다시_맡는_것은_거의_헛일이다" />
+    </UnitTest>
+    <UnitTest name="섞임과_감쇠를_끈_세계는_한_번_훑기로_전부_복원된다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="497fb4ad-215f-1770-9bf3-0ec05083590b">
+      <Execution id="75218a34-a3b3-48c6-81c1-8097ca65a8b9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="섞임과_감쇠를_끈_세계는_한_번_훑기로_전부_복원된다" />
+    </UnitTest>
+    <UnitTest name="잡내는_사실을_가려도_영영_묻지는_못한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="80749f29-d72f-47c7-f0fe-0906e2c5daed">
+      <Execution id="d78e97b9-2d43-45d8-a3e5-ff7af80a0528" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DecayIsFairTests" name="잡내는_사실을_가려도_영영_묻지는_못한다" />
+    </UnitTest>
+    <UnitTest name="집이_성립한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="22f72fb8-f3e9-7aa8-f036-1d00e3e4c4c0">
+      <Execution id="6bfbcc9d-569c-481b-87f2-d4e15a01f2c8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="집이_성립한다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓰고_조각을_잇지_않는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="3d4e446f-ff21-f0d2-3ef5-1492f49cd7f4">
+      <Execution id="48c70b4a-d7c8-4faa-88bb-5dfbb14d8ee2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.LocalizationTests" name="자리표시자를_쓰고_조각을_잇지_않는다" />
+    </UnitTest>
+    <UnitTest name="사실마다_맡을_수_있는_창을_찍는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="bbccabb7-bfd6-02e7-dd29-fcf4bfea019a">
+      <Execution id="c41ba27f-5cdd-4660-b0d0-1acd044d7eed" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DiagnosticTests" name="사실마다_맡을_수_있는_창을_찍는다" />
+    </UnitTest>
+    <UnitTest name="둘_다_켠_세계는_한_번_훑기로_부족하다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="1acdf5b5-30ff-a106-35a8-7c56f924ce7f">
+      <Execution id="e505135e-dfb0-4ea3-9a4c-7e105583ab2b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="둘_다_켠_세계는_한_번_훑기로_부족하다" />
+    </UnitTest>
+    <UnitTest name="창은_끊기지_않는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="a974c0b4-299b-7c5b-2d36-a308b2018e5c">
+      <Execution id="f7d337c5-e406-447c-bbf5-ecb67e503d57" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DecayIsFairTests" name="창은_끊기지_않는다" />
+    </UnitTest>
+    <UnitTest name="한쪽만_켠_두_세계도_한_번_훑기를_막지_못한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="410b95bc-6499-607f-d603-ffbd5459468d">
+      <Execution id="7ef2a110-e9fa-4003-9ec9-7451ce603499" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="한쪽만_켠_두_세계도_한_번_훑기를_막지_못한다" />
+    </UnitTest>
+    <UnitTest name="조사_설정이_성립한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="4c21c966-4f2c-ad90-fa06-efd89914b575">
+      <Execution id="91ec955c-acd9-426a-b248-9d474438bbca" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="조사_설정이_성립한다" />
+    </UnitTest>
+    <UnitTest name="표가_없으면_한국어_원문이_그대로_나온다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="79a4c9a8-cb53-7b3b-1a63-e57d274693b3">
+      <Execution id="67c2f2e2-2462-4bc7-a2c7-b0882def3cfa" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.LocalizationTests" name="표가_없으면_한국어_원문이_그대로_나온다" />
+    </UnitTest>
+    <UnitTest name="되짚기_길에서_늦게_열리는_창이_실제로_늦게_채워진다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="71fdbf99-596c-3e1e-b533-52698b714c94">
+      <Execution id="896f7fd1-3eaf-4924-8592-17cae5389566" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="되짚기_길에서_늦게_열리는_창이_실제로_늦게_채워진다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드는_같은_조사_결과를_낸다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="96d96bff-9588-52b2-7f9f-77bd4ca25737">
+      <Execution id="032b7e04-3f57-4299-bcff-1b734a1dcf62" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.SeedDeterminismTests" name="같은_씨드는_같은_조사_결과를_낸다" />
+    </UnitTest>
+    <UnitTest name="플레이어가_닿기_전에_닫히는_창이_없다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="bf48aaf7-0447-aaeb-7697-b5499266f2ca">
+      <Execution id="016949b0-609e-4d5a-b768-37d380b5e8d1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DecayIsFairTests" name="플레이어가_닿기_전에_닫히는_창이_없다" />
+    </UnitTest>
+    <UnitTest name="감쇠는_정수이고_단조롭다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="a6244781-b964-21f2-54c4-144052cac537">
+      <Execution id="787401ac-66b3-4959-96b1-c27e74744c73" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="감쇠는_정수이고_단조롭다" />
+    </UnitTest>
+    <UnitTest name="이른_길과_늦은_길_어느_쪽도_혼자_이기지_않는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="b08d89a5-210a-8ba1-9468-bc3873816842">
+      <Execution id="bc585948-f681-4f93-8490-5eb54edb116b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.NoDominantStrategyTests" name="이른_길과_늦은_길_어느_쪽도_혼자_이기지_않는다" />
+    </UnitTest>
+    <UnitTest name="사람의_향_지문이_성립한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="ef00e935-9aea-75f9-32df-a844d3a13b4b">
+      <Execution id="e2787406-4812-44f4-bb96-1b6df2393815" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="사람의_향_지문이_성립한다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드는_같은_냄새_지형을_만든다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="ba23977c-918a-0128-74dc-2358e9230503">
+      <Execution id="8fcf95b3-01c6-4172-a3a7-5c8d7567ffc6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.SeedDeterminismTests" name="같은_씨드는_같은_냄새_지형을_만든다" />
+    </UnitTest>
+    <UnitTest name="향_계열이_성립한다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="dce7ab66-1dfe-6016-021a-ab8a3ba25b27">
+      <Execution id="cc7967a0-8be1-440d-8dc1-5c296d60ff25" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.DataIntegrityTests" name="향_계열이_성립한다" />
+    </UnitTest>
+    <UnitTest name="데이터의_한국어가_비어_있지_않다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="b36a161b-1178-396d-fe6a-e6d730b6d3fc">
+      <Execution id="7025bcc9-3f3b-465c-90ae-d6f7a04c13cb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.LocalizationTests" name="데이터의_한국어가_비어_있지_않다" />
+    </UnitTest>
+    <UnitTest name="어느_방도_혼자_판을_결정하지_않는다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="90f20096-2128-0316-bbce-2bd222d33e8a">
+      <Execution id="e731b8c6-50b1-4525-84d5-b30bfd8aa05e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.NoDominantStrategyTests" name="어느_방도_혼자_판을_결정하지_않는다" />
+    </UnitTest>
+    <UnitTest name="어떤_한_번_훑기로도_잡히지_않는_사실이_있다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="1144832c-cb3b-e2c7-d911-2e9e8580b148">
+      <Execution id="da12f0ef-b7b6-4154-92f8-a460b3a15a8e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="어떤_한_번_훑기로도_잡히지_않는_사실이_있다" />
+    </UnitTest>
+    <UnitTest name="되돌아가면_전부_복원된다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="4caf9831-44b8-8df0-888e-2708a859ab81">
+      <Execution id="9e450a78-b208-41e4-96e6-bf7fd3b96928" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.MixingForcesRevisitsTests" name="되돌아가면_전부_복원된다" />
+    </UnitTest>
+    <UnitTest name="다른_씨드는_다른_잡내를_만든다" storage="c:\users\psi\orca\game\games\scent-layers\testbuild\debug\net8.0\scent-layers.tests.dll" id="c51f3cb3-879b-ca59-5227-a5a8f92d102f">
+      <Execution id="2a998902-48ef-49f9-b338-638becc4e192" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Scent.Tests.SeedDeterminismTests" name="다른_씨드는_다른_잡내를_만든다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d191fa75-f148-94cc-9025-cbd5aa4da89f" executionId="ec731144-cdf0-4282-9a80-a5bc6ced57c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="90f20096-2128-0316-bbce-2bd222d33e8a" executionId="e731b8c6-50b1-4525-84d5-b30bfd8aa05e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3387906f-01e0-178e-808e-aadc1c826e76" executionId="edb127f5-2888-4568-960d-6a2e849fd230" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bfb94fcd-72f0-4b37-67c0-0b579fc74ff6" executionId="512d0e35-bd41-4220-9d6f-8ecb431d7562" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dce7ab66-1dfe-6016-021a-ab8a3ba25b27" executionId="cc7967a0-8be1-440d-8dc1-5c296d60ff25" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ef00e935-9aea-75f9-32df-a844d3a13b4b" executionId="e2787406-4812-44f4-bb96-1b6df2393815" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1144832c-cb3b-e2c7-d911-2e9e8580b148" executionId="da12f0ef-b7b6-4154-92f8-a460b3a15a8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80749f29-d72f-47c7-f0fe-0906e2c5daed" executionId="d78e97b9-2d43-45d8-a3e5-ff7af80a0528" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="99ca4ae1-6f7b-61f6-3358-cd46a18301ef" executionId="b25ac324-b803-4128-b00d-6a0daf87f15b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="22f72fb8-f3e9-7aa8-f036-1d00e3e4c4c0" executionId="6bfbcc9d-569c-481b-87f2-d4e15a01f2c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="410b95bc-6499-607f-d603-ffbd5459468d" executionId="7ef2a110-e9fa-4003-9ec9-7451ce603499" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b9ded663-3144-85a0-b88a-56eaa8cc6d8d" executionId="6f818159-8de7-4c5f-bfe6-07e56cac5fde" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bf48aaf7-0447-aaeb-7697-b5499266f2ca" executionId="016949b0-609e-4d5a-b768-37d380b5e8d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4caf9831-44b8-8df0-888e-2708a859ab81" executionId="9e450a78-b208-41e4-96e6-bf7fd3b96928" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a974c0b4-299b-7c5b-2d36-a308b2018e5c" executionId="f7d337c5-e406-447c-bbf5-ecb67e503d57" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c21c966-4f2c-ad90-fa06-efd89914b575" executionId="91ec955c-acd9-426a-b248-9d474438bbca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1acdf5b5-30ff-a106-35a8-7c56f924ce7f" executionId="e505135e-dfb0-4ea3-9a4c-7e105583ab2b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79a4c9a8-cb53-7b3b-1a63-e57d274693b3" executionId="67c2f2e2-2462-4bc7-a2c7-b0882def3cfa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="497fb4ad-215f-1770-9bf3-0ec05083590b" executionId="75218a34-a3b3-48c6-81c1-8097ca65a8b9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6244781-b964-21f2-54c4-144052cac537" executionId="787401ac-66b3-4959-96b1-c27e74744c73" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="70b140d1-4627-2958-b5a4-177d7e5ba94d" executionId="c0f7dce9-702d-4033-8ccd-4af59732b920" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="96d96bff-9588-52b2-7f9f-77bd4ca25737" executionId="032b7e04-3f57-4299-bcff-1b734a1dcf62" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e481406-a355-6274-a753-53d8e19f2eba" executionId="d572b263-233a-4de6-8c4b-9d5f90be26ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2d05fcd-d641-0c58-5c96-207d85328342" executionId="314c2388-8e80-4790-98f5-1310bd2f2833" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c51f3cb3-879b-ca59-5227-a5a8f92d102f" executionId="2a998902-48ef-49f9-b338-638becc4e192" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b36a161b-1178-396d-fe6a-e6d730b6d3fc" executionId="7025bcc9-3f3b-465c-90ae-d6f7a04c13cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e059f88a-828b-71fa-d4d1-e27c90a43529" executionId="379adcf8-1b7e-468c-92a2-5b54b52aa5e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba23977c-918a-0128-74dc-2358e9230503" executionId="8fcf95b3-01c6-4172-a3a7-5c8d7567ffc6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="71fdbf99-596c-3e1e-b533-52698b714c94" executionId="896f7fd1-3eaf-4924-8592-17cae5389566" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52b85013-5644-c0c0-730e-e0135fd0d6b3" executionId="957920f8-11df-4538-9317-9b41b26246e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b08d89a5-210a-8ba1-9468-bc3873816842" executionId="bc585948-f681-4f93-8490-5eb54edb116b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bbccabb7-bfd6-02e7-dd29-fcf4bfea019a" executionId="c41ba27f-5cdd-4660-b0d0-1acd044d7eed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a617812-977f-58de-8f1c-17722ee58ed3" executionId="a54ac6a8-e31c-4336-bb06-b273b68afc08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="09d24b3d-520a-653d-c840-05330c4e4aa6" executionId="fd7109fc-b0e2-40f2-9625-4855cfa272dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d4e446f-ff21-f0d2-3ef5-1492f49cd7f4" executionId="48c70b4a-d7c8-4faa-88bb-5dfbb14d8ee2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="35" executed="35" passed="35" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\scent-layers\TestBuild\Debug\net8.0\scent-layers.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 35 of 35 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+계열 12종의 감쇠가 정수·단조 · 나이 되돌리기가 전 구간에서 뒤집힌다&#xD;
+&#xD;
+방문 14건 · 모두 15분 격자 위&#xD;
+&#xD;
+사람 5명의 동선이 전부 걸어서 가능하다&#xD;
+&#xD;
+머리향-잔향 간격 283‰ · 허용 오차 110‰ · 중간향은 전부 오차 안&#xD;
+&#xD;
+사람 5명 · 표지 5종 · 겹치는 계열 5종&#xD;
+&#xD;
+조사 22:00~02:00 · 맡는 횟수 11 · 한 번에 15분&#xD;
+&#xD;
+방 6개 · 길 9개 · 전부 이어져 있다&#xD;
+&#xD;
+사실 14개 · 가장 좁은 창 45분 (하한 30분)&#xD;
+&#xD;
+사실 14개 전부: 누구인지는 늘 알 수 있고, 어려운 것은 언제인가다&#xD;
+&#xD;
+잡내 계열 5종 중 표지 잔향 0종&#xD;
+&#xD;
+창 14개가 모두 한 덩어리다&#xD;
+&#xD;
+창 14개가 모두 실제로 닿을 수 있는 자리에 있다&#xD;
+&#xD;
+섞임x·감쇠x | 한 번 훑기 최고 14/14 · 평균 14 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:45)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_kitchen@1352 &gt; r_cellar@1369 &gt; r_bath@1390 &gt; r_study@1407 &gt; r_greenhouse@1425&#xD;
+섞임o·감쇠x | 한 번 훑기 최고 14/14 · 평균 14 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:45)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_kitchen@1352 &gt; r_cellar@1369 &gt; r_bath@1390 &gt; r_study@1407 &gt; r_greenhouse@1425&#xD;
+섞임x·감쇠o | 한 번 훑기 최고 14/14 · 평균 12 · 순열 720 | 되짚기 14/14 (맡은 횟수 6 · 되돌아간 방 0 · 끝 23:49)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_bath@1412 &gt; r_study@1429&#xD;
+섞임o·감쇠o | 한 번 훑기 최고 9/14 · 평균 7 · 순열 720 | 되짚기 14/14 (맡은 횟수 11 · 되돌아간 방 5 · 끝 01:22)&#xD;
+    되짚기 길: r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_cellar@1484 &gt; r_bath@1505 &gt; r_study@1522&#xD;
+&#xD;
+r_porch       잡내@15:00  잡내@15:15  a_doctor@16:45  a_son@18:15  a_gardener@21:30&#xD;
+r_kitchen     잡내@16:15  잡내@16:30  a_housekeeper@17:00  a_cook@18:30&#xD;
+r_study       잡내@15:30  잡내@16:45  a_doctor@17:30  a_son@19:00&#xD;
+r_cellar      잡내@16:00  a_doctor@17:15  a_cook@18:45  a_gardener@20:15&#xD;
+r_greenhouse  잡내@15:00  a_gardener@16:00  잡내@16:00  a_housekeeper@20:30&#xD;
+r_bath        잡내@15:45  a_housekeeper@18:00  a_son@19:30&#xD;
+&#xD;
+사실 14개 · 섞임o·감쇠o 세계 · 조사 22:00~02:00&#xD;
+id   방            사람          방문     창(열림~닫힘)    분  가장이른도착&#xD;
+v01  r_greenhouse a_gardener     16:00  22:00~22:59       60  22:21&#xD;
+v02  r_porch      a_doctor       16:45  22:00~22:59       60  22:15&#xD;
+v03  r_kitchen    a_housekeeper  17:00  22:00~23:29       90  22:17&#xD;
+v04  r_cellar     a_doctor       17:15  22:00~23:44      105  22:19&#xD;
+v05  r_study      a_doctor       17:30  22:00~23:44      105  22:18&#xD;
+v06  r_bath       a_housekeeper  18:00  22:00~00:29      150  22:20&#xD;
+v07  r_porch      a_son          18:15  00:00~00:44       45  22:15&#xD;
+v08  r_kitchen    a_cook         18:30  00:15~00:59       45  22:17&#xD;
+v09  r_cellar     a_cook         18:45  00:15~01:14       60  22:19&#xD;
+v10  r_study      a_son          19:00  00:45~01:29       45  22:18&#xD;
+v11  r_bath       a_son          19:30  01:00~01:59       60  22:20&#xD;
+v12  r_cellar     a_gardener     20:15  22:00~02:00      241  22:19&#xD;
+v13  r_greenhouse a_housekeeper  20:30  22:00~02:00      241  22:21&#xD;
+v14  r_porch      a_gardener     21:30  22:00~02:00      241  22:15&#xD;
+&#xD;
+데이터의 한국어 원문이 전부 채워져 있다&#xD;
+&#xD;
+되짚기: 14/14 · 맡은 횟수 11 · 되돌아간 방 5 · 22:00~01:22&#xD;
+    r_porch@1335 &gt; r_greenhouse@1356 &gt; r_cellar@1376 &gt; r_kitchen@1393 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_cellar@1484 &gt; r_bath@1505 &gt; r_study@1522&#xD;
+&#xD;
+앞쪽 절반이 준 사실 8개 · 뒤쪽 절반이 준 사실 6개&#xD;
+&#xD;
+섞임o·감쇠o: 순열 720가지 중 최고 9/14 · 평균 7 · 모자란 사실 5개&#xD;
+    최고 순서: r_porch &gt; r_kitchen &gt; r_greenhouse &gt; r_cellar &gt; r_study &gt; r_bath&#xD;
+&#xD;
+섞임x·감쇠x: 순열 720가지 전부가 14/14&#xD;
+&#xD;
+순열 720가지 어느 것으로도 못 잡는 사실 4개: v08(찬모 한씨·부엌 18:30), v09(찬모 한씨·지하 저장실 18:45), v10(집주인의 아들·서재 19:00), v11(집주인의 아들·욕실 19:30)&#xD;
+&#xD;
+섞임o·감쇠x: 최고 14 · 평균 14&#xD;
+섞임x·감쇠o: 최고 14 · 평균 12&#xD;
+→ 한쪽만으로는 아무것도 막지 못한다. 막는 것은 둘의 맞물림이다.&#xD;
+&#xD;
+두 바퀴(같은 순서) 13/14 · 최적 14/14&#xD;
+    r_porch@1335 &gt; r_kitchen@1352 &gt; r_greenhouse@1371 &gt; r_cellar@1391 &gt; r_study@1413 &gt; r_bath@1430 &gt; r_porch@1450 &gt; r_kitchen@1467 &gt; r_greenhouse@1486 &gt; r_cellar@1506 &gt; r_study@1528&#xD;
+&#xD;
+제자리 재시도 36번 중 새 사실 0개&#xD;
+&#xD;
+r_porch 3 · r_kitchen 2 · r_study 2 · r_cellar 3 · r_greenhouse 2 · r_bath 2&#xD;
+&#xD;
+서두르기 9 · 기다리기 7 · 섞기(최적) 14 / 14&#xD;
+&#xD;
+죽치기 r_porch       3/14&#xD;
+죽치기 r_kitchen     2/14&#xD;
+죽치기 r_study       2/14&#xD;
+죽치기 r_cellar      3/14&#xD;
+죽치기 r_greenhouse  2/14&#xD;
+죽치기 r_bath        1/14&#xD;
+가장 나은 죽치기 r_porch 3/14 · 최적 14/14 (상한 4)&#xD;
+&#xD;
+씨드 8개가 두 번씩 같은 지형을 냈다&#xD;
+&#xD;
+네 세계가 두 번씩 같은 길·같은 복원 수를 냈다&#xD;
+&#xD;
+씨드 8개가 서로 다른 잡내 8가지를 냈다&#xD;
+&#xD;
+40721: 켠 9 / 끈 14  ·  41698: 켠 9 / 끈 14  ·  42675: 켠 9 / 끈 14  ·  43652: 켠 9 / 끈 14  ·  44629: 켠 9 / 끈 14  ·  45606: 켠 9 / 끈 14  ·  46583: 켠 9 / 끈 14  ·  47560: 켠 9 / 끈 14&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

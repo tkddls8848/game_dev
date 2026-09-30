@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>잠긴 휴대폰</title>
+<style>
+:root{--steel:#2b3036;--steel-d:#15181c;--glow:#bcd6ff;--oled:#05070b;--tag:#e8c547;--red:#ff4d4d;--paper:#f1efe6;--ink:#1f2a44;--pencil:#4a4a4a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#050608}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#dfe6f0}
+#stage{position:absolute;width:1600px;height:1000px;overflow:hidden;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:
+   radial-gradient(ellipse 42% 60% at 50% 46%,rgba(120,160,230,.22),transparent 70%),
+   radial-gradient(ellipse 55% 45% at 78% 0%,rgba(255,240,210,.18),transparent 70%),
+   linear-gradient(180deg,#2a2f35,#1a1d21 70%,#101215);}
+/* brushed steel */
+#stage:before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px),repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 2px,transparent 2px 7px)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 72% at 50% 48%,transparent 45%,rgba(0,0,0,.78) 100%);z-index:1}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay;z-index:2}
+.top{position:absolute;left:40px;top:28px;z-index:4}
+.top h1{font-size:30px;font-weight:800;letter-spacing:.02em;color:#eef3fa}
+.top p{font-size:14px;color:#8d9aad;margin-top:4px}
+.case{position:absolute;right:40px;top:30px;text-align:right;z-index:4;font-size:13px;color:#8d9aad;line-height:1.5}
+.case b{color:#e8c547;font-weight:700;letter-spacing:.12em}
+/* ---------- phone ---------- */
+.phoneWrap{position:absolute;left:590px;top:70px;width:430px;height:880px;transform:rotate(2.2deg);z-index:3}
+.phoneWrap.buzz{animation:buzz .09s linear 10}
+@keyframes buzz{0%{transform:rotate(2.2deg) translate(0,0)}25%{transform:rotate(2.6deg) translate(2px,-1px)}50%{transform:rotate(1.8deg) translate(-2px,1px)}75%{transform:rotate(2.4deg) translate(1px,2px)}}
+.shadow{position:absolute;inset:18px -10px -28px 22px;border-radius:64px;background:rgba(0,0,0,.7);filter:blur(24px)}
+.body{position:absolute;inset:0;border-radius:58px;background:linear-gradient(135deg,#5a5f66,#2a2d31 40%,#16181b);box-shadow:inset 0 0 0 2px #74797f,inset 0 0 0 5px #111}
+.glass{position:absolute;inset:12px;border-radius:48px;overflow:hidden;background:var(--oled)}
+.wall{position:absolute;inset:0;transition:filter .5s,opacity .5s;
+  background:
+   radial-gradient(ellipse 60% 40% at 50% 92%,rgba(255,140,70,.55),transparent 70%),
+   radial-gradient(ellipse 90% 50% at 50% 70%,rgba(80,60,130,.6),transparent 70%),
+   linear-gradient(180deg,#0b1430 0%,#1d2150 45%,#6a3a4a 78%,#c96a3c 100%)}
+.wall svg{position:absolute;left:0;bottom:0;width:100%}
+.dim .wall,.dim .ls{opacity:0}
+.ls{position:absolute;inset:0;transition:opacity .35s}
+.sb{position:absolute;left:34px;right:30px;top:20px;display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:#fff}
+.bat{display:inline-flex;align-items:center;gap:6px}
+.bat i{position:relative;display:inline-block;width:28px;height:13px;border:1.5px solid rgba(255,255,255,.8);border-radius:4px}
+.bat i:after{content:"";position:absolute;right:-4px;top:3px;width:2px;height:5px;background:rgba(255,255,255,.8);border-radius:1px}
+.bat i b{position:absolute;left:1.5px;top:1.5px;bottom:1.5px;border-radius:1.5px;background:#ffcc3a}
+.lock{position:absolute;left:0;right:0;top:56px;text-align:center;font-size:16px;color:rgba(255,255,255,.85)}
+.date{position:absolute;left:0;right:0;top:84px;text-align:center;font-size:17px;color:rgba(255,255,255,.85);font-weight:600}
+.time{position:absolute;left:0;right:0;top:98px;text-align:center;font-size:84px;font-weight:700;color:#f4f6ff;letter-spacing:-.02em;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+.stack{position:absolute;left:14px;right:14px;top:206px;bottom:30px;display:flex;flex-direction:column;gap:6px}
+.nt{position:relative;padding:7px 12px 8px 48px;border-radius:16px;background:rgba(245,245,255,.2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:#fff;transition:transform .5s,opacity .5s;cursor:pointer}
+.nt:hover{background:rgba(245,245,255,.28)}
+.nt .ic{position:absolute;left:10px;top:10px;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.nt .ap{font-size:11px;color:rgba(255,255,255,.65);display:flex;justify-content:space-between}
+.nt .fr{font-size:13.5px;font-weight:700;margin-top:1px}
+.nt .pv{font-size:12.5px;line-height:1.35;color:rgba(255,255,255,.92);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.nt.noted:after{content:"기록";position:absolute;right:10px;bottom:8px;font-size:10px;color:#1b1b1b;background:var(--tag);padding:1px 6px;border-radius:6px;font-weight:800}
+.nt.edge{opacity:.55}
+.nt.edge:before{content:"다음에 밀려난다";position:absolute;right:10px;top:9px;font-size:10px;color:#ffb3a3;font-weight:700}
+.nt.gone{transform:translateY(140px) scale(.92);opacity:0}
+.nt.new .pv{-webkit-line-clamp:2}
+.nt.fresh{animation:drop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes drop{from{transform:translateY(-40px) scale(.96);opacity:0}}
+.ic.msg{background:#3ecf5c;color:#fff}.ic.call{background:#34c759;color:#fff}.ic.bank{background:#2f6fe4;color:#fff}.ic.sys{background:#f2c230;color:#222}.ic.box{background:#b67a3a;color:#fff}.ic.pic{background:linear-gradient(135deg,#ff6a3d,#ffcf3d,#3dcf8e,#3d8bff);color:#fff}.ic.hlt{background:#ff375f;color:#fff}
+.home{position:absolute;left:50%;bottom:12px;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:rgba(255,255,255,.8)}
+.torch,.cam{display:none;position:absolute;bottom:34px;width:48px;height:48px;border-radius:50%;background:rgba(40,40,50,.55);backdrop-filter:blur(8px)}
+.torch{left:38px}.cam{right:38px}
+.torch:after,.cam:after{content:"";position:absolute;inset:15px;border:2px solid rgba(255,255,255,.8);border-radius:4px}
+.cam:after{border-radius:50%}
+.crack{position:absolute;inset:12px;border-radius:48px;pointer-events:none;overflow:hidden;z-index:2}
+.bag{position:absolute;inset:-26px -30px -40px -30px;border-radius:14px;pointer-events:none;z-index:4;
+  background:linear-gradient(115deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 30%,rgba(255,255,255,.12) 42%,rgba(255,255,255,0) 55%,rgba(255,255,255,.07) 80%,rgba(255,255,255,.02));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.bag:before{content:"";position:absolute;left:0;right:0;top:0;height:30px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 2px,transparent 2px 5px);border-radius:14px 14px 0 0;opacity:.6}
+.tag{position:absolute;right:-60px;bottom:40px;width:170px;padding:10px 12px;background:var(--tag);color:#1b1b1b;transform:rotate(-8deg);z-index:5;border-radius:3px;box-shadow:0 10px 20px rgba(0,0,0,.6);font-size:12px;line-height:1.4}
+.tag b{display:block;font-size:13px;letter-spacing:.1em}
+.tag:before{content:"";position:absolute;left:10px;top:10px;width:10px;height:10px;border-radius:50%;background:#1b1b1b;box-shadow:0 0 0 3px #c9a520}
+.tag span{display:block;padding-left:18px}
+/* glove */
+.glove{position:absolute;left:880px;top:780px;width:340px;height:260px;z-index:6;pointer-events:none;transform:rotate(-24deg);filter:drop-shadow(0 20px 20px rgba(0,0,0,.6))}
+/* ---------- notebook ---------- */
+.note{position:absolute;left:44px;top:120px;width:486px;height:800px;transform:rotate(-2deg);z-index:3;border-radius:4px;
+  background:
+   linear-gradient(90deg,transparent 58px,rgba(220,80,80,.5) 58px 60px,transparent 60px),
+   repeating-linear-gradient(180deg,transparent 0 31px,rgba(60,110,190,.28) 31px 32px),
+   linear-gradient(180deg,#f4f2e8,#e7e3d2);
+  box-shadow:0 30px 40px rgba(0,0,0,.6),0 2px 0 #cfc9b5,0 4px 0 #bdb7a2;color:var(--ink)}
+.note .hole{position:absolute;left:18px;width:18px;height:18px;border-radius:50%;background:#1b1e22;box-shadow:inset 0 2px 3px #000}
+.note h2{position:absolute;left:78px;top:26px;font-size:22px;font-family:"Nanum Pen Script","Gaegu","Comic Sans MS",cursive;color:#1f2a44;font-weight:700}
+.note .q{position:absolute;left:78px;top:64px;right:24px;font-size:14px;color:#8a1f1f;font-weight:700}
+.lines{position:absolute;left:78px;right:22px;top:96px;font-size:18px;line-height:32px;font-family:"Nanum Pen Script","Gaegu","Comic Sans MS",cursive}
+.lines div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lines .t{color:#2255aa;font-weight:700;margin-right:8px}
+.lines .x{color:#b02020;text-decoration:line-through}
+.lines .hl{background:linear-gradient(180deg,transparent 55%,rgba(255,220,60,.7) 55%)}
+.lines .miss{color:#b02020}
+.circle{position:absolute;border:2.5px solid #c0282a;border-radius:50%;transform:rotate(-6deg)}
+.verdict{position:absolute;left:70px;right:22px;bottom:26px;padding:12px 14px;border:2px dashed #1f2a44;border-radius:4px;font-size:14px}
+.verdict .h{font-weight:800;margin-bottom:8px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opts span{padding:4px 10px;border:1.5px solid #1f2a44;border-radius:14px;font-size:13px;cursor:pointer}
+.opts span.x{opacity:.4;text-decoration:line-through}
+.opts span.pick{background:#1f2a44;color:#f4f2e8}
+.pencil{position:absolute;left:420px;top:760px;width:220px;height:16px;transform:rotate(-58deg);z-index:4;border-radius:2px;
+  background:linear-gradient(180deg,#f2c230,#d9a817 50%,#b88a0e);box-shadow:0 12px 12px rgba(0,0,0,.5)}
+.pencil:before{content:"";position:absolute;left:-26px;top:0;border-right:26px solid #e8cfa0;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.pencil:after{content:"";position:absolute;right:-18px;top:0;width:18px;height:16px;background:#c9a;border-radius:0 3px 3px 0;box-shadow:inset 4px 0 0 #aaa}
+/* ---------- right panel ---------- */
+.side{position:absolute;right:40px;top:110px;width:430px;z-index:3}
+.card{background:linear-gradient(180deg,rgba(18,22,28,.88),rgba(10,12,16,.9));border:1px solid rgba(160,190,230,.14);border-radius:10px;padding:16px 18px;margin-bottom:14px;box-shadow:0 20px 30px rgba(0,0,0,.4)}
+.card .l{font-size:12px;letter-spacing:.2em;color:#7f8ea5;font-weight:700}
+.batbig{display:flex;align-items:flex-end;gap:14px;margin-top:6px}
+.batbig b{font-size:64px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.batbig small{font-size:22px;color:#9aa8bc}
+.batbig .per{font-size:13px;color:#9aa8bc;line-height:1.5;padding-bottom:6px}
+.gauge{height:14px;border-radius:7px;background:#20252d;margin-top:12px;position:relative;overflow:hidden}
+.gauge i{position:absolute;left:0;top:0;bottom:0;border-radius:7px;transition:width .5s}
+.gauge em{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 3px,transparent 3px 6px);transition:all .5s}
+.hint{font-size:12.5px;color:#9aa8bc;margin-top:8px;line-height:1.5}
+.day{position:relative;height:260px;margin-top:10px}
+.day svg{width:100%;height:100%}
+.btns{display:flex;gap:10px}
+.btn{flex:1;padding:16px 10px;border-radius:12px;border:none;font:inherit;font-weight:800;font-size:18px;cursor:pointer;color:#fff;transition:transform .08s,filter .15s}
+.btn small{display:block;font-size:11.5px;font-weight:600;opacity:.8;margin-top:3px}
+.btn:hover{filter:brightness(1.15)}.btn:active{transform:translateY(2px) scale(.98)}
+.wake{background:linear-gradient(180deg,#4e82ff,#2856c9);box-shadow:0 10px 24px rgba(60,110,255,.35),inset 0 1px 0 rgba(255,255,255,.3)}
+.wait{background:linear-gradient(180deg,#3a414c,#262b33);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.tabs{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:50;display:flex;gap:6px}
+.tabs button{font:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:14px;border:1px solid rgba(200,220,255,.25);background:rgba(10,12,16,.75);color:#b9c6da;cursor:pointer}
+.tabs button.on{background:#e8c547;color:#1b1b1b;border-color:#e8c547}
+/* B specific */
+#B #stage{}
+.redwash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 30% 55% at 50% 50%,rgba(255,60,60,.14),transparent 70%);animation:rw 1.2s infinite;z-index:1}
+@keyframes rw{50%{opacity:.4}}
+.lost{position:absolute;left:640px;top:880px;width:390px;z-index:7;transform:rotate(7deg)}
+.lost>.nt{box-shadow:0 0 0 2px rgba(255,90,80,.8),0 20px 30px rgba(0,0,0,.7);background:rgba(90,40,50,.7)}
+.lost .nt{margin-bottom:6px;filter:grayscale(.3)}
+.lost .gh{opacity:.5;transform:translateY(6px) scale(.97)}
+.lost .gh2{opacity:.22;transform:translateY(10px) scale(.94)}
+.lostlbl{position:absolute;left:1030px;top:860px;z-index:7;width:260px;color:#ffb3a3;font-size:14px;line-height:1.5}
+.lostlbl b{display:block;font-size:18px;color:#ff6b5b}
+.lostlbl:before{content:"";position:absolute;left:-26px;top:12px;width:20px;height:2px;background:#ff6b5b}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="grainf"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+</defs></svg>
+
+<!-- ================= A ================= -->
+<section class="screen" id="A">
+  <div class="top"><h1>잠긴 휴대폰</h1><p>한지운(34)의 휴대폰 · 잠금은 풀 수 없다 · 화면을 깨우는 것 하나만 할 수 있다</p></div>
+  <div class="case">증거 №<b> 0314-07</b><br>자택 계단 아래에서 발견 · 20:25 수거</div>
+
+  <div class="note" id="noteA">
+    <div class="hole" style="top:60px"></div><div class="hole" style="top:260px"></div><div class="hole" style="top:460px"></div><div class="hole" style="top:660px"></div>
+    <h2>3/14 마지막 하루 — 잠금 화면에서 본 것</h2>
+    <div class="q">물음 ① 18~19시 어디 · ② 마지막 만난 사람 · ③ 몇 시</div>
+    <div class="lines" id="linesA">
+      <div><span class="t">20:25</span>줍다 · 잔량 19% (저전력 알림은 20:12에 20%)</div>
+      <div><span class="t">→</span><span class="hl">그 뒤로 화면이 한 번도 안 켜졌다</span></div>
+      <div><span class="t">17:55</span>사진 백업 · 한섭목공 앞 (EXIF)</div>
+      <div><span class="t">18:20</span>체크카드 12,000원 · 한섭목공</div>
+      <div><span class="t">18:44</span>집주인 “계단 등 갈았습니다. 오늘은 어두우니…”</div>
+      <div><span class="t">19:10</span>걸음 8,420 · 목표 채움 — 이때 살아 있었다</div>
+      <div><span class="t">19:58</span>형 “아까 준 봉투 잘 챙겼지”</div>
+      <div><span class="t">20:41</span>택배 “문 앞에 두었습니다” — 대면 X</div>
+      <div><span class="t">20:52</span>부재중 · 형 한지섭</div>
+      <div><span class="t">21:03</span>부재중 · 형 한지섭</div>
+      <div id="newLine" style="opacity:0"><span class="t">21:30</span>공방 유씨 “오늘 공방 한 번도 안 나왔잖아”</div>
+      <div class="x">13:02 목공방 사진? → 밀려서 못 봄</div>
+    </div>
+    
+    <div class="verdict"><div class="h">① 18:00~19:00 사이 어디에 있었나?</div>
+      <div class="opts"><span class="pick">형의 가게 (한섭목공)</span><span class="x">자택</span><span>목공방</span><span class="x">능내 약국</span></div></div>
+  </div>
+  <div class="pencil"></div>
+
+  <div class="phoneWrap" id="phoneA">
+    <div class="shadow"></div><div class="body"></div>
+    <div class="glass" id="glassA">
+      <div class="wall"><svg viewBox="0 0 406 300"><path d="M0 300 V210 L40 200 L60 170 L90 176 L120 140 L150 150 L190 120 L230 150 L260 138 L300 160 L340 150 L380 170 L406 160 V300Z" fill="#12101c"/><path d="M0 300 V250 C80 236 160 246 240 232 C300 222 360 240 406 230 V300Z" fill="#07060c"/><circle cx="300" cy="95" r="3" fill="#ffd9a0" opacity=".8"/></svg></div>
+      <div class="ls">
+        <div class="sb"><span>SKT 5G</span><span class="bat"><span id="pctA">13%</span><i><b id="batA" style="width:13%"></b></i></span></div>
+        <div class="lock">🔒</div>
+        <div class="date">3월 14일 토요일</div>
+        <div class="time" id="timeA">21:31</div>
+        <div class="stack" id="stackA"></div>
+        <div class="torch"></div><div class="cam"></div><div class="home"></div>
+      </div>
+    </div>
+    <svg class="crack" viewBox="0 0 406 856"><g stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none">
+      <path d="M0 780 L60 742 L96 760 L150 700 L210 712 L260 660"/><path d="M60 742 L48 690 L20 660"/><path d="M96 760 L120 820 L110 856"/><path d="M150 700 L170 640 L150 590"/><path d="M210 712 L240 780 L300 800"/>
+      <path d="M40 700 L90 720 M130 760 L180 740" stroke-width=".7"/><circle cx="62" cy="742" r="8" stroke-width=".8"/></g>
+      <g stroke="rgba(0,0,0,.4)" stroke-width="1" fill="none"><path d="M1 781 L61 743 L97 761 L151 701 L211 713 L261 661"/></g></svg>
+    <div class="bag"></div>
+    <div class="tag"><b>증 거 물</b><span>휴대폰 1대 · 뒷면 파손<br>잔량 이상 소모 주의</span></div>
+  </div>
+
+  
+  <div class="side">
+    <div class="card"><div class="l">배터리 — 이 조사의 예산</div>
+      <div class="batbig"><b id="bigA" style="color:#ffd35a">13</b><small>%</small><div class="per">깨울 때마다 −2.6%<br>가만히 둬도 10분에 −0.4%</div></div>
+      <div class="gauge"><i id="gA" style="width:13%;background:linear-gradient(90deg,#ff7a3a,#ffd35a)"></i><em id="gAc" style="left:10.4%;width:2.6%"></em></div>
+      <div class="hint">줄무늬 = 한 번 더 깨우는 값. <b style="color:#dfe6f0">45분 이상 벌려 두 번 읽어야</b> 줄어드는 속도가 보인다.</div>
+    </div>
+    <div class="card"><div class="l">오늘 밤 — 언제 깨웠나</div>
+      <div class="day"><svg viewBox="0 0 394 260" id="dayA"></svg></div>
+    </div>
+    <div class="btns">
+      <button class="btn wake" id="wakeA">화면 깨우기<small>−26‰ · 알림 8장을 본다</small></button>
+      <button class="btn wait" id="waitA">10분 둔다<small>화면은 꺼진 채 · −4‰</small></button>
+    </div>
+  </div>
+  <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#grainf)"/></svg>
+  <div class="vign"></div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="screen" id="B">
+  <div class="redwash"></div>
+  <div class="top"><h1>잠긴 휴대폰</h1><p>22:45 — 소식이 퍼졌다. 여덟 통이 한꺼번에 들어와 앞의 모든 것을 쓸어 낸다</p></div>
+  <div class="case">증거 №<b> 0314-07</b><br>저전력 · 잔량 6%</div>
+
+  <div class="note">
+    <div class="hole" style="top:60px"></div><div class="hole" style="top:260px"></div><div class="hole" style="top:460px"></div><div class="hole" style="top:660px"></div>
+    <h2>22:40에 깨운 것 — 쓸리기 5분 전</h2>
+    <div class="q">물음 ③ 계단에서 떨어진 것은 몇 시인가?</div>
+    <div class="lines">
+      <div><span class="t">19:10</span>걸음 8,420 — 살아 있었다</div>
+      <div><span class="t">20:12</span>배터리 20% → 20:25 줍다 19%</div>
+      <div><span class="t">→</span><span class="hl">20:12 이후 화면이 한 번도 안 켜졌다</span></div>
+      <div><span class="t">22:04</span>형 “지금 집 앞인데 문이 잠겼다. 아까</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;여섯 시 반에 가게에서 나갈 땐 멀쩡했잖아”</div>
+      <div><span class="t">22:31</span><span class="hl">집주인 “여덟 시쯤 계단에서 뭐 떨어지는 소리”</span></div>
+      <div class="miss"><span class="t" style="color:#b02020">21:30</span>공방 유씨 … 22:40엔 이미 밀려 있었다</div>
+      <div class="miss"><span class="t" style="color:#b02020">?</span>자택 계단참 사진 — 아직 안 왔다 (23:15?)</div>
+      <div style="color:#666">──────────────</div>
+      <div>남은 잔량으로 깨울 수 있는 횟수: <b style="color:#b02020">2번</b></div>
+    </div>
+    <div class="circle" style="left:196px;top:254px;width:260px;height:40px"></div>
+    <svg style="position:absolute;left:74px;top:420px;width:390px;height:190px" viewBox="0 0 390 190" font-family="Nanum Pen Script,Gaegu,cursive">
+      <path d="M10 90 C80 88 160 93 240 89 C300 87 350 91 380 90" stroke="#333" stroke-width="2" fill="none"/>
+      <g fill="#2255aa" font-size="17"><circle cx="30" cy="90" r="4"/><text x="14" y="120">19:10</text><text x="4" y="140" font-size="14">걷고 있음</text>
+      <circle cx="150" cy="90" r="4"/><text x="132" y="120">20:00</text><text x="118" y="140" font-size="14">쿵 (집주인)</text>
+      <circle cx="238" cy="90" r="4"/><text x="222" y="120">20:12</text><text x="206" y="140" font-size="14">20% · 손 안 댐</text>
+      <circle cx="330" cy="90" r="4"/><text x="314" y="120">20:25</text><text x="310" y="140" font-size="14">줍다</text></g>
+      <path d="M140 40 C150 60 170 60 176 76" stroke="#b02020" stroke-width="2" fill="none"/><path d="M110 22 h120 v26 h-120z" stroke="#b02020" stroke-width="1.8" fill="none" transform="rotate(-3 170 35)"/>
+      <text x="118" y="41" fill="#b02020" font-size="19">20:06 계단참 사진?</text>
+      <path d="M150 70 C170 95 200 104 238 94" stroke="#b02020" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+      <text x="40" y="178" fill="#555" font-size="16">20:00 ~ 20:12 사이 — 사진 EXIF가 오면 확정</text>
+    </svg>
+    <div class="verdict"><div class="h">③ 떨어진 시각 — 쥔 사실 3 / 4</div>
+      <div class="opts"><span class="x">19시대</span><span class="pick">20시대</span><span class="x">21시대</span><span>알 수 없다</span></div></div>
+  </div>
+  <div class="pencil"></div>
+
+  <div class="phoneWrap buzzing" id="phoneB">
+    <div class="shadow"></div><div class="body"></div>
+    <div class="glass">
+      <div class="wall" style="filter:saturate(.7) brightness(.8)"><svg viewBox="0 0 406 300"><path d="M0 300 V210 L40 200 L60 170 L90 176 L120 140 L150 150 L190 120 L230 150 L260 138 L300 160 L340 150 L380 170 L406 160 V300Z" fill="#12101c"/></svg></div>
+      <div class="ls">
+        <div class="sb"><span>SKT 5G</span><span class="bat"><span style="color:#ff5b4d">6%</span><i style="border-color:#ff5b4d"><b style="width:6%;background:#ff4d4d"></b></i></span></div>
+        <div class="lock">🔒</div>
+        <div class="date">3월 14일 토요일</div>
+        <div class="time">22:52</div>
+        <div class="stack" id="stackB"></div>
+        <div class="torch"></div><div class="cam"></div><div class="home"></div>
+      </div>
+    </div>
+    <svg class="crack" viewBox="0 0 406 856"><g stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none">
+      <path d="M0 780 L60 742 L96 760 L150 700 L210 712 L260 660"/><path d="M60 742 L48 690 L20 660"/><path d="M96 760 L120 820 L110 856"/><path d="M150 700 L170 640 L150 590"/><path d="M210 712 L240 780 L300 800"/></g></svg>
+    <div class="bag"></div>
+  </div>
+  <div class="lost" id="lostB"></div>
+  <div class="lostlbl"><b>밀려 나갔다 — 영영 못 본다</b>22:42부터 10분 사이 8장이 쓸렸다. 잠금을 풀 수 없으니 다시 볼 길이 없다.</div>
+
+  <div class="side">
+    <div class="card" style="border-color:rgba(255,90,80,.4)"><div class="l" style="color:#ff8a7a">배터리 — 저전력</div>
+      <div class="batbig"><b style="color:#ff5b4d">6</b><small>%</small><div class="per">깨우기 2번 남음<br>23:15 사진 · 23:55 형의 문자를 둘 다 볼 수 있을까</div></div>
+      <div class="gauge"><i style="width:6%;background:linear-gradient(90deg,#b31d1d,#ff5b4d)"></i><em style="left:3.4%;width:2.6%"></em></div>
+    </div>
+    <div class="card"><div class="l">오늘 밤 — 언제 깨웠나</div>
+      <div class="day"><svg viewBox="0 0 394 260" id="dayB"></svg></div>
+    </div>
+    <div class="btns">
+      <button class="btn wake" id="wakeB" style="background:linear-gradient(180deg,#d84a3a,#8e1f18);box-shadow:0 10px 24px rgba(255,70,60,.35)">지금 깨운다<small>−26‰ · 남는 것 3.4%</small></button>
+      <button class="btn wait" id="waitB">참는다<small>23:15 사진을 기다린다</small></button>
+    </div>
+  </div>
+  <svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#grainf)"/></svg>
+  <div class="vign"></div>
+</section>
+
+<div class="tabs"><button data-s="A">1 · 21:31 깨우기</button><button data-s="B">2 · 22:52 쓸려 나감</button></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var stage=document.getElementById('stage');
+function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+addEventListener('resize',fit);fit();
+
+var AC=null;function ac(){try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C();}}catch(e){}return AC;}
+function buzz(n){var a=ac();if(!a)return;var t=a.currentTime;for(var k=0;k<(n||1);k++){var o=a.createOscillator(),g=a.createGain();o.type='sawtooth';o.frequency.value=110;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=260;
+  g.gain.setValueAtTime(0,t+k*.5);g.gain.linearRampToValueAtTime(.25,t+k*.5+.02);g.gain.setValueAtTime(.25,t+k*.5+.3);g.gain.linearRampToValueAtTime(0,t+k*.5+.34);o.connect(f);f.connect(g);g.connect(a.destination);o.start(t+k*.5);o.stop(t+k*.5+.4);}}
+function tick(){var a=ac();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(2200,t);o.frequency.exponentialRampToValueAtTime(900,t+.05);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+.08);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.1);}
+
+var ICON={msg:'✉',call:'☎',bank:'₩',sys:'⚡',box:'▣',pic:'◐',hlt:'♥'};
+function nt(n,cls){return '<div class="nt '+(cls||'')+'"><div class="ic '+n[0]+'">'+ICON[n[0]]+'</div><div class="ap"><span>'+n[1]+'</span><span>'+n[2]+'</span></div><div class="fr">'+n[3]+'</div><div class="pv">'+n[4]+'</div></div>';}
+var A=[
+ ['msg','메시지','21:30','공방 유씨','오늘 공방 한 번도 안 나왔잖아. 무슨 일 있어?'],
+ ['msg','메시지','21:09','형 한지섭','왜 전화 안 받아'],
+ ['call','전화','21:03','형 한지섭','부재중 전화'],
+ ['call','전화','20:52','형 한지섭','부재중 전화'],
+ ['box','택배','20:41','배송','문 앞에 두었습니다 · 자택 현관'],
+ ['sys','배터리','20:12','배터리 20%','저전력 모드가 켜졌습니다'],
+ ['msg','메시지','19:58','형 한지섭','아까 준 봉투 잘 챙겼지'],
+ ['box','택배','19:31','배송','배송이 출발했습니다 · 오늘 중 도착']];
+var sA=document.getElementById('stackA');
+sA.innerHTML=A.map(function(n,i){return nt(n,i===0?'new':(i===7?'edge':(i>=2&&i<=6?'noted':'')));}).join('');
+var B=[
+ ['msg','메시지','22:52','동창회 단톡 [8]','지운이 소식 들었어?'],
+ ['msg','메시지','22:51','보험 설계사','고객님 확인 부탁드립니다'],
+ ['msg','메시지','22:50','옛 룸메 성태','전화 좀'],
+ ['msg','메시지','22:49','큰집 고모','지운아'],
+ ['msg','메시지','22:48','옆집 402호','괜찮으신 거죠?'],
+ ['msg','메시지','22:47','동창 준혁','야 무슨 일 났다며'],
+ ['msg','메시지','22:46','회사 최 과장','지금 연락 받았는데 사실이야?'],
+ ['msg','메시지','22:45','사촌 누나','지운아 무슨 일이야 전화 좀 받아']];
+document.getElementById('stackB').innerHTML=B.map(function(n,i){return nt(n,i===0?'new':'');}).join('');
+document.getElementById('lostB').innerHTML=
+  nt(['msg','메시지','22:31','집주인','아까 여덟 시쯤 계단에서 뭐 떨어지는 소리가 났는데 괜찮으세요'],'noted')+
+  '<div class="gh">'+nt(['msg','메시지','22:04','형 한지섭','지금 집 앞인데 문이 잠겼다. 아까 여섯 시 반에 가게에서 나갈 땐 멀쩡했잖아'])+'</div>';
+
+/* day strip */
+function day(id,wakes,now,bat){var h='',W=394,x0=46,x1=380;function X(m){return x0+(m-1225)/(1500-1225)*(x1-x0);}
+  h+='<rect x="'+x0+'" y="20" width="'+(x1-x0)+'" height="170" fill="rgba(255,255,255,.02)" stroke="rgba(160,190,230,.12)"/>';
+  [[1225,'20:25'],[1285,'21:25'],[1345,'22:25'],[1405,'23:25'],[1465,'24:25']].forEach(function(t){h+='<line x1="'+X(t[0])+'" y1="20" x2="'+X(t[0])+'" y2="196" stroke="rgba(160,190,230,.1)"/><text x="'+X(t[0])+'" y="212" fill="#6f7d93" font-size="10" text-anchor="middle">'+t[1]+'</text>';});
+  // bursts
+  [[1365,'쓸림 A'],[1415,'쓸림 B']].forEach(function(b){h+='<rect x="'+X(b[0]-3)+'" y="20" width="'+(X(b[0]+7)-X(b[0]-3))+'" height="170" fill="rgba(255,80,70,.18)"/><text x="'+X(b[0]+2)+'" y="34" fill="#ff8a7a" font-size="10" text-anchor="middle">'+b[1]+'</text>';});
+  // battery curve (200 at top y=40 -> 0 at y=190)
+  function Y(p){return 190-p/200*150;}var p=196,m=1225,pts=[[X(m),Y(p)]];
+  for(m=1225;m<=now;m+=5){if(m%10===5)p-=4;wakes.forEach(function(w){if(w===m)p-=26;});pts.push([X(m),Y(Math.max(p,0))]);}
+  h+='<path d="M'+pts.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L')+'" fill="none" stroke="'+(bat<80?'#ff5b4d':'#ffd35a')+'" stroke-width="2.4"/>';
+  h+='<line x1="'+x0+'" y1="'+Y(0)+'" x2="'+x1+'" y2="'+Y(0)+'" stroke="#ff5b4d" stroke-dasharray="3 3"/><text x="'+(x0-6)+'" y="'+(Y(0)+4)+'" fill="#ff5b4d" font-size="10" text-anchor="end">0</text><text x="'+(x0-6)+'" y="'+(Y(200)+4)+'" fill="#9aa8bc" font-size="10" text-anchor="end">20%</text>';
+  wakes.forEach(function(w){h+='<line x1="'+X(w)+'" y1="196" x2="'+X(w)+'" y2="226" stroke="#7fb0ff" stroke-width="2"/><circle cx="'+X(w)+'" cy="232" r="5" fill="#4e82ff" stroke="#bcd6ff"/>';});
+  h+='<line x1="'+X(now)+'" y1="14" x2="'+X(now)+'" y2="196" stroke="#fff" stroke-width="1.5"/><text x="'+X(now)+'" y="12" fill="#fff" font-size="11" text-anchor="middle">지금</text>';
+  h+='<text x="'+x0+'" y="254" fill="#7f8ea5" font-size="11">● 깨운 시각 · 선 = 잔량 · 붉은 띠 = 여덟 통이 몰려온다</text>';
+  document.getElementById(id).innerHTML=h;}
+var wakesA=[1225,1290],nowA=1291,permA=131;
+day('dayA',wakesA,nowA,permA);
+day('dayB',[1225,1290,1360],1372,60);
+
+function setBat(){var pct=Math.max(0,permA/10);document.getElementById('pctA').textContent=Math.round(pct)+'%';document.getElementById('batA').style.width=pct+'%';
+  document.getElementById('bigA').textContent=pct.toFixed(1);document.getElementById('gA').style.width=pct+'%';document.getElementById('gAc').style.left=Math.max(0,pct-2.6)+'%';
+  var hh=Math.floor(nowA/60),mm=nowA%60;document.getElementById('timeA').textContent=(hh%24<10?'0':'')+(hh%24)+':'+(mm<10?'0':'')+mm;}
+var g=document.getElementById('glassA'),ph=document.getElementById('phoneA');
+document.getElementById('wakeA').addEventListener('click',function(){if(permA<26)return;permA-=26;wakesA.push(nowA);g.classList.remove('dim');
+  document.getElementById('newLine').style.opacity=1;ph.classList.remove('buzz');void ph.offsetWidth;ph.classList.add('buzz');buzz(1);var f=sA.firstElementChild;if(f){f.classList.remove('fresh');void f.offsetWidth;f.classList.add('fresh');}setBat();day('dayA',wakesA,nowA,permA);});
+document.getElementById('waitA').addEventListener('click',function(){nowA+=10;permA-=4;g.classList.add('dim');tick();setBat();day('dayA',wakesA,nowA,permA);});
+Array.prototype.forEach.call(document.querySelectorAll('.nt'),function(n){n.addEventListener('click',function(){n.classList.toggle('noted');tick();});});
+Array.prototype.forEach.call(document.querySelectorAll('.opts span'),function(o){o.addEventListener('click',function(){if(o.classList.contains('x'))return;Array.prototype.forEach.call(o.parentNode.children,function(c){c.classList.remove('pick');});o.classList.add('pick');tick();});});
+var pB=document.getElementById('phoneB');
+function buzzB(){pB.classList.remove('buzz');void pB.offsetWidth;pB.classList.add('buzz');}
+document.getElementById('wakeB').addEventListener('click',function(){buzzB();buzz(3);});
+document.getElementById('waitB').addEventListener('click',function(){tick();});
+var bi=0;setInterval(function(){if(document.getElementById('B').classList.contains('on')&&(bi++%3===0))buzzB();},1400);
+
+function show(id){['A','B'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.classList.toggle('on',b.getAttribute('data-s')===id);});
+  try{history.replaceState(null,'','#'+id.toLowerCase());}catch(e){}}
+Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){show(b.getAttribute('data-s'));});});
+addEventListener('keydown',function(e){if(e.key==='1')show('A');else if(e.key==='2')show('B');});
+addEventListener('hashchange',function(){show(location.hash==='#b'?'B':'A');});
+show(location.hash==='#b'?'B':'A');
+})();
+</script>
+</body>
+</html>

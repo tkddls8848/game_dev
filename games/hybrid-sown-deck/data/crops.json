@@ -1,0 +1,88 @@
+{
+  "_": "작물 → 카드 대응은 여기 cardId 한 곳에만 적혀 있다. 카드를 얻는 다른 길은 '카드를 심는 것'뿐이다.",
+  "_두_길": "표본을 얻는 길은 둘이고 둘 다 밭이다: (1) 씨앗으로 작물을 길러 거둔다 (2) 쓰지 않은 표본을 심어 자라게 한다.",
+  "crops": [
+    {
+      "id": "crop_seedwort",
+      "nameKo": "씨무릇",
+      "nameEn": "Seedwort",
+      "growTurns": 1,
+      "waterPerTurn": 1,
+      "seedCost": 1,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_sprout",
+      "cardsPerHarvest": 2,
+      "sortOrder": 1,
+      "note": "싸고 빨리 는다. 심어 두면 가시덤불이 된다 — 이 PoC 에서 가장 값싼 투자다"
+    },
+    {
+      "id": "crop_bramble",
+      "nameKo": "가시덤불",
+      "nameEn": "Bramble",
+      "growTurns": 2,
+      "waterPerTurn": 1,
+      "seedCost": 2,
+      "seasons": [
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_bramble",
+      "cardsPerHarvest": 2,
+      "sortOrder": 2,
+      "note": "봄에는 씨앗으로 살 수 없다. 봄에 가시덤불을 쥐려면 작년 어린싹을 심어 두었어야 한다"
+    },
+    {
+      "id": "crop_broadleaf",
+      "nameKo": "넓은잎",
+      "nameEn": "Broadleaf",
+      "growTurns": 2,
+      "waterPerTurn": 1,
+      "seedCost": 2,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_broadleaf",
+      "cardsPerHarvest": 2,
+      "sortOrder": 3,
+      "note": "유일한 방어. 세 계절 전부에 있다 — 봄에 방어가 없어 밤을 못 넘기는 일을 여기서 막는다"
+    },
+    {
+      "id": "crop_thicket",
+      "nameKo": "덤불벽",
+      "nameEn": "Thicket",
+      "growTurns": 3,
+      "waterPerTurn": 1,
+      "seedCost": 4,
+      "seasons": [
+        "season_autumn"
+      ],
+      "cardId": "card_thicket",
+      "cardsPerHarvest": 1,
+      "sortOrder": 4,
+      "note": "가을에만, 씨앗 3 · 세 턴. 비싸다. 넓은잎을 안 쓰고 심는 것이 두 번째 길이다"
+    },
+    {
+      "id": "crop_emberseed",
+      "nameKo": "불꽃씨",
+      "nameEn": "Emberseed",
+      "growTurns": 2,
+      "waterPerTurn": 2,
+      "seedCost": 2,
+      "seasons": [
+        "season_spring",
+        "season_summer",
+        "season_autumn"
+      ],
+      "cardId": "card_ember",
+      "cardsPerHarvest": 2,
+      "sortOrder": 5,
+      "note": "물을 두 배 먹는다. 안 쓰고 심으면 카드가 아니라 씨앗으로 돌아온다 — 덱을 밭으로 바꾸는 유일한 카드"
+    }
+  ]
+}

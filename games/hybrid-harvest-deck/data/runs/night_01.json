@@ -1,0 +1,13 @@
+{
+  "_": "한 해의 겨울 밤. 3전투 + 보스. 이것이 수직 슬라이스의 전량이다.",
+  "id": "night_01",
+  "nameKo": "첫 겨울 밤",
+  "playerHp": 55,
+  "healBetweenBattles": 6,
+  "battles": [
+    "enemy_rat",
+    "enemy_crow",
+    "enemy_fox"
+  ],
+  "boss": "enemy_wolf"
+}

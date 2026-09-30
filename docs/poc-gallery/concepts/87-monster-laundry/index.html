@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>괴수 세탁소</title>
+<style>
+:root{
+  --night:#0b0a1f; --tile:#123a44; --tile-d:#0a2530; --enamel:#dfeee6; --enamel-d:#9fb8b0; --chrome:#c9d4dc;
+  --pink:#ff3fa4; --cyan:#3ff0ff; --lava:#ff6a1a; --lava-l:#ffc24a; --slime:#8cff4a; --star:#b58cff; --alarm:#ff2a3a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#050410;overflow:hidden}
+body{font-family:"Noto Sans KR","Noto Sans CJK KR",sans-serif;color:#eaf6ff}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:var(--night)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.09;mix-blend-mode:overlay;z-index:80}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:79;background:radial-gradient(ellipse 95% 90% at 45% 45%,transparent 60%,rgba(0,0,10,.55))}
+
+/* room */
+.wall{position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(0,0,0,.35) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(0deg,rgba(0,0,0,.35) 1px,transparent 1px) 0 0/48px 48px,
+  radial-gradient(ellipse 60% 50% at 38% 40%,#1c5a66,#0f3440 60%,#081a22)}
+.floor{position:absolute;left:0;right:0;top:760px;height:240px;overflow:hidden;
+  background:linear-gradient(180deg,#0c1820,#05090e)}
+.floor svg{position:absolute;inset:0}
+.window{position:absolute;left:24px;top:84px;width:1040px;height:500px;border:14px solid #1a1a2a;border-radius:6px;overflow:hidden;
+  box-shadow:0 0 0 3px #2c2c44,0 20px 40px rgba(0,0,0,.6),inset 0 0 60px rgba(0,0,0,.6)}
+.street{position:absolute;inset:0;background:linear-gradient(180deg,#140c2e 0,#2a1440 45%,#40183e 70%,#1a0a1e 100%)}
+.rain{position:absolute;inset:-100px 0 0 0;opacity:.35;background:repeating-linear-gradient(104deg,transparent 0 14px,rgba(180,220,255,.55) 14px 15px,transparent 15px 38px);animation:rn .5s linear infinite}
+@keyframes rn{from{transform:translateY(0)}to{transform:translateY(100px)}}
+.mullion{position:absolute;top:0;bottom:0;width:12px;background:#1a1a2a;box-shadow:0 0 0 2px #2c2c44}
+.glassrefl{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.06) 32%,transparent 40%,transparent 60%,rgba(255,255,255,.05) 62%,transparent 66%)}
+.neonsign{position:absolute;font-weight:900;letter-spacing:.08em;white-space:nowrap}
+.neon-p{color:#ffd2ec;text-shadow:0 0 4px #fff,0 0 12px var(--pink),0 0 28px var(--pink),0 0 60px var(--pink);animation:nf 6s infinite steps(1)}
+.neon-c{color:#d8fdff;text-shadow:0 0 4px #fff,0 0 12px var(--cyan),0 0 28px var(--cyan),0 0 50px var(--cyan)}
+@keyframes nf{0%,100%{opacity:1}62%{opacity:.4}63%{opacity:1}65%{opacity:.6}66%{opacity:1}}
+
+/* washer */
+.washer{position:absolute;left:330px;top:150px;width:540px;height:660px;z-index:10;filter:drop-shadow(0 40px 30px rgba(0,0,0,.7))}
+.drum{position:absolute;left:70px;top:150px;width:400px;height:400px}
+.spin{transform-origin:200px 200px;animation:sp 3.2s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.slosh{animation:sl 2.4s ease-in-out infinite alternate;transform-origin:200px 300px}
+@keyframes sl{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+
+.bub{position:absolute;border-radius:50%;pointer-events:none;z-index:30;
+  background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.95) 0 8%,rgba(255,255,255,.12) 18%,rgba(160,240,255,.08) 55%,rgba(255,120,220,.35) 80%,rgba(255,255,255,.55) 92%,transparent 96%);
+  animation:rise linear infinite}
+@keyframes rise{0%{transform:translate(0,0)}50%{transform:translate(18px,-260px)}100%{transform:translate(-10px,-560px);opacity:0}}
+
+/* top HUD */
+.top{position:absolute;left:0;right:0;top:0;height:66px;z-index:60;display:flex;align-items:center;gap:24px;padding:0 24px;
+  background:linear-gradient(#17152e,#0e0c20);border-bottom:2px solid #2a2650;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.logo{font:900 30px/1 "Noto Sans CJK KR";letter-spacing:.06em}
+.sep{width:1px;height:34px;background:#34305a}
+.st{display:flex;flex-direction:column;line-height:1.15}
+.st span{font-size:11px;letter-spacing:.16em;color:#8a86b8}
+.st b{font-size:21px;color:#fff;font-weight:800}
+.st b.c{color:var(--cyan);text-shadow:0 0 10px rgba(63,240,255,.6);font-family:"Noto Sans Mono CJK KR",monospace}
+.mood{margin-left:auto;display:flex;align-items:center;gap:12px}
+.mood .bar{width:220px;height:14px;border-radius:7px;background:#221e40;overflow:hidden;box-shadow:inset 0 1px 3px #000}
+.mood .bar i{display:block;height:100%;background:linear-gradient(90deg,#5aff9a,#ffd84a 55%,#ff5a2a 85%,#ff2a3a)}
+.mood .face{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ff9a4a,#8a2a0a);box-shadow:0 0 14px rgba(255,120,40,.6);position:relative}
+
+/* order ticket */
+.ticket{position:absolute;left:1100px;top:88px;width:474px;height:470px;z-index:20;padding:22px 24px;color:#1a1830;
+  background:linear-gradient(#fbf7e8,#ece4c8);border-radius:4px;transform:rotate(1.4deg);box-shadow:0 20px 40px rgba(0,0,0,.6)}
+.ticket::before{content:"";position:absolute;left:0;right:0;top:-10px;height:12px;background:radial-gradient(circle at 8px 12px,transparent 7px,#fbf7e8 7.5px) 0 0/16px 12px}
+.ticket .pin{position:absolute;left:50%;top:-18px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff9ad0,#d0207a);box-shadow:0 4px 6px rgba(0,0,0,.5)}
+.ticket h3{font:900 22px/1 "Noto Sans CJK KR";letter-spacing:.1em;display:flex;justify-content:space-between;border-bottom:3px solid #1a1830;padding-bottom:10px}
+.ticket h3 small{font:700 14px "Noto Sans Mono CJK KR";color:#d0207a}
+.cust{display:flex;gap:14px;margin:14px 0 10px;align-items:center}
+.cust .pf{width:84px;height:84px;border-radius:8px;background:#1a1030;flex:none;overflow:hidden;border:3px solid #1a1830}
+.cust b{font-size:22px;display:block}
+.cust span{font-size:14px;color:#5a567a;line-height:1.5}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #b8b09a;font-size:16px}
+.row em{font-style:normal;font-weight:800}
+.chip{display:inline-block;padding:3px 9px;border-radius:12px;font-size:13px;font-weight:800;color:#fff;margin-left:4px}
+.warnline{margin-top:12px;padding:10px 12px;background:#1a1830;color:#ffd84a;font-weight:800;font-size:15px;border-radius:3px;display:flex;gap:10px;align-items:center}
+/* recipe notebook */
+.notes{position:absolute;left:1100px;top:584px;width:474px;height:250px;z-index:20;padding:16px 20px;border-radius:4px;
+  background:linear-gradient(#1b1936,#141230);border:1px solid #3a3670;box-shadow:0 14px 30px rgba(0,0,0,.6)}
+.notes h4{font:800 13px "Noto Sans CJK KR";letter-spacing:.2em;color:#9a96d8;margin-bottom:10px}
+.rc{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(120,110,200,.2);font-size:15px}
+.rc .st2{width:30px;height:30px;border-radius:50%;flex:none}
+.rc .eq{margin-left:auto;display:flex;gap:6px}
+.pill{font-size:12px;font-weight:800;padding:3px 8px;border-radius:10px;border:1px solid currentColor}
+
+/* control bar */
+.ctrl{position:absolute;left:16px;right:16px;top:846px;height:140px;z-index:50;display:flex;gap:16px;align-items:stretch;padding:14px 18px;
+  background:linear-gradient(#2a2a3e,#16162a);border:2px solid #40406a;border-radius:10px;box-shadow:0 -10px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+.grp{background:rgba(0,0,0,.35);border:1px solid #34345a;border-radius:8px;padding:10px 12px;position:relative}
+.grp h5{font:800 11px "Noto Sans CJK KR";letter-spacing:.2em;color:#8a86b8;margin-bottom:6px}
+.bottles{display:flex;gap:10px}
+.btl{width:74px;height:78px;border-radius:6px;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;font-size:11px;font-weight:800;border:2px solid transparent;transition:transform .12s}
+.btl:hover{transform:translateY(-3px)}
+.btl svg{position:absolute;top:2px;left:50%;margin-left:-18px}
+.btl.sel{border-color:#fff;box-shadow:0 0 16px var(--c),inset 0 0 12px var(--c);background:rgba(255,255,255,.06)}
+.dial{width:74px;height:74px;border-radius:50%;margin:0 auto;position:relative;cursor:pointer;background:radial-gradient(circle at 40% 35%,#eef4f8,#8a98a8 70%,#4a5868);box-shadow:0 6px 10px rgba(0,0,0,.6),inset 0 -3px 6px rgba(0,0,0,.4)}
+.dial .nd{position:absolute;left:50%;top:7px;width:6px;height:30px;margin-left:-3px;border-radius:3px;background:#1a1830;transform-origin:3px 30px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.dlabels{position:absolute;inset:0;pointer-events:none}
+.dlabels span{position:absolute;font-size:11px;font-weight:800;white-space:nowrap}
+.seg{display:flex;flex-direction:column;gap:4px;margin-top:0}
+.seg button{font:800 12px "Noto Sans CJK KR";width:92px;padding:4px 0;border-radius:4px;border:1px solid #4a4a7a;background:#1e1e38;color:#b8b4e8;cursor:pointer}
+.seg button.on{background:var(--cyan);color:#062028;border-color:#bff;box-shadow:0 0 12px rgba(63,240,255,.6)}
+.meters{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.mt{display:grid;grid-template-columns:96px 1fr 56px;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.mt .tr{height:14px;border-radius:7px;background:#1a1830;overflow:hidden;box-shadow:inset 0 1px 3px #000;position:relative}
+.mt .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:7px}
+.mt b{text-align:right;font-family:"Noto Sans Mono CJK KR",monospace;font-size:17px}
+.go{width:200px;border-radius:10px;border:3px solid #ffd2ec;cursor:pointer;font:900 24px/1.2 "Noto Sans CJK KR";color:#fff;letter-spacing:.06em;
+  background:radial-gradient(circle at 50% 30%,#ff7ac4,#d0207a 70%);box-shadow:0 0 26px rgba(255,63,164,.7),0 6px 0 #6a0a3a;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.go small{display:block;font-size:12px;font-weight:700;opacity:.85}
+.go:active{transform:translateY(4px);box-shadow:0 0 26px rgba(255,63,164,.7),0 2px 0 #6a0a3a}
+
+/* B */
+#b .wall{background:
+  linear-gradient(90deg,rgba(0,0,0,.4) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(0deg,rgba(0,0,0,.4) 1px,transparent 1px) 0 0/48px 48px,
+  radial-gradient(ellipse 60% 50% at 38% 40%,#5a1a2a,#2a0c18 60%,#12040a)}
+.alarm{position:absolute;inset:0;z-index:48;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(255,40,60,0),rgba(255,30,50,.35));animation:al 1.1s ease-in-out infinite}
+@keyframes al{0%,100%{opacity:.35}50%{opacity:1}}
+.beacon{position:absolute;left:1030px;top:60px;width:40px;height:26px;border-radius:20px 20px 4px 4px;background:#ff2a3a;z-index:61;box-shadow:0 0 30px 10px rgba(255,40,60,.7);animation:al .55s infinite}
+.shake{animation:sh .18s infinite}
+@keyframes sh{0%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(2px,-2px)}75%{transform:translate(-1px,-3px)}100%{transform:translate(0,0)}}
+.claim{position:absolute;left:1100px;top:88px;width:474px;height:746px;z-index:20;padding:22px 24px;border-radius:6px;
+  background:linear-gradient(#2a0c18,#160610);border:2px solid #ff2a3a;box-shadow:0 0 40px rgba(255,40,60,.35),0 20px 40px rgba(0,0,0,.7)}
+.claim h3{font:900 30px/1 "Noto Sans CJK KR";color:#fff;text-shadow:0 0 16px rgba(255,40,60,.8)}
+.claim .sub{color:#ff9aa6;font-size:14px;margin:8px 0 16px;letter-spacing:.06em}
+.rage{height:26px;border-radius:13px;background:#12040a;border:1px solid #6a1a2a;overflow:hidden;position:relative}
+.rage i{position:absolute;inset:0;width:100%;background:repeating-linear-gradient(135deg,#ff2a3a 0 14px,#c01020 14px 28px);animation:rg .6s linear infinite}
+@keyframes rg{to{background-position:40px 0}}
+.rage b{position:absolute;right:10px;top:3px;font-size:15px;color:#fff}
+.dmg{margin-top:16px}
+.dmg div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,80,100,.2);font-size:16px;color:#ffd6dc}
+.dmg div b{color:#fff}
+.dmg .x{color:#ff5a6a}.dmg .o{color:#7affb0}
+.cause{margin-top:14px;padding:12px 14px;border-radius:4px;background:rgba(255,255,255,.05);border-left:4px solid #ffd84a;font-size:14px;line-height:1.6;color:#ffe9b8}
+.choice{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.choice button{text-align:left;font:800 17px "Noto Sans CJK KR";padding:13px 16px;border-radius:6px;cursor:pointer;color:#fff;border:1px solid #6a2a3a;background:linear-gradient(#3a1020,#240a14);display:flex;justify-content:space-between;align-items:center}
+.choice button:hover{border-color:#ff9aa6;box-shadow:0 0 14px rgba(255,80,100,.4)}
+.choice button small{font-weight:600;font-size:13px;color:#ff9aa6}
+.choice button.pri{background:linear-gradient(#ffd84a,#d09a10);color:#2a1400;border-color:#fff2a0}
+.choice button.pri small{color:#5a3a00}
+.tag{position:absolute;z-index:40;background:#fff;color:#1a1830;font:900 18px/1.2 "Noto Sans CJK KR";padding:8px 12px;border-radius:4px;box-shadow:0 6px 14px rgba(0,0,0,.6);transform:rotate(-8deg)}
+.tag .r{color:#e0102a;font-size:30px;display:block}
+.big-warn{position:absolute;left:24px;top:600px;z-index:45;font:900 58px/1 "Noto Sans CJK KR";color:#fff;letter-spacing:.04em;
+  text-shadow:0 0 10px #ff2a3a,0 0 30px #ff2a3a,0 6px 0 #6a0010;transform:rotate(-4deg)}
+.big-warn small{display:block;font-size:20px;letter-spacing:.2em;color:#ffb8c0;text-shadow:0 0 10px #ff2a3a;margin-top:8px}
+
+.say{margin-top:16px;padding:12px 16px;border-radius:14px;background:#fff;color:#2a0610;font:900 18px/1.4 "Noto Sans CJK KR";position:relative;transform:rotate(-1deg)}
+.say span{display:block;font:600 12px "Noto Sans CJK KR";color:#8a3a4a;margin-top:4px}
+.say::after{content:"";position:absolute;left:-12px;top:22px;border:10px solid transparent;border-right-color:#fff}
+.tabs{position:absolute;right:12px;bottom:4px;z-index:95;display:flex;gap:6px}
+.tabs button{font:700 11px/1 "Noto Sans CJK KR",sans-serif;padding:4px 9px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(10,8,30,.8);color:#cfcaf8;cursor:pointer}
+.tabs button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= SCREEN A ================= -->
+<section class="screen" id="a">
+  <div class="wall"></div>
+  <div class="window">
+    <div class="street"></div>
+    <svg width="1040" height="500" style="position:absolute;left:0;top:0" id="streetA"></svg>
+    <div class="rain"></div>
+    <div class="mullion" style="left:340px"></div><div class="mullion" style="left:690px"></div>
+    <div class="glassrefl"></div>
+  </div>
+  <div class="floor"><svg width="1600" height="240" id="floorA"></svg></div>
+  <div class="neonsign neon-c" style="left:884px;top:600px;width:206px;text-align:center;line-height:1.35;font-size:23px;z-index:12;white-space:normal">24시 영업<br>뿔 달린 손님 환영</div>
+  <svg id="basketA" width="300" height="300" style="position:absolute;left:18px;top:540px;z-index:9"></svg>
+  <div class="washer" id="washerA"><svg width="540" height="660" id="wsvgA"></svg></div>
+  <div id="bubsA"></div>
+
+  <div class="top">
+    <div class="logo neon-p">괴수 세탁소</div><div class="sep"></div>
+    <div class="st"><span>영업</span><b class="c">밤 11:42</b></div><div class="sep"></div>
+    <div class="st"><span>대기 손님</span><b>3 마리</b></div><div class="sep"></div>
+    <div class="st"><span>금고</span><b>비늘 동전 38개</b></div>
+    <div class="mood"><div class="st" style="text-align:right"><span>부글이 기분</span><b style="color:#ffd84a">꾹 참는 중</b></div><div class="bar"><i style="width:58%"></i></div><div class="face" id="faceA"></div></div>
+  </div>
+
+  <div class="ticket">
+    <div class="pin"></div>
+    <h3>세탁 주문서 <small>No. 0412</small></h3>
+    <div class="cust">
+      <div class="pf"><svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" fill="#2a1030"/><path d="M8 84 Q10 30 42 24 Q74 30 76 84Z" fill="#3a1a14"/><path d="M20 40 L14 16 L28 32Z M64 40 L70 16 L56 32Z" fill="#5a2a1a"/><path d="M24 50 q6 -6 12 0 M48 50 q6 -6 12 0" stroke="#ffc24a" stroke-width="4" fill="none"/><path d="M30 66 Q42 72 54 66" stroke="#ff6a1a" stroke-width="3" fill="none"/><path d="M16 60 l8 -6 l-2 10 M66 58 l-8 -4 l2 10" stroke="#ff6a1a" stroke-width="2" fill="none"/></svg></div>
+      <div><b>용암 거인 ‘부글이’</b><span>단골 · 키 22m · 성격 급함<br>“내일 아침 산책에 꼭 둘러야 해.”</span></div>
+    </div>
+    <div class="row"><span>세탁물</span><em>털실 목도리 · 길이 14m</em></div>
+    <div class="row"><span>얼룩</span><em><span class="chip" style="background:#ff6a1a">용암</span><span class="chip" style="background:#5aa820">점액</span></em></div>
+    <div class="row"><span>소재 주의</span><em style="color:#d0207a">양털 · 고온에 줄어듦</em></div>
+    <div class="row"><span>수고비</span><em>비늘 동전 12개</em></div>
+    <div class="row"><span>찾으러 옴</span><em>아침 6:30 · 해 뜨기 전</em></div>
+    <div class="warnline">⚠ 줄어들면 목에 안 맞는다 — 부글이가 화낸다</div>
+  </div>
+
+  <div class="notes">
+    <h4>얼룩 수첩 · 알아낸 조합</h4>
+    <div class="rc"><div class="st2" style="background:radial-gradient(circle,#ffe08a,#ff6a1a 50%,#8a1a00);box-shadow:0 0 12px #ff6a1a"></div>용암 얼룩<div class="eq"><span class="pill" style="color:#3ff0ff">얼음 세제</span><span class="pill" style="color:#7ab8ff">냉수</span></div></div>
+    <div class="rc"><div class="st2" style="background:radial-gradient(circle,#dfffa0,#5aa820 55%,#1a4a00);box-shadow:0 0 12px #8cff4a"></div>점액<div class="eq"><span class="pill" style="color:#8cff4a">산성 거품</span><span class="pill" style="color:#ffd84a">고속 회전</span></div></div>
+    <div class="rc"><div class="st2" style="background:radial-gradient(circle,#fff,#b58cff 45%,#2a0a5a);box-shadow:0 0 12px #b58cff"></div>별빛 가루<div class="eq"><span class="pill" style="color:#8a86b8">? ? ?</span></div></div>
+    <div class="rc" style="border:0;color:#ff9ad0;font-size:13px">※ 양털 + 고속 회전 = 수축 위험 · 둘 다 걸리면 어떻게 하지?</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="grp"><h5>세제 · 두 개까지</h5>
+      <div class="bottles" id="bottles">
+        <div class="btl sel" style="--c:#3ff0ff;color:#3ff0ff" data-snd="660"><svg width="36" height="52" viewBox="0 0 36 52"><rect x="12" y="0" width="12" height="8" rx="2" fill="#bff"/><path d="M6 12 Q6 8 12 8 H24 Q30 8 30 12 V48 Q30 52 26 52 H10 Q6 52 6 48Z" fill="#1ab8d0"/><rect x="10" y="22" width="16" height="16" rx="2" fill="#e8feff"/><path d="M14 30 l4 -5 l4 5 l-4 5z" fill="#1ab8d0"/></svg>얼음 세제</div>
+        <div class="btl sel" style="--c:#8cff4a;color:#8cff4a" data-snd="520"><svg width="36" height="52" viewBox="0 0 36 52"><rect x="12" y="0" width="12" height="8" rx="2" fill="#dfa"/><path d="M6 12 Q6 8 12 8 H24 Q30 8 30 12 V48 Q30 52 26 52 H10 Q6 52 6 48Z" fill="#4a9a1a"/><rect x="10" y="22" width="16" height="16" rx="2" fill="#efffd8"/><circle cx="16" cy="30" r="3" fill="#4a9a1a"/><circle cx="21" cy="27" r="2" fill="#4a9a1a"/></svg>산성 거품</div>
+        <div class="btl" style="--c:#b58cff;color:#b58cff" data-snd="880"><svg width="36" height="52" viewBox="0 0 36 52"><rect x="12" y="0" width="12" height="8" rx="2" fill="#dcf"/><path d="M6 12 Q6 8 12 8 H24 Q30 8 30 12 V48 Q30 52 26 52 H10 Q6 52 6 48Z" fill="#6a3ab8"/><rect x="10" y="22" width="16" height="16" rx="2" fill="#f2eaff"/><path d="M18 24 l2 4 l4 1 l-3 3 l1 4 l-4 -2 l-4 2 l1 -4 l-3 -3 l4 -1z" fill="#6a3ab8"/></svg>별빛 유연제</div>
+      </div></div>
+    <div class="grp" style="width:170px"><h5>물 온도</h5>
+      <div class="dial" id="dial"><div class="nd" id="needle"></div>
+      </div>
+      <div class="dlabels"><span style="left:14px;top:92px;color:#7ab8ff">냉수</span><span style="left:124px;top:92px;color:#ff6a1a">용암</span><span style="left:14px;top:30px;color:#9ad">미온</span><span style="left:124px;top:30px;color:#ffb04a">고온</span></div>
+    </div>
+    <div class="grp"><h5>회전</h5><div class="seg" id="seg"><button>저속</button><button class="on">중속</button><button>고속</button></div></div>
+    <div class="grp meters"><h5 style="margin-bottom:0">예상 결과 · 현재 조합</h5>
+      <div class="mt"><span style="color:#ffb04a">용암 얼룩</span><div class="tr"><i style="width:94%;background:linear-gradient(90deg,#ff6a1a,#ffd84a)"></i></div><b style="color:#ffd84a">94%</b></div>
+      <div class="mt"><span style="color:#8cff4a">점액</span><div class="tr"><i style="width:61%;background:linear-gradient(90deg,#3a8a10,#8cff4a)"></i></div><b style="color:#8cff4a">61%</b></div>
+      <div class="mt"><span style="color:#ff9ad0">수축 위험</span><div class="tr"><i style="width:12%;background:#ff3fa4;box-shadow:0 0 10px #ff3fa4"></i></div><b style="color:#ff9ad0">12%</b></div>
+    </div>
+    <button class="go" id="goA">세탁 시작<small>동전 넣기 · 42분</small></button>
+  </div>
+</section>
+
+<!-- ================= SCREEN B ================= -->
+<section class="screen" id="b">
+  <div class="wall"></div>
+  <div class="window shake" id="winB">
+    <div class="street" style="background:linear-gradient(180deg,#2a0a14 0,#5a1420 50%,#2a0610 100%)"></div>
+    <svg width="1040" height="500" style="position:absolute;left:0;top:0" id="streetB"></svg>
+    <div class="rain"></div>
+    <div class="mullion" style="left:340px"></div><div class="mullion" style="left:690px"></div>
+    <svg width="1040" height="500" style="position:absolute;left:0;top:0" id="crackB"></svg>
+    <div class="glassrefl"></div>
+  </div>
+  <div class="floor"><svg width="1600" height="240" id="floorB"></svg></div>
+  <div class="neonsign neon-c" style="left:884px;top:600px;width:206px;text-align:center;line-height:1.35;font-size:23px;z-index:12;white-space:normal;opacity:.35">24시 영업<br>뿔 달린 손님 환영</div>
+  <div class="washer" id="washerB"><svg width="540" height="660" id="wsvgB"></svg></div>
+  <div id="bubsB"></div>
+  <div class="tag" style="left:606px;top:664px">14m → 4.5m<span class="r">수축 −68%</span></div>
+  <div class="big-warn">부글이 폭주!<small>목도리가 목에 안 들어간다</small></div>
+  <div class="beacon"></div>
+
+  <div class="top">
+    <div class="logo neon-p" style="animation-duration:1.2s">괴수 세탁소</div><div class="sep"></div>
+    <div class="st"><span>영업</span><b class="c" style="color:#ff5a6a;text-shadow:0 0 10px #ff2a3a">밤 12:24</b></div><div class="sep"></div>
+    <div class="st"><span>가게 유리창</span><b style="color:#ff9aa6">금 3곳 · 위험</b></div><div class="sep"></div>
+    <div class="st"><span>금고</span><b>비늘 동전 38개</b></div>
+    <div class="mood"><div class="st" style="text-align:right"><span>부글이 기분</span><b style="color:#ff2a3a">폭발 직전</b></div><div class="bar"><i style="width:100%;background:linear-gradient(90deg,#ff5a2a,#ff2a3a)"></i></div><div class="face" id="faceB" style="background:radial-gradient(circle at 40% 35%,#ff5a4a,#8a0a0a);box-shadow:0 0 20px #ff2a3a"></div></div>
+  </div>
+
+  <div class="claim">
+    <h3>세탁 실패 · 수축</h3>
+    <div class="sub">주문서 No. 0412 · 털실 목도리</div>
+    <div class="rage"><i></i><b>분노 100</b></div>
+    <div class="dmg">
+      <div><span>용암 얼룩</span><b class="o">제거 100% ✓</b></div>
+      <div><span>점액</span><b class="o">제거 100% ✓</b></div>
+      <div><span>길이</span><b class="x">14m → 4.5m ✗</b></div>
+      <div><span>수고비</span><b class="x">0개 · 배상 요구</b></div>
+    </div>
+    <div class="cause"><b>원인</b> · 점액을 빼려고 <b>고속 회전</b>, 용암을 식히려던 물이 <b>고온</b>으로 돌아가 있었다. 양털은 둘 다 싫어한다.<br><span style="color:#ff9ad0">수첩에 새로 적힘: 양털 + 고온 + 고속 = 수축</span></div>
+    <div class="choice">
+      <button class="pri" id="stretch">다리미로 늘려 보기 <small>성공 38% · 30초</small></button>
+      <button id="coupon">사과 쿠폰 내밀기 <small>동전 −20</small></button>
+      <button id="hide">셔터 내리고 숨기 <small>내일 손님 −1</small></button>
+    </div>
+    <div class="say">“내 목도리… 이제 발가락에도 안 맞잖아!!”<span>— 부글이, 유리창에 이마를 댄 채</span></div>
+  </div>
+
+  <div class="ctrl" style="border-color:#6a2a3a">
+    <div class="grp"><h5>사용한 세제</h5>
+      <div class="bottles">
+        <div class="btl sel" style="--c:#3ff0ff;color:#3ff0ff"><svg width="36" height="52" viewBox="0 0 36 52"><rect x="12" y="0" width="12" height="8" rx="2" fill="#bff"/><path d="M6 12 Q6 8 12 8 H24 Q30 8 30 12 V48 Q30 52 26 52 H10 Q6 52 6 48Z" fill="#1ab8d0"/><rect x="10" y="22" width="16" height="16" rx="2" fill="#e8feff"/></svg>얼음 세제</div>
+        <div class="btl sel" style="--c:#8cff4a;color:#8cff4a"><svg width="36" height="52" viewBox="0 0 36 52"><rect x="12" y="0" width="12" height="8" rx="2" fill="#dfa"/><path d="M6 12 Q6 8 12 8 H24 Q30 8 30 12 V48 Q30 52 26 52 H10 Q6 52 6 48Z" fill="#4a9a1a"/><rect x="10" y="22" width="16" height="16" rx="2" fill="#efffd8"/></svg>산성 거품</div>
+      </div></div>
+    <div class="grp" style="width:170px"><h5>물 온도</h5><div class="dial"><div class="nd" style="transform:rotate(40deg);background:#e0102a"></div></div>
+      <div class="dlabels"><span style="left:14px;top:92px;color:#7ab8ff">냉수</span><span style="left:124px;top:92px;color:#ff6a1a">용암</span><span style="left:14px;top:30px;color:#9ad">미온</span><span style="left:118px;top:30px;color:#ff2a3a;text-shadow:0 0 8px #ff2a3a">고온◀</span></div></div>
+    <div class="grp"><h5>회전</h5><div class="seg"><button>저속</button><button>중속</button><button class="on" style="background:#ff2a3a;color:#fff;border-color:#ffb8c0;box-shadow:0 0 14px #ff2a3a">고속</button></div></div>
+    <div class="grp meters"><h5 style="margin-bottom:0">세탁 결과</h5>
+      <div class="mt"><span style="color:#ffb04a">용암 얼룩</span><div class="tr"><i style="width:100%;background:linear-gradient(90deg,#ff6a1a,#ffd84a)"></i></div><b style="color:#7affb0">100%</b></div>
+      <div class="mt"><span style="color:#8cff4a">점액</span><div class="tr"><i style="width:100%;background:linear-gradient(90deg,#3a8a10,#8cff4a)"></i></div><b style="color:#7affb0">100%</b></div>
+      <div class="mt"><span style="color:#ff5a6a">수축</span><div class="tr"><i style="width:68%;background:repeating-linear-gradient(135deg,#ff2a3a 0 8px,#b01020 8px 16px);box-shadow:0 0 12px #ff2a3a"></i></div><b style="color:#ff5a6a">68%</b></div>
+    </div>
+    <button class="go" id="goB" style="background:radial-gradient(circle at 50% 30%,#ff6a7a,#a01020 70%);border-color:#ffb8c0;box-shadow:0 0 26px rgba(255,40,60,.7),0 6px 0 #4a0010">다시 빨기<small>새 목도리 · 동전 −12</small></button>
+  </div>
+  <div class="alarm"></div>
+</section>
+
+<canvas id="grainC" width="256" height="256" style="display:none"></canvas>
+<div class="grain" id="grain"></div>
+<div class="vig"></div>
+<div class="tabs"><button data-s="a">1 · 세탁</button><button data-s="b">2 · 폭주</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transformOrigin='50% 50%';stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){if(k!=='a'&&k!=='b')k='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id===k);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var t=0;t<tb.length;t++)tb[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  var seed=11;function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+  var gc=document.getElementById('grainC'),gx=gc.getContext('2d'),id=gx.createImageData(256,256);
+  for(var p=0;p<id.data.length;p+=4){var v=(rnd()*255)|0;id.data[p]=id.data[p+1]=id.data[p+2]=v;id.data[p+3]=255;}
+  gx.putImageData(id,0,0);document.getElementById('grain').style.backgroundImage='url('+gc.toDataURL()+')';
+
+  // ---------- street + monster ----------
+  function street(svg,angry){var s='<defs><radialGradient id="eye'+(angry?1:0)+'" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6c0"/><stop offset=".35" stop-color="'+(angry?'#ff3a1a':'#ffb030')+'"/><stop offset="1" stop-color="rgba(255,80,0,0)"/></radialGradient>'+
+    '<linearGradient id="skin'+(angry?1:0)+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a1e22"/><stop offset="1" stop-color="#120608"/></linearGradient></defs>';
+    // skyline
+    var bx=0;for(var i=0;i<16;i++){var w=50+((i*37)%50),h=120+((i*71)%170);s+='<rect x="'+bx+'" y="'+(420-h)+'" width="'+w+'" height="'+(h+80)+'" fill="'+(angry?'#240812':'#1a0f30')+'"/>';
+      for(var wy=0;wy<h/26;wy++)for(var wx=0;wx<w/18;wx++)if(((i+wx*3+wy*7)%5)===0)s+='<rect x="'+(bx+6+wx*16)+'" y="'+(430-h+wy*24)+'" width="7" height="10" fill="'+(angry?'#ff8a5a':'#ffd88a')+'" opacity=".55"/>';bx+=w+4;}
+    s+='<rect x="0" y="420" width="1040" height="80" fill="#0c0616"/>';
+    for(var l=0;l<5;l++)s+='<ellipse cx="'+(80+l*220)+'" cy="470" rx="70" ry="8" fill="'+(angry?'#ff3a4a':'#ff3fa4')+'" opacity=".25"/>';
+    if(!angry){
+      // big lava giant leaning, chin on hand, peeking into the shop at left
+      s+='<g><path d="M-40 520 Q-20 180 150 120 Q300 80 380 200 Q430 300 420 520Z" fill="url(#skin0)"/>'+
+        '<path d="M110 40 L150 130 L90 120Z M300 30 L270 120 L330 130Z" fill="#2a1216"/>'+
+        '<path d="M60 250 Q100 230 130 260 M170 300 Q200 280 230 310 M280 220 Q320 240 330 280 M40 380 Q90 360 120 400" stroke="#ff6a1a" stroke-width="5" fill="none" opacity=".85"/>'+
+        '<path d="M60 250 Q100 230 130 260 M170 300 Q200 280 230 310 M280 220 Q320 240 330 280" stroke="#ffd84a" stroke-width="2" fill="none"/>'+
+        '<ellipse cx="170" cy="210" rx="70" ry="44" fill="url(#eye0)"/><ellipse cx="180" cy="210" rx="30" ry="22" fill="#ffe8a0"/><ellipse cx="186" cy="212" rx="8" ry="18" fill="#1a0604"/>'+
+        '<path d="M100 190 Q170 172 250 196 L250 210 Q170 190 100 206Z" fill="#1a0a0c"/>'+
+        '<ellipse cx="320" cy="200" rx="48" ry="30" fill="url(#eye0)" opacity=".8"/><ellipse cx="324" cy="202" rx="18" ry="14" fill="#ffe8a0"/><ellipse cx="327" cy="203" rx="5" ry="11" fill="#1a0604"/>'+
+        '<path d="M150 380 Q230 410 330 370" stroke="#ff6a1a" stroke-width="6" fill="none"/>'+
+        // hand under chin
+        '<path d="M140 520 Q150 430 230 420 Q320 415 360 470 L380 520Z" fill="#241012"/><path d="M200 430 v40 M250 424 v44 M300 428 v40" stroke="#ff6a1a" stroke-width="3" opacity=".6"/></g>';
+      // steam
+      for(var st=0;st<6;st++)s+='<ellipse cx="'+(120+st*50)+'" cy="'+(60-st*4)+'" rx="40" ry="18" fill="#ff9a6a" opacity=".08"/>';
+      // other small monsters queue on right
+      s+='<g opacity=".9"><path d="M760 520 Q770 360 850 350 Q930 360 940 520Z" fill="#101a2a"/><circle cx="830" cy="410" r="10" fill="#8cff4a"/><circle cx="870" cy="410" r="10" fill="#8cff4a"/><path d="M800 350 q-20 -60 10 -80 M900 350 q20 -60 -10 -80" stroke="#101a2a" stroke-width="12" fill="none"/>'+
+        '<path d="M960 520 Q965 420 1010 410 Q1050 420 1060 520Z" fill="#1a1030"/><circle cx="1000" cy="450" r="7" fill="#b58cff"/><circle cx="1024" cy="450" r="7" fill="#b58cff"/></g>';
+    }else{
+      // giant eye pressed against the glass
+      s+='<path d="M-60 520 Q-40 -40 520 -40 Q1100 -40 1100 520Z" fill="url(#skin1)"/>'+
+        '<path d="M0 160 Q140 120 220 200 M820 140 Q900 180 980 150 M60 420 Q200 380 260 440 M760 420 Q860 380 1000 430" stroke="#ff3a1a" stroke-width="8" fill="none"/>'+
+        '<path d="M0 160 Q140 120 220 200 M820 140 Q900 180 980 150 M60 420 Q200 380 260 440 M760 420 Q860 380 1000 430" stroke="#ffd84a" stroke-width="3" fill="none"/>'+
+        '';
+      function eye(cx,cy,sc){return '<g transform="translate('+cx+' '+cy+') scale('+sc+')"><ellipse rx="190" ry="120" fill="url(#eye1)"/><ellipse rx="110" ry="84" fill="#ffd060"/><ellipse rx="110" ry="84" fill="none" stroke="#ff3a1a" stroke-width="8"/>'+
+          '<ellipse rx="16" ry="72" fill="#120202"/><ellipse cx="-34" cy="-30" rx="18" ry="10" fill="#fff" opacity=".7"/><path d="M-150 -70 Q0 -150 150 -70 L150 -100 Q0 -190 -150 -100Z" fill="#0a0204"/>'+
+          '<path d="M-90 -86 L-70 -50 M-20 -110 L-14 -70 M50 -104 L40 -66 M110 -80 L90 -46" stroke="#0a0204" stroke-width="8"/></g>';}
+      s+=eye(170,230,1)+eye(900,210,.85);
+      // claws on glass
+      for(var c=0;c<4;c++){        s+='<path d="M'+(900+c*34)+' 500 Q'+(906+c*34)+' 400 '+(918+c*34)+' 360 L'+(930+c*34)+' 500Z" fill="#2a0c10" stroke="#ff3a1a" stroke-width="2"/>';}
+    }
+    svg.innerHTML=s;}
+  street(document.getElementById('streetA'),false);street(document.getElementById('streetB'),true);
+  document.getElementById('crackB').innerHTML='<g stroke="#fff" stroke-width="2.4" fill="none" opacity=".85"><path d="M180 330 L240 300 L300 320 L360 270 M240 300 L230 230 L270 180 M240 300 L200 380 L150 420 M300 320 L330 400"/><path d="M860 120 L820 180 L840 240 L800 300 M820 180 L760 160 M840 240 L900 270"/><circle cx="240" cy="300" r="10"/></g><g stroke="#9ff" stroke-width="1" fill="none" opacity=".4"><path d="M182 332 L242 302 L302 322 M862 122 L822 182 L842 242"/></g>';
+
+  function floor(svg,red){var s='';for(var r=0;r<6;r++){var y0=r*r*9+r*12,y1=(r+1)*(r+1)*9+(r+1)*12;for(var c=-10;c<24;c++){var x0=800+(c*100-800)*(1+y0/140),x1=800+((c+1)*100-800)*(1+y0/140),x2=800+((c+1)*100-800)*(1+y1/140),x3=800+(c*100-800)*(1+y1/140);
+      s+='<path d="M'+x0+' '+y0+' L'+x1+' '+y0+' L'+x2+' '+y1+' L'+x3+' '+y1+'Z" fill="'+(((r+c)%2)?(red?'#2a0c14':'#0e2a30'):(red?'#1a060c':'#081a20'))+'"/>';}}
+    s+='<ellipse cx="600" cy="30" rx="380" ry="40" fill="'+(red?'#ff2a3a':'#ff3fa4')+'" opacity=".16"/><ellipse cx="600" cy="20" rx="220" ry="18" fill="'+(red?'#ff5a6a':'#3ff0ff')+'" opacity=".12"/>';
+    if(red){for(var f=0;f<14;f++)s+='<ellipse cx="'+(200+f*80)+'" cy="'+(40+(f%4)*30)+'" rx="'+(60+(f%3)*30)+'" ry="'+(18+(f%2)*10)+'" fill="#fff" opacity=".75"/>';}
+    svg.innerHTML=s;}
+  floor(document.getElementById('floorA'),0);floor(document.getElementById('floorB'),1);
+
+  // ---------- washer ----------
+  function washer(svg,broken){var k=broken?'B':'A';
+    var s='<defs><linearGradient id="en'+k+'" x1="0" x2="1"><stop offset="0" stop-color="#b8ccc6"/><stop offset=".3" stop-color="#eaf6f0"/><stop offset=".7" stop-color="#dfeee6"/><stop offset="1" stop-color="#8aa29a"/></linearGradient>'+
+      '<radialGradient id="ch'+k+'" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#b8c4cc"/><stop offset=".8" stop-color="#5a6a78"/><stop offset="1" stop-color="#d8e2ea"/></radialGradient>'+
+      '<radialGradient id="wt'+k+'" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="'+(broken?'#5a1a2a':'#1a6a8a')+'"/><stop offset="1" stop-color="'+(broken?'#1a0408':'#06202e')+'"/></radialGradient>'+
+      '<clipPath id="port'+k+'"><circle cx="200" cy="200" r="168"/></clipPath>'+
+      '<pattern id="knit'+k+'" width="14" height="12" patternUnits="userSpaceOnUse"><path d="M0 0 L7 12 L14 0" stroke="rgba(0,0,0,.25)" stroke-width="2" fill="none"/></pattern></defs>';
+    s+='<rect x="10" y="20" width="520" height="630" rx="34" fill="url(#en'+k+')" stroke="#4a5a58" stroke-width="3"/>';
+    s+='<rect x="10" y="20" width="520" height="110" rx="34" fill="#c9dcd6"/><rect x="10" y="100" width="520" height="30" fill="#c9dcd6"/><path d="M10 130 H530" stroke="#7a908a" stroke-width="3"/>';
+    s+='<rect x="40" y="44" width="200" height="64" rx="8" fill="#0a1418" stroke="#4a5a58" stroke-width="3"/>';
+    s+='<text x="140" y="88" text-anchor="middle" font-family="Noto Sans Mono CJK KR" font-size="34" font-weight="700" fill="'+(broken?'#ff2a3a':'#3ff0ff')+'" style="filter:drop-shadow(0 0 6px '+(broken?'#ff2a3a':'#3ff0ff')+')">'+(broken?'Er:수축':'31:08')+'</text>';
+    s+='<circle cx="300" cy="76" r="26" fill="url(#ch'+k+')" stroke="#4a5a58" stroke-width="2"/><path d="M300 56 V76" stroke="#1a1830" stroke-width="5"/>';
+    s+='<rect x="360" y="52" width="140" height="48" rx="6" fill="#2a2a3e"/><rect x="376" y="62" width="10" height="28" rx="3" fill="#0a0a14"/><text x="440" y="82" text-anchor="middle" font-size="15" font-weight="800" fill="#ffd84a" font-family="Noto Sans CJK KR">비늘 동전</text>';
+    s+='<text x="270" y="624" text-anchor="middle" font-size="18" font-weight="900" fill="#5a6e6a" font-family="Noto Sans CJK KR" letter-spacing="4">7번 · 초대형 드럼 · 괴수 전용</text>';
+    s+='<rect x="26" y="640" width="60" height="18" rx="4" fill="#2a3230"/><rect x="454" y="640" width="60" height="18" rx="4" fill="#2a3230"/>';
+    // porthole
+    s+='<g transform="translate(70 170)">';
+    s+='<circle cx="200" cy="200" r="206" fill="#3a4a4a"/><circle cx="200" cy="200" r="198" fill="url(#ch'+k+')"/><circle cx="200" cy="200" r="176" fill="#1a2426"/>';
+    if(!broken){
+      s+='<g clip-path="url(#portA)"><circle cx="200" cy="200" r="170" fill="url(#wtA)"/>';
+      s+='<g class="spin"><path d="M40 150 Q120 60 220 110 Q320 160 360 90 L380 150 Q320 230 220 180 Q120 130 60 220Z" fill="#c23a5a"/><path d="M40 150 Q120 60 220 110 Q320 160 360 90 L380 150 Q320 230 220 180 Q120 130 60 220Z" fill="url(#knitA)"/>'+
+        '<path d="M60 250 Q150 200 240 260 Q320 320 350 280 L340 330 Q300 370 230 310 Q150 250 80 300Z" fill="#e0587a"/><path d="M60 250 Q150 200 240 260 Q320 320 350 280 L340 330 Q300 370 230 310 Q150 250 80 300Z" fill="url(#knitA)"/>'+
+        '<ellipse cx="150" cy="115" rx="34" ry="20" fill="#ff6a1a" style="filter:drop-shadow(0 0 10px #ff6a1a)"/><ellipse cx="150" cy="115" rx="16" ry="9" fill="#ffd84a"/>'+
+        '<ellipse cx="290" cy="150" rx="22" ry="14" fill="#ff6a1a" opacity=".8" style="filter:drop-shadow(0 0 8px #ff6a1a)"/>'+
+        '<path d="M210 270 q20 -14 40 4 q14 16 -6 26 q-24 8 -34 -30z" fill="#8cff4a" opacity=".85" style="filter:drop-shadow(0 0 8px #8cff4a)"/>'+
+        '<path d="M110 260 l-14 -6 M120 270 l-10 10" stroke="#fff" stroke-width="4"/></g>';
+      s+='<g class="slosh"><path d="M20 250 Q110 220 200 245 Q290 270 380 240 V400 H20Z" fill="rgba(80,220,255,.35)"/>';
+      for(var f=0;f<26;f++)s+='<circle cx="'+(30+(f*53)%340)+'" cy="'+(232+(f*17)%40)+'" r="'+(10+(f*7)%16)+'" fill="#f2fdff" opacity=".85"/>';
+      s+='</g>';
+      s+='</g>';
+      s+='<circle cx="200" cy="200" r="172" fill="none" stroke="#0a1418" stroke-width="10"/>';
+      s+='<path d="M90 90 Q140 50 210 44" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".35" fill="none"/><path d="M84 120 Q90 108 100 100" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".5"/>';
+      s+='<rect x="386" y="170" width="26" height="60" rx="8" fill="url(#chA)" stroke="#3a4a4a" stroke-width="2"/>';
+    }else{
+      // door swung open to the right: inside dark drum, door ellipse
+      s+='<circle cx="200" cy="200" r="170" fill="#0c0406"/>';
+      for(var h=0;h<18;h++){var a=h/18*6.283;s+='<circle cx="'+(200+Math.cos(a)*120)+'" cy="'+(200+Math.sin(a)*120)+'" r="6" fill="#2a0c12"/>';}
+      s+='<circle cx="200" cy="200" r="170" fill="none" stroke="#3a0a14" stroke-width="16"/>';
+      for(var fb=0;fb<20;fb++)s+='<circle cx="'+(40+(fb*47)%320)+'" cy="'+(300+(fb*13)%80)+'" r="'+(14+(fb*5)%18)+'" fill="#fff" opacity=".9"/>';
+      // tiny scarf hanging out, held by clothes-peg
+      s+='<path d="M170 170 Q200 150 230 170 L240 260 Q236 290 226 300 L214 300 Q212 270 206 250 Q200 270 196 300 L184 300 Q176 280 172 260Z" fill="#c23a5a"/><path d="M170 170 Q200 150 230 170 L240 260 Q236 290 226 300 L214 300 Q212 270 206 250 Q200 270 196 300 L184 300 Q176 280 172 260Z" fill="url(#knitB)"/>';
+      s+='<path d="M186 300 v14 M192 300 v16 M218 300 v14 M224 300 v12" stroke="#e0587a" stroke-width="3"/>';
+      s+='<rect x="192" y="140" width="16" height="40" rx="3" fill="#ffd84a" stroke="#6a4a00" stroke-width="2"/>';
+      s+='<path d="M200 60 V140" stroke="#ccc" stroke-width="2"/>';
+      s+='</g>';
+      // open door
+      s+='<g transform="translate(470 170)"><ellipse cx="60" cy="200" rx="70" ry="200" fill="url(#chB)" stroke="#3a4a4a" stroke-width="4"/><ellipse cx="66" cy="200" rx="48" ry="170" fill="rgba(180,220,230,.25)" stroke="#1a2426" stroke-width="6"/><path d="M50 60 Q40 120 44 200" stroke="#fff" stroke-width="8" opacity=".4" fill="none"/></g>';
+      s+='<g>';
+    }
+    s+='</g>';
+    svg.innerHTML=s;}
+  washer(document.getElementById('wsvgA'),false);washer(document.getElementById('wsvgB'),true);
+
+  // basket with giant sock
+  document.getElementById('basketA').innerHTML='<path d="M20 120 L280 120 L260 290 L40 290Z" fill="#3a6a8a" stroke="#0a1a2a" stroke-width="4"/>'+
+    (function(){var o='';for(var i=0;i<9;i++)o+='<path d="M'+(40+i*27)+' 130 L'+(52+i*24)+' 280" stroke="#0a1a2a" stroke-width="6" opacity=".5"/>';return o;})()+
+    '<path d="M60 124 Q40 20 110 30 Q140 40 130 90 L200 80 Q260 80 250 124Z" fill="#6a4ac8"/><path d="M200 80 Q260 80 250 124 L210 124Z" fill="#ffd84a"/><path d="M70 40 Q110 20 134 50" stroke="#fff" stroke-width="10" fill="none" opacity=".6"/>'+
+    '<ellipse cx="160" cy="100" rx="22" ry="10" fill="#b58cff" style="filter:drop-shadow(0 0 8px #b58cff)"/><circle cx="150" cy="96" r="3" fill="#fff"/><circle cx="170" cy="104" r="2" fill="#fff"/>'+
+    '<rect x="150" y="210" width="110" height="34" rx="4" fill="#fff" transform="rotate(-6 200 227)"/><text x="204" y="234" text-anchor="middle" font-size="16" font-weight="900" fill="#1a1830" font-family="Noto Sans CJK KR" transform="rotate(-6 200 227)">대기 · 별빛 양말</text>';
+
+  // bubbles
+  function bubbles(id,n,x0,w,y0){var e=document.getElementById(id);for(var i=0;i<n;i++){var b=document.createElement('div');b.className='bub';var r=10+rnd()*38;b.style.width=b.style.height=r+'px';b.style.left=(x0+rnd()*w)+'px';b.style.top=(y0+rnd()*140)+'px';b.style.animationDuration=(5+rnd()*7)+'s';b.style.animationDelay=(-rnd()*10)+'s';e.appendChild(b);}}
+  bubbles('bubsA',26,300,640,600);bubbles('bubsB',44,280,760,560);
+
+  // mood face
+  function face(el,angry){el.innerHTML='<svg width="42" height="42" viewBox="0 0 42 42"><path d="M12 16 l6 '+(angry?3:0)+' M30 16 l-6 '+(angry?3:0)+'" stroke="#1a0604" stroke-width="3"/><circle cx="15" cy="19" r="3" fill="#ffe8a0"/><circle cx="27" cy="19" r="3" fill="#ffe8a0"/><path d="M13 30 Q21 '+(angry?24:30)+' 29 30" stroke="#ffe8a0" stroke-width="3" fill="none"/></svg>';}
+  face(document.getElementById('faceA'),false);face(document.getElementById('faceB'),true);
+
+  // ---------- interaction + audio ----------
+  var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function blip(f){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*1.6,t+.08);g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.2);}
+  function slosh(){var c=ac();if(!c)return;var t=c.currentTime,n=c.sampleRate*1.2,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n)*.5;
+    var s=c.createBufferSource(),f=c.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.linearRampToValueAtTime(1400,t+.6);f.frequency.linearRampToValueAtTime(300,t+1.2);s.buffer=b;s.connect(f).connect(c.destination);s.start(t);
+    var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=60;g.gain.setValueAtTime(.3,t);g.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(g).connect(c.destination);o.start(t);o.stop(t+1.2);}
+  function roar(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),o2=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.type='sawtooth';o2.type='square';o.frequency.setValueAtTime(90,t);o.frequency.linearRampToValueAtTime(55,t+1.1);o2.frequency.setValueAtTime(93,t);o2.frequency.linearRampToValueAtTime(52,t+1.1);
+    f.type='lowpass';f.frequency.value=700;g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.35,t+.15);g.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(f);o2.connect(f);f.connect(g).connect(c.destination);o.start(t);o2.start(t);o.stop(t+1.25);o2.stop(t+1.25);}
+  var bt=document.querySelectorAll('#bottles .btl');for(var i=0;i<bt.length;i++)bt[i].addEventListener('click',function(){this.classList.toggle('sel');blip(+this.getAttribute('data-snd'));});
+  var ang=[-120,-40,40,120],ai=0,nd=document.getElementById('needle');nd.style.transform='rotate(-120deg)';
+  document.getElementById('dial').addEventListener('click',function(){ai=(ai+1)%4;nd.style.transform='rotate('+ang[ai]+'deg)';blip(300+ai*120);});
+  var sb=document.querySelectorAll('#seg button');for(var j=0;j<sb.length;j++)sb[j].addEventListener('click',function(){for(var q=0;q<sb.length;q++)sb[q].classList.remove('on');this.classList.add('on');blip(440);});
+  document.getElementById('goA').addEventListener('click',function(){slosh();var w=document.getElementById('washerA');w.animate([{transform:'translate(0,0)'},{transform:'translate(-4px,2px)'},{transform:'translate(4px,-2px)'},{transform:'translate(0,0)'}],{duration:160,iterations:6});});
+  ['stretch','coupon','hide','goB'].forEach(function(k){document.getElementById(k).addEventListener('click',roar);});
+  document.getElementById('winB').addEventListener('click',roar);
+
+  show((location.hash||'#a').slice(1));
+})();
+</script>
+</body>
+</html>

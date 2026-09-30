@@ -1,0 +1,95 @@
+{
+  "_": "이번 대가 고를 수 있는 제례 여섯. 각각 **즉시 효과**와 **지연 효과**를 따로 가진다.",
+  "_핵": "deferred 의 delayGenerations 가 이 PoC의 기제다 — 결정의 값 대부분이 결정한 대에 오지 않는다.",
+  "_형식": "payPercent 는 이번 대 공물 요구의 몇 %를 갚는가. 값 없는 int 는 -1.",
+
+  "rites": [
+    {
+      "id": "offer_elder",
+      "name": "늙은 이를 바친다",
+      "note": "살 만큼 산 이를 고른다. 구덩이는 남은 해가 적은 목숨을 덜 반긴다 — 요구를 다 채우지 못한다",
+      "requiresVictimTier": "elder",
+      "requiresCoffers": -1,
+      "payPercent": 60,
+      "immediate": { "wrath": 0, "binding": 4, "prosperity": 0, "houseVitality": 0, "resentment": 6, "demandBonus": 0, "coffers": 0 },
+      "deferred": [
+        { "delayGenerations": 2, "note": "고른 사람의 집안이 등을 돌리는 데 두 대가 걸린다",
+          "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": -3, "resentment": 7, "demandBonus": 0, "coffers": 0 }
+      ]
+    },
+    {
+      "id": "offer_young",
+      "name": "젊은 이를 바친다",
+      "note": "남은 해가 많은 목숨. 구덩이가 만족하고 속박이 굳는다. 마을은 그것을 잊지 않는다",
+      "requiresVictimTier": "young",
+      "requiresCoffers": -1,
+      "payPercent": 100,
+      "immediate": { "wrath": 0, "binding": 9, "prosperity": 0, "houseVitality": 0, "resentment": 15, "demandBonus": 0, "coffers": 0 },
+      "deferred": [
+        { "delayGenerations": 1, "note": "장례가 끝나고 나서야 원한이 형태를 갖춘다",
+          "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": 0, "resentment": 10, "demandBonus": 0, "coffers": 0 },
+        { "delayGenerations": 3, "note": "일할 사람이 줄어든 것은 한 세대가 지나서야 논에 나타난다",
+          "wrath": 0, "binding": 0, "prosperity": -9, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 }
+      ]
+    },
+    {
+      "id": "house_pays",
+      "name": "집안이 대신 치른다",
+      "note": "종손의 수명을 떼어 넣는다. 마을은 고개를 숙이고, 가문은 얇아진다",
+      "requiresVictimTier": "",
+      "requiresCoffers": -1,
+      "payPercent": 100,
+      "immediate": { "wrath": 0, "binding": 5, "prosperity": 0, "houseVitality": -8, "resentment": -6, "demandBonus": 0, "coffers": 0 },
+      "deferred": [
+        { "delayGenerations": 1, "note": "그 소문이 퍼지는 데 한 대가 걸린다",
+          "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": 0, "resentment": -3, "demandBonus": 0, "coffers": 0 },
+        { "delayGenerations": 2, "note": "떼어 낸 수명은 손자가 병약하게 태어나는 것으로 나타난다",
+          "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": -16, "resentment": 0, "demandBonus": 0, "coffers": 0 }
+      ]
+    },
+    {
+      "id": "rite_reinforce",
+      "name": "제례를 늘린다",
+      "note": "곳간을 털어 절차를 겹친다. 속박이 굳지만 구덩이는 다음 대에 더 요구한다",
+      "requiresVictimTier": "",
+      "requiresCoffers": 16,
+      "payPercent": 45,
+      "immediate": { "wrath": 0, "binding": 13, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": -16 },
+      "deferred": [
+        { "delayGenerations": 3, "note": "겹친 절차는 이자를 붙인다. 손자 대의 요구가 늘어 있다",
+          "wrath": 0, "binding": 0, "prosperity": -5, "houseVitality": 0, "resentment": 0, "demandBonus": 6, "coffers": 0 }
+      ]
+    },
+    {
+      "id": "rite_release",
+      "name": "해제 의식을 잇는다",
+      "note": "약조를 되돌리는 절차. 의식 자체가 공물의 일부를 삼키지만 속박이 풀리고 구덩이가 노한다",
+      "requiresVictimTier": "",
+      "requiresCoffers": 6,
+      "payPercent": 70,
+      "immediate": { "wrath": 0, "binding": -8, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": -6 },
+      "releaseProgress": 34,
+      "deferred": [
+        { "delayGenerations": 1, "note": "구덩이가 노하는 것은 의식이 끝난 뒤다",
+          "wrath": 12, "binding": 0, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 },
+        { "delayGenerations": 2, "note": "약조가 주던 풍요가 빠지는 자리. 마을은 이것이 해제 때문인 줄 모른다",
+          "wrath": 0, "binding": 0, "prosperity": -8, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 }
+      ]
+    },
+    {
+      "id": "close_ledger",
+      "name": "장부를 덮는다",
+      "note": "이번 대는 아무것도 하지 않는다. 아무도 죽지 않은 한 대라 마을이 숨을 돌리고 곳간이 남는다. 값은 손자가 받는다",
+      "requiresVictimTier": "",
+      "requiresCoffers": -1,
+      "payPercent": 0,
+      "deferUnpaidGenerations": 1,
+      "_미룬다": "이 수만 미납을 노여움으로 바꾸지 않는다. 구덩이는 기다리고, 미룬 공물은 다음 대의 요구에 그대로 얹힌다. NoDominantStrategy 가 이 수를 죽은 선택지로 잡아내서 생긴 규칙이다",
+      "immediate": { "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": 0, "resentment": -8, "demandBonus": 0, "coffers": 9 },
+      "deferred": [
+        { "delayGenerations": 2, "note": "덮어 둔 장부의 값. 증조부가 이것을 했고 당신이 지금 받고 있다",
+          "wrath": 15, "binding": -9, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 }
+      ]
+    }
+  ]
+}

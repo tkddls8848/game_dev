@@ -1,0 +1,35 @@
+{
+  "_": "상점가 · 가격 변동 폭 · 연말 할당량 · 검사기가 쓰는 한계값. crops.json 은 농학, 이 표는 돈이다.",
+  "startMoney": 560,
+  "wellWaterPerDay": 22,
+  "livingCostPerSeason": 240,
+  "quotaCoin": 3900,
+  "_할당량": "연말에 이만큼을 손에 쥐고 있어야 그 해를 넘긴다. 못 넘기면 봄으로 되감는다.",
+  "priceBandPercent": 16,
+  "priceStepDays": 7,
+  "_가격": "기준가에 +-priceBandPercent 안에서 씨드 고정 난수를 걸고 priceStepDays 마다 새로 뽑는다. 한 해의 가격표도 날씨처럼 되감기 때마다 같다 - 그래서 지식이 값을 갖는다.",
+  "_사다리": "판매단가가 minSoil 순서와 같은 방향으로 올라간다. 토질이 곧 자격이고, 되감기 흔적은 그 사다리를 한 칸씩 내려가게 만든다 - 이 PoC에서 흔적이 느껴지는 통로가 여기다.",
+  "shop": [
+    { "cropId": "buckwheat", "buySeed": 10, "sellUnit": 15 },
+    { "cropId": "turnip",    "buySeed": 12, "sellUnit": 19 },
+    { "cropId": "kale",      "buySeed": 14, "sellUnit": 22 },
+    { "cropId": "barley",    "buySeed": 18, "sellUnit": 24 },
+    { "cropId": "maize",     "buySeed": 28, "sellUnit": 31 },
+    { "cropId": "pumpkin",   "buySeed": 34, "sellUnit": 56 },
+    { "cropId": "grape",     "buySeed": 62, "sellUnit": 74 }
+  ],
+  "limits": {
+    "assetCeilingCoin": 24000,
+    "maxAttemptIncomeCoin": 20000,
+    "firstYearMarginMaxCoin": 600,
+    "_첫해": "첫 해는 넘길 수 있어야 하되 여유가 이 안이어야 한다. 넘길 수 없으면 불공정하고, 넉넉히 넘기면 되감기 버튼이 화면에 나올 일이 없다.",
+    "wallMinRewinds": 1,
+    "wallWithinRewinds": 8,
+    "_벽": "완전한 지식으로도 할당량을 못 넘기는 되감기 횟수가 이 구간 안에 있어야 한다. 없으면 되감기가 공짜다.",
+    "seasonViabilityMinCrops": 2,
+    "seasonViabilityMinCompletableMoneyCrops": 1,
+    "seasonViabilityMinIncomeCoin": 200,
+    "deadCropMinPlantings": 1,
+    "_예지값_없음": "'완전한 지식이 무지보다 더 남긴다'는 한계값을 두었다가 뺐다. 이 저장소의 탐욕 정책에서는 성립하지 않는다(실측: 완전한 지식 4076 vs 무지 4217, -141코인). 사람은 한 해의 윤작을 계획하지만 이 정책은 못 하므로, 그 차이는 기계가 판정할 수 없다. 검사기는 대신 '되감기가 이득이 아니다'라는 규칙 쪽을 본다. README 판정 칸 참고."
+  }
+}

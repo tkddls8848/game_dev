@@ -1,0 +1,54 @@
+{
+  "_": "priority 오름차순으로 훑어 처음 맞는 것이 결말이다. -1 은 '따지지 않는다'.",
+
+  "endings": [
+    {
+      "id": "e_withdrawn", "priority": 10,
+      "name": "원고를 거둬 갔다",
+      "text": "짧은 편지 한 장이 왔다. 「그동안 고맙습니다. 원고는 제가 가지고 있겠습니다.」 봉투 안에 붉은 자국이 남은 교정지가 그대로 들어 있다.",
+      "requiresWithdrawn": 1
+    },
+    {
+      "id": "e_silenced", "priority": 20,
+      "name": "더 쓰지 못한다",
+      "text": "답장이 오지 않는다. 원고는 여기 있고 작가는 없다. 고칠 사람이 없는 교정지는 그냥 붉은 종이다.",
+      "requiresSilenced": 1
+    },
+    {
+      "id": "e_gutted", "priority": 30,
+      "name": "반으로 줄어 돌아왔다",
+      "text": "남은 문장은 전부 옳다. 여덟 장이 세 장이 되었고, 지운 자리가 어디였는지는 이제 아무도 모른다.",
+      "lostSentenceMin": 4
+    },
+    {
+      "id": "e_masterpiece", "priority": 40,
+      "name": "청하지 않은 문장",
+      "text": "고쳐 달라고 한 적 없는 줄이 딸려 왔다. 교정지에 적을 것이 없다. 이런 것을 받으려고 이 일을 한다.",
+      "masterpieceMin": 1
+    },
+    {
+      "id": "e_polished_dead", "priority": 50,
+      "name": "말끔하고 아무도 아닌 글",
+      "text": "흠이 없다. 문장마다 옳고, 어느 문장도 이 사람이 쓴 것 같지 않다. 편집장은 좋다고 할 것이다.",
+      "qualityMin": 58, "voiceMax": 46
+    },
+    {
+      "id": "e_published", "priority": 60,
+      "name": "실린다",
+      "text": "실을 수 있다. 첫 문장은 그대로 남았고, 마지막 문장은 없어졌다. 작가는 다음 원고를 보내겠다고 했다.",
+      "requiresPublishable": 1
+    },
+    {
+      "id": "e_stalled", "priority": 70,
+      "name": "그대로다",
+      "text": "다섯 번을 주고받았는데 원고는 처음과 크게 다르지 않다. 붉은 자국만 늘었다.",
+      "qualityMax": 46
+    },
+    {
+      "id": "e_shelved", "priority": 80,
+      "name": "서랍",
+      "text": "나쁘지 않다. 나쁘지 않은 원고는 서랍에 들어간다.",
+      "requiresWithdrawn": -1
+    }
+  ]
+}

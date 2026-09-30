@@ -1,0 +1,41 @@
+{
+  "slug": "management-curse-inheritance",
+  "kind": "curse",
+  "title": "저주상속",
+  "english": "THE INHERITED DEBT",
+  "tagline": "할아버지는 빌었고, 아버지는 미뤘다. 청구서는 내게 왔다.",
+  "instructions": "세 번의 결산을 처리하세요. 선대 장부와 주민의 사정을 조사하면 기억을 빼앗지 않는 계약 변경이 열립니다.",
+  "question": "단순한 자원 최적화보다 어떤 대가를 남기는지 고민하게 되는가?",
+  "values": [
+    7,
+    3,
+    3
+  ],
+  "items": [
+    {
+      "id": "contract",
+      "title": "마르지 않는 우물",
+      "text": "약조 제17호 · 풍년력 83년",
+      "detail": "대가: 매 결산에 한 가족의 소중한 기억 하나"
+    },
+    {
+      "id": "mae",
+      "title": "임매월",
+      "text": "제례 음식을 차리는 집",
+      "detail": "지난해에도 어머니의 얼굴을 바쳤어요."
+    },
+    {
+      "id": "receipt",
+      "title": "지난해 납부 영수증",
+      "text": "선대의 붉은 취소선",
+      "detail": "이미 납부한 대가가 올해 장부에 다시 올라 있다."
+    }
+  ],
+  "palette": {
+    "background": "#1d201b",
+    "surface": "#2b3027",
+    "paper": "#eee5cc",
+    "accent": "#d2b578",
+    "muted": "#b7b59f"
+  }
+}

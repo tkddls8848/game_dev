@@ -1,0 +1,188 @@
+{
+  "checkedAt": "2026-09-27T10:11:19.080Z",
+  "allPassed": true,
+  "missingDataErrorVerified": true,
+  "fileGalleryVerified": true,
+  "reports": [
+    {
+      "slug": "mystery-scent-layers",
+      "title": "잔향 감식실",
+      "status": "passed",
+      "states": 30,
+      "endingStates": 6,
+      "endingsExercised": [
+        "외투가 옮긴 냄새",
+        "향기는 사람의 이름이 아니다"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/mystery-scent-layers.png"
+    },
+    {
+      "slug": "narrative-armistice",
+      "title": "휴전의 문장",
+      "status": "passed",
+      "states": 13,
+      "endingStates": 6,
+      "endingsExercised": [
+        "같은 문서, 같은 약속",
+        "서명 뒤의 총성"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/narrative-armistice.png"
+    },
+    {
+      "slug": "mystery-locked-phone",
+      "title": "잠금 해제 불가",
+      "status": "passed",
+      "states": 30,
+      "endingStates": 15,
+      "endingsExercised": [
+        "마지막 수신인",
+        "지워지지 않은 부재중 전화"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/mystery-locked-phone.png"
+    },
+    {
+      "slug": "puzzle-memory-suture",
+      "title": "기억의 봉합사",
+      "status": "passed",
+      "states": 16,
+      "endingStates": 8,
+      "endingsExercised": [
+        "남아 있는 온기",
+        "꿈의 거부 반응"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/puzzle-memory-suture.png"
+    },
+    {
+      "slug": "puzzle-tomorrow-map",
+      "title": "내일의 지도",
+      "status": "passed",
+      "states": 24,
+      "endingStates": 12,
+      "endingsExercised": [
+        "모두의 주소가 남은 아침",
+        "길은 열렸고 문은 사라졌다"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/puzzle-tomorrow-map.png"
+    },
+    {
+      "slug": "management-curse-inheritance",
+      "title": "저주상속",
+      "status": "passed",
+      "states": 156,
+      "endingStates": 91,
+      "endingsExercised": [
+        "처음 쓰는 공정한 장부",
+        "다음 세대의 청구서"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/management-curse-inheritance.png"
+    },
+    {
+      "slug": "rhythm-your-tempo",
+      "title": "당신의 박자",
+      "status": "passed",
+      "states": 21,
+      "endingStates": 8,
+      "endingsExercised": [
+        "네 사람의 한 호흡",
+        "서로를 놓친 사중주"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/rhythm-your-tempo.png"
+    },
+    {
+      "slug": "narrative-redline",
+      "title": "붉은 펜으로 남긴 것",
+      "status": "passed",
+      "states": 16,
+      "endingStates": 8,
+      "endingsExercised": [
+        "작가가 다시 보낸 목소리",
+        "읽히지만 남지 않은 문장"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/narrative-redline.png"
+    },
+    {
+      "slug": "narrative-last-address",
+      "title": "마지막 이삿날",
+      "status": "passed",
+      "states": 103,
+      "endingStates": 51,
+      "endingsExercised": [
+        "조용한 집의 다음 주소",
+        "마지막 차에 실은 것"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/narrative-last-address.png"
+    },
+    {
+      "slug": "puzzle-prayer-office",
+      "title": "기적 배정과",
+      "status": "passed",
+      "states": 24,
+      "endingStates": 12,
+      "endingsExercised": [
+        "세 통의 감사 편지",
+        "하류에서 온 청구서"
+      ],
+      "viewports": [
+        1600,
+        768,
+        390
+      ],
+      "consoleErrors": 0,
+      "screenshot": "png/puzzle-prayer-office.png"
+    }
+  ]
+}

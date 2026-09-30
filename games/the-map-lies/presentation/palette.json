@@ -1,0 +1,91 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+
+  "name": "트레이싱지 겹친 도시 계획",
+  "oneLine": "흑백 항공사진 위에 반투명 트레이싱지. 고친 날마다 한 장씩 겹쳐서 몇 번 고쳤는지가 두께로 보인다",
+  "reference": "1960년대 도시계획 도면 · 항공측량 사진 · 제도용 연필과 지우개 자국",
+  "_겹치지않게": "먼저 만든 열두 연출 중 청사진 모눈종이와 바랜 토지 측량도가 가깝다. 갈라 놓은 점 셋: (1) 바탕이 종이가 아니라 **회색 항공사진**이다 — 청사진은 청색 잉크, 측량도는 세피아. (2) 선이 잉크가 아니라 **흑연**이고 지운 자리에 문댄 자국이 남는다. (3) **겹이 쌓인다** — 고친 날 수가 두께로 보이는 것이 이 연출의 전부다. 청색과 세피아를 팔레트에서 아예 뺐다.",
+
+  "color": {
+    "photoBlack": "#16150F",
+    "photoDark": "#2A2A22",
+    "photoMid": "#5E5D52",
+    "photoLight": "#8E8D80",
+    "photoHaze": "#B4B3A6",
+    "vellum": "#E6E0CE",
+    "vellumLit": "#F1ECDD",
+    "vellumEdge": "#C4BCA4",
+    "graphite": "#34332E",
+    "graphiteSoft": "#6B6A61",
+    "graphiteFaint": "#9A9890",
+    "eraser": "#D9D3BE",
+    "stamp": "#4A463C",
+    "redDot": "#B4352A",
+    "redDotGlow": "#E06A58",
+    "warn": "#8A6A22",
+    "ink": "#2B2A24",
+    "inkSoft": "#63615A"
+  },
+
+  "type": {
+    "familyBody": "Sunflower",
+    "familyHand": "GamjaFlower",
+    "sizeTitle": 50,
+    "sizeHeading": 25,
+    "sizeBody": 16,
+    "sizeHint": 13,
+    "sizeNum": 14,
+    "sizeHand": 19,
+    "trackTitle": "0.02em",
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다.",
+    "_손글씨": "GamjaFlower 는 도면 위의 연필 주석에만 쓴다. 본문에 쓰면 도면이 낙서가 된다."
+  },
+
+  "photo": {
+    "cellPx": 30,
+    "grainAlpha": 0.16,
+    "grainPitchPx": 3,
+    "blurPx": 0,
+    "_입자": "항공사진의 거친 입자는 겹친 그라디언트 두 장이 전부다. 이미지를 한 장도 받지 않았다",
+    "_밝기": "칸 종류마다 회색값이 다르다. 건물이 가장 어둡고 길이 가장 밝다 — 실제 항공사진에서 아스팔트가 더 밝다"
+  },
+
+  "vellumSheet": {
+    "offsetPx": 3,
+    "alpha": 0.14,
+    "edgeAlpha": 0.34,
+    "maxSheets": 9,
+    "overlayAlpha": 0.28,
+    "_덮개": "사진 위에 덮는 트레이싱지 한 장의 불투명도. 0.42 로 해 보고 내렸다 — 건물과 길의 회색차가 눈으로 안 보였다. 사진이 밑에서 읽혀야 한다",
+    "_겹": "고친 날 하나에 한 장. offsetPx 만큼 밀어 쌓으면 두께가 보인다. 아홉 장을 넘으면 모아서 한 장으로 적는다 — 그 이상은 눈으로 세지 못한다"
+  },
+
+  "pencil": {
+    "widthPx": 1,
+    "widthStrongPx": 2,
+    "jitterPx": 1,
+    "dashPlan": "none",
+    "dashUndrawn": "3 4",
+    "eraserAlpha": 0.5,
+    "_지운자리": "지우개는 선을 없애지 않는다. 문댄 자국을 남긴다 — 같은 칸을 다시 그은 횟수가 그 자국의 진하기다"
+  },
+
+  "dot": {
+    "radiusPx": 3,
+    "radiusTrappedPx": 4,
+    "ringPx": 1,
+    "_사람": "갇힌 사람은 선 사이의 작은 붉은 점이다. 크게 그리면 캐릭터가 되고, 그러면 도면이 아니게 된다"
+  },
+
+  "grade": {
+    "vignette": 0.30,
+    "grainStatic": true,
+    "paperFiber": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 사진이 된다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리 자료를 하나도 받지 않았다. CC0 이면서 이 연출에 맞는 것(연필·지우개·도면 넘기는 소리)을 원 페이지에서 확인하지 못했다. 없는 것을 있는 척 적지 않는다. CREDITS.md 의 「버린 것」에 같은 사실을 적었다"
+  }
+}

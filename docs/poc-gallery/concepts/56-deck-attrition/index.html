@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>닳는 활자 — 마지막 인쇄</title>
+<style>
+:root{
+  --soot:#0d0e10; --wall:#1a1b1e; --oak:#3b2a1c; --oak2:#5b4128; --lead:#8d949c; --lead2:#4f555c; --lead3:#c9ced3;
+  --paper:#ece5d3; --paper2:#d8ceb4; --ink:#151412; --verm:#d9401f; --brass:#c79a4a; --molten:#ff8a1e;
+  --mono:"D2Coding","Nanum Gothic Coding","Noto Sans Mono CJK KR",ui-monospace,monospace;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:var(--sans);color:var(--paper)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:var(--soot)}
+.screen{position:absolute;inset:0;opacity:0;visibility:hidden}
+.screen.on{opacity:1;visibility:visible}
+/* workshop backdrop: wall of type-case drawers */
+.drawers{position:absolute;left:0;right:0;top:0;height:560px;
+  background:
+   repeating-linear-gradient(90deg,transparent 0 196px,rgba(0,0,0,.65) 196px 204px),
+   repeating-linear-gradient(0deg,transparent 0 62px,rgba(0,0,0,.7) 62px 70px),
+   linear-gradient(180deg,#2c2118,#1b140e);filter:blur(1.2px);opacity:.75}
+.drawers::after{content:"";position:absolute;inset:0;background:
+   repeating-linear-gradient(90deg,transparent 0 84px,rgba(210,170,100,.18) 84px 116px,transparent 116px 200px),
+   repeating-linear-gradient(0deg,transparent 0 26px,rgba(210,170,100,.12) 26px 32px,transparent 32px 70px);mix-blend-mode:screen}
+.bench{position:absolute;left:0;right:0;top:470px;bottom:0;
+  background:linear-gradient(180deg,#4a3422 0,#3a2818 12%,#2a1d12 60%,#140e09 100%);
+  box-shadow:0 -12px 30px rgba(0,0,0,.8)}
+.bench::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(2deg,rgba(0,0,0,.0) 0 7px,rgba(0,0,0,.18) 7px 9px,rgba(255,220,160,.03) 9px 14px);}
+.lampcone{position:absolute;left:50%;top:-40px;width:1300px;height:1080px;transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(ellipse 45% 55% at 50% 45%,rgba(255,236,190,.22),rgba(255,220,160,.07) 55%,transparent 75%);mix-blend-mode:screen;animation:sway 7s ease-in-out infinite}
+@keyframes sway{50%{transform:translateX(-49%)}}
+.lamp{position:absolute;left:50%;top:-20px;transform:translateX(-50%);width:120px;height:70px}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 70% at 50% 46%,transparent 50%,rgba(0,0,0,.85) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay}
+/* top hud */
+.hud{position:absolute;left:36px;right:36px;top:22px;display:flex;justify-content:space-between;align-items:flex-start;font-family:var(--mono);font-size:14px;letter-spacing:2px;color:#a9a393;z-index:5}
+.route{display:flex;gap:8px;align-items:center}
+.route span{padding:4px 10px;border:1px solid #4a4438;color:#7d776a}
+.route span.done{color:#5b574c;text-decoration:line-through}
+.route span.cur{border-color:var(--verm);color:var(--paper);background:rgba(217,64,31,.12)}
+.route i{color:#4a4438;font-style:normal}
+/* chase + proof sheet (enemy) */
+.chase{position:absolute;left:520px;top:92px;width:560px;height:430px;border-radius:4px;
+  background:linear-gradient(145deg,#6d747b,#3d4248 40%,#2a2e33);box-shadow:inset 0 0 0 3px #22262a,inset 0 0 0 10px #50565d,0 30px 60px rgba(0,0,0,.8),0 0 0 1px #000}
+.chase::before{content:"";position:absolute;left:10px;right:10px;top:10px;bottom:10px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 2px,transparent 2px 7px)}
+.quoin{position:absolute;width:40px;height:16px;background:linear-gradient(#e0b862,#8a6424);border-radius:2px;box-shadow:0 2px 3px #000}
+.proof{position:absolute;left:34px;top:30px;right:34px;bottom:30px;background:linear-gradient(175deg,#f1ebda,#ddd3b9);box-shadow:0 4px 14px rgba(0,0,0,.5);overflow:hidden;color:var(--ink)}
+.proof::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,transparent 50%,rgba(120,90,40,.18));pointer-events:none}
+.proof .ph{position:absolute;left:22px;top:16px;font-family:var(--mono);font-size:12px;letter-spacing:3px;color:#6b6250}
+.proof .ename{position:absolute;left:0;right:0;top:36px;text-align:center;font-family:var(--serif);font-weight:800;font-size:96px;letter-spacing:18px;color:var(--ink);filter:url(#inkA)}
+.proof .hpline{position:absolute;left:40px;right:40px;top:170px;height:26px;border:2px solid var(--ink)}
+.proof .hpline i{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 8px)}
+.proof .hpn{position:absolute;right:40px;top:202px;font-family:var(--mono);font-size:18px}
+.proof .hpn b{font-size:28px}
+.intent{position:absolute;left:40px;top:204px;display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px}
+.intent .seal{border:3px solid var(--verm);color:var(--verm);padding:2px 10px;font-weight:800;transform:rotate(-4deg);font-size:24px;filter:url(#inkA)}
+.marks{position:absolute;left:24px;right:24px;top:252px;bottom:16px}
+.imp{position:absolute;font-family:var(--serif);font-weight:900;color:var(--ink);line-height:1;animation:press .28s cubic-bezier(.2,1.8,.4,1) both}
+.imp small{display:block;font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:2px;margin-top:4px;color:#5b5446}
+@keyframes press{from{transform:scale(1.35);opacity:0}to{opacity:1}}
+/* left: player */
+.left{position:absolute;left:36px;top:110px;width:420px}
+.hpcard{background:linear-gradient(180deg,rgba(236,229,211,.96),rgba(216,206,180,.96));color:var(--ink);padding:18px 22px;box-shadow:0 12px 30px rgba(0,0,0,.6);transform:rotate(-1.2deg)}
+.hpcard .lb{font-family:var(--mono);font-size:12px;letter-spacing:3px;color:#6b6250}
+.hpcard .big{font-family:var(--serif);font-weight:900;font-size:64px;line-height:1.05}
+.hpcard .big small{font-size:24px;font-weight:400;color:#6b6250}
+.hpcard .note{font-size:14px;color:#4a4436;margin-top:4px}
+.hpcard .note b{color:var(--verm)}
+.deadline{margin-top:26px}
+.deadline .lb{font-family:var(--mono);font-size:12px;letter-spacing:3px;color:#a9a393;margin-bottom:10px}
+.sheets{display:flex;gap:5px}
+.sheets i{width:22px;height:30px;background:var(--paper2);box-shadow:0 2px 4px rgba(0,0,0,.6)}
+.sheets i.used{background:#3c362c;opacity:.6}
+.sheets i.now{background:var(--verm);box-shadow:0 0 12px rgba(217,64,31,.8)}
+.deadline .t{font-family:var(--serif);font-size:18px;margin-top:10px;color:var(--paper)}
+.deadline .t b{color:var(--verm)}
+.block{margin-top:22px;font-family:var(--mono);font-size:14px;letter-spacing:2px;color:#a9a393}
+.block b{font-family:var(--serif);font-size:30px;color:var(--lead3);margin-left:8px}
+/* right: type case */
+.case{position:absolute;right:36px;top:96px;width:430px;padding:14px 14px 10px;background:linear-gradient(180deg,#5b4128,#3b2a1c);box-shadow:inset 0 0 0 2px #22170d,0 20px 40px rgba(0,0,0,.7);border-radius:3px}
+.case h3{font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:4px;color:#e5c793;margin:0 4px 10px;display:flex;justify-content:space-between}
+.case h3 em{font-style:normal;color:#b39468}
+.cell{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;background:linear-gradient(180deg,#261a10,#1c130b);box-shadow:inset 0 3px 8px rgba(0,0,0,.8);padding:8px 10px;margin-bottom:8px;border-radius:2px}
+.cell .smp{height:54px;background:var(--paper);display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:var(--serif);font-weight:900;font-size:30px;box-shadow:inset 0 0 6px rgba(0,0,0,.25);position:relative;overflow:hidden}
+.cell .smp.red{color:var(--verm)}
+.cell .nm{font-size:16px;color:var(--paper)}
+.cell .nm small{display:block;font-size:12px;color:#b8a888;margin-top:3px;font-family:var(--mono);letter-spacing:1px}
+.nicks{display:flex;gap:4px;margin-top:6px}
+.nicks i{width:18px;height:8px;background:linear-gradient(var(--lead3),var(--lead2));border-radius:1px}
+.nicks i.gone{background:#2a2019;box-shadow:inset 0 1px 2px #000}
+.cell.melted .smp{background:#2a1a10;color:transparent}
+.cell.melted .smp::after{content:"녹 음";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--molten);font-size:20px;letter-spacing:6px;text-shadow:0 0 12px var(--molten)}
+.cell.melted .nm{color:#7e6d58;text-decoration:line-through}
+.cell.hot{box-shadow:inset 0 3px 8px rgba(0,0,0,.8),0 0 0 2px var(--verm)}
+/* hand: lead slugs */
+.handlbl{position:absolute;left:50%;top:560px;transform:translateX(-50%);font-family:var(--serif);font-size:22px;color:var(--paper);letter-spacing:3px;text-shadow:0 2px 8px #000;white-space:nowrap}
+.handlbl b{color:var(--verm);font-weight:700}
+.hand{position:absolute;left:0;right:0;top:606px;height:360px;display:flex;justify-content:center;gap:22px}
+.slug{width:196px;height:330px;position:relative;cursor:pointer;transition:transform .18s cubic-bezier(.3,1.7,.5,1)}
+.slug:hover{transform:translateY(-22px)}
+.slug:active{transform:translateY(-8px) scale(.97)}
+.slug .face{position:absolute;left:18px;right:18px;top:0;height:150px;border-radius:4px;
+  background:linear-gradient(135deg,#dfe3e7 0,#a4abb2 18%,#6e757c 55%,#9aa1a8 80%,#565c62 100%);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),inset 0 -8px 14px rgba(0,0,0,.45),0 16px 0 #3a3f44,0 18px 0 #22262a,0 34px 30px rgba(0,0,0,.7)}
+.slug .face .g{position:absolute;inset:14px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:900;font-size:82px;color:#2b2f33;
+  transform:scaleX(-1);text-shadow:1px 1px 0 rgba(255,255,255,.55),-2px -2px 3px rgba(0,0,0,.55)}
+.slug.wood .face{background:linear-gradient(135deg,#d7a86c,#a8743e 40%,#7d5328 80%,#5b3a1a);box-shadow:inset 0 0 0 2px rgba(255,230,190,.25),inset 0 -8px 14px rgba(0,0,0,.45),0 16px 0 #4d3219,0 18px 0 #2a1a0b,0 34px 30px rgba(0,0,0,.7)}
+.slug.wood .face .g{color:#3c220c;text-shadow:1px 1px 0 rgba(255,220,170,.4),-2px -2px 3px rgba(0,0,0,.55)}
+.slug.wood .face::before{content:"";position:absolute;inset:0;border-radius:4px;background:repeating-linear-gradient(80deg,transparent 0 9px,rgba(60,30,10,.18) 9px 11px)}
+.slug .plate{position:absolute;left:0;right:0;top:186px;height:140px;background:linear-gradient(180deg,#efe8d6,#d6cbb0);color:var(--ink);padding:10px 12px;box-shadow:0 10px 20px rgba(0,0,0,.6)}
+.slug .plate .n{font-family:var(--serif);font-weight:800;font-size:19px;display:flex;justify-content:space-between;align-items:baseline}
+.slug .plate .n .c{font-family:var(--mono);font-size:13px;color:#fff;background:var(--ink);padding:1px 7px;border-radius:9px}
+.slug .plate .d{font-size:12.5px;line-height:1.5;color:#3e382c;margin-top:6px}
+.slug .plate .w{position:absolute;left:12px;right:12px;bottom:8px;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:#8a7f66;display:flex;justify-content:space-between}
+.slug.rare .plate{border-top:4px solid var(--verm)}
+.slug.worn .face .g{filter:url(#wear2);opacity:.85}
+.slug.worn3 .face .g{filter:url(#wear3);opacity:.7}
+.slug.spent{pointer-events:none;opacity:.25;filter:grayscale(1)}
+.quoins{position:absolute;right:44px;bottom:70px;display:flex;gap:10px;align-items:flex-end}
+.qk{width:26px;height:58px;background:linear-gradient(90deg,#8a6424,#f0c878,#8a6424);border-radius:3px;box-shadow:0 6px 12px rgba(0,0,0,.6);transition:opacity .3s,transform .3s}
+.qk.off{opacity:.18;transform:translateY(8px)}
+.quoins .lb{position:absolute;bottom:-22px;right:0;font-family:var(--mono);font-size:12px;letter-spacing:3px;color:#a9a393;white-space:nowrap}
+.pile{position:absolute;left:40px;bottom:30px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:#a9a393;line-height:1.9}
+.pile b{color:var(--paper);font-size:16px}
+.flash{position:absolute;inset:0;background:#fff8e6;opacity:0;pointer-events:none}
+.flash.go{animation:fl .25s ease-out}
+@keyframes fl{0%{opacity:.35}100%{opacity:0}}
+.shake{animation:shk .25s}
+@keyframes shk{25%{transform:translate(3px,2px)}50%{transform:translate(-3px,-1px)}75%{transform:translate(2px,-2px)}}
+/* B */
+#b .bench{background:linear-gradient(180deg,#3a2616 0,#2a1a0f 20%,#150d07 100%)}
+.platen{position:absolute;left:470px;top:-40px;width:660px;height:300px;
+  background:linear-gradient(180deg,#1b1d20,#3c4146 60%,#23272b);clip-path:polygon(6% 0,94% 0,100% 78%,92% 100%,8% 100%,0 78%);box-shadow:0 30px 60px rgba(0,0,0,.9);animation:platen 3.6s ease-in-out infinite}
+.platen::before{content:"압 판";position:absolute;left:0;right:0;top:120px;text-align:center;font-family:var(--serif);font-weight:900;font-size:72px;letter-spacing:40px;color:#0c0d0e;text-shadow:0 1px 0 rgba(255,255,255,.12)}
+.platen::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(90deg,transparent,rgba(255,138,30,.35),transparent)}
+@keyframes platen{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+.bossbar{position:absolute;left:520px;top:276px;width:560px;font-family:var(--mono);font-size:13px;letter-spacing:2px;color:#a9a393}
+.bossbar .bar{height:14px;margin-top:6px;background:#1c1d1f;border:1px solid #555}
+.bossbar .bar i{display:block;height:100%;width:22%;background:repeating-linear-gradient(90deg,var(--paper) 0 6px,#b9ae93 6px 8px)}
+.bossbar .row{display:flex;justify-content:space-between}
+.bossbar .row b{color:var(--paper);font-size:18px}
+.bproof{position:absolute;left:560px;top:340px;width:480px;height:200px;background:linear-gradient(175deg,#f1ebda,#ddd3b9);color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.7);transform:rotate(-1deg);overflow:hidden}
+.bproof .lb{position:absolute;left:16px;top:10px;font-family:var(--mono);font-size:11px;letter-spacing:3px;color:#6b6250}
+.prints{position:absolute;left:18px;right:18px;top:34px;display:flex;justify-content:space-between;align-items:flex-end}
+.pr{text-align:center;font-family:var(--serif);font-weight:900;color:var(--ink);line-height:1}
+.pr small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:2px;color:#6b6250;margin-top:8px}
+.pr{font-size:92px}.pr.p2 span{filter:url(#wear2);opacity:.85;display:inline-block}.pr.p3 span{filter:url(#wear3);opacity:.62;display:inline-block}
+.arrow{font-family:var(--mono);font-size:22px;color:#8a7f66;align-self:center}
+.crucible{position:absolute;left:1180px;top:560px;width:300px;height:260px}
+.glow{position:absolute;left:1080px;top:420px;width:520px;height:520px;background:radial-gradient(circle,rgba(255,138,30,.55),rgba(255,90,20,.18) 40%,transparent 68%);mix-blend-mode:screen;animation:heat 1.6s ease-in-out infinite}
+@keyframes heat{50%{opacity:.75;transform:scale(1.04)}}
+.melting{position:absolute;left:1262px;top:470px;width:130px;height:150px;animation:sink 4s ease-in infinite}
+@keyframes sink{0%{transform:translateY(-10px) rotate(-8deg)}60%{transform:translateY(90px) rotate(4deg);opacity:1}75%{opacity:0;transform:translateY(120px)}100%{opacity:0}}
+.caption{position:absolute;left:1040px;top:840px;width:520px;text-align:center}
+.caption .h{font-family:var(--serif);font-weight:800;font-size:38px;color:var(--molten);text-shadow:0 0 18px rgba(255,138,30,.7);letter-spacing:4px}
+.caption .s{font-size:15px;color:#d8c8a8;margin-top:6px;line-height:1.5}
+.bleft{position:absolute;left:36px;top:330px;width:440px}
+.bleft .hpcard{transform:rotate(1deg)}
+.bhand{position:absolute;left:36px;top:620px;display:flex;gap:14px}
+.bhand .slug{width:150px;height:260px}
+.bhand .slug .face{left:12px;right:12px;height:112px}
+.bhand .slug .face .g{font-size:60px}
+.bhand .slug .plate{top:144px;height:110px;padding:8px 10px}
+.bhand .slug .plate .n{font-size:16px}
+.bhand .slug .plate .d{font-size:11.5px}
+.ember{position:absolute;width:4px;height:4px;border-radius:50%;background:#ffb04a;box-shadow:0 0 8px #ff8a1e;animation:rise 3s linear infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:1}100%{transform:translateY(-260px) translateX(20px);opacity:0}}
+.tabs{position:absolute;right:16px;bottom:8px;display:flex;gap:6px;z-index:60}
+.tabs button{font-family:var(--mono);background:rgba(10,10,12,.85);color:#a9a393;border:1px solid #4a4438;padding:3px 10px;font-size:12px;letter-spacing:1px;cursor:pointer}
+.tabs button.on{background:var(--verm);color:#fff;border-color:var(--verm)}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <filter id="inkA"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter>
+  <filter id="wear1"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="5" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="1.6"/></filter>
+  <filter id="wear2"><feTurbulence type="fractalNoise" baseFrequency=".45" numOctaves="3" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="6" result="d"/><feMorphology in="d" operator="erode" radius=".6"/></filter>
+  <filter id="wear3"><feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="3" seed="11" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="12" result="d"/><feGaussianBlur in="d" stdDeviation=".9"/></filter>
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0"/></filter>
+ </defs>
+</svg>
+
+<!-- ================= A ================= -->
+<section class="screen" id="a">
+  <div class="drawers"></div>
+  <div class="bench"></div>
+  <div class="lampcone"></div>
+  <svg class="lamp" viewBox="0 0 120 70"><rect x="58" y="0" width="4" height="24" fill="#222"/><path d="M20 60 Q60 10 100 60 Z" fill="#2c3a2e" stroke="#111"/><ellipse cx="60" cy="60" rx="40" ry="6" fill="#fff3cf"/></svg>
+
+  <div class="hud">
+    <div class="route"><span class="done">교정쇄</span><i>—</i><span class="cur">조임쇠</span><i>—</i><span>조임쇠</span><i>—</i><span>압판</span></div>
+    <div>닳는 활자 · 회차 1 · 둘째 전투</div>
+  </div>
+
+  <div class="left">
+    <div class="hpcard">
+      <div class="lb">체 력</div>
+      <div class="big" id="hpA">52 <small>/ 80</small></div>
+      <div class="note">전투 사이에 <b>한 번도 차지 않는다</b>. 아낀 활자의 값은 여기서 낸다.</div>
+    </div>
+    <div class="deadline">
+      <div class="lb">마 감 — 이 판을 14장 안에 찍어야 한다</div>
+      <div class="sheets" id="sheetsA"></div>
+      <div class="t">다섯째 장 · 남은 장 <b>9</b></div>
+    </div>
+    <div class="block">방 어 <b id="blkA">0</b></div>
+  </div>
+
+  <div class="chase">
+    <div class="quoin" style="left:50%;top:-4px;margin-left:-20px"></div>
+    <div class="quoin" style="left:50%;bottom:-4px;margin-left:-20px"></div>
+    <div class="proof" id="proofA">
+      <div class="ph">교정 No.2 — 적</div>
+      <div class="ename">조임쇠</div>
+      <div class="hpline"><i id="ehpbar" style="width:78%"></i></div>
+      <div class="intent">다음 수 <span class="seal">공격 14</span></div>
+      <div class="hpn"><b id="ehp">47</b> / 60</div>
+      <div class="marks" id="marksA"></div>
+    </div>
+  </div>
+
+  <div class="case" id="caseA">
+    <h3>활 자 상 자 <em>회차 전체에서 닳는다</em></h3>
+  </div>
+
+  <div class="handlbl">대형 목활자가 손에 왔다 — <b>지금 찍을까, 압판까지 아껴 둘까</b></div>
+  <div class="hand" id="handA"></div>
+  <div class="pile">뽑을 더미 <b>6</b> · 버린 더미 <b>3</b></div>
+  <div class="quoins" id="qA"><div class="qk"></div><div class="qk"></div><div class="qk"></div><div class="lb">기 력</div></div>
+  <div class="flash" id="flashA"></div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="screen" id="b">
+  <div class="drawers" style="opacity:.45"></div>
+  <div class="bench"></div>
+  <div class="glow"></div>
+  <div class="platen"></div>
+  <div class="hud">
+    <div class="route"><span class="done">교정쇄</span><i>—</i><span class="done">조임쇠</span><i>—</i><span class="done">조임쇠</span><i>—</i><span class="cur">압판</span></div>
+    <div>닳는 활자 · 회차 1 · 보스</div>
+  </div>
+  <div class="bossbar"><div class="row"><span>압 판 · 다음 수 <span style="color:var(--verm)">공격 20</span></span><b>28 / 128</b></div><div class="bar"><i></i></div></div>
+
+  <div class="bproof">
+    <div class="lb">대형 목활자 — 이 회차의 세 번 인쇄</div>
+    <div class="prints">
+      <div class="pr p1"><span>목</span><small>첫째 · 피해 20</small></div><div class="arrow">→</div>
+      <div class="pr p2"><span>목</span><small>둘째 · 피해 16</small></div><div class="arrow">→</div>
+      <div class="pr p3" id="lastprint"><span>목</span><small>셋째 · 피해 12</small></div>
+    </div>
+  </div>
+
+  <div class="bleft">
+    <div class="hpcard">
+      <div class="lb">체 력</div>
+      <div class="big">31 <small>/ 80</small></div>
+      <div class="note">마감 <b>11 / 14</b> · 남은 장 3 — 압판까지 28</div>
+    </div>
+  </div>
+  <div class="bhand" id="handB"></div>
+  <div class="case" id="caseB" style="left:560px;right:auto;top:580px;width:470px;transform:rotate(.6deg)"><h3>활 자 상 자 <em>한 칸이 비었다</em></h3></div>
+
+  <svg class="melting" viewBox="0 0 130 150"><defs><linearGradient id="wd" x1="0" x2="1"><stop offset="0" stop-color="#d7a86c"/><stop offset=".5" stop-color="#8a5a2c"/><stop offset="1" stop-color="#5b3a1a"/></linearGradient></defs>
+    <path d="M15 10 H115 V110 Q100 140 65 120 Q30 140 15 110 Z" fill="url(#wd)" stroke="#2a1a0b" stroke-width="2"/>
+    <text x="65" y="84" text-anchor="middle" font-size="64" font-weight="900" fill="#3c220c" transform="translate(130 0) scale(-1 1)" font-family="serif">목</text>
+    <path d="M15 96 Q40 112 65 100 Q90 116 115 96 L115 110 Q100 140 65 120 Q30 140 15 110Z" fill="#ff8a1e" opacity=".85"/>
+  </svg>
+  <svg class="crucible" viewBox="0 0 300 260">
+    <defs><radialGradient id="mol" cx=".5" cy=".4"><stop offset="0" stop-color="#fff2b0"/><stop offset=".35" stop-color="#ffb13a"/><stop offset=".8" stop-color="#e2500f"/><stop offset="1" stop-color="#7a1c05"/></radialGradient>
+    <linearGradient id="iron" x1="0" x2="1"><stop offset="0" stop-color="#1a1b1d"/><stop offset=".45" stop-color="#4b4f54"/><stop offset="1" stop-color="#141517"/></linearGradient></defs>
+    <path d="M30 70 L270 70 L244 230 Q150 262 56 230 Z" fill="url(#iron)" stroke="#000" stroke-width="3"/>
+    <ellipse cx="150" cy="72" rx="122" ry="26" fill="#0e0f10"/>
+    <ellipse cx="150" cy="76" rx="110" ry="20" fill="url(#mol)"><animate attributeName="ry" values="20;22;20" dur="1.8s" repeatCount="indefinite"/></ellipse>
+    <g fill="#fff4c4" opacity=".8"><circle cx="110" cy="76" r="4"><animate attributeName="r" values="1;5;0" dur="1.3s" repeatCount="indefinite"/></circle><circle cx="182" cy="80" r="3"><animate attributeName="r" values="0;4;0" dur="1.7s" begin=".4s" repeatCount="indefinite"/></circle></g>
+    <text x="150" y="170" text-anchor="middle" font-size="18" fill="#6f6860" letter-spacing="8" font-family="monospace">용 해 로</text>
+  </svg>
+  <div id="embers"></div>
+  <div class="caption">
+    <div class="h">대형 목활자 — 녹았다</div>
+    <div class="s">덱 · 손 · 버림 어디에 있든 전부 사라졌다.<br>회차가 끝날 때까지 돌아오지 않는다. 보상으로도.</div>
+  </div>
+  <div class="quoins" style="left:60px;right:auto;bottom:40px"><div class="qk off"></div><div class="qk off"></div><div class="qk"></div><div class="lb">기 력</div></div>
+  <div class="flash" id="flashB"></div>
+</section>
+
+<svg class="grain" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#noise)"/></svg>
+<div class="vig"></div>
+<div class="tabs"><button data-s="a">1 · 지금 찍을까</button><button data-s="b">2 · 녹는 순간</button></div>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);fit();
+
+var AC=null;function ac(){try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C();}}catch(e){}return AC;}
+function press(depth){var c=ac();if(!c)return;var t=c.currentTime;
+  var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(38,t+.25);g.gain.setValueAtTime(.55*depth,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.32);
+  var n=c.sampleRate*.08,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);
+  var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='highpass';f.frequency.value=1800;var g2=c.createGain();g2.gain.value=.3;s.connect(f);f.connect(g2);g2.connect(c.destination);s.start(t);}
+function clack(){var c=ac();if(!c)return;var t=c.currentTime;var o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.value=1900;g.gain.setValueAtTime(.06,t);g.gain.exponentialRampToValueAtTime(.001,t+.05);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.06);}
+function hiss(){var c=ac();if(!c)return;var t=c.currentTime;var n=c.sampleRate*1.4,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.min(1,i/(n*.05))*Math.pow(1-i/n,1.5);
+  var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=3200;f.Q.value=.6;var g=c.createGain();g.gain.value=.35;s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);
+  var o=c.createOscillator(),g2=c.createGain();o.type='sine';o.frequency.setValueAtTime(70,t);g2.gain.setValueAtTime(.3,t);g2.gain.exponentialRampToValueAtTime(.001,t+1.2);o.connect(g2);g2.connect(c.destination);o.start(t);o.stop(t+1.3);}
+
+/* deadline sheets */
+var sh=document.getElementById('sheetsA');for(var i=0;i<14;i++){var e=document.createElement('i');if(i<4)e.className='used';if(i===4)e.className='now';sh.appendChild(e);}
+
+/* type case (wearable types) */
+var CASE=[
+ {id:'wood',n:'대형 목활자',g:'목',left:3,max:3,wear:0,sub:'피해 20 · 마모 20%'},
+ {id:'verm',n:'주홍 잉크',g:'朱',left:2,max:3,wear:1,sub:'피해 8 · 번짐 7',red:1},
+ {id:'forme',n:'조판틀',g:'틀',left:3,max:3,wear:0,sub:'방어 16 · 마모 20%'},
+ {id:'make',n:'판 고르기',g:'고',left:1,max:2,wear:1,sub:'회복 14 · 마모 25%'},
+ {id:'recast',n:'활자 재주조',g:'鑄',left:1,max:1,wear:0,sub:'가장 뭉개진 활자를 다시 붓는다'}
+];
+var caseEl=document.getElementById('caseA');
+function wearFilter(w){return w<=0?'':(w===1?'url(#wear1)':(w===2?'url(#wear2)':'url(#wear3)'));}
+function drawCase(el,list){
+  el=el||caseEl;list=list||CASE;var caseEl2=el;
+  var old=el.querySelectorAll('.cell');for(var i=0;i<old.length;i++)el.removeChild(old[i]);
+  list.forEach(function(t){
+    var d=document.createElement('div');d.className='cell'+(t.left<=0?' melted':'')+(t.hot?' hot':'');
+    var nk='';for(var i=0;i<t.max;i++)nk+='<i class="'+(i<t.left?'':'gone')+'"></i>';
+    d.innerHTML='<div class="smp'+(t.red?' red':'')+'"><span style="display:inline-block;filter:'+wearFilter(Math.min(t.wear,1))+(t.wear>1?' blur(.8px)':'')+';opacity:'+(1-t.wear*.2)+'">'+t.g+'</span></div><div class="nm">'+t.n+'<small>'+t.sub+'</small><div class="nicks">'+nk+'</div></div>';
+    caseEl2.appendChild(d);
+  });
+}
+drawCase();
+
+/* hand */
+var energy=3,block=0,ehp=47,hp=52,markN=0;
+var HAND=[
+ {n:'상용 활자',g:'가',c:1,d:'피해 5. 케이스에 얼마든지 있다. 닳지 않는다.',w:'닳지 않음',k:'sort'},
+ {n:'대형 목활자',g:'목',c:2,d:'피해 20. 회차에 3번. 찍을 때마다 모서리가 뭉개진다.',w:'첫 인쇄 · 가장 선명',k:'wood',wood:1,rare:1},
+ {n:'여백재',g:'□',c:1,d:'방어 6. 판을 고여 흔들리지 않게 한다.',w:'닳지 않음',k:'furn'},
+ {n:'조판틀',g:'틀',c:1,d:'방어 16. 회차에 3번. 쇠테가 헐거워질 때까지.',w:'첫 인쇄 · 가장 선명',k:'forme'},
+ {n:'잉크 방망이',g:'墨',c:1,d:'피해 3. 번짐 2 — 적의 턴마다 번지고 한 칸 마른다.',w:'닳지 않음',k:'ink'}
+];
+var handEl=document.getElementById('handA');
+function drawHand(){
+  handEl.innerHTML='';
+  HAND.forEach(function(h){
+    var d=document.createElement('div');d.className='slug'+(h.wood?' wood':'')+(h.rare?' rare':'')+(h.spent?' spent':'')+(h.wearC===1?' worn':'')+(h.wearC>=2?' worn3':'');
+    d.innerHTML='<div class="face"><div class="g">'+h.g+'</div></div><div class="plate"><div class="n">'+h.n+'<span class="c">'+h.c+'</span></div><div class="d">'+h.d+'</div><div class="w"><span>'+h.w+'</span><span>'+(h.k==='wood'||h.k==='forme'?'회차 소모':'')+'</span></div></div>';
+    d.addEventListener('mouseenter',function(){clack();CASE.forEach(function(t){t.hot=(t.id===h.k);});drawCase();});
+    d.addEventListener('mouseleave',function(){CASE.forEach(function(t){t.hot=false;});drawCase();});
+    d.addEventListener('click',function(){play(h);});
+    handEl.appendChild(d);
+  });
+}
+function stamp(txt,sub,w,red){
+  var m=document.getElementById('marksA');var s=document.createElement('div');s.className='imp';
+  var x=20+(markN%4)*112,y=6+Math.floor(markN/4)*80;markN++;
+  s.style.left=x+'px';s.style.top=y+'px';s.style.fontSize=(txt.length>2?44:58)+'px';s.style.transform='rotate('+((markN*37)%7-3)+'deg)';
+  if(red)s.style.color='#d9401f';
+  s.innerHTML='<span style="display:inline-block;filter:'+wearFilter(w)+';opacity:'+(1-w*.2)+'">'+txt+'</span><small>'+sub+'</small>';m.appendChild(s);
+  var f=document.getElementById('flashA');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+  var p=document.getElementById('proofA');p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');
+}
+function setQ(){var q=document.querySelectorAll('#qA .qk');for(var i=0;i<q.length;i++)q[i].classList.toggle('off',i>=energy);}
+function hit(n){ehp=Math.max(0,ehp-n);document.getElementById('ehp').textContent=ehp;document.getElementById('ehpbar').style.width=(ehp/60*100)+'%';}
+function play(h){
+  if(h.spent)return;if(energy<h.c){clack();return;}
+  energy-=h.c;setQ();
+  if(h.k==='wood'){var t=CASE[0];var dmg=[20,16,12][t.wear]||12;hit(dmg);stamp('-'+dmg,'목활자 · '+(t.wear+1)+'번째',t.wear);press(1);
+    t.left--;t.wear++;if(t.left<=0){hiss();h.spent=true;}else{h.wearC=t.wear;h.w=['첫 인쇄 · 가장 선명','둘째 · 모서리가 뭉개짐','마지막 · 다음은 녹는다'][t.wear];energy+=0;}
+  }else if(h.k==='forme'){var f=CASE[2];var b=[16,13,10][f.wear]||10;block+=b;stamp('+'+b,'조판틀 · 방어',f.wear);press(.7);f.left--;f.wear++;h.spent=true;}
+  else if(h.k==='sort'){hit(5);stamp('-5','상용 활자',0);press(.5);h.spent=true;}
+  else if(h.k==='furn'){block+=6;stamp('+6','여백재 · 방어',0);press(.4);h.spent=true;}
+  else if(h.k==='ink'){hit(3);stamp('-3','번짐 2',0,1);press(.5);h.spent=true;}
+  if(h.k==='wood')h.spent=true;
+  document.getElementById('blkA').textContent=block;
+  drawCase();drawHand();
+}
+drawHand();
+
+/* B hand + embers */
+drawCase(document.getElementById('caseB'),[
+ {n:'대형 목활자',g:'목',left:0,max:3,wear:3,sub:'녹아 사라졌다 · 보상으로도 안 돌아온다'},
+ {n:'주홍 잉크',g:'朱',left:1,max:3,wear:2,sub:'피해 8 · 번짐 7',red:1},
+ {n:'조판틀',g:'틀',left:1,max:3,wear:2,sub:'방어 16 → 10'},
+ {n:'판 고르기',g:'고',left:0,max:2,wear:2,sub:'녹아 사라졌다'}
+]);
+var HB=[
+ {n:'상용 활자',g:'가',c:1,d:'피해 5. 닳지 않는다.',w:'닳지 않음'},
+ {n:'여백재',g:'□',c:1,d:'방어 6. 닳지 않는다.',w:'닳지 않음'},
+ {n:'조판틀',g:'틀',c:1,d:'방어 16. 쇠테가 헐거워졌다.',w:'마지막 한 번',worn:1}
+];
+var hb=document.getElementById('handB');
+HB.forEach(function(h){var d=document.createElement('div');d.className='slug'+(h.worn?' worn3':'');
+  d.innerHTML='<div class="face"><div class="g">'+h.g+'</div></div><div class="plate"><div class="n">'+h.n+'<span class="c">'+h.c+'</span></div><div class="d">'+h.d+'</div><div class="w"><span>'+h.w+'</span></div></div>';
+  d.addEventListener('click',function(){press(.6);});hb.appendChild(d);});
+var em=document.getElementById('embers');
+for(var i=0;i<16;i++){var e=document.createElement('div');e.className='ember';e.style.left=(1210+Math.random()*240)+'px';e.style.top=(600+Math.random()*60)+'px';e.style.animationDelay=(Math.random()*3)+'s';e.style.animationDuration=(2.2+Math.random()*2)+'s';em.appendChild(e);}
+document.querySelector('#b .crucible').addEventListener('click',function(){hiss();var f=document.getElementById('flashB');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');});
+document.getElementById('lastprint').addEventListener('click',function(){press(1);});
+
+/* switching */
+var btns=document.querySelectorAll('.tabs button');
+function show(id){['a','b'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});for(var i=0;i<btns.length;i++)btns[i].classList.toggle('on',btns[i].dataset.s===id);}
+for(var i=0;i<btns.length;i++)btns[i].addEventListener('click',function(){show(this.dataset.s);try{history.replaceState(null,'','#'+this.dataset.s);}catch(e){}});
+window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+window.addEventListener('hashchange',function(){show(location.hash==='#b'?'b':'a');});
+show(location.hash==='#b'?'b':'a');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>물·조수 — 이펙트 샘플</title>
+<style>
+:root{--bg:#0f1114;--panel:#171a1f;--panel2:#1d2127;--line:#2a2f37;--tx:#d9dde3;--mut:#8b939e;--acc:#e8b86a;--acc2:#6ec3d6;--bad:#e0705f}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:13px/1.45 "Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;overflow:hidden}
+#app{display:grid;grid-template-columns:1fr 360px;grid-template-rows:54px 1fr;height:100vh;gap:0}
+header{grid-column:1/3;display:flex;align-items:center;gap:18px;padding:0 18px;border-bottom:1px solid var(--line);background:#12151a}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+header h1 small{font-weight:400;color:var(--mut);font-size:12px;margin-left:10px}
+header .desc{color:var(--mut);font-size:12px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{font:12px/1 ui-monospace,Menlo,Consolas,monospace;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--mut);white-space:nowrap}
+.pill.on{color:#9fe0a8;border-color:#35523a}
+#stagecol{display:flex;flex-direction:column;min-width:0;min-height:0;padding:10px 12px 10px 14px;gap:8px}
+#tabs{display:flex;gap:6px}
+#tabs button{flex:1;min-width:0;text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:7px 11px;cursor:pointer;font:inherit}
+#tabs button b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tabs button span{display:block;color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tabs button kbd{float:right;font:11px ui-monospace,monospace;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:6px}
+#tabs button.act{border-color:var(--acc);background:#221f19}
+#tabs button.act span{color:#c9a978}
+#stagewrap{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;background:#08090b;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+#stage{display:block;max-width:100%;max-height:100%;cursor:crosshair;touch-action:none}
+#hint{display:flex;gap:14px;color:var(--mut);font-size:12px;align-items:center}
+#hint b{color:var(--tx);font-weight:600}
+#hint .k{font:11px ui-monospace,monospace;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--tx);background:var(--panel)}
+#side{border-left:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+#side section{padding:12px 14px;border-bottom:1px solid var(--line)}
+#side h2{font-size:12px;margin:0 0 8px;color:var(--mut);font-weight:600;letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center}
+.row{display:grid;grid-template-columns:96px 1fr 58px;align-items:center;gap:8px;margin:5px 0}
+.row label{color:var(--tx);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row input[type=range]{width:100%;accent-color:var(--acc)}
+.row input[type=color]{width:100%;height:20px;border:0;background:none;padding:0}
+.row output{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--acc);text-align:right}
+#readout{font:11.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#0e1013;border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:8px 0 0;color:#b9d7a8;white-space:pre-wrap;max-height:150px;overflow:auto}
+button.sm{background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:5px;padding:3px 8px;font:11px inherit;cursor:pointer}
+button.sm:hover{border-color:var(--acc)}
+#memo{flex:1;min-height:0;overflow:auto;padding:12px 14px}
+#memo h3{font-size:12.5px;margin:12px 0 4px;color:var(--acc)}
+#memo h3:first-child{margin-top:0}
+#memo p,#memo li{color:#b8bec7;font-size:12px;margin:3px 0}
+#memo ul{margin:0;padding-left:16px}
+#memo code{font:11.5px ui-monospace,monospace;color:#9fd0dc;background:#0e1013;padding:0 3px;border-radius:3px}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+#ov{position:absolute;left:14px;top:12px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#e9e3d6;background:rgba(10,12,15,.62);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:6px 10px;pointer-events:none;white-space:pre;backdrop-filter:blur(2px)}
+#ov:empty{display:none}
+</style></head>
+<body><div id="app">
+<header><h1 id="ttl"></h1><div class="desc" id="desc"></div><span class="pill" id="snd">소리 꺼짐 — 캔버스를 누르면 켜짐</span><span class="pill" id="fps">-- fps</span></header>
+<div id="stagecol"><div id="tabs"></div><div id="stagewrap"><canvas id="stage"></canvas><div id="ov"></div></div><div id="hint"></div></div>
+<aside id="side">
+<section><h2><span id="ptitle">파라미터</span><span class="btns"><button class="sm" id="reset">기본값</button><button class="sm" id="copy">복사</button></span></h2><div id="params"></div><pre id="readout"></pre></section>
+<section><h2>동작</h2><div class="btns" id="actions"></div></section>
+<div id="memo"></div>
+</aside></div>
+<script>
+"use strict";
+// ---- 공통: 씨드 난수 · 오디오 · 페이지 틀 (fx 샘플 공용, 파일마다 인라인 복사됨) ----
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+function hexRgb(h){const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]}
+
+const AU=(()=>{
+  let ctx=null,master,comp,rev,revIn,ready=[],rng=mulberry32(9001);const cache={};
+  function impulse(sec,decay,dark){
+    const sr=ctx.sampleRate,n=Math.floor(sr*sec),b=ctx.createBuffer(2,n,sr);
+    for(let c=0;c<2;c++){const d=b.getChannelData(c);let lp=0;
+      for(let i=0;i<n;i++){const t=i/n;const k=0.9-0.85*Math.pow(t,0.6)*dark; // 꼬리로 갈수록 어두워짐
+        lp+= (rng()*2-1-lp)*k; d[i]=lp*Math.pow(1-t,decay)*(i<sr*0.004?i/(sr*0.004):1);}}
+    return b;}
+  function ensure(){
+    if(ctx){if(ctx.state==='suspended')ctx.resume();return ctx;}
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;
+    ctx=new AC();comp=ctx.createDynamicsCompressor();comp.threshold.value=-16;comp.ratio.value=3.5;comp.attack.value=0.004;comp.release.value=0.2;
+    master=ctx.createGain();master.gain.value=0.8;master.connect(comp);comp.connect(ctx.destination);
+    rev=ctx.createConvolver();rev.buffer=impulse(2.6,2.6,1);revIn=ctx.createGain();revIn.gain.value=1;revIn.connect(rev);rev.connect(master);
+    ready.forEach(f=>f(ctx));ready=[];return ctx;}
+  function noise(kind,sec){
+    const key=kind+sec;if(cache[key])return cache[key];
+    const sr=ctx.sampleRate,n=Math.floor(sr*sec),b=ctx.createBuffer(1,n,sr),d=b.getChannelData(0),r=mulberry32(77+kind.length);
+    let b0=0,b1=0,b2=0,br=0;
+    for(let i=0;i<n;i++){const w=r()*2-1;
+      if(kind==='white')d[i]=w;
+      else if(kind==='pink'){b0=0.99765*b0+w*0.099;b1=0.963*b1+w*0.2965;b2=0.57*b2+w*1.0527;d[i]=(b0+b1+b2+w*0.1848)*0.2;}
+      else{br=(br+0.02*w)/1.02;d[i]=br*3.5;}}
+    // 루프 이음매 제거: 앞뒤 20ms 크로스페이드
+    const f=Math.floor(sr*0.02);for(let i=0;i<f;i++){const t=i/f;d[i]=d[i]*t+d[n-f+i]*(1-t);}
+    return cache[key]=b;}
+  function out(pan,wet,dest){
+    const g=ctx.createGain();let node=g;
+    if(pan&&ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=clamp(pan,-1,1);g.connect(p);node=p;}
+    node.connect(dest||master);
+    if(wet){const s=ctx.createGain();s.gain.value=wet;node.connect(s);s.connect(revIn);}
+    return g;}
+  function env(g,t,peak,a,d,hold){g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(peak,t+a);if(hold)g.gain.setValueAtTime(peak,t+a+hold);g.gain.exponentialRampToValueAtTime(0.0001,t+a+(hold||0)+d);}
+  function chain(src,filters,t,dur){let n=src;(filters||[]).forEach(f=>{const bq=ctx.createBiquadFilter();bq.type=f.type||'lowpass';bq.Q.value=f.Q==null?0.7:f.Q;
+      bq.frequency.setValueAtTime(f.f,t);if(f.f1)bq.frequency.exponentialRampToValueAtTime(f.f1,t+(f.ft||dur));if(f.g!=null)bq.gain.value=f.g;n.connect(bq);n=bq;});return n;}
+  // 필터 걸린 노이즈 한 방
+  function burst(o){if(!ctx)return;const t=ctx.currentTime+(o.t0||0),a=o.a||0.003,d=o.d||0.2,hold=o.hold||0;
+    const s=ctx.createBufferSource();s.buffer=noise(o.kind||'white',o.len||2);s.playbackRate.value=o.rate||1;
+    const off=(o.off!=null?o.off:rng())*(s.buffer.duration-a-d-hold-0.05);
+    const n=chain(s,o.filter,t,a+d+hold);const g=out(o.pan,o.wet,o.dest);n.connect(g);env(g,t,o.gain||0.5,a,d,hold);
+    s.start(t,Math.max(0,off));s.stop(t+a+hold+d+0.05);return g;}
+  // 음정 있는 톤 (주파수 스윕)
+  function tone(o){if(!ctx)return;const t=ctx.currentTime+(o.t0||0),a=o.a||0.002,d=o.d||0.2,hold=o.hold||0;
+    const s=ctx.createOscillator();s.type=o.type||'sine';s.frequency.setValueAtTime(o.f,t);
+    if(o.f1)s.frequency.exponentialRampToValueAtTime(o.f1,t+(o.ft||a+d));
+    const n=chain(s,o.filter,t,a+d+hold);const g=out(o.pan,o.wet,o.dest);n.connect(g);env(g,t,o.gain||0.3,a,d,hold);
+    s.start(t);s.stop(t+a+hold+d+0.05);return g;}
+  // 반복 앰비언스: 노이즈 루프 + 필터, 핸들 반환
+  function loop(o){if(!ctx)return null;const s=ctx.createBufferSource();s.buffer=noise(o.kind||'brown',o.len||6);s.loop=true;s.playbackRate.value=o.rate||1;
+    const fs=(o.filter||[]).map(f=>{const bq=ctx.createBiquadFilter();bq.type=f.type||'lowpass';bq.frequency.value=f.f;bq.Q.value=f.Q==null?0.7:f.Q;return bq;});
+    let n=s;fs.forEach(b=>{n.connect(b);n=b;});const g=out(o.pan,o.wet,o.dest);g.gain.value=0;n.connect(g);s.start();
+    return{src:s,gain:g,filters:fs,set(v,tc){g.gain.setTargetAtTime(v,ctx.currentTime,tc||0.1)},stop(){try{g.gain.setTargetAtTime(0,ctx.currentTime,0.08);s.stop(ctx.currentTime+0.5)}catch(e){}}};}
+  return{ensure,burst,tone,loop,noise,out,impulse,get ctx(){return ctx},get master(){return master},get revIn(){return revIn},onReady(f){ctx?f(ctx):ready.push(f)},now(){return ctx?ctx.currentTime:0}};
+})();
+
+const FX={p:{},vi:0};
+FX.run=function(E){
+  FX.E=E;const W=E.W||1200,H=E.H||780;
+  document.getElementById('ttl').innerHTML=E.title+'<small>이펙트 샘플 · fx/'+E.slug+'</small>';
+  document.getElementById('desc').textContent=E.desc;
+  const cv=document.getElementById('stage');cv.width=W;cv.height=H;FX.cv=cv;
+  const tabs=document.getElementById('tabs');
+  const store=E.variants.map(v=>{const o={};v.params.forEach(q=>o[q.k]=q.v);return o;});
+  E.variants.forEach((v,i)=>{const b=document.createElement('button');b.innerHTML='<kbd>'+(i+1)+'</kbd><b>'+v.name+'</b><span>'+v.concept+'</span>';b.onclick=()=>setV(i);tabs.appendChild(b);});
+  const act=document.getElementById('actions');
+  (E.actions||[]).forEach(a=>{const b=document.createElement('button');b.className='sm';b.textContent=a.label;b.onclick=()=>{AU.ensure();a.fn();};act.appendChild(b);});
+  const rows=document.getElementById('params'),ro=document.getElementById('readout');
+  function fmt(q,v){if(q.type==='color')return v;const s=q.step||0.01;const dec=s>=1?0:s>=0.1?1:s>=0.01?2:3;return (+v).toFixed(dec);}
+  function readout(){const v=E.variants[FX.vi];const o={variant:v.id};v.params.forEach(q=>o[q.k]=q.type==='color'?FX.p[q.k]:+fmt(q,FX.p[q.k]));ro.textContent=JSON.stringify(o,null,1).replace(/\n /g,'\n  ');}
+  function buildRows(){const v=E.variants[FX.vi];rows.innerHTML='';document.getElementById('ptitle').textContent='파라미터 — '+v.name;
+    v.params.forEach(q=>{const r=document.createElement('div');r.className='row';
+      const inp=q.type==='color'?'<input type="color" value="'+FX.p[q.k]+'">':'<input type="range" min="'+q.min+'" max="'+q.max+'" step="'+(q.step||0.01)+'" value="'+FX.p[q.k]+'">';
+      r.innerHTML='<label title="'+q.k+'">'+q.label+'</label>'+inp+'<output>'+fmt(q,FX.p[q.k])+'</output>';
+      const i=r.querySelector('input'),o=r.querySelector('output');
+      i.oninput=()=>{FX.p[q.k]=q.type==='color'?i.value:+i.value;o.textContent=fmt(q,FX.p[q.k]);readout();E.onParam&&E.onParam(q.k,FX.p[q.k]);};
+      rows.appendChild(r);});readout();}
+  document.getElementById('reset').onclick=()=>{const v=E.variants[FX.vi];v.params.forEach(q=>FX.p[q.k]=q.v);buildRows();E.onParam&&E.onParam('*');};
+  document.getElementById('copy').onclick=()=>{try{navigator.clipboard.writeText(ro.textContent)}catch(e){}};
+  function setV(i){FX.vi=i;FX.p=store[i];FX.v=E.variants[i];[...tabs.children].forEach((b,j)=>b.classList.toggle('act',j===i));
+    document.getElementById('hint').innerHTML=FX.v.hint;
+    document.getElementById('memo').innerHTML=E.memoCommon+'<h3>이 변형: '+FX.v.name+' ('+FX.v.concept+')</h3>'+FX.v.memo;
+    buildRows();try{history.replaceState(null,'','#v='+(i+1))}catch(e){}E.setVariant(i,FX.v);}
+  FX.setV=setV;
+  const sp=document.getElementById('snd');
+  function unlock(){if(AU.ensure()){sp.textContent='소리 켜짐';sp.classList.add('on');if(!FX.audioOn){FX.audioOn=true;E.audioStart&&E.audioStart();}}}
+  function pos(e){const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height];}
+  cv.addEventListener('pointerdown',e=>{unlock();cv.setPointerCapture(e.pointerId);FX.down=true;const[x,y]=pos(e);FX.mx=x;FX.my=y;E.down&&E.down(x,y,e);});
+  cv.addEventListener('pointermove',e=>{const[x,y]=pos(e);FX.mx=x;FX.my=y;E.move&&E.move(x,y,e,FX.down);});
+  cv.addEventListener('pointerup',e=>{FX.down=false;const[x,y]=pos(e);E.up&&E.up(x,y,e);});
+  cv.addEventListener('pointercancel',()=>{FX.down=false;});
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;unlock();const n=+e.key;if(n>=1&&n<=E.variants.length){setV(n-1);return;}
+    if(e.key===' ')e.preventDefault();E.key&&E.key(e.key.toLowerCase(),e);});
+  window.addEventListener('keyup',e=>{E.keyup&&E.keyup(e.key.toLowerCase(),e);});
+  E.init(cv);
+  const m=/v=(\d)/.exec(location.hash);setV(m?clamp(+m[1]-1,0,E.variants.length-1):0);
+  const fp=document.getElementById('fps');let last=performance.now(),acc=0,fr=0;FX.t=0;
+  function frame(now){if(FX.paused){last=now;requestAnimationFrame(frame);return;}let dt=now-last;last=now;if(dt>50)dt=50;if(dt<0)dt=0;FX.t+=dt;acc+=dt;fr++;
+    if(acc>=500){fp.textContent=(fr*1000/acc).toFixed(0)+' fps';acc=0;fr=0;}
+    E.update(dt,FX.t);E.render(FX.t);requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+  window.FXDEMO={setV,E,AU,pause(v){FX.paused=v},advance(ms){for(let t=0;t<ms;t+=16){FX.t+=16;E.update(16,FX.t);}E.render(FX.t);}};
+};
+
+</script>
+<script>
+// 물·조수 — 이펙트 샘플
+// WebGL1 한 장짜리 셰이더(바닥·굴절·흡수·코스틱·반사·거품) + CPU 파동 시뮬레이션(300x195) + 점 파티클(물방울)
+const SW=300,SH=195,BW=600,BH=390;
+const NOISE_N=256;
+
+const VARIANTS=[
+ {id:'tide-flat',name:'갯벌 밀물 · 수위선',concept:'#72 조수 간만 우체부',
+  hint:'<b>클릭</b> 발 딛기 · <b>드래그</b> 갯길 걷기(발자국→물 참) · <span class="k">Space</span> 밀물 급습 · <span class="k">R</span> 리셋',
+  params:[
+   {k:'tideSpeed',label:'물때 속도',min:0,max:3,step:0.05,v:0.6},
+   {k:'tideAmp',label:'물때 폭',min:0,max:0.1,step:0.002,v:0.05},
+   {k:'tideMid',label:'평균 수위',min:0.44,max:0.56,step:0.002,v:0.498},
+   {k:'ripple',label:'물결 세기',min:0,max:2,step:0.05,v:1},
+   {k:'glint',label:'반짝임',min:0,max:3,step:0.05,v:1.3},
+   {k:'foam',label:'수위선 거품',min:0,max:2,step:0.05,v:1},
+   {k:'wetHold',label:'젖음 유지 s',min:0,max:30,step:1,v:12},
+   {k:'water',label:'물 색',type:'color',v:'#3a7f86'}],
+  memo:`<ul><li>수위는 <code>level = mid + amp·sin(phase)</code>. 물때표 시각(ms)을 받아 phase를 계산하면 순수 C#로 판정(갯길 잠김 여부)과 연출이 같은 값을 쓴다.</li>
+<li><b>수위선</b>은 거품 띠(depth 0~0.012)와 <b>젖은 모래</b> 띠(최근 최고 수위 uWet까지)의 두 겹. uWet은 썰물 때 <code>wetHold</code>초에 걸쳐 내려온다 — 물이 막 빠진 자리가 번들거리는 게 “방금까지 잠겨 있었다”는 정보다.</li>
+<li>발자국은 바닥 높이를 깎는다 → 수위가 오르면 발자국부터 물이 고인다. Unity에선 지형 높이 RT에 데칼 스탬프.</li>
+<li>물골의 금빛 반짝임은 태양 역광 스페큘러(지수 260~600) + 고주파 노멀 노이즈. 카메라를 남쪽에서 기울여 보는 구도일 때만 잘 산다.</li></ul>`},
+ {id:'ankle-deep',name:'발목 물 · 걸음 물결',concept:'#16 익사한 집',
+  hint:'<b>드래그</b> 잠긴 방을 걷기(걸음마다 물결) · <b>클릭</b> 첨벙 · <span class="k">Space</span> 큰 물건 떨어짐 · 천장에서 물방울이 떨어진다',
+  params:[
+   {k:'depth',label:'물 깊이',min:0.005,max:0.08,step:0.001,v:0.03},
+   {k:'stride',label:'보폭 px',min:18,max:80,step:1,v:40},
+   {k:'ripple',label:'물결 세기',min:0,max:2,step:0.05,v:1.1},
+   {k:'damp',label:'물결 감쇠',min:0.97,max:0.999,step:0.001,v:0.995},
+   {k:'drip',label:'물방울 빈도/s',min:0,max:3,step:0.05,v:0.6},
+   {k:'light',label:'창빛 세기',min:0,max:2,step:0.05,v:1},
+   {k:'water',label:'물 색',type:'color',v:'#2c5a63'}],
+  memo:`<ul><li>얕은 물은 <b>물 자체보다 바닥이 주인공</b>이다. 흡수를 약하게, 굴절·코스틱·스페큘러로 “물이 있다”를 보여 준다.</li>
+<li>벽·가구 다리는 시뮬레이션 마스크(0) → 물결이 반사·회절한다. 방이 좁다는 느낌이 여기서 나온다.</li>
+<li>걸음 간격(보폭 px)과 물결 반경·세기를 발소리와 같은 프레임에 발생시킨다. Unity: 발 IK 접지 이벤트 → 물 높이 RT에 스탬프 + AudioSource.PlayOneShot.</li>
+<li>잔향이 큰 방 소리(습식 0.35)가 “잠긴 실내”를 만든다. 야외 물과 같은 샘플을 쓰면 안 된다.</li></ul>`},
+ {id:'caustic-floor',name:'수면 아래 코스틱',concept:'#15 수면 아래 스텔스',
+  hint:'<b>클릭</b> 수면에 조약돌 → 물결이 빛 무늬를 휜다 · <b>드래그</b> 손으로 수면 휘젓기 · <span class="k">Space</span> 위층 경비 지나감(그림자)',
+  params:[
+   {k:'caus',label:'코스틱 세기',min:0,max:3,step:0.05,v:1.4},
+   {k:'causScale',label:'코스틱 크기',min:2,max:14,step:0.1,v:6.5},
+   {k:'causSpeed',label:'코스틱 속도',min:0,max:3,step:0.05,v:0.8},
+   {k:'depth',label:'물 깊이',min:0.05,max:0.4,step:0.005,v:0.18},
+   {k:'ripple',label:'수면 물결',min:0,max:2,step:0.05,v:1.2},
+   {k:'shadow',label:'그림자 농도',min:0,max:1,step:0.01,v:0.8},
+   {k:'water',label:'물 색',type:'color',v:'#1f6f86'}],
+  memo:`<ul><li>코스틱은 애니메이션 Worley 두 겹의 (F2−F1) 가장자리를 pow로 좁힌 것. 수면 기울기(시뮬레이션 노멀)로 좌표를 밀어 <b>물결이 빛 무늬를 휘게</b> 한다.</li>
+<li>그림자는 코스틱을 먼저 지운다(빛이 막힘) — 곱하기 순서가 중요. 그림자 속에서도 코스틱이 보이면 “위에 뭔가 있다”가 안 읽힌다.</li>
+<li>Unity: URP 데칼 프로젝터 또는 라이트 쿠키에 코스틱 셰이더, 그림자는 실제 섀도맵 사용. 소리는 전부 로우패스(700Hz)를 통과시켜 “물속”으로.</li></ul>`},
+ {id:'coast-surge',name:'해안 파도 · 벼랑 거품',concept:'#51 밭이 줄어드는 세계',
+  hint:'<b>클릭</b> 그 지점에 파도 부서짐 · <span class="k">Space</span> 큰 파도(해일) · 주기적인 너울이 벼랑에 부딪혀 거품이 쌓인다',
+  params:[
+   {k:'swell',label:'너울 높이',min:0,max:2,step:0.05,v:1},
+   {k:'period',label:'너울 주기 s',min:2,max:12,step:0.1,v:5.5},
+   {k:'foam',label:'거품',min:0,max:2,step:0.05,v:1.2},
+   {k:'glint',label:'반짝임',min:0,max:3,step:0.05,v:0.35},
+   {k:'wind',label:'바람 잔물결',min:0,max:2,step:0.05,v:0.9},
+   {k:'water',label:'물 색',type:'color',v:'#1d4f6e'}],
+  memo:`<ul><li>너울은 오른쪽 경계 열을 사인으로 흔들어 주입. 파도가 마스크(땅)에 닿으면 에너지를 거품(A 채널)에 쌓고 천천히 흩어지게 한다 → <b>파도가 때린 자리가 하얗게 남는다</b>.</li>
+<li>큰 파도는 3단: 물러남(바닥 드러남 0.8s) → 밀려옴 → 벼랑 충돌 시 물보라 파티클 + 저음 쿵. 침식 이벤트와 같은 타이밍에 붙이면 “땅이 먹힌다”가 소리로도 읽힌다.</li>
+<li>Unity: 해안 거품은 Shore distance(깊이 텍스처 차이) + 폼 텍스처 스크롤, 큰 파도 물보라는 VFX Graph 스폰 이벤트.</li></ul>`}
+];
+
+const memoCommon=`<h3>기법</h3><ul>
+<li><b>물 높이</b>: CPU 2버퍼 파동방정식 <code>next=(2−4k)·h + k·(상하좌우 합) − prev; next*=damp</code> (k=c² 0.28~0.45가 물결 속도, 0.5 이하에서 안정), 300×195 격자(4px/칸), 프레임당 2스텝. 기울기·높이·거품을 RGBA8 텍스처로 매 프레임 업로드.</li>
+<li><b>바닥</b>: 600×390 높이장을 16bit(R,G)로 인코딩, 셰이더에서 수동 쌍선형 보간 → 수심 = 수위 − 바닥.</li>
+<li><b>셰이딩</b>: 굴절(노멀×수심만큼 바닥 좌표 밀기) → 코스틱 → Beer 흡수 <code>exp(−d·k·(4,1.6,1.1))</code> → 산란색 → 태양 스페큘러 → 해안 거품.</li>
+<li><b>물방울</b>: 점 스프라이트. 떨어지면 그 자리에 작은 물결을 다시 넣는다(2차 튐).</li></ul>
+<h3>Unity 이식</h3><ul>
+<li>파동: 순수 C# <code>WaveGrid</code>(int 고정소수 가능) → Texture2D.SetPixelData, 또는 CustomRenderTexture 핑퐁. 판정용 수위·수심은 C#에서 같은 함수로.</li>
+<li>셰이더: Shader Graph 한 장(Scene Color 대신 바닥 텍스처 재샘플). 소리: 행동 이벤트와 같은 프레임에 트리거, 수심에 따라 음색 교체(모래 → 질척 → 첨벙).</li></ul>
+<h3>함정</h3><ul>
+<li>수심 0 근처에서 거품·젖음 띠가 깜빡이면 수위가 떨린 것 — 수위는 부드럽게 보간.</li>
+<li>WebGL1 float 텍스처에 기대지 말 것(모바일·SwiftShader). 8bit로 기울기를 굽는다.</li>
+<li>물결 세기를 올리면 경계에서 체커보드 진동 → damp를 0.985 이하로.</li></ul>`;
+
+// ---------- 씨드 노이즈 ----------
+let R=mulberry32(72);
+const LAT=new Float32Array(NOISE_N*NOISE_N);
+(function(){const r=mulberry32(1234);for(let i=0;i<LAT.length;i++)LAT[i]=r();})();
+function vn(x,y){const xi=Math.floor(x),yi=Math.floor(y),fx=x-xi,fy=y-yi;const ux=fx*fx*(3-2*fx),uy=fy*fy*(3-2*fy);
+ const m=NOISE_N-1,a=LAT[(yi&m)*NOISE_N+(xi&m)],b=LAT[(yi&m)*NOISE_N+((xi+1)&m)],c=LAT[((yi+1)&m)*NOISE_N+(xi&m)],d=LAT[((yi+1)&m)*NOISE_N+((xi+1)&m)];
+ return a+(b-a)*ux+(c-a)*uy+(a-b-c+d)*ux*uy;}
+function fbm(x,y,o){let s=0,a=0.5,t=0;for(let i=0;i<(o||5);i++){s+=vn(x,y)*a;t+=a;x=x*2.03+17.1;y=y*2.03+9.7;a*=0.5;}return s/t;}
+
+// ---------- 바닥 생성 (변형별) ----------
+const bedHi=new Float32Array(BW*BH),matHi=new Float32Array(BW*BH),fpHi=new Float32Array(BW*BH),bedLo=new Float32Array(SW*SH);
+const obst=new Uint8Array(SW*SH); // 1 = 벽/가구(항상 막힘)
+function buildBed(vi){
+ fpHi.fill(0);obst.fill(0);
+ for(let j=0;j<BH;j++)for(let i=0;i<BW;i++){const u=i/BW,v=j/BH,X=u*3,Y=v*1.95;let h=0,m=0;
+  if(vi===0){ // 갯벌: 평평한 펄 + 좁게 굽이치는 물골 + 웅덩이 + 갯길 + 섬
+   h=0.515+0.05*(fbm(X*1.5,Y*1.5,4)-0.5)-0.02*(v-0.5);
+   const w=fbm(X*0.8+5,Y*0.8+2,3);const r=Math.abs(fbm(X*0.6+0.7*w,Y*0.6-0.5*w,4)-0.5);
+   h-=0.085*smooth(0.045,0.0,r)+0.025*smooth(0.11,0.0,r);
+   const r2=Math.abs(fbm(X*1.8+2*w+11,Y*1.8+4,3)-0.5);h-=0.045*smooth(0.028,0,r2)*smooth(0.3,0.1,r);
+   h-=0.014*smooth(0.6,0.7,fbm(X*4+3,Y*4,3));
+   const py=0.5+0.07*Math.sin(u*6.2+0.6)+0.03*Math.sin(u*15.0);const d=Math.abs(v-py);
+   const path=smooth(0.03,0.012,d);h=lerp(h,Math.max(h,0.528+0.004*Math.sin(u*23)),path);m=path;
+   const cx=(u-0.1)*1.54,cy=v-0.12,isl=Math.sqrt(cx*cx+cy*cy);h=Math.max(h,0.3+0.7*smooth(0.2,0.07,isl+0.05*(fbm(X*4,Y*4,3)-0.5)));
+   const cx2=(u-0.9)*1.54,cy2=v-0.9,isl2=Math.sqrt(cx2*cx2+cy2*cy2);h=Math.max(h,0.3+0.66*smooth(0.16,0.05,isl2+0.05*(fbm(X*4+3,Y*4,3)-0.5)));
+  }else if(vi===1){ // 잠긴 방: 마루 + 벽 + 가구
+   const inx=u>0.06&&u<0.94&&v>0.08&&v<0.94;h=inx?0.5-0.004*Math.sin(v*40)+0.004*(fbm(X*3,Y*3,3)-0.5):0.9;
+   // 식탁 다리 4, 의자, 기울어진 장
+   const legs=[[0.34,0.38],[0.52,0.38],[0.34,0.6],[0.52,0.6],[0.7,0.25],[0.74,0.25],[0.7,0.33],[0.74,0.33]];
+   for(const[lx,ly]of legs)if(Math.abs(u-lx)<0.009&&Math.abs(v-ly)<0.014)h=0.9;
+   if(u>0.8&&u<0.94&&v>0.62&&v<0.94)h=0.9; // 장롱
+   m=inx?1:0;
+  }else if(vi===2){ // 가라앉은 바닥: 석판 + 모래 퇴적
+   const s=fbm(X*1.5,Y*1.5,4);h=0.5+0.06*(s-0.5);m=smooth(0.45,0.62,fbm(X*2+7,Y*2+1,4));
+  }else{ // 해안: 왼쪽 밭 + 벼랑, 오른쪽 바다
+   const edge=0.43+0.06*(fbm(Y*2.5,1.3,4)-0.5)*2+0.03*Math.sin(v*14);
+   const land=smooth(edge+0.015,edge-0.015,u);
+   const sea=0.40-0.18*smooth(edge,1.0,u)+0.04*(fbm(X*3,Y*3,4)-0.5);
+   h=lerp(sea,0.72+0.03*(fbm(X*2,Y*2,3)-0.5),land);
+   // 바위
+   const rk=fbm(X*3.2+20,Y*3.2,4);if(u>edge&&rk>0.64)h=Math.max(h,0.45+0.6*(rk-0.64));
+   m=land*smooth(0.78,0.35,v)*smooth(0.05,0.18,v); // 밭 영역
+  }
+  bedHi[j*BW+i]=clamp(h,0,1);matHi[j*BW+i]=m;}
+ for(let j=0;j<SH;j++)for(let i=0;i<SW;i++){bedLo[j*SW+i]=bedHi[(j*2)*BW+i*2];if(vi===1&&bedHi[(j*2)*BW+i*2]>0.8)obst[j*SW+i]=1;}
+}
+
+// ---------- WebGL ----------
+let gl,prog,pprog,tBed,tSim,tNoise,quad,pbuf,U={},PU={};
+const bedBytes=new Uint8Array(BW*BH*4),simBytes=new Uint8Array(SW*SH*4);
+const VS=`attribute vec2 p;varying vec2 vUv;void main(){vUv=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,0.,1.);}`;
+const FS=`precision highp float;
+varying vec2 vUv;
+uniform sampler2D tBed,tSim,tNoise;
+uniform vec2 uBedRes,uSimRes,uRes;
+uniform float uFoamW,uSwell,uAbsorb,uT,uLevel,uWet,uScene,uGlint,uFoam,uCaus,uCausScale,uCausT,uRipple,uWind,uLight,uRelief;
+uniform vec3 uWater,uShadow;
+float gM,gF;
+float dec(vec4 c){return (c.r*65280.+c.g*255.)/65535.;}
+vec3 bedS(vec2 uv){vec2 p=uv*uBedRes-0.5;vec2 i=floor(p);vec2 f=p-i;vec2 tx=1./uBedRes;
+ vec4 a=texture2D(tBed,(i+vec2(.5,.5))*tx),b=texture2D(tBed,(i+vec2(1.5,.5))*tx),c=texture2D(tBed,(i+vec2(.5,1.5))*tx),d=texture2D(tBed,(i+vec2(1.5,1.5))*tx);
+ float ha=dec(a),hb=dec(b),hc=dec(c),hd=dec(d);
+ gM=mix(mix(a.b,b.b,f.x),mix(c.b,d.b,f.x),f.y);gF=mix(mix(a.a,b.a,f.x),mix(c.a,d.a,f.x),f.y);
+ return vec3(mix(mix(ha,hb,f.x),mix(hc,hd,f.x),f.y),mix(hb-ha,hd-hc,f.y)*uBedRes.x/uRes.x,mix(hc-ha,hd-hb,f.x)*uBedRes.y/uRes.y);}
+float n1(vec2 p){return texture2D(tNoise,(p+.5)/256.).r;} // p = 격자 칸 단위
+float fb(vec2 p){return n1(p)*.5+n1(p*2.07+.31)*.28+n1(p*4.13+.73)*.22;}
+vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}
+float worl(vec2 p,float t){vec2 i=floor(p),f=fract(p);float d1=8.,d2=8.;
+ for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){vec2 g=vec2(float(x),float(y));vec2 o=h2(i+g);o=.5+.45*sin(t+6.2831*o);float d=length(g+o-f);
+  if(d<d1){d2=d1;d1=d;}else if(d<d2)d2=d;}return d2-d1;}
+float caus(vec2 p,float t){float a=worl(p,t),b=worl(p*1.37+vec2(3.1,1.7),t*1.21+1.3);
+ return pow(1.-smoothstep(0.,.22,a),3.)*.65+pow(1.-smoothstep(0.,.2,b),3.)*.55;}
+vec3 albedo(vec2 uv,float h,float m,float fp){vec2 q=uv*vec2(uRes.x/uRes.y,1.);vec3 c;
+ if(uScene<.5){ // 갯벌
+  float rip=sin(q.x*150.+fb(q*3.)*22.+q.y*50.)*.5+.5;
+  vec3 mud=mix(vec3(.30,.27,.23),vec3(.40,.36,.30),fb(q*5.));
+  vec3 sand=mix(vec3(.58,.51,.40),vec3(.70,.62,.48),fb(q*9.));
+  c=mix(mud,sand,smoothstep(.50,.54,h)*.8);c*=.95+.06*rip*smoothstep(.5,.53,h);
+  c=mix(c,vec3(.23,.21,.19),smoothstep(.47,.43,h));
+  c=mix(c,vec3(.80,.72,.56)*(.92+.1*rip),m*.85);
+  float gr=smoothstep(.66,.74,h);vec3 grass=mix(vec3(.22,.33,.14),vec3(.36,.45,.2),fb(q*14.));vec3 rock=mix(vec3(.30,.29,.27),vec3(.5,.47,.42),fb(q*20.));
+  c=mix(c,rock,smoothstep(.56,.62,h)*(1.-gr));c=mix(c,grass,gr);
+  float shell=step(.94,n1(q*150.))*smoothstep(.49,.52,h);c=mix(c,vec3(.9,.86,.78),shell*.6);
+ }else if(uScene<1.5){ // 마루
+  float rows=q.y*15.;float row=floor(rows);float off=fract(sin(row*12.9)*437.)*3.;float px=q.x*2.2+off;float seg=floor(px);
+  float tone=fract(sin(row*7.1+seg*3.3)*917.);vec3 w=mix(vec3(.33,.22,.13),vec3(.46,.31,.18),tone);
+  float grain=fb(vec2(q.x*3.,q.y*24.)+tone*9.);w*=.85+.25*grain;
+  float seam=smoothstep(.0,.05,fract(rows))*smoothstep(1.,.95,fract(rows))*smoothstep(0.,.012,fract(px))*smoothstep(1.,.988,fract(px));
+  c=w*(.45+.55*seam);
+  vec2 rug=abs(uv-vec2(.43,.49))-vec2(.2,.18);float rg=step(max(rug.x,rug.y),0.);
+  float pat=smoothstep(.35,.65,abs(fract((uv.x-uv.y)*9.)-.5)*2.);vec3 rc=mix(vec3(.30,.10,.08),vec3(.42,.22,.12),pat)*(.75+.35*fb(q*40.));
+  float bd=step(max(rug.x,rug.y),-.02);c=mix(c,mix(vec3(.42,.33,.2),rc,bd),rg);
+  c=mix(c,vec3(.16,.15,.14)*(.7+.4*fb(q*12.)),smoothstep(.7,.8,h));
+ }else if(uScene<2.5){ // 석판 + 모래
+  vec2 tq=q*5.;vec2 ti=floor(tq);vec2 tf=fract(tq);float tone=fract(sin(dot(ti,vec2(12.9,78.2)))*437.);
+  vec3 st=mix(vec3(.42,.43,.40),vec3(.58,.56,.5),tone)*(.8+.3*fb(q*18.));
+  float gap=smoothstep(0.,.035,tf.x)*smoothstep(1.,.965,tf.x)*smoothstep(0.,.035,tf.y)*smoothstep(1.,.965,tf.y);
+  st*=.5+.5*gap;
+  float mosaic=step(length(uv-vec2(.5,.5)),.17)*step(.13,length(uv-vec2(.5,.5)));st=mix(st,vec3(.55,.42,.22)*(.8+.3*fb(q*30.)),mosaic*.8);
+  vec3 sand=mix(vec3(.72,.66,.5),vec3(.82,.76,.6),fb(q*11.))*(.9+.1*sin(q.x*90.+fb(q*4.)*12.));
+  c=mix(st,sand,smoothstep(.3,.7,m));
+  float weed=smoothstep(.62,.72,fb(q*3.+7.));c=mix(c,vec3(.12,.22,.12)*(.6+.8*fb(q*40.)),weed*.8);
+ }else{ // 해안
+  vec3 sea=mix(vec3(.52,.47,.36),vec3(.28,.30,.28),smoothstep(.36,.26,h))*(.8+.35*fb(q*10.));
+  vec3 grass=mix(vec3(.30,.42,.16),vec3(.46,.52,.22),fb(q*8.));
+  float rowS=sin(q.y*140.+fb(q*2.)*2.)*.5+.5;vec3 field=mix(vec3(.36,.25,.14),vec3(.62,.52,.2),rowS)*(.85+.3*fb(q*25.));
+  vec3 land=mix(grass,field,smoothstep(.3,.6,m));
+  vec3 cliff=mix(vec3(.36,.27,.18),vec3(.48,.38,.26),fb(q*vec2(4.,40.)));
+  float top=smoothstep(.66,.70,h);c=mix(mix(sea,cliff,smoothstep(.44,.52,h)),land,top);
+  c=mix(c,vec3(.33,.32,.30)*(.7+.5*fb(q*16.)),smoothstep(.43,.5,h)*(1.-smoothstep(.5,.6,h))*step(uv.x,.55)*0.);
+ }
+ c*=1.-fp*.35;return c;}
+void main(){
+ vec2 uv=vUv;vec3 B=bedS(uv);float h=B.x,m=gM,fp=gF;
+ vec4 S=texture2D(tSim,uv);vec2 sl=(S.rg-.5)*2.;float hw=(S.b-.5)*2.;float fo=S.a;
+ vec3 L=normalize(vec3(-.25,-.75,.62));vec3 V=normalize(vec3(0.,.52,.85));
+ if(uScene>1.5&&uScene<2.5){L=normalize(vec3(.3,-.4,.87));}
+ if(uScene<.5){L=normalize(vec3(-.15,-.55,.82));}
+ vec3 bn=normalize(vec3(-B.y*uRelief,-B.z*uRelief,1.));
+ float light=1.;
+ if(uScene>.5&&uScene<1.5){vec2 w=uv-vec2(.62,.45);w.x-=w.y*.55;float win=smoothstep(.26,.18,abs(w.x))*smoothstep(.4,.28,abs(w.y));light=.2+1.1*uLight*win;}
+ float shade=(.35+.75*max(dot(bn,L),0.))*light;
+ float depth=uLevel+hw*.01*uRipple-h;
+ vec2 q=uv*vec2(uRes.x/uRes.y,1.);
+ // 바람 잔물결 노멀
+ float t=uT;
+ // 바람 잔물결: 값 노이즈 두 겹의 수치 기울기
+ vec2 wq=q*34.;float e=.2;float w0=fb(wq+vec2(t*.35,t*.12)),wx=fb(wq+vec2(t*.35+e,t*.12)),wy=fb(wq+vec2(t*.35,t*.12+e));
+ vec2 wq2=q*80.;float v0=n1(wq2-vec2(t*.6,t*.9)),vx=n1(wq2-vec2(t*.6-e,t*.9)),vy=n1(wq2-vec2(t*.6,t*.9-e));
+ vec2 wn=(vec2(wx-w0,wy-w0)*.5+vec2(vx-v0,vy-v0)*.3)/e*uWind*.14;
+ if(uSwell>0.){float ph=q.x*16.+t*1.3+fb(q*2.5)*2.5+q.y*1.5;wn+=vec2(cos(ph)*.16,cos(ph)*.03)*uSwell*(.6+.4*fb(q*4.+t*.05));}
+ vec3 N=normalize(vec3(-sl*uRipple*1.3-wn,1.));
+ vec3 col;
+ if(depth<=0.){ // 마른 땅 / 젖은 모래
+  vec3 a=albedo(uv,h,m,fp);col=a*shade;
+  float wet=smoothstep(0.,.02,uWet-h);
+  if(wet>0.){col*=1.-.42*wet;
+   vec3 wN=normalize(bn+vec3((n1(q*40.)-.5)*.15,(n1(q*40.+.5)-.5)*.15,0.));
+   float sp=pow(max(dot(wN,normalize(L+V)),0.),90.)*.5;
+   float glit=step(.975,n1(q*160.+floor(t*.6)*7.37))*pow(max(dot(wN,normalize(L+V)),0.),8.);
+   col+=wet*(sp*vec3(1.,.86,.62)+glit*2.2*vec3(1.,.9,.7))*uGlint*light;
+   col+=wet*.03*vec3(.5,.6,.7);}
+  // 수위선 바로 위 젖은 가장자리: 방금 물이 핥은 자리
+  float edge=smoothstep(-.012,0.,depth);col=mix(col,col*.72,edge*.6);
+ }else{
+  float dv=depth;vec2 off=N.xy*dv*.9*uRipple+N.xy*.004;
+  vec3 B2=bedS(uv-off);vec3 a=albedo(uv-off,B2.x,gM,gF);
+  vec3 bl=a*shade;
+  // 코스틱
+  vec2 cq=q*uCausScale+sl*uRipple*1.6+wn*.4;float ca=caus(cq,uCausT);
+  float lap=0.;{vec2 st=1./uSimRes;lap=(texture2D(tSim,uv+vec2(st.x,0.)).b+texture2D(tSim,uv-vec2(st.x,0.)).b+texture2D(tSim,uv+vec2(0.,st.y)).b+texture2D(tSim,uv-vec2(0.,st.y)).b-4.*S.b);}
+  float cfall=smoothstep(0.,.02,dv)*exp(-dv*4.);
+  float cs=(ca*uCaus+clamp(-lap*40.,-.5,1.5)*uRipple)*cfall;
+  float shadowM=1.;if(uShadow.z>0.){vec2 sd=(uv-uShadow.xy)*vec2(uRes.x/uRes.y,1.);sd.y*=1.6;shadowM=1.-uShadow.z*smoothstep(.16,.05,length(sd)+.03*(fb(q*3.+t*.1)-.5));}
+  bl*=shadowM;bl+=a*cs*vec3(1.,.97,.85)*light*shadowM;
+  vec3 T=exp(-dv*uAbsorb*vec3(4.,1.6,1.1));
+  vec3 scat=uWater*(1.-exp(-dv*uAbsorb*2.5))*(.55+.45*light)*shadowM;
+  col=bl*T+scat;
+  // 반사
+  float F=.02+.98*pow(1.-max(dot(N,V),0.),5.);
+  vec3 sky=uScene>2.5?vec3(.45,.55,.62):uScene<.5?vec3(.9,.78,.6):vec3(.35,.42,.45);
+  col=mix(col,sky*light,clamp(F*1.8,0.,.5)*smoothstep(0.,.01,dv));
+  vec3 H=normalize(L+V);float sp=pow(max(dot(N,H),0.),420.)*(uScene<.5?1.4:6.)+pow(max(dot(N,H),0.),60.)*(uScene<.5?.07:.35);
+  vec3 sunC=uScene<.5?vec3(1.,.82,.52):uScene>2.5?vec3(1.,.95,.85):vec3(.9,.95,1.);
+  col+=sp*sunC*uGlint*light*shadowM*smoothstep(0.,.006,dv);
+  // 거품: 수위선 띠 + 시뮬레이션 거품
+  float fpat=smoothstep(.42,.75,fb(q*18.+vec2(t*.05,-t*.03)+sl*.3))*.7+smoothstep(.55,.8,n1(q*55.+t*.02))*.5;
+  float shore=smoothstep(uFoamW,0.,dv)*(.35+.65*fpat);
+  float sf=clamp(fo*1.6,0.,1.)*(.25+.9*fpat);
+  float fm=clamp((shore*.85+sf)*uFoam,0.,1.);
+  col=mix(col,vec3(.93,.95,.93)*(.55+.5*light),fm*.9);
+ }
+ col=col/(1.+col*.18);
+ vec2 vg=uv-.5;col*=1.-dot(vg,vg)*.55;
+ col=pow(col,vec3(.95));
+ gl_FragColor=vec4(col,1.);
+}`;
+const PVS=`attribute vec4 a;uniform vec2 uRes;varying float vA;void main(){vA=a.w;gl_Position=vec4(a.x/uRes.x*2.-1.,1.-a.y/uRes.y*2.,0.,1.);gl_PointSize=a.z;}`;
+const PFS=`precision mediump float;varying float vA;uniform vec3 uC;void main(){vec2 d=gl_PointCoord-.5;float r=length(d);float al=smoothstep(.5,.2,r)*vA;float hi=smoothstep(.3,0.,length(d-vec2(-.12,-.12)));gl_FragColor=vec4(uC+hi*.25,al);}`;
+function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+function mk(vs,fs){const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
+function tex(w,h,filter,data,wrap){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,data);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,filter);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,filter);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,wrap||gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,wrap||gl.CLAMP_TO_EDGE);return t;}
+function uploadBed(){for(let i=0;i<BW*BH;i++){const v=Math.round(clamp(bedHi[i]-fpHi[i]*0.02,0,1)*65535);bedBytes[i*4]=v>>8;bedBytes[i*4+1]=v&255;bedBytes[i*4+2]=Math.round(clamp(matHi[i],0,1)*255);bedBytes[i*4+3]=Math.round(clamp(fpHi[i],0,1)*255);}
+ gl.bindTexture(gl.TEXTURE_2D,tBed);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,BW,BH,0,gl.RGBA,gl.UNSIGNED_BYTE,bedBytes);}
+
+// ---------- 시뮬레이션 ----------
+let h0=new Float32Array(SW*SH),h1=new Float32Array(SW*SH);const foam=new Float32Array(SW*SH),mask=new Uint8Array(SW*SH);
+function impulse(x,y,r,amp){const cx=x/4,cy=y/4,rr=r/4;for(let j=Math.max(1,Math.floor(cy-rr));j<Math.min(SH-1,cy+rr);j++)for(let i=Math.max(1,Math.floor(cx-rr));i<Math.min(SW-1,cx+rr);i++){
+ const d=Math.hypot(i-cx,j-cy)/rr;if(d<1){const k=j*SW+i;if(mask[k])h1[k]+=amp*(0.5+0.5*Math.cos(d*Math.PI));}}}
+function addFoam(x,y,r,a){const cx=x/4,cy=y/4,rr=r/4;for(let j=Math.max(0,Math.floor(cy-rr));j<Math.min(SH,cy+rr);j++)for(let i=Math.max(0,Math.floor(cx-rr));i<Math.min(SW,cx+rr);i++){const d=Math.hypot(i-cx,j-cy)/rr;if(d<1)foam[j*SW+i]=Math.min(1.5,foam[j*SW+i]+a*(1-d));}}
+function simStep(damp,k){const a=2-4*k;
+ const kk=k;for(let j=1;j<SH-1;j++){let k=j*SW+1;for(let i=1;i<SW-1;i++,k++){
+  if(!mask[k]){h0[k]=0;continue;}
+  const v=(h1[k-1]+h1[k+1]+h1[k-SW]+h1[k+SW])*kk+a*h1[k]-h0[k];h0[k]=v*damp;}}
+ const t=h0;h0=h1;h1=t;}
+
+// ---------- 파티클 ----------
+const parts=[];const pdata=new Float32Array(4*1200);
+function spray(x,y,n,spd,up,size){for(let i=0;i<n;i++){const a=R()*Math.PI*2,s=spd*(0.3+R()*0.9);parts.push({x,y,z:0,vx:Math.cos(a)*s,vy:Math.sin(a)*s*0.7,vz:up*(0.5+R()*0.8),s:size*(0.5+R()*0.8),life:1});}}
+
+// ---------- 상태 ----------
+let vi=0,level=0.5,wetLv=0.5,phase=-0.6,surge=0,surgeT=-1,stepAcc=0,lastX=0,lastY=0,footSide=1,dripT=0,shadowT=-1,swellT=0,waveCount=0;
+let amb=[],started=false;
+const ov=document.getElementById('ov');
+function depthAt(x,y){const i=clamp(Math.round(x/2),0,BW-1),j=clamp(Math.round(y/2),0,BH-1);return level-(bedHi[j*BW+i]-fpHi[j*BW+i]*0.02);}
+
+// ---------- 소리 ----------
+function lowpassUnder(){return vi===2?[{type:'lowpass',f:750,Q:0.5}]:[];}
+function sSlosh(g,pan,deep){const w=vi===1?0.35:0.15;
+ AU.burst({kind:'pink',a:0.012,d:0.16+deep*0.2,gain:0.55*g,filter:[{type:'bandpass',f:1100,f1:380,Q:1.1}],pan,wet:w});
+ AU.burst({kind:'white',t0:0.07,a:0.006,d:0.22,gain:0.22*g,filter:[{type:'bandpass',f:2400,f1:900,Q:0.9}],pan,wet:w});
+ for(let i=0;i<3;i++){const f=500+R()*700;AU.tone({type:'sine',t0:0.05+R()*0.18,f,f1:f*1.9,d:0.05,gain:0.05*g,pan,wet:w});}}
+function sSquelch(g,pan){AU.burst({kind:'pink',a:0.004,d:0.13,gain:0.45*g,filter:[{type:'bandpass',f:420,f1:170,Q:2.2}],pan,wet:0.05});
+ AU.burst({kind:'white',t0:0.09,a:0.002,d:0.05,gain:0.12*g,filter:[{type:'bandpass',f:1600,Q:3}],pan});}
+function sSand(g,pan){AU.burst({kind:'white',a:0.004,d:0.08,gain:0.16*g,filter:[{type:'highpass',f:1800},{type:'lowpass',f:6000}],pan});
+ AU.burst({kind:'pink',a:0.003,d:0.06,gain:0.18*g,filter:[{type:'bandpass',f:700,Q:1}],pan});}
+function sPlop(g,pan,under){const lp=under?[{type:'lowpass',f:900,Q:0.6}]:[];const f=260+R()*120;
+ AU.tone({type:'sine',f,f1:f*3.2,ft:0.07,a:0.002,d:0.12,gain:0.4*g,filter:lp,pan,wet:under?0.5:0.25});
+ AU.burst({kind:'white',a:0.001,d:0.03,gain:0.25*g,filter:under?[{type:'lowpass',f:1200}]:[{type:'highpass',f:2500}],pan});
+ for(let i=0;i<4;i++){const f2=700+R()*900;AU.tone({type:'sine',t0:0.12+i*0.06+R()*0.05,f:f2,f1:f2*1.6,d:0.04,gain:0.07*g,filter:lp,pan,wet:0.4});}}
+function sDrip(pan,g){const f=900+R()*500;AU.tone({type:'sine',f,f1:f*2.1,ft:0.035,a:0.001,d:0.09,gain:0.16*g,pan,wet:0.7});
+ AU.tone({type:'sine',t0:0.004,f:f*0.5,f1:f*0.9,d:0.05,gain:0.06*g,pan,wet:0.6});}
+function sSurge(g){AU.burst({kind:'pink',a:0.8,hold:0.4,d:2.2,gain:0.55*g,filter:[{type:'lowpass',f:220,f1:2200,ft:1.2,Q:0.4}],wet:0.35,len:6});
+ AU.burst({kind:'white',t0:1.05,a:0.03,d:2.4,gain:0.35*g,filter:[{type:'bandpass',f:2200,f1:500,Q:0.6}],wet:0.4,len:6,pan:0.2});
+ AU.tone({type:'sine',t0:1.05,f:70,f1:32,d:0.9,gain:0.5*g});}
+function sCrash(g,pan){AU.burst({kind:'white',a:0.01,d:1.3,gain:0.4*g,filter:[{type:'bandpass',f:1800,f1:450,Q:0.5}],pan,wet:0.35,len:6});
+ AU.burst({kind:'brown',a:0.02,d:0.9,gain:0.6*g,filter:[{type:'lowpass',f:400}],pan,wet:0.2});
+ AU.tone({type:'sine',f:85,f1:40,d:0.5,gain:0.35*g,pan});}
+function sThud(g){AU.tone({type:'sine',f:95,f1:55,d:0.25,gain:0.4*g,filter:[{type:'lowpass',f:300}],wet:0.5});AU.burst({kind:'brown',a:0.005,d:0.25,gain:0.35*g,filter:[{type:'lowpass',f:260}],wet:0.4});}
+function startAmb(){amb.forEach(a=>a&&a.stop());amb=[];if(!AU.ctx)return;
+ if(vi===0){amb.push(AU.loop({kind:'brown',filter:[{type:'bandpass',f:520,Q:0.7}],wet:0.1}));amb.push(AU.loop({kind:'pink',filter:[{type:'lowpass',f:260}],wet:0.2,len:5}));}
+ if(vi===1){amb.push(AU.loop({kind:'brown',filter:[{type:'lowpass',f:140}],wet:0.3}));}
+ if(vi===2){amb.push(AU.loop({kind:'brown',filter:[{type:'lowpass',f:300,Q:1.5}],wet:0.3}));amb.push(AU.loop({kind:'pink',filter:[{type:'bandpass',f:180,Q:2}],len:4}));}
+ if(vi===3){amb.push(AU.loop({kind:'brown',filter:[{type:'lowpass',f:500}],wet:0.2}));amb.push(AU.loop({kind:'pink',filter:[{type:'bandpass',f:1500,Q:0.5}],wet:0.3,len:5}));}}
+
+// ---------- 행동 ----------
+function step(x,y,strong){const d=depthAt(x,y),pan=(x/600-1)*0.7,p=FX.p;
+ if(vi===2){impulse(x,y,strong?26:14,strong?2.2:0.8);if(strong){spray(x,y,10,70,90,5);sPlop(1,pan,true);}return;}
+ if(d>0.002){const deep=clamp(d/0.05,0,1);impulse(x,y,strong?24:16,(strong?2.2:1.2)*(0.5+deep));addFoam(x,y,strong?22:12,0.35+deep*0.3);
+  spray(x,y,strong?26:10,strong?95:55,strong?130:70,strong?6:4.5);sSlosh(strong?1:0.7,pan,deep);}
+ else{stampFoot(x,y,strong);const wet=(wetLv-(level-d))>0;wet?sSquelch(strong?1:0.75,pan):sSand(strong?1:0.8,pan);}}
+function stampFoot(x,y,strong){const dx=x-lastX,dy=y-lastY,l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l;
+ const ang=Math.atan2(uy,ux);const c=Math.cos(ang),s=Math.sin(ang);const bx=x/2,by=y/2;
+ for(let j=-10;j<=10;j++)for(let i=-10;i<=10;i++){const X=Math.round(bx+i),Y=Math.round(by+j);if(X<0||Y<0||X>=BW||Y>=BH)continue;
+  const lx=i*c+j*s,ly=-i*s+j*c;const e=(lx/5.5)**2+(ly/2.9)**2;const toe=((lx-4.5)/2.2)**2+(ly/3.1)**2;
+  const v=Math.max(smooth(1,0.5,e),smooth(1,0.4,toe)*0.9);if(v>0){const k=Y*BW+X;fpHi[k]=Math.max(fpHi[k],v*(strong?1:0.85));}}
+ uploadBed();}
+function surgeNow(){ if(vi===0){surge=Math.max(surge,0.03);surgeT=0;sSurge(1);}
+ else if(vi===1){const x=300+R()*600,y=200+R()*380;impulse(x,y,60,5);spray(x,y,60,160,220,7);addFoam(x,y,60,1);sCrash(0.8,(x/600-1)*0.6);}
+ else if(vi===2){shadowT=0;}
+ else{surgeT=0;sSurge(1.1);}}
+
+const E={slug:'water-tide',title:'물·조수',desc:'수위 상승 · 물결 링 · 코스틱 · 젖은 모래 번들거림 · 발목까지 찬 물 — 행동(발 딛기·조약돌·파도)과 소리·물결이 같은 프레임에 터진다.',
+ variants:VARIANTS,memoCommon,W:1200,H:780,
+ actions:[{label:'행동 (Space)',fn:()=>surgeNow()},{label:'리셋 (R)',fn:()=>reset()},{label:'밀물/썰물 뒤집기 (T)',fn:()=>{phase+=Math.PI;}}],
+ init(cv){gl=cv.getContext('webgl',{antialias:false,preserveDrawingBuffer:true});if(!gl){ov.textContent='WebGL 사용 불가';return;}
+  prog=mk(VS,FS);pprog=mk(PVS,PFS);
+  quad=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quad);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  pbuf=gl.createBuffer();
+  const nb=new Uint8Array(NOISE_N*NOISE_N*4);const r=mulberry32(55);for(let i=0;i<nb.length;i++)nb[i]=Math.floor(r()*256);
+  tNoise=tex(NOISE_N,NOISE_N,gl.LINEAR,nb,gl.REPEAT);tBed=tex(BW,BH,gl.NEAREST,null);tSim=tex(SW,SH,gl.LINEAR,null);
+  ['uFoamW','uSwell','uAbsorb','tBed','tSim','tNoise','uBedRes','uSimRes','uRes','uT','uLevel','uWet','uScene','uGlint','uFoam','uCaus','uCausScale','uCausT','uRipple','uWind','uLight','uRelief','uWater','uShadow'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
+  ['uRes','uC'].forEach(n=>PU[n]=gl.getUniformLocation(pprog,n));},
+ setVariant(i){vi=i;reset();if(FX.audioOn)startAmb();},
+ audioStart(){startAmb();},
+ down(x,y){lastX=x-1;lastY=y;stepAcc=0;step(x,y,true);lastX=x;lastY=y;},
+ move(x,y,e,down){if(!down)return;const d=Math.hypot(x-lastX,y-lastY);
+  if(vi===2){if(d>6){impulse(x,y,12,0.35);lastX=x;lastY=y;if(R()<0.15)AU.burst({kind:'pink',a:0.02,d:0.25,gain:0.12,filter:[{type:'lowpass',f:500}],wet:0.4});}return;}
+  const stride=vi===1?FX.p.stride:36;stepAcc+=d;
+  if(stepAcc>=stride){stepAcc=0;footSide=-footSide;const l=d||1,nx=-(y-lastY)/l,ny=(x-lastX)/l;step(x+nx*7*footSide,y+ny*7*footSide,false);}
+  lastX=x;lastY=y;},
+ key(k){if(k===' ')surgeNow();if(k==='r')reset();if(k==='t')phase+=Math.PI;},
+ update(dt,t){const p=FX.p,s=dt/1000;
+  // 수위
+  if(vi===0){phase+=s*p.tideSpeed*0.25;let target=p.tideMid+p.tideAmp*Math.sin(phase)+surge;level=lerp(level,target,1-Math.exp(-s*4));surge*=Math.exp(-s*0.25);
+   if(level>wetLv)wetLv=level;else wetLv=Math.max(level,wetLv-s*(p.wetHold>0?0.03/p.wetHold:1));}
+  else if(vi===1){level=0.5+p.depth;wetLv=level;}
+  else if(vi===2){level=0.5+p.depth;wetLv=level;}
+  else{level=0.52;wetLv=0.66;}
+  for(let k=0;k<SW*SH;k++){const m=bedLo[k]<level-0.0015&&!obst[k];if(!m&&mask[k]){h0[k]=h1[k]=0;}mask[k]=m?1:0;}
+  // 강제 입력
+  if(vi===0&&surgeT>=0){surgeT+=s;if(surgeT<2.4){const a=Math.sin(surgeT*4.5)*1.4*Math.exp(-surgeT*0.6);for(let j=1;j<SH-1;j++){const k=j*SW+SW-3;if(mask[k])h1[k]=a;}}else surgeT=-1;}
+  if(vi===3){swellT+=s;const per=p.period,ph=(swellT%per)/per;const big=surgeT>=0;
+   const amp=p.swell*(big?3.2:1.8);
+   const wave=ph<0.35?Math.sin(ph/0.35*Math.PI):0;
+   if(big){surgeT+=s;if(surgeT>3.2)surgeT=-1;}
+   const bigA=big?Math.sin(clamp(surgeT/1.4,0,1)*Math.PI)*amp:0;
+   for(let j=1;j<SH-1;j++){const k=j*SW+SW-3;if(mask[k])h1[k]=wave*amp*(0.8+0.2*Math.sin(j*0.07+swellT))+bigA;}
+   // 벼랑 충돌: 마스크 경계에서 에너지 → 거품/물보라 · 소리
+   if(Math.floor((swellT-s)/per)!==Math.floor(swellT/per)){waveCount++;if(AU.ctx)AU.burst({kind:'pink',t0:1.6,a:0.25,d:1.8,gain:0.3*p.swell,filter:[{type:'bandpass',f:900,f1:350,Q:0.5}],wet:0.35,len:6,pan:-0.3});}
+  }
+  if(vi===1){dripT-=s;if(dripT<0&&p.drip>0){dripT=(0.3+R()*1.4)/p.drip;const x=100+R()*1000,y=90+R()*600;if(depthAt(x,y)>0){impulse(x,y,8,1.4);spray(x,y,4,30,40,3);if(FX.audioOn)sDrip((x/600-1)*0.8,0.8);}}}
+  if(vi===2&&shadowT>=0){shadowT+=s;const ph=shadowT;if(Math.floor(ph/0.55)!==Math.floor((ph-s)/0.55)&&ph<3.4&&FX.audioOn)sThud(0.8);if(shadowT>4.2)shadowT=-1;}
+  if(vi===2){if(R()<s*0.6)impulse(200+R()*800,150+R()*500,10,0.25);}
+  // 시뮬레이션
+  const damp=vi===1?p.damp:vi===2?0.99:vi===3?0.995:0.992;
+  const c2=[0.3,0.28,0.4,0.45][vi];simStep(damp,c2);simStep(damp,c2);
+  // 거품 누적/감쇠 + 텍스처 굽기
+  const rg=vi===3?1.4:1;
+  for(let j=0;j<SH;j++)for(let i=0;i<SW;i++){const k=j*SW+i;let f=foam[k]*Math.exp(-s*(vi===3?0.35:0.9));
+   if(mask[k]&&vi===3&&i>0&&i<SW-1&&j>0&&j<SH-1&&(!mask[k-1]||!mask[k+1]||!mask[k-SW]||!mask[k+SW]))f+=Math.abs(h1[k]-h0[k])*0.9*p.foam;
+   if(vi===3&&mask[k]&&h1[k]>0.9)f+=(h1[k]-0.9)*0.05;
+   foam[k]=Math.min(f,1.4);
+   const sx=i>0&&i<SW-1?(h1[k+1]-h1[k-1]):0,sy=j>0&&j<SH-1?(h1[k+SW]-h1[k-SW]):0;
+   const o=k*4;simBytes[o]=clamp(128+sx*40*rg,0,255);simBytes[o+1]=clamp(128+sy*40*rg,0,255);simBytes[o+2]=clamp(128+h1[k]*28,0,255);simBytes[o+3]=clamp(foam[k]*180,0,255);}
+  // 벼랑 물보라 (큰 파도)
+  if(vi===3&&surgeT>0.9&&surgeT<1.8){for(let n=0;n<6;n++){const j=Math.floor(R()*(SH-2))+1;for(let i=SW-3;i>2;i--){const k=j*SW+i;if(!mask[k-1]){if(h1[k]>0.6){spray(i*4,j*4,2,120,160*p.swell,6);}break;}}}}
+  if(vi===3&&surgeT>1.15&&surgeT<1.15+s*1.01&&FX.audioOn)sCrash(1.2,-0.4);
+  // 파티클
+  for(let i=parts.length-1;i>=0;i--){const q=parts[i];q.x+=q.vx*s;q.y+=q.vy*s;q.z+=q.vz*s;q.vz-=520*s;
+   if(q.z<0){parts.splice(i,1);if(depthAt(q.x,q.y)>0)impulse(q.x,q.y,6,0.4);}}
+  if(parts.length>1100)parts.splice(0,parts.length-1100);
+  // 앰비언스
+  if(amb.length&&AU.ctx){if(vi===0){const wetA=clamp((level-0.44)/0.1,0,1);amb[0].set(0.05+0.2*wetA);amb[1].set(0.08);if(R()<s*(0.6+wetA*1.5))AU.burst({kind:'pink',a:0.05,d:0.35,gain:0.08+0.12*wetA,filter:[{type:'bandpass',f:700+R()*500,f1:300,Q:1.2}],wet:0.3,pan:R()*1.6-0.8});}
+   if(vi===1)amb[0].set(0.12);if(vi===2){amb[0].set(0.35);amb[1].set(0.06);if(R()<s*0.8)sPlop(0.25,R()*1.6-0.8,true);}
+   if(vi===3){const ph=(swellT%p.period)/p.period;amb[0].set(0.18+0.25*p.swell*Math.max(0,Math.sin(ph*Math.PI*2+2)));amb[1].set(0.05+0.05*p.wind);}}
+  // 오버레이
+  if(vi===0){const m=(level-0.43)*30;ov.textContent='수위 '+m.toFixed(2)+' m  '+(Math.cos(phase)>0?'▲ 밀물':'▼ 썰물')+'\n갯길 '+(level>0.529?'잠김':'열림');}
+  else if(vi===1)ov.textContent='수심 '+(p.depth*300).toFixed(0)+' cm · 걸음 물결';
+  else if(vi===2)ov.textContent=shadowT>=0?'위층 경비 통과 중 — 멈춰라':'수심 '+(p.depth*20).toFixed(1)+' m';
+  else ov.textContent='너울 '+waveCount+'번째 · 주기 '+p.period.toFixed(1)+'s';
+ },
+ render(t){if(!gl)return;const p=FX.p;gl.viewport(0,0,1200,780);gl.useProgram(prog);
+  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tBed);gl.uniform1i(U.tBed,0);
+  gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tSim);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,SW,SH,0,gl.RGBA,gl.UNSIGNED_BYTE,simBytes);gl.uniform1i(U.tSim,1);
+  gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,tNoise);gl.uniform1i(U.tNoise,2);
+  gl.uniform2f(U.uBedRes,BW,BH);gl.uniform2f(U.uSimRes,SW,SH);gl.uniform2f(U.uRes,1200,780);
+  const ts=t/1000;gl.uniform1f(U.uT,ts);gl.uniform1f(U.uLevel,level);gl.uniform1f(U.uWet,wetLv);gl.uniform1f(U.uScene,vi);
+  gl.uniform1f(U.uGlint,p.glint!=null?p.glint:vi===1?0.8:0.9);gl.uniform1f(U.uFoam,p.foam!=null?p.foam:0.5);
+  gl.uniform1f(U.uCaus,p.caus!=null?p.caus:vi===1?0.3:vi===0?0.12:0.35);gl.uniform1f(U.uCausScale,p.causScale||(vi===1?6:5));
+  gl.uniform1f(U.uCausT,ts*(p.causSpeed!=null?p.causSpeed:0.7));gl.uniform1f(U.uRipple,p.ripple!=null?p.ripple:1);
+  gl.uniform1f(U.uWind,p.wind!=null?p.wind:vi===0?0.45:vi===2?0.5:0.05);gl.uniform1f(U.uLight,p.light!=null?p.light:1);gl.uniform1f(U.uFoamW,[0.0035,0.004,0.006,0.02][vi]);gl.uniform1f(U.uSwell,vi===3?p.swell:0);gl.uniform1f(U.uAbsorb,[8,5,2.2,5][vi]);gl.uniform1f(U.uRelief,vi===3?90:vi===1?30:40);
+  const c=hexRgb(p.water);gl.uniform3f(U.uWater,c[0],c[1],c[2]);
+  let shx=0,shy=0,sha=0;if(vi===2&&shadowT>=0){const k=shadowT/4.2;shx=lerp(-0.15,1.15,k);shy=0.35+0.12*Math.sin(k*3);sha=p.shadow*smooth(0,0.1,k)*smooth(1,0.9,k);}
+  gl.uniform3f(U.uShadow,shx,shy,sha);
+  gl.bindBuffer(gl.ARRAY_BUFFER,quad);const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);gl.disableVertexAttribArray(loc);
+  // 물방울
+  const n=Math.min(parts.length,1200);if(n){for(let i=0;i<n;i++){const q=parts[i];pdata[i*4]=q.x;pdata[i*4+1]=q.y-q.z*0.75;pdata[i*4+2]=q.s*(1+q.z*0.004);pdata[i*4+3]=0.85*smooth(0,20,q.z+8);}
+   gl.useProgram(pprog);gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);gl.bufferData(gl.ARRAY_BUFFER,pdata.subarray(0,n*4),gl.DYNAMIC_DRAW);
+   const al=gl.getAttribLocation(pprog,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,4,gl.FLOAT,false,0,0);
+   gl.uniform2f(PU.uRes,1200,780);gl.uniform3f(PU.uC,vi===2?0.75:0.86,vi===2?0.9:0.93,0.95);
+   gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.POINTS,0,n);gl.disable(gl.BLEND);gl.disableVertexAttribArray(al);}}
+};
+function reset(){R=mulberry32(72+vi);buildBed(vi);if(gl)uploadBed();h0.fill(0);h1.fill(0);foam.fill(0);parts.length=0;surge=0;surgeT=-1;shadowT=-1;swellT=0;waveCount=0;phase=-0.6;
+ level=vi===0?0.498+0.05*Math.sin(phase):0.5;wetLv=level+0.03;}
+FX.run(E);
+
+</script>
+</body></html>

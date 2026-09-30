@@ -1,0 +1,53 @@
+{
+  "_": "상점가 · 가격 변동 폭 · 고정비 · 검사기가 쓰는 한계값. 전부 정수.",
+  "startMoney": 600,
+  "wellWaterPerDay": 26,
+  "priceBandPercent": 12,
+  "priceStepDays": 7,
+  "_밴드": "씨드 고정 잡음. 이 위에 signal.json 의 시세지수(백분율)를 곱한다 — 잡음과 남의 반응을 가른다.",
+  "livingCostPerSeason": 600,
+  "taxPerPlotPerYear": 20,
+  "bankruptcyAtCoin": -400,
+
+  "shop": [
+    { "cropId": "turnip",    "buySeed": 12, "sellUnit": 20 },
+    { "cropId": "barley",    "buySeed": 20, "sellUnit": 26 },
+    { "cropId": "flax",      "buySeed": 24, "sellUnit": 44 },
+    { "cropId": "sorghum",   "buySeed": 26, "sellUnit": 34 },
+    { "cropId": "winterRye", "buySeed": 14, "sellUnit": 22 },
+    { "cropId": "lavender",  "buySeed": 55, "sellUnit": 70 },
+    { "cropId": "melon",     "buySeed": 70, "sellUnit": 150 },
+    { "cropId": "saffron",   "buySeed": 90, "sellUnit": 260 }
+  ],
+
+  "limits": {
+    "_": "검사기가 읽는 한계값. 데이터로 계산한 이론 상한과 실측을 둘 다 여기에 가둔다.",
+    "maxYearIncomeCoin": 32000,
+    "assetCeilingCoin": 2400000,
+    "economyWindowYears": 20,
+    "incomeDriftMaxPercent": 25,
+    "_발산": "이 PoC는 확장이 없어 수입이 복리로 늘 수 없다. 그것을 주장이 아니라 검사로 만든다 — 11~30년 평균과 81~100년 평균의 차이가 25% 안이어야 한다.",
+
+    "seasonViabilityMinCrops": 2,
+    "seasonViabilityMinCompletableMoneyCrops": 1,
+    "seasonViabilityMinIncomeCoin": 300,
+    "deadCropMinPlantings": 1,
+
+    "firstPriceWarnSeasonMin": 1,
+    "firstPriceWarnSeasonMax": 4,
+    "firstCollapseSeasonMin": 2,
+    "firstCollapseSeasonMax": 6,
+    "firstTheftSeasonMin": 2,
+    "firstTheftSeasonMax": 6,
+    "firstVisitorSeasonMin": 1,
+    "firstVisitorSeasonMax": 4,
+    "_페이싱": "계절 번호(1부터). 3년 = 12계절. 경고·도둑은 Blind, 붕기는 MonoSeasonBest, 방문자는 Renown 정책이 기준이다 — 그 정책이 그 사건을 만드는 정책이다.",
+
+    "signalMattersMinMoneyDeltaPercent": 15,
+    "signalMattersMinMonoPenaltyPercent": 15,
+    "signalMattersMinDeltaSpreadPoints": 40,
+    "signalMattersOffBestMinRankOn": 3,
+    "_SignalMatters": "이 PoC의 핵. 상한이 아니라 하한이다 — 신호를 쓰는 정책은 켜진 세상에서 15% 이상 더 벌어야 하고, 단작은 15% 이상 잘해야 하며, 정책들의 듀를 폭이 40폴인트 이상 벌어지고, 신호 없는 세상의 1위가 켜진 세상에서 3위 밖으로 밀려나야 한다.",
+    "noSingleCropWinsMarginPercent": 5
+  }
+}

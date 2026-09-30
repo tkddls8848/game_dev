@@ -1,0 +1,46 @@
+{
+  "_": "회차 하나. 전투 3 + 보스 1. 활자 상자와 체력이 전투를 넘어 이어진다 — 이 둘이 규칙의 시간축이다.",
+  "_보상": "보상은 장 수가 아니라 주조다. 이미 덱에 있는 활자를 받으면 남은 횟수가 rewardRecastUses 만큼 늘고 선명도가 돌아온다. 이미 녹은 활자는 보상으로도 돌아오지 않는다.",
+  "id": "run_01",
+  "seed": 20260927,
+  "playerMaxHp": 80,
+  "handSize": 5,
+  "energyPerTurn": 3,
+  "maxRoundsPerBattle": 14,
+  "healAfterBattle": 0,
+  "rewardsPerBattle": 1,
+  "rewardRecastUses": 1,
+  "startingDeck": [
+    "card_sort",
+    "card_sort",
+    "card_sort",
+    "card_sort",
+    "card_furniture",
+    "card_furniture",
+    "card_furniture",
+    "card_composing",
+    "card_ink",
+    "card_mallet",
+    "card_woodtype",
+    "card_forme",
+    "card_vermilion",
+    "card_makeready"
+  ],
+  "rewardPool": [
+    "card_sort",
+    "card_furniture",
+    "card_ink",
+    "card_mallet",
+    "card_recast"
+  ],
+  "battles": [
+    "enemy_proof",
+    "enemy_quoin",
+    "enemy_quoin"
+  ],
+  "boss": "enemy_platen",
+  "_마감": "maxRoundsPerBattle 는 마감이다. 판을 다 찍기 전에 마감이 오면 진다 — 이 한 줄이 '큰 활자를 아껴 둘 이유'를 만든다. 기본 활자만으로는 보스 판을 마감 안에 못 찍는다.",
+  "_체력": [
+    "healAfterBattle 0. 체력은 회차 내내 한 번도 안 차는 예산이다 — 그래야 '지금 막을까'가 다음 전투까지 이어지는 결정이 된다. 차는 길은 판 고르기(활자)뿐이고, 그것도 닳는다."
+  ]
+}

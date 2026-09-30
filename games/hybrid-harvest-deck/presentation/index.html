@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+  연출 목업 — 저택 창고 장부.
+
+  손으로 그린 그림이 아니다. 아래 파일들을 **실제로 읽어** 그린다:
+    ../data/crops.json ../data/cards.json ../data/seasons.json
+    ../data/plots.json ../data/enemies.json ../data/runs/night_01.json
+    ./palette.json  ./sample_year.json (검사기가 구운 '실제로 돌린 한 해')
+
+  띄우는 법 — file:// 은 fetch 가 막힌다. PoC 뿌리에서:
+    python -m http.server 8000
+    http://localhost:8000/presentation/index.html
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>창고 장부 — 밭이 덱을 만든다</title>
+<style>
+  @font-face { font-family:"NanumMyeongjo"; src:url("assets/fonts/NanumMyeongjo-Regular.ttf") format("truetype"); font-display:swap; }
+  @font-face { font-family:"GothicA1";      src:url("assets/fonts/GothicA1-Regular.ttf") format("truetype"); font-display:swap; }
+  @font-face { font-family:"NotoEmoji";     src:url("assets/fonts/NotoEmoji-VariableFont_wght.ttf") format("truetype"); font-display:swap; }
+
+  :root{
+    --void:#171310; --ink:#2B2118; --paper:#D9C9A4; --paper-edge:#B49C6E;
+    --accent:#8A2E22; --muted:#7A6A52; --rule:#B6A176; --crop:#4E5D3A; --card:#3B4B63;
+    --s-title:40px; --s-heading:22px; --s-body:15px; --s-hint:12px; --s-qty:26px;
+    --rule-gap:26px; --tex-op:.38; --stamp-rot:-7deg;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:24px 16px 64px; background:var(--void); color:var(--ink);
+    font-family:"NanumMyeongjo", serif; font-size:var(--s-body); line-height:1.65;
+  }
+  .glyph{font-family:"NotoEmoji", sans-serif; font-variant-emoji:text}
+  .num{font-family:"GothicA1", sans-serif; font-variant-numeric:tabular-nums}
+
+  .ledger{
+    max-width:1180px; margin:0 auto; position:relative;
+    background-color:var(--paper);
+    border:1px solid var(--paper-edge);
+    box-shadow:0 18px 60px rgba(0,0,0,.55);
+  }
+  /* 종이 결: 실제로 내려받은 CC0 크라프트지 질감 + 장부 괘선 */
+  .ledger::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:url("assets/img/kraft-paper.jpg");
+    background-size:420px; mix-blend-mode:multiply; opacity:var(--tex-op);
+  }
+  .ledger::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--rule-gap) - 1px),var(--rule) calc(var(--rule-gap) - 1px),var(--rule) var(--rule-gap));
+  }
+  .sheet{position:relative; z-index:1; padding:32px 34px 40px}
+
+  header{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink); padding-bottom:12px}
+  h1{font-size:var(--s-title); margin:0; letter-spacing:.06em; font-weight:400}
+  .sub{color:var(--muted); font-size:var(--s-hint); letter-spacing:.14em; text-transform:uppercase}
+  .stamp{
+    border:2.5px solid var(--accent); color:var(--accent); padding:6px 14px;
+    transform:rotate(var(--stamp-rot)); font-size:var(--s-hint); letter-spacing:.2em;
+    opacity:.85; white-space:nowrap; border-radius:2px;
+  }
+
+  .spread{display:grid; grid-template-columns:1fr 64px 1fr; gap:0; margin-top:26px; align-items:start}
+  .page h2{
+    font-size:var(--s-heading); margin:0 0 4px; font-weight:400; letter-spacing:.08em;
+    border-bottom:1px solid var(--ink); padding-bottom:6px;
+  }
+  .page .cap{font-size:var(--s-hint); color:var(--muted); margin:6px 0 16px}
+  .gutter{
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    padding-top:96px; color:var(--accent);
+  }
+  .gutter .arrow{font-size:30px; line-height:1}
+  .gutter .lbl{writing-mode:vertical-rl; font-size:var(--s-hint); letter-spacing:.3em; margin-top:10px; color:var(--muted)}
+  .page.left{padding-right:26px; border-right:1px dashed var(--paper-edge)}
+  .page.right{padding-left:26px}
+
+  /* ── 밭 ── */
+  .season{margin-bottom:18px}
+  .season-hd{display:flex; align-items:baseline; gap:8px; font-size:var(--s-hint); letter-spacing:.16em; color:var(--muted)}
+  .season-hd b{font-family:"NanumMyeongjo",serif; font-size:var(--s-body); color:var(--ink); letter-spacing:.06em; font-weight:400}
+  .plots{display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px; margin-top:8px}
+  .plot{
+    border:1px solid var(--paper-edge); background:rgba(255,252,242,.34);
+    padding:8px 9px; min-height:78px; position:relative;
+  }
+  .plot.empty{border-style:dotted; opacity:.55}
+  .plot .pid{font-size:10px; letter-spacing:.14em; color:var(--muted)}
+  .plot .row{display:flex; align-items:center; gap:6px; margin-top:4px}
+  .plot .g{font-size:20px; color:var(--crop)}
+  .plot .nm{font-size:13px}
+  .plot .yield{font-size:var(--s-qty); line-height:1; color:var(--ink); margin-top:6px}
+  .plot .yield small{font-size:11px; color:var(--muted); margin-left:3px}
+  .plot.lost{color:var(--accent)}
+  .plot.lost .yield{color:var(--accent); font-size:14px}
+
+  /* ── 덱 ── */
+  .deckrow{
+    display:grid; grid-template-columns:34px 1fr auto; gap:10px; align-items:center;
+    border-bottom:1px solid var(--rule); padding:9px 2px;
+  }
+  .deckrow .g{font-size:22px; color:var(--card); text-align:center}
+  .deckrow .nm{font-size:16px}
+  .deckrow .from{display:block; font-size:var(--s-hint); color:var(--muted)}
+  .deckrow .from .gg{font-size:12px; color:var(--crop)}
+  .deckrow .qty{font-size:var(--s-qty); line-height:1}
+  .deckrow .qty small{font-size:11px; color:var(--muted); margin-left:3px}
+  .deckrow.zero{opacity:.45}
+  .deckrow.zero .qty{color:var(--accent)}
+  .effects{font-size:var(--s-hint); color:var(--muted)}
+  .cost{
+    display:inline-block; min-width:18px; text-align:center; border:1px solid var(--ink);
+    border-radius:50%; font-size:11px; line-height:16px; margin-right:6px;
+  }
+
+  /* ── 밤 ── */
+  .night{margin-top:30px; border-top:2px solid var(--ink); padding-top:16px}
+  .night h2{font-size:var(--s-heading); font-weight:400; margin:0 0 10px; letter-spacing:.08em}
+  .foes{display:flex; gap:10px; flex-wrap:wrap}
+  .foe{border:1px solid var(--paper-edge); padding:8px 12px; background:rgba(255,252,242,.34); min-width:118px}
+  .foe.boss{border-color:var(--accent); border-width:2px}
+  .foe .g{font-size:22px}
+  .foe .nm{font-size:13px}
+  .foe .hp{font-size:var(--s-hint); color:var(--muted)}
+
+  .totals{display:flex; gap:26px; flex-wrap:wrap; margin-top:14px; font-size:var(--s-hint); color:var(--muted)}
+  .totals b{font-family:"GothicA1",sans-serif; color:var(--ink); font-size:15px; font-weight:500}
+
+  .note{
+    margin-top:26px; border-left:3px solid var(--accent); padding:4px 0 4px 14px;
+    font-size:var(--s-hint); color:var(--muted); max-width:760px;
+  }
+  .err{max-width:760px; margin:60px auto; color:#D9C9A4; font-family:"GothicA1",sans-serif; line-height:1.9}
+  .err code{background:#241d17; padding:2px 7px; border-radius:3px; color:#E3B87A}
+
+  @media (max-width:900px){
+    .spread{grid-template-columns:1fr}
+    .page.left{padding-right:0; border-right:none; border-bottom:1px dashed var(--paper-edge); padding-bottom:20px}
+    .page.right{padding-left:0; padding-top:20px}
+    .gutter{flex-direction:row; padding:14px 0}
+    .gutter .lbl{writing-mode:horizontal-tb; margin:0 0 0 10px}
+  }
+</style>
+</head>
+<body>
+<div id="root"><div class="err">장부를 펴는 중…</div></div>
+
+<script>
+const F = (p) => fetch(p).then(r => { if(!r.ok) throw new Error(p+" → "+r.status); return r.json(); });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Promise.all([
+  F("palette.json"), F("sample_year.json"),
+  F("../data/crops.json"), F("../data/cards.json"), F("../data/seasons.json"),
+  F("../data/plots.json"), F("../data/enemies.json"), F("../data/runs/night_01.json")
+]).then(draw).catch(err => {
+  document.getElementById("root").innerHTML =
+    '<div class="err"><b>데이터를 읽지 못했다.</b><br>' + esc(err.message) +
+    '<br><br>이 목업은 <code>data/</code> 의 실제 JSON 을 읽어 그린다. ' +
+    '<code>file://</code> 로는 fetch 가 막히므로 PoC 뿌리에서 서버를 띄운다:' +
+    '<br><br><code>python -m http.server 8000</code><br>' +
+    '<code>http://localhost:8000/presentation/index.html</code></div>';
+});
+
+function draw([pal, sample, cropsF, cardsF, seasonsF, plotsF, enemiesF, night]){
+  // palette.json 이 색·크기의 유일한 출처다. CSS 변수로 깐다.
+  const r = document.documentElement.style;
+  const c = pal.color, t = pal.type, g = pal.grade;
+  r.setProperty("--void",c.void); r.setProperty("--ink",c.ink); r.setProperty("--paper",c.paper);
+  r.setProperty("--paper-edge",c.paperEdge); r.setProperty("--accent",c.accent);
+  r.setProperty("--muted",c.muted); r.setProperty("--rule",c.rule);
+  r.setProperty("--crop",c.crop); r.setProperty("--card",c.card);
+  r.setProperty("--s-title",t.sizeTitle+"px"); r.setProperty("--s-heading",t.sizeHeading+"px");
+  r.setProperty("--s-body",t.sizeBody+"px"); r.setProperty("--s-hint",t.sizeHint+"px");
+  r.setProperty("--s-qty",t.sizeQuantity+"px");
+  r.setProperty("--rule-gap",g.ruleSpacingPx+"px"); r.setProperty("--tex-op",g.paperTextureOpacity);
+  r.setProperty("--stamp-rot",g.stampRotationDeg+"deg");
+
+  const G     = id => pal.glyph[id] || "";
+  const crops = Object.fromEntries(cropsF.crops.map(x=>[x.id,x]));
+  const cards = Object.fromEntries(cardsF.cards.map(x=>[x.id,x]));
+  const plots = Object.fromEntries(plotsF.plots.map(x=>[x.id,x]));
+  const seasons = seasonsF.seasons.filter(s=>s.plantable).sort((a,b)=>a.order-b.order);
+  const enemies = Object.fromEntries(enemiesF.enemies.map(x=>[x.id,x]));
+
+  // ── 왼쪽 장: 밭 ───────────────────────────────────────────────
+  const fieldHtml = seasons.map(s => {
+    const rows = sample.plantings.filter(p => p.seasonId === s.id);
+    const water = rows.reduce((a,p)=>a + crops[p.cropId].waterPerTurn*crops[p.cropId].growTurns, 0);
+    const seed  = rows.reduce((a,p)=>a + crops[p.cropId].seedCost, 0);
+    const cells = rows.length ? rows.map(p => {
+      const cr = crops[p.cropId], lost = p.harvestTurn < 0;
+      return `<div class="plot${lost?" lost":""}">
+        <div class="pid">${esc(plots[p.plotId]?plots[p.plotId].nameKo:p.plotId)} · 비옥도 <span class="num">${plots[p.plotId]?plots[p.plotId].fertility:100}</span>%</div>
+        <div class="row"><span class="g glyph">${G(cr.id)}</span><span class="nm">${esc(cr.nameKo)}</span></div>
+        <div class="yield num">${lost ? "익지 못함" : p.cardsYielded}${lost?"":`<small>장 · ${esc(cards[p.cardId].nameKo)}</small>`}</div>
+      </div>`;
+    }).join("") : `<div class="plot empty"><div class="pid">비어 있음</div></div>`;
+    return `<div class="season">
+      <div class="season-hd"><span class="g glyph" style="font-size:16px">${G(s.id)}</span>
+        <b>${esc(s.nameKo)}</b> · 물 <span class="num">${water}</span>/${s.waterBudget}
+        · 씨앗 <span class="num">${seed}</span>/${s.seedBudget} · ${s.turns}턴</div>
+      <div class="plots">${cells}</div></div>`;
+  }).join("");
+
+  // ── 오른쪽 장: 그 밭에서 나온 덱 ─────────────────────────────
+  const deckHtml = sample.deck.map(d => {
+    const cd = cards[d.cardId];
+    const eff = cd.effects.map(e => `${e.type} ${e.amount}${e.target==="enemy"?" → 적":""}`).join(" · ");
+    const src = d.fromCrops.map(id => `<span class="gg glyph">${G(id)}</span> ${esc(crops[id].nameKo)}`).join(", ");
+    return `<div class="deckrow${d.count===0?" zero":""}">
+      <span class="g glyph">${G(d.cardId)}</span>
+      <span><span class="nm"><span class="cost num">${cd.cost}</span>${esc(cd.nameKo)}</span>
+        <span class="from">${src} 에서만 나온다 — 상점 없음</span>
+        <span class="effects">${esc(eff)}</span></span>
+      <span class="qty num">${d.count === 0 ? "—" : d.count}<small>${d.count===0?"":"장"}</small></span>
+    </div>`;
+  }).join("");
+
+  // ── 밤 ───────────────────────────────────────────────────────
+  const foeHtml = night.battles.concat([night.boss]).map((id,i) => {
+    const e = enemies[id], boss = i === night.battles.length;
+    return `<div class="foe${boss?" boss":""}">
+      <div class="g glyph">${G(id)}</div>
+      <div class="nm">${esc(e.nameKo)}${boss?" · 보스":""}</div>
+      <div class="hp">체력 <span class="num">${e.hp}</span> · ${e.pattern.map(a=>a.type[0].toUpperCase()+a.amount).join(" ")}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("root").innerHTML = `
+  <div class="ledger"><div class="sheet">
+    <header>
+      <div>
+        <div class="sub">${esc(pal.name)} · 씨드 <span class="num">${sample.seed}</span></div>
+        <h1>제 <span class="num">${sample.year}</span> 해 수불부</h1>
+      </div>
+      <div class="stamp">${sample.nightWon ? "밤을 지켰음" : "창고를 잃었음"}</div>
+    </header>
+
+    <div class="spread">
+      <section class="page left">
+        <h2>밭</h2>
+        <div class="cap">봄·여름·가을에 심는다. 밭 <span class="num">${sample.unlockedPlots}</span>칸 ·
+          씨앗 <span class="num">${sample.seedsAtStart}</span>로 시작해 <span class="num">${sample.seedsSpent}</span>을 썼다.</div>
+        ${fieldHtml}
+      </section>
+
+      <div class="gutter"><div class="arrow">→</div><div class="lbl">밭이 덱이 된다</div></div>
+
+      <section class="page right">
+        <h2>덱</h2>
+        <div class="cap">이 장의 수량은 왼쪽 장에서 그대로 옮겨 적은 것이다.
+          모두 <span class="num">${sample.deckSize}</span>장.</div>
+        ${deckHtml}
+      </section>
+    </div>
+
+    <div class="night">
+      <h2><span class="glyph">${G("season_winter")}</span> 겨울 밤 — ${esc(night.nameKo)}</h2>
+      <div class="foes">${foeHtml}</div>
+      <div class="totals">
+        <span>시작 체력 <b class="num">${night.playerHp}</b></span>
+        <span>전투 사이 회복 <b class="num">${night.healBetweenBattles}</b></span>
+        <span>넘긴 전투 <b class="num">${sample.battlesCleared}/${sample.battlesTotal}</b></span>
+        <span>남은 체력 <b class="num">${sample.playerHpLeft}</b></span>
+      </div>
+    </div>
+
+    <p class="note">
+      이 장부의 수량은 손으로 적은 것이 아니다. <code>src/</code> 의 시뮬레이터가 씨드
+      <span class="num">${sample.seed}</span>으로 한 해를 실제로 돌려
+      <code>presentation/sample_year.json</code> 에 구운 값이고, 작물·카드·계절·적은
+      <code>data/</code> 의 JSON 을 그대로 읽었다. 밭을 고치면 이 장부의 오른쪽 장이 따라 바뀐다 —
+      그것이 이 기획의 전부다.
+    </p>
+  </div></div>`;
+}
+</script>
+</body>
+</html>

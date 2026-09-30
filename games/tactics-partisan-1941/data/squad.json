@@ -1,0 +1,79 @@
+{
+  "_": "분대원 3인. PLAN_TACTICS §4 표. **수단이 겹치지 않는다** — 겹치면 한 명만 쓰는 최적해가 생긴다.",
+  "_은밀": "stealthPercent + 구역 coverPercent - 수행 중 exposurePercent (+ 정착한 은폐 지점) >= 100 이면 보이지 않는다.",
+  "_소음": "noiseLoudness 가 balance.noise.hearingThresholdPercent(20) 미만이면 같은 구역에서도 들리지 않는다. 한 홉마다 40이 깎인다 — 총성 90은 한 홉, 폭음 100은 두 홉.",
+  "_이름": "무명의 가상 분대다. 실존 인물·부대를 쓰지 않는다 (PLAN_TACTICS §8).",
+
+  "members": [
+    {
+      "id": "scout",
+      "name": "정찰병",
+      "role": "소리 없이 움직이고 넓게 본다. 교전하면 거의 반드시 진다",
+      "stealthPercent": 60,
+      "moveMsPerZone": 4000,
+      "canEngage": 0,
+      "actions": [
+        {
+          "kind": "Infiltrate",
+          "durationMs": 20000,
+          "exposurePercent": 25,
+          "noiseLoudness": 5,
+          "charges": -1,
+          "rangeZones": 0
+        }
+      ]
+    },
+    {
+      "id": "sniper",
+      "name": "저격수",
+      "role": "멀리서 한 명을 지운다. 총성이 크다 — 다음 순찰이 온다",
+      "stealthPercent": 45,
+      "moveMsPerZone": 6000,
+      "canEngage": 1,
+      "actions": [
+        {
+          "kind": "Shoot",
+          "durationMs": 8000,
+          "exposurePercent": 20,
+          "noiseLoudness": 90,
+          "charges": 4,
+          "rangeZones": 2
+        }
+      ]
+    },
+    {
+      "id": "sapper",
+      "name": "공병",
+      "role": "함정과 폭약을 미리 놓는다. 설치에 시간이 걸린다",
+      "stealthPercent": 40,
+      "moveMsPerZone": 7000,
+      "canEngage": 1,
+      "actions": [
+        {
+          "kind": "PlantTrap",
+          "durationMs": 12000,
+          "exposurePercent": 30,
+          "noiseLoudness": 25,
+          "charges": 2,
+          "rangeZones": 0
+        },
+        {
+          "kind": "PlantCharge",
+          "durationMs": 12000,
+          "exposurePercent": 30,
+          "noiseLoudness": 10,
+          "charges": 2,
+          "rangeZones": 0
+        },
+        {
+          "kind": "Detonate",
+          "durationMs": 2000,
+          "exposurePercent": 10,
+          "noiseLoudness": 100,
+          "charges": -1,
+          "rangeZones": 2
+        }
+      ]
+    }
+  ]
+}

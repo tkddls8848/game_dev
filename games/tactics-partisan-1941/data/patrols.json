@@ -1,0 +1,79 @@
+{
+  "_": "순찰병 · 경로(구역 배열) · 구간별 체류 ms · 교대 시각. PLAN_TACTICS §6.",
+  "_주기": "legs 의 dwellMs 합이 순찰 주기다. 둘 다 165,000ms(2분 45초)로 맞춰 두 순찰이 서로 미끄러지지 않게 했다 — 며칠 지켜보면 주기가 드러나야 정찰이 성립한다.",
+  "_위상": "phaseOptionsMs 중 하나를 mission.seed 가 고른다. 고른 위상은 정찰로 관측되므로 씨드가 숨은 정보를 만들지 않는다. 지금은 설계한 위상 하나씩만 들어 있다.",
+  "_교대": "교대 시각에 순찰병의 주기가 newPhaseMs 로 갈아탄다. 이게 회차 중반에 새 창을 연다.",
+
+  "guards": [
+    {
+      "id": "g_sentry",
+      "name": "초소 감시병",
+      "mapId": "map_ridge_post",
+      "hearingThresholdPercent": 20,
+      "phaseOptionsMs": [0],
+      "legs": [
+        { "zone": "z_post",  "dwellMs": 60000 },
+        { "zone": "z_track", "dwellMs": 30000 },
+        { "zone": "z_shed",  "dwellMs": 45000 },
+        { "zone": "z_track", "dwellMs": 30000 }
+      ]
+    },
+    {
+      "id": "g_rover",
+      "name": "순회병",
+      "mapId": "map_ridge_post",
+      "hearingThresholdPercent": 20,
+      "phaseOptionsMs": [120000],
+      "legs": [
+        { "zone": "z_track", "dwellMs": 40000 },
+        { "zone": "z_gully", "dwellMs": 35000 },
+        { "zone": "z_track", "dwellMs": 40000 },
+        { "zone": "z_post",  "dwellMs": 50000 }
+      ]
+    },
+
+    {
+      "id": "g_railguard",
+      "name": "화차 감시병",
+      "mapId": "map_rail_siding",
+      "hearingThresholdPercent": 20,
+      "phaseOptionsMs": [0],
+      "legs": [
+        { "zone": "z_siding",     "dwellMs": 40000 },
+        { "zone": "z_watchbox",   "dwellMs": 35000 },
+        { "zone": "z_siding",     "dwellMs": 40000 },
+        { "zone": "z_embankment", "dwellMs": 50000 }
+      ]
+    },
+    {
+      "id": "g_crossguard",
+      "name": "건널목 초병",
+      "mapId": "map_rail_siding",
+      "hearingThresholdPercent": 20,
+      "phaseOptionsMs": [60000],
+      "legs": [
+        { "zone": "z_crossing",   "dwellMs": 55000 },
+        { "zone": "z_watchbox",   "dwellMs": 30000 },
+        { "zone": "z_crossing",   "dwellMs": 55000 },
+        { "zone": "z_embankment", "dwellMs": 25000 }
+      ]
+    }
+  ],
+
+  "shiftChanges": [
+    {
+      "id": "sc_ridge_relief",
+      "guardId": "g_sentry",
+      "atMs": 300000,
+      "newPhaseMs": 0,
+      "note": "교대. 새 감시병이 초소에서부터 순찰을 다시 시작한다 — 창고가 45초 비는 창이 한 번 더 열린다"
+    },
+    {
+      "id": "sc_rail_relief",
+      "guardId": "g_crossguard",
+      "atMs": 330000,
+      "newPhaseMs": 0,
+      "note": "교대. 건널목 초병이 건널목에서부터 다시 돈다"
+    }
+  ]
+}

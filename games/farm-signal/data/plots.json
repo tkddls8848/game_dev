@@ -1,0 +1,30 @@
+{
+  "_": "밭 12칸. 확장은 없다 — 이 PoC의 축은 '넓히기'가 아니라 '보이기'다.",
+  "_exposure": "길에서 이 칸이 얼마나 보이는가(0~100). y=0 이 길가다. 이것이 이 PoC에서 칸을 가르는 유일한 값이다.",
+  "_토질의_함정": "뒤 칸(y=2)은 안 보이지만 토질이 나쁘다. 사프란(minSoil 45)은 C3 한 칸에만 심긴다 — 숨길 수 있는 돈작물의 양이 데이터로 묶여 있다.",
+  "gridWidth": 4,
+  "gridHeight": 3,
+  "soilFloorForPlanting": 10,
+  "exposureFloor": 5,
+  "soilRegenPerSeason": 12,
+  "_토질_회복": "계절마다 본래 토질까지 이만큼 돌아온다(상한은 100이 아니라 plots[].soil). 생량보다 회복이 커서 토질은 사심상 상수다. 일부러 그러었다 — 토질이 닳는 것은 games/farm-erosion 의 축이다. 여기서 토질은 칸의 성경(무엇을 심을 수 있는가)이고, 이 PoC의 유일한 유한 자원은 노출이다.",
+  "screenDepth": 1,
+  "screenEffectPercent": 100,
+  "_가림": "screenDepth 1 = 바로 뒤 칸만 가린다. 키(screenHeight)를 그 칸의 exposure에서 그대로 뺀다(screenEffectPercent 100).",
+  "expansion": { "enabled": 0, "costBase": -1, "costPerPlot": -1 },
+  "reclaimCost": -1,
+  "plots": [
+    { "id": "A1", "x": 0, "y": 0, "soil": 46, "exposure": 92 },
+    { "id": "A2", "x": 1, "y": 0, "soil": 52, "exposure": 88 },
+    { "id": "A3", "x": 2, "y": 0, "soil": 40, "exposure": 84 },
+    { "id": "A4", "x": 3, "y": 0, "soil": 58, "exposure": 78 },
+    { "id": "B1", "x": 0, "y": 1, "soil": 62, "exposure": 56 },
+    { "id": "B2", "x": 1, "y": 1, "soil": 48, "exposure": 52 },
+    { "id": "B3", "x": 2, "y": 1, "soil": 66, "exposure": 48 },
+    { "id": "B4", "x": 3, "y": 1, "soil": 54, "exposure": 44 },
+    { "id": "C1", "x": 0, "y": 2, "soil": 36, "exposure": 26 },
+    { "id": "C2", "x": 1, "y": 2, "soil": 44, "exposure": 22 },
+    { "id": "C3", "x": 2, "y": 2, "soil": 50, "exposure": 18 },
+    { "id": "C4", "x": 3, "y": 2, "soil": 32, "exposure": 14 }
+  ]
+}

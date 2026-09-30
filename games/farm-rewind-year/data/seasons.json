@@ -1,0 +1,70 @@
+{
+  "_": "계절 길이 · 날씨 분포(씨드 고정) · 계절 전환 효과 · 달의 위상. 백분율은 정수.",
+  "_손실": "growthLossPoints - 그 날 자라고 있던 작물이 쌓아 둔 진행도를 이만큼 잃는다(하루 이상적 성장 = 100점). 백분율로 깎으면 성장에 천장이 생겨 긴 작물이 영원히 익지 않는다 - 그래서 정액이다. 폭풍이 언제 오는지는 되감아 본 사람만 안다.",
+  "_한_해": "28일 x 4계절 = 112일. 달의 주기도 28일이라 한 계절에 정확히 한 번 찬다 - 연감 연출이 이 사실을 쓴다.",
+  "daysPerSeason": 28,
+  "moonCycleDays": 28,
+  "moonPhases": [
+    { "id": "new",      "nameKo": "삭",     "nameEn": "New Moon",       "dayInCycle":  1 },
+    { "id": "waxcres",  "nameKo": "초승",   "nameEn": "Waxing Crescent","dayInCycle":  4 },
+    { "id": "firstq",   "nameKo": "상현",   "nameEn": "First Quarter",  "dayInCycle":  8 },
+    { "id": "waxgib",   "nameKo": "상현달", "nameEn": "Waxing Gibbous", "dayInCycle": 11 },
+    { "id": "full",     "nameKo": "망",     "nameEn": "Full Moon",      "dayInCycle": 15 },
+    { "id": "wangib",   "nameKo": "하현달", "nameEn": "Waning Gibbous", "dayInCycle": 18 },
+    { "id": "lastq",    "nameKo": "하현",   "nameEn": "Last Quarter",   "dayInCycle": 22 },
+    { "id": "wancres",  "nameKo": "그믐",   "nameEn": "Waning Crescent","dayInCycle": 25 }
+  ],
+  "seasons": [
+    {
+      "id": "spring", "nameKo": "봄", "nameEn": "Spring", "order": 0,
+      "transitionSoilLoss": 1,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 34 },
+        { "weatherId": "rain", "weight": 40 },
+        { "weatherId": "storm", "weight": 12 },
+        { "weatherId": "drought", "weight": 6 },
+        { "weatherId": "frost", "weight": 8 }
+      ]
+    },
+    {
+      "id": "summer", "nameKo": "여름", "nameEn": "Summer", "order": 1,
+      "transitionSoilLoss": 2,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 42 },
+        { "weatherId": "rain", "weight": 20 },
+        { "weatherId": "storm", "weight": 14 },
+        { "weatherId": "drought", "weight": 24 },
+        { "weatherId": "frost", "weight": 0 }
+      ]
+    },
+    {
+      "id": "autumn", "nameKo": "가을", "nameEn": "Autumn", "order": 2,
+      "transitionSoilLoss": 1,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 34 },
+        { "weatherId": "rain", "weight": 32 },
+        { "weatherId": "storm", "weight": 20 },
+        { "weatherId": "drought", "weight": 6 },
+        { "weatherId": "frost", "weight": 8 }
+      ]
+    },
+    {
+      "id": "winter", "nameKo": "겨울", "nameEn": "Winter", "order": 3,
+      "transitionSoilLoss": 1,
+      "weatherWeights": [
+        { "weatherId": "clear", "weight": 40 },
+        { "weatherId": "rain", "weight": 20 },
+        { "weatherId": "storm", "weight": 10 },
+        { "weatherId": "drought", "weight": 4 },
+        { "weatherId": "frost", "weight": 26 }
+      ]
+    }
+  ],
+  "weathers": [
+    { "id": "clear",   "nameKo": "맑음", "nameEn": "Clear",   "waterDelta":  0, "growthPercent": 100, "growthLossPoints":   0 },
+    { "id": "rain",    "nameKo": "비",   "nameEn": "Rain",    "waterDelta":  5, "growthPercent": 114, "growthLossPoints":   0 },
+    { "id": "storm",   "nameKo": "폭풍", "nameEn": "Storm",   "waterDelta":  7, "growthPercent":  72, "growthLossPoints": 130 },
+    { "id": "drought", "nameKo": "가뭄", "nameEn": "Drought", "waterDelta": -5, "growthPercent":  74, "growthLossPoints":   0 },
+    { "id": "frost",   "nameKo": "서리", "nameEn": "Frost",   "waterDelta":  0, "growthPercent":  42, "growthLossPoints":  35 }
+  ]
+}

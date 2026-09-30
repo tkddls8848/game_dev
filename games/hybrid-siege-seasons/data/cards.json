@@ -1,0 +1,94 @@
+{
+  "_": "카드. 상점은 없다 — 카드를 얻는 유일한 길은 밭이다(crops.json 의 cardId).",
+  "_효과": "{type, amount, target} 세 필드의 평평한 배열. 다형성을 쓰지 않는다.",
+  "_durability": "이 PoC 의 손잡이. 한 판이 아니라 **해를 넘겨** 닳는다. 0 이 되면 덱에서 영영 사라진다.",
+  "_sortWeight": "'정리'가 없앨 카드를 고르는 결정적 기준. 낮을수록 먼저 없앤다.",
+  "cards": [
+    {
+      "id": "card_slash",
+      "nameKo": "베기",
+      "nameEn": "Slash",
+      "cost": 1,
+      "durability": 10,
+      "sortWeight": 10,
+      "glyph": "slash",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 3,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_bulwark",
+      "nameKo": "방벽",
+      "nameEn": "Bulwark",
+      "cost": 2,
+      "durability": 5,
+      "sortWeight": 40,
+      "glyph": "bulwark",
+      "effects": [
+        {
+          "type": "block",
+          "amount": 8,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_ember",
+      "nameKo": "불씨",
+      "nameEn": "Ember",
+      "cost": 1,
+      "durability": 6,
+      "sortWeight": 30,
+      "glyph": "ember",
+      "effects": [
+        {
+          "type": "burn",
+          "amount": 3,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_sort",
+      "nameKo": "손질",
+      "nameEn": "Mend",
+      "cost": 1,
+      "durability": 5,
+      "sortWeight": 20,
+      "glyph": "mend",
+      "effects": [
+        {
+          "type": "repair",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "draw",
+          "amount": 1,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_harvest",
+      "nameKo": "수확",
+      "nameEn": "Harvest",
+      "cost": 2,
+      "durability": 3,
+      "sortWeight": 50,
+      "glyph": "harvest",
+      "effects": [
+        {
+          "type": "damage_per_remaining",
+          "amount": 1,
+          "target": "enemy"
+        }
+      ]
+    }
+  ],
+  "_repair": "손질은 손패에서 가장 닳은 카드의 남은 횟수를 되돌린다. 자기와 같은 카드는 손질하지 못한다 — 막지 않으면 손질 두 장이 서로를 고쳐 무한 증식 고리가 된다."
+}

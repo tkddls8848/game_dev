@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>호흡·심박 펄스 · FX 샘플</title>
+<style>
+:root{--bg:#0d0e10;--panel:#15171a;--panel2:#1b1e22;--line:#2a2e34;--text:#d9dce1;--mute:#868c96;--acc:#ff7a6b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#08090a;overflow:hidden;color:var(--text)}
+body{font:13px/1.5 "Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+#app{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform:translate(-50%,-50%);transform-origin:50% 50%;background:var(--bg);overflow:hidden}
+header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line)}
+header .ttl{display:flex;align-items:baseline;gap:12px;min-width:0}
+header .tag{font-size:11px;letter-spacing:.08em;color:#0d0e10;background:var(--acc);padding:2px 7px;border-radius:3px;font-weight:700}
+header h1{font-size:20px;font-weight:700;letter-spacing:-.01em}
+header .desc{color:var(--mute);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .stat{display:flex;gap:10px;font:12px/1 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:var(--mute)}
+header .stat span{padding:5px 8px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+#aud.on{color:var(--acc);border-color:var(--acc)}
+main{display:flex;gap:16px;padding:14px 16px 0}
+.left{width:1122px;flex:none}
+#stageWrap{position:relative;width:1122px;height:702px;border:1px solid var(--line);background:#000;border-radius:4px;overflow:hidden}
+#view{display:block;width:1120px;height:700px;cursor:crosshair;touch-action:none}
+#hud{position:absolute;right:10px;top:10px;font:11.5px/1.5 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:#dfe6ee;background:rgba(0,0,0,.55);padding:5px 9px;border-radius:3px;white-space:pre;pointer-events:none;display:none}
+#flash{position:absolute;left:12px;top:10px;font:12px/1.4 "Noto Sans KR","Noto Sans CJK KR",sans-serif;color:#fff;background:rgba(0,0,0,.45);padding:5px 9px;border-radius:3px;pointer-events:none;opacity:0;transition:opacity .4s}
+#vars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+#vars button{all:unset;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:9px 12px;height:84px;display:flex;flex-direction:column;gap:3px;transition:border-color .15s,background .15s}
+#vars button:hover{border-color:#3d434b}
+#vars button.on{border-color:var(--acc);background:var(--panel2);box-shadow:inset 3px 0 0 var(--acc)}
+#vars b{font-size:14px;font-weight:700}
+#vars b i{font-style:normal;color:var(--mute);font-weight:500;margin-right:6px;font-family:ui-monospace,"DejaVu Sans Mono",monospace}
+#vars .cpt{font-size:11.5px;color:var(--acc)}
+#vars .sub{font-size:11.5px;color:var(--mute);line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#hint{margin-top:10px;padding:9px 12px;background:var(--panel);border:1px solid var(--line);border-radius:4px;color:#c8ccd2;font-size:13px;display:flex;gap:10px;align-items:center}
+#hint kbd{font:11px/1 ui-monospace,monospace;border:1px solid #454b54;border-bottom-width:2px;border-radius:3px;padding:2px 5px;color:#e6e8ec;background:#1f2226}
+#hint .k{color:var(--acc);font-weight:700;flex:none}
+aside{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;height:926px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+.panel h2{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+.panel h2 small{font-weight:500;color:var(--mute);font-size:11.5px}
+.prm{display:grid;grid-template-columns:118px 1fr 64px;align-items:center;gap:8px;margin:5px 0}
+.prm label{font-size:12px;color:#c3c7cd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prm output{font:12px/1 ui-monospace,"DejaVu Sans Mono",monospace;text-align:right;color:var(--acc)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#30343a;border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--acc);border:2px solid #111;cursor:pointer}
+.row{display:flex;gap:6px;margin-top:8px}
+.row button{all:unset;cursor:pointer;font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:3px;background:var(--panel2);color:#cfd3d8}
+.row button:hover{border-color:var(--acc)}
+#readout{margin-top:8px;font:11.5px/1.45 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:#aeb4bc;background:#0f1113;border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:pre;overflow:hidden;user-select:all}
+.memo{flex:1;min-height:0;overflow:auto}
+.memo::-webkit-scrollbar{width:8px}.memo::-webkit-scrollbar-thumb{background:#2c3036;border-radius:4px}
+#memo{font-size:12.5px;line-height:1.6;color:#c4c8ce}
+#memo h3{font-size:12px;color:var(--acc);margin:10px 0 3px;font-weight:700}
+#memo h3:first-child{margin-top:0}
+#memo ul{padding-left:16px}
+#memo li{margin:2px 0}
+#memo code{font:11.5px ui-monospace,"DejaVu Sans Mono",monospace;color:#e2c98f;background:#0f1113;padding:0 3px;border-radius:2px}
+#memo .vnote{background:var(--panel2);border-left:3px solid var(--acc);padding:7px 10px;margin-bottom:8px;border-radius:0 3px 3px 0}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="ttl"><span class="tag">FX 샘플</span><h1>호흡·심박 펄스</h1><p class="desc">숨 리듬 비네트 · 화면 수축 · 심박 파형 · 숨 참기 게이지</p></div>
+ <div class="stat"><span id="fps">-- fps</span><span id="aud">소리: 첫 입력 후 켜짐</span></div>
+</header>
+<main>
+ <section class="left">
+  <div id="stageWrap"><canvas id="view" width="1120" height="700"></canvas><div id="flash"></div><div id="hud"></div></div>
+  <nav id="vars"></nav>
+  <div id="hint"></div>
+ </section>
+ <aside>
+  <div class="panel"><h2>파라미터 <small id="pvName"></small></h2><div id="params"></div>
+   <div class="row"><button id="reset">기본값</button><button id="copy">값 복사</button><button id="mute">소리 끄기</button></div>
+   <pre id="readout"></pre></div>
+  <div class="panel memo"><h2>구현 메모</h2><div id="memo"></div></div>
+ </aside>
+</main>
+</div>
+<script>
+'use strict';
+/* ===== 공통: 난수 · 노이즈 ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hash1(i,s){let t=(Math.imul(i|0,374761393)+Math.imul(s|0,668265263))|0;t=Math.imul(t^(t>>>13),1274126177);return((t^(t>>>16))>>>0)/4294967296}
+function vnoise(x,s){const i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return hash1(i,s)*(1-u)+hash1(i+1,s)*u}
+function snoise(x,s){return vnoise(x,s)*2-1}
+const clamp=(x,a,b)=>x<a?a:x>b?b:x, lerp=(a,b,t)=>a+(b-a)*t, sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+const easeOut=t=>1-Math.pow(1-clamp(t,0,1),3), easeInOut=t=>{t=clamp(t,0,1);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+function mkCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+const FONT_SANS='"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+const FONT_SERIF='"Noto Serif KR","Noto Serif CJK KR","Batang","AppleMyungjo",serif';
+const FONT_MONO='"D2Coding","DejaVu Sans Mono",Consolas,"Noto Sans Mono CJK KR",monospace';
+
+/* ===== 공통: WebAudio ===== */
+const AU={C:null,muted:false};
+function makeIR(C,sec,pow,seed,pre){const r=mulberry32(seed),n=Math.floor(sec*C.sampleRate),b=C.createBuffer(2,n,C.sampleRate),p=Math.floor((pre||0.012)*C.sampleRate);
+ for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let lp=0;for(let i=p;i<n;i++){const k=(i-p)/(n-p);lp=lp*0.35+(r()*2-1)*0.65;d[i]=lp*Math.pow(1-k,pow)}}return b}
+function audioInit(){
+ if(AU.C){if(AU.C.state!=='running')AU.C.resume();return}
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ const C=new AC();AU.C=C;
+ const comp=C.createDynamicsCompressor();comp.threshold.value=-16;comp.knee.value=8;comp.ratio.value=4;comp.attack.value=.003;comp.release.value=.25;
+ const master=C.createGain();master.gain.value=.85;master.connect(comp);comp.connect(C.destination);
+ const conv=C.createConvolver();conv.buffer=makeIR(C,2.6,2.4,9001);const wet=C.createGain();wet.gain.value=.8;conv.connect(wet);wet.connect(master);
+ AU.master=master;AU.rev=conv;
+ const r=mulberry32(4242),nb=C.createBuffer(1,C.sampleRate*3,C.sampleRate),d=nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=r()*2-1;AU.nb=nb;
+ const pb=C.createBuffer(1,C.sampleRate*3,C.sampleRate),pd=pb.getChannelData(0);let b0=0,b1=0,b2=0;for(let i=0;i<pd.length;i++){const w=r()*2-1;b0=.99765*b0+w*.099046;b1=.963*b1+w*.2965164;b2=.57*b2+w*1.0526913;pd[i]=(b0+b1+b2+w*.1848)*.2}AU.pb=pb;
+ AU.rng=mulberry32(77);
+ const el=document.getElementById('aud');el.textContent='소리: 켜짐';el.classList.add('on');
+ if(FXCUR&&FXCUR.audioStart)FXCUR.audioStart(S);
+}
+function auOut(node,rev,pan){const C=AU.C;let n=node;if(pan){const p=C.createStereoPanner();p.pan.value=clamp(pan,-1,1);n.connect(p);n=p}n.connect(AU.master);if(rev){const s=C.createGain();s.gain.value=rev;n.connect(s);s.connect(AU.rev)}return n}
+function env(param,t,a,d,peak,hold){param.cancelScheduledValues(t);param.setValueAtTime(.0001,t);param.linearRampToValueAtTime(peak,t+a);if(hold)param.setValueAtTime(peak,t+a+hold);param.exponentialRampToValueAtTime(.0001,t+a+(hold||0)+d)}
+/* 잡음 한 방: {at,dur,type,f,f2,q,g,a,rev,pan,pink,rate} */
+function sNoise(o){const C=AU.C;if(!C||AU.muted)return;const t=C.currentTime+(o.at||0),dur=o.dur||.2;
+ const s=C.createBufferSource();s.buffer=o.pink?AU.pb:AU.nb;s.loop=true;s.playbackRate.value=o.rate||1;
+ const f=C.createBiquadFilter();f.type=o.type||'bandpass';f.frequency.setValueAtTime(o.f||1000,t);if(o.f2)f.frequency.exponentialRampToValueAtTime(o.f2,t+(o.a||.005)+dur);f.Q.value=o.q||1;
+ const g=C.createGain();env(g.gain,t,o.a||.004,dur,o.g||.3,o.hold);s.connect(f);f.connect(g);auOut(g,o.rev,o.pan);
+ s.start(t,AU.rng()*2);s.stop(t+(o.a||.004)+(o.hold||0)+dur+.1);return g}
+/* 음 한 방: {at,dur,type,f,f2,g,a,rev,pan,lp,detune} */
+function sTone(o){const C=AU.C;if(!C||AU.muted)return;const t=C.currentTime+(o.at||0),dur=o.dur||.3;
+ const s=C.createOscillator();s.type=o.type||'sine';s.frequency.setValueAtTime(o.f||440,t);if(o.f2)s.frequency.exponentialRampToValueAtTime(o.f2,t+(o.glide||dur));if(o.detune)s.detune.value=o.detune;
+ const g=C.createGain();env(g.gain,t,o.a||.004,dur,o.g||.2,o.hold);let n=s;
+ if(o.lp){const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=o.lp;f.Q.value=o.q||.7;s.connect(f);n=f}
+ n.connect(g);auOut(g,o.rev,o.pan);s.start(t);s.stop(t+(o.a||.004)+(o.hold||0)+dur+.1);return g}
+/* 지속음 루프: 변형이 떠나면 정리된다 */
+function loopNoise(o){const C=AU.C;const s=C.createBufferSource();s.buffer=o.pink?AU.pb:AU.nb;s.loop=true;s.playbackRate.value=o.rate||1;
+ const f=C.createBiquadFilter();f.type=o.type||'lowpass';f.frequency.value=o.f||800;f.Q.value=o.q||.7;const g=C.createGain();g.gain.value=0;s.connect(f);f.connect(g);auOut(g,o.rev,o.pan);s.start(0,AU.rng()*2);
+ return{g,f,src:s,stop(){try{g.gain.setTargetAtTime(0,C.currentTime,.05);s.stop(C.currentTime+.4)}catch(e){}}}}
+function loopOsc(o){const C=AU.C;const s=C.createOscillator();s.type=o.type||'sine';s.frequency.value=o.f||60;let n=s;let f=null;
+ if(o.lp){f=C.createBiquadFilter();f.type=o.ftype||'lowpass';f.frequency.value=o.lp;f.Q.value=o.q||.7;s.connect(f);n=f}
+ const g=C.createGain();g.gain.value=0;n.connect(g);auOut(g,o.rev,o.pan);s.start();
+ return{g,f,osc:s,stop(){try{g.gain.setTargetAtTime(0,C.currentTime,.05);s.stop(C.currentTime+.4)}catch(e){}}}}
+function setG(loop,v,tc){if(!loop||!AU.C)return;loop.g.gain.setTargetAtTime(AU.muted?0:v,AU.C.currentTime,tc||.03)}
+
+/* ===== 공통: WebGL 후처리 ===== */
+function GLX(cv){
+ const gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:true,alpha:false});
+ if(!gl)throw new Error('WebGL을 쓸 수 없다');
+ const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+ const VS='attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+ function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o}
+ const X={gl};
+ X.prog=fs=>{const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,VS));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'precision highp float;varying vec2 uv;\n'+fs));gl.bindAttribLocation(p,0,'p');gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));p.u={};const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);
+  for(let i=0;i<n;i++){const a=gl.getActiveUniform(p,i);p.u[a.name]={loc:gl.getUniformLocation(p,a.name),type:a.type}}return p};
+ X.tex=(w,h)=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  if(w)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);t.w=w;t.h=h;return t};
+ X.upload=(t,src)=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);t.w=src.width;t.h=src.height};
+ X.fbo=(w,h)=>{const t=X.tex(w,h);const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{f,t,w,h}};
+ X.run=(p,U,target)=>{gl.bindFramebuffer(gl.FRAMEBUFFER,target?target.f:null);gl.viewport(0,0,target?target.w:cv.width,target?target.h:cv.height);gl.useProgram(p);let unit=0;
+  for(const k in U){const u=p.u[k];if(!u)continue;const v=U[k];
+   if(u.type===gl.SAMPLER_2D){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,v.t||v);gl.uniform1i(u.loc,unit);unit++}
+   else if(typeof v==='number')gl.uniform1f(u.loc,v);else if(v.length===2)gl.uniform2fv(u.loc,v);else if(v.length===3)gl.uniform3fv(u.loc,v);else gl.uniform4fv(u.loc,v)}
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,3)};
+ return X;
+}
+
+/* ===== 공통: 틀 ===== */
+const S={W:1120,H:700,t:0,dt:0,mx:560,my:350,down:false,keys:{}};
+let FXCUR=null;
+function boot(FX){
+ FXCUR=FX;
+ const view=document.getElementById('view');S.view=view;S.X=GLX(view);
+ const app=document.getElementById('app');
+ function fit(){const s=Math.min(innerWidth/1600,innerHeight/1000);app.style.transform='translate(-50%,-50%) scale('+s+')'}
+ addEventListener('resize',fit);fit();
+ FX.setup(S);
+ const nav=document.getElementById('vars');
+ FX.variants.forEach((v,i)=>{v.P={};v.params.forEach(p=>v.P[p.k]=p.v);
+  const b=document.createElement('button');b.innerHTML='<b><i>'+(i+1)+'</i>'+v.name+'</b><span class="cpt">'+v.concept+'</span><span class="sub">'+v.sub+'</span>';
+  b.onclick=()=>select(i);v.btn=b;nav.appendChild(b)});
+ let cur=null;
+ function select(i){
+  if(cur&&cur.leave)cur.leave(S);
+  if(cur&&cur.loops){cur.loops.forEach(l=>l.stop());}
+  cur=FX.variants[i];cur.loops=[];S.v=cur;S.P=cur.P;S.rng=mulberry32(1234+i);
+  FX.variants.forEach(v=>v.btn.classList.toggle('on',v===cur));
+  document.getElementById('hint').innerHTML='<span class="k">조작</span><span>'+cur.hint+'</span>';
+  document.getElementById('memo').innerHTML='<div class="vnote"><b>이 변형 — '+cur.name+'</b><br>'+cur.note+'</div>'+FX.memo;
+  buildParams();cur.enter(S);if(AU.C&&cur.audio)cur.audio(S);
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+ }
+ S.select=select;
+ S.loop=l=>{if(l)cur.loops.push(l);return l};
+ function buildParams(){const box=document.getElementById('params');box.innerHTML='';document.getElementById('pvName').textContent=cur.concept;
+  cur.params.forEach(p=>{const d=document.createElement('div');d.className='prm';
+   const dec=(String(p.step).split('.')[1]||'').length;
+   d.innerHTML='<label title="'+p.k+'">'+p.l+'</label><input type="range" min="'+p.min+'" max="'+p.max+'" step="'+p.step+'" value="'+cur.P[p.k]+'"><output></output>';
+   const inp=d.querySelector('input'),out=d.querySelector('output');
+   const show=()=>{out.textContent=Number(cur.P[p.k]).toFixed(dec)+(p.u||'')};show();
+   inp.oninput=()=>{cur.P[p.k]=parseFloat(inp.value);show();readout();if(cur.onParam)cur.onParam(S,p.k)};
+   box.appendChild(d)});readout()}
+ function readout(){const o={variant:cur.id};cur.params.forEach(p=>o[p.k]=cur.P[p.k]);
+  document.getElementById('readout').textContent=JSON.stringify(o,null,1).replace(/\n /g,'\n  ')}
+ document.getElementById('reset').onclick=()=>{cur.params.forEach(p=>cur.P[p.k]=p.v);buildParams();if(cur.onParam)cur.onParam(S,'*')};
+ document.getElementById('copy').onclick=()=>{const t=document.getElementById('readout').textContent;
+  try{navigator.clipboard.writeText(t);flash('값을 복사했다')}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('readout'));const s=getSelection();s.removeAllRanges();s.addRange(r);flash('선택됨 — Ctrl+C')}};
+ document.getElementById('mute').onclick=e=>{AU.muted=!AU.muted;e.target.textContent=AU.muted?'소리 켜기':'소리 끄기';if(AU.master)AU.master.gain.setTargetAtTime(AU.muted?0:.85,AU.C.currentTime,.05)};
+ function pos(e){const r=view.getBoundingClientRect();return[(e.clientX-r.left)*S.W/r.width,(e.clientY-r.top)*S.H/r.height]}
+ addEventListener('pointerdown',()=>{const had=!!AU.C;audioInit();if(!had&&AU.C&&cur.audio)cur.audio(S)},true);
+ addEventListener('keydown',()=>{const had=!!AU.C;audioInit();if(!had&&AU.C&&cur.audio)cur.audio(S)},true);
+ view.addEventListener('pointerdown',e=>{view.setPointerCapture(e.pointerId);const[x,y]=pos(e);S.mx=x;S.my=y;S.down=true;S.button=e.button;if(cur.down)cur.down(S,x,y,e)});
+ view.addEventListener('pointermove',e=>{const[x,y]=pos(e);S.mx=x;S.my=y;if(cur.move)cur.move(S,x,y,e)});
+ view.addEventListener('pointerup',e=>{const[x,y]=pos(e);S.down=false;if(cur.up)cur.up(S,x,y,e)});
+ view.addEventListener('contextmenu',e=>e.preventDefault());
+ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type!=='range')return;
+  if(!cur.captureKeys&&/^[1-9]$/.test(e.key)&&+e.key<=FX.variants.length){select(+e.key-1);return}
+  if(e.key===' '||e.key==='Backspace')e.preventDefault();if(e.repeat&&!cur.keyRepeat)return;S.keys[e.key]=true;if(cur.key)cur.key(S,e,true)});
+ addEventListener('keyup',e=>{S.keys[e.key]=false;if(cur.key)cur.key(S,e,false)});
+ const h=parseInt((location.hash||'').slice(1));select(h>=1&&h<=FX.variants.length?h-1:0);
+ let last=performance.now(),fa=0,fn=0;const fel=document.getElementById('fps');
+ function tick(now){let dt=(now-last)/1000;last=now;fa+=dt;fn++;if(fa>.5){fel.textContent=(fn/fa).toFixed(0)+' fps';fa=0;fn=0}
+  if(!S.manual){dt=Math.min(dt,.05);S.dt=dt;S.t+=dt;cur.frame(S,dt);FX.present(S,cur)}hudT+=dt;if(hudT>.1){hudT=0;hud()}requestAnimationFrame(tick)}
+ let hudT=0;const hel=document.getElementById('hud');function hud(){if(cur.hud){let txt='';try{txt=cur.hud(S)}catch(e){}hel.style.display=txt?'block':'none';hel.textContent=txt}else hel.style.display='none'}
+ /* 검증용: ?test 로 열면 시간이 멈추고 FXSTEP(초)로만 흐른다(느린 소프트웨어 GL에서도 같은 결과) */
+ S.manual=/test/.test(location.search);
+ window.FXSTEP=(sec,draw)=>{const n=Math.max(1,Math.round(sec*30));for(let i=0;i<n;i++){S.dt=1/30;S.t+=1/30;cur.frame(S,1/30)}if(draw!==false){FX.present(S,cur);hud()}};
+ requestAnimationFrame(tick);
+}
+function flash(msg){const f=document.getElementById('flash');f.textContent=msg;f.style.opacity=1;clearTimeout(flash.h);flash.h=setTimeout(()=>f.style.opacity=0,1400)}
+</script>
+<script>
+/* ===== 호흡·심박 펄스 =====
+   장면(Canvas2D) + UI(Canvas2D, 후처리 밖) 두 장. WebGL 합성 한 패스가
+   화면 수축(스케일) · 비네트(반경/부드러움/색) · 터널 흐림 · 색수차 · 채도 · 노출 · 눈꺼풀 마스크 · 잔상(21)을 처리한다.
+   숨과 심박은 순수 함수(시간 → 부피·위상)라서 소리·화면·게이지가 같은 값을 읽는다. */
+const W=1120,H=700;
+let sc,sg,ui,ug,lit,lg2,tmp,tg,X,PR={},tS,tU,AF=[],af=0;
+const SH_POST=`uniform sampler2D T;uniform sampler2D U;uniform sampler2D A;
+uniform float scale;uniform float vigR;uniform float vigS;uniform float vigStr;uniform vec3 vigCol;uniform float desat;uniform float expo;uniform float ca;uniform float tunnel;uniform float lid;uniform float lidSoft;uniform float after;uniform float warm;uniform float t;uniform vec2 ctr;
+float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){vec2 p=(uv-ctr)/scale+ctr;float d=length((uv-.5)*vec2(1.45,1.));float edge=smoothstep(vigR,vigR+vigS,d);
+ vec2 dir=p-.5;vec3 col=vec3(0.);
+ for(int i=0;i<6;i++){float k=float(i)/5.;vec2 q=p-dir*k*tunnel*edge*.09;vec2 o=dir*ca*.012*(.3+edge);col+=vec3(texture2D(T,q+o).r,texture2D(T,q).g,texture2D(T,q-o).b);}
+ col/=6.;col*=expo;float l=dot(col,vec3(.299,.587,.114));col=mix(col,vec3(l),desat);
+ col=mix(col,col*vec3(1.1,.96,.8),max(warm,0.))+mix(vec3(0.),col*vec3(-.12,-.02,.12),max(-warm,0.));
+ col=mix(col,vigCol,clamp(edge*vigStr,0.,1.));
+ vec2 e=vec2((uv.x-.5)/.78,(uv.y-.5)/max(lid*.62,.0005));float m=1.-smoothstep(1.-lidSoft,1.,length(e));m=mix(m,1.,step(.999,lid));
+ vec3 a=(texture2D(A,uv).rgb*2.+texture2D(A,uv+vec2(.003,0.)).rgb+texture2D(A,uv-vec2(.003,0.)).rgb+texture2D(A,uv+vec2(0.,.005)).rgb+texture2D(A,uv-vec2(0.,.005)).rgb)/6.;float al=dot(a,vec3(.3,.59,.11));col=col*m+vec3(.55,.85,1.)*al*after*(1.-m*.85);
+ vec4 u=texture2D(U,uv);col=mix(col,u.rgb,u.a);
+ col+=(h(uv*vec2(1123.,701.)+t)-.5)*(4./255.);gl_FragColor=vec4(col,1.);}`;
+const SH_AFTER=`uniform sampler2D T;uniform sampler2D P;uniform float decay;uniform float open;
+void main(){vec3 c=texture2D(T,uv).rgb;float l=dot(c,vec3(.3,.59,.11));vec3 b=c*smoothstep(.25,.7,l)*open;gl_FragColor=vec4(max(texture2D(P,uv).rgb*decay,b),1.);}`;
+
+/* 숨: 위상 0~1 → 부피 0~1. 들숨 40% · 날숨 45% · 쉼 15% */
+function lung(ph){ph=((ph%1)+1)%1;if(ph<.4)return .5-.5*Math.cos(Math.PI*ph/.4);if(ph<.85)return .5+.5*Math.cos(Math.PI*(ph-.4)/.45);return 0}
+function heart(g,pan){if(!AU.C)return;sTone({f:62,f2:38,dur:.14,g:.55*g,a:.004,pan});sNoise({type:'lowpass',f:110,dur:.09,g:.35*g,pan});sTone({f:74,f2:46,dur:.11,g:.38*g,a:.004,at:.17,pan});sNoise({type:'lowpass',f:130,dur:.07,g:.22*g,at:.17,pan})}
+function U0(){return{scale:1,vigR:.55,vigS:.45,vigStr:.5,vigCol:[0,0,0],desat:0,expo:1,ca:0,tunnel:0,lid:1,lidSoft:.2,after:0,warm:0,ctr:[.5,.5]}}
+function wave(g,x,y,w,h,arr,col,now,mark){g.strokeStyle=col;g.lineWidth=2;g.beginPath();arr.forEach((v,i)=>{const px=x+i/(arr.length-1)*w,py=y+h-v*h;i?g.lineTo(px,py):g.moveTo(px,py)});g.stroke()}
+function rr2(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function panel(g,x,y,w,h){g.fillStyle='rgba(8,10,14,.62)';g.fillRect(x,y,w,h);g.strokeStyle='rgba(255,255,255,.08)';g.strokeRect(x+.5,y+.5,w-1,h-1)}
+
+/* ---------- 1. 숨소리 도둑 ---------- */
+const V37={id:'37-hold-breath',name:'숨 참기 · 시야 수축',concept:'37 숨소리 도둑',
+ sub:'누르고 있는 동안 숨을 참는다: 산소가 줄수록 시야가 좁아지고 흐려지며 심장이 커진다. 놓을 때 잠든 사람의 날숨에 숨겨라',
+ hint:'<b>누르고 있기</b> 또는 <kbd>Space</kbd> = 숨 참기 · <b>놓기</b> = 내쉼(청록 구간 = 코골이가 덮어 줌 / 그 밖 = 소음) · 마우스 = 손 뻗기',
+ note:'시야 수축은 네 겹을 같은 값(산소 부족 s=1-O₂)에 묶는다: 비네트 반경 ↓, 터널 흐림 ↑, 채도 ↓, 화면 스케일 ↓(0.97). 심박 간격도 s로 줄어서 소리와 화면 박동이 함께 빨라진다. 놓는 순간 비네트는 스프링으로 튕겨 열린다 — 해방감이 "숨을 쉬었다"를 말한다.',
+ params:[{k:'sleepBpm',l:'잠든 사람 호흡',min:6,max:20,step:.5,v:11,u:'/분'},{k:'holdMax',l:'최대 숨 참기',min:2,max:15,step:.5,v:6,u:'s'},{k:'vigMin',l:'최소 시야 반경',min:.05,max:.5,step:.01,v:.14},{k:'contract',l:'화면 수축',min:0,max:8,step:.1,v:3,u:'%'},{k:'tunnel',l:'터널 흐림',min:0,max:2,step:.05,v:1},{k:'hrMax',l:'최대 심박',min:80,max:190,step:1,v:150,u:'bpm'}],
+ demo:[{t:'keyhold',k:'Space',ms:3200,keep:true},{t:'shot',ms:0},{t:'keyup',k:'Space'},{t:'wait',ms:250}],shots:[.35],
+ enter(S){this.ph=.1;this.hold=false;this.o2=1;this.hb=0;this.hist=[];this.vig=.62;this.vv=0;this.noise=0;this.msg=null;this.stir=0;this.hand=[900,600]},
+ audio(S){this.sb=S.loop(loopNoise({type:'bandpass',f:900,q:.9,pan:-.2}));this.snore=S.loop(loopOsc({type:'sawtooth',f:48,lp:320,pan:-.2}));this.me=S.loop(loopNoise({type:'bandpass',f:520,q:.8}));this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:160}));setG(this.room,.05)},
+ start(S){if(this.hold)return;this.hold=true;this.t0=S.t;sNoise({type:'bandpass',f:1500,f2:600,q:1,dur:.15,g:.08})},
+ stop(S){if(!this.hold)return;this.hold=false;const held=S.t-this.t0,s=1-this.o2;const safe=this.cover>.4;
+  sNoise({type:'bandpass',f:600,f2:1300,q:.9,dur:.35+s*.4,g:.1+s*.35,a:.02});sNoise({type:'bandpass',f:1100,f2:500,q:.7,dur:.6+s*.6,g:.06+s*.2,at:.3});
+  this.vv+=2.2+s*2;
+  if(!safe&&s>.25){this.noise=Math.min(1,this.noise+s*.9);this.msg={txt:'소음! 뒤척인다',c:'#ff7a6b',t:S.t};this.stir=1;sNoise({pink:true,type:'lowpass',f:500,dur:.7,g:.25,at:.2,pan:-.2})}
+  else this.msg={txt:safe?'코골이에 묻혔다':'조용히 내쉼',c:'#7fe0c8',t:S.t}},
+ down(S){this.start(S)},up(S){this.stop(S)},key(S,e,d){if(e.key===' ')d?this.start(S):this.stop(S)},
+ move(S,x,y){},
+ frame(S,dt){const P=this.P,t=S.t;
+  const rate=P.sleepBpm/60*(this.stir>0?1.8:1);this.stir=Math.max(0,this.stir-dt*.25);const prev=lung(this.ph);this.ph+=dt*rate;const v=lung(this.ph),dv=(v-prev)/dt;this.v=v;
+  const phm=((this.ph%1)+1)%1;this.cover=phm>.45&&phm<.85?1:0;
+  this.hist.push(v);if(this.hist.length>240)this.hist.shift();
+  if(this.hold)this.o2=Math.max(0,this.o2-dt/P.holdMax);else this.o2=Math.min(1,this.o2+dt/2.2);
+  const s=1-this.o2;this.noise*=Math.exp(-dt/3);
+  // 심박: 간격이 s로 줄어든다
+  const hr=lerp(68,P.hrMax,s*s*.9+this.noise*.3);this.hr=hr;this.hb+=dt*hr/60;if(this.hb>=1){this.hb-=1;this.beat=t;heart(.35+s*.9)}
+  const ba=t-(this.beat||-9);const bp=Math.exp(-ba/.09)+.6*Math.exp(-Math.max(0,ba-.17)/.08)*(ba>.17);
+  // 비네트: 목표 반경으로 스프링
+  const tgt=lerp(.62,P.vigMin,Math.pow(s,.8))-bp*.03*(.3+s);this.vv+=((tgt-this.vig)*60-this.vv*9)*dt;this.vig+=this.vv*dt;
+  // 소리
+  if(AU.C){setG(this.sb,.12*Math.min(1,Math.abs(dv)*.9)*(this.stir>0?1.6:1));this.sb.f.frequency.setTargetAtTime(dv>0?1300:750,AU.C.currentTime,.1);setG(this.snore,dv<0?.05*Math.min(1,-dv):0);setG(this.me,this.hold?0:.03*(.5+.5*Math.sin(t*1.7)))}
+  // 손
+  this.hand[0]+=(S.mx-this.hand[0])*(1-Math.exp(-dt/.12));this.hand[1]+=(S.my-this.hand[1])*(1-Math.exp(-dt/.12));
+  this.draw(S,v,s,bp);
+  this.U={...U0(),scale:1-P.contract/100*s-bp*.004*(.2+s),vigR:this.vig,vigS:.28+.2*(1-s),vigStr:.97,vigCol:[.01,.012,.02],desat:.75*s,expo:1-.25*s+bp*.05*s,ca:.6*s+bp*.3*s,tunnel:P.tunnel*s}},
+ draw(S,v,s,bp){const P=this.P,t=S.t;
+  sg.fillStyle='#141b2a';sg.fillRect(0,0,W,H);
+  for(let i=0;i<16;i++){sg.fillStyle=i%2?'#1a2334':'#161e2e';sg.fillRect(0,i*44,W,43)}
+  // 러그
+  sg.fillStyle='#1a1a2a';sg.fillRect(120,470,520,200);sg.strokeStyle='rgba(120,100,140,.2)';sg.lineWidth=6;sg.strokeRect(136,486,488,168);
+  // 침대
+  sg.fillStyle='#231a14';sg.fillRect(160,90,560,420);sg.fillStyle='#2b3448';sg.fillRect(176,104,528,392);
+  sg.fillStyle='#d8d4c8';sg.globalAlpha=.25;sg.fillRect(196,130,150,120);sg.globalAlpha=1;
+  // 머리
+  sg.fillStyle='#c8c4bc';rr2(sg,190,150,150,110,26);sg.fill();sg.fillStyle='rgba(0,0,0,.18)';sg.beginPath();sg.ellipse(275,215,58,30,0,0,7);sg.fill();
+  sg.fillStyle='#9a7a66';sg.beginPath();sg.ellipse(280,205,34,40,.35,0,7);sg.fill();sg.fillStyle='#231a14';sg.beginPath();sg.ellipse(262,190,32,36,.35,Math.PI*.55,Math.PI*1.7);sg.fill();
+  sg.strokeStyle='rgba(40,25,20,.6)';sg.lineWidth=2;sg.beginPath();sg.moveTo(292,212);sg.lineTo(304,208);sg.stroke();
+  // 이불: 가슴 부분이 숨에 따라 부푼다
+  const rise=v*14+(this.stir>0?Math.sin(t*9)*6*this.stir:0);
+  const bl=sg.createLinearGradient(300,0,700,0);bl.addColorStop(0,'#3d4f73');bl.addColorStop(1,'#2a3752');sg.fillStyle=bl;
+  sg.beginPath();sg.moveTo(300,120);sg.bezierCurveTo(380,108-rise,470,110-rise,540,124);sg.lineTo(700,130);sg.lineTo(700,480);sg.lineTo(540,490);sg.bezierCurveTo(470,500+rise*.6,380,500+rise*.6,300,480);sg.closePath();sg.fill();
+  sg.strokeStyle='rgba(0,0,0,.3)';sg.lineWidth=3;for(let i=0;i<5;i++){sg.beginPath();sg.moveTo(330+i*70,140-rise*(i<3?.8:.2));sg.bezierCurveTo(350+i*70,260,320+i*70,380,340+i*70,470+rise*.4);sg.stroke()}
+  const hl=sg.createRadialGradient(420,300,10,420,300,200);hl.addColorStop(0,'rgba(140,170,230,'+(.08+v*.08)+')');hl.addColorStop(1,'rgba(140,170,230,0)');sg.fillStyle=hl;sg.fillRect(220,100,400,400);
+  // 협탁 + 손목시계(목표)
+  sg.fillStyle='#2a2018';sg.fillRect(760,130,170,150);sg.fillStyle='#1a140f';sg.fillRect(770,140,150,130);
+  sg.strokeStyle='#8a7a5a';sg.lineWidth=5;sg.beginPath();sg.arc(840,200,18,0,7);sg.stroke();sg.fillStyle='#c8d0d8';sg.beginPath();sg.arc(840,200,13,0,7);sg.fill();
+  const gl=Math.max(0,Math.sin(t*2.3))**8;sg.fillStyle='rgba(255,255,255,'+gl*.9+')';sg.beginPath();sg.arc(834,194,3,0,7);sg.fill();
+  sg.fillStyle='#403428';sg.beginPath();sg.arc(890,170,20,0,7);sg.fill();
+  // 블라인드 달빛
+  sg.globalCompositeOperation='lighter';for(let i=0;i<9;i++){sg.fillStyle='rgba(130,160,230,.09)';sg.beginPath();const x0=500+i*60;sg.moveTo(x0,0);sg.lineTo(x0+30,0);sg.lineTo(x0-270,H);sg.lineTo(x0-300,H);sg.fill()}sg.globalCompositeOperation='source-over';
+  // 장갑 낀 손(플레이어)
+  const[hx,hy]=this.hand;sg.strokeStyle='#07080a';sg.lineWidth=48;sg.lineCap='round';sg.beginPath();sg.moveTo(W+60,H+80);sg.quadraticCurveTo(hx+120,hy+140,hx+18,hy+22);sg.stroke();
+  sg.fillStyle='#0b0c0f';sg.beginPath();sg.ellipse(hx,hy,34,26,-.6,0,7);sg.fill();for(let i=0;i<4;i++){sg.save();sg.translate(hx-10+i*6,hy-14+i*5);sg.rotate(-.9+i*.25);sg.fillRect(-6,-34,12,34);sg.restore()}
+  sg.strokeStyle='rgba(120,140,190,.25)';sg.lineWidth=2;sg.beginPath();sg.ellipse(hx,hy,34,26,-.6,3.6,5.2);sg.stroke();
+  // ---- UI (후처리 밖) ----
+  ug.clearRect(0,0,W,H);panel(ug,300,H-92,520,76);ug.fillStyle='#9fb0c8';ug.font='12px '+FONT_SANS;ug.fillText('잠든 사람의 숨',314,H-74);
+  // 청록 = 날숨·코골이(덮어 줌)
+  const n=this.hist.length;const x0=314,w=380,y0=H-66,hh=40;
+  for(let i=1;i<n;i++){const ph=(((this.ph-(n-1-i)*(1/60)*this.P.sleepBpm/60)%1)+1)%1;if(ph>.45&&ph<.85){ug.fillStyle='rgba(60,200,180,.12)';ug.fillRect(x0+(i-1)/239*w,y0,w/239+1,hh)}}
+  wave(ug,x0,y0,w*(n-1)/239,hh,this.hist,'#6fe0cc');ug.fillStyle='#fff';ug.fillRect(x0+w*(n-1)/239,y0-4,1.5,hh+8);ug.fillStyle='#e8eef6';ug.font='600 11px '+FONT_SANS;ug.fillText('지금',x0+w*(n-1)/239-10,y0+hh+14);
+  // 산소 게이지(숨 참기)
+  const gx=720,gy=H-76;ug.fillStyle='#9fb0c8';ug.fillText('숨',gx,gy+4);ug.strokeStyle='rgba(255,255,255,.3)';ug.strokeRect(gx+22,gy-6,70,12);ug.fillStyle=this.o2<.3?'#ff7a6b':this.hold?'#ffd27a':'#7fe0c8';ug.fillRect(gx+23,gy-5,68*this.o2,10);
+  ug.fillStyle='#9fb0c8';ug.fillText('심박',gx,gy+30);ug.fillStyle=s>.5?'#ff7a6b':'#e8eef6';ug.font='700 15px '+FONT_MONO;ug.fillText(Math.round(this.hr),gx+34,gy+32);
+  ug.fillStyle='#9fb0c8';ug.font='12px '+FONT_SANS;ug.fillText('소음',gx,gy+54);ug.fillStyle='rgba(255,255,255,.15)';ug.fillRect(gx+34,gy+46,58,8);ug.fillStyle='#ff7a6b';ug.fillRect(gx+34,gy+46,58*this.noise,8);
+  if(this.msg){const a=t-this.msg.t;if(a<1.8){ug.globalAlpha=Math.min(1,(1.8-a)*2);ug.fillStyle=this.msg.c;ug.font='700 22px '+FONT_SANS;ug.textAlign='center';ug.fillText(this.msg.txt,560,80-Math.min(a,.3)*20);ug.textAlign='left';ug.globalAlpha=1}}
+  if(this.hold){ug.fillStyle='rgba(255,210,122,.9)';ug.font='600 13px '+FONT_SANS;ug.fillText('숨 참는 중 '+(S.t-this.t0).toFixed(1)+'s',24,34)}},
+ hud(S){return'O₂ '+this.o2.toFixed(2)+'  시야 반경 '+this.vig.toFixed(3)+'\n심박 '+Math.round(this.hr)+' bpm  덮임 '+(this.cover?'예':'아니오')}
+};
+
+/* ---------- 2. 간병 ---------- */
+const V38={id:'38-caregiver-breath',name:'함께 숨쉬는 화면 · 무호흡',concept:'38 간병',
+ sub:'화면 전체가 부모의 숨에 맞춰 아주 조금 부풀고 가라앉는다. 숨이 멎으면 화면도 멎고, 시계 소리만 커진다',
+ hint:'<b>침대</b> 클릭 = 다가가기/물러나기(기울어 다가감, 숨소리 커짐) · <b>불규칙성</b> 슬라이더 ↑ = 체인-스토크스 호흡(점점 커졌다 줄고 멎음)',
+ note:'동기화는 1~2%로 아주 작게 — 플레이어가 "알아채기 전에 느끼는" 크기. 무호흡 구간에서는 모든 움직임(비네트 호흡·이불·빛 흔들림)을 멈추고 비네트만 천천히 조이며 차갑게 식힌다. 숨이 돌아오면 따뜻한 색으로 스프링 해방. 정적 자체가 신호가 된다.',
+ params:[{k:'rate',l:'호흡수',min:6,max:24,step:.5,v:13,u:'/분'},{k:'irreg',l:'불규칙성',min:0,max:1,step:.05,v:.7},{k:'apnea',l:'무호흡 길이',min:2,max:15,step:.5,v:6,u:'s'},{k:'sync',l:'화면 동기화',min:0,max:4,step:.1,v:1.4,u:'%'},{k:'lean',l:'다가가기 줌',min:0,max:20,step:.5,v:9,u:'%'}],
+ demo:[{t:'wait',ms:3000},{t:'shot',ms:0},{t:'click',x:470,y:420},{t:'wait',ms:1400}],shots:[.3],
+ enter(S){this.ph=0;this.cs=0;this.hist=[];this.lean=0;this.leanT=0;this.vig=.6;this.vv=0;this.warm=0;this.apT=0;this.inAp=false;this.lastSec=-1},
+ audio(S){this.br=S.loop(loopNoise({type:'bandpass',f:800,q:.9}));this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:200}));setG(this.room,.04);this.lamp=S.loop(loopOsc({type:'sawtooth',f:120,lp:600,ftype:'bandpass',q:6}));setG(this.lamp,.004)},
+ down(S,x,y){if(x>260&&x<760&&y>260&&y<620){this.leanT=this.leanT>.5?0:1;sNoise({pink:true,type:'bandpass',f:400,q:.8,dur:.5,g:.1});sNoise({type:'bandpass',f:180,q:1,dur:.2,g:.1,at:.35})}},
+ frame(S,dt){const P=this.P,t=S.t;
+  // 체인-스토크스: 주기 동안 진폭이 sin²로 오르내리고, 바닥에서 무호흡
+  const cyc=Math.max(10,P.apnea*3.2);this.cs+=dt/cyc;const cph=this.cs%1;const apFrac=P.apnea/cyc;
+  let amp=1;this.inAp=false;if(P.irreg>0){if(cph<apFrac*P.irreg){amp=0;this.inAp=true}else{const k=(cph-apFrac*P.irreg)/(1-apFrac*P.irreg);amp=lerp(1,Math.sin(Math.PI*k)**2,P.irreg)}}
+  const prev=this.v||0;if(!this.inAp)this.ph+=dt*P.rate/60*(1+.3*P.irreg*(1-amp));const v=this.inAp?Math.max(0,prev-dt*2):lung(this.ph)*Math.max(.12,amp);this.v=v;const dv=(v-prev)/dt;
+  this.hist.push(v);if(this.hist.length>300)this.hist.shift();
+  if(this.inAp)this.apT+=dt;else if(this.apT>0){if(this.apT>1.5){this.vv+=1.6;this.warm=.9;sNoise({type:'bandpass',f:700,f2:1400,q:.8,dur:.5,g:.18,a:.05})}this.apT=0}
+  this.warm*=Math.exp(-dt/2.2);
+  // 시계
+  const sec=Math.floor(t);if(sec!==this.lastSec){this.lastSec=sec;const loud=this.inAp?.16:.05;sNoise({type:'bandpass',f:sec%2?3200:2600,q:6,dur:.02,g:loud,rev:.2})}
+  this.lean+=(this.leanT-this.lean)*(1-Math.exp(-dt/.7));
+  const tgt=this.inAp?lerp(.6,.32,clamp(this.apT/P.apnea,0,1)):.62+v*.02*P.sync;this.vv+=((tgt-this.vig)*30-this.vv*7)*dt;this.vig+=this.vv*dt;
+  if(AU.C)setG(this.br,(.05+.1*this.lean)*Math.min(1,Math.abs(dv)*.8)),this.br.f.frequency.setTargetAtTime(dv>0?1100:700,AU.C.currentTime,.1);
+  this.draw(S,v);
+  const cold=this.inAp?-clamp(this.apT/P.apnea,0,1)*.9:0;
+  this.U={...U0(),scale:1+v*P.sync/100+this.lean*P.lean/100,ctr:[.42,1-.62],vigR:this.vig,vigS:.42,vigStr:.9,vigCol:[.02,.012,.008],expo:1+(this.inAp?-.08:v*.03),warm:.25+this.warm*.6+cold,desat:this.inAp?.25*clamp(this.apT/P.apnea,0,1):0}},
+ draw(S,v){const P=this.P,t=S.t;
+  sg.fillStyle='#2a1c14';sg.fillRect(0,0,W,H);
+  // 벽지 + 창
+  for(let x=0;x<W;x+=28){sg.fillStyle=x%56?'rgba(255,230,190,.025)':'rgba(0,0,0,.05)';sg.fillRect(x,0,14,440)}
+  sg.fillStyle='#0c1426';sg.fillRect(800,60,240,260);for(let i=0;i<40;i++){sg.fillStyle='rgba(255,210,140,'+(.3+hash1(i,1)*.5)+')';sg.fillRect(810+hash1(i,2)*220,200+hash1(i,3)*110,2,2)}sg.strokeStyle='#3a281c';sg.lineWidth=10;sg.strokeRect(800,60,240,260);sg.beginPath();sg.moveTo(920,60);sg.lineTo(920,320);sg.stroke();
+  sg.fillStyle='rgba(180,40,30,.35)';sg.fillRect(760,40,40,300);sg.fillRect(1040,40,40,300);
+  // 액자 · 달력 · 시계
+  sg.fillStyle='#4a3424';sg.fillRect(420,70,150,110);sg.fillStyle='#7a6a58';sg.fillRect(432,82,126,86);sg.fillStyle='#e8e0d0';sg.fillRect(620,60,110,140);sg.fillStyle='#a02020';sg.fillRect(620,60,110,22);
+  for(let i=0;i<20;i++){sg.fillStyle='rgba(60,40,30,.5)';sg.fillRect(628+(i%5)*20,92+Math.floor(i/5)*24,12,12)}
+  const cx=320,cy=110;sg.fillStyle='#e8dcc0';sg.beginPath();sg.arc(cx,cy,34,0,7);sg.fill();sg.strokeStyle='#3a2a1c';sg.lineWidth=4;sg.stroke();
+  const sa=Math.floor(t)*Math.PI/30;sg.lineWidth=1.5;sg.strokeStyle='#a02020';sg.beginPath();sg.moveTo(cx,cy);sg.lineTo(cx+Math.sin(sa)*28,cy-Math.cos(sa)*28);sg.stroke();sg.strokeStyle='#222';sg.lineWidth=3;sg.beginPath();sg.moveTo(cx,cy);sg.lineTo(cx+Math.sin(1.2)*20,cy-Math.cos(1.2)*20);sg.stroke();
+  // 바닥
+  sg.fillStyle='#3a2618';sg.fillRect(0,440,W,260);
+  // 침대
+  sg.fillStyle='#4a2e1c';sg.fillRect(220,300,560,40);sg.fillStyle='#5a3a24';sg.fillRect(200,330,600,240);
+  sg.fillStyle='#e8e0d0';sg.fillRect(230,330,170,70);
+  sg.fillStyle='#c8a890';sg.beginPath();sg.ellipse(310,356,42,32,0,0,7);sg.fill();sg.fillStyle='#bdbdbd';sg.beginPath();sg.ellipse(300,340,40,22,0,Math.PI,0);sg.fill();
+  const rise=v*10;const qg=sg.createLinearGradient(0,380,0,580);qg.addColorStop(0,'#d8683a');qg.addColorStop(1,'#8a3a1c');sg.fillStyle=qg;
+  sg.beginPath();sg.moveTo(200,400);sg.bezierCurveTo(330,388-rise,470,386-rise*1.2,640,396);sg.lineTo(800,400);sg.lineTo(800,570);sg.lineTo(200,570);sg.closePath();sg.fill();
+  sg.strokeStyle='rgba(80,20,10,.35)';sg.lineWidth=2;for(let i=0;i<7;i++){sg.beginPath();sg.moveTo(230+i*80,400-rise*(i>1&&i<5?1:.3));sg.lineTo(210+i*84,570);sg.stroke()}
+  // 스탠드
+  sg.fillStyle='#2a1c12';sg.fillRect(840,420,140,170);sg.fillStyle='#8a6a3a';sg.fillRect(900,340,8,80);
+  const fl=this.inAp?1:.97+.03*Math.sin(t*7.3)*vnoise(t*3,5);
+  sg.fillStyle='rgba(255,210,140,'+.95*fl+')';sg.beginPath();sg.moveTo(870,300);sg.lineTo(940,300);sg.lineTo(960,350);sg.lineTo(850,350);sg.fill();
+  sg.globalCompositeOperation='lighter';const lg=sg.createRadialGradient(905,340,10,905,340,520);lg.addColorStop(0,'rgba(255,190,110,'+.5*fl+')');lg.addColorStop(.4,'rgba(255,160,80,'+.15*fl+')');lg.addColorStop(1,'rgba(255,140,60,0)');sg.fillStyle=lg;sg.fillRect(0,0,W,H);sg.globalCompositeOperation='source-over';
+  // 의자와 보호자 실루엣(전경)
+  sg.fillStyle='#120c08';sg.beginPath();sg.ellipse(1010,560,110,150,0,0,7);sg.fill();sg.beginPath();sg.arc(1000,400,44,0,7);sg.fill();
+  // UI
+  ug.clearRect(0,0,W,H);panel(ug,24,H-84,360,62);ug.fillStyle='#d8c0a0';ug.font='12px '+FONT_SANS;ug.fillText(this.inAp?'숨이 멎었다 · '+this.apT.toFixed(1)+'s':'숨소리',38,H-66);
+  wave(ug,38,H-58,330*(this.hist.length-1)/299,30,this.hist,this.inAp?'#9fb8d8':'#ffc890');
+  ug.font='600 44px '+FONT_SERIF;ug.fillStyle='rgba(255,236,210,.85)';ug.fillText('02:47',30,70);ug.font='14px '+FONT_SANS;ug.fillText('간병 · 11월 17일',32,96)},
+ hud(S){return(this.inAp?'무호흡 '+this.apT.toFixed(1)+'s':'부피 '+this.v.toFixed(2))+'\n화면 스케일 '+this.U.scale.toFixed(4)+'  비네트 '+this.vig.toFixed(3)}
+};
+
+/* ---------- 3. 배터리 서바이벌: 심박 ---------- */
+const V05={id:'05-heartbeat-fear',name:'공포 심박 · 손전등',concept:'05 배터리 서바이벌',
+ sub:'어둠 속 손전등. 놀랄 때마다 심박이 치솟고, 박동마다 가장자리가 붉게 조여들며 화면이 쿵 한다. 배터리가 떨어지면 빛이 떤다',
+ hint:'<b>마우스</b> = 손전등 조준 · <b>클릭</b> = 어둠 속에서 무언가 쿵(공포 ↑) · <kbd>B</kbd> = 배터리 교체',
+ note:'박동 = "쿵(lub) · 짧은 틈 · 쿵(dub)" 두 번. 화면 스케일과 비네트는 lub에 크게, dub에 작게. 심박 간격은 fear로 72→165bpm. ECG 줄은 같은 박 이벤트로 그리므로 소리·화면·파형이 절대 어긋나지 않는다. 손전등 깜빡임은 배터리 20% 이하에서 노이즈 드롭아웃.',
+ params:[{k:'fearDecay',l:'공포 회복',min:.02,max:.5,step:.01,v:.12,u:'/s'},{k:'hrMax',l:'최대 심박',min:100,max:200,step:1,v:165,u:'bpm'},{k:'pulseVig',l:'박동 비네트',min:0,max:1,step:.02,v:.55},{k:'thump',l:'박동 스케일',min:0,max:3,step:.05,v:1.1,u:'%'},{k:'ca',l:'박동 색수차',min:0,max:2,step:.05,v:.8},{k:'drain',l:'배터리 소모',min:0,max:10,step:.1,v:2.5,u:'%/s'}],
+ demo:[{t:'click',x:700,y:300},{t:'wait',ms:600},{t:'shot',ms:0},{t:'wait',ms:210}],shots:[.12],
+ enter(S){this.fear=.15;this.hb=0;this.beat=-9;this.ecg=new Array(360).fill(0);this.bat=.34;this.scare=-9;this.mote=[];for(let i=0;i<60;i++)this.mote.push([S.rng()*W,S.rng()*H,S.rng()]);this.buildLit()},
+ audio(S){this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:140}));setG(this.room,.06);this.hiss=S.loop(loopNoise({type:'highpass',f:6000}));setG(this.hiss,.004)},
+ buildLit(){const g=lg2;g.fillStyle='#4a4236';g.fillRect(0,0,W,H);
+  for(let y=0;y<H;y+=40){g.fillStyle=y%80?'#544a3c':'#4a4034';g.fillRect(0,y,W,38)}
+  g.fillStyle='#3a342a';g.fillRect(0,480,W,220);
+  // 선반과 상자
+  for(let s=0;s<3;s++){const sx=40+s*360;g.fillStyle='#3a2e22';g.fillRect(sx,80,300,14);g.fillRect(sx,230,300,14);g.fillRect(sx,380,300,14);g.fillRect(sx,80,12,420);g.fillRect(sx+288,80,12,420);
+   for(let r=0;r<3;r++)for(let b=0;b<4;b++){if(hash1(s*12+r*4+b,1)<.25)continue;const bw=50+hash1(b,s+r)*20,bh=60+hash1(r,b+s)*60;g.fillStyle=['#6a5238','#5a4a38','#7a6a4a','#4a4034'][(b+r+s)%4];g.fillRect(sx+20+b*68,80+r*150+150-bh-6,bw,bh);g.fillStyle='rgba(0,0,0,.2)';g.fillRect(sx+20+b*68,80+r*150+150-bh-6,bw,6)}}
+  // 문 + 비상구
+  g.fillStyle='#1a1612';g.fillRect(470,120,180,360);g.fillStyle='#3a3228';g.fillRect(480,130,160,350);g.fillStyle='#c8b060';g.beginPath();g.arc(620,320,6,0,7);g.fill();
+  g.fillStyle='#1d6a3a';g.fillRect(520,84,80,26);g.fillStyle='#bfffcf';g.font='700 14px '+FONT_SANS;g.fillText('비상구',534,103);
+  // 열쇠(찾을 것)
+  g.strokeStyle='#e0c060';g.lineWidth=4;g.beginPath();g.arc(830,560,12,0,7);g.stroke();g.beginPath();g.moveTo(842,560);g.lineTo(880,560);g.lineTo(880,570);g.moveTo(870,560);g.lineTo(870,568);g.stroke();
+  g.fillStyle='rgba(120,20,10,.5)';g.beginPath();g.ellipse(300,600,70,16,0,0,7);g.fill()},
+ down(S,x,y){this.fear=Math.min(1,this.fear+.55);this.scare=S.t;const pan=(S.rng()-.5)*1.6;
+  sNoise({type:'lowpass',f:220,dur:.6,g:.7,pan,rev:.9});[88,131,197].forEach((f,i)=>sTone({f,dur:.9,g:.08,pan,rev:1,a:.003}));sNoise({type:'bandpass',f:3000,q:2,dur:.4,g:.05,at:.05,pan,rev:1});
+  sTone({type:'sawtooth',f:220,f2:180,dur:.5,g:.03,lp:900,at:.1,rev:.6})},
+ key(S,e,d){if(d&&(e.key==='b'||e.key==='B')){this.bat=1;sNoise({type:'bandpass',f:2500,q:3,dur:.03,g:.2});sNoise({type:'bandpass',f:1800,q:3,dur:.03,g:.2,at:.12})}},
+ frame(S,dt){const P=this.P,t=S.t;this.fear=Math.max(0,this.fear-dt*P.fearDecay);this.bat=Math.max(0,this.bat-dt*P.drain/100);
+  const hr=lerp(72,P.hrMax,Math.pow(this.fear,.7));this.hr=hr;this.hb+=dt*hr/60;if(this.hb>=1){this.hb-=1;this.beat=t;heart(.4+this.fear*.8)}
+  const ba=t-this.beat;const lub=Math.exp(-ba/.07),dub=ba>.17?.6*Math.exp(-(ba-.17)/.06):0;const bp=lub+dub;this.bp=bp;
+  // ECG
+  const k=ba<.03?0:ba<.06?-.25:ba<.09?1:ba<.12?-.35:ba<.22?0:ba<.26?.3:0;const n=Math.max(1,Math.round(dt*120));for(let i=0;i<n;i++){this.ecg.push(k+(S.rng()-.5)*.03);this.ecg.shift()}
+  let L=Math.min(1,this.bat*3+.25);if(this.bat<.2){L*=vnoise(t*25,4)>.35?1:.25+.2*vnoise(t*60,2)}this.L=L;
+  this.draw(S,L);
+  const sa=t-this.scare;const shock=sa<.6?Math.exp(-sa/.2):0;
+  this.U={...U0(),scale:1+bp*P.thump/100*(.4+this.fear),vigR:.5-this.fear*.18-bp*P.pulseVig*.12,vigS:.4,vigStr:.92,vigCol:[.09+bp*P.pulseVig*.3*this.fear,0,0],ca:bp*P.ca*this.fear+shock*1.5,desat:.1+this.fear*.25,expo:1+shock*.3}},
+ draw(S,L){const P=this.P,t=S.t;
+  // 손전등: 화면 아래에서 마우스로 향하는 원뿔
+  const mx=S.mx,my=S.my;sg.fillStyle='#000';sg.fillRect(0,0,W,H);sg.globalAlpha=.07;sg.drawImage(lit,0,0);sg.globalAlpha=1;
+  const M=this.mk||(this.mk=mkCanvas(W,H)),mg=M.getContext('2d');mg.clearRect(0,0,W,H);mg.globalCompositeOperation='lighter';
+  const rg=mg.createRadialGradient(mx,my,0,mx,my,240);rg.addColorStop(0,'rgba(0,0,0,'+L+')');rg.addColorStop(.5,'rgba(0,0,0,'+.75*L+')');rg.addColorStop(1,'rgba(0,0,0,0)');mg.fillStyle=rg;mg.fillRect(0,0,W,H);
+  const sx=W*.62,sy=H+40;const a=Math.atan2(my-sy,mx-sx);const cg=mg.createLinearGradient(sx,sy,mx,my);cg.addColorStop(0,'rgba(0,0,0,'+.3*L+')');cg.addColorStop(1,'rgba(0,0,0,'+.12*L+')');mg.fillStyle=cg;
+  mg.beginPath();mg.moveTo(sx+Math.cos(a+1.57)*20,sy+Math.sin(a+1.57)*20);mg.lineTo(mx+Math.cos(a+1.57)*150,my+Math.sin(a+1.57)*150);mg.lineTo(mx+Math.cos(a-1.57)*150,my+Math.sin(a-1.57)*150);mg.lineTo(sx+Math.cos(a-1.57)*20,sy+Math.sin(a-1.57)*20);mg.fill();mg.globalCompositeOperation='source-over';
+  tg.clearRect(0,0,W,H);tg.globalCompositeOperation='source-over';tg.drawImage(lit,0,0);tg.globalCompositeOperation='destination-in';tg.drawImage(M,0,0);tg.globalCompositeOperation='source-over';sg.drawImage(tmp,0,0);
+  // 빛 속 먼지
+  sg.globalCompositeOperation='lighter';const wg=sg.createRadialGradient(mx,my,0,mx,my,200);wg.addColorStop(0,'rgba(255,240,200,'+.12*L+')');wg.addColorStop(1,'rgba(255,240,200,0)');sg.fillStyle=wg;sg.fillRect(mx-200,my-200,400,400);
+  for(const m of this.mote){m[1]+=Math.sin(t*.7+m[2]*9)*.2;m[0]+=Math.cos(t*.5+m[2]*7)*.2;const dd=Math.hypot(m[0]-mx,m[1]-my);if(dd<200){sg.fillStyle='rgba(255,240,210,'+(1-dd/200)*.6*L+')';sg.fillRect(m[0],m[1],1.6,1.6)}}
+  sg.globalCompositeOperation='source-over';
+  // 손전등 쥔 손(전경)
+  sg.save();sg.translate(sx,sy-40);sg.rotate(a+Math.PI/2);sg.fillStyle='#141414';sg.fillRect(-16,-10,32,120);sg.fillStyle='#2a2a2a';sg.fillRect(-20,-20,40,26);sg.fillStyle='rgba(255,240,200,'+.8*L+')';sg.fillRect(-15,-22,30,4);sg.restore();
+  // UI
+  ug.clearRect(0,0,W,H);panel(ug,W-300,H-96,276,80);ug.fillStyle='#e8a0a0';ug.font='12px '+FONT_SANS;ug.fillText('심박',W-288,H-78);ug.font='700 22px '+FONT_MONO;ug.fillStyle=this.fear>.5?'#ff6a5a':'#f0d0d0';ug.fillText(Math.round(this.hr),W-120,H-72);ug.font='11px '+FONT_MONO;ug.fillText('bpm',W-64,H-72);
+  wave(ug,W-288,H-66,252,40,this.ecg.map(v=>.4+v*.5),'#ff6a5a');
+  ug.fillStyle='rgba(255,255,255,.7)';ug.font='12px '+FONT_SANS;ug.fillText('배터리',24,H-30);ug.strokeStyle='rgba(255,255,255,.5)';ug.strokeRect(74,H-42,60,16);ug.fillRect(134,H-37,3,6);ug.fillStyle=this.bat<.2?'#ff6a5a':'#9fe07a';ug.fillRect(76,H-40,56*this.bat,12);ug.fillStyle='#fff';ug.font='600 13px '+FONT_MONO;ug.fillText(Math.round(this.bat*100)+'%',144,H-29)},
+ hud(S){return'공포 '+this.fear.toFixed(2)+'  심박 '+Math.round(this.hr)+'bpm\n박동 펄스 '+this.bp.toFixed(2)+'  빛 '+this.L.toFixed(2)}
+};
+
+/* ---------- 4. 1초 스냅: 눈 뜨기 + 잔상 ---------- */
+const V21={id:'21-one-second-snap',name:'1초 눈뜨기 · 잔상',concept:'21 1초 스냅',after:true,
+ sub:'딱 1초만 눈을 뜬다: 과노출에서 적응하고, 눈꺼풀이 닫히면 밝았던 것의 잔상만 푸르게 남아 사라진다',
+ hint:'<b>클릭</b> 또는 <kbd>Space</kbd> = 1초 눈뜨기(닫혀 있을 때만) · 눈을 감으면 잔상으로 위치를 기억한다',
+ note:'잔상 = 누적 버퍼 max(이전×decay, 밝은 부분×열림). 눈을 감아도 이 버퍼만 남아서 "어디에 뭐가 있었는지"가 게임 정보가 된다. 눈 뜨는 순간 노출 2.2배 → 250ms 적응(동공 반응). 눈꺼풀은 타원 마스크의 세로 반경을 열림 값으로. 남은 시간 숫자는 ms 단위로 판독.',
+ params:[{k:'snapMs',l:'뜨는 시간',min:200,max:3000,step:50,v:1000,u:'ms'},{k:'openMs',l:'눈꺼풀 열림',min:30,max:500,step:10,v:110,u:'ms'},{k:'closeMs',l:'눈꺼풀 닫힘',min:30,max:600,step:10,v:170,u:'ms'},{k:'afterS',l:'잔상 반감',min:.2,max:6,step:.1,v:1.8,u:'s'},{k:'afterAmt',l:'잔상 세기',min:0,max:2,step:.05,v:.8},{k:'adapt',l:'과노출',min:1,max:4,step:.1,v:2.2,u:'×'}],
+ demo:[{t:'wait',ms:300},{t:'click',x:560,y:350},{t:'wait',ms:450},{t:'shot',ms:0},{t:'wait',ms:900}],shots:[.2],
+ enter(S){this.o=0;this.t0=-99;this.hb=0;this.found=[false,false,false,false,false];this.buildLit()},
+ audio(S){this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:260}));setG(this.room,.025);this.tone=S.loop(loopNoise({pink:true,type:'bandpass',f:900,q:.5}))},
+ buildLit(){const g=lg2;g.fillStyle='#2e2820';g.fillRect(0,0,W,H);
+  for(let x=0;x<W;x+=36){g.fillStyle='rgba(90,70,50,.35)';g.fillRect(x,0,2,470);for(let y=12;y<470;y+=46){g.fillStyle='rgba(120,90,60,.25)';g.beginPath();g.arc(x+18,y+(x/36%2)*23,5,0,7);g.fill()}}
+  g.fillStyle='#2a2018';g.fillRect(0,470,W,230);g.fillStyle='#5a2a24';g.beginPath();g.ellipse(560,610,380,70,0,0,7);g.fill();g.strokeStyle='rgba(200,160,90,.3)';g.lineWidth=4;g.beginPath();g.ellipse(560,610,340,56,0,0,7);g.stroke();
+  // 침대
+  g.fillStyle='#4a3020';g.fillRect(360,280,380,60);g.fillStyle='#2e1e12';g.fillRect(372,292,356,40);
+  const bd=g.createLinearGradient(0,340,0,490);bd.addColorStop(0,'#cfc6b4');bd.addColorStop(1,'#8a8272');g.fillStyle=bd;g.fillRect(350,340,400,150);
+  g.fillStyle='#e4ddce';rr2(g,372,346,120,46,12);g.fill();g.fillStyle='rgba(0,0,0,.12)';g.fillRect(372,382,120,10);
+  g.strokeStyle='rgba(60,50,40,.28)';g.lineWidth=2;for(let i=0;i<7;i++){g.beginPath();g.moveTo(420+i*48,400);g.bezierCurveTo(430+i*48,430,410+i*48,460,425+i*48,490);g.stroke()}
+  g.fillStyle='#6a2a2a';g.fillRect(350,440,400,50);g.fillStyle='rgba(0,0,0,.25)';g.fillRect(350,486,400,8);
+  // 옷장
+  g.fillStyle='#3a2616';g.fillRect(830,120,200,380);g.strokeStyle='#241608';g.lineWidth=4;g.strokeRect(846,136,80,340);g.strokeRect(934,136,80,340);g.fillStyle='#c0a060';g.fillRect(920,300,4,20);g.fillRect(938,300,4,20);
+  // 의자 위 인형
+  g.fillStyle='#3a2616';g.fillRect(140,380,120,20);g.fillRect(146,400,10,90);g.fillRect(244,400,10,90);g.fillRect(146,250,10,140);g.fillRect(244,250,10,140);
+  g.fillStyle='#f0ece4';g.beginPath();g.moveTo(170,380);g.lineTo(230,380);g.lineTo(220,320);g.lineTo(180,320);g.fill();g.fillStyle='#f4dcc8';g.beginPath();g.arc(200,300,24,0,7);g.fill();g.fillStyle='#1a1410';g.beginPath();g.arc(200,292,26,Math.PI*1.05,Math.PI*1.95);g.fill();g.fillStyle='#000';g.fillRect(190,298,4,4);g.fillRect(206,298,4,4);
+  // 액자·시계·오르골·열쇠
+  g.fillStyle='#5a4028';g.fillRect(470,90,150,120);g.fillStyle='#8a8070';g.fillRect(482,102,126,96);g.fillStyle='#3a3028';g.beginPath();g.arc(520,150,18,0,7);g.arc(570,150,18,0,7);g.fill();
+  g.fillStyle='#e8dcc0';g.beginPath();g.arc(720,140,30,0,7);g.fill();g.strokeStyle='#3a2a1c';g.lineWidth=3;g.stroke();g.beginPath();g.moveTo(720,140);g.lineTo(720,120);g.moveTo(720,140);g.lineTo(736,146);g.stroke();
+  g.fillStyle='#7a2020';g.fillRect(640,440,70,40);g.fillStyle='#c8a050';g.fillRect(640,436,70,6);
+  g.strokeStyle='#e8c860';g.lineWidth=3;g.beginPath();g.arc(300,540,7,0,7);g.stroke();g.beginPath();g.moveTo(307,540);g.lineTo(330,540);g.stroke()},
+ open(S){if(S.t-this.t0<this.P.snapMs/1000+this.P.closeMs/1000+.3)return;this.t0=S.t;
+  sNoise({type:'bandpass',f:300,f2:2400,q:.8,dur:.18,g:.12});sNoise({type:'highpass',f:4000,dur:.015,g:.15});sTone({f:880,dur:.05,g:.02,at:this.P.snapMs/1000});
+  sNoise({type:'lowpass',f:260,dur:.2,g:.2,at:this.P.snapMs/1000+.05})},
+ down(S){this.open(S)},key(S,e,d){if(d&&e.key===' ')this.open(S)},
+ frame(S,dt){const P=this.P,t=S.t;const a=(t-this.t0)*1000;let o=0;
+  if(a>=0){if(a<P.openMs)o=easeOut(a/P.openMs);else if(a<P.snapMs)o=1;else if(a<P.snapMs+P.closeMs)o=1-easeInOut((a-P.snapMs)/P.closeMs)}
+  this.o=o;const opening=a>=0&&a<P.snapMs;
+  if(AU.C)setG(this.tone,o*.05);
+  const hr=opening?118:88;this.hb+=dt*hr/60;if(this.hb>=1){this.hb-=1;this.beat=t;heart(o>.5?.25:.45)}const ba=t-(this.beat||-9);const bp=Math.exp(-ba/.08)+(ba>.17?.6*Math.exp(-(ba-.17)/.07):0);
+  sg.drawImage(lit,0,0);
+  // 섬광 빛: 가운데가 밝다
+  sg.globalCompositeOperation='lighter';const fg=sg.createRadialGradient(560,330,40,560,330,620);fg.addColorStop(0,'rgba(200,210,230,.35)');fg.addColorStop(1,'rgba(200,210,230,0)');sg.fillStyle=fg;sg.fillRect(0,0,W,H);sg.globalCompositeOperation='source-over';
+  const ad=opening?1+(P.adapt-1)*Math.exp(-a/250):1;
+  ug.clearRect(0,0,W,H);
+  // 남은 시간
+  const rem=opening?Math.max(0,(P.snapMs-a)/1000):0;panel(ug,W/2-90,18,180,58);ug.fillStyle=opening?'#fff':'rgba(255,255,255,.5)';ug.font='700 34px '+FONT_MONO;ug.textAlign='center';ug.fillText(rem.toFixed(2)+'초',W/2,62);ug.textAlign='left';
+  ug.fillStyle='#ff4a3a';ug.beginPath();ug.arc(40,38,7,0,7);ug.fill();ug.fillStyle='#fff';ug.font='700 14px '+FONT_SANS;ug.fillText('REC',54,43);
+  panel(ug,24,80,180,150);ug.fillStyle='#e8e0d0';ug.font='600 14px '+FONT_SANS;ug.fillText('찾을 것',38,104);['녹슨 열쇠','오르골','인형','가족 사진','벽시계'].forEach((s,i)=>{ug.strokeStyle='rgba(255,255,255,.6)';ug.strokeRect(38,116+i*22,11,11);ug.fillStyle='#d8d0c0';ug.font='13px '+FONT_SANS;ug.fillText(s,56,126+i*22)});
+  // 눈 감은 동안 박동 표시
+  if(o<.5){ug.fillStyle='rgba(255,120,110,'+(.25+bp*.5)+')';ug.font='12px '+FONT_SANS;ug.fillText('눈 감음 — 기억에 의지한다',470,H-30)}
+  this.U={...U0(),lid:o,lidSoft:.18+.12*(1-o),expo:ad,vigR:.48,vigS:.5,vigStr:.75,after:P.afterAmt,scale:1+bp*.004*(1-o)};
+  this.afterOpen=o;this.afterDecay=Math.pow(.5,dt/P.afterS)},
+ hud(S){return'눈 열림 '+this.o.toFixed(2)+'  노출 '+this.U.expo.toFixed(2)+'\n잔상 감쇠/프레임 '+(this.afterDecay||0).toFixed(4)}
+};
+
+const FX={variants:[V37,V38,V05,V21],
+ memo:`<h3>기법</h3><ul>
+<li>숨은 <code>lung(phase)</code>: 들숨 40%(코사인 상승) · 날숨 45% · 쉼 15%. 심박은 누적 위상이 1을 넘을 때 박 이벤트 1개 → lub(즉시)·dub(+170ms).</li>
+<li>한 값이 여러 감각을 동시에 움직인다: 산소 부족 s → 비네트 반경·터널 흐림·채도·스케일·심박 간격·숨소리 볼륨.</li>
+<li>비네트 반경은 목표값으로 <b>스프링</b>(k·c) — 숨을 놓을 때 튕겨 열리는 오버슈트가 "해방"을 전한다.</li>
+<li>UI(파형·게이지·타이머)는 별도 캔버스로 후처리 뒤에 얹는다: 시야가 좁아져도 정보는 읽혀야 한다.</li>
+<li>21 잔상: 누적 FBO 핑퐁 <code>max(prev·0.5^(dt/반감), 밝은부분·열림)</code>.</li></ul>
+<h3>Unity로 옮길 것</h3><ul>
+<li>URP Volume을 스크립트로 구동: Vignette.intensity/smoothness, ColorAdjustments.saturation, ChromaticAberration, LensDistortion.scale(화면 수축). 값은 순수 C# <code>BreathModel</code>/<code>HeartModel</code>이 ms 정수 시간으로 계산.</li>
+<li>눈꺼풀·잔상은 커스텀 Renderer Feature(풀스크린 셰이더 + 잔상 RT 2장).</li>
+<li>소리: 숨 = 밴드패스 잡음(들숨 1.1~1.3kHz, 날숨 700Hz), 볼륨 = |d부피/dt|. 코골이 = 48Hz 톱니 저역통과, 날숨에서만. 심박 = 62→38Hz 사인 + 저역 잡음, dub는 +170ms.</li>
+<li>무호흡(38) 판정·길이, 숨 참기(37) 산소·소음 판정은 전부 헤드리스 테스트 가능한 순수 로직.</li></ul>
+<h3>함정</h3><ul>
+<li>화면 호흡은 2% 이하로. 크면 멀미, 작아도 오래 보면 "살아 있는 방"이 된다. 멀미 옵션으로 0 가능하게.</li>
+<li>비네트를 검정 100%로 닫으면 조작 불능 — 최소 반경(<code>vigMin</code>)을 두고 UI는 그 위에.</li>
+<li>심박 소리를 매 박 같은 샘플로 내면 기계 같다 — 세기를 공포/산소에 비례, 피치 미세 변화.</li>
+<li>잔상 decay를 프레임당 상수로 두면 프레임레이트에 따라 달라진다 — <code>0.5^(dt/반감기)</code>.</li></ul>`,
+ setup(S){sc=mkCanvas(W,H);sg=sc.getContext('2d');ui=mkCanvas(W,H);ug=ui.getContext('2d');lit=mkCanvas(W,H);lg2=lit.getContext('2d');tmp=mkCanvas(W,H);tg=tmp.getContext('2d');
+  X=S.X;tS=X.tex();tU=X.tex();PR.post=X.prog(SH_POST);PR.after=X.prog(SH_AFTER);AF=[X.fbo(W,H),X.fbo(W,H)]},
+ present(S,v){const U=v.U;if(!U)return;X.upload(tS,sc);X.upload(tU,ui);let A=AF[af];
+  if(v.after){const a=AF[af],b=AF[1-af];X.run(PR.after,{T:tS,P:b,decay:v.afterDecay||.98,open:v.afterOpen||0},a);af=1-af;A=a}
+  X.run(PR.post,{T:tS,U:tU,A,scale:U.scale,vigR:U.vigR,vigS:U.vigS,vigStr:U.vigStr,vigCol:U.vigCol,desat:U.desat,expo:U.expo,ca:U.ca,tunnel:U.tunnel,lid:U.lid,lidSoft:U.lidSoft,after:v.after?U.after:0,warm:U.warm,t:S.t%7,ctr:U.ctr},null)}
+};
+boot(FX);
+
+</script>
+</body>
+</html>

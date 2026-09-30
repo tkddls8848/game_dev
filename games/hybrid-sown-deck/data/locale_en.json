@@ -1,0 +1,35 @@
+{
+  "_": "한국어가 원문이고 이 표는 덮어쓰기다. 표가 없거나 깨져도 화면은 한국어로 나온다.",
+  "entries": [
+    { "key": "season.season_spring", "text": "Spring" },
+    { "key": "season.season_summer", "text": "Summer" },
+    { "key": "season.season_autumn", "text": "Autumn" },
+    { "key": "season.season_winter", "text": "Winter" },
+
+    { "key": "crop.crop_seedwort",  "text": "Seedwort" },
+    { "key": "crop.crop_bramble",   "text": "Bramble" },
+    { "key": "crop.crop_broadleaf", "text": "Broadleaf" },
+    { "key": "crop.crop_thicket",   "text": "Thicket" },
+    { "key": "crop.crop_emberseed", "text": "Emberseed" },
+
+    { "key": "card.card_sprout",    "text": "Sprout" },
+    { "key": "card.card_bramble",   "text": "Bramble" },
+    { "key": "card.card_broadleaf", "text": "Broadleaf" },
+    { "key": "card.card_thicket",   "text": "Thicket" },
+    { "key": "card.card_ember",     "text": "Emberseed" },
+
+    { "key": "label.card_sprout",    "text": "Seedwort, first year" },
+    { "key": "label.card_bramble",   "text": "Seedwort, second year" },
+    { "key": "label.card_broadleaf", "text": "Broadleaf, first year" },
+    { "key": "label.card_thicket",   "text": "Broadleaf, third year" },
+    { "key": "label.card_ember",     "text": "Emberseed, dry pod" },
+
+    { "key": "enemy.enemy_hare", "text": "Hare" },
+    { "key": "enemy.enemy_roe",  "text": "Roe Deer" },
+    { "key": "enemy.enemy_boar", "text": "Boar" },
+
+    { "key": "sow.grow",     "text": "grows" },
+    { "key": "sow.split",    "text": "splits in two" },
+    { "key": "sow.seedfall", "text": "leaves only seed" }
+  ]
+}

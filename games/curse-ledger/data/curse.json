@@ -1,0 +1,50 @@
+{
+  "_": "저주 하나. 시작 상태 · 공물 요구 곡선 · 앞 세대가 남긴 청구서.",
+  "_핵": "inheritedPending 이 이 PoC의 기제다 — 1대가 시작되기도 전에 조상의 결정이 청구서로 도착해 있다.",
+
+  "id": "c_nureong",
+  "name": "누렁물 구덩이의 약조",
+  "note": "종가 뒤 대밭의 물 없는 구덩이. 약조를 받은 해부터 이 골짜기에 흉년이 없었다",
+
+  "generations": 8,
+  "seed": 20260927,
+
+  "start": {
+    "prosperity": 62,
+    "binding": 74,
+    "wrath": 0,
+    "houseVitality": 80,
+    "resentment": 8,
+    "releaseProgress": 0,
+    "coffers": 40
+  },
+
+  "demand": {
+    "base": 10,
+    "growthPerGeneration": 3,
+    "wrathPercent": 25,
+    "jitterMs": -1,
+    "leanYearSpanPercent": 22,
+    "_흉년": "씨드가 정하는 흉년/풍년. 요구의 ±22% 안에서 흔든다. 나머지는 누적한다(부동소수 금지)",
+    "_jitterMs": "쓰지 않는다. 값 없는 int 는 -1 (설계 원칙 3)"
+  },
+
+  "inheritedPending": [
+    { "atGeneration": 1, "from": "h_g3", "note": "석 해 덮어 둔 장부의 값. 증조부가 미룬 것이 지금 온다",
+      "wrath": 9, "binding": -6, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 },
+    { "atGeneration": 1, "from": "h_g4", "note": "아버지가 바친 넷의 원한. 아직 식지 않았다",
+      "wrath": 0, "binding": 0, "prosperity": 0, "houseVitality": 0, "resentment": 11, "demandBonus": 0, "coffers": 0 },
+    { "atGeneration": 2, "from": "h_g4", "note": "아버지가 늘린 제례의 이자",
+      "wrath": 0, "binding": 0, "prosperity": -4, "houseVitality": 0, "resentment": 0, "demandBonus": 4, "coffers": 0 },
+    { "atGeneration": 3, "from": "h_g3", "note": "증조부가 덮은 장부의 두 번째 값. 아무도 이것이 올 줄 몰랐다",
+      "wrath": 7, "binding": -5, "prosperity": 0, "houseVitality": 0, "resentment": 0, "demandBonus": 0, "coffers": 0 }
+  ],
+
+  "priorLedger": [
+    { "generation": 1, "heirId": "h_g1", "riteId": "rite_reinforce", "victimNames": [] },
+    { "generation": 2, "heirId": "h_g2", "riteId": "offer_elder",    "victimNames": ["정복주"] },
+    { "generation": 3, "heirId": "h_g3", "riteId": "close_ledger",   "victimNames": [] },
+    { "generation": 4, "heirId": "h_g4", "riteId": "offer_young",    "victimNames": ["조삼근", "조삼돌", "박순길", "최길보"] },
+    { "_": "앞 네 대는 이미 적혀 있다. 목업에서 위쪽(세로쓰기라 오른쪽)에 그대로 남는다. 이 이름들은 kin.json 에 없다 — 이미 죽은 사람이다" }
+  ]
+}

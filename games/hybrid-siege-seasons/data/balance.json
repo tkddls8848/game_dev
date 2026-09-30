@@ -1,0 +1,77 @@
+{
+  "_": "검사기가 쓰는 한계값. 여기를 고쳐서 밸런스를 푼다 — 카드 상점을 넣지 않는다.",
+  "seed": 20260927,
+  "battle": {
+    "energyPerTurn": 3,
+    "drawPerTurn": 5,
+    "maxTurnsPerBattle": 60,
+    "maxPlaysPerTurn": 40,
+    "maxBurnStacks": 6,
+    "burnTurnsAssumed": 3,
+    "_wear": "카드를 쓰면 닳는다. 값은 비율이다 — 한 번 쓰면 그 카드 수명의 1/durability 를 태운다.",
+    "wearWeightSkilled": 80,
+    "wearWeightHoard": 500,
+    "wearWeightReckless": 0
+  },
+  "year": {
+    "_": "적 체력은 해마다 백분율 정수로 커진다. 나머지는 누적한다 — 부동소수 금지.",
+    "hpGrowthPctPerYear": 22,
+    "hpScaleMaxPct": 300,
+    "_겨울나기": "겨울을 나면 창고의 카드가 한 번씩 닳는다. 이것이 영속 덱의 유일한 크기 의존 손실이라, 이것이 없으면 밭이 내는 속도가 상수·쓰는 속도도 상수가 되어 덱이 선형으로 발산한다. 동시에 '아끼기만 하기'의 답이기도 하다 — 아껴 둔 카드도 겨울에는 닳는다.",
+    "winterDecayUses": 1
+  },
+  "economy": {
+    "seedStipendPerYear": 14,
+    "seedCarryCap": 6,
+    "seedWinBonus": 6,
+    "fertilizerCarryCap": 3,
+    "fertilizerWinBonus": 1,
+    "fertilizerYieldBonus": 1,
+    "seedCeiling": 40,
+    "fertilizerCeiling": 8,
+    "deckCeiling": 90,
+    "economyYears": 200
+  },
+  "seasonFeasibility": {
+    "trials": 40,
+    "minWinPct": 60
+  },
+  "runSolvability": {
+    "trials": 40,
+    "minWinPct": 60
+  },
+  "fieldDeckMapping": {
+    "_": "작물을 하나 빼면 얼마나 손해인지는 여러 해로 재야 분해능이 생긴다.",
+    "trials": 30,
+    "years": 8,
+    "minCardPlayPct": 5,
+    "maxExclusionGainPct": 15
+  },
+  "winRateBand": {
+    "_": "한 해가 아니라 여러 해를 잇는다. 넘긴 해 / 치른 해.",
+    "trials": 80,
+    "years": 8,
+    "randomMinPct": 0,
+    "randomMaxPct": 25,
+    "skilledMinPct": 40,
+    "skilledMaxPct": 85
+  },
+  "dominance": {
+    "_": "단작뿐 아니라 '아끼기만 하는' 플레이도 본다 — 이 PoC 의 고유 위험이다.",
+    "trials": 50,
+    "years": 8,
+    "monoCropMaxWinPct": 55,
+    "hoardMaxGainPct": 0,
+    "_아낌축": "'얼마나 아끼는가'를 훑는다. 최적이 양 끝이면 손잡이가 장식이다 — 0 이 최적이면 닳는 것이 의미 없고, 최댓값이 최적이면 계획서가 경고한 '아끼기만 하는 지루한 최적해'다.",
+    "wearSweep": [
+      0,
+      40,
+      80,
+      120,
+      180,
+      260,
+      500
+    ],
+    "minWearSpreadPct": 25
+  }
+}

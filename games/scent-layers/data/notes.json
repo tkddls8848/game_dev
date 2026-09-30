@@ -1,0 +1,22 @@
+{
+  "_": "향 계열. retainPermille 은 decayStepMin(15분) 마다 남는 비율(천분율)이다. 전부 정수.",
+  "_왜_정수인가": "뿌리 CLAUDE.md 설계 원칙 4. 부동소수를 쓰면 '0.999 남은 냄새'가 생기고 테스트를 쓸 수 없다.",
+  "_역치": "perceptionFloor 아래는 코에 잡히지 않는다 — 합에서 아예 빠진다. 이 문턱이 이 게임의 시간축을 만든다: 남의 냄새가 이 아래로 내려가야 내 냄새가 또렷해진다.",
+  "_세_계급": "top(머리향)만 시각을 말해 준다. heart·base 는 잔향과 감쇠율이 너무 가까워 비율로 나이를 가르지 못한다 — 그것이 되짚기를 어렵게 만드는 이유다.",
+  "decayStepMin": 15,
+  "perceptionFloor": 10,
+  "notes": [
+    { "id": "n_citrus",  "ko": "감귤 세제", "klass": "top",   "retainPermille": 700, "color": "#B4662C", "bandOrder": 1 },
+    { "id": "n_alcohol", "ko": "알코올",   "klass": "top",   "retainPermille": 690, "color": "#9A8C3A", "bandOrder": 2 },
+    { "id": "n_grass",   "ko": "풀즙",     "klass": "top",   "retainPermille": 710, "color": "#6E7A3A", "bandOrder": 3 },
+    { "id": "n_smoke",   "ko": "탄내",     "klass": "heart", "retainPermille": 900, "color": "#4A4238", "bandOrder": 4 },
+    { "id": "n_oil",     "ko": "기름",     "klass": "heart", "retainPermille": 915, "color": "#7A6338", "bandOrder": 5 },
+    { "id": "n_musk",    "ko": "땀",       "klass": "base",  "retainPermille": 938, "color": "#6B5A52", "bandOrder": 6 },
+    { "id": "n_leather", "ko": "가죽",     "klass": "base",  "retainPermille": 945, "color": "#6A4A32", "bandOrder": 7 },
+    { "id": "n_ether",   "ko": "에테르",   "klass": "base",  "retainPermille": 948, "color": "#54646B", "bandOrder": 8 },
+    { "id": "n_iron",    "ko": "쇠·피",    "klass": "base",  "retainPermille": 952, "color": "#8A3F32", "bandOrder": 9 },
+    { "id": "n_ash",     "ko": "재",       "klass": "base",  "retainPermille": 955, "color": "#5A5A56", "bandOrder": 10 },
+    { "id": "n_wax",     "ko": "밀랍",     "klass": "base",  "retainPermille": 958, "color": "#8C7A48", "bandOrder": 11 },
+    { "id": "n_soil",    "ko": "흙",       "klass": "base",  "retainPermille": 962, "color": "#4E4433", "bandOrder": 12 }
+  ]
+}

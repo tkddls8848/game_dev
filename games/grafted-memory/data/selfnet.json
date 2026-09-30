@@ -1,0 +1,48 @@
+{
+  "_": "**시술자 자신의 기억망.** 사람·장소·정서는 net.json 의 등록표를 그대로 쓴다(같은 도시다).",
+  "_왜있는가": "마지막 장면을 연출 문구로 두지 않기 위해서다. graftedOnDay 가 박힌 기억이 둘 있고, 검사기는 그 필드를 보지 않고 **의뢰에 쓰는 것과 똑같은 규칙**으로 떠는 자리를 찾는다. 찾은 자리는 넷인데 심어진 것은 둘이다 — 어느 둘인지는 기계가 말해 주지 않는다. 그것이 이 게임의 끝이다.",
+
+  "people": [],
+  "places": [],
+  "moods": [],
+  "moodDistance": [],
+
+  "subjects": [
+    {
+      "id": "subj-operator",
+      "name": "시술자 (나)",
+      "note": "의뢰를 받는 쪽. 기억망이 아홉 해치뿐인 것은 이 사람이 제 기억을 별로 들여다보지 않기 때문이다.",
+      "surfacedAtStart": ["s-night-shift", "s-hundredth"],
+      "distortedPerSession": 0,
+
+      "memories": [
+        { "id": "s-alley-dog",         "name": "골목의 개",              "dayIndex": 3200,  "spanDays": 1,  "placeId": "pl-alley",  "peopleIds": ["p-brother"],    "moodId": "mood-dread",   "intensityPercent": 65, "fixityPercent": 60, "note": "" },
+        { "id": "s-brother-bicycle",   "name": "형의 자전거",            "dayIndex": 3600,  "spanDays": 1,  "placeId": "pl-alley",  "peopleIds": ["p-brother"],    "moodId": "mood-elation", "intensityPercent": 70, "fixityPercent": 55, "note": "" },
+        { "id": "s-mother-fever",      "name": "어머니가 열이 났던 밤",   "dayIndex": 6600,  "spanDays": 3,  "placeId": "pl-alley",  "peopleIds": ["p-mother"],     "moodId": "mood-dread",   "intensityPercent": 80, "fixityPercent": 75, "note": "" },
+        { "id": "s-fathers-blessing",  "name": "아버지가 이 일을 자랑스러워했다", "dayIndex": 6700, "spanDays": 1, "placeId": "pl-alley", "peopleIds": ["p-father"], "moodId": "mood-calm", "intensityPercent": 85, "fixityPercent": 90, "graftedOnDay": 16400, "note": "심어진 것. 아버지는 이 일을 알지도 못했다" },
+        { "id": "s-exam-night",        "name": "시험 전날",              "dayIndex": 6800,  "spanDays": 2,  "placeId": "pl-alley",  "peopleIds": [],               "moodId": "mood-shame",   "intensityPercent": 60, "fixityPercent": 50, "note": "" },
+        { "id": "s-dorm-window",       "name": "기숙사 창",              "dayIndex": 15400, "spanDays": 40, "placeId": "pl-dorm",   "peopleIds": [],               "moodId": "mood-calm",    "intensityPercent": 60, "fixityPercent": 40, "note": "" },
+        { "id": "s-first-clinic",      "name": "처음 시술실에 들어간 날",  "dayIndex": 16100, "spanDays": 1,  "placeId": "pl-clinic", "peopleIds": ["p-supervisor"], "moodId": "mood-shame",   "intensityPercent": 80, "fixityPercent": 85, "note": "" },
+        { "id": "s-supervisor-praise", "name": "감독관이 잘했다고 했다",   "dayIndex": 16500, "spanDays": 1,  "placeId": "pl-clinic", "peopleIds": ["p-supervisor"], "moodId": "mood-elation", "intensityPercent": 75, "fixityPercent": 60, "note": "" },
+        { "id": "s-night-shift",       "name": "야근",                  "dayIndex": 17300, "spanDays": 5,  "placeId": "pl-clinic", "peopleIds": ["p-supervisor"],               "moodId": "mood-calm",    "intensityPercent": 30, "fixityPercent": 40, "note": "" },
+        { "id": "s-seonhwa-face",      "name": "선화의 얼굴을 안다",      "dayIndex": 17300, "spanDays": 1,  "placeId": "pl-dorm",   "peopleIds": ["p-supervisor"], "moodId": "mood-longing", "intensityPercent": 90, "fixityPercent": 85, "graftedOnDay": 18200, "note": "심어진 것. 의뢰인의 기억이 시술자에게 남았다" },
+        { "id": "s-hundredth",         "name": "백 번째 의뢰",           "dayIndex": 17900, "spanDays": 1,  "placeId": "pl-clinic", "peopleIds": ["p-supervisor"], "moodId": "mood-calm",    "intensityPercent": 40, "fixityPercent": 45, "note": "" }
+      ],
+
+      "links": [
+        { "a": "s-alley-dog",        "b": "s-brother-bicycle",   "kind": "place",  "probeCost": 2 },
+        { "a": "s-brother-bicycle",  "b": "s-mother-fever",      "kind": "time",   "probeCost": 6 },
+        { "a": "s-mother-fever",     "b": "s-exam-night",        "kind": "place",  "probeCost": 3 },
+        { "a": "s-exam-night",       "b": "s-fathers-blessing",  "kind": "time",   "probeCost": 2 },
+        { "a": "s-mother-fever",     "b": "s-fathers-blessing",  "kind": "place",  "probeCost": 4 },
+        { "a": "s-exam-night",       "b": "s-dorm-window",       "kind": "time",   "probeCost": 7 },
+        { "a": "s-dorm-window",      "b": "s-first-clinic",      "kind": "time",   "probeCost": 3 },
+        { "a": "s-first-clinic",     "b": "s-supervisor-praise", "kind": "place",  "probeCost": 2 },
+        { "a": "s-supervisor-praise","b": "s-night-shift",       "kind": "place",  "probeCost": 4 },
+        { "a": "s-night-shift",      "b": "s-seonhwa-face",      "kind": "time",   "probeCost": 2 },
+        { "a": "s-night-shift",      "b": "s-hundredth",         "kind": "place",  "probeCost": 3 },
+        { "a": "s-supervisor-praise","b": "s-hundredth",         "kind": "person", "probeCost": 5 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "_": "도와야 하는 것. slotsRequired 는 24시간을 여섯 시간대로 쪼갠 중 몇 칸을 먹는가이고, graceCost 는 관리사무소의 유예 일수를 몇 개 먹는가다. 유예는 건물 하나에 정해진 양뿐이라 한 집에 쓴 만큼 나머지 집에서 빠진다.",
+  "_perceivedWeight": "그 사정이 얼마나 크게 「보이는가」. 실제 손실(baseStakes)이 아니다 — 필요한 것만 알고 얼마나 급한지는 모를 때 사람이 짐작하는 값이고, 정책 검사기가 쓴다. 실제와 어긋나 있는 것이 이 PoC의 요점이다.",
+  "needs": [
+    { "id": "need_deposit",  "name": "보증금 반환 서류",     "slotsRequired": 2, "graceCost": 2, "perceivedWeight": 40, "note": "집주인이 서류를 안 준다. 대신 받아 오는 데 반나절이 든다" },
+    { "id": "need_move",     "name": "이삿짐 차",            "slotsRequired": 1, "graceCost": 1, "perceivedWeight": 25, "note": "차만 구해 주면 된다. 가장 싸고 가장 작다" },
+    { "id": "need_paper",    "name": "전출 신고 서류",       "slotsRequired": 1, "graceCost": 1, "perceivedWeight": 15, "note": "동사무소에 한 번 다녀오면 끝난다" },
+    { "id": "need_school",   "name": "아이 전학 처리",       "slotsRequired": 2, "graceCost": 3, "perceivedWeight": 50, "note": "학교와 교육청 둘을 거친다. 유예가 사흘 든다" },
+    { "id": "need_medicine", "name": "약과 통원",            "slotsRequired": 3, "graceCost": 4, "perceivedWeight": 70, "note": "가장 비싸다. 시간대 셋과 유예 나흘. 이 하나를 고르면 엿들을 시간이 셋밖에 남지 않는다" },
+    { "id": "need_search",   "name": "잃어버린 것 찾기",     "slotsRequired": 2, "graceCost": 2, "perceivedWeight": 30, "note": "짐 속에서 무엇을 찾아 주는 일" },
+    { "id": "need_none",     "name": "없다 (이미 나갔다)",   "slotsRequired": 1, "graceCost": 1, "perceivedWeight": 0, "note": "도울 것이 없는 집. 그래도 고르면 유예 하루가 사라진다 — 나머지가 그만큼 밀린다" }
+  ]
+}

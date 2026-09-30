@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>자리를 바꾸는 것들</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#05080e}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#dfe7f2}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:#0b1320}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;inset:0}
+.tabs{position:absolute;left:40px;top:34px;z-index:60;display:flex;gap:16px}
+.tabs button{background:none;border:none;border-bottom:1px solid transparent;font:500 13px/1.6 inherit;font-family:inherit;color:rgba(223,231,242,.4);letter-spacing:3px;cursor:pointer;padding:0 0 2px}
+.tabs button.on{color:#dfe7f2;border-bottom-color:#dfe7f2}
+.head{position:absolute;right:48px;top:34px;text-align:right;z-index:30}
+.head small{font-size:12px;letter-spacing:5px;color:rgba(223,231,242,.5)}
+.head b{display:block;font-weight:300;font-size:30px;letter-spacing:2px;margin-top:6px}
+.cnt{position:absolute;left:40px;bottom:40px;z-index:30;display:flex;align-items:flex-end;gap:16px}
+.cnt b{font-weight:200;font-size:72px;line-height:.9;letter-spacing:-2px}
+.cnt span{font-size:13px;letter-spacing:3px;color:rgba(223,231,242,.55);line-height:1.7}
+.dots{display:flex;gap:5px;margin-top:8px}
+.dots i{width:9px;height:9px;border:1px solid rgba(223,231,242,.4);border-radius:50%}
+.dots i.m{background:#f2d7a0;border-color:#f2d7a0;box-shadow:0 0 6px #f2d7a0}
+.plac{position:absolute;right:48px;bottom:40px;width:420px;z-index:30;background:#f4f1ea;color:#1b1f26;padding:26px 28px 22px;box-shadow:0 30px 60px rgba(0,0,0,.55);font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif;transition:transform .3s}
+.plac .no{font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:11px;letter-spacing:4px;color:#7a7f88}
+.plac h3{font-size:28px;margin:8px 0 2px;font-weight:700;letter-spacing:-.5px}
+.plac .meta{font-size:14px;color:#555b66;margin-bottom:14px;font-style:italic}
+.plac p{font-size:16px;line-height:1.75;color:#2b3039}
+.plac .own{margin-top:14px;padding-top:10px;border-top:1px solid #d6d0c2;font-family:"Pretendard","Noto Sans KR",sans-serif;font-size:12px;letter-spacing:2px;color:#a0661e}
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;z-index:30;font-size:12px;letter-spacing:4px;color:rgba(223,231,242,.35)}
+.vt{cursor:pointer}
+.vt:hover .glass{stroke:rgba(255,255,255,.7)}
+.vt.sel .glass{stroke:#f2d7a0;stroke-width:2.5}
+.fin{position:absolute;left:0;right:0;top:120px;text-align:center;z-index:30;pointer-events:none}
+.fin small{font-size:12px;letter-spacing:8px;color:rgba(223,231,242,.5)}
+.fin h2{font-weight:200;font-size:46px;letter-spacing:10px;margin-top:10px}
+.bigplac{position:absolute;left:1340px;transform:translateX(-50%);top:760px;z-index:30;width:420px;background:#f4f1ea;color:#1b1f26;padding:18px 26px;text-align:center;font-family:"Nanum Myeongjo","Noto Serif KR",serif;box-shadow:0 20px 40px rgba(0,0,0,.6)}
+.bigplac .no{font-family:"Pretendard",sans-serif;font-size:11px;letter-spacing:4px;color:#7a7f88}
+.bigplac h3{font-size:26px;margin:6px 0 4px}
+.bigplac p{font-size:15px;color:#3b4049;line-height:1.6}
+.small{position:absolute;z-index:25;background:#efece4;color:#1b1f26;font:600 11px/1.35 "Nanum Myeongjo","Noto Serif KR",serif;padding:5px 8px;box-shadow:0 6px 14px rgba(0,0,0,.4);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="stage">
+<nav class="tabs"><button data-s="a">1 · 넷째 밤</button><button data-s="b">2 · 마지막 밤</button></nav>
+
+<section class="screen" id="a">
+ <svg class="scene" id="sA" viewBox="0 0 1600 1000"></svg>
+ <div class="head"><small>시립 생활사 박물관 · 3전시실</small><b>넷째 밤 · 03:12</b></div>
+ <div class="cnt"><b>7</b><span>/ 20 전시물이<br>내 것으로 바뀌었다<div class="dots" id="dots"></div></span></div>
+ <div class="plac" id="plac">
+  <div class="no" id="pNo">No. 17 · 생활 유물</div>
+  <h3 id="pT">머그컵</h3>
+  <div class="meta" id="pM">2019년경 · 경비원 자택 부엌</div>
+  <p id="pP">손잡이 아래 이가 빠졌다. 매일 아침 같은 자리에 놓였다. 안쪽에 커피 자국이 둥글게 남아 있다.</p>
+  <div class="own" id="pO">● 어젯밤까지: 청자 상감 잔, 고려</div>
+ </div>
+ <div class="hint">진열장을 비추면 설명이 바뀐다</div>
+</section>
+
+<section class="screen" id="b">
+ <svg class="scene" id="sB" viewBox="0 0 1600 1000"></svg>
+ <div class="head"><small>시립 생활사 박물관 · 3전시실</small><b>스무째 밤 · 03:12</b></div>
+ <div class="fin"><small>상설 전시</small><h2>한 사람의 방</h2></div>
+ <div class="bigplac"><div class="no">No. 20 · 입고 예정</div><h3>경비원, 34세</h3><p>야간 근무 중. 손전등을 들고 있다.<br>이 진열장은 그를 위해 비워 두었다.</p></div>
+</section>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var k=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+addEventListener('resize',fit);fit();
+var NS='http://www.w3.org/2000/svg';
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+var AC=null;function ac(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){AC=null}return AC;}
+function chime(f,v){var c=ac();if(!c)return;var t=c.currentTime;[1,2.76,5.4].forEach(function(m,i){var o=c.createOscillator(),g=c.createGain();o.frequency.value=f*m;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime((v||.06)/(i*2+1),t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+1.8/(i+1));o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+2);});}
+function steps(){var c=ac();if(!c)return;for(var k=0;k<3;k++){var t=c.currentTime+k*.45,b=c.createBuffer(1,c.sampleRate*.08,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=700;var g=c.createGain();g.gain.value=.4;s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);}}
+
+function base(svg,uid){
+ var d=el('defs',{},svg);
+ function lg(id,st,x2,y2){var g=el('linearGradient',{id:id+uid,x1:0,y1:0,x2:x2||0,y2:y2===undefined?1:y2},d);st.forEach(function(s){el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]===undefined?1:s[2]},g)});return 'url(#'+id+uid+')';}
+ var G={};
+ G.wall=lg('wall',[[0,'#15202f'],[1,'#0c1420']]);
+ G.floor=lg('floor',[[0,'#1a2432'],[1,'#070b12']]);
+ G.plinth=lg('plinth',[[0,'#d6dbe2'],[1,'#8a93a0']],1,0);
+ G.glass=lg('glass',[[0,'#cfe0ff',.16],[.5,'#cfe0ff',.04],[1,'#cfe0ff',.12]],1,1);
+ G.shaft=lg('shaft',[[0,'#cfe0ff',.22],[1,'#cfe0ff',0]],0,1);
+ G.warm=lg('warm',[[0,'#ffe2a8',.55],[1,'#ffe2a8',0]]);
+ el('rect',{width:1600,height:1000,fill:G.wall},svg);
+ // tall windows on back wall (upper) with moon light
+ [[160,90],[560,90],[960,90],[1360,90]].forEach(function(w){el('rect',{x:w[0],y:w[1],width:120,height:300,fill:'#1e3452'},svg);el('rect',{x:w[0],y:w[1],width:120,height:300,fill:'none',stroke:'#0a1019','stroke-width':8},svg);el('line',{x1:w[0]+60,y1:w[1],x2:w[0]+60,y2:w[1]+300,stroke:'#0a1019','stroke-width':6},svg);el('line',{x1:w[0],y1:w[1]+150,x2:w[0]+120,y2:w[1]+150,stroke:'#0a1019','stroke-width':6},svg);el('rect',{x:w[0]+6,y:w[1]+6,width:50,height:140,fill:'rgba(207,224,255,.12)'},svg);});
+ // light shafts falling diagonally to floor
+ [[160,90],[560,90],[960,90],[1360,90]].forEach(function(w){el('path',{d:'M'+w[0]+' '+(w[1]+300)+' L'+(w[0]+120)+' '+(w[1]+300)+' L'+(w[0]+330)+' 1000 L'+(w[0]+170)+' 1000Z',fill:G.shaft},svg);});
+ // floor
+ el('rect',{x:0,y:720,width:1600,height:280,fill:G.floor},svg);el('rect',{x:0,y:716,width:1600,height:6,fill:'#2a3748'},svg);
+ // window light patches on floor
+ [[160],[560],[960],[1360]].forEach(function(w){var x=w[0]+230;el('path',{d:'M'+x+' 800 L'+(x+140)+' 800 L'+(x+190)+' 900 L'+(x+40)+' 900Z',fill:'rgba(207,224,255,.08)'},svg);el('line',{x1:x+70,y1:800,x2:x+115,y2:900,stroke:'rgba(10,16,25,.6)','stroke-width':6},svg);});
+ return G;
+}
+function vitrine(svg,G,x,w,h,obj,mine,idx,lab){
+ var g=el('g',{'class':'vt','data-i':idx},svg);
+ var top=720-150-h;
+ el('ellipse',{cx:x,cy:726,rx:w*.7,ry:10,fill:'rgba(0,0,0,.5)'},g);
+ el('rect',{x:x-w/2,y:570,width:w,height:150,fill:G.plinth},g);
+ el('rect',{x:x-w/2,y:570,width:w,height:6,fill:'#eef1f5'},g);
+ // warm pin light
+ el('path',{d:'M'+(x-8)+' '+top+' L'+(x+8)+' '+top+' L'+(x+w/2-6)+' 570 L'+(x-w/2+6)+' 570Z',fill:mine?G.warm:'rgba(207,224,255,.05)'},g);
+ var og=el('g',{transform:'translate('+x+',570)'},g);obj(og,mine);
+ el('rect',{'class':'glass',x:x-w/2+4,y:top,width:w-8,height:570-top,fill:G.glass,stroke:'rgba(207,224,255,.35)','stroke-width':1.5},g);
+ el('line',{x1:x-w/2+18,y1:top+8,x2:x-w/2+18,y2:560,stroke:'rgba(255,255,255,.25)','stroke-width':2},g);
+ // mini placard on plinth
+ el('rect',{x:x-26,y:600,width:52,height:26,fill:mine?'#f2d7a0':'#e9ecef',opacity:.9},g);
+ el('line',{x1:x-18,y1:610,x2:x+18,y2:610,stroke:'#555','stroke-width':1.5},g);el('line',{x1:x-18,y1:617,x2:x+8,y2:617,stroke:'#888','stroke-width':1.5},g);
+ return g;
+}
+// objects (origin = plinth top center)
+var O={
+ mirror:function(g){el('circle',{cx:0,cy:-70,r:42,fill:'#5f7a6a',stroke:'#3d5446','stroke-width':6},g);el('circle',{cx:0,cy:-70,r:12,fill:'#3d5446'},g);el('rect',{x:-14,y:-30,width:28,height:30,fill:'#2a2f35'},g);},
+ pot:function(g){el('path',{d:'M-30 -6 C-44 -40 -40 -80 -20 -100 L20 -100 C40 -80 44 -40 30 -6Z',fill:'#8a5e3c'},g);el('path',{d:'M-34 -60 L34 -60',stroke:'#5a3a22','stroke-width':3},g);el('path',{d:'M-20 -100 L-24 -112 L24 -112 L20 -100',fill:'#6a4428'},g);},
+ earring:function(g){el('rect',{x:-26,y:-10,width:52,height:10,fill:'#2a2f35'},g);[-12,12].forEach(function(dx){el('circle',{cx:dx,cy:-48,r:5,fill:'none',stroke:'#e0b050','stroke-width':3},g);el('path',{d:'M'+dx+' -43 l-7 22 l14 0Z',fill:'#e0b050'},g);});},
+ mug:function(g){el('path',{d:'M-30 -2 L-28 -70 L28 -70 L30 -2Z',fill:'#f1efe9'},g);el('path',{d:'M28 -58 C52 -58 52 -20 28 -20',stroke:'#f1efe9','stroke-width':9,fill:'none'},g);el('path',{d:'M-28 -70 L-20 -70 L-24 -62Z',fill:'#6a7280'},g);el('ellipse',{cx:0,cy:-70,rx:28,ry:6,fill:'#5a3a22'},g);el('text',{x:0,y:-30,'text-anchor':'middle','font-size':12,fill:'#8a93a0','font-weight':700},g).textContent='MON';},
+ watch:function(g){el('rect',{x:-12,y:-110,width:24,height:100,rx:6,fill:'#5a3a22'},g);el('circle',{cx:0,cy:-60,r:22,fill:'#c8ccd2',stroke:'#8a93a0','stroke-width':4},g);el('path',{d:'M0 -60 L0 -74 M0 -60 L10 -56',stroke:'#1b1f26','stroke-width':2.5},g);},
+ keys:function(g){el('circle',{cx:-8,cy:-40,r:14,fill:'none',stroke:'#c8a050','stroke-width':4},g);el('path',{d:'M4 -34 L40 -16 M28 -22 L24 -12 M34 -19 L31 -10',stroke:'#c8a050','stroke-width':5},g);el('rect',{x:-40,y:-30,width:26,height:18,rx:4,fill:'#d9453a'},g);},
+ photo:function(g){el('rect',{x:-40,y:-104,width:80,height:90,fill:'#3a2f25'},g);el('rect',{x:-34,y:-98,width:68,height:70,fill:'#c9b894'},g);el('rect',{x:-34,y:-98,width:68,height:30,fill:'#a9bcc8'},g);[[-18,-66,7,1],[0,-70,8,1.15],[17,-60,5,.75]].forEach(function(f){el('circle',{cx:f[0],cy:f[1],r:f[2],fill:'#5a4630'},g);el('path',{d:'M'+(f[0]-f[2]*1.5)+' -28 C'+(f[0]-f[2]*1.5)+' '+(f[1]+f[2]*1.2)+' '+(f[0]+f[2]*1.5)+' '+(f[1]+f[2]*1.2)+' '+(f[0]+f[2]*1.5)+' -28Z',fill:f[3]>1?'#3a4a6a':'#7a4a3a'},g);});el('rect',{x:-34,y:-98,width:68,height:70,fill:'rgba(255,230,180,.12)'},g);},
+ torch:function(g){el('rect',{x:-50,y:-26,width:92,height:22,rx:6,fill:'#2a2f35'},g);el('path',{d:'M42 -30 L60 -34 L60 0 L42 -4Z',fill:'#3a4048'},g);el('circle',{cx:60,cy:-17,r:3,fill:'#f2d7a0'},g);}
+};
+var items=[
+ {o:'mirror',m:0,no:'No. 12 · 고려',t:'청동 거울',meta:'12세기 · 개성 출토',p:'뒷면에 쌍룡 무늬. 거울면은 녹이 슬어 아무것도 비추지 않는다.',own:'변화 없음'},
+ {o:'mug',m:1,no:'No. 17 · 생활 유물',t:'머그컵',meta:'2019년경 · 경비원 자택 부엌',p:'손잡이 아래 이가 빠졌다. 매일 아침 같은 자리에 놓였다. 안쪽에 커피 자국이 둥글게 남아 있다.',own:'● 어젯밤까지: 청자 상감 잔, 고려'},
+ {o:'pot',m:0,no:'No. 13 · 삼국',t:'회청색 항아리',meta:'5세기 · 경주',p:'어깨에 두 줄의 음각선. 입구가 조금 기울었다.',own:'변화 없음'},
+ {o:'watch',m:1,no:'No. 18 · 유품',t:'손목시계',meta:'1987년 · 아버지의 것',p:'가죽줄이 늘어나 마지막 구멍만 닳았다. 3시 12분에 멈춰 있다.',own:'● 어젯밤까지: 금동 허리띠 장식, 신라'},
+ {o:'earring',m:0,no:'No. 14 · 신라',t:'금동 귀걸이 한 쌍',meta:'6세기 · 황남대총',p:'가는 고리에 나뭇잎 모양 장식이 달렸다.',own:'변화 없음'},
+ {o:'keys',m:1,no:'No. 19 · 생활 유물',t:'열쇠 꾸러미',meta:'현재 · 경비원 주머니',p:'현관, 사물함, 그리고 무엇을 여는지 잊어버린 작은 열쇠 하나.',own:'● 방금 전: 주머니가 가벼워졌다'}];
+var sA=document.getElementById('sA');var GA=base(sA,'A');
+var xs=[190,430,670,910,1150,1390],vt=[];
+items.forEach(function(it,i){var g=vitrine(sA,GA,xs[i],150,170,O[it.o],it.m,i);vt.push(g);g.addEventListener('mouseenter',function(){sel(i)});g.addEventListener('click',function(){sel(i);chime(it.m?392:523,.07)});});
+// guard silhouette with flashlight (front, left)
+(function(){var g=el('g',{transform:'translate(70,720)'},sA);el('ellipse',{cx:20,cy:6,rx:60,ry:10,fill:'rgba(0,0,0,.6)'},g);el('path',{d:'M-10 0 L-6 -170 C-30 -176 -34 -250 0 -262 C40 -270 60 -240 50 -170 L54 0Z',fill:'#05080e'},g);el('circle',{cx:14,cy:-290,r:28,fill:'#05080e'},g);el('path',{d:'M-16 -300 L44 -300 L40 -316 L-10 -316Z',fill:'#05080e'},g);el('path',{d:'M40 -180 L80 -170',stroke:'#05080e','stroke-width':16,'stroke-linecap':'round'},g);
+ el('path',{d:'M86 -172 L420 -330 L420 -40Z',fill:'rgba(255,236,190,.07)'},g);})();
+var dots=document.getElementById('dots');for(var i=0;i<20;i++){var d=document.createElement('i');if(i<7)d.className='m';dots.appendChild(d);}
+function sel(i){var it=items[i];vt.forEach(function(g,j){g.classList.toggle('sel',j===i)});document.getElementById('pNo').textContent=it.no;document.getElementById('pT').textContent=it.t;document.getElementById('pM').textContent=it.meta;document.getElementById('pP').textContent=it.p;var o=document.getElementById('pO');o.textContent=it.own;o.style.color=it.m?'#a0661e':'#7a7f88';}
+sel(1);
+
+// B: the apartment as exhibition
+var sB=document.getElementById('sB');var GB=base(sB,'B');
+(function(){var svg=sB;
+ // rope stanchions helper
+ function rope(x1,x2,y){[x1,x2].forEach(function(x){el('rect',{x:x-4,y:y-70,width:8,height:70,fill:'#9aa3ae'},svg);el('ellipse',{cx:x,cy:y,rx:18,ry:5,fill:'#6a7280'},svg);});el('path',{d:'M'+x1+' '+(y-66)+' Q'+((x1+x2)/2)+' '+(y-30)+' '+x2+' '+(y-66),stroke:'#2a3a5a','stroke-width':7,fill:'none'},svg);}
+ // bed (left)
+ el('ellipse',{cx:250,cy:726,rx:190,ry:12,fill:'rgba(0,0,0,.5)'},svg);
+ el('rect',{x:80,y:600,width:340,height:110,fill:'#c9ced6'},svg);el('rect',{x:80,y:590,width:340,height:28,fill:'#e6e9ee'},svg);el('rect',{x:70,y:520,width:22,height:200,fill:'#5a4a3a'},svg);el('rect',{x:408,y:600,width:14,height:120,fill:'#5a4a3a'},svg);
+ el('path',{d:'M180 590 C200 570 300 572 330 592Z',fill:'#aab2be'},svg);el('rect',{x:96,y:570,width:70,height:26,rx:10,fill:'#f1efe9'},svg);
+ rope(90,410,800);
+ // coat rack with guard's uniform coat
+ el('rect',{x:520,y:440,width:8,height:280,fill:'#5a4a3a'},svg);el('path',{d:'M500 720 L548 720',stroke:'#5a4a3a','stroke-width':8},svg);
+ el('path',{d:'M500 460 C480 480 486 600 490 640 L560 640 C566 600 570 480 548 460Z',fill:'#1e2a44'},svg);el('rect',{x:536,y:500,width:14,height:10,fill:'#c8a050'},svg);
+ // kitchen table with two chairs, one pushed in
+ el('ellipse',{cx:800,cy:726,rx:170,ry:12,fill:'rgba(0,0,0,.5)'},svg);
+ el('rect',{x:680,y:600,width:240,height:14,fill:'#8a6a4a'},svg);el('rect',{x:690,y:614,width:10,height:106,fill:'#6a4a2a'},svg);el('rect',{x:900,y:614,width:10,height:106,fill:'#6a4a2a'},svg);
+ el('path',{d:'M640 720 L640 640 L620 520 L632 518 L652 630 L700 630 L700 720',stroke:'#6a4a2a','stroke-width':8,fill:'none'},svg);
+ el('path',{d:'M880 720 L880 640 L900 540 L888 538 L870 630',stroke:'#6a4a2a','stroke-width':8,fill:'none',opacity:.6},svg);
+ O.mug(el('g',{transform:'translate(760,600) scale(.6)'},svg));O.keys(el('g',{transform:'translate(850,600) scale(.6)'},svg));
+ rope(660,940,800);
+ // family photo on wall (framed) and clock stopped
+ O.photo(el('g',{transform:'translate(1120,470) scale(1.3)'},svg));
+ el('circle',{cx:800,cy:470,r:30,fill:'#c8ccd2',stroke:'#8a93a0','stroke-width':5},svg);el('path',{d:'M800 470 L800 450 M800 470 L814 476',stroke:'#1b1f26','stroke-width':3},svg);
+ // empty vitrine for the guard (right)
+ var x=1340,top=260;
+ el('ellipse',{cx:x,cy:726,rx:150,ry:12,fill:'rgba(0,0,0,.6)'},svg);
+ el('rect',{x:x-110,y:680,width:220,height:40,fill:GB.plinth},svg);
+ el('path',{d:'M'+(x-10)+' '+top+' L'+(x+10)+' '+top+' L'+(x+100)+' 680 L'+(x-100)+' 680Z',fill:GB.warm},svg);
+ el('rect',{x:x-104,y:top,width:208,height:420,fill:GB.glass,stroke:'rgba(242,215,160,.6)','stroke-width':2},svg);
+ el('line',{x1:x-86,y1:top+10,x2:x-86,y2:670,stroke:'rgba(255,255,255,.3)','stroke-width':2},svg);
+ // faint reflection of the guard with torch in glass
+ var r=el('g',{transform:'translate('+(x+20)+',680) scale(.9)',opacity:.22},svg);el('path',{d:'M-10 0 L-6 -170 C-30 -176 -34 -250 0 -262 C40 -270 60 -240 50 -170 L54 0Z',fill:'#cfe0ff'},r);el('circle',{cx:14,cy:-290,r:28,fill:'#cfe0ff'},r);el('circle',{cx:-40,cy:-176,r:10,fill:'#fff'},r);
+ // the torch beam from viewer hitting the glass
+ el('circle',{cx:x-50,cy:500,r:7,fill:'rgba(255,245,220,.8)'},svg);el('circle',{cx:x-50,cy:500,r:26,fill:'rgba(255,240,200,.15)'},svg);
+})();
+function small(x,y,t){var d=document.createElement('div');d.className='small';d.style.left=x+'px';d.style.top=y+'px';d.innerHTML=t;document.getElementById('b').appendChild(d);}
+small(170,740,'No. 01 · 침대<br>반쯤 개어진 이불');small(470,652,'No. 06 · 근무복');small(730,740,'No. 09 · 식탁과 의자 둘<br>한 의자는 오래 밀려 있다');small(1070,610,'No. 15 · 가족사진<br>1996년 여름, 셋');
+
+var tabs=document.querySelectorAll('.tabs button');
+function show(id){if(id!=='a'&&id!=='b')id='a';document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});tabs.forEach(function(b){b.classList.toggle('on',b.dataset.s===id)});if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}
+tabs.forEach(function(b){b.onclick=function(){steps();show(b.dataset.s)}});
+addEventListener('hashchange',function(){show(location.hash.slice(1))});
+addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var c=0;vt.forEach(function(g,j){if(g.classList.contains('sel'))c=j});c=(c+(e.key==='ArrowRight'?1:5))%6;sel(c);chime(items[c].m?392:523,.05);}});
+show(location.hash.slice(1)||'a');
+})();
+</script>
+</body>
+</html>

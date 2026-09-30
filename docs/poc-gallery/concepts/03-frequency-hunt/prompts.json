@@ -1,0 +1,17 @@
+{
+  "num": 3,
+  "slug": "frequency-hunt",
+  "title": "주파수 사냥",
+  "images": [
+    {
+      "id": "a",
+      "screen": "A · 수신 — 다이얼로 조난 신호를 잡고 좌표를 받아 적는 순간",
+      "prompt": "Actual gameplay view, not poster, no device frame: a frontal close view of a 1970s coast-guard shortwave receiver console in olive-green crackled enamel with brass screws, filling a 16:9 landscape frame. Across the top, a long backlit amber glass dial window with a black frequency scale from 6.0 to 8.0 MHz, station labels, and a red needle sliding toward an unmarked distress frequency where a soft bright halo is growing. Below: a cream analog S-meter with a trembling needle, a green phosphor waterfall spectrum display showing one bright vertical signal trace in noise, a large knurled bakelite tuning knob with tick marks, and a small black readout where decoded words appear between noise blocks. On the right, a clipped lined notepad with handwritten coordinates, two digits still missing as red question marks, and a big red dispatch button. Warm lamp light from above, dust, subtle grain and vignette, tactile industrial realism. Korean UI text: \"주파수 사냥\", \"구조 3 / 7\", \"구조대 파견\". Text constraints: the maker plate reads only \"해안 경비 수신기\"; the dial shows only frequency numbers and no station names; do not show any real-world country, government, agency or broadcaster names (no U.S., BBC, VOA, Japan, Moscow). The notepad and decoder show the position as 37° 38' ??\" N and 128° 58' ??\" E, matching the east-coast chart."
+    },
+    {
+      "id": "b",
+      "screen": "B · 파견 — 해도 위 오차 원과 구조선 항로",
+      "prompt": "Actual gameplay view, not poster, no device frame: a top-down nautical chart of a Korean east-coast bay filling most of the 16:9 frame, sandy beige coastline with a lighthouse pulse, pale blue-grey sea with depth soundings, contour lines and a lat/long grid with edge labels. In the sea, a red dashed uncertainty ellipse with a smaller solid inner ellipse and crosshair marks the estimated position of a sinking fishing boat, with red handwritten annotation. A navy dashed route line with a small patrol-ship icon advances from the harbor toward it. Other pins: green rescued markers, one hollow red lost-signal marker. Top right: a cream duty-log card with rubber-stamp results in green, red and amber. Bottom strip: the olive radio console edge with the amber dial and green flickering fragments of a fading voice transcript, a large amber countdown. Soft paper texture, printed-map realism, calm but urgent. Korean UI text: \"해진호 추정 위치\", \"당직 일지\", \"14:08\". Text constraints: the duty-log card shows no year, date or weekday; do not show any real government agency name, emblem or badge. The large amber display is labelled \"현재 시각\" and reads exactly \"14:08\" (it is the current clock time, not a countdown); log entries are all at or before 14:08 except one line \"14:15 현장 도착 예정\". Chart grid constraint (must match image A's coordinates 37° 38' N, 128° 58' E): the latitude edge labels run from 37°34'N to 37°42'N and the longitude edge labels run from 128°52'E to 129°04'E; the red uncertainty ellipse is centered on the 37°38'N / 128°58'E grid intersection. Do not show any 129°2x' or 37°3x' labels outside that range."
+    }
+  ]
+}

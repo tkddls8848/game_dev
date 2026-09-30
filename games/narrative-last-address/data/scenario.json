@@ -1,0 +1,39 @@
+{
+  "slug": "narrative-last-address",
+  "kind": "apartment",
+  "title": "마지막 이삿날",
+  "english": "THE LAST ADDRESS",
+  "tagline": "내일이면 주소가 사라진다. 오늘은 아직 이웃이다.",
+  "instructions": "세 집의 문에 귀를 기울여 사정을 알아보세요. 작은 도움에 시간을 쓴 뒤 마지막 이삿차에 태울 한 가구를 정합니다.",
+  "question": "마지막 선택보다 그전에 건넨 작은 도움이 기억에 남는가?",
+  "values": [
+    8
+  ],
+  "items": [
+    {
+      "id": "301",
+      "title": "301호 · 정복만",
+      "text": "상자를 끄는 소리. 혼자서는 장롱을 문밖으로 꺼낼 수 없다.",
+      "detail": "장롱을 함께 옮기기"
+    },
+    {
+      "id": "302",
+      "title": "302호 · 김여진",
+      "text": "고양이를 부르는 소리. 이삿짐 사이에서 반려묘가 보이지 않는다.",
+      "detail": "계단 아래 고양이 찾기"
+    },
+    {
+      "id": "303",
+      "title": "303호 · 한난실",
+      "text": "아무 소리도 없다. 짐을 쌀 상자도, 갈 곳까지 옮길 차도 없었다.",
+      "detail": "상자와 테이프 가져오기"
+    }
+  ],
+  "palette": {
+    "background": "#262a2b",
+    "surface": "#363b3b",
+    "paper": "#efe4cd",
+    "accent": "#dfa677",
+    "muted": "#bdc0b4"
+  }
+}

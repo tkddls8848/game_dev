@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>테이프 감식</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#050504}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#e6dcc4}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;
+ background:radial-gradient(ellipse at 40% 30%,#2a2620,#131210 70%);}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.mono{font-family:"DejaVu Sans Mono","Consolas",monospace}
+.tabs{position:absolute;right:24px;top:22px;z-index:60;display:flex;gap:6px}
+.tabs button{font:700 12px/1 "DejaVu Sans Mono",monospace;padding:8px 12px;background:#1b1914;color:#8f866f;border:1px solid #3a352a;border-radius:3px;cursor:pointer;box-shadow:inset 0 -2px 0 #0a0908}
+.tabs button.on{background:#e8a33a;color:#1b1206;border-color:#e8a33a}
+.panel{position:absolute;background:linear-gradient(#26231d,#1a1814);border:1px solid #3a352a;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 30px rgba(0,0,0,.6)}
+.panel .lbl{position:absolute;left:14px;top:10px;font:700 11px/1 "DejaVu Sans Mono",monospace;letter-spacing:2px;color:#8f866f}
+.screw{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#8a8272,#2a2620);box-shadow:inset 0 0 0 1px #111}
+.screw::after{content:"";position:absolute;left:1px;right:1px;top:4px;height:2px;background:#1a1814;transform:rotate(35deg)}
+/* header */
+.case{position:absolute;left:30px;top:22px;display:flex;align-items:center;gap:18px}
+.case .no{font:900 13px/1 "DejaVu Sans Mono",monospace;background:#e8a33a;color:#1b1206;padding:8px 10px;border-radius:2px}
+.case b{font-size:26px;letter-spacing:-.5px}
+.case span{font-size:14px;color:#8f866f;letter-spacing:1px}
+/* deck */
+.deck{left:30px;top:78px;width:470px;height:360px}
+.reel{position:absolute;top:44px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,#1a1814 0 18%,#6a5a42 18.5% 30%,#3a2f22 30.5% 62%,#8a8272 62.5% 64%,#2a2620 64.5%);box-shadow:0 6px 14px rgba(0,0,0,.6),inset 0 0 0 3px #4a4436}
+.reel::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 20deg,rgba(0,0,0,.55) 20deg 45deg,transparent 45deg 140deg,rgba(0,0,0,.55) 140deg 165deg,transparent 165deg 260deg,rgba(0,0,0,.55) 260deg 285deg,transparent 285deg);-webkit-mask:radial-gradient(circle,transparent 0 30%,#000 30.5% 60%,transparent 61%);mask:radial-gradient(circle,transparent 0 30%,#000 30.5% 60%,transparent 61%)}
+.reel.l{left:40px;animation:spin 3.2s linear infinite reverse}.reel.r{left:260px;animation:spin 2.4s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tapepath{position:absolute;left:120px;top:210px;width:230px;height:40px;border-bottom:4px solid #4a3522;border-radius:0 0 40% 40%}
+.head{position:absolute;left:205px;top:236px;width:60px;height:30px;background:linear-gradient(#c9c2b0,#7a7466);border-radius:3px}
+.counter{position:absolute;left:30px;top:282px;display:flex;gap:10px;align-items:center}
+.counter .dig{font:700 26px/1 "DejaVu Sans Mono",monospace;background:#0a0908;color:#f3e9d0;padding:6px 10px;border-radius:3px;letter-spacing:3px;box-shadow:inset 0 2px 4px #000}
+.tbtn{width:44px;height:34px;border-radius:3px;background:linear-gradient(#d8d0bc,#9a927e);border:1px solid #1a1814;display:grid;place-items:center;color:#1b1914;font-size:14px;cursor:pointer;box-shadow:0 3px 0 #4a4436}
+.tbtn:active,.tbtn.on{transform:translateY(2px);box-shadow:0 1px 0 #4a4436;background:linear-gradient(#e8a33a,#b07a22)}
+/* VU */
+.vus{left:30px;top:456px;width:470px;height:170px;display:flex;gap:14px;padding:34px 16px 16px}
+.vu{flex:1;position:relative;background:linear-gradient(#f3e3b0,#e0c784);border-radius:4px;overflow:hidden;box-shadow:inset 0 0 20px rgba(120,70,0,.5),inset 0 0 0 2px #2a2620}
+.vu svg{position:absolute;inset:0}
+.vu .nd{position:absolute;left:50%;bottom:-8px;width:2px;height:108px;background:#1a1208;transform-origin:50% 100%;transform:rotate(-40deg)}
+.vu span{position:absolute;left:0;right:0;bottom:8px;text-align:center;font:900 12px/1 "DejaVu Sans Mono",monospace;color:#5a3a12}
+/* spectrogram */
+.spec{left:520px;top:78px;width:760px;height:548px}
+.spec canvas{position:absolute;left:14px;top:34px;width:732px;height:450px;border-radius:3px;background:#030805}
+.spec .crt{position:absolute;left:14px;top:34px;width:732px;height:450px;border-radius:3px;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.6));box-shadow:inset 0 0 30px rgba(0,0,0,.8)}
+.band{position:absolute;left:14px;width:732px;border-top:2px solid #e8a33a;border-bottom:2px solid #e8a33a;background:rgba(232,163,58,.08);cursor:ns-resize;z-index:3}
+.band::before{content:"대역 통과";position:absolute;right:8px;top:-20px;font:700 11px/1 "DejaVu Sans Mono",monospace;color:#e8a33a;background:#1a1814;padding:3px 6px}
+.band i{position:absolute;left:50%;top:50%;width:40px;height:6px;margin:-3px -20px;border-radius:3px;background:#e8a33a}
+.axis{position:absolute;left:14px;right:14px;bottom:30px;display:flex;justify-content:space-between;font:700 11px/1 "DejaVu Sans Mono",monospace;color:#6f6754}
+.yax{position:absolute;right:20px;top:40px;bottom:66px;display:flex;flex-direction:column;justify-content:space-between;font:700 10px/1 "DejaVu Sans Mono",monospace;color:#6f6754;z-index:4;text-align:right}
+.voices{position:absolute;left:24px;top:44px;z-index:4;display:flex;gap:8px}
+.voices span{font:700 11px/1 "DejaVu Sans Mono",monospace;padding:4px 7px;border-radius:2px}
+/* rack */
+.rack{left:1300px;top:78px;width:270px;height:548px;padding:36px 16px 16px}
+.fx{background:#12110e;border:1px solid #3a352a;border-radius:4px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.fx .led{width:9px;height:9px;border-radius:50%;background:#3a2a10}
+.fx .led.on{background:#ffb13b;box-shadow:0 0 8px #ffb13b}
+.fx b{font-size:14px;display:block}
+.fx small{font:700 11px/1.2 "DejaVu Sans Mono",monospace;color:#8f866f}
+.knob{margin-left:auto;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#6a6252,#1a1814 70%);box-shadow:0 3px 6px #000,inset 0 0 0 2px #0a0908;position:relative;cursor:grab}
+.knob::after{content:"";position:absolute;left:50%;top:4px;width:3px;height:12px;margin-left:-1.5px;background:#e8a33a;border-radius:2px}
+.clar{margin-top:14px}
+.clar small{font:700 11px/1 "DejaVu Sans Mono",monospace;color:#8f866f;letter-spacing:2px}
+.clar b{display:block;font:900 44px/1.1 "DejaVu Sans Mono",monospace;color:#ffb13b;text-shadow:0 0 12px rgba(255,177,59,.4)}
+.clar .bar{height:8px;background:#0a0908;border-radius:4px;overflow:hidden;margin-top:6px}
+.clar .bar i{display:block;height:100%;background:linear-gradient(90deg,#8a4a12,#ffb13b);transition:width .2s}
+/* transcript */
+.trans{left:30px;top:646px;width:1540px;height:326px;padding:40px 30px 20px;background:linear-gradient(#efe6cf,#e2d6b8);color:#241c10;border-color:#b8a980}
+.trans .lbl{color:#7a6a4c}
+.line{display:flex;gap:18px;align-items:baseline;padding:12px 0;border-bottom:1px dashed #b8a980;font-size:24px}
+.line .ts{font:700 14px/1 "DejaVu Sans Mono",monospace;color:#7a6a4c;width:90px;flex:none}
+.line .who{font:900 13px/1 "DejaVu Sans Mono",monospace;padding:4px 6px;border-radius:2px;flex:none}
+.w{display:inline-block;transition:filter .3s,opacity .3s,background .3s;padding:0 2px}
+.w.x{filter:blur(6px);opacity:.55;background:rgba(36,28,16,.12)}
+.w.new{background:#ffd98a;border-radius:2px}
+.snaps{margin-top:18px;font:700 12px/1 'DejaVu Sans Mono',monospace;color:#8f866f}
+.snaps small{letter-spacing:2px;display:block;margin-bottom:8px}
+.snaps div{display:flex;gap:8px;align-items:center;padding:7px 8px;border-top:1px solid #3a352a;color:#c9bfa4}
+.snaps div.on{background:rgba(232,163,58,.12);color:#ffb13b}
+.snaps i{font-style:normal;color:#6f6754}
+.snaps em{font-style:normal;margin-left:auto}
+.foot{display:flex;gap:12px;align-items:center;margin-top:22px}
+.chip{font:700 14px/1 inherit;font-family:inherit;background:#241c10;color:#efe6cf;padding:9px 12px;border-radius:3px}
+.chip.dim{background:transparent;color:#7a6a4c;border:1px solid #b8a980}
+.keys{margin-left:auto;font:700 12px/1 'DejaVu Sans Mono',monospace;color:#7a6a4c}
+.stamp{position:absolute;right:40px;top:30px;border:4px solid #b0281c;color:#b0281c;font-weight:900;font-size:22px;padding:6px 12px;transform:rotate(6deg);opacity:.85;letter-spacing:2px}
+/* B */
+.board{position:absolute;left:30px;top:78px;width:1540px;height:894px;border-radius:6px;background:
+ radial-gradient(circle at 1px 1px,rgba(0,0,0,.18) 1px,transparent 1.5px) 0 0/5px 5px,linear-gradient(#b58a58,#8e6a40);box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 20px 40px rgba(0,0,0,.6)}
+.paper{position:absolute;background:#f3ecdc;color:#241c10;padding:24px 26px;box-shadow:0 10px 20px rgba(0,0,0,.45)}
+.paper h4{font:700 12px/1 "DejaVu Sans Mono",monospace;letter-spacing:2px;color:#7a6a4c;margin-bottom:10px}
+.paper h3{font-size:26px;margin-bottom:12px;letter-spacing:-.5px}
+.paper p{font-size:20px;line-height:1.7}
+.pin{position:absolute;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff7a6a,#9a1a10);box-shadow:0 3px 4px rgba(0,0,0,.5);z-index:3}
+.hl{background:#ffd98a;padding:0 3px}
+.hl.red{background:#ffb3a8;text-decoration:line-through;text-decoration-color:#b0281c;text-decoration-thickness:3px}
+.bigstamp{position:absolute;border:7px double #b0281c;color:#b0281c;font:900 58px/1 "Pretendard",sans-serif;padding:12px 24px;transform:rotate(-10deg);letter-spacing:6px;opacity:.9;background:rgba(243,236,220,.25)}
+.wave{position:absolute;background:#0a0f0a;border:8px solid #1a1814;border-radius:6px;box-shadow:0 10px 20px rgba(0,0,0,.5)}
+.wave canvas{display:block}
+.prog{position:absolute;left:60px;bottom:40px;display:flex;gap:8px;align-items:center;font:700 13px/1 "DejaVu Sans Mono",monospace;color:#2a1a08}
+.prog i{width:28px;height:36px;background:#f3ecdc;border:1px solid #7a5a30;display:grid;place-items:center;font-style:normal;font-size:12px;box-shadow:0 2px 3px rgba(0,0,0,.3)}
+.prog i.d{background:#2a1a08;color:#f3ecdc}
+.prog i.c{background:#e8a33a;border-color:#2a1a08}
+</style>
+</head>
+<body>
+<div id="stage">
+<nav class="tabs"><button data-s="a">1 · 필터 복원</button><button data-s="b">2 · 모순 발견</button></nav>
+<div class="case"><span class="no">사건 07 / 15</span><b>부두 3번 창고 화재</b><span>증거물 7-C · 경비실 자동응답기 테이프 · 겹쳐 녹음됨</span></div>
+
+<section class="screen" id="a">
+ <div class="panel deck"><span class="lbl">REEL · 증거 7-C</span><div class="screw" style="left:8px;bottom:8px"></div><div class="screw" style="right:8px;bottom:8px"></div>
+  <div class="reel l"></div><div class="reel r"></div><div class="tapepath"></div><div class="head"></div>
+  <div class="counter"><span class="dig mono" id="ctr">0412</span><div class="tbtn" id="rew">◀◀</div><div class="tbtn on" id="play">▶</div><div class="tbtn">■</div><div class="tbtn" id="rev">↺</div></div>
+ </div>
+ <div class="panel vus"><span class="lbl">입력 레벨</span>
+  <div class="vu"><svg viewBox="0 0 210 120"><path d="M20 100 A90 90 0 0 1 190 100" fill="none" stroke="#5a3a12" stroke-width="2"/><path d="M150 38 A90 90 0 0 1 190 100" fill="none" stroke="#b0281c" stroke-width="6"/><g stroke="#5a3a12" stroke-width="2"><line x1="36" y1="60" x2="44" y2="66"/><line x1="70" y1="32" x2="74" y2="42"/><line x1="105" y1="24" x2="105" y2="34"/><line x1="140" y1="32" x2="136" y2="42"/></g></svg><div class="nd" id="n1"></div><span>목소리 A</span></div>
+  <div class="vu"><svg viewBox="0 0 210 120"><path d="M20 100 A90 90 0 0 1 190 100" fill="none" stroke="#5a3a12" stroke-width="2"/><path d="M150 38 A90 90 0 0 1 190 100" fill="none" stroke="#b0281c" stroke-width="6"/><g stroke="#5a3a12" stroke-width="2"><line x1="36" y1="60" x2="44" y2="66"/><line x1="70" y1="32" x2="74" y2="42"/><line x1="105" y1="24" x2="105" y2="34"/><line x1="140" y1="32" x2="136" y2="42"/></g></svg><div class="nd" id="n2"></div><span>목소리 B</span></div>
+ </div>
+ <div class="panel spec"><span class="lbl">스펙트로그램 · 04:12 – 04:30</span>
+  <div class="voices"><span style="background:#ff7a4a;color:#1b1206">A 남성 · 위층 녹음</span><span style="background:#5ae0c8;color:#06201a">B 여성 · 아래층 녹음</span></div>
+  <canvas id="spec" width="732" height="450"></canvas><div class="crt"></div>
+  <div class="band" id="band" style="top:190px;height:120px"><i></i></div>
+  <div class="yax"><span>4k</span><span>2k</span><span>1k</span><span>500</span><span>250</span><span>Hz</span></div>
+  <div class="axis"><span>04:12</span><span>04:16</span><span>04:20</span><span>04:24</span><span>04:28</span></div>
+ </div>
+ <div class="panel rack"><span class="lbl">이펙트 체인</span>
+  <div class="fx"><span class="led on"></span><div><b>대역 통과</b><small id="bpTxt">310–620 Hz</small></div><div class="knob" style="transform:rotate(20deg)"></div></div>
+  <div class="fx"><span class="led on"></span><div><b>험 제거</b><small>60 Hz · −24dB</small></div><div class="knob" style="transform:rotate(-40deg)"></div></div>
+  <div class="fx"><span class="led"></span><div><b>역재생</b><small>꺼짐</small></div><div class="knob" style="transform:rotate(-120deg)"></div></div>
+  <div class="fx"><span class="led on"></span><div><b>속도 보정</b><small>0.94×</small></div><div class="knob" style="transform:rotate(-15deg)"></div></div>
+  <div class="clar"><small>명료도 · 목소리 B</small><b id="clar">61%</b><div class="bar"><i id="clb" style="width:61%"></i></div></div>
+  <div class="snaps"><small>스냅샷</small><div><i>#1</i>저역 차단만<em>38%</em></div><div><i>#2</i>+ 험 제거<em>47%</em></div><div class="on"><i>#3</i>+ 대역 통과<em id="snap3">64%</em></div></div>
+ </div>
+ <div class="panel trans"><span class="lbl">복원 진술 · 목소리 B</span><span class="stamp">복원 중</span>
+  <div class="line"><span class="ts">04:13.2</span><span class="who" style="background:#5ae0c8">B</span><span id="t1"></span></div>
+  <div class="line"><span class="ts">04:17.8</span><span class="who" style="background:#5ae0c8">B</span><span id="t2"></span></div>
+  <div class="line" style="opacity:.55"><span class="ts">04:15.0</span><span class="who" style="background:#ff7a4a">A</span><span>…여기는 동진물류 경비실입니다. 용건이 있으시면 삐 소리 후에…</span></div>
+  <div class="foot"><span class="chip">대조할 진술 · 한동석 "밤 10시에 퇴근했습니다"</span><span class="chip dim">남은 되감기 4</span><span class="keys">드래그 / ↑↓ 대역 이동 · 휠 폭 조절 · 되감기 ◀◀ · 역재생 ↺</span></div>
+ </div>
+</section>
+
+<section class="screen" id="b">
+ <div class="board">
+  <div class="paper" style="left:50px;top:50px;width:600px;transform:rotate(-1.5deg)"><div class="pin" style="left:290px;top:-8px"></div>
+   <h4>진술서 · 용의자 한동석 (경비원)</h4><h3>"그날은 일찍 나갔습니다."</h3>
+   <p>저는 <span class="hl red">밤 10시에 퇴근</span>했습니다.<br>창고 열쇠는 사무실에 두고 갔고,<br>불이 난 건 다음 날 아침에 알았습니다.</p></div>
+  <div class="paper" style="left:760px;top:40px;width:720px;transform:rotate(1.2deg)"><div class="pin" style="left:350px;top:-8px"></div>
+   <h4>복원 테이프 7-C · 목소리 B · 04:13–04:21</h4><h3>"동석 씨, 아직 거기 있어요?"</h3>
+   <p>"동석 씨, 아직 거기 있어요? <span class="hl">열한 시 사십 분</span>인데<br>3번 창고 불이 켜져 있어서요.<br>열쇠, <span class="hl">그 사람한테 줬다면서요</span>."</p></div>
+  <div class="wave" style="left:780px;top:370px"><canvas id="clean" width="680" height="150"></canvas></div>
+  <svg style="position:absolute;inset:0;pointer-events:none" viewBox="0 0 1540 894"><path d="M300 250 C420 420 700 420 900 190" stroke="#b0281c" stroke-width="4" fill="none" stroke-dasharray="2 0"/><path d="M340 200 C500 330 760 330 1010 250" stroke="#b0281c" stroke-width="3" fill="none" opacity=".6"/></svg>
+  <div class="bigstamp" style="left:250px;top:430px">모순 발견</div>
+  <div class="paper" style="left:120px;top:590px;width:520px;transform:rotate(2deg);background:#fffbe8"><div class="pin" style="left:250px;top:-8px"></div>
+   <h4>감식 메모</h4><p style="font-size:18px">자동응답기 녹음 시각 <b>23:40</b>. 퇴근했다는 사람이 전화를 받을 수 있는 자리에 있었다.<br>"그 사람"은 누구인가 → 사건 08로 이어짐</p></div>
+  <div class="paper" style="left:780px;top:560px;width:680px;background:#e9f2ea;transform:rotate(-.6deg)">
+   <h4>복원 기록</h4><p style="font-size:17px;font-family:'DejaVu Sans Mono',monospace;line-height:1.8">필터 체인: 대역 통과 310–620Hz → 험 제거 → 속도 0.94×<br>명료도 38% → <b>94%</b> · 되감기 11회 · 소요 06:42<br>평가: <b style="color:#b0281c">S</b> — 핵심 문장 2개 모두 복원</p></div>
+  <div class="prog">해결한 사건<i class="d">1</i><i class="d">2</i><i class="d">3</i><i class="d">4</i><i class="d">5</i><i class="d">6</i><i class="c">7</i><i>8</i><i>9</i><i>10</i><i>11</i><i>12</i><i>13</i><i>14</i><i>15</i></div>
+ </div>
+</section>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var k=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+addEventListener('resize',fit);fit();
+var AC=null;function ac(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){AC=null}return AC;}
+function hissBand(lo,hi){var c=ac();if(!c)return;var t=c.currentTime,len=.5,b=c.createBuffer(1,c.sampleRate*len,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.6;var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=Math.sqrt(lo*hi);f.Q.value=Math.max(.5,Math.sqrt(lo*hi)/(hi-lo));var g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.25,t+.03);g.gain.linearRampToValueAtTime(0,t+len);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);
+ var o=c.createOscillator(),og=c.createGain();o.type='sawtooth';o.frequency.value=Math.sqrt(lo*hi)*.5;var lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=hi;og.gain.setValueAtTime(0,t);og.gain.linearRampToValueAtTime(.04,t+.05);og.gain.linearRampToValueAtTime(0,t+.45);o.connect(lp);lp.connect(og);og.connect(c.destination);o.start(t);o.stop(t+.5);}
+function clunk(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(50,t+.08);g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.15);}
+function whirr(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.setValueAtTime(200,t);o.frequency.linearRampToValueAtTime(900,t+.6);g.gain.setValueAtTime(.05,t);g.gain.linearRampToValueAtTime(0,t+.7);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.75);}
+
+// spectrogram (static base drawn once, then scrolling playhead)
+var cv=document.getElementById('spec'),g=cv&&cv.getContext?cv.getContext('2d'):null,W=732,H=450;
+var seed=5;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+var base=null;
+function drawBase(){if(!g)return;var img=g.createImageData(W,H),D=img.data;
+ for(var x=0;x<W;x++){
+  var t=x/W;
+  // voice A (male): formants low, bursts
+  var aOn=(Math.sin(t*23)+Math.sin(t*7.3))>-.2;var bOn=(Math.sin(t*19+1)+Math.sin(t*5.1+2))>0;
+  for(var y=0;y<H;y++){var fy=1-y/H;var v=rnd()*.28*(1-fy*.5); var r=0,gg=0,bb=0;
+   // hum line
+   if(Math.abs(y-(H-22))<2)v+=.5;
+   // A harmonics
+   if(aOn){for(var h=1;h<9;h++){var cy=H-18-h*26-Math.sin(t*9)*6*h;var dd=Math.abs(y-cy);if(dd<4)r+=.9*(1-dd/4)/(h*.5);}}
+   // B harmonics (higher)
+   if(bOn){for(var h2=1;h2<7;h2++){var cy2=H-30-h2*48-Math.sin(t*13+1)*9*h2;var d2=Math.abs(y-cy2);if(d2<4)gg+=.95*(1-d2/4)/(h2*.45);}}
+   var k=(y*W+x)*4;D[k]=Math.min(255,(v*120+r*255+gg*40));D[k+1]=Math.min(255,(v*170+r*90+gg*230));D[k+2]=Math.min(255,(v*110+r*40+gg*200));D[k+3]=255;}
+ }
+ g.putImageData(img,0,0);base=g.getImageData(0,0,W,H);}
+drawBase();
+var ph=0;function tick(){if(g&&base){g.putImageData(base,0,0);ph=(ph+1.2)%W;g.fillStyle='rgba(255,177,59,.85)';g.fillRect(ph,0,2,H);g.fillStyle='rgba(255,177,59,.08)';g.fillRect(0,0,ph,H);}
+ var n1=document.getElementById('n1'),n2=document.getElementById('n2');var tt=Date.now()/1000;if(n1)n1.style.transform='rotate('+(-40+40+Math.sin(tt*5)*18+Math.sin(tt*13)*8)+'deg)';if(n2)n2.style.transform='rotate('+(-40+30+Math.sin(tt*4+1)*20+Math.sin(tt*11)*6)+'deg)';
+ requestAnimationFrame(tick);}
+requestAnimationFrame(tick);
+
+// transcript words with clarity threshold
+var L1=[['동석',30],['씨,',30],['아직',45],['거기',55],['있어요?',40],['열한',78],['시',78],['사십',88],['분인데',70]];
+var L2=[['3번',65],['창고',50],['불이',55],['켜져',60],['있어서요.',50],['열쇠,',72],['그',92],['사람한테',95],['줬다면서요.',85]];
+function render(cl){[['t1',L1],['t2',L2]].forEach(function(p){var e=document.getElementById(p[0]);if(!e)return;e.innerHTML=p[1].map(function(w){var ok=cl>=w[1];return '<span class="w'+(ok?'':' x')+'">'+(ok?w[0]:w[0].replace(/./g,'■'))+'</span>';}).join(' ');});
+ document.getElementById('clar').textContent=Math.round(cl)+'%';var s3=document.getElementById('snap3');if(s3)s3.textContent=Math.round(cl)+'%';document.getElementById('clb').style.width=cl+'%';}
+// band drag
+var band=document.getElementById('band'),drag=null;
+function freq(y){var f=1-(y-34)/450;return Math.round(250*Math.pow(16,f));}
+function updBand(){var top=parseFloat(band.style.top)||band.offsetTop,h=parseFloat(band.style.height)||band.offsetHeight;var hi=freq(top),lo=freq(top+h);document.getElementById('bpTxt').textContent=lo+'–'+hi+' Hz';
+ // best band center ~ 250..(voice B) around top=250 region
+ var center=top+h/2;var cl=Math.max(12,94-Math.abs(center-300)*.55-Math.max(0,h-110)*.25);render(cl);return [lo,hi];}
+band.addEventListener('pointerdown',function(e){drag={y:e.clientY,t:band.offsetTop};try{band.setPointerCapture(e.pointerId)}catch(_){}});
+band.addEventListener('pointermove',function(e){if(!drag)return;var k=stage.getBoundingClientRect().width/1600||1;var nt=Math.max(34,Math.min(34+450-(parseFloat(band.style.height)||120),drag.t+(e.clientY-drag.y)/k));band.style.top=nt+'px';updBand();});
+band.addEventListener('pointerup',function(){if(!drag)return;drag=null;var f=updBand();hissBand(f[0],f[1]);});
+band.addEventListener('wheel',function(e){e.preventDefault();var h=Math.max(50,Math.min(300,band.offsetHeight+(e.deltaY>0?10:-10)));band.style.height=h+'px';updBand();},{passive:false});
+band.style.top='190px';updBand();
+// transport
+var ctr=412;setInterval(function(){ctr=(ctr+1)%10000;var e=document.getElementById('ctr');if(e)e.textContent=('000'+ctr).slice(-4);},900);
+['rew','play','rev'].forEach(function(id){var b=document.getElementById(id);if(b)b.onclick=function(){clunk();if(id!=='play')whirr();document.querySelectorAll('.tbtn').forEach(function(q){q.classList.remove('on')});b.classList.add('on');}});
+
+// clean waveform B
+(function(){var c=document.getElementById('clean');if(!c||!c.getContext)return;var x=c.getContext('2d');x.fillStyle='#0a0f0a';x.fillRect(0,0,680,150);x.strokeStyle='rgba(90,224,200,.15)';for(var i=0;i<680;i+=34){x.beginPath();x.moveTo(i,0);x.lineTo(i,150);x.stroke();}
+ for(var i=0;i<680;i+=3){var env=Math.max(0,Math.sin(i/680*Math.PI*6))*Math.max(0,Math.sin(i/40));var h=6+env*55*(0.6+rnd()*.4);var hl=(i>250&&i<370);x.fillStyle=hl?'#ffb13b':'#5ae0c8';x.fillRect(i,75-h,2,h*2);}
+ x.fillStyle='#ffb13b';x.font='bold 13px monospace';x.fillText('23:40 — "열한 시 사십 분"',256,18);x.strokeStyle='#ffb13b';x.strokeRect(250,24,122,110);})();
+
+var tabs=document.querySelectorAll('.tabs button');
+function show(id){if(id!=='a'&&id!=='b')id='a';document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});tabs.forEach(function(b){b.classList.toggle('on',b.dataset.s===id)});if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}
+tabs.forEach(function(b){b.onclick=function(){clunk();show(b.dataset.s)}});
+addEventListener('hashchange',function(){show(location.hash.slice(1))});
+addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');else if(e.key==='ArrowUp'||e.key==='ArrowDown'){var nt=Math.max(34,Math.min(34+450-(parseFloat(band.style.height)||120),(parseFloat(band.style.top)||190)+(e.key==='ArrowUp'?-10:10)));band.style.top=nt+'px';var f=updBand();hissBand(f[0],f[1]);}});
+show(location.hash.slice(1)||'a');
+})();
+</script>
+</body>
+</html>

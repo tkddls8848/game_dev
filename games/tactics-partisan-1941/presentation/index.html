@@ -1,0 +1,906 @@
+<!doctype html>
+<!--
+  연출 목업 — 소비에트 구성주의 포스터.
+
+  **data/ 의 실제 JSON을 읽어 그린다.** 손으로 그린 그림이 아니어야 비교가 된다.
+  순찰 시간축·감시 공백·소음 도달 범위는 여기서 다시 계산한다 —
+  src/PatrolModel.cs · NoiseModel.cs 와 같은 규칙이고, 값이 어긋나면 화면에서 보인다.
+
+  이 페이지가 보여 주려는 것 하나:
+  **정찰 단계에서 무엇이 보이는가.** 그게 이 게임의 핵이기 때문이다.
+
+  여는 법 (fetch 는 file:// 에서 막힌다):
+      cd games/tactics-partisan-1941
+      python -m http.server 8731
+      → http://localhost:8731/presentation/index.html
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>능선 초소</title>
+<style>
+@font-face { font-family: "Black Han Sans"; src: url("assets/fonts/BlackHanSans-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Stardos Stencil"; src: url("assets/fonts/StardosStencil-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Nanum Gothic"; src: url("assets/fonts/NanumGothic-Regular.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --void: #0B0A0A;
+  --ink: #161211;
+  --surface: #1E1A18;
+  --paper: #EDE3CB;
+  --paper-dim: #D6CAAE;
+  --accent: #C1272D;
+  --accent-deep: #8C1519;
+  --muted: #7A6F5E;
+  --diag: -18deg;
+  --rule-thick: 6px;
+  --rule-thin: 2px;
+  --misreg: 3px;
+  --gutter: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; background: var(--void); }
+
+body {
+  font-family: "Nanum Gothic", "Malgun Gothic", sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 거친 인쇄 — 종이 결 + 망점. 정지한 입자여야 인쇄물이 된다 */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+body::before {
+  background-image: url("assets/textures/paper-grain.jpg");
+  background-size: 620px;
+  opacity: .22;
+  mix-blend-mode: overlay;
+}
+body::after {
+  background-image: radial-gradient(var(--paper) 1.1px, transparent 1.2px);
+  background-size: 6px 6px;
+  opacity: .14;
+  mix-blend-mode: soft-light;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) 96px; position: relative; z-index: 1; }
+
+/* ── 머리 ────────────────────────────────────────────────────────────── */
+header { position: relative; padding: 40px 0 28px; overflow: hidden; }
+header::before {
+  content: "";
+  position: absolute;
+  left: -30%; right: -30%; top: 54%;
+  height: 160px;
+  background: var(--accent);
+  transform: rotate(var(--diag));
+  z-index: -1;
+}
+h1 {
+  font-family: "Black Han Sans", "Malgun Gothic", sans-serif;
+  font-size: clamp(38px, 9vw, 76px);
+  line-height: .92;
+  letter-spacing: -2px;
+  margin: 0;
+  color: var(--paper);
+  /* 미스레지스터: 붉은 판이 살짝 밀려 찍혔다 */
+  text-shadow: var(--misreg) calc(var(--misreg) * -1) 0 var(--accent-deep);
+}
+.tagline { font-size: 17px; margin: 14px 0 0; max-width: 46ch; color: var(--paper); }
+.kicker {
+  font-family: "Stardos Stencil", monospace;
+  letter-spacing: 2px;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: var(--void);
+  background: var(--paper);
+  display: inline-block;
+  padding: 2px 10px;
+  margin-bottom: 12px;
+}
+
+/* ── 공통 ────────────────────────────────────────────────────────────── */
+h2 {
+  font-family: "Black Han Sans", "Malgun Gothic", sans-serif;
+  font-size: clamp(22px, 4vw, 34px);
+  letter-spacing: -1px;
+  margin: 56px 0 6px;
+  border-bottom: var(--rule-thick) solid var(--accent);
+  padding-bottom: 6px;
+}
+h2 .num {
+  font-family: "Stardos Stencil", monospace;
+  color: var(--accent);
+  font-size: .6em;
+  margin-right: 10px;
+  vertical-align: 12%;
+}
+.lede { color: var(--paper-dim); font-size: 15px; margin: 0 0 20px; max-width: 70ch; }
+.stencil { font-family: "Stardos Stencil", monospace; letter-spacing: 1px; }
+.num { font-family: "Stardos Stencil", monospace; font-variant-numeric: tabular-nums; }
+
+/* ── 임무 탭 ─────────────────────────────────────────────────────────── */
+.tabs { display: flex; flex-wrap: wrap; gap: 0; margin: 24px 0 8px; }
+.tab {
+  font-family: "Black Han Sans", "Malgun Gothic", sans-serif;
+  font-size: 15px;
+  background: transparent;
+  color: var(--paper-dim);
+  border: var(--rule-thin) solid var(--muted);
+  border-right-width: 0;
+  padding: 9px 14px;
+  cursor: pointer;
+  text-align: left;
+}
+.tab:last-child { border-right-width: var(--rule-thin); }
+.tab[aria-pressed="true"] { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+.tab:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+
+.brief {
+  border-left: var(--rule-thick) solid var(--accent);
+  background: var(--ink);
+  padding: 14px 18px;
+  margin: 0 0 8px;
+}
+.brief .goal { color: var(--paper-dim); font-size: 14px; margin-top: 6px; }
+
+/* ── 정찰 토글 ───────────────────────────────────────────────────────── */
+.toggles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 22px 0 14px; }
+.toggle {
+  font-family: "Stardos Stencil", monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  background: var(--ink);
+  color: var(--paper-dim);
+  border: var(--rule-thin) solid var(--muted);
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.toggle[aria-pressed="true"] { background: var(--paper); color: var(--void); border-color: var(--paper); }
+.toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ── 구역 지도 ───────────────────────────────────────────────────────── */
+.mapbox { background: var(--ink); border: var(--rule-thin) solid var(--muted); padding: 8px; }
+svg.map { display: block; width: 100%; height: auto; }
+.zone-plate { fill: var(--surface); stroke: var(--paper-dim); stroke-width: 2; }
+.zone-plate.vantage { fill: var(--accent-deep); stroke: var(--paper); stroke-width: 4; }
+.zone-plate.target { stroke: var(--accent); stroke-width: 4; }
+.zone-plate.unseen { fill: #121010; stroke: #3a352f; stroke-dasharray: 5 5; }
+.zone-name { font-family: "Black Han Sans", "Malgun Gothic", sans-serif; font-size: 15px; fill: var(--paper); }
+.zone-meta { font-family: "Stardos Stencil", monospace; font-size: 11px; fill: var(--paper-dim); letter-spacing: 1px; }
+.zone-note { font-size: 10.5px; fill: var(--muted); }
+.link-move { stroke: var(--paper-dim); stroke-width: 3; }
+.link-move.blocked { stroke: var(--accent); stroke-dasharray: 2 6; stroke-width: 4; }
+.link-sight { stroke: var(--accent); stroke-width: 2.2; stroke-dasharray: 8 5; opacity: .95; }
+.link-sight.dim { opacity: .18; }
+.guard-dot { fill: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 13px; color: var(--paper-dim); }
+.legend i { display: inline-block; width: 26px; height: 0; border-top: 3px solid; margin-right: 6px; vertical-align: 4px; }
+
+/* ── 시간축 ──────────────────────────────────────────────────────────── */
+.timeline { margin-top: 10px; }
+.tl-row { display: grid; grid-template-columns: 116px 1fr 124px; gap: 10px; align-items: center; margin-bottom: 6px; }
+.tl-note { font-family: "Stardos Stencil", monospace; font-size: 11px; color: var(--paper-dim); letter-spacing: .5px; }
+.tl-label { font-family: "Black Han Sans", "Malgun Gothic", sans-serif; font-size: 13px; text-align: right; }
+.tl-track { position: relative; height: 30px; background: var(--surface); border: var(--rule-thin) solid var(--muted); }
+.tl-seg { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; border-right: 1px solid var(--void); }
+.tl-seg span { font-family: "Stardos Stencil", monospace; font-size: 10px; letter-spacing: .5px; white-space: nowrap; }
+.tl-shift { position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 3px solid var(--paper); }
+.tl-shift::after {
+  content: attr(data-at);
+  position: absolute; top: -17px; left: 3px;
+  font-family: "Stardos Stencil", monospace; font-size: 10px; color: var(--paper);
+  white-space: nowrap;
+}
+.tl-axis { display: grid; grid-template-columns: 116px 1fr 124px; gap: 10px; margin-top: 4px; }
+.tl-ticks { position: relative; height: 18px; }
+.tl-ticks span { position: absolute; font-family: "Stardos Stencil", monospace; font-size: 10px; color: var(--muted); transform: translateX(-50%); }
+.tl-gap { position: absolute; top: 4px; bottom: 4px; background: repeating-linear-gradient(var(--diag), var(--paper) 0 3px, transparent 3px 7px); }
+
+/* ── 표 ──────────────────────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: var(--rule-thin) solid #2e2823; vertical-align: top; }
+th {
+  font-family: "Stardos Stencil", monospace;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--void); background: var(--paper-dim);
+}
+td.n { font-family: "Stardos Stencil", monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr:hover td { background: #191513; }
+
+/* ── 카드 ────────────────────────────────────────────────────────────── */
+.cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 8px; }
+.card { background: var(--ink); border: var(--rule-thin) solid var(--muted); padding: 16px; position: relative; overflow: hidden; }
+.card::before {
+  content: "";
+  position: absolute; right: -40px; top: -40px;
+  width: 120px; height: 120px; background: var(--accent);
+  transform: rotate(var(--diag)); opacity: .18;
+}
+.card h3 { font-family: "Black Han Sans", "Malgun Gothic", sans-serif; font-size: 22px; margin: 0 0 2px; }
+.card .role { color: var(--paper-dim); font-size: 13.5px; margin: 0 0 12px; }
+.card ul { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+.card li { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid #2e2823; padding: 5px 0; }
+.card li b { font-family: "Stardos Stencil", monospace; font-weight: normal; color: var(--accent); }
+.icon { width: 18px; height: 19px; vertical-align: -3px; color: var(--accent); }
+
+.checkers li { display: flex; gap: 10px; align-items: baseline; border-top: 1px solid #2e2823; padding: 7px 0; font-size: 14px; }
+.checkers { list-style: none; padding: 0; margin: 8px 0 0; }
+.checkers .ok { color: var(--accent); font-family: "Stardos Stencil", monospace; }
+
+.note { background: var(--ink); border-left: var(--rule-thick) solid var(--paper-dim); padding: 12px 16px; font-size: 14px; color: var(--paper-dim); margin-top: 18px; }
+.err { background: var(--accent-deep); color: var(--paper); padding: 20px; margin: 40px 0; }
+.err code { background: rgba(0,0,0,.45); padding: 2px 6px; }
+footer { margin-top: 64px; border-top: var(--rule-thick) solid var(--accent); padding-top: 14px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 620px) {
+  .tl-row, .tl-axis { grid-template-columns: 74px 1fr 88px; }
+  .tl-note { font-size: 10px; }
+  .tl-label { font-size: 11px; }
+  .tab { flex: 1 1 40%; border-right-width: var(--rule-thin); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">헤드리스 PoC · 실시간 전술 × 거점 경영</div>
+    <h1 id="title">능선 초소</h1>
+    <p class="tagline">순찰을 며칠 지켜보고, 한 번의 매복으로 초소를 지운다.
+      이 화면은 <b>정찰 단계에서 무엇이 보이는가</b>를 <span class="stencil">data/</span> 의 실제 수치로 그린다.</p>
+  </header>
+
+  <div id="app" hidden>
+    <h2><span class="num">01</span>임무</h2>
+    <p class="lede">세 임무가 각각 다른 사람을 반드시 요구한다. 수치는 <span class="stencil">mission.json</span> 그대로다.</p>
+    <div class="tabs" id="tabs" role="group" aria-label="임무 선택"></div>
+    <div class="brief" id="brief"></div>
+
+    <h2><span class="num">02</span>구역 지도</h2>
+    <p class="lede">지도에는 <b>좌표가 없다</b>. 구역과 인접 관계뿐이고, 배치는 연출이 정한다
+      (<span class="stencil">palette.json</span> 의 layout). 실선은 걸어갈 수 있는 인접,
+      붉은 점선은 소음 차폐, 얇은 점선 화살표는 시선이다.</p>
+    <div class="toggles" id="toggles">
+      <button class="toggle" id="t-recon" aria-pressed="true">정찰에서 보이는 것만</button>
+      <button class="toggle" id="t-sight" aria-pressed="true">시선 표시</button>
+    </div>
+    <div class="mapbox"><svg class="map" id="map" viewBox="0 0 1000 560" role="img"
+        aria-label="구역과 인접 관계를 그린 지도"></svg></div>
+    <div class="legend">
+      <span><i style="border-color:#D6CAAE"></i>인접 (이동 · 소음)</span>
+      <span><i style="border-color:#C1272D;border-top-style:dashed"></i>소음 차폐</span>
+      <span><i style="border-color:#C1272D;border-top-width:1.6px;border-top-style:dashed"></i>시선</span>
+      <span>굵은 흰 테두리 = 정찰 벤티지</span>
+      <span>점선 회색 = 정찰 사각</span>
+    </div>
+    <div class="note" id="recon-note"></div>
+
+    <h2><span class="num">03</span>순찰 시간축</h2>
+    <p class="lede">두 순찰의 주기와 교대 시각. <span class="stencil">patrols.json</span> 의 체류 시간에서
+      다시 계산했다 — <span class="stencil">src/PatrolModel.cs</span> 와 같은 규칙이다.
+      흰 세로선이 교대 시각이다.</p>
+    <div class="timeline" id="timeline"></div>
+
+    <h2><span class="num">04</span>감시 공백</h2>
+    <p class="lede"><b>이 표가 정찰의 산출물이다.</b> 구역마다 "살아 있는 순찰병 누구에게도 보이지 않는 구간".
+      계획 단계에서 플레이어가 노리는 것이 이 줄무늬다. 사선 줄무늬가 공백이다.</p>
+    <div class="timeline" id="gaps"></div>
+    <div class="note" id="gap-note"></div>
+
+    <h2><span class="num">05</span>분대 3인</h2>
+    <p class="lede">수단이 겹치지 않는다. 겹치면 한 명만 쓰는 최적해가 생긴다
+      (<span class="stencil">squad.json</span>).</p>
+    <div class="cards" id="squad"></div>
+
+    <h2><span class="num">06</span>소음이 닿는 범위</h2>
+    <p class="lede">거리가 아니라 <b>인접 몇 홉</b>으로 판정한다. 한 홉마다
+      <span class="num" id="atten"></span> 이 깎이고, 도착 음량이
+      <span class="num" id="thresh"></span> 미만이면 들리지 않는다.</p>
+    <table id="noise"><thead><tr><th>수단</th><th>음량</th><th>닿는 홉</th><th>이 지도에서 닿는 구역 (초소에서 냈을 때)</th></tr></thead><tbody></tbody></table>
+
+    <h2><span class="num">07</span>거점</h2>
+    <p class="lede">임무 사이에 빼앗은 보급으로 무엇을 고칠지 고른다 (<span class="stencil">camp.json</span>).</p>
+    <div class="cards" id="camp"></div>
+
+    <h2><span class="num">08</span>검사기 일곱</h2>
+    <p class="lede">Phase는 "구현했다"가 아니라 "검사기가 통과한다"로 닫는다.
+      아래는 <span class="stencil">tests/</span> 에 실제로 있는 것들이다.</p>
+    <ul class="checkers" id="checkers"></ul>
+    <div class="note">기계가 판정할 수 없는 것 둘: <b>지켜보는 며칠이 지루한가</b>,
+      <b>매복이 터질 때 통쾌한가</b>. 둘 다 사람이 플레이해야 안다 — README 의 판정 칸에 미확인이라고 적었다.</div>
+
+    <footer>
+      에셋은 CC0 · 퍼블릭 도메인 · OFL 뿐이다 (<span class="stencil">CREDITS.md</span>).
+      배경은 1941년 동부 전선 파르티잔이지만 실존 인물·부대·사건을 쓰지 않는다 — 무명의 가상 분대다.
+    </footer>
+  </div>
+
+  <div class="err" id="err" hidden>
+    <h2 style="margin-top:0;border:0">데이터를 읽지 못했다</h2>
+    <p><code>file://</code> 에서는 <code>fetch</code> 가 막힌다. 이 목업은 <b>data/ 의 실제 JSON을 읽어</b> 그리므로
+      작은 서버가 필요하다:</p>
+    <p><code>cd games/tactics-partisan-1941 &amp;&amp; python -m http.server 8731</code><br>
+      → <code>http://localhost:8731/presentation/index.html</code></p>
+    <p id="err-detail" class="stencil"></p>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────
+   1. 데이터 읽기. 손으로 옮겨 적은 값이 하나도 없어야 이 목업이 쓸모가 있다.
+   ───────────────────────────────────────────────────────────────────────── */
+const FILES = {
+  map: "../data/map.json",
+  patrols: "../data/patrols.json",
+  squad: "../data/squad.json",
+  mission: "../data/mission.json",
+  camp: "../data/camp.json",
+  balance: "../data/balance.json",
+  palette: "palette.json"
+};
+
+const D = {};
+let missionId = null;
+let showReconOnly = true;
+let showSight = true;
+
+async function boot() {
+  try {
+    const entries = await Promise.all(
+      Object.entries(FILES).map(async ([key, url]) => {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(url + " → HTTP " + res.status);
+        return [key, await res.json()];
+      })
+    );
+    for (const [key, value] of entries) D[key] = value;
+  } catch (e) {
+    document.getElementById("err").hidden = false;
+    document.getElementById("err-detail").textContent = String(e.message || e);
+    return;
+  }
+  document.getElementById("app").hidden = false;
+  missionId = D.mission.missions[0].id;
+  applyPalette();
+  buildTabs();
+  buildSquad();
+  buildCamp();
+  buildCheckers();
+  render();
+}
+
+/* palette.json 이 색과 크기의 단일 출처다. CSS 변수로 부어 넣는다. */
+function applyPalette() {
+  const p = D.palette, root = document.documentElement.style;
+  root.setProperty("--void", p.color.void);
+  root.setProperty("--ink", p.color.ink);
+  root.setProperty("--surface", p.color.surface);
+  root.setProperty("--paper", p.color.paper);
+  root.setProperty("--paper-dim", p.color.paperDim);
+  root.setProperty("--accent", p.color.accent);
+  root.setProperty("--accent-deep", p.color.accentDeep);
+  root.setProperty("--muted", p.color.muted);
+  root.setProperty("--diag", p.layout.diagonalDeg + "deg");
+  root.setProperty("--rule-thick", p.print.ruleThickPx + "px");
+  root.setProperty("--rule-thin", p.print.ruleThinPx + "px");
+  root.setProperty("--misreg", p.print.misregisterPx + "px");
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2. 순찰 시간축 — src/PatrolModel.cs 와 같은 규칙을 여기서 다시 돈다.
+      legs 의 dwellMs 합이 주기, phaseOptionsMs[0] 이 위상, 교대가 위상을 갈아탄다.
+   ───────────────────────────────────────────────────────────────────────── */
+function mod(v, m) { const r = v % m; return r < 0 ? r + m : r; }
+
+function patrolWindows(guard, shifts, lengthMs) {
+  const starts = [];
+  let acc = 0;
+  for (const leg of guard.legs) { starts.push(acc); acc += leg.dwellMs; }
+  const cycle = acc;
+
+  const segStart = [0], segPhase = [mod(guard.phaseOptionsMs[0], cycle)];
+  for (const sc of shifts) {
+    if (sc.guardId !== guard.id || sc.atMs <= 0 || sc.atMs >= lengthMs) continue;
+    segStart.push(sc.atMs);
+    segPhase.push(mod(sc.newPhaseMs, cycle));
+  }
+
+  const out = [];
+  for (let s = 0; s < segStart.length; s++) {
+    const from = segStart[s];
+    const to = s + 1 < segStart.length ? segStart[s + 1] : lengthMs;
+    let t = from;
+    while (t < to) {
+      const local = mod(segPhase[s] + (t - from), cycle);
+      let leg = 0;
+      for (let i = guard.legs.length - 1; i >= 0; i--) if (local >= starts[i]) { leg = i; break; }
+      const remaining = starts[leg] + guard.legs[leg].dwellMs - local;
+      const end = Math.min(to, t + remaining);
+      const last = out[out.length - 1];
+      if (last && last.zone === guard.legs[leg].zone && last.toMs === t) last.toMs = end;
+      else out.push({ guardId: guard.id, zone: guard.legs[leg].zone, fromMs: t, toMs: end });
+      t = end;
+    }
+  }
+  return out;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   3. 소음 전파 — src/NoiseModel.cs 와 같은 규칙. 인접 홉 + 차폐만 본다.
+   ───────────────────────────────────────────────────────────────────────── */
+function propagate(map, nb, origin, loudness) {
+  if (loudness < nb.hearingThresholdPercent) return [];
+  const adj = {}, extra = {};
+  for (const z of map.zones) adj[z.id] = [];
+  for (const l of map.links) { adj[l.a].push(l.b); adj[l.b].push(l.a); }
+  for (const b of (map.noiseBlocked || [])) {
+    extra[b.a + "|" + b.b] = b.extraAttenuation;
+    extra[b.b + "|" + b.a] = b.extraAttenuation;
+  }
+  const cost = { [origin]: 0 }, hops = { [origin]: 0 }, done = new Set(), reach = [];
+  for (;;) {
+    let cur = null, best = Infinity;
+    for (const k in cost) if (!done.has(k) && cost[k] < best) { cur = k; best = cost[k]; }
+    if (cur === null) break;
+    done.add(cur);
+    const arrival = loudness - best;
+    if (arrival < nb.hearingThresholdPercent) continue;
+    reach.push({ zone: cur, loudness: arrival, hops: hops[cur] });
+    for (const n of adj[cur]) {
+      const step = best + nb.hopAttenuation + (extra[cur + "|" + n] || 0);
+      if (!(n in cost) || step < cost[n]) { cost[n] = step; hops[n] = hops[cur] + 1; }
+    }
+  }
+  return reach;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   4. 그리기
+   ───────────────────────────────────────────────────────────────────────── */
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const svgEl = (tag, attrs) => {
+  const n = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+};
+const secs = (ms) => (ms / 1000).toFixed(0) + "s";
+const clock = (ms) => {
+  const t = Math.round(ms / 1000);
+  return String(Math.floor(t / 60)) + ":" + String(t % 60).padStart(2, "0");
+};
+
+function mission() { return D.mission.missions.find((m) => m.id === missionId); }
+function mapOf(m) { return D.map.maps.find((x) => x.id === m.mapId); }
+function guardsOf(m) { return m.guardIds.map((id) => D.patrols.guards.find((g) => g.id === id)); }
+function sightOf(map, zone) { const s = map.sightLines.find((x) => x.from === zone); return s ? s.sees : []; }
+
+function observableZones(map) {
+  const seen = new Set();
+  for (const v of map.reconVantages) for (const z of sightOf(map, v)) seen.add(z);
+  return seen;
+}
+
+function buildTabs() {
+  const box = $("tabs");
+  box.textContent = "";
+  for (const m of D.mission.missions) {
+    const b = el("button", "tab", m.name);
+    b.setAttribute("aria-pressed", String(m.id === missionId));
+    b.addEventListener("click", () => { missionId = m.id; buildTabs(); render(); });
+    box.appendChild(b);
+  }
+}
+
+function render() {
+  const m = mission(), map = mapOf(m);
+  $("title").textContent = m.name;
+  document.title = m.name;
+  renderBrief(m, map);
+  renderMap(m, map);
+  renderTimeline(m, map);
+  renderGaps(m, map);
+  renderNoise(m, map);
+}
+
+function renderBrief(m, map) {
+  const box = $("brief");
+  box.textContent = "";
+  box.appendChild(el("div", null, m.brief));
+  const goals = [];
+  for (const g of m.eliminateGuardIds) goals.push("순찰병 제거 " + D.patrols.guards.find((x) => x.id === g).name);
+  for (const t of m.destroyTargetIds) goals.push("폭파 " + D.mission.targets.find((x) => x.id === t).name);
+  for (const i of m.seizeIntelIds) goals.push("탈취 " + D.mission.intel.find((x) => x.id === i).name);
+  const line = el("div", "goal");
+  line.innerHTML = "<b>승리 조건</b> " + goals.join(" · ")
+    + " · 전원 " + map.zones.find((z) => z.id === map.extractionZone).name + " 복귀"
+    + ' <span class="num">' + clock(m.extractDeadlineMs) + "</span> 까지"
+    + " · 허용 경보 <span class=\"num\">" + m.maxAlarm + "</span>"
+    + " (<span class=\"num\">" + m.alarmThreshold + "</span> 에 닿으면 즉시 실패)"
+    + " · 씨드 <span class=\"num\">" + m.seed + "</span>";
+  box.appendChild(line);
+}
+
+function renderMap(m, map) {
+  const svg = $("map");
+  svg.textContent = "";
+  const L = D.palette.layout;
+  const cols = L.gridColumns, rows = L.gridRows;
+  const W = 1000, H = 560, padX = 92, padY = 74;
+  const cw = (W - padX * 2) / Math.max(1, cols - 1);
+  const ch = (H - padY * 2) / Math.max(1, rows - 1);
+  const pos = {};
+  for (const z of map.zones) {
+    const cell = L.zones[z.id] || [0, 0];
+    pos[z.id] = { x: padX + cell[0] * cw, y: padY + cell[1] * ch };
+  }
+
+  const obs = observableZones(map);
+  const guardZones = new Set();
+  for (const g of guardsOf(m)) for (const leg of g.legs) guardZones.add(leg.zone);
+  const targetZones = new Set();
+  for (const t of m.destroyTargetIds) targetZones.add(D.mission.targets.find((x) => x.id === t).zone);
+  for (const i of m.seizeIntelIds) targetZones.add(D.mission.intel.find((x) => x.id === i).zone);
+
+  const blocked = new Set();
+  for (const b of (map.noiseBlocked || [])) blocked.add([b.a, b.b].sort().join("|"));
+
+  const gLinks = svgEl("g", {});
+  for (const l of map.links) {
+    const a = pos[l.a], b = pos[l.b];
+    const isBlocked = blocked.has([l.a, l.b].sort().join("|"));
+    gLinks.appendChild(svgEl("line", {
+      x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+      class: "link-move" + (isBlocked ? " blocked" : "")
+    }));
+  }
+  svg.appendChild(gLinks);
+
+  if (showSight) {
+    const gSight = svgEl("g", {});
+    for (const zone of map.zones) {
+      if (!guardZones.has(zone.id)) continue;   // 순찰병이 서는 자리의 시선만 그린다 — 그게 위험의 정의다
+      const dim = showReconOnly && !obs.has(zone.id);
+      for (const to of sightOf(map, zone.id)) {
+        if (to === zone.id) continue;
+        const a = pos[zone.id], b = pos[to];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const ux = dx / len, uy = dy / len;
+        gSight.appendChild(svgEl("line", {
+          x1: a.x + ux * 48, y1: a.y + uy * 30,
+          x2: b.x - ux * 56, y2: b.y - uy * 36,
+          class: "link-sight" + (dim ? " dim" : ""),
+          "marker-end": "url(#arrow)"
+        }));
+      }
+    }
+    const defs = svgEl("defs", {});
+    const marker = svgEl("marker", {
+      id: "arrow", viewBox: "0 0 10 10", refX: "9", refY: "5",
+      markerWidth: "5", markerHeight: "5", orient: "auto-start-reverse"
+    });
+    marker.appendChild(svgEl("path", { d: "M0 0 L10 5 L0 10 z", fill: D.palette.color.accent }));
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+    svg.appendChild(gSight);
+  }
+
+  for (const z of map.zones) {
+    const p = pos[z.id];
+    const hidden = showReconOnly && !obs.has(z.id);
+    const cls = ["zone-plate"];
+    if (map.reconVantages.includes(z.id)) cls.push("vantage");
+    if (targetZones.has(z.id)) cls.push("target");
+    if (hidden) cls.push("unseen");
+    const g = svgEl("g", {});
+    g.appendChild(svgEl("rect", {
+      x: p.x - 92, y: p.y - 30, width: 184, height: 74,
+      class: cls.join(" "), transform: "rotate(" + L.diagonalDeg / 6 + " " + p.x + " " + p.y + ")"
+    }));
+    const name = svgEl("text", { x: p.x - 82, y: p.y - 8, class: "zone-name" });
+    name.textContent = z.name;
+    g.appendChild(name);
+    const meta = svgEl("text", { x: p.x - 82, y: p.y + 11, class: "zone-meta" });
+    meta.textContent = "엄폐 " + z.coverPercent + "%"
+      + (map.reconVantages.includes(z.id) ? " · 정찰 자리" : "")
+      + (guardZones.has(z.id) ? " · 순찰" : "");
+    g.appendChild(meta);
+    const spots = (map.concealment || []).filter((c) => c.zone === z.id);
+    if (spots.length) {
+      const note = svgEl("text", { x: p.x - 82, y: p.y + 28, class: "zone-note" });
+      note.textContent = "은폐 " + spots[0].name + " +" + spots[0].hideBonusPercent + "%";
+      g.appendChild(note);
+    }
+    svg.appendChild(g);
+  }
+
+  const obsList = map.zones.filter((z) => obs.has(z.id)).map((z) => z.name);
+  const hiddenList = map.zones.filter((z) => !obs.has(z.id)).map((z) => z.name);
+  $("recon-note").innerHTML =
+    "<b>정찰 벤티지</b> " + map.reconVantages.map((v) => map.zones.find((z) => z.id === v).name).join(" · ")
+    + " → 여기서 보이는 구역 <b>" + obsList.length + "/" + map.zones.length + "</b>: " + obsList.join(", ")
+    + (hiddenList.length ? "<br><b>정찰 사각</b> " + hiddenList.join(", ")
+        + " — 순찰병이 이 구역을 밟으면 <span class=\"stencil\">DetectionFairness</span> 가 실패한다."
+      : "<br>사각이 없다. 순찰병이 밟는 구역이 전부 정찰에서 보인다 — "
+        + "<span class=\"stencil\">DetectionFairness</span> 의 정적 보장이 이것이다.");
+}
+
+function trackRow(label, build, note) {
+  const row = el("div", "tl-row");
+  row.appendChild(el("div", "tl-label", label));
+  const track = el("div", "tl-track");
+  build(track);
+  row.appendChild(track);
+  row.appendChild(el("div", "tl-note", note || ""));
+  return row;
+}
+
+function renderTimeline(m, map) {
+  const box = $("timeline");
+  box.textContent = "";
+  const span = m.lengthMs;
+  // 붉은색·검정·크림 셋의 농도 변형만 쓴다. 네 번째 색을 들이면 연출이 무너진다.
+  const shades = [D.palette.color.accent, D.palette.color.paperDim, D.palette.color.accentDeep,
+                  "#8E857A", "#5A514A", D.palette.color.paper];
+  const zoneColor = (zone) => shades[map.zones.findIndex((z) => z.id === zone) % shades.length];
+  const light = new Set([D.palette.color.paperDim, D.palette.color.paper, "#8E857A"]);
+
+  for (const g of guardsOf(m)) {
+    const windows = patrolWindows(g, D.patrols.shiftChanges, span);
+    const cycleMs = g.legs.reduce((a, leg) => a + leg.dwellMs, 0);
+    box.appendChild(trackRow(g.name, (track) => {
+      for (const w of windows) {
+        const seg = el("div", "tl-seg");
+        seg.style.left = (w.fromMs / span * 100) + "%";
+        seg.style.width = ((w.toMs - w.fromMs) / span * 100) + "%";
+        const c = zoneColor(w.zone);
+        seg.style.background = c;
+        seg.style.color = light.has(c) ? D.palette.color.void : D.palette.color.paper;
+        const zn = map.zones.find((z) => z.id === w.zone);
+        seg.title = zn.name + " " + clock(w.fromMs) + "–" + clock(w.toMs)
+          + " (" + w.fromMs + "–" + w.toMs + "ms)";
+        seg.appendChild(el("span", null, zn.name));
+        track.appendChild(seg);
+      }
+      for (const sc of D.patrols.shiftChanges) {
+        if (sc.guardId !== g.id || !m.shiftChangeIds.includes(sc.id)) continue;
+        if (sc.atMs <= 0 || sc.atMs >= span) continue;
+        const mark = el("div", "tl-shift");
+        mark.style.left = (sc.atMs / span * 100) + "%";
+        mark.dataset.at = "교대 " + clock(sc.atMs);
+        mark.title = sc.note;
+        track.appendChild(mark);
+      }
+    }, "주기 " + clock(cycleMs)));
+  }
+
+  const axis = el("div", "tl-axis");
+  axis.appendChild(el("div", "tl-label", "회차 " + clock(span)));
+  const ticks = el("div", "tl-ticks");
+  for (let t = 60000; t <= span; t += 60000) {   // 0:00 은 왼쪽 라벨과 겹친다
+    const s = el("span", "num", clock(t));
+    s.style.left = (t / span * 100) + "%";
+    ticks.appendChild(s);
+  }
+  axis.appendChild(ticks);
+  axis.appendChild(el("div", "tl-note", ""));
+  box.appendChild(axis);
+}
+
+/* 구역마다 "살아 있는 순찰병 누구에게도 보이지 않는 구간". 정찰의 산출물이다. */
+function renderGaps(m, map) {
+  const box = $("gaps");
+  box.textContent = "";
+  const span = m.lengthMs;
+  const tick = D.balance.tickMs;
+  const guards = guardsOf(m);
+  const windows = guards.map((g) => patrolWindows(g, D.patrols.shiftChanges, span));
+
+  const zoneAt = (gi, ms) => {
+    for (const w of windows[gi]) if (ms >= w.fromMs && ms < w.toMs) return w.zone;
+    return null;
+  };
+
+  let bestZone = null, bestGap = -1;
+  for (const z of map.zones) {
+    const watched = new Array(Math.ceil(span / tick)).fill(false);
+    for (let k = 0; k < watched.length; k++) {
+      const ms = k * tick;
+      for (let gi = 0; gi < guards.length; gi++) {
+        const gz = zoneAt(gi, ms);
+        if (gz && sightOf(map, gz).includes(z.id)) { watched[k] = true; break; }
+      }
+    }
+    const gaps = [];
+    let start = -1;
+    for (let k = 0; k <= watched.length; k++) {
+      if (k < watched.length && !watched[k]) { if (start < 0) start = k; }
+      else if (start >= 0) { gaps.push([start * tick, k * tick]); start = -1; }
+    }
+    const longest = gaps.reduce((a, g) => Math.max(a, g[1] - g[0]), 0);
+    if (longest > bestGap && !map.reconVantages.includes(z.id)) { bestGap = longest; bestZone = z; }
+
+    box.appendChild(trackRow(z.name, (track) => {
+      for (const [a, b] of gaps) {
+        const seg = el("div", "tl-gap");
+        seg.style.left = (a / span * 100) + "%";
+        seg.style.width = ((b - a) / span * 100) + "%";
+        seg.title = "감시 공백 " + clock(a) + "–" + clock(b) + " (" + (b - a) + "ms)";
+        track.appendChild(seg);
+      }
+    }, gaps.length ? gaps.length + "구간 · 최장 " + secs(longest) : "공백 없음"));
+  }
+
+  $("gap-note").innerHTML = bestZone
+    ? "가장 오래 비는 곳은 <b>" + bestZone.name + "</b> — 최장 <span class=\"num\">"
+      + secs(bestGap) + "</span>. 공병의 설치가 <span class=\"num\">"
+      + D.squad.members.find((x) => x.id === "sapper").actions[0].durationMs / 1000
+      + "초</span>, 정찰병의 탈취가 <span class=\"num\">"
+      + D.squad.members.find((x) => x.id === "scout").actions[0].durationMs / 1000
+      + "초</span> 걸린다. <b>공백이 그보다 길어야 계획이 선다.</b>"
+    : "";
+}
+
+function renderNoise(m, map) {
+  const nb = D.balance.noise;
+  $("atten").textContent = nb.hopAttenuation;
+  $("thresh").textContent = nb.hearingThresholdPercent;
+  const body = $("noise").querySelector("tbody");
+  body.textContent = "";
+  const origin = map.zones.find((z) => z.id === (m.destroyTargetIds.length
+    ? D.mission.targets.find((x) => x.id === m.destroyTargetIds[0]).zone
+    : map.zones[map.zones.length - 1].id));
+
+  for (const member of D.squad.members) {
+    for (const a of member.actions) {
+      const reach = propagate(map, nb, origin.id, a.noiseLoudness);
+      const maxHops = a.noiseLoudness < nb.hearingThresholdPercent
+        ? -1 : Math.floor((a.noiseLoudness - nb.hearingThresholdPercent) / nb.hopAttenuation);
+      const tr = el("tr");
+      tr.appendChild(el("td", null, member.name + " · " + a.kind));
+      tr.appendChild(el("td", "n", String(a.noiseLoudness)));
+      tr.appendChild(el("td", "n", maxHops < 0 ? "들리지 않는다" : maxHops + "홉"));
+      tr.appendChild(el("td", null, reach.length
+        ? reach.map((r) => map.zones.find((z) => z.id === r.zone).name + " " + r.loudness).join(" · ")
+        : "—"));
+      body.appendChild(tr);
+    }
+  }
+  const cap = el("tr");
+  const td = el("td", null);
+  td.colSpan = 4;
+  td.style.color = D.palette.color.muted;
+  td.style.fontSize = "13px";
+  td.textContent = "기준 자리: " + origin.name + ". 구역 이름 뒤 숫자가 도착 음량이다.";
+  cap.appendChild(td);
+  body.appendChild(cap);
+}
+
+function buildSquad() {
+  const box = $("squad");
+  box.textContent = "";
+  const icons = { Shoot: "wave", PlantTrap: "trap", PlantCharge: "gear", Detonate: "star", Infiltrate: "eye" };
+  for (const mem of D.squad.members) {
+    const card = el("div", "card");
+    card.appendChild(el("h3", null, mem.name));
+    card.appendChild(el("p", "role", mem.role));
+    const ul = el("ul");
+    const add = (k, v) => { const li = el("li"); li.appendChild(el("span", null, k)); li.appendChild(el("b", null, v)); ul.appendChild(li); };
+    add("은밀", mem.stealthPercent + "%");
+    add("한 구역 이동", mem.moveMsPerZone / 1000 + "초");
+    add("교전", mem.canEngage ? "가능" : "불가");
+    for (const a of mem.actions) {
+      const li = el("li");
+      const left = el("span");
+      const img = document.createElement("img");
+      img.className = "icon";
+      img.src = "assets/icons/" + (icons[a.kind] || "star") + ".svg";
+      img.alt = "";
+      left.appendChild(img);
+      left.appendChild(document.createTextNode(" " + a.kind));
+      li.appendChild(left);
+      li.appendChild(el("b", null, a.durationMs / 1000 + "초 · 소음 " + a.noiseLoudness
+        + (a.charges >= 0 ? " · " + a.charges + "회" : "")));
+      ul.appendChild(li);
+    }
+    card.appendChild(ul);
+    box.appendChild(card);
+  }
+}
+
+function buildCamp() {
+  const box = $("camp");
+  box.textContent = "";
+  const supplies = el("div", "card");
+  supplies.appendChild(el("h3", null, "보급"));
+  supplies.appendChild(el("p", "role", "저장 한계가 발산을 막고, 못 나간 회차의 배급이 고갈을 막는다"));
+  const ul = el("ul");
+  for (const s of D.camp.supplies) {
+    const li = el("li");
+    li.appendChild(el("span", null, s.name));
+    li.appendChild(el("b", null, s.startAmount + " (" + s.floor + "–" + s.ceiling + ")"));
+    ul.appendChild(li);
+  }
+  supplies.appendChild(ul);
+  box.appendChild(supplies);
+
+  const repairs = el("div", "card");
+  repairs.appendChild(el("h3", null, "고칠 것"));
+  repairs.appendChild(el("p", "role", "남는 보급이 흘러나가는 자리"));
+  const ul2 = el("ul");
+  for (const r of D.camp.repairs) {
+    const li = el("li");
+    li.appendChild(el("span", null, r.name));
+    li.appendChild(el("b", null, r.cost + " → 매 회차 +" + r.bonusPerMission));
+    ul2.appendChild(li);
+  }
+  repairs.appendChild(ul2);
+  box.appendChild(repairs);
+
+  const rec = el("div", "card");
+  rec.appendChild(el("h3", null, "손실과 회복"));
+  rec.appendChild(el("p", "role", "되돌릴 수 있어야 하고, 공짜여서는 안 된다"));
+  const ul3 = el("ul");
+  const r = D.camp.recovery;
+  const add3 = (k, v) => { const li = el("li"); li.appendChild(el("span", null, k)); li.appendChild(el("b", null, v)); ul3.appendChild(li); };
+  add3("다칠 확률", r.lossChancePercent + "%");
+  add3("쉬는 회차", r.woundedRecoverMissions + "회");
+  add3("회복 값", "의약품 " + r.medicineCost);
+  add3("마을의 신뢰", "−" + r.trustPenaltyOnLoss);
+  rec.appendChild(ul3);
+  box.appendChild(rec);
+}
+
+function buildCheckers() {
+  const items = [
+    ["TickDeterminism", "같은 씨드·같은 명령 = 같은 결과. 나머지 여섯의 전제다"],
+    ["AmbushSolvability", "적어도 한 계획이 경보 없이 초소를 지운다"],
+    ["DetectionFairness", "실패 원인이 정찰 단계에서 볼 수 있었던 것인가 — 이 PoC의 핵"],
+    ["NoDominantOrder", "모든 임무를 같은 순서·같은 분대원으로는 풀 수 없다"],
+    ["NoiseReachability", "총성·폭발이 닿는 범위가 인접 관계와 맞는다"],
+    ["SupplyEconomy", "N회 시뮬레이션에서 보급이 발산·고갈하지 않는다"],
+    ["AttritionRecoverable", "분대원을 잃어도 되돌릴 수 있고, 잃는 것이 공짜가 아니다"]
+  ];
+  const box = $("checkers");
+  box.textContent = "";
+  items.forEach(([name, why], i) => {
+    const li = el("li");
+    li.appendChild(el("span", "ok", String(i + 1).padStart(2, "0")));
+    const body = el("div");
+    body.appendChild(el("b", "stencil", name));
+    body.appendChild(el("div", null, why));
+    li.appendChild(body);
+    box.appendChild(li);
+  });
+}
+
+$("t-recon").addEventListener("click", (e) => {
+  showReconOnly = !showReconOnly;
+  e.currentTarget.setAttribute("aria-pressed", String(showReconOnly));
+  e.currentTarget.textContent = showReconOnly ? "정찰에서 보이는 것만" : "전부 보기";
+  render();
+});
+$("t-sight").addEventListener("click", (e) => {
+  showSight = !showSight;
+  e.currentTarget.setAttribute("aria-pressed", String(showSight));
+  render();
+});
+
+boot();
+</script>
+</body>
+</html>

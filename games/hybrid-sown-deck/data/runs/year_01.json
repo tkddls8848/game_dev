@@ -1,0 +1,11 @@
+{
+  "id": "year_01",
+  "nameKo": "첫 해",
+  "_": "겨울 하룻밤에 셋이 차례로 온다. 체력은 셋 사이에 이어진다 — 회복하지 않는다.",
+  "playerHp": 44,
+  "visits": [
+    { "order": 0, "enemyId": "enemy_hare", "isBoss": false },
+    { "order": 1, "enemyId": "enemy_roe",  "isBoss": false },
+    { "order": 2, "enemyId": "enemy_boar", "isBoss": true  }
+  ]
+}

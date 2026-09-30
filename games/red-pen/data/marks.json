@@ -1,0 +1,65 @@
+{
+  "_": "붉은 펜의 어휘. 조작은 대화 선택지가 아니라 **이 부호를 문장에 얹는 것**이다.",
+  "_읽는_법": "fixes 가 [\"*\"] 이면 그 문장의 흠을 전부 없앤다(지우는 것도 그렇다). needs* 가 -1 이면 조건이 없다.",
+  "_고치면_생긴다": "★ maxFixes 는 한 번에 낫는 흠의 수다 — 한 부호로 한 흠씩만 낫는다. introducesFlaw 는 **고치다가 새로 생기는 흠**이다: 편집자가 써 넣은 줄은 이 글의 소리가 아니고(∧ → 톤이 어긋난다 55%), 도려낸 자리는 무엇을 가리키는지 흐려진다(⌐ → 모호 30%). 원고가 다섯 번 오가는 이유이고, 되풀이가 공짜가 아닌 이유다.",
+  "_설계": "값이 서로 맞물려 있다 — 잘 듣는 부호일수록 작가를 깎고(목소리·자신감), 다정한 부호일수록 작가의 상태가 좋아야 먹힌다. 한 부호만 되풀이하는 것이 최선이 되지 않는 이유가 이 맞물림이다.",
+
+  "marks": [
+    {
+      "id": "m_leave", "name": "그대로 둔다", "symbol": "",
+      "harshness": 0, "fixes": [], "maxFixes": 0, "introducesFlaw": "", "introducesPercent": -1,
+      "qualityGain": 0, "voiceDelta": 0,
+      "confidenceDelta": 0, "trustDelta": 0, "stubbornDelta": 0,
+      "removesSentence": 0, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "아무 표시도 하지 않는다. 작가는 이 침묵을 읽는다 — 아무것도 아니지는 않다"
+    },
+    {
+      "id": "m_praise", "name": "여백의 칭찬", "symbol": "○",
+      "harshness": 0, "fixes": [], "maxFixes": 0, "introducesFlaw": "", "introducesPercent": -1,
+      "qualityGain": 0, "voiceDelta": 2,
+      "confidenceDelta": 7, "trustDelta": 6, "stubbornDelta": -3,
+      "removesSentence": 0, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "동그라미 하나와 「여기」. 원고는 한 글자도 나아지지 않는다. 다음 봉투가 열릴 확률은 달라진다"
+    },
+    {
+      "id": "m_query", "name": "물음표 주석", "symbol": "?",
+      "harshness": 1, "fixes": ["f_vague", "f_cliche", "f_tone"], "maxFixes": 1, "introducesFlaw": "", "introducesPercent": -1,
+      "qualityGain": 8, "voiceDelta": 6,
+      "confidenceDelta": 3, "trustDelta": 4, "stubbornDelta": -1,
+      "removesSentence": 0, "needsTrustMin": 46, "needsStubbornMax": 62,
+      "note": "★ 고치지 않고 묻는다. 작가가 스스로 찾으면 **목소리가 오히려 산다.** 다만 나를 믿고 있어야 하고, 고집이 서 있으면 물음표는 비아냥으로 읽힌다"
+    },
+    {
+      "id": "m_move", "name": "이동 화살표", "symbol": "↷",
+      "harshness": 2, "fixes": ["f_order"], "maxFixes": 1, "introducesFlaw": "", "introducesPercent": -1,
+      "qualityGain": 10, "voiceDelta": 1,
+      "confidenceDelta": -1, "trustDelta": 1, "stubbornDelta": 0,
+      "removesSentence": 0, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "문장은 건드리지 않고 자리만 옮긴다. 가장 싸게 듣는 부호이고 자리 말고는 아무것도 못 고친다"
+    },
+    {
+      "id": "m_cut", "name": "도려내기", "symbol": "⌐",
+      "harshness": 4, "fixes": ["f_bloat", "f_vague"], "maxFixes": 1, "introducesFlaw": "f_vague", "introducesPercent": 30,
+      "qualityGain": 18, "voiceDelta": -6,
+      "confidenceDelta": -5, "trustDelta": -2, "stubbornDelta": 2,
+      "removesSentence": 0, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "군더더기에 줄을 긋는다. 빠르게 나아지고 조금씩 밋밋해진다"
+    },
+    {
+      "id": "m_insert", "name": "삽입 갈고리", "symbol": "∧",
+      "harshness": 6, "fixes": ["f_inert", "f_cliche", "f_tone", "f_vague"], "maxFixes": 1, "introducesFlaw": "f_tone", "introducesPercent": 55,
+      "qualityGain": 28, "voiceDelta": -17,
+      "confidenceDelta": -8, "trustDelta": -4, "stubbornDelta": 3,
+      "removesSentence": 0, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "★ 편집자가 대신 써 넣는다. 가장 확실하게 좋아지고 **가장 확실하게 작가의 목소리를 지운다.** 이 한 줄이 이 PoC의 축이다"
+    },
+    {
+      "id": "m_delete", "name": "삭제선", "symbol": "⌫",
+      "harshness": 9, "fixes": ["*"], "maxFixes": 9, "introducesFlaw": "", "introducesPercent": -1,
+      "qualityGain": 0, "voiceDelta": 0,
+      "confidenceDelta": -13, "trustDelta": -7, "stubbornDelta": 5,
+      "removesSentence": 1, "needsTrustMin": -1, "needsStubbornMax": -1,
+      "note": "문장을 지운다. 나쁜 문장 하나를 지우면 원고 전체의 평균이 오른다 — 그래서 유혹적이고, 아끼는 문장에 그으면 관계가 끝난다"
+    }
+  ]
+}

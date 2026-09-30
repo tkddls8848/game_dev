@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<!--
+  deck-rewind 연출 목업 — "차가운 실험 기록"
+
+  이 파일은 손으로 그린 그림이 아니다. 아래 다섯 개를 전부 읽어서 그린다:
+    palette.json        색 · 크기 · 필터값 (색을 코드에 박지 않는다)
+    ../data/cards.json      카드 (코스트 · 효과 · 희귀도)
+    ../data/enemies.json    적 (체력 · 행동 패턴 · 기억 배율)
+    ../data/runs/run_01.json  회차 구성
+    scene.json          실제 시뮬레이션 한 판 (tests/SceneExportTests.cs 가 굽는다)
+
+  그래서 데이터를 고치면 이 화면이 같이 바뀐다. 목업이 거짓이 될 수 없다.
+
+  file:// 로 열면 fetch 가 막힌다. 저장소 뿌리에서:
+    python -m http.server 8000 --directory games/deck-rewind
+    http://localhost:8000/presentation/
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>되감기 — 연출 목업</title>
+<style>
+  /* 색과 크기는 전부 palette.json 에서 온다. 여기 박힌 값이 있으면 그건 버그다. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--void);
+    color: var(--paper);
+    font-family: var(--font), ui-monospace, monospace;
+    font-size: var(--size-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 모눈 + 종이 질감. 질감은 에셋이고 격자는 CSS다 — 격자를 이미지로 두면 축척을 못 바꾼다. */
+  .sheet {
+    position: relative;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+    background-color: var(--ink);
+    background-image:
+      linear-gradient(var(--grid-major) var(--hairline), transparent var(--hairline)),
+      linear-gradient(90deg, var(--grid-major) var(--hairline), transparent var(--hairline)),
+      linear-gradient(var(--grid) var(--hairline), transparent var(--hairline)),
+      linear-gradient(90deg, var(--grid) var(--hairline), transparent var(--hairline));
+    background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  }
+  .sheet::before {   /* 종이 질감 — CSS 필터로 청사진 톤으로 민다 (에셋은 원본 그대로) */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("assets/img/paper.jpg");
+    background-size: 700px;
+    opacity: var(--paper-tex-opacity);
+    filter: hue-rotate(var(--paper-hue)) saturate(var(--paper-sat)) brightness(var(--paper-bright));
+    mix-blend-mode: screen;
+  }
+  .sheet::after {    /* 비네트. 정지해 있다 */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 42%, transparent 46%, rgba(0,0,0,var(--vignette)) 100%);
+  }
+  .wrap { position: relative; max-width: 1180px; margin: 0 auto; }
+
+  /* ---- 머리 ---- */
+  header { border-bottom: var(--hairline) solid var(--accent-dim); padding-bottom: 18px; margin-bottom: 8px; }
+  .stamp {
+    display: inline-block; font-size: var(--size-hint); letter-spacing: 3px;
+    color: var(--accent); border: var(--hairline) solid var(--accent-dim);
+    padding: 3px 9px; text-transform: uppercase;
+  }
+  h1 {
+    font-size: var(--size-title); letter-spacing: var(--ls-title); font-weight: 700;
+    margin: 14px 0 6px; color: var(--highlight);
+  }
+  .sub { color: var(--muted); font-size: var(--size-hint); margin: 0; }
+  .oneline { color: var(--paper); margin: 10px 0 0; max-width: 70ch; }
+
+  h2 {
+    font-size: var(--size-heading); font-weight: 700; color: var(--accent);
+    letter-spacing: 2px; margin: 46px 0 4px;
+    border-left: 3px solid var(--accent); padding-left: 10px;
+  }
+  h2 .n { color: var(--muted); font-weight: 400; margin-right: 8px; }
+  .note { color: var(--muted); font-size: var(--size-hint); margin: 0 0 18px; max-width: 78ch; }
+  .note b { color: var(--paper); font-weight: 700; }
+
+  /* ---- 계측 띠 ---- */
+  .readout { display: flex; flex-wrap: wrap; gap: 0; border: var(--hairline) solid var(--grid-major); }
+  .readout > div {
+    flex: 1 1 128px; padding: 10px 12px; border-right: var(--hairline) solid var(--grid-major);
+    background: rgba(0,0,0,0.25);
+  }
+  .readout > div:last-child { border-right: 0; }
+  .readout dt { font-size: var(--size-hint); color: var(--muted); letter-spacing: 1px; }
+  .readout dd { margin: 2px 0 0; font-size: var(--size-number); color: var(--highlight); font-weight: 700; }
+  .readout dd small { font-size: var(--size-hint); color: var(--muted); font-weight: 400; letter-spacing: 0; }
+
+  /* ---- 카드 ---- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(214px, 1fr)); gap: 14px; }
+  .card {
+    position: relative; border: var(--hairline) solid var(--card-edge);
+    background: linear-gradient(180deg, var(--surface-raised), var(--surface));
+    padding: 12px 12px 14px; border-radius: var(--radius);
+    display: flex; flex-direction: column; min-height: 196px;
+  }
+  .card::before {   /* 카드 안쪽 모눈. 카드도 기록지다 */
+    content: ""; position: absolute; inset: 5px; pointer-events: none; opacity: 0.5;
+    background-image:
+      linear-gradient(var(--grid) var(--hairline), transparent var(--hairline)),
+      linear-gradient(90deg, var(--grid) var(--hairline), transparent var(--hairline));
+    background-size: 8px 8px, 8px 8px;
+  }
+  .card > * { position: relative; }
+  .card-top { display: flex; align-items: flex-start; gap: 8px; }
+  .cost {
+    flex: 0 0 auto; width: 30px; height: 30px; border: var(--hairline) solid var(--accent);
+    color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 15px;
+  }
+  .cost.free { border-style: dashed; color: var(--muted); border-color: var(--muted); }
+  .card-name { font-weight: 700; color: var(--highlight); font-size: 16px; line-height: 1.25; }
+  .card-id { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; }
+  .rarity {
+    position: absolute; top: 10px; right: 10px; width: 7px; height: 7px;
+    background: var(--card-edge);
+  }
+  .card-text { color: var(--muted); font-size: var(--size-hint); margin: 10px 0 12px; flex: 1 1 auto; }
+  .effects { display: flex; flex-direction: column; gap: 4px; }
+  .eff {
+    display: flex; align-items: center; gap: 7px; font-size: var(--size-hint);
+    border-top: var(--hairline) solid var(--grid-major); padding-top: 4px;
+  }
+  .eff img { width: 14px; height: 14px; opacity: 0.85; }
+  .eff .amt { color: var(--accent); font-weight: 700; margin-left: auto; }
+  .eff .tgt { color: var(--muted); font-size: 10px; }
+
+  /* ---- 전투 장면 ---- */
+  .scene { border: var(--hairline) solid var(--grid-major); background: rgba(0,0,0,0.3); }
+  .turn {
+    display: grid; grid-template-columns: 54px 1fr 232px;
+    border-bottom: var(--hairline) solid var(--grid-major);
+  }
+  .turn:last-child { border-bottom: 0; }
+  .turn.rewound { background: rgba(63,216,228,0.055); }
+  .tno {
+    border-right: var(--hairline) solid var(--grid-major); padding: 12px 8px;
+    color: var(--muted); font-size: var(--size-hint); text-align: center;
+  }
+  .tno b { display: block; color: var(--accent); font-size: 18px; }
+  .tbody { padding: 12px 14px; min-width: 0; }
+  .tside {
+    border-left: var(--hairline) solid var(--grid-major); padding: 12px 14px;
+    font-size: var(--size-hint);
+  }
+  .bars { display: grid; gap: 6px; margin-bottom: 10px; }
+  .bar { display: grid; grid-template-columns: 58px 1fr 84px; align-items: center; gap: 8px; font-size: var(--size-hint); }
+  .bar .lbl { color: var(--muted); }
+  .bar .track { height: 9px; border: var(--hairline) solid var(--grid-major); position: relative; }
+  .bar .fill { position: absolute; inset: 0 auto 0 0; }
+  .bar .fill.hp { background: var(--accent-dim); }
+  .bar .fill.ehp { background: var(--danger); }
+  .bar .fill.lost { background: repeating-linear-gradient(90deg, var(--danger) 0 2px, transparent 2px 4px); }
+  .bar .val { text-align: right; color: var(--paper); }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    border: var(--hairline) solid var(--grid-major); padding: 2px 7px; font-size: 11px; color: var(--muted);
+  }
+  .chip.played { border-color: var(--accent-dim); color: var(--accent); }
+  .row-label { color: var(--muted); font-size: 10px; letter-spacing: 1px; margin: 9px 0 4px; }
+  .unknown {
+    color: var(--warn); border: var(--hairline) dashed var(--warn); padding: 2px 8px;
+    display: inline-block; font-size: 11px;
+  }
+  .known { color: var(--paper); border: var(--hairline) solid var(--muted); padding: 2px 8px;
+    display: inline-block; font-size: 11px; }
+  .mem { display: flex; gap: 4px; align-items: center; margin-top: 8px; }
+  .mem i { width: 9px; height: 9px; border: var(--hairline) solid var(--muted); display: inline-block; }
+  .mem i.on { background: var(--accent); border-color: var(--accent); }
+  .rewind-mark {
+    margin-top: 9px; color: var(--accent); border-top: var(--hairline) solid var(--accent-dim);
+    padding-top: 6px; font-size: 11px; letter-spacing: 1px;
+  }
+  .rewind-mark img { width: 13px; height: 13px; vertical-align: -2px; margin-right: 5px; }
+  .enemyact { color: var(--paper); font-size: var(--size-hint); margin-top: 8px; }
+  .enemyact .hit { color: var(--danger); font-weight: 700; }
+
+  /* ---- 적 ---- */
+  .enemies { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .enemy { border: var(--hairline) solid var(--grid-major); background: rgba(0,0,0,0.28); padding: 14px; }
+  .enemy h3 { margin: 0; font-size: 17px; color: var(--highlight); }
+  .enemy .meta { color: var(--muted); font-size: 11px; margin-bottom: 10px; }
+  .pattern { display: flex; gap: 5px; flex-wrap: wrap; }
+  .pat {
+    border: var(--hairline) solid var(--grid-major); padding: 4px 7px; font-size: 11px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .pat.attack { border-color: var(--danger); color: var(--danger); }
+  .pat.block { border-color: var(--accent-dim); color: var(--accent); }
+  .memline { margin-top: 10px; font-size: var(--size-hint); color: var(--muted); }
+  .memline table { border-collapse: collapse; margin-top: 5px; }
+  .memline td, .memline th {
+    border: var(--hairline) solid var(--grid-major); padding: 3px 9px; font-size: 11px; text-align: right;
+  }
+  .memline th { color: var(--muted); font-weight: 400; }
+  .memline td { color: var(--highlight); }
+
+  .sfx { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sfx button {
+    font-family: inherit; font-size: var(--size-hint); color: var(--accent);
+    background: var(--surface); border: var(--hairline) solid var(--accent-dim);
+    padding: 8px 14px; cursor: pointer; letter-spacing: 1px; border-radius: var(--radius);
+  }
+  .sfx button:hover { background: var(--surface-raised); border-color: var(--accent); }
+  .sfx button small { display: block; color: var(--muted); letter-spacing: 0; }
+  .err { border: var(--hairline) solid #C4544A; color: #E8A39B; padding: 18px; margin: 30px 0;
+         background: rgba(0,0,0,0.4); }
+  .err code { color: #fff; }
+  footer { margin-top: 54px; border-top: var(--hairline) solid var(--grid-major);
+           padding-top: 14px; color: var(--muted); font-size: 11px; }
+  @media (max-width: 860px) {
+    .turn { grid-template-columns: 44px 1fr; }
+    .tside { grid-column: 1 / -1; border-left: 0; border-top: var(--hairline) solid var(--grid-major); }
+  }
+</style>
+</head>
+<body>
+<div class="sheet"><div class="wrap" id="root">
+  <p class="sub">데이터를 읽는 중…</p>
+</div></div>
+
+<script>
+// ───────────────────────────────────────────────────────────────
+// 전부 데이터에서 온다. 이 파일에 게임 수치를 적지 않는다.
+// ───────────────────────────────────────────────────────────────
+const ICON = {
+  damage: "assets/icons/sword.svg",
+  block: "assets/icons/shield.svg",
+  heal: "assets/icons/flask_full.svg",
+  burn: "assets/icons/fire.svg",
+  draw: "assets/icons/hourglass.svg",
+  energy: "assets/icons/flask_full.svg",
+  strength: "assets/icons/sword.svg",
+  weak: "assets/icons/hourglass.svg",
+  rewind_charge: "assets/icons/arrow_counterclockwise.svg"
+};
+const EFFECT_KO = {
+  damage: "피해", block: "방어", strength: "힘", draw: "드로우", energy: "기력",
+  heal: "회복", weak: "약화", burn: "연소", rewind_charge: "되감기 충전"
+};
+const INTENT_KO = { attack: "공격", block: "방어", weak: "약화", strengthen: "강화", heal: "회복" };
+const TARGET_KO = { self: "자신", enemy: "적", player: "플레이어" };
+const SFX_KO = { cardPlace: "카드 놓기", rewind: "되감기", damage: "피해" };
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+async function getJson(path) {
+  const r = await fetch(path, { cache: "no-store" });
+  if (!r.ok) throw new Error(path + " → HTTP " + r.status);
+  return r.json();
+}
+
+function applyPalette(p) {
+  const s = document.documentElement.style, c = p.color, t = p.type, l = p.line, g = p.grade;
+  s.setProperty("--void", c.void);
+  s.setProperty("--ink", c.ink);
+  s.setProperty("--surface", c.surface);
+  s.setProperty("--surface-raised", c.surfaceRaised);
+  s.setProperty("--paper", c.paper);
+  s.setProperty("--accent", c.accent);
+  s.setProperty("--accent-dim", c.accentDim);
+  s.setProperty("--muted", c.muted);
+  s.setProperty("--highlight", c.highlight);
+  s.setProperty("--warn", c.warn);
+  s.setProperty("--danger", c.danger);
+  s.setProperty("--grid", c.grid);
+  s.setProperty("--grid-major", c.gridMajor);
+  s.setProperty("--font", t.family);
+  s.setProperty("--size-title", t.sizeTitle + "px");
+  s.setProperty("--size-heading", t.sizeHeading + "px");
+  s.setProperty("--size-body", t.sizeBody + "px");
+  s.setProperty("--size-hint", t.sizeHint + "px");
+  s.setProperty("--size-number", t.sizeNumber + "px");
+  s.setProperty("--ls-title", t.letterSpacingTitle + "px");
+  s.setProperty("--hairline", l.hairline + "px");
+  s.setProperty("--radius", l.radius + "px");
+  s.setProperty("--paper-tex-opacity", g.paperTextureOpacity);
+  s.setProperty("--paper-hue", g.paperHueRotateDeg + "deg");
+  s.setProperty("--paper-sat", g.paperSaturate);
+  s.setProperty("--paper-bright", g.paperBrightness);
+  s.setProperty("--vignette", g.vignette);
+  // 글꼴도 palette.json 이 가리키는 파일에서 온다 (OFL, assets/fonts 에 라이선스 전문 동봉).
+  const face = new FontFace(t.family, 'url("' + t.familyFile + '")');
+  face.load().then(f => document.fonts.add(f)).catch(() => {});
+}
+
+function effRow(e) {
+  const icon = ICON[e.type];
+  return '<div class="eff">'
+    + (icon ? '<img src="' + icon + '" alt="">' : "")
+    + '<span>' + esc(EFFECT_KO[e.type] || e.type) + '</span>'
+    + '<span class="tgt">' + esc(TARGET_KO[e.target] || e.target) + '</span>'
+    + '<span class="amt">' + e.amount + '</span></div>';
+}
+
+function cardEl(c, pal) {
+  const edge = pal.rarity[c.rarity] || pal.color.muted;
+  return '<article class="card" style="--card-edge:' + edge + '">'
+    + '<span class="rarity" title="' + esc(c.rarity) + '"></span>'
+    + '<div class="card-top">'
+    +   '<div class="cost' + (c.cost === 0 ? " free" : "") + '">' + c.cost + '</div>'
+    +   '<div><div class="card-name">' + esc(c.nameKo) + '</div>'
+    +       '<div class="card-id">' + esc(c.id) + ' · ' + esc(c.rarity) + '</div></div>'
+    + '</div>'
+    + '<p class="card-text">' + esc(c.textKo) + '</p>'
+    + '<div class="effects">' + c.effects.map(effRow).join("") + '</div>'
+    + '</article>';
+}
+
+function bar(label, cls, cur, max) {
+  const pct = max > 0 ? Math.max(0, Math.min(100, Math.round(cur * 100 / max))) : 0;
+  return '<div class="bar"><span class="lbl">' + esc(label) + '</span>'
+    + '<span class="track"><span class="fill ' + cls + '" style="width:' + pct + '%"></span></span>'
+    + '<span class="val">' + cur + ' / ' + max + '</span></div>';
+}
+
+function turnEl(t, cards) {
+  const name = id => (cards[id] ? cards[id].nameKo : id);
+  const played = t.played.length
+    ? t.played.map(id => '<span class="chip played">' + esc(name(id)) + '</span>').join("")
+    : '<span class="chip">내지 않음</span>';
+  const hand = t.hand.map(id => '<span class="chip">' + esc(name(id)) + '</span>').join("");
+  const intent = t.knownIntentType
+    ? '<span class="known">' + esc(INTENT_KO[t.knownIntentType] || t.knownIntentType)
+      + ' ' + t.knownIntentAmount + ' <small>— 전에 본 수</small></span>'
+    : '<span class="unknown">? 아직 본 적 없는 수</span>';
+  const memDots = Array.from({ length: 4 }, (_, i) =>
+    '<i class="' + (i < t.memory ? "on" : "") + '"></i>').join("");
+  const act = esc(t.enemyAction)
+    .replace(/attack (\d+)/, '<span class="hit">공격 $1</span>')
+    .replace(/dealt=(\d+)/, '실피해 $1').replace(/hp=(\d+)/, '체력 $1')
+    .replace(/enemy /, '적 ').replace(/block (\d+)/, '방어 $1')
+    .replace(/weak (\d+)/, '약화 $1').replace(/strengthen (\d+)/, '강화 $1')
+    .replace(/heal (\d+)/, '회복 $1').replace(/ehp=(\d+)/, '적 체력 $1');
+  return '<div class="turn' + (t.rewoundAfter ? " rewound" : "") + '">'
+    + '<div class="tno">T<b>' + t.round + '</b></div>'
+    + '<div class="tbody">'
+    +   '<div class="bars">'
+    +     bar("나", "hp", t.playerHpAfter, t.playerMaxHp)
+    +     bar("적", "ehp", t.enemyHpAfter, t.enemyMaxHp)
+    +   '</div>'
+    +   '<div class="row-label">손패 ' + t.hand.length + '장 · 기력 ' + t.energy
+    +     ' · 덱 ' + t.deck + ' · 버림 ' + t.discard + '</div>'
+    +   '<div class="chips">' + hand + '</div>'
+    +   '<div class="row-label">낸 카드</div><div class="chips">' + played + '</div>'
+    +   '<div class="enemyact">' + act + '</div>'
+    + '</div>'
+    + '<div class="tside">'
+    +   '<div class="row-label">적의 다음 수</div>' + intent
+    +   '<div class="row-label" style="margin-top:12px">적의 기억</div>'
+    +   '<div class="mem">' + memDots + '<span style="margin-left:6px">' + t.memory + '</span></div>'
+    +   '<div class="row-label" style="margin-top:12px">되감기 충전 ' + t.rewindCharges + '</div>'
+    +   '<div>방어 ' + t.playerBlock + '</div>'
+    +   (t.rewoundAfter
+        ? '<div class="rewind-mark"><img src="assets/icons/arrow_counterclockwise.svg" alt="">'
+          + '이 턴 끝에서 되감았다</div>' : "")
+    + '</div></div>';
+}
+
+function enemyEl(e, pal) {
+  const pat = e.pattern.map(p =>
+    '<span class="pat ' + esc(p.type) + '">'
+    + esc(INTENT_KO[p.type] || p.type) + '<b>' + p.amount + '</b></span>').join("");
+  // 기억 배율은 데이터의 백분율 정수로 계산한다 (엔진과 같은 식, 부동소수 없음).
+  const atk = e.pattern.filter(p => p.type === "attack").map(p => p.amount);
+  const sample = atk.length ? atk[atk.length - 1] : 0;
+  let cells = "", heads = "";
+  for (let m = 0; m <= 3; m++) {
+    const pct = 100 + e.memoryDamagePctPerStack * m;
+    heads += "<th>기억 " + m + "</th>";
+    cells += "<td>" + Math.floor(sample * pct / 100) + "</td>";
+  }
+  return '<div class="enemy"><h3>' + esc(e.nameKo) + '</h3>'
+    + '<div class="meta">' + esc(e.id) + ' · 체력 ' + e.maxHp
+    + ' · 패턴 ' + e.pattern.length + '수 · 기억 +' + e.memoryDamagePctPerStack + '%/회</div>'
+    + '<div class="pattern">' + pat + '</div>'
+    + '<div class="memline">공격 ' + sample + ' 이 기억에 따라 실제로 주는 피해'
+    + '<table><tr>' + heads + '</tr><tr>' + cells + '</tr></table></div></div>';
+}
+
+(async function () {
+  const root = document.getElementById("root");
+  let pal, cards, enemies, run, scene, balance;
+  try {
+    [pal, cards, enemies, run, scene, balance] = await Promise.all([
+      getJson("palette.json"),
+      getJson("../data/cards.json"),
+      getJson("../data/enemies.json"),
+      getJson("../data/runs/run_01.json"),
+      getJson("scene.json"),
+      getJson("../data/balance.json")
+    ]);
+  } catch (err) {
+    root.innerHTML = '<div class="err"><b>데이터를 읽지 못했다.</b><br>' + esc(err.message)
+      + '<br><br>이 목업은 <code>data/</code> 의 실제 JSON을 읽어 그린다. '
+      + '<code>file://</code> 로 열면 브라우저가 fetch 를 막는다. 저장소 뿌리에서:<br><br>'
+      + '<code>python -m http.server 8000 --directory games/deck-rewind</code><br>'
+      + '<code>http://localhost:8000/presentation/</code></div>';
+    return;
+  }
+  applyPalette(pal);
+
+  const byId = {};
+  cards.cards.forEach(c => { byId[c.id] = c; });
+  const order = { common: 0, uncommon: 1, rare: 2 };
+  const sorted = cards.cards.slice().sort((a, b) =>
+    (order[a.rarity] - order[b.rarity]) || (a.cost - b.cost));
+
+  root.innerHTML =
+    '<header>'
+    + '<span class="stamp">' + esc(pal.name) + '</span>'
+    + '<h1>되감기</h1>'
+    + '<p class="sub">games/deck-rewind · ' + esc(pal.reference) + '</p>'
+    + '<p class="oneline">' + esc(pal.oneLine) + '</p>'
+    + '</header>'
+
+    + '<h2><span class="n">§1</span>회차</h2>'
+    + '<p class="note">전부 <b>data/runs/' + esc(run.id) + '.json</b> 에서 읽은 값이다. '
+    + '되감기 충전은 전투가 아니라 <b>회차</b> 자원이다 — 보스 앞에서 남아 있는지가 판단이 된다.</p>'
+    + '<div class="readout">'
+    +   '<div><dt>체력</dt><dd>' + run.playerMaxHp + '</dd></div>'
+    +   '<div><dt>손패</dt><dd>' + run.handSize + '</dd></div>'
+    +   '<div><dt>기력 / 턴</dt><dd>' + run.energyPerTurn + '</dd></div>'
+    +   '<div><dt>되감기 충전</dt><dd>' + run.rewindCharges + '</dd></div>'
+    +   '<div><dt>전투</dt><dd>' + (run.battles.length + 1) + '<small> (보스 포함)</small></dd></div>'
+    +   '<div><dt>시작 덱</dt><dd>' + run.startingDeck.length + '<small>장</small></dd></div>'
+    +   '<div><dt>씨드</dt><dd><small>' + run.seed + '</small></dd></div>'
+    + '</div>'
+
+    + '<h2><span class="n">§2</span>카드 ' + cards.cards.length + '종</h2>'
+    + '<p class="note">코스트 · 효과 · 희귀도는 <b>data/cards.json</b> 그대로다. '
+    + '희귀도 색은 <b>palette.json</b> 의 <code>rarity</code> 한 곳에서 온다.</p>'
+    + '<div class="cards">' + sorted.map(c => cardEl(c, pal)).join("") + '</div>'
+
+    + '<h2><span class="n">§3</span>전투 한 장면 — ' + esc(scene.enemyNameKo) + '</h2>'
+    + '<p class="note"><b>손으로 그린 장면이 아니다.</b> '
+    + esc(scene.generatedBy) + ' 가 씨드 ' + scene.seed + ' 로 실제 한 판을 돌려 '
+    + '<b>scene.json</b> 으로 굽고, 이 화면이 그걸 읽는다. '
+    + '결과 ' + esc(scene.outcome === "PlayerWon" ? "승" : "패")
+    + ' · ' + scene.turns.length + '턴 · 되감기 ' + scene.rewindsUsed + '회. '
+    + '<b>적의 다음 수 칸이 대개 비어 있는 것</b>이 이 PoC의 규칙이다 — 맞고 나서 안다.</p>'
+    + '<div class="scene">' + scene.turns.map(t => turnEl(t, byId)).join("") + '</div>'
+
+    + '<h2><span class="n">§4</span>소리</h2>'
+    + '<p class="note">경로는 <b>palette.json</b> 의 <code>sfx</code> 에서 온다 — 파일명을 코드에 박지 않는다. '
+    + '<b>되감기 소리만 다른 계열</b>이어야 한다. 카드 놓기와 같은 계열이면 그것이 특별한 수라는 것이 '
+    + '귀로 전달되지 않는다. 눌러서 들어 볼 것.</p>'
+    + '<div class="sfx">'
+    +   Object.keys(pal.sfx).map(function (k) {
+          return '<button data-sfx="' + esc(pal.sfx[k]) + '">' + esc(SFX_KO[k] || k)
+            + '<small>' + esc(pal.sfx[k]) + '</small></button>';
+        }).join("")
+    + '</div>'
+
+    + '<h2><span class="n">§5</span>적 ' + enemies.enemies.length + '종</h2>'
+    + '<p class="note">패턴은 순환한다. 되감으면 <b>패턴이 한 칸 밀리고</b>(같은 수를 다시 두지 않는다) '
+    + '<b>피해가 기억한 만큼 늘어난다</b>. 아래 표는 그 배율을 데이터의 백분율 정수로 계산한 것이다 — '
+    + '엔진과 같은 식이고 부동소수를 지나가지 않는다.</p>'
+    + '<div class="enemies">' + enemies.enemies.map(e => enemyEl(e, pal)).join("") + '</div>'
+
+    + '<footer>'
+    + '읽은 파일: palette.json · ../data/cards.json · ../data/enemies.json · ../data/runs/'
+    + esc(run.id) + '.json · ../data/balance.json · scene.json<br>'
+    + '검사기 한계값: 지배 ' + balance.dominanceMaxWinRatePct + '% 이하 · 준최적 승률 '
+    + balance.greedyWinRatePctMin + '~' + balance.greedyWinRatePctMax + '% · 사장 카드 판정선 '
+    + balance.deadCardMinAdoptionPct + '%<br>'
+    + '에셋은 전부 CC0 · 퍼블릭 도메인 · OFL — 출처는 ../CREDITS.md'
+    + '</footer>';
+
+  root.querySelectorAll(".sfx button").forEach(function (b) {
+    b.addEventListener("click", function () { new Audio(b.dataset.sfx).play().catch(function () {}); });
+  });
+})();
+</script>
+</body>
+</html>

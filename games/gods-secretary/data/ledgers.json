@@ -1,0 +1,64 @@
+{
+  "_": "장부 한 권 = 시나리오 하나. holdings 는 **have 가 need 를 절대 넘지 않는다**(DataValidator 가 본다) — 그래서 누구에게서 한 단위라도 빼면 반드시 부족이 생기고, 대가 없는 허가가 구조적으로 불가능해진다. NoFreeGrant 가 그것을 실제로 뒤져서 확인한다.",
+  "_toleranceUnits": "이만큼까지는 견딘다. 넘으면 severeExtraPerUnit 이 더 붙는다 — **이 한 값이 게임을 만든다.** 한도 안에서 빼면 싸고, 한도를 넘기면 값이 두 배가 된다. 그래서 깊이 모자란 사람에게 한도 안의 자리에서 옮겨 주면 세상의 고통이 줄고, 이미 벼랑에 선 사람에게서 빼면 는다.",
+  "volumes": [
+    {
+      "id": "v_first", "name": "첫 철", "seed": 20260927, "days": 6,
+      "note": "샘이 아직 있는 철. 깊이 모자란 셋(리나의 숨 · 헤사의 비 · 벨의 곡식)을 한도 안의 자리에서 채우면 세상이 덜 아프다 — 그런데 봉랍은 엿새에 여섯 번뿐이고 편지는 여덟 장이다",
+      "holdings": [
+        { "soulId": "s_lina",  "domain": "d_breath", "have": 4,  "need": 9,  "toleranceUnits": 1 },
+        { "soulId": "s_hessa", "domain": "d_rain",   "have": 6,  "need": 12, "toleranceUnits": 1 },
+        { "soulId": "s_bel",   "domain": "d_grain",  "have": 6,  "need": 10, "toleranceUnits": 1 },
+        { "soulId": "s_kaid",  "domain": "d_breath", "have": 9,  "need": 9,  "toleranceUnits": 3 },
+        { "soulId": "s_tavi",  "domain": "d_breath", "have": 8,  "need": 8,  "toleranceUnits": 3 },
+        { "soulId": "s_noor",  "domain": "d_breath", "have": 7,  "need": 7,  "toleranceUnits": 2 },
+        { "soulId": "s_oren",  "domain": "d_rain",   "have": 11, "need": 12, "toleranceUnits": 3 },
+        { "soulId": "s_marco", "domain": "d_rain",   "have": 8,  "need": 8,  "toleranceUnits": 2 },
+        { "soulId": "s_kaid",  "domain": "d_rain",   "have": 6,  "need": 8,  "toleranceUnits": 2 },
+        { "soulId": "s_noor",  "domain": "d_rain",   "have": 4,  "need": 5,  "toleranceUnits": 1 },
+        { "soulId": "s_hessa", "domain": "d_grain",  "have": 10, "need": 10, "toleranceUnits": 3 },
+        { "soulId": "s_marco", "domain": "d_grain",  "have": 5,  "need": 6,  "toleranceUnits": 1 },
+        { "soulId": "s_tavi",  "domain": "d_grain",  "have": 6,  "need": 7,  "toleranceUnits": 2 },
+        { "soulId": "s_lina",  "domain": "d_grain",  "have": 3,  "need": 3,  "toleranceUnits": 1 }
+      ]
+    },
+    {
+      "id": "v_dry", "name": "가문 철", "seed": 20260928, "days": 6,
+      "note": "비의 샘이 마른 철. 비를 옮기면 어디서 빼도 벼랑을 넘어 손해가 나고, 숨과 곡식에만 아직 한도가 남아 있다 — **기각이 자비가 되는 철**이고, 영역을 가려 보지 않으면 진다",
+      "holdings": [
+        { "soulId": "s_hessa", "domain": "d_rain",   "have": 5, "need": 11, "toleranceUnits": 1 },
+        { "soulId": "s_oren",  "domain": "d_rain",   "have": 6, "need": 10, "toleranceUnits": 1 },
+        { "soulId": "s_marco", "domain": "d_rain",   "have": 4, "need": 7,  "toleranceUnits": 1 },
+        { "soulId": "s_kaid",  "domain": "d_rain",   "have": 7, "need": 8,  "toleranceUnits": 2 },
+        { "soulId": "s_noor",  "domain": "d_rain",   "have": 5, "need": 6,  "toleranceUnits": 1 },
+        { "soulId": "s_noor",  "domain": "d_breath", "have": 5, "need": 8,  "toleranceUnits": 1 },
+        { "soulId": "s_lina",  "domain": "d_breath", "have": 7, "need": 8,  "toleranceUnits": 3 },
+        { "soulId": "s_kaid",  "domain": "d_breath", "have": 8, "need": 8,  "toleranceUnits": 3 },
+        { "soulId": "s_tavi",  "domain": "d_breath", "have": 6, "need": 7,  "toleranceUnits": 2 },
+        { "soulId": "s_bel",   "domain": "d_grain",  "have": 7, "need": 9,  "toleranceUnits": 1 },
+        { "soulId": "s_hessa", "domain": "d_grain",  "have": 9, "need": 9,  "toleranceUnits": 3 },
+        { "soulId": "s_tavi",  "domain": "d_grain",  "have": 7, "need": 7,  "toleranceUnits": 2 },
+        { "soulId": "s_marco", "domain": "d_grain",  "have": 6, "need": 6,  "toleranceUnits": 1 }
+      ]
+    },
+    {
+      "id": "v_late", "name": "늦은 철", "seed": 20260929, "days": 6,
+      "note": "곡식이 모자란 철. 깊이 모자란 넷이 **헤사의 곳간 하나**를 두고 겹친다. 그 곳간은 한도가 셋이라 싸게 나오는 것이 셋뿐이고, 넷째 되부터 값이 두 배다 — 이 철에서 「하나만 고른다」가 가장 선명하다",
+      "holdings": [
+        { "soulId": "s_bel",   "domain": "d_grain",  "have": 5,  "need": 10, "toleranceUnits": 1 },
+        { "soulId": "s_marco", "domain": "d_grain",  "have": 4,  "need": 7,  "toleranceUnits": 1 },
+        { "soulId": "s_lina",  "domain": "d_grain",  "have": 3,  "need": 6,  "toleranceUnits": 1 },
+        { "soulId": "s_tavi",  "domain": "d_grain",  "have": 5,  "need": 8,  "toleranceUnits": 1 },
+        { "soulId": "s_hessa", "domain": "d_grain",  "have": 13, "need": 13, "toleranceUnits": 3 },
+        { "soulId": "s_noor",  "domain": "d_breath", "have": 5,  "need": 8,  "toleranceUnits": 1 },
+        { "soulId": "s_kaid",  "domain": "d_breath", "have": 9,  "need": 9,  "toleranceUnits": 3 },
+        { "soulId": "s_lina",  "domain": "d_breath", "have": 8,  "need": 8,  "toleranceUnits": 2 },
+        { "soulId": "s_tavi",  "domain": "d_breath", "have": 7,  "need": 7,  "toleranceUnits": 2 },
+        { "soulId": "s_hessa", "domain": "d_rain",   "have": 6,  "need": 9,  "toleranceUnits": 1 },
+        { "soulId": "s_oren",  "domain": "d_rain",   "have": 9,  "need": 10, "toleranceUnits": 3 },
+        { "soulId": "s_marco", "domain": "d_rain",   "have": 8,  "need": 8,  "toleranceUnits": 2 },
+        { "soulId": "s_kaid",  "domain": "d_rain",   "have": 6,  "need": 7,  "toleranceUnits": 1 }
+      ]
+    }
+  ]
+}

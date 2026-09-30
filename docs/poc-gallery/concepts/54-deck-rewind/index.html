@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>되감기</title>
+<style>
+:root{--void:#080b0f;--ink:#0d1219;--surf:#141c26;--raised:#1b2632;--paper:#c9d6e2;--cy:#3fd8e4;--cyd:#1c7c86;--muted:#5a6e80;--hi:#eaf4f8;--warn:#d98a3b;--dang:#c4544a;--grid:#1f2c3a;--gridM:#2a3b4c;
+  --mono:"JetBrains Mono","D2Coding","Nanum Gothic Coding","Consolas","Menlo",monospace;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif}
+html,body{margin:0;height:100%;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;font-family:var(--mono);color:var(--paper);
+  background:
+   linear-gradient(var(--gridM) 1px,transparent 1px) 0 0/100px 100px,
+   linear-gradient(90deg,var(--gridM) 1px,transparent 1px) 0 0/100px 100px,
+   linear-gradient(var(--grid) 1px,transparent 1px) 0 0/20px 20px,
+   linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/20px 20px,
+   radial-gradient(1000px 700px at 50% 40%,#101822,#080b0f)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(0,0,0,.7) 100%)}
+.top{position:absolute;left:32px;right:32px;top:22px;display:flex;align-items:center;gap:26px;z-index:20}
+.top b.t{font-size:26px;letter-spacing:6px;color:var(--hi)}
+.top small{display:block;font-size:10px;letter-spacing:4px;color:var(--muted)}
+.tl{flex:1;position:relative;height:46px;margin:0 20px}
+.tl .ln{position:absolute;left:0;right:0;top:22px;height:1px;background:var(--gridM)}
+.tl .rd{position:absolute;top:10px;width:24px;height:24px;margin-left:-12px;border:1px solid var(--muted);background:var(--ink);font-size:10px;display:grid;place-items:center;color:var(--muted)}
+.tl .rd.done{border-color:var(--cyd);color:var(--cy)}
+.tl .rd.now{border-color:var(--cy);background:var(--cy);color:var(--void);box-shadow:0 0 14px rgba(63,216,228,.6)}
+.tl .rd.ghost{border-style:dashed;border-color:var(--warn);color:var(--warn)}
+.tl .lab{position:absolute;top:38px;font-size:10px;color:var(--muted);transform:translateX(-50%);white-space:nowrap}
+.charges{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--muted);letter-spacing:2px}
+.charges i{width:26px;height:26px;border:1px solid var(--cy);display:grid;place-items:center;font-style:normal;color:var(--cy);font-size:14px}
+.charges i.used{border-color:var(--gridM);color:var(--gridM)}
+/* enemy */
+.enemy{position:absolute;left:560px;top:110px;width:480px;height:430px}
+.enemy svg{position:absolute;inset:0}
+.scanline{animation:scan 2.6s linear infinite}
+@keyframes scan{from{transform:translateY(0)}to{transform:translateY(330px)}}
+.ehud{position:absolute;left:520px;top:548px;width:560px;z-index:10}
+.ehud .nm{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted);letter-spacing:2px}
+.ehud .nm b{font-family:var(--sans);font-size:24px;color:var(--hi);letter-spacing:4px}
+.hp{height:12px;border:1px solid var(--gridM);margin-top:8px;position:relative;background:var(--ink)}
+.hp i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#8a3a33,var(--dang))}
+.hp span{position:absolute;right:0;top:16px;font-size:12px;color:var(--paper)}
+.intent{position:absolute;left:1080px;top:180px;width:230px;z-index:10;border:1px dashed var(--warn);padding:14px 16px;background:rgba(217,138,59,.05)}
+.intent small{font-size:10px;letter-spacing:3px;color:var(--warn)}
+.intent b{display:block;font-size:40px;color:var(--warn);letter-spacing:6px;margin:4px 0;animation:jit 1.8s steps(3) infinite}
+@keyframes jit{33%{opacity:.6;transform:translateX(2px)}66%{opacity:1;transform:translateX(-1px)}}
+.intent p{margin:0;font-family:var(--sans);font-size:12px;color:var(--muted);line-height:1.6}
+.mem{position:absolute;left:1080px;top:340px;width:230px;z-index:10;border:1px solid var(--gridM);padding:12px 16px;background:rgba(13,18,25,.85)}
+.mem small{font-size:10px;letter-spacing:3px;color:var(--muted)}
+.mem .row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.mem .row b{color:var(--warn)}
+/* player */
+.me{position:absolute;left:32px;top:120px;width:300px;z-index:10}
+.box{border:1px solid var(--gridM);background:rgba(13,18,25,.88);padding:14px 16px;margin-bottom:12px}
+.box small{font-size:10px;letter-spacing:3px;color:var(--muted)}
+.box .big{font-size:34px;color:var(--hi)}
+.box .big em{font-style:normal;font-size:14px;color:var(--muted)}
+.box .row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--grid)}
+.en{display:flex;gap:8px;margin-top:6px}
+.en i{width:36px;height:36px;border-radius:50%;border:2px solid var(--cy);box-shadow:0 0 12px rgba(63,216,228,.45),inset 0 0 10px rgba(63,216,228,.35)}
+.en i.off{border-color:var(--gridM);box-shadow:none}
+.log{position:absolute;left:1080px;top:486px;width:262px;z-index:10;font-size:12px;line-height:1.6}
+.log h5{margin:0 0 8px;font-size:10px;letter-spacing:3px;color:var(--muted);font-weight:500}
+.log div{padding:6px 0;border-bottom:1px dashed var(--grid);color:var(--muted)}
+.log div b{color:var(--paper);font-weight:500}
+.log .w{color:var(--warn)}
+/* hand */
+.hand{position:absolute;left:0;right:0;bottom:44px;height:300px;z-index:15}
+.card{position:absolute;bottom:0;width:190px;height:270px;background:linear-gradient(180deg,#1b2632,#121a24);border:1px solid var(--rc,#5a6e80);box-shadow:0 18px 30px rgba(0,0,0,.6);transform-origin:50% 120%;transition:transform .18s cubic-bezier(.3,1.4,.5,1),box-shadow .2s;cursor:pointer;padding:12px;box-sizing:border-box}
+.card::before{content:"";position:absolute;inset:6px;border:1px dashed rgba(90,110,128,.35);pointer-events:none}
+.card .co{position:absolute;left:-10px;top:-10px;width:36px;height:36px;border-radius:50%;background:var(--void);border:2px solid var(--cy);color:var(--cy);display:grid;place-items:center;font-size:18px;font-weight:700;box-shadow:0 0 10px rgba(63,216,228,.4)}
+.card h6{margin:14px 0 6px 18px;font-family:var(--sans);font-size:19px;color:var(--hi);letter-spacing:2px}
+.card .rar{margin-left:18px;font-size:9px;letter-spacing:3px;color:var(--rc)}
+.card .fig{height:92px;margin:10px 4px;border:1px solid var(--grid);background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/10px 10px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/10px 10px}
+.card .fig svg{width:100%;height:100%}
+.card p{margin:0 4px;font-family:var(--sans);font-size:12.5px;line-height:1.5;color:var(--paper)}
+.card:hover{box-shadow:0 0 0 1px var(--cy),0 0 26px rgba(63,216,228,.35),0 24px 40px rgba(0,0,0,.6);z-index:5}
+.card.play{transition:transform .35s ease-in,opacity .35s;opacity:0}
+.endt{position:absolute;right:32px;bottom:44px;width:200px;height:64px;border:1px solid var(--cy);background:rgba(63,216,228,.08);color:var(--cy);font-family:var(--sans);font-size:18px;letter-spacing:3px;cursor:pointer;z-index:16}
+.rwb{position:absolute;right:32px;bottom:120px;width:200px;height:64px;border:1px solid var(--warn);background:rgba(217,138,59,.08);color:var(--warn);font-family:var(--sans);font-size:17px;letter-spacing:2px;cursor:pointer;z-index:16}
+.rwb small,.endt small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;opacity:.8}
+.pile{position:absolute;left:32px;bottom:40px;font-size:11px;color:var(--muted);z-index:16;letter-spacing:1px;line-height:1.8}
+.pile b{color:var(--paper)}
+/* B */
+.tint{position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(180deg,rgba(217,138,59,.05),rgba(63,216,228,.04))}
+.bars{position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(0deg,transparent 0 6px,rgba(63,216,228,.05) 6px 7px);animation:rb 0.5s linear infinite}
+@keyframes rb{from{background-position:0 0}to{background-position:0 -14px}}
+.rwtitle{position:absolute;left:0;right:0;top:92px;text-align:center;z-index:20}
+.rwtitle small{font-size:12px;letter-spacing:6px;color:var(--warn)}
+.rwtitle h1{margin:6px 0 0;font-family:var(--sans);font-size:52px;letter-spacing:12px;color:var(--hi);text-shadow:3px 0 0 rgba(217,138,59,.6),-3px 0 0 rgba(63,216,228,.6)}
+.cmp{position:absolute;left:32px;bottom:34px;width:640px;z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cmp .box h5{margin:0 0 8px;font-size:11px;letter-spacing:3px;font-weight:500}
+.cmp .box div{font-family:var(--sans);font-size:13px;padding:4px 0;border-bottom:1px solid var(--grid)}
+.seen{position:absolute;left:32px;top:220px;width:330px;z-index:20}
+.ghostc{position:relative;height:150px;border:1px dashed var(--warn);padding:14px 16px;background:rgba(217,138,59,.05);margin-bottom:12px}
+.ghostc small{font-size:10px;letter-spacing:3px;color:var(--warn)}
+.ghostc b{display:block;font-family:var(--sans);font-size:26px;color:var(--warn);margin:6px 0;text-decoration:line-through;text-decoration-thickness:2px}
+.ghostc p{margin:0;font-family:var(--sans);font-size:12.5px;color:var(--muted);line-height:1.6}
+.mult{position:absolute;right:32px;bottom:34px;width:420px;z-index:20}
+.mult table{width:100%;border-collapse:collapse;font-size:13px}
+.mult td,.mult th{padding:7px 10px;border-bottom:1px solid var(--grid);text-align:right}
+.mult th{font-weight:500;color:var(--muted);font-size:10px;letter-spacing:2px}
+.mult td:first-child,.mult th:first-child{text-align:left}
+.mult tr.now td{color:var(--warn);background:rgba(217,138,59,.07)}
+.tabs{position:absolute;right:10px;bottom:6px;display:flex;gap:6px;z-index:60}
+.tabs button{background:var(--ink);border:1px solid var(--gridM);color:var(--muted);font:600 11px var(--mono);padding:3px 8px;cursor:pointer}
+.tabs button.on{background:var(--cy);color:var(--void)}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="archivist" viewBox="0 0 480 430">
+    <g fill="none" stroke="#3fd8e4" stroke-width="1.2">
+      <!-- base -->
+      <path d="M120 400 L360 400 L390 370 L90 370Z"/><path d="M90 370 V355 H390 V370"/>
+      <!-- cabinet body -->
+      <rect x="140" y="130" width="200" height="225"/>
+      <path d="M140 130 L170 100 H370 L340 130"/><path d="M340 130 L370 100 V325 L340 355"/>
+      <!-- drawers -->
+      <g stroke-opacity=".8"><rect x="155" y="200" width="80" height="34"/><rect x="245" y="200" width="80" height="34"/><rect x="155" y="244" width="80" height="34"/><rect x="245" y="244" width="80" height="34"/><rect x="155" y="288" width="80" height="34"/><rect x="245" y="288" width="80" height="34"/></g>
+      <g stroke-opacity=".6"><path d="M185 217 h20 M275 217 h20 M185 261 h20 M275 261 h20 M185 305 h20 M275 305 h20"/></g>
+      <!-- one drawer open with cards -->
+      <path d="M245 288 L215 318 L295 318 L325 288"/><path d="M225 312 l10 -22 M245 312 l10 -22 M265 312 l10 -22" stroke-opacity=".7"/>
+      <!-- eye lens -->
+      <circle cx="240" cy="160" r="26"/><circle cx="240" cy="160" r="16"/><circle cx="240" cy="160" r="5" fill="#3fd8e4"/>
+      <path d="M200 160 H140 M280 160 H340" stroke-dasharray="3 4"/>
+      <!-- arms -->
+      <path d="M140 170 L90 200 L70 260 L96 300"/><path d="M90 200 L60 190"/><circle cx="96" cy="300" r="10"/>
+      <path d="M340 170 L390 210 L410 270 L384 300"/><circle cx="384" cy="300" r="10"/>
+      <!-- antenna / reel -->
+      <path d="M255 100 V60"/><circle cx="255" cy="50" r="12"/><circle cx="255" cy="50" r="4"/>
+      <circle cx="195" cy="80" r="14"/><path d="M195 80 L208 72" />
+    </g>
+    <!-- dimension marks -->
+    <g stroke="#5a6e80" stroke-width="1" fill="none"><path d="M420 100 V400 M414 100 h12 M414 400 h12"/><path d="M140 418 H340 M140 412 v12 M340 412 v12"/></g>
+    <text x="430" y="254" fill="#5a6e80" font-size="11" font-family="JetBrains Mono,monospace" transform="rotate(90 430 254)">H 300</text>
+    <text x="222" y="428" fill="#5a6e80" font-size="11" font-family="JetBrains Mono,monospace">W 200</text>
+  </symbol>
+</defs></svg>
+
+<!-- ============ A : 전투 · 의도를 모른다 ============ -->
+<section class="scr" id="A">
+  <header class="top">
+    <div><b class="t">되감기</b><small>DECK-REWIND · 실험 기록 03</small></div>
+    <div class="tl" id="tlA"></div>
+    <div class="charges">되감기 <i>↺</i><i>↺</i><i class="used">↺</i></div>
+  </header>
+
+  <aside class="me">
+    <div class="box"><small>피험자 · 체력</small><div class="big">41 <em>/ 70</em></div>
+      <div class="hp" style="margin-top:6px"><i style="width:58.5%;background:linear-gradient(90deg,#1c7c86,#3fd8e4)"></i></div></div>
+    <div class="box"><small>기력</small><div class="en"><i></i><i></i><i></i></div></div>
+    <div class="box"><small>상태</small>
+      <div class="row"><span>방어</span><span>0</span></div>
+      <div class="row"><span>힘</span><span>+2</span></div>
+      <div class="row"><span>약화</span><span style="color:var(--warn)">1턴</span></div></div>
+  </aside>
+
+  <div class="enemy"><svg viewBox="0 0 480 430"><use href="#archivist"/>
+    <rect class="scanline" x="60" y="40" width="360" height="2" fill="#3fd8e4" opacity=".5"/></svg></div>
+  <div class="ehud"><div class="nm"><b>기록관</b><span>ENEMY_ARCHIVIST · 패턴 6수</span></div><div class="hp"><i style="width:61%"></i><span>68 / 112</span></div></div>
+
+  <div class="intent"><small>다음 수 · 관측 불가</small><b>? ? ?</b><p>적의 다음 수는 보이지 않는다.<br>맞고 나서야 안다.</p></div>
+  <div class="mem"><small>적의 기억</small>
+    <div class="row"><span>기억 스택</span><b>1</b></div>
+    <div class="row"><span>피해 가중</span><b>+22%</b></div>
+    <div class="row"><span>패턴 오프셋</span><b>+1</b></div></div>
+
+  <aside class="log"><h5>실험 기록 · 라운드 4</h5>
+    <div><b>R3</b> 기록관 — 공격 12 → 방어로 흡수</div>
+    <div class="w"><b>R3</b> 되감기 1회 · 기억 +1</div>
+    <div><b>R4</b> 교정 · 힘 +2</div>
+    <div><b>R4</b> 소각 · 피해 9 · 연소 4</div></aside>
+
+  <div class="hand" id="hand"></div>
+  <div class="pile">뽑을 더미 <b>9</b> · 버린 더미 <b>6</b> · 소멸 <b>0</b><br>1 / 2 화면 · 카드를 눌러 냅니다</div>
+  <button class="rwb" id="rwb">↺ 되감기<small>라운드 4 시작으로 · 충전 2</small></button>
+  <button class="endt" id="endt">턴 종료<small>적이 수를 둔다</small></button>
+</section>
+
+<!-- ============ B : 되감기 · 적이 기억한다 ============ -->
+<section class="scr" id="B">
+  <div class="tint"></div><div class="bars"></div>
+  <header class="top">
+    <div><b class="t">되감기</b><small>DECK-REWIND · 실험 기록 03</small></div>
+    <div class="tl" id="tlB"></div>
+    <div class="charges">되감기 <i>↺</i><i class="used">↺</i><i class="used">↺</i></div>
+  </header>
+  <div class="rwtitle"><small>REWIND · R5 → R4 · 난수 상태까지 복원</small><h1>되감기</h1></div>
+  <div class="enemy" style="top:190px"><svg viewBox="0 0 480 430">
+    <g transform="translate(14 0)" opacity=".35"><use href="#archivist" style="color:#d98a3b"/></g>
+    <g transform="translate(-14 0)" opacity=".35" style="filter:hue-rotate(160deg)"><use href="#archivist"/></g>
+    <use href="#archivist"/>
+    <circle cx="240" cy="160" r="60" fill="none" stroke="#d98a3b" stroke-width="2" stroke-dasharray="6 5"><animateTransform attributeName="transform" type="rotate" from="0 240 160" to="-360 240 160" dur="6s" repeatCount="indefinite"/></circle>
+    <circle cx="240" cy="160" r="80" fill="none" stroke="#d98a3b" stroke-width="1" opacity=".5"><animate attributeName="r" values="60;110" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0" dur="1.6s" repeatCount="indefinite"/></circle>
+  </svg></div>
+  <div class="ehud" style="top:628px"><div class="nm"><b>기록관</b><span style="color:var(--warn)">기억 2 · 같은 수를 다시 두지 않는다</span></div><div class="hp"><i style="width:61%"></i><span>68 / 112</span></div></div>
+
+  <div class="seen">
+    <div class="ghostc"><small>당신이 본 것 · 되감기 전 R4</small><b>공격 20</b><p>체력 41 → 0. 전투 불능.<br>이제 안다 — 그러나 적도 안다.</p></div>
+    <div class="ghostc" style="border-color:var(--cy);background:rgba(63,216,228,.05)"><small style="color:var(--cy)">이번 R4 · 패턴 오프셋 +1</small><b style="color:var(--cy);text-decoration:none">? ? ?</b><p>공격 20은 오지 않는다. 대신 한 칸 밀린 수.<br>남은 전투의 모든 피해 +44%.</p></div>
+  </div>
+
+  <div class="intent" style="left:1100px;top:250px;width:260px;border-color:var(--cy);background:rgba(63,216,228,.05)"><small style="color:var(--cy)">복원됨</small>
+    <div style="font-family:var(--sans);font-size:14px;line-height:2;margin-top:6px">
+      체력 <b style="display:inline;font-size:16px;color:var(--hi);animation:none;letter-spacing:0">0 → 41</b><br>손패 · 덱 · 버림 · 난수<br>기력 3 · 라운드 4</div></div>
+
+  <div class="cmp">
+    <div class="box"><h5 style="color:var(--cy)">되돌아오는 것</h5><div>체력 · 방어 · 적 체력</div><div>손패 · 덱 · 버림 · 난수 상태</div><div>낸 카드 · 기력 · 라운드</div></div>
+    <div class="box" style="border-color:var(--warn)"><h5 style="color:var(--warn)">되돌아오지 않는 것</h5><div>충전 — 회차당 3회 중 1회 남음</div><div>적의 기억 — 피해 +22% 누적</div><div>적의 패턴 오프셋 · 플레이어가 본 것</div></div>
+  </div>
+  <div class="mult box"><small>공격 10이 실제로 주는 피해</small>
+    <table><tr><th>기억</th><th>가중</th><th>피해</th></tr>
+      <tr><td>0</td><td>+0%</td><td>10</td></tr><tr><td>1</td><td>+22%</td><td>11</td></tr><tr class="now"><td>2 · 지금</td><td>+44%</td><td>13</td></tr></table></div>
+</section>
+
+<div class="vig"></div>
+<nav class="tabs"><button data-k="a">A 전투</button><button data-k="b">B 되감기</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+
+  function tl(id,now,ghost){var h='<div class="ln"></div>';for(var r=1;r<=8;r++){var x=(r-1)/7*100;
+      var cls=r<now?'done':(r===now?'now':'');if(ghost&&r===ghost)cls='ghost';
+      h+='<div class="rd '+cls+'" style="left:'+x+'%">'+r+'</div>';
+      if(r===now)h+='<div class="lab" style="left:'+x+'%">스냅샷</div>';
+      if(ghost&&r===ghost)h+='<div class="lab" style="left:'+x+'%;color:#d98a3b">본 것</div>';}
+    document.getElementById(id).innerHTML=h;}
+  tl('tlA',4,0);tl('tlB',4,5);
+
+  var RC={common:'#5a6e80',uncommon:'#3fd8e4',rare:'#d98a3b'};
+  var HAND=[
+    ['관측침',1,'common','피해 6. 가장 값싼 측정 수단이다.','<path d="M10 70 L150 20" stroke="#3fd8e4" stroke-width="2"/><circle cx="150" cy="20" r="5" fill="#3fd8e4"/>'],
+    ['차폐막',1,'common','방어 6. 다음 한 번을 흡수한다.','<path d="M40 80 Q80 0 120 80" fill="none" stroke="#5a6e80" stroke-width="2"/><path d="M50 80 Q80 20 110 80" fill="none" stroke="#3fd8e4" stroke-width="1"/>'],
+    ['논증',2,'uncommon','피해 14. 손 한 칸으로 끝나지만 기력 둘을 한 번에 쓴다.','<rect x="30" y="20" width="100" height="60" fill="none" stroke="#3fd8e4"/><path d="M30 20 L130 80 M130 20 L30 80" stroke="#3fd8e4" stroke-width=".8"/>'],
+    ['감쇠',1,'uncommon','적에게 약화 2. 방어 4.','<path d="M10 50 Q40 10 70 50 T130 50 T170 50" fill="none" stroke="#3fd8e4" stroke-width="2"/><path d="M10 50 Q40 35 70 50 T130 50 T170 50" fill="none" stroke="#5a6e80"/>'],
+    ['역행',0,'rare','기력 0. 되감기 충전 +1. 적의 기억은 줄지 않는다.','<circle cx="85" cy="50" r="30" fill="none" stroke="#d98a3b" stroke-width="2"/><path d="M85 20 L75 12 M85 20 L75 28" stroke="#d98a3b" stroke-width="2"/><path d="M85 50 V32 M85 50 L98 58" stroke="#d98a3b" stroke-width="2"/>']];
+  var hand=document.getElementById('hand'),n=HAND.length,h='';
+  for(var c=0;c<n;c++){var k=c-(n-1)/2,rot=k*5,x=800-95+k*168,y=Math.abs(k)*14;
+    h+='<div class="card" data-rot="'+rot+'" data-y="'+y+'" style="--rc:'+RC[HAND[c][2]]+';left:'+x+'px;transform:translateY('+y+'px) rotate('+rot+'deg)">'+
+      '<div class="co" style="border-color:'+(HAND[c][2]==='rare'?'#d98a3b':'#3fd8e4')+';color:'+(HAND[c][2]==='rare'?'#d98a3b':'#3fd8e4')+'">'+HAND[c][1]+'</div>'+
+      '<h6>'+HAND[c][0]+'</h6><div class="rar">'+({common:'COMMON',uncommon:'UNCOMMON',rare:'RARE'})[HAND[c][2]]+'</div>'+
+      '<div class="fig"><svg viewBox="0 0 170 100">'+HAND[c][4]+'</svg></div><p>'+HAND[c][3]+'</p></div>';}
+  hand.innerHTML=h;
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function blip(f,d){var a=ctx();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='square';o.frequency.value=f;
+    g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.001,t+(d||.08));o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+(d||.08)+.02);}
+  function rewindSnd(){var a=ctx();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();o.type='sawtooth';
+    o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(90,t+.9);f.type='lowpass';f.frequency.setValueAtTime(3000,t);f.frequency.exponentialRampToValueAtTime(300,t+.9);
+    g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+1);o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+1.05);}
+  var cards=hand.querySelectorAll('.card');
+  for(var q=0;q<cards.length;q++){
+    cards[q].addEventListener('mouseenter',function(){this.style.transform='translateY(-46px) rotate(0deg) scale(1.06)';blip(1200,.03);});
+    cards[q].addEventListener('mouseleave',function(){if(this.className.indexOf('play')<0)this.style.transform='translateY('+this.getAttribute('data-y')+'px) rotate('+this.getAttribute('data-rot')+'deg)';});
+    cards[q].addEventListener('click',function(){var el=this;el.style.transform='translate(0,-420px) scale(.7)';el.className='card play';blip(660,.12);
+      setTimeout(function(){el.className='card';el.style.transform='translateY('+el.getAttribute('data-y')+'px) rotate('+el.getAttribute('data-rot')+'deg)';},1400);});}
+  document.getElementById('rwb').addEventListener('click',function(){rewindSnd();setTimeout(function(){show('b');},450);});
+  document.getElementById('endt').addEventListener('click',function(){blip(220,.2);});
+  show(location.hash.replace('#','')||'a');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>마지막 컷</title>
+<style>
+:root{--paper:#f2ead8;--paper2:#e9dfc8;--ink:#1d1b2b;--pink:#ff4a86;--blue:#2c68d4;--yel:#ffcf3a;--mute:#8b8170}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#15131c}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;
+ background:
+  radial-gradient(circle at 1px 1px,rgba(29,27,43,.07) 1px,transparent 1.6px) 0 0/6px 6px,
+  radial-gradient(ellipse at 30% 20%,#f8f2e3,transparent 60%),
+  linear-gradient(160deg,var(--paper),var(--paper2));}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(ellipse at center,transparent 55%,rgba(60,40,20,.28));mix-blend-mode:multiply}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block;animation:inkIn .5s ease-out}
+@keyframes inkIn{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:none}}
+.tabs{position:absolute;right:22px;top:18px;z-index:50;display:flex;gap:6px}
+.tabs button{font:700 13px/1 inherit;font-family:inherit;padding:8px 12px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg)}
+.tabs button.on{background:var(--pink);color:#fff}
+.tabs button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+/* header */
+.mast{position:absolute;left:48px;top:30px;display:flex;align-items:baseline;gap:18px}
+.mast h1{white-space:nowrap;font-size:46px;font-weight:900;letter-spacing:-2px;position:relative}
+.mast h1 span{position:relative;z-index:2}
+.mast h1::before{content:"마지막 컷";position:absolute;left:3px;top:2px;color:var(--pink);opacity:.8;z-index:1}
+.mast h1::after{content:"마지막 컷";position:absolute;left:-2px;top:-1px;color:var(--blue);opacity:.55;z-index:0}
+.mast em{font-style:normal;font-size:15px;color:var(--mute);letter-spacing:2px}
+/* page */
+.page{position:absolute;left:48px;top:108px;width:1000px;height:860px;background:#fbf6ea;border:3px solid var(--ink);box-shadow:10px 12px 0 rgba(29,27,43,.85);padding:16px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:200px 1fr;gap:14px;transform:rotate(-.4deg)}
+.panel{position:relative;border:3px solid var(--ink);overflow:hidden;background:#fdf8ec}
+.panel .no{position:absolute;left:6px;top:4px;font:800 12px/1 inherit;font-family:inherit;background:var(--ink);color:var(--paper);padding:3px 6px;z-index:3}
+.big{grid-column:1/4;cursor:default}
+.cap{position:absolute;background:var(--yel);border:2px solid var(--ink);padding:5px 10px;font-weight:800;font-size:15px;box-shadow:2px 2px 0 var(--ink);z-index:3}
+/* bubble */
+.bubble{position:absolute;z-index:10;cursor:grab;user-select:none;touch-action:none}
+.bubble:active{cursor:grabbing}
+.bubble .b{background:#fff;border:3px solid var(--ink);border-radius:50%;padding:28px 40px;font-weight:900;font-size:40px;letter-spacing:-1px;white-space:nowrap;box-shadow:4px 5px 0 rgba(29,27,43,.25);transition:transform .15s}
+.bubble.drag .b{transform:scale(1.06) rotate(-2deg);box-shadow:10px 12px 0 rgba(29,27,43,.2)}
+.slot{position:absolute;width:150px;height:84px;border:2px dashed rgba(44,104,212,.45);border-radius:50%;z-index:4;pointer-events:none;transition:.2s}
+.slot.hot{border-color:var(--pink);background:rgba(255,74,134,.08);transform:scale(1.08)}
+.slot i{position:absolute;left:50%;top:100%;transform:translate(-50%,4px);font:700 11px/1 inherit;font-family:inherit;font-style:normal;color:var(--blue);white-space:nowrap}
+#gaze{position:absolute;inset:0;z-index:5;pointer-events:none}
+/* side */
+.side{position:absolute;left:1090px;top:108px;width:460px;height:860px}
+.card{background:#fbf6ea;border:3px solid var(--ink);box-shadow:6px 7px 0 var(--ink);padding:20px 22px;margin-bottom:22px;position:relative}
+.card h3{font-size:14px;letter-spacing:3px;color:var(--mute);margin-bottom:12px;font-weight:800}
+.face-read{font-size:54px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:6px;transition:color .2s}
+.face-sub{font-size:15px;color:#4a4458;line-height:1.5;min-height:46px}
+.bar{display:grid;grid-template-columns:62px 1fr 42px;align-items:center;gap:10px;margin:10px 0;font-weight:800;font-size:15px}
+.bar .t{height:18px;border:2px solid var(--ink);background:repeating-linear-gradient(45deg,#fff,#fff 4px,#f1e9d6 4px,#f1e9d6 8px);position:relative;overflow:hidden}
+.bar .t b{position:absolute;left:0;top:0;bottom:0;transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums}
+.words{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.word{border:2px solid var(--ink);background:#fff;padding:12px 10px;font-weight:900;font-size:22px;text-align:center;cursor:pointer;border-radius:30px;box-shadow:3px 3px 0 var(--ink);transition:transform .1s}
+.word:hover{transform:translateY(-2px) rotate(-1deg)}
+.word.on{background:var(--ink);color:var(--paper)}
+.word small{display:block;font-size:11px;font-weight:700;color:var(--mute);margin-top:3px}
+.word.on small{color:#cfc6b0}
+.hint{font-size:13px;color:var(--mute);line-height:1.6}
+.ink-stamp{position:absolute;right:18px;top:14px;border:3px solid var(--pink);color:var(--pink);font-weight:900;padding:4px 8px;transform:rotate(8deg);font-size:14px;opacity:.9}
+/* screen B */
+.tri{position:absolute;left:48px;top:134px;width:1504px;height:556px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.tri .panel{box-shadow:8px 9px 0 var(--ink)}
+.tri .panel:nth-child(1){transform:rotate(-1.2deg)}
+.tri .panel:nth-child(3){transform:rotate(1deg)}
+.tri .lbl{position:absolute;bottom:14px;left:14px;font-weight:900;font-size:30px;background:var(--paper);border:3px solid var(--ink);padding:4px 14px;z-index:6}
+.tri .bubble{cursor:default}
+.tri .bubble .b{font-size:30px;padding:20px 30px;position:relative}
+.tri .bubble .b::after{content:"";position:absolute;right:26px;bottom:-22px;width:30px;height:30px;background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:skewX(35deg) rotate(20deg);border-radius:0 0 4px 0}
+.tri .bubble.up .b::after{bottom:auto;top:-20px;transform:rotate(200deg) skewX(35deg)}
+.stampB{position:absolute;right:14px;top:14px;z-index:8;font-weight:900;font-size:18px;color:var(--pink);border:3px solid var(--pink);padding:3px 9px;transform:rotate(9deg);background:rgba(255,255,255,.4)}
+.strip{position:absolute;left:48px;top:726px;width:1504px;height:170px;display:flex;gap:12px;align-items:flex-end}
+.th{flex:1;height:130px;border:3px solid var(--ink);background:#fbf6ea;position:relative;overflow:hidden;transition:transform .2s}
+.th:hover{transform:translateY(-8px)}
+.th.lock{background:repeating-linear-gradient(-45deg,#e6dcc5,#e6dcc5 6px,#ddd1b6 6px,#ddd1b6 12px)}
+.th.lock::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:40px;color:rgba(29,27,43,.25)}
+.th .k{position:absolute;left:4px;top:3px;font:800 11px/1 inherit;font-family:inherit;background:var(--ink);color:var(--paper);padding:2px 5px;z-index:2}
+.th.cur{height:160px;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink)}
+.th svg{position:absolute;inset:0;width:100%;height:100%}
+.foot{position:absolute;left:48px;right:48px;top:906px;display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.foot .q{font-size:24px;letter-spacing:-.5px}
+.foot .q b{color:var(--pink)}
+.foot .m{font-size:14px;color:var(--mute);letter-spacing:2px}
+.subt{position:absolute;left:48px;top:84px;font-size:18px;font-weight:700;color:#4a4458}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg class="grain" width="1600" height="1000"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .1 0 0 0 0 .08 0 0 0 0 .06 0 0 0 .55 0"/></filter><rect width="1600" height="1000" filter="url(#gr)"/></svg>
+
+<!-- reusable art -->
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <pattern id="ht" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(20)"><circle cx="3.5" cy="3.5" r="1.6" fill="#1d1b2b"/></pattern>
+  <pattern id="htp" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)"><circle cx="4" cy="4" r="2.1" fill="#ff4a86"/></pattern>
+  <pattern id="htb" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><circle cx="4.5" cy="4.5" r="2.4" fill="#2c68d4"/></pattern>
+  <pattern id="rain" width="30" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(14)"><line x1="10" y1="0" x2="10" y2="18" stroke="#1d1b2b" stroke-width="1.4"/><line x1="25" y1="22" x2="25" y2="34" stroke="#1d1b2b" stroke-width="1"/></pattern>
+  <symbol id="face" viewBox="0 0 1000 560">
+   <!-- background: rain window & bus stop blur -->
+   <rect width="1000" height="560" fill="#fdf8ec"/>
+   <rect width="1000" height="560" fill="url(#htb)" opacity=".28"/>
+   <rect x="0" y="0" width="1000" height="560" fill="url(#rain)" opacity=".45"/>
+   <path d="M0 400 Q300 380 520 420 T1000 400 V560 H0Z" fill="url(#ht)" opacity=".25"/>
+   <!-- speed lines from left (leaving bus) -->
+   <g stroke="#1d1b2b" stroke-width="2" opacity=".35">
+    <line x1="0" y1="120" x2="220" y2="140"/><line x1="0" y1="170" x2="260" y2="180"/><line x1="0" y1="230" x2="190" y2="235"/>
+   </g>
+   <!-- shoulders / coat -->
+   <path d="M430 560 C440 470 500 430 560 420 C640 410 700 420 760 450 C830 490 880 520 900 560Z" fill="#fdf8ec" stroke="#1d1b2b" stroke-width="5"/>
+   <path d="M560 420 C600 470 610 520 600 560" fill="none" stroke="#1d1b2b" stroke-width="4"/>
+   <path d="M760 450 C820 490 860 520 900 560 L760 560Z" fill="url(#htb)" opacity=".7"/>
+   <!-- neck -->
+   <path d="M600 330 C600 380 590 410 570 425 L680 430 C672 400 668 370 672 336Z" fill="#fdf8ec" stroke="#1d1b2b" stroke-width="4"/>
+   <path d="M610 350 C630 390 660 400 672 400" fill="url(#htp)" opacity=".55"/>
+   <!-- face three-quarter, turned left -->
+   <path d="M540 170 C530 230 535 280 552 312 C566 338 592 360 624 364 C660 368 700 350 718 318 C738 282 744 230 736 180 C724 110 670 80 620 84 C570 88 548 120 540 170Z" fill="#fff9ee" stroke="#1d1b2b" stroke-width="5"/>
+   <!-- nose -->
+   <path d="M556 226 C548 250 544 262 556 268" fill="none" stroke="#1d1b2b" stroke-width="4" stroke-linecap="round"/>
+   <!-- eye: half-lidded, looking down-left -->
+   <path d="M578 212 C590 202 612 202 626 212" fill="none" stroke="#1d1b2b" stroke-width="5" stroke-linecap="round"/>
+   <path d="M582 214 C594 222 612 222 624 214" fill="none" stroke="#1d1b2b" stroke-width="2.5"/>
+   <ellipse cx="596" cy="216" rx="7" ry="5" fill="#1d1b2b"/>
+   <path d="M574 190 C590 180 612 180 630 186" fill="none" stroke="#1d1b2b" stroke-width="4" stroke-linecap="round"/>
+   <!-- far eye hint -->
+   <path d="M548 206 C552 202 558 202 562 206" fill="none" stroke="#1d1b2b" stroke-width="3"/>
+   <!-- mouth: flat, ambiguous -->
+   <path d="M566 300 C576 303 590 303 600 299" fill="none" stroke="#1d1b2b" stroke-width="4" stroke-linecap="round"/>
+   <!-- cheek shade -->
+   <path d="M640 240 C660 290 660 330 630 356 C680 350 712 320 722 280 C700 280 670 262 640 240Z" fill="url(#htp)" opacity=".6"/>
+   <!-- wet hair strands -->
+   <path d="M520 190 C500 90 590 40 670 50 C760 62 800 140 790 240 C786 300 800 360 830 420 C780 410 752 380 740 330 C748 250 742 190 720 150 C690 130 640 120 600 130 C570 140 548 160 540 200Z" fill="#1d1b2b"/>
+   <path d="M600 130 C620 160 650 170 690 164" fill="none" stroke="#fdf8ec" stroke-width="3" opacity=".7"/>
+   <path d="M740 120 C770 170 776 240 770 300" fill="none" stroke="#fdf8ec" stroke-width="2" opacity=".5"/>
+   <path d="M538 182 C556 128 626 104 690 116 C716 142 700 168 664 156 C628 146 598 164 572 196 C560 190 548 186 538 182Z" fill="#1d1b2b"/>
+   <path d="M540 180 C534 150 548 132 566 124" fill="none" stroke="#1d1b2b" stroke-width="6"/>
+   <!-- raindrop on cheek (ambiguous tear) -->
+   <path d="M612 250 C608 262 610 272 616 274 C622 272 622 262 612 250Z" fill="#fff" stroke="#1d1b2b" stroke-width="2.5"/>
+   <!-- umbrella edge top right -->
+   <path d="M760 0 C860 40 940 60 1000 60 V0Z" fill="url(#ht)" opacity=".7"/>
+  </symbol>
+ </defs>
+</svg>
+
+<nav class="tabs"><button data-s="a">1 · 말풍선</button><button data-s="b">2 · 세 번의 읽기</button></nav>
+
+<!-- ============ SCREEN A ============ -->
+<section class="screen" id="a">
+ <div class="mast"><h1><span>마지막 컷</span></h1><em>제4화 「정류장」 · 컷 12 / 12</em></div>
+ <div class="page">
+  <div class="panel"><span class="no">9</span>
+   <svg viewBox="0 0 320 200" width="100%" height="100%"><rect width="320" height="200" fill="url(#htb)" opacity=".25"/><rect width="320" height="200" fill="url(#rain)" opacity=".5"/>
+    <rect x="30" y="60" width="200" height="90" rx="10" fill="#fdf8ec" stroke="#1d1b2b" stroke-width="4"/><rect x="45" y="75" width="40" height="30" fill="url(#ht)"/><rect x="95" y="75" width="40" height="30" fill="url(#ht)"/><rect x="145" y="75" width="40" height="30" fill="url(#ht)"/>
+    <circle cx="70" cy="155" r="14" fill="#1d1b2b"/><circle cx="190" cy="155" r="14" fill="#1d1b2b"/>
+    <g stroke="#1d1b2b" stroke-width="2"><line x1="240" y1="80" x2="310" y2="84"/><line x1="240" y1="110" x2="316" y2="112"/><line x1="240" y1="136" x2="300" y2="137"/></g>
+    <text x="214" y="44" font-weight="900" font-size="24" fill="#1d1b2b" font-family="inherit">부우웅</text></svg>
+   <div class="cap" style="left:10px;bottom:10px">마지막 버스.</div></div>
+  <div class="panel"><span class="no">10</span>
+   <svg viewBox="0 0 320 200" width="100%" height="100%"><rect width="320" height="200" fill="url(#htp)" opacity=".2"/>
+    <path d="M60 200 C70 130 110 110 160 110 C210 110 250 130 262 200Z" fill="#fdf8ec" stroke="#1d1b2b" stroke-width="4"/>
+    <rect x="120" y="60" width="90" height="62" fill="#fff" stroke="#1d1b2b" stroke-width="4" transform="rotate(-8 165 90)"/>
+    <path d="M128 70 L165 96 L204 60" fill="none" stroke="#1d1b2b" stroke-width="3" transform="rotate(-8 165 90)"/>
+    <path d="M110 120 C120 100 132 96 146 104" fill="none" stroke="#1d1b2b" stroke-width="5" stroke-linecap="round"/><path d="M220 120 C212 100 200 96 186 104" fill="none" stroke="#1d1b2b" stroke-width="5" stroke-linecap="round"/></svg>
+   <div class="cap" style="right:10px;bottom:10px">뜯지 않은 편지.</div></div>
+  <div class="panel"><span class="no">11</span>
+   <svg viewBox="0 0 320 200" width="100%" height="100%"><rect width="320" height="200" fill="#1d1b2b"/><rect width="320" height="200" fill="url(#rain)" opacity=".4" style="filter:invert(1)"/>
+    <circle cx="240" cy="70" r="30" fill="#ffcf3a"/><circle cx="252" cy="62" r="30" fill="#1d1b2b"/>
+    <text x="30" y="120" font-weight="900" font-size="30" fill="#fdf8ec" font-family="inherit">……</text></svg>
+  </div>
+  <div class="panel big" id="bigA"><span class="no">12</span>
+   <svg viewBox="0 0 1000 560" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><use href="#face"/></svg>
+   <svg id="gaze" viewBox="0 0 964 612" preserveAspectRatio="none"><path id="gazeP" d="" fill="none" stroke="#ff4a86" stroke-width="2.5" stroke-dasharray="3 8" stroke-linecap="round"/><path id="tail" d="" fill="#fff" stroke="#1d1b2b" stroke-width="3" stroke-linejoin="round"/></svg>
+   <div class="slot" style="left:60px;top:70px"><i>위 · 혼잣말</i></div>
+   <div class="slot" style="left:250px;top:380px"><i>아래 · 삼킨 말</i></div>
+   <div class="slot" style="left:760px;top:120px"><i>뒤 · 누군가에게</i></div>
+   <div class="bubble" id="bub" style="left:150px;top:30px"><div class="b" id="bubT">괜찮아.</div></div>
+  </div>
+ </div>
+ <aside class="side">
+  <div class="card"><span class="ink-stamp">얼굴 변경 없음</span>
+   <h3>지금 이 얼굴은</h3>
+   <div class="face-read" id="read">체념</div>
+   <div class="face-sub" id="readSub">말풍선이 위에 떠 있다. 그녀는 자신에게 말하고 있다.</div>
+   <div class="bar"><span>안도</span><span class="t"><b id="b0" style="background:var(--blue)"></b></span><span class="n" id="n0">0</span></div>
+   <div class="bar"><span>체념</span><span class="t"><b id="b1" style="background:var(--ink)"></b></span><span class="n" id="n1">0</span></div>
+   <div class="bar"><span>거짓말</span><span class="t"><b id="b2" style="background:var(--pink)"></b></span><span class="n" id="n2">0</span></div>
+  </div>
+  <div class="card">
+   <h3>대사 · 남은 말 4</h3>
+   <div class="words" id="words">
+    <div class="word on" data-w="괜찮아.">괜찮아.<small>컷 1에서 주움</small></div>
+    <div class="word" data-w="……">……<small>컷 11</small></div>
+    <div class="word" data-w="가.">가.<small>컷 6</small></div>
+    <div class="word" data-w="고마웠어.">고마웠어.<small>컷 3</small></div>
+   </div>
+  </div>
+  <div class="card" style="background:var(--ink);color:var(--paper);box-shadow:6px 7px 0 var(--pink)">
+   <h3 style="color:#b9b09c">작가의 메모</h3>
+   <p style="font-size:17px;line-height:1.6;font-weight:600">그림은 다시 그리지 않는다.<br>말풍선만 옮겨서, 이 사람이 무엇을 느끼는지 정해라.</p>
+   <p class="hint" style="margin-top:10px;color:#9d9482">드래그 · 말풍선 이동 &nbsp;|&nbsp; 클릭 · 대사 교체 &nbsp;|&nbsp; Enter · 컷 확정</p>
+  </div>
+ </aside>
+</section>
+
+<!-- ============ SCREEN B ============ -->
+<section class="screen" id="b">
+ <div class="mast"><h1><span>마지막 컷</span></h1><em>제4화 완성 · 세 명의 독자가 본 같은 얼굴</em></div>
+ <div class="tri">
+  <div class="panel"><span class="no">12-A</span>
+   <svg viewBox="0 0 1000 560" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><use href="#face"/></svg>
+   <div class="bubble" style="left:40px;top:40px"><div class="b">괜찮아.</div></div>
+   <span class="lbl">체념</span><span class="stampB">독자 61%</span></div>
+  <div class="panel"><span class="no">12-B</span>
+   <svg viewBox="0 0 1000 560" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><use href="#face"/></svg>
+   <div class="bubble" style="left:280px;top:40px"><div class="b" style="border-style:dashed">가.</div></div>
+   <span class="lbl" style="background:var(--pink);color:#fff">거짓말</span><span class="stampB">독자 27%</span></div>
+  <div class="panel"><span class="no">12-C</span>
+   <svg viewBox="0 0 1000 560" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><use href="#face"/></svg>
+   <div class="bubble up" style="left:40px;top:330px"><div class="b">고마웠어.</div></div>
+   <span class="lbl" style="left:auto;right:14px;background:var(--blue);color:#fff">안도</span><span class="stampB">독자 12%</span></div>
+ </div>
+ <div class="subt">얼굴은 한 번도 다시 그려지지 않았다. 달라진 것은 말풍선의 자리뿐.</div>
+ <div class="strip" id="strip"></div>
+ <div class="foot"><div class="q">당신의 마지막 컷은 <b>체념</b>이었다. &nbsp;그녀는 끝내 편지를 뜯지 않는다.</div><div class="m">수집한 컷 7 / 12 · 다음 화 「빈 우산」</div></div>
+</section>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var k=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+addEventListener('resize',fit);fit();
+var AC=null;function ac(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){AC=null}return AC;}
+function pen(freq,dur,vol){var c=ac();if(!c)return;var t=c.currentTime,b=c.createBuffer(1,c.sampleRate*dur,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;f.Q.value=3;var g=c.createGain();g.gain.value=vol;s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);}
+function pop(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(520,t);o.frequency.exponentialRampToValueAtTime(260,t+.12);g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.2);}
+// screens
+var tabs=document.querySelectorAll('.tabs button');
+function show(id){if(id!=='a'&&id!=='b')id='a';document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});tabs.forEach(function(b){b.classList.toggle('on',b.dataset.s===id)});if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}
+tabs.forEach(function(b){b.onclick=function(){pen(1800,.08,.15);show(b.dataset.s)}});
+addEventListener('hashchange',function(){show(location.hash.slice(1))});
+addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');if(e.key==='Enter'){pop();show('b')}});
+show(location.hash.slice(1)||'a');
+
+// bubble logic
+var big=document.getElementById('bigA'),bub=document.getElementById('bub'),bt=document.getElementById('bubT');
+var mouth={x:590,y:300}; // in big panel px approx (964x612 area)
+var W='괜찮아.';
+var TX={
+ '괜찮아.':{top:[20,70,10],low:[10,30,60],back:[60,10,30]},
+ '……':{top:[5,85,10],low:[5,55,40],back:[20,40,40]},
+ '가.':{top:[10,60,30],low:[5,25,70],back:[15,20,65]},
+ '고마웠어.':{top:[40,50,10],low:[55,25,20],back:[75,10,15]}};
+var SUB={0:'그녀는 무언가를 내려놓았다. 이상하게 입꼬리가 가벼워 보인다.',1:'말풍선이 위에 떠 있다. 그녀는 자신에게 말하고 있다.',2:'입가 가까이 눌린 말. 눈은 다른 것을 말한다.'};
+var NAME=['안도','체념','거짓말'],COL=['#2c68d4','#1d1b2b','#ff4a86'];
+var slots=document.querySelectorAll('#bigA .slot');
+function evalPos(){
+ var x=bub.offsetLeft+bub.offsetWidth/2,y=bub.offsetTop+bub.offsetHeight/2;
+ var w=big.clientWidth,h=big.clientHeight;
+ var top=Math.max(0,1-y/(h*.55)),low=Math.max(0,(y-h*.4)/(h*.6)),back=Math.max(0,(x-w*.55)/(w*.45));
+ var s=top+low+back+.001;var t=TX[W]||TX['괜찮아.'];
+ var v=[0,1,2].map(function(i){return (t.top[i]*top+t.low[i]*low+t.back[i]*back)/s});
+ var tot=v[0]+v[1]+v[2]||1;v=v.map(function(q){return Math.round(q/tot*100)});
+ var m=v.indexOf(Math.max.apply(null,v));
+ for(var i=0;i<3;i++){document.getElementById('b'+i).style.width=v[i]+'%';document.getElementById('n'+i).textContent=v[i];}
+ var r=document.getElementById('read');if(r.textContent!==NAME[m]){r.textContent=NAME[m];r.style.color=COL[m];document.getElementById('readSub').textContent=SUB[m];}
+ // slots hot
+ slots.forEach(function(sl){var dx=sl.offsetLeft+75-x,dy=sl.offsetTop+42-y;sl.classList.toggle('hot',Math.sqrt(dx*dx+dy*dy)<130)});
+ // gaze line & tail (convert to svg coords 964x612)
+ var sx=964/w,sy=612/h,ex=bub.offsetLeft+bub.offsetWidth*.5,ey=bub.offsetTop+bub.offsetHeight*.5;
+ var mx=mouth.x*w/964,my=mouth.y*h/612;
+ var ang=Math.atan2(my-ey,mx-ex),bx=ex+Math.cos(ang)*bub.offsetWidth*.42,by=ey+Math.sin(ang)*bub.offsetHeight*.42;
+ var tx=bx+(mx-bx)*.45,ty=by+(my-by)*.45,px=-Math.sin(ang)*16,py=Math.cos(ang)*16;
+ document.getElementById('tail').setAttribute('d','M'+((bx+px)*sx)+' '+((by+py)*sy)+' L'+(tx*sx)+' '+(ty*sy)+' L'+((bx-px)*sx)+' '+((by-py)*sy)+'Z');
+ document.getElementById('gazeP').setAttribute('d','M'+(560*w/964*sx)+' '+(215*h/612*sy)+' Q'+((ex+560*w/964)/2*sx)+' '+(Math.min(ey,215)*sy-40)+' '+(ex*sx)+' '+(ey*sy));
+}
+var drag=null;
+bub.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,l:bub.offsetLeft,t:bub.offsetTop};bub.classList.add('drag');try{bub.setPointerCapture(e.pointerId)}catch(_){}pen(900,.12,.2);});
+bub.addEventListener('pointermove',function(e){if(!drag)return;var k=stage.getBoundingClientRect().width/1600||1;var nl=drag.l+(e.clientX-drag.x)/k,nt=drag.t+(e.clientY-drag.y)/k;nl=Math.max(0,Math.min(big.clientWidth-bub.offsetWidth,nl));nt=Math.max(0,Math.min(big.clientHeight-bub.offsetHeight,nt));bub.style.left=nl+'px';bub.style.top=nt+'px';evalPos();});
+function up(){if(!drag)return;drag=null;bub.classList.remove('drag');pop();}
+bub.addEventListener('pointerup',up);bub.addEventListener('pointercancel',up);
+document.querySelectorAll('.word').forEach(function(el){el.onclick=function(){document.querySelectorAll('.word').forEach(function(q){q.classList.remove('on')});el.classList.add('on');W=el.dataset.w;bt.textContent=W;pen(1400,.1,.18);setTimeout(evalPos,0);}});
+setTimeout(evalPos,30);addEventListener('resize',function(){setTimeout(evalPos,0)});
+// idle drift: bubble breathes
+var t0=0;setInterval(function(){if(drag)return;t0+=.05;bt.style.transform='translateY('+(Math.sin(t0)*2.5)+'px)'},50);
+
+// strip
+var strip=document.getElementById('strip'),cuts=['정류장','버스','편지','우산','골목','창문','손','비','신발','떠남','밤','마지막'];
+var got=[0,1,2,5,8,10,11];
+cuts.forEach(function(n,i){var d=document.createElement('div');d.className='th'+(got.indexOf(i)<0?' lock':'')+(i===11?' cur':'');
+ if(got.indexOf(i)>=0){d.innerHTML='<span class="k">'+(i+1)+' · '+n+'</span>'+(i===11?'<svg viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice"><use href="#face"/></svg>':'<svg viewBox="0 0 120 130" preserveAspectRatio="none"><rect width="120" height="130" fill="url(#'+(['ht','htp','htb'][i%3])+')" opacity=".35"/><circle cx="'+(30+i*7%60)+'" cy="70" r="'+(18+i%4*4)+'" fill="#fdf8ec" stroke="#1d1b2b" stroke-width="3"/><path d="M0 110 Q60 '+(90+i%3*8)+' 120 108 V130 H0Z" fill="#1d1b2b"/></svg>');}
+ else d.innerHTML='<span class="k">'+(i+1)+'</span>';
+ d.onclick=function(){pen(1600,.06,.12)};strip.appendChild(d);});
+})();
+</script>
+</body>
+</html>

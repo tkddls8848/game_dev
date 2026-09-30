@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>마지막 이삿날</title>
+<style>
+:root{--bg:#262a2b;--surf:#363b3b;--paper:#efe4cd;--amber:#dfa677;--amber2:#f3c58f;--muted:#bdc0b4;--red:#b84a3a;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Noto Serif CJK KR","Batang",serif;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+html,body{margin:0;height:100%;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;background:var(--bg);color:var(--paper);font-family:var(--sans)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+svg.scene{position:absolute;inset:0}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:overlay;z-index:40;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse at 50% 50%,transparent 50%,rgba(10,8,6,.7) 100%)}
+.buzz{animation:buzz 5s infinite}
+@keyframes buzz{0%,100%{opacity:1}41%{opacity:1}42%{opacity:.55}43%{opacity:1}44%{opacity:.7}45%{opacity:1}}
+.door{cursor:pointer}
+.door:hover .dh{stroke:#f3c58f}
+.wave path{animation:wv 2.2s ease-out infinite;opacity:0}
+.wave path:nth-child(2){animation-delay:.4s}.wave path:nth-child(3){animation-delay:.8s}.wave path:nth-child(4){animation-delay:1.2s}
+@keyframes wv{0%{opacity:0;transform:translateY(0)}30%{opacity:.9}100%{opacity:0;transform:translateY(-40px)}}
+/* HUD */
+.top{position:absolute;left:40px;right:40px;top:26px;display:flex;align-items:flex-start;gap:24px;z-index:20}
+.logo b{display:block;font-family:var(--serif);font-size:32px;letter-spacing:6px}
+.logo small{font-size:11px;letter-spacing:5px;color:var(--amber)}
+.clock{margin-left:auto;display:flex;align-items:center;gap:16px;background:rgba(20,22,22,.78);border:1px solid rgba(223,166,119,.3);padding:12px 18px;backdrop-filter:blur(4px)}
+.clock .t{font-family:var(--serif);font-size:30px;color:var(--amber2);letter-spacing:1px}
+.clock .t small{font-family:var(--sans);font-size:11px;color:var(--muted);display:block;letter-spacing:2px}
+.hours{display:flex;gap:4px}
+.hours i{width:22px;height:30px;border-radius:3px;background:var(--amber);box-shadow:0 0 10px rgba(223,166,119,.4)}
+.hours i.used{background:#3d4242;box-shadow:none}
+.hours i.plan{background:transparent;border:2px dashed var(--amber);box-sizing:border-box;box-shadow:none;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.truck{background:rgba(20,22,22,.78);border:1px solid rgba(189,192,180,.25);padding:12px 18px;font-size:12px;color:var(--muted);line-height:1.6}
+.truck b{display:block;font-family:var(--serif);font-size:18px;color:var(--paper)}
+.listen{position:absolute;left:600px;top:140px;width:330px;padding:18px 20px;background:rgba(26,28,28,.88);border:1px solid rgba(223,166,119,.5);box-shadow:0 20px 40px rgba(0,0,0,.5);z-index:20}
+.listen::after{content:"";position:absolute;left:150px;bottom:-12px;border:12px solid transparent;border-top-color:rgba(223,166,119,.5);border-bottom:0}
+.listen small{font-size:11px;letter-spacing:3px;color:var(--amber)}
+.listen h3{margin:4px 0 8px;font-family:var(--serif);font-size:22px}
+.listen p{margin:0;font-family:var(--serif);font-size:16px;line-height:1.7;color:#e8dcc4}
+.acts{position:absolute;left:40px;right:40px;bottom:34px;display:grid;grid-template-columns:1.1fr 1.1fr 1.1fr 1.3fr;gap:14px;z-index:20}
+.act{position:relative;background:linear-gradient(180deg,rgba(54,59,59,.95),rgba(34,37,37,.95));border:1px solid rgba(189,192,180,.2);padding:16px 18px;cursor:pointer;transition:transform .12s,border-color .2s}
+.act:hover{transform:translateY(-3px);border-color:var(--amber)}
+.act:active{transform:translateY(1px)}
+.act small{font-size:11px;letter-spacing:2px;color:var(--muted)}
+.act b{display:block;font-family:var(--serif);font-size:19px;margin:5px 0 6px}
+.act .cost{position:absolute;right:16px;top:14px;font-size:12px;color:var(--amber);border:1px solid rgba(223,166,119,.5);padding:2px 8px;border-radius:10px}
+.act span{font-size:12px;color:var(--muted);line-height:1.5}
+.act.done{opacity:.55}
+.act.done .cost{color:var(--muted);border-color:#555}
+.act.sel{border-color:var(--amber);box-shadow:0 0 0 1px rgba(223,166,119,.4),0 0 30px rgba(223,166,119,.2)}
+.act.final{background:linear-gradient(180deg,rgba(90,58,40,.95),rgba(56,36,26,.95));border-color:rgba(223,166,119,.6)}
+.act.final b{color:var(--amber2)}
+.nb{position:absolute;right:40px;top:130px;width:300px;z-index:20}
+.nb h4{margin:0 0 8px;font-size:11px;letter-spacing:3px;color:var(--amber);font-weight:600}
+.nb .r{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;margin-bottom:6px;background:rgba(20,22,22,.72);border-left:3px solid #555}
+.nb .r b{font-family:var(--serif);font-size:15px;display:block}
+.nb .r span{font-size:12px;color:var(--muted);line-height:1.5}
+.nb .r.help{border-left-color:#8fb39a}.nb .r.now{border-left-color:var(--amber)}
+.nb .r em{font-style:normal;font-size:11px;color:#8fb39a}
+.hint{position:absolute;left:40px;top:120px;font-size:12px;color:var(--muted);z-index:20;line-height:1.7}
+.hint kbd{border:1px solid #666;border-radius:3px;padding:0 5px;color:var(--paper)}
+/* B */
+.end{position:absolute;left:60px;top:70px;width:470px;z-index:20}
+.end small{font-size:12px;letter-spacing:6px;color:var(--amber)}
+.end h1{margin:10px 0 14px;font-family:var(--serif);font-size:56px;letter-spacing:6px;line-height:1.15;text-shadow:0 0 30px rgba(223,166,119,.35)}
+.end p{margin:0;font-family:var(--serif);font-size:18px;line-height:1.8;color:#e8dcc4}
+.stats{position:absolute;left:60px;top:430px;display:flex;gap:12px;z-index:20}
+.stat{background:rgba(20,22,22,.8);border:1px solid rgba(223,166,119,.3);padding:12px 18px;min-width:110px}
+.stat small{font-size:11px;color:var(--muted);letter-spacing:2px}
+.stat b{display:block;font-family:var(--serif);font-size:30px;color:var(--amber2)}
+.memo{position:absolute;left:60px;top:530px;width:400px;padding:18px 22px;background:linear-gradient(180deg,#efe4cd,#dccfb2);color:#2d2a24;transform:rotate(-1.5deg);box-shadow:0 20px 40px rgba(0,0,0,.5);z-index:20;font-family:var(--serif)}
+.memo small{font-family:var(--sans);font-size:10px;letter-spacing:3px;color:#6b6352}
+.memo div{font-size:15px;line-height:1.9;margin-top:6px}
+.memo s{color:#8b806e}
+.tabs{position:absolute;right:14px;bottom:8px;display:flex;gap:6px;z-index:60}
+.tabs button{background:rgba(20,22,22,.85);border:1px solid rgba(223,166,119,.35);color:var(--muted);font:600 11px var(--sans);padding:4px 9px;cursor:pointer}
+.tabs button.on{background:var(--amber);color:#1e1a14}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<!-- ============ A : 3층 복도 ============ -->
+<section class="scr" id="A">
+<svg class="scene" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4f4c"/><stop offset=".55" stop-color="#5b5f58"/><stop offset=".56" stop-color="#3f5552"/><stop offset="1" stop-color="#34403d"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3a34"/><stop offset="1" stop-color="#1c1b18"/></linearGradient>
+    <radialGradient id="lamp" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#ffd9a6" stop-opacity=".55"/><stop offset=".5" stop-color="#ffc98a" stop-opacity=".12"/><stop offset="1" stop-color="#ffc98a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a66"/><stop offset=".45" stop-color="#d98a5f"/><stop offset=".7" stop-color="#f3c58f"/><stop offset="1" stop-color="#8a5a48"/></linearGradient>
+    <linearGradient id="beam" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#ffcf95" stop-opacity=".45"/><stop offset="1" stop-color="#ffcf95" stop-opacity="0"/></linearGradient>
+    <linearGradient id="doorg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5c3f30"/><stop offset="1" stop-color="#6d4a37"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+    <pattern id="stain" width="220" height="300" patternUnits="userSpaceOnUse"><rect width="220" height="300" fill="none"/><path d="M40 0 C44 60 36 120 42 200" stroke="#2c302d" stroke-width="10" opacity=".25" filter="url(#soft)"/><circle cx="160" cy="80" r="30" fill="#2c302d" opacity=".15" filter="url(#soft)"/></pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="#1e2120"/>
+  <!-- ceiling -->
+  <rect x="0" y="0" width="1600" height="150" fill="#2b2e2c"/>
+  <path d="M0 150 H1600" stroke="#1a1c1b" stroke-width="6"/>
+  <!-- back wall -->
+  <rect x="0" y="150" width="1600" height="590" fill="url(#wall)"/>
+  <rect x="0" y="150" width="1600" height="590" fill="url(#stain)"/>
+  <path d="M0 475 H1600" stroke="#2c3a37" stroke-width="4"/>
+  <!-- window at end -->
+  <g transform="translate(0 170)">
+    <rect x="1330" y="210" width="230" height="330" fill="url(#sunset)"/>
+    <circle cx="1440" cy="440" r="46" fill="#ffe3b0" opacity=".9"/>
+    <path d="M1330 470 L1360 430 L1380 440 L1400 380 L1430 400 L1470 350 L1500 410 L1540 390 L1560 420 V540 H1330Z" fill="#4a3a3a" opacity=".85"/>
+    <path d="M1360 540 V300 M1360 300 H1480 M1470 300 V330" stroke="#2a2222" stroke-width="4" fill="none"/>
+    <path d="M1500 540 V330 M1500 330 H1556" stroke="#2a2222" stroke-width="3" fill="none"/>
+    <rect x="1330" y="210" width="230" height="330" fill="none" stroke="#1c1e1d" stroke-width="12"/>
+    <path d="M1445 210 V540 M1330 375 H1560" stroke="#1c1e1d" stroke-width="7"/>
+    <path d="M1330 210 L1348 240 L1370 226 L1352 262" stroke="#e8e0cf" stroke-width="1.5" fill="none" opacity=".6"/>
+  </g>
+  <!-- sun beam across corridor -->
+  <path d="M1330 400 L1330 710 L300 1000 L-100 1000 Z" fill="url(#beam)" opacity=".5"/>
+  <!-- lamps -->
+  <g class="buzz"><rect x="250" y="150" width="120" height="12" fill="#f5e6c8"/><path d="M130 162 L490 162 L620 740 L0 740Z" fill="url(#lamp)"/></g>
+  <g><rect x="700" y="150" width="120" height="12" fill="#f5e6c8"/><path d="M580 162 L940 162 L1070 740 L450 740Z" fill="url(#lamp)"/></g>
+  <g opacity=".5"><rect x="1140" y="150" width="120" height="12" fill="#8a8272"/></g>
+  <!-- doors -->
+  <g class="door" data-d="301">
+    <rect x="200" y="300" width="210" height="440" fill="#2a2c2a"/><rect x="212" y="312" width="186" height="428" fill="url(#doorg)"/>
+    <rect x="232" y="336" width="146" height="170" fill="none" stroke="#4a3226" stroke-width="3"/><rect x="232" y="530" width="146" height="170" fill="none" stroke="#4a3226" stroke-width="3"/>
+    <circle cx="378" cy="530" r="9" fill="#c7b58f"/><rect x="274" y="322" width="62" height="28" fill="#d9d2c0"/><text x="305" y="343" font-family="Pretendard,Noto Sans KR,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#2a2c2a">301</text>
+    <path d="M428 420 C470 410 520 430 560 424" stroke="#b84a3a" stroke-width="10" fill="none" opacity=".75" stroke-linecap="round"/>
+    <text x="440" y="470" font-family="Pretendard,sans-serif" font-size="46" font-weight="900" fill="#b84a3a" opacity=".7" transform="rotate(-6 440 470)">철거</text>
+  </g>
+  <g class="door" data-d="302">
+    <rect x="660" y="300" width="210" height="440" fill="#2a2c2a"/><rect x="672" y="312" width="186" height="428" fill="url(#doorg)"/>
+    <rect x="692" y="336" width="146" height="170" fill="none" stroke="#4a3226" stroke-width="3"/><rect x="692" y="530" width="146" height="170" fill="none" stroke="#4a3226" stroke-width="3"/>
+    <circle cx="838" cy="530" r="9" fill="#c7b58f"/><rect x="734" y="322" width="62" height="28" fill="#f0e3c4"/><text x="765" y="343" font-family="Pretendard,Noto Sans KR,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#2a2c2a">302</text>
+    <rect x="672" y="734" width="186" height="6" fill="#ffcf95" opacity=".85"/><rect x="620" y="738" width="290" height="30" fill="#ffcf95" opacity=".18" filter="url(#soft)"/>
+    <g class="wave" stroke="#f3c58f" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <path d="M700 726 q12 -10 24 0 t24 0 t24 0 t24 0 t24 0 t24 0"/>
+      <path d="M690 716 q14 -12 28 0 t28 0 t28 0 t28 0 t28 0"/>
+      <path d="M706 706 q12 -10 24 0 t24 0 t24 0 t24 0 t24 0"/>
+      <path d="M716 696 q10 -8 20 0 t20 0 t20 0 t20 0 t20 0"/>
+    </g>
+    <rect x="672" y="312" width="186" height="428" fill="none" stroke="#f3c58f" stroke-width="3" class="dh" opacity=".8"/>
+  </g>
+  <g class="door" data-d="303">
+    <rect x="1080" y="300" width="210" height="440" fill="#2a2c2a"/><rect x="1092" y="312" width="186" height="428" fill="#4f3a2e"/>
+    <rect x="1112" y="336" width="146" height="170" fill="none" stroke="#3a2a20" stroke-width="3"/><rect x="1112" y="530" width="146" height="170" fill="none" stroke="#3a2a20" stroke-width="3"/>
+    <circle cx="1258" cy="530" r="9" fill="#8f8468"/><rect x="1154" y="322" width="62" height="28" fill="#bdb6a4"/><text x="1185" y="343" font-family="Pretendard,Noto Sans KR,sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#2a2c2a">303</text>
+    <rect x="1120" y="400" width="120" height="70" fill="#e8e0cf" transform="rotate(3 1180 435)"/>
+    <text x="1180" y="430" font-family="Pretendard,sans-serif" font-size="14" text-anchor="middle" fill="#444" transform="rotate(3 1180 435)">퇴거 안내</text>
+    <text x="1180" y="452" font-family="Pretendard,sans-serif" font-size="11" text-anchor="middle" fill="#777" transform="rotate(3 1180 435)">재개발 3구역 · 10월 1일</text>
+    <path d="M1112 700 h150" stroke="#b84a3a" stroke-width="4" opacity=".6"/>
+  </g>
+  <!-- floor -->
+  <rect x="0" y="740" width="1600" height="260" fill="url(#floor)"/>
+  <path d="M0 740 H1600" stroke="#56584f" stroke-width="3"/>
+  <g stroke="#2a2925" stroke-width="2" opacity=".6"><path d="M0 800 H1600"/><path d="M0 880 H1600"/></g>
+  <!-- boxes near 301 -->
+  <g>
+    <rect x="40" y="640" width="130" height="100" fill="#b58b5a"/><rect x="40" y="640" width="130" height="16" fill="#a67c4d"/><path d="M105 640 V740" stroke="#d8c29a" stroke-width="10"/>
+    <rect x="60" y="560" width="100" height="80" fill="#c49a67"/><path d="M110 560 V640" stroke="#e1cfa6" stroke-width="8"/>
+    <text x="80" y="700" font-family="Pretendard,sans-serif" font-size="14" fill="#3d2d1c">부엌 · 깨짐</text>
+    <!-- wardrobe dragged half out -->
+    <rect x="420" y="520" width="150" height="220" fill="#6b4a33"/><rect x="430" y="530" width="62" height="200" fill="#5c3f2c"/><rect x="498" y="530" width="62" height="200" fill="#5c3f2c"/>
+    <circle cx="486" cy="630" r="4" fill="#c7b58f"/><circle cx="504" cy="630" r="4" fill="#c7b58f"/>
+    <path d="M420 740 L396 760 H600 L570 740" fill="#1a1916" opacity=".6"/>
+  </g>
+  <!-- stair rail at left -->
+  <path d="M0 620 L60 620" stroke="#8a8a80" stroke-width="5"/>
+  <!-- player listening at 302 -->
+  <g transform="translate(610 740)">
+    <ellipse cx="30" cy="4" rx="70" ry="10" fill="#000" opacity=".5"/>
+    <path d="M0 0 C-6 -40 0 -90 20 -120 L40 -120 C52 -90 58 -50 56 0Z" fill="#1d2326"/>
+    <path d="M20 -118 C22 -160 40 -190 58 -196 L66 -170 C58 -150 50 -130 44 -118Z" fill="#232b2e"/>
+    <circle cx="66" cy="-206" r="20" fill="#2b2320"/>
+    <path d="M52 -222 C58 -236 82 -232 84 -212 C76 -222 62 -224 52 -222Z" fill="#141010"/>
+    <path d="M56 -168 C70 -176 84 -196 72 -226" stroke="#232b2e" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <path d="M80 -212 C84 -210 86 -204 84 -200" stroke="#f3c58f" stroke-width="2" fill="none"/>
+    <path d="M22 -118 L-4 -60" stroke="#1d2326" stroke-width="14" stroke-linecap="round"/>
+  </g>
+  <!-- cat hint under stairs text -->
+</svg>
+
+<header class="top">
+  <div class="logo"><b>마지막 이삿날</b><small>THE LAST ADDRESS · 3층 복도</small></div>
+  <div class="clock"><div class="t">오후 2:00<small>이삿차 출발까지</small></div><div class="hours" id="hours"><i class="used"></i><i class="used"></i><i class="used"></i><i class="plan"></i><i class="plan"></i><i></i><i></i><i></i></div></div>
+  <div class="truck"><b>마지막 이삿차 · 저녁 7시</b>한 가구의 짐을 더 실을 수 있습니다</div>
+</header>
+<div class="hint">문에 귀를 기울여 이웃의 사정을 알아보세요.<br><kbd>1</kbd> <kbd>2</kbd> 화면 전환</div>
+
+<div class="listen">
+  <small>302호 · 김여진 · 귀 기울이기</small>
+  <h3>고양이를 부르는 소리</h3>
+  <p>“나비야… 나비야, 어디 있니.” 이삿짐 사이에서 반려묘가 보이지 않는다.</p>
+</div>
+
+<aside class="nb">
+  <h4>이웃 · 오늘은 아직 이웃이다</h4>
+  <div class="r help"><div><b>301호 · 정복만</b><span>장롱을 문밖으로 함께 옮겼다 <em>· 도움 완료</em></span></div></div>
+  <div class="r now"><div><b>302호 · 김여진</b><span>고양이를 부르는 소리 · 사정 확인 중</span></div></div>
+  <div class="r"><div><b>303호 · 한난실</b><span>아무 소리도 없다. 아직 문을 두드리지 않았다</span></div></div>
+</aside>
+
+<div class="acts">
+  <div class="act done"><span class="cost">1시간</span><small>302호 · 김여진</small><b>사정 확인</b><span>문 너머로 이야기를 들었다</span></div>
+  <div class="act sel" data-h="2"><span class="cost">2시간</span><small>302호 · 작은 도움</small><b>계단 아래 고양이 찾기</b><span>이삿짐 사이, 계단 밑 어둠을 살핀다</span></div>
+  <div class="act" data-h="1"><span class="cost">1시간</span><small>303호 · 한난실</small><b>문에 귀 기울이기</b><span>조용한 집의 사정을 알아본다</span></div>
+  <div class="act final"><span class="cost">최종 결정</span><small>이삿차 배정 · 한 가구만</small><b>이 가구와 함께 떠납니다</b><span>작은 도움은 여러 번 줄 수 있지만, 마지막 차에는 한 가구만</span></div>
+</div>
+</section>
+
+<!-- ============ B : 저녁, 함께 떠나는 복도 ============ -->
+<section class="scr" id="B">
+<svg class="scene" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141a2a"/><stop offset=".55" stop-color="#3b3446"/><stop offset=".8" stop-color="#8a5a48"/><stop offset="1" stop-color="#c9825a"/></linearGradient>
+    <radialGradient id="win" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#ffd9a0"/><stop offset="1" stop-color="#e59a5c"/></radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffcf95" stop-opacity=".5"/><stop offset="1" stop-color="#ffcf95" stop-opacity="0"/></radialGradient>
+    <linearGradient id="headl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff2cf" stop-opacity=".55"/><stop offset="1" stop-color="#fff2cf" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#dusk)"/>
+  <g fill="#e8e0cf" opacity=".7"><circle cx="200" cy="80" r="1.5"/><circle cx="420" cy="140" r="1.2"/><circle cx="900" cy="60" r="1.5"/><circle cx="1300" cy="110" r="1.3"/><circle cx="1500" cy="50" r="1.1"/></g>
+  <!-- distant new towers + cranes -->
+  <g fill="#232638" opacity=".9"><rect x="40" y="420" width="90" height="380"/><rect x="150" y="360" width="70" height="440"/><rect x="1420" y="380" width="100" height="420"/><rect x="1530" y="440" width="70" height="360"/></g>
+  <g stroke="#2c2f44" stroke-width="5" fill="none"><path d="M260 800 V260 H460 M260 290 L200 290"/><path d="M1360 800 V300 H1180"/></g>
+  <circle cx="460" cy="266" r="4" fill="#e0574a"><animate attributeName="opacity" values="1;.1;1" dur="1.6s" repeatCount="indefinite"/></circle>
+  <!-- old apartment facade -->
+  <rect x="560" y="210" width="760" height="600" fill="#4a4c48"/>
+  <rect x="560" y="210" width="760" height="600" fill="#000" opacity=".25"/>
+  <g stroke="#3a3c38" stroke-width="3"><path d="M560 360 H1320"/><path d="M560 510 H1320"/><path d="M560 660 H1320"/></g>
+  <text x="590" y="250" font-family="Pretendard,sans-serif" font-size="22" font-weight="800" fill="#8a8a80">희망연립 가동</text>
+  <!-- dark windows floors 1,2,4 -->
+  <g fill="#23252a"><rect x="610" y="270" width="140" height="70"/><rect x="870" y="270" width="140" height="70"/><rect x="1130" y="270" width="140" height="70"/>
+    <rect x="610" y="570" width="140" height="70"/><rect x="870" y="570" width="140" height="70"/><rect x="1130" y="570" width="140" height="70"/>
+    <rect x="610" y="720" width="140" height="70"/><rect x="1130" y="720" width="140" height="70"/></g>
+  <g fill="#b84a3a" opacity=".7"><path d="M620 300 l120 30 M620 330 l120 -30"/></g>
+  <path d="M620 300 L740 330 M620 330 L740 300" stroke="#b84a3a" stroke-width="6" opacity=".6"/>
+  <path d="M1140 600 L1260 630 M1140 630 L1260 600" stroke="#b84a3a" stroke-width="6" opacity=".6"/>
+  <!-- 3rd floor corridor lit (open gallery) -->
+  <rect x="560" y="380" width="760" height="120" fill="#2a2724"/>
+  <rect x="560" y="380" width="760" height="120" fill="url(#glow)"/>
+  <g><rect x="620" y="398" width="110" height="94" fill="url(#win)"/><rect x="880" y="398" width="110" height="94" fill="url(#win)"/><rect x="1140" y="398" width="110" height="94" fill="url(#win)"/></g>
+  <g fill="#1a1512"><text x="675" y="392" font-family="Pretendard,sans-serif" font-size="13" text-anchor="middle" fill="#c9b99a">301</text><text x="935" y="392" font-family="Pretendard,sans-serif" font-size="13" text-anchor="middle" fill="#c9b99a">302</text><text x="1195" y="392" font-family="Pretendard,sans-serif" font-size="13" text-anchor="middle" fill="#c9b99a">303</text></g>
+  <path d="M560 470 H1320" stroke="#6a6a62" stroke-width="4"/><g stroke="#6a6a62" stroke-width="3"><path d="M600 470 V500"/><path d="M700 470 V500"/><path d="M800 470 V500"/><path d="M900 470 V500"/><path d="M1000 470 V500"/><path d="M1100 470 V500"/><path d="M1200 470 V500"/><path d="M1300 470 V500"/></g>
+  <!-- neighbors on corridor carrying boxes -->
+  <g fill="#15110f">
+    <g transform="translate(760 470)"><circle cx="0" cy="-58" r="9"/><path d="M-10 -48 h20 l4 48 h-28z"/><rect x="8" y="-44" width="26" height="22" fill="#b58b5a"/></g>
+    <g transform="translate(1060 470)"><circle cx="0" cy="-58" r="9"/><path d="M-10 -48 h20 l4 48 h-28z"/><rect x="-34" y="-44" width="26" height="22" fill="#c49a67"/></g>
+    <g transform="translate(1270 470)"><circle cx="0" cy="-54" r="8"/><path d="M-9 -45 h18 l4 45 h-26z"/></g>
+  </g>
+  <!-- street -->
+  <rect x="0" y="800" width="1600" height="200" fill="#1d1c1f"/>
+  <path d="M0 800 H1600" stroke="#4a4744" stroke-width="4"/>
+  <g stroke="#6a6258" stroke-width="4" stroke-dasharray="40 30"><path d="M0 930 H1600"/></g>
+  <!-- streetlamp -->
+  <path d="M1400 800 V560 Q1400 540 1380 540 H1350" stroke="#2a2a2c" stroke-width="7" fill="none"/>
+  <ellipse cx="1350" cy="546" rx="18" ry="6" fill="#ffdca6"/><path d="M1330 550 L1260 800 H1440 L1370 550Z" fill="#ffdca6" opacity=".12"/>
+  <!-- truck -->
+  <g transform="translate(700 700)">
+    <ellipse cx="220" cy="170" rx="330" ry="16" fill="#000" opacity=".5"/>
+    <rect x="0" y="0" width="330" height="150" fill="#d8d2c4"/><rect x="0" y="0" width="330" height="10" fill="#b9b2a2"/>
+    <text x="165" y="86" font-family="Pretendard,sans-serif" font-size="22" font-weight="800" text-anchor="middle" fill="#6b6456">새 주소 이사</text>
+    <!-- open back with cargo -->
+    <rect x="-8" y="6" width="16" height="140" fill="#9a9384"/>
+    <path d="M330 30 H420 L470 90 V150 H330Z" fill="#c9825a"/><path d="M345 42 H410 L448 90 H345Z" fill="#ffe3b0" opacity=".85"/>
+    <circle cx="80" cy="160" r="26" fill="#1a1a1a"/><circle cx="80" cy="160" r="10" fill="#666"/><circle cx="400" cy="160" r="26" fill="#1a1a1a"/><circle cx="400" cy="160" r="10" fill="#666"/>
+    <rect x="462" y="116" width="12" height="18" fill="#ffe8b8"/>
+    <path d="M474 110 L900 60 L900 200 L474 140Z" fill="url(#headl)"/>
+    <!-- 303 grandma in cab -->
+    <circle cx="395" cy="68" r="11" fill="#2a2320"/><path d="M384 80 h22 v14 h-22z" fill="#2a2320"/>
+  </g>
+  <!-- cargo being loaded at back of truck -->
+  <g>
+    <rect x="600" y="752" width="80" height="60" fill="#b58b5a"/><rect x="612" y="712" width="60" height="44" fill="#c49a67"/>
+    <g fill="#15110f"><g transform="translate(560 800)"><circle cx="0" cy="-74" r="11"/><path d="M-13 -62 h26 l5 62 h-36z"/></g>
+      <g transform="translate(520 800)"><circle cx="0" cy="-66" r="10"/><path d="M-12 -56 h24 l5 56 h-34z"/><rect x="10" y="-48" width="30" height="24" fill="#c49a67"/></g>
+      <!-- 302 with cat carrier -->
+      <g transform="translate(440 800)"><circle cx="0" cy="-70" r="10"/><path d="M-12 -60 h24 l5 60 h-34z"/><rect x="-40" y="-34" width="30" height="22" rx="4" fill="#7a8a8a"/><circle cx="-25" cy="-23" r="5" fill="#f3c58f"/></g>
+    </g>
+  </g>
+</svg>
+
+<div class="end">
+  <small>저녁 7시 · 마지막 차에 실은 것</small>
+  <h1>함께 떠나는<br>복도</h1>
+  <p>먼저 도왔던 이웃들이 남은 가구의 짐을 나눠 옮겼다. 당신의 차에는 한 가구만 탔지만 복도에는 아무도 혼자 남지 않았다.</p>
+</div>
+<div class="stats">
+  <div class="stat"><small>도운 이웃</small><b>3</b></div>
+  <div class="stat"><small>차량 여유</small><b>0</b></div>
+  <div class="stat"><small>이삿차</small><b style="font-size:20px;padding-top:8px">303호</b></div>
+</div>
+<div class="memo">
+  <small>오늘 쓴 시간 · 8시간</small>
+  <div>
+    <s>301호 · 정복만</s> 장롱을 함께 옮기기 · 2시간<br>
+    <s>302호 · 김여진</s> 계단 아래 고양이 찾기 · 2시간<br>
+    <s>303호 · 한난실</s> 상자와 테이프 가져오기 · 2시간<br>
+    <b>303호 · 한난실</b> 이삿차 배정 · 최종 결정
+  </div>
+</div>
+</section>
+
+<div class="grain"></div><div class="vig"></div>
+<nav class="tabs"><button data-k="a">A 복도</button><button data-k="b">B 저녁</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  show(location.hash.replace('#','')||'a');
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function knock(){var a=ctx();if(!a)return;for(var k=0;k<2;k++){var t=a.currentTime+k*.16;var o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
+    o.type='triangle';o.frequency.setValueAtTime(180,t);o.frequency.exponentialRampToValueAtTime(70,t+.08);f.type='lowpass';f.frequency.value=600;
+    g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.16);}}
+  function tick(){var a=ctx();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=660;
+    g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.3);}
+  var doors=document.querySelectorAll('.door');for(var d=0;d<doors.length;d++)doors[d].addEventListener('click',knock);
+  var hours=document.getElementById('hours').children;
+  var acts=document.querySelectorAll('.act');
+  for(var j=0;j<acts.length;j++){acts[j].addEventListener('click',function(){
+    if(this.className.indexOf('done')>=0)return;
+    if(this.className.indexOf('final')>=0){tick();setTimeout(function(){show('b');},300);return;}
+    for(var q=0;q<acts.length;q++){if(acts[q].className.indexOf('done')<0&&acts[q].className.indexOf('final')<0)acts[q].className='act';}
+    this.className='act sel';tick();
+    var h=parseInt(this.getAttribute('data-h')||'1',10);
+    for(var i=3;i<hours.length;i++){hours[i].className=(i<3+h)?'plan':'';}
+  });}
+})();
+</script>
+</body>
+</html>

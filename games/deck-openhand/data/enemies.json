@@ -1,0 +1,128 @@
+{
+  "_": "행동 순서는 순환한다. 플레이어에게 늘 보인다 — 그것이 이 PoC의 규칙이다.",
+  "_난수": "적의 행동에는 난수가 없다. 난수가 닿는 곳은 카드를 뽑는 순서 하나뿐이다.",
+  "_순서": "패턴 길이가 6~7이라 보이는 창(5)보다 길다. 창보다 짧으면 전부 보여 순서가 문제가 되지 않는다.",
+  "enemies": [
+    {
+      "id": "enemy_hierophant",
+      "nameKo": "사제",
+      "maxHp": 52,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 11,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 8,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 9,
+          "target": "player"
+        },
+        {
+          "type": "heal",
+          "amount": 5,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 16,
+          "target": "player"
+        }
+      ]
+    },
+    {
+      "id": "enemy_hanged",
+      "nameKo": "매달린자",
+      "maxHp": 68,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 13,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 3,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 10,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 15,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 9,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ]
+    },
+    {
+      "id": "enemy_tower",
+      "nameKo": "탑",
+      "maxHp": 124,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ]
+    }
+  ]
+}

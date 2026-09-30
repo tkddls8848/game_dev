@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>숨소리 도둑</title>
+<style>
+:root{
+  --moon:#9fb7d8; --moon2:#5d7598; --ink:#070a12; --night:#0d1322; --amber:#f2b566; --amber2:#c9772f;
+  --danger:#ff5a4a; --safe:#7fe0c4; --text:#dfe7f3; --dim:#7d8aa3;
+  --sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono","D2Coding",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:var(--sans);color:var(--text)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:0 0;overflow:hidden;background:var(--ink)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;inset:0;width:1600px;height:1000px}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain .5s steps(3) infinite}
+@keyframes grain{0%{transform:translate(0,0)}33%{transform:translate(-8px,5px)}66%{transform:translate(6px,-7px)}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 65% at 50% 48%,transparent 40%,rgba(0,0,0,.78) 100%)}
+.redpulse{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 180px 30px rgba(255,40,30,.18);animation:redp 1.1s ease-in-out infinite}
+@keyframes redp{50%{box-shadow:inset 0 0 260px 60px rgba(255,40,30,.38)}}
+
+/* HUD */
+.hud-top{position:absolute;left:44px;top:34px;display:flex;gap:22px;align-items:flex-end}
+.logo{font-weight:900;font-size:40px;letter-spacing:-1px;color:#e9eef8;text-shadow:0 0 18px rgba(159,183,216,.35)}
+.logo small{display:block;font-size:12px;letter-spacing:6px;color:var(--dim);font-weight:500;margin-bottom:4px}
+.room{font-size:14px;color:var(--dim);border-left:1px solid #2a3450;padding-left:16px;line-height:1.5}
+.room b{color:var(--text);font-weight:600}
+.loot{position:absolute;right:40px;top:34px;width:300px;background:linear-gradient(180deg,rgba(14,20,34,.86),rgba(8,11,20,.86));border:1px solid #243049;border-radius:6px;padding:16px 18px;backdrop-filter:blur(4px)}
+.loot h4{font-size:12px;letter-spacing:4px;color:var(--dim);font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between}
+.loot h4 span{color:var(--amber);letter-spacing:0;font-family:var(--mono)}
+.li{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px dashed #1f2940;font-size:14px}
+.li i{width:9px;height:9px;border-radius:50%;border:1px solid var(--dim)}
+.li.got i{background:var(--safe);border-color:var(--safe);box-shadow:0 0 8px var(--safe)}
+.li.got{color:#9fe9d3}
+.li em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+/* breath monitor */
+.breath{position:absolute;left:40px;right:40px;bottom:30px;height:176px;border-radius:8px;
+  background:linear-gradient(180deg,rgba(9,13,24,.9),rgba(5,7,13,.95));border:1px solid #232d45;
+  box-shadow:0 -20px 60px rgba(0,0,0,.6)}
+.breath .lab{position:absolute;left:22px;top:14px;font-size:12px;letter-spacing:4px;color:var(--dim)}
+.breath .lab b{color:var(--text);letter-spacing:0;font-size:15px;margin-left:8px}
+.breath svg{position:absolute;left:22px;top:40px;width:1030px;height:118px}
+.phase{position:absolute;left:1080px;top:18px;width:200px}
+.phase .p{font-size:12px;letter-spacing:3px;color:var(--dim)}
+.phase .v{font-size:34px;font-weight:800;margin-top:4px;transition:color .2s}
+.phase .s{font-size:13px;color:var(--dim);margin-top:4px}
+.hold{position:absolute;right:24px;top:18px;width:220px}
+.hold .p{font-size:12px;letter-spacing:3px;color:var(--dim);display:flex;justify-content:space-between}
+.hold .bar{margin-top:10px;height:14px;border-radius:7px;background:#141b2c;overflow:hidden;border:1px solid #26314d}
+.hold .fill{height:100%;background:linear-gradient(90deg,#4fa6d6,#9fe0ff);border-radius:7px;transition:width .1s linear}
+.hold .noise{margin-top:18px}
+.hold .noise .fill{background:linear-gradient(90deg,#f2b566,#ff5a4a)}
+.key{display:inline-block;min-width:22px;padding:1px 6px;border:1px solid #3a4666;border-bottom-width:3px;border-radius:4px;font-family:var(--mono);font-size:11px;color:#c9d4ea;text-align:center}
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:222px;font-size:15px;color:#cfd8ea;background:rgba(6,9,16,.72);padding:9px 18px;border-radius:30px;border:1px solid #2a3552;white-space:nowrap}
+.hint b{color:var(--safe)}
+.tag{position:absolute;padding:6px 10px 6px 26px;font-size:13px;background:rgba(8,12,22,.82);border:1px solid #33415f;border-radius:4px;color:#e6ecf7;cursor:pointer;transition:transform .12s,border-color .12s;white-space:nowrap}
+.tag:before{content:"";position:absolute;left:9px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.tag:hover{transform:translateY(-2px);border-color:var(--amber)}
+.tag:active{transform:translateY(1px)}
+.tag small{display:block;color:var(--dim);font-size:11px}
+.tag.done{opacity:.45;text-decoration:line-through}
+.toast{position:absolute;left:50%;top:150px;transform:translateX(-50%);font-size:22px;font-weight:700;padding:10px 26px;border-radius:4px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* screen B */
+.alarm{position:absolute;left:50%;top:120px;transform:translateX(-50%);text-align:center}
+.alarm .t{font-size:64px;font-weight:900;letter-spacing:-2px;color:#ffd8d2;text-shadow:0 0 30px rgba(255,70,50,.7);animation:shake .18s infinite}
+.alarm .s{font-size:18px;color:#ff9d90;margin-top:6px;letter-spacing:1px}
+@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)}}
+.freeze{position:absolute;left:50%;top:292px;transform:translateX(-50%);display:flex;gap:14px}
+.opt{width:250px;padding:14px 16px;border:1px solid #5a2b30;background:rgba(30,8,12,.82);border-radius:6px;cursor:pointer;transition:all .15s}
+.opt:hover{border-color:#ff7a6a;background:rgba(60,12,16,.9);transform:translateY(-3px)}
+.opt b{display:block;font-size:17px;color:#ffe4df}
+.opt span{font-size:12px;color:#d59a93;line-height:1.5;display:block;margin-top:4px}
+.opt .key{float:right;border-color:#7a3a40;color:#ffb3aa}
+
+.tabs{position:absolute;right:14px;bottom:214px;display:flex;gap:6px;z-index:50}
+.tabs button{font-family:var(--sans);font-size:12px;background:rgba(10,14,24,.8);color:#9aa7c0;border:1px solid #2c3754;padding:5px 10px;border-radius:3px;cursor:pointer}
+.tabs button.on{color:#fff;border-color:var(--amber)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= SCREEN A ================= -->
+<section class="screen" id="sa">
+<svg class="scene" viewBox="0 0 1600 1000" aria-hidden="true">
+  <defs>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141b2d"/><stop offset="1" stop-color="#0a0e19"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101729"/><stop offset="1" stop-color="#18223a"/></linearGradient>
+    <linearGradient id="duvet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b5d80"/><stop offset=".6" stop-color="#2b3754"/><stop offset="1" stop-color="#1a2238"/></linearGradient>
+    <radialGradient id="lamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf8a" stop-opacity=".75"/><stop offset=".35" stop-color="#f2a452" stop-opacity=".25"/><stop offset="1" stop-color="#f2a452" stop-opacity="0"/></radialGradient>
+    <linearGradient id="moonbeam" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bcd3f2" stop-opacity=".32"/><stop offset="1" stop-color="#bcd3f2" stop-opacity="0"/></linearGradient>
+    <filter id="blur6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+    <pattern id="boards" width="140" height="1000" patternUnits="userSpaceOnUse"><rect width="140" height="1000" fill="none"/><line x1="0" y1="0" x2="0" y2="1000" stroke="#070a13" stroke-width="3"/><line x1="70" y1="0" x2="70" y2="1000" stroke="#0c1120" stroke-width="1"/></pattern>
+  </defs>
+  <!-- wall & floor (3/4 top-down) -->
+  <rect width="1600" height="1000" fill="url(#floor)"/>
+  <rect width="1600" height="1000" fill="url(#boards)" transform="skewX(-8)"/>
+  <rect width="1600" height="190" fill="url(#wall)"/>
+  <rect y="186" width="1600" height="8" fill="#1f2a44"/>
+  <!-- window with blinds on wall -->
+  <g transform="translate(980,24)">
+    <rect width="300" height="150" fill="#1d2d4d"/>
+    <rect width="300" height="150" fill="#8fb0dc" opacity=".18"/>
+    <g fill="#0e1526"><rect y="10" width="300" height="9"/><rect y="30" width="300" height="9"/><rect y="50" width="300" height="9"/><rect y="70" width="300" height="9"/><rect y="90" width="300" height="9"/><rect y="110" width="300" height="9"/><rect y="130" width="300" height="9"/></g>
+    <rect x="-8" y="-6" width="316" height="162" fill="none" stroke="#26324f" stroke-width="8"/>
+  </g>
+  <!-- moonlight stripes across floor -->
+  <g opacity=".9">
+    <polygon points="980,190 1280,190 1080,1000 380,1000" fill="url(#moonbeam)"/>
+    <g fill="#060912" opacity=".55">
+      <polygon points="990,210 1270,210 1235,245 950,245"/><polygon points="945,285 1225,285 1190,330 895,330"/>
+      <polygon points="885,380 1170,380 1130,440 820,440"/><polygon points="805,505 1100,505 1050,580 720,580"/>
+      <polygon points="700,665 1010,665 950,760 600,760"/><polygon points="570,860 900,860 840,1000 460,1000"/>
+    </g>
+  </g>
+  <!-- rug -->
+  <ellipse cx="760" cy="760" rx="360" ry="120" fill="#1b1f33" opacity=".85"/>
+  <ellipse cx="760" cy="760" rx="330" ry="104" fill="none" stroke="#2c2b44" stroke-width="3" stroke-dasharray="4 8"/>
+  <!-- dresser left -->
+  <g transform="translate(90,150)">
+    <rect width="250" height="120" fill="#20170f"/><rect y="120" width="250" height="16" fill="#120d08"/>
+    <rect x="12" y="18" width="226" height="40" fill="#2a1e13" stroke="#3a2a1b"/><rect x="12" y="66" width="226" height="40" fill="#2a1e13" stroke="#3a2a1b"/>
+    <circle cx="125" cy="38" r="4" fill="#8a6a3a"/><circle cx="125" cy="86" r="4" fill="#8a6a3a"/>
+    <rect x="40" y="-30" width="60" height="30" rx="4" fill="#2d3550"/>
+    <rect x="160" y="-18" width="44" height="18" fill="#3a2b1c"/>
+  </g>
+  <!-- door crack -->
+  <g transform="translate(40,300)"><rect width="36" height="360" fill="#0a0d16"/><polygon points="36,0 44,0 260,560 36,420" fill="#f2b566" opacity=".05"/><rect x="34" width="3" height="360" fill="#f7c37a" opacity=".6" filter="url(#blur2)"/></g>
+
+  <!-- BED -->
+  <g transform="translate(470,210)">
+    <rect x="-20" y="20" width="590" height="440" rx="30" fill="#000" opacity=".45" filter="url(#blur6)"/>
+    <rect x="-10" y="-14" width="560" height="54" rx="10" fill="#241a12"/>
+    <rect x="0" y="0" width="540" height="430" rx="18" fill="#1a2135"/>
+    <!-- pillows -->
+    <rect x="40" y="26" width="200" height="86" rx="34" fill="#9fb0cc"/><rect x="40" y="26" width="200" height="86" rx="34" fill="#0d1426" opacity=".35"/>
+    <rect x="296" y="26" width="200" height="86" rx="34" fill="#8a9bb9"/><rect x="296" y="26" width="200" height="86" rx="34" fill="#0d1426" opacity=".5"/>
+    <!-- sleeper head -->
+    <g transform="translate(150,70)">
+      <ellipse cx="0" cy="6" rx="46" ry="40" fill="#2b2320"/>
+      <ellipse cx="-4" cy="20" rx="34" ry="26" fill="#b89078"/>
+      <path d="M-30 6 q30-40 64 2" fill="#231b18"/>
+      <path d="M-20 22 q6 3 12 0" stroke="#5a3a2e" stroke-width="2" fill="none"/>
+      <path d="M8 22 q6 3 12 0" stroke="#5a3a2e" stroke-width="2" fill="none"/>
+      <ellipse id="mouth" cx="0" cy="36" rx="5" ry="2" fill="#4a2a24"/>
+    </g>
+    <!-- duvet w/ breathing -->
+    <g id="duvetG" style="transform-origin:270px 150px">
+      <path d="M0 120 C120 96 420 96 540 120 L540 412 Q540 430 522 430 L18 430 Q0 430 0 412Z" fill="url(#duvet)"/>
+      <path d="M40 150 C160 200 180 260 150 400" stroke="#1a2238" stroke-width="3" fill="none" opacity=".7"/>
+      <path d="M240 140 C300 210 330 300 320 420" stroke="#1a2238" stroke-width="3" fill="none" opacity=".6"/>
+      <path d="M0 120 C120 96 420 96 540 120" stroke="#6e84ad" stroke-width="3" fill="none"/>
+      <!-- arm out of the duvet -->
+      <path d="M250 132 q40 6 70 30 q14 12 4 20 q-30 -10 -74 -22z" fill="#9c7a66"/><path d="M318 160 q14 4 18 14 q-8 8 -20 2z" fill="#8a6a58"/>
+    </g>
+    <!-- moon stripes over bed -->
+    <g fill="#bcd3f2" opacity=".07"><polygon points="430,0 540,0 540,90 380,90"/><polygon points="330,150 540,150 540,230 270,230"/></g>
+  </g>
+
+  <!-- NIGHTSTAND with lamp & targets -->
+  <g transform="translate(1080,300)">
+    <circle cx="90" cy="20" r="230" fill="url(#lamp)"/>
+    <rect x="0" y="0" width="180" height="150" rx="6" fill="#2a1e14"/>
+    <rect x="0" y="0" width="180" height="14" fill="#3b2b1c"/>
+    <rect x="12" y="70" width="156" height="60" fill="#22180f" stroke="#3a2a1b"/>
+    <circle cx="90" cy="100" r="4" fill="#a17e48"/>
+    <!-- lamp -->
+    <path d="M50 -60 L130 -60 L118 -10 L62 -10Z" fill="#f7cf93"/><rect x="86" y="-10" width="8" height="12" fill="#6a5237"/>
+    <!-- watch (target) -->
+    <g id="watch" transform="translate(40,30)">
+      <rect x="-6" y="-16" width="12" height="32" rx="3" fill="#5a4a30"/>
+      <circle r="13" fill="#d9c18d" stroke="#8a6f3a" stroke-width="3"/>
+      <circle r="9" fill="#1a1a1a"/><line x1="0" y1="0" x2="0" y2="-6" stroke="#f2e0b0" stroke-width="1.5"/><line x1="0" y1="0" x2="5" y2="2" stroke="#f2e0b0" stroke-width="1.5"/>
+    </g>
+    <!-- glasses & phone -->
+    <g transform="translate(118,34)"><circle cx="-10" r="9" fill="none" stroke="#c9d6ea" stroke-width="2"/><circle cx="12" r="9" fill="none" stroke="#c9d6ea" stroke-width="2"/><line x1="-1" y1="0" x2="3" y2="0" stroke="#c9d6ea" stroke-width="2"/></g>
+  </g>
+  <!-- player: gloved hand reaching from bottom-right -->
+  <g id="hand" transform="translate(1180,470)">
+    <path d="M160 520 C130 400 60 260 -30 150 L-4 118 C60 190 170 300 240 520Z" fill="#141722" stroke="#5f79a8" stroke-width="2" stroke-opacity=".6"/>
+    <path d="M-40 150 q-10 -30 10 -46 l40 -30 q18 -8 24 8 l-6 30 q14 -10 22 4 l-10 40 q-26 30 -60 30z" fill="#1c1f2c" stroke="#e0a45c" stroke-width="2" stroke-opacity=".7"/>
+    <path d="M-8 76 l-30 -24 M6 72 l-10 -34 M22 78 l6 -30" stroke="#262b3b" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <!-- plant, chair -->
+  <g transform="translate(1380,560)"><rect x="-30" y="60" width="60" height="70" rx="8" fill="#231a14"/><path d="M0 60 q-60-60-40-140 M0 60 q10-90 40-120 M0 60 q50-40 80-30" stroke="#1d3a33" stroke-width="12" fill="none" stroke-linecap="round"/></g>
+</svg>
+
+<div class="grain"></div><div class="vig"></div>
+
+<div class="hud-top">
+  <div class="logo"><small>BREATH THIEF</small>숨소리 도둑</div>
+  <div class="room"><b>방 04 · 안방</b><br>집주인 김 원장 · 수면 깊이 3단계 중 2</div>
+</div>
+
+<div class="loot">
+  <h4>오늘 밤 목록 <span id="lootCount">1 / 3</span></h4>
+  <div class="li got"><i></i>서랍 속 금반지<em>+₩ 820,000</em></div>
+  <div class="li" id="liWatch"><i></i>손목시계 · 협탁<em>+₩ 2,400,000</em></div>
+  <div class="li"><i></i>금고 열쇠 · 베개 밑<em>???</em></div>
+</div>
+
+<div class="tag" id="tagWatch" style="left:1000px;top:258px">손목시계 훔치기<small>숨을 내쉴 때 손을 뻗으세요</small></div>
+<div class="tag" style="left:560px;top:118px">베개 밑 열쇠<small>수면 3단계에서만</small></div>
+<div class="toast" id="toastA"></div>
+
+<div class="hint">집주인이 <b>숨을 내쉬는 순간</b>이 소리를 덮는다 · <span class="key">SPACE</span> 길게 = 내 숨 참기 · <span class="key">E</span> 훔치기</div>
+
+<div class="breath">
+  <div class="lab">집주인의 숨 <b>코골이 · 느린 호흡</b></div>
+  <svg viewBox="0 0 1030 118" preserveAspectRatio="none">
+    <defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fe0c4" stop-opacity=".22"/><stop offset="1" stop-color="#7fe0c4" stop-opacity="0"/></linearGradient></defs>
+    <g stroke="#1b2438"><line x1="0" y1="59" x2="1030" y2="59"/><line x1="0" y1="20" x2="1030" y2="20" stroke-dasharray="3 6"/><line x1="0" y1="98" x2="1030" y2="98" stroke-dasharray="3 6"/></g>
+    <g id="winsA"></g>
+    <path id="waveA" d="" fill="none" stroke="#9fc3ff" stroke-width="2.5"/>
+    <path id="waveA2" d="" fill="none" stroke="#9fc3ff" stroke-width="10" opacity=".12"/>
+    <line x1="820" y1="0" x2="820" y2="118" stroke="#ffffff" stroke-opacity=".6"/>
+    <text x="826" y="14" fill="#8a97b0" font-size="11" font-family="monospace">NOW</text>
+  </svg>
+  <div class="phase"><div class="p">지금</div><div class="v" id="phaseA">내쉼</div><div class="s" id="phaseSA">소리가 묻힌다 · 1.2초</div></div>
+  <div class="hold">
+    <div class="p"><span>내 숨 참기</span><span id="holdTxt">82%</span></div>
+    <div class="bar"><div class="fill" id="holdA" style="width:82%"></div></div>
+    <div class="noise"><div class="p"><span>소음</span><span id="noiseTxt">18</span></div><div class="bar"><div class="fill" id="noiseA" style="width:18%"></div></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ================= SCREEN B ================= -->
+<section class="screen" id="sb">
+<svg class="scene" viewBox="0 0 1600 1000" aria-hidden="true">
+  <defs>
+    <linearGradient id="floorB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1220"/><stop offset="1" stop-color="#0a0710"/></linearGradient>
+    <radialGradient id="lampB" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe0a8" stop-opacity=".95"/><stop offset=".3" stop-color="#ffb35a" stop-opacity=".4"/><stop offset="1" stop-color="#ff8a3a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="duvetB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b4a64"/><stop offset="1" stop-color="#231a2c"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#floorB)"/>
+  <rect width="1600" height="210" fill="#140e1a"/>
+  <!-- lamp is ON: the owner switched it on -->
+  <circle cx="1250" cy="330" r="620" fill="url(#lampB)" id="lampGlow"/>
+  <!-- long shadow of thief cast on wall -->
+  <path d="M240 1000 L520 140 L600 110 L660 150 L700 1000Z" fill="#050308" opacity=".7"/>
+  <ellipse cx="590" cy="120" rx="60" ry="72" fill="#050308" opacity=".7"/>
+  <!-- bed (mid-right), owner sitting up, backlit by the lamp -->
+  <g transform="translate(640,360)">
+    <rect x="-20" y="120" width="760" height="600" rx="30" fill="#000" opacity=".5"/>
+    <rect x="0" y="60" width="720" height="600" rx="24" fill="#241a2a"/>
+    <path d="M0 260 C180 200 520 214 720 270 L720 660 L0 660Z" fill="url(#duvetB)"/>
+    <path d="M40 300 C200 340 260 420 230 620 M380 280 C440 360 470 480 450 640" stroke="#170f1c" stroke-width="4" fill="none" opacity=".8"/>
+    <path d="M0 260 C180 200 520 214 720 270" stroke="#ffb870" stroke-width="3" fill="none" opacity=".45"/>
+    <rect x="380" y="40" width="260" height="96" rx="40" fill="#6d5460"/>
+    <rect x="380" y="40" width="260" height="96" rx="40" fill="none" stroke="#ffcf94" stroke-width="3" opacity=".55"/>
+    <g id="owner" style="transform-origin:510px 270px;animation:stir 2.6s ease-in-out infinite">
+      <path d="M400 300 C396 180 440 132 510 128 C580 132 626 180 632 300Z" fill="#130c16"/>
+      <path d="M632 300 C626 180 580 132 510 128" stroke="#ffc27a" stroke-width="4" fill="none" opacity=".9"/>
+      <ellipse cx="512" cy="92" rx="50" ry="60" fill="#1d1419"/>
+      <path d="M560 60 C572 80 572 118 552 142" stroke="#ffc88a" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M462 70 q48 -60 104 -6 q-12 -42 -56 -46 q-42 4 -48 52z" fill="#0e080b"/>
+      <!-- half-open eye glinting -->
+      <path d="M526 92 q10 -4 20 0" stroke="#ffdcb0" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <circle cx="536" cy="93" r="2.4" fill="#fff"/>
+      <path d="M600 210 q50 -40 74 -150" stroke="#130c16" stroke-width="28" stroke-linecap="round" fill="none"/>
+      <path d="M620 196 q44 -40 60 -140" stroke="#ffc27a" stroke-width="3" fill="none" opacity=".8"/>
+    </g>
+  </g>
+  <!-- nightstand, lamp just switched on -->
+  <g transform="translate(1370,320)"><rect x="0" y="40" width="200" height="200" fill="#2e1f14"/><rect x="0" y="40" width="200" height="12" fill="#5a3c22"/>
+    <path d="M50 -40 L150 -40 L134 20 L66 20Z" fill="#fff4d6"/><rect x="94" y="20" width="10" height="22" fill="#6a5237"/>
+    <path d="M150 -40 L134 20" stroke="#fff" stroke-width="2" opacity=".8"/></g>
+  <!-- light rays sweeping toward the thief -->
+  <polygon points="1440,300 0,420 0,1000 700,1000" fill="#ffb35a" opacity=".05"/>
+  <!-- the thief: foreground, crouched, back to camera, rim-lit by the lamp -->
+  <g transform="translate(120,470)">
+    <ellipse cx="260" cy="520" rx="320" ry="50" fill="#000" opacity=".6"/>
+    <path d="M60 540 C30 360 90 200 250 150 C400 170 470 330 450 540Z" fill="#07060a"/>
+    <path d="M250 150 C400 170 470 330 450 540" stroke="#ffb35a" stroke-width="4" fill="none" opacity=".85"/>
+    <ellipse cx="258" cy="100" rx="84" ry="88" fill="#09070c"/>
+    <path d="M320 30 C356 60 362 130 330 170" stroke="#ffb35a" stroke-width="4" fill="none" opacity=".9"/>
+    <!-- balaclava knit texture -->
+    <path d="M190 60 q70 -30 140 0 M180 90 q80 -30 160 0" stroke="#15121b" stroke-width="3" fill="none"/>
+    <!-- arm extended, holding the watch -->
+    <path d="M430 290 C500 260 560 220 600 170" stroke="#09070c" stroke-width="54" stroke-linecap="round" fill="none"/>
+    <path d="M440 266 C510 238 560 200 596 150" stroke="#ffb35a" stroke-width="3" fill="none" opacity=".8"/>
+    <circle cx="612" cy="150" r="32" fill="#0c0a10" stroke="#ffb35a" stroke-width="2" stroke-opacity=".7"/>
+    <circle cx="630" cy="128" r="14" fill="#f2d9a0"/><circle cx="630" cy="128" r="9" fill="#1b1512"/>
+    <circle cx="630" cy="128" r="34" fill="#ffd98a" opacity=".25"/>
+    <path d="M630 94 v-18 M630 162 v18 M596 128 h-18 M664 128 h18" stroke="#ffe6b0" stroke-width="2" opacity=".7"/>
+  </g>
+</svg>
+<div class="grain"></div><div class="vig"></div><div class="redpulse"></div>
+
+<div class="hud-top">
+  <div class="logo"><small>BREATH THIEF</small>숨소리 도둑</div>
+  <div class="room"><b>방 04 · 안방</b><br>손목시계 확보 · 발각까지 <b id="countB" style="color:#ff8a7a">3.4초</b></div>
+</div>
+
+<div class="alarm"><div class="t">숨이 멎었다</div><div class="s">코골이가 끊겼다 — 집주인이 몸을 일으킨다</div></div>
+
+<div class="freeze">
+  <div class="opt" data-o="0"><span class="key">Z</span><b>얼어붙기</b><span>숨을 참고 그림자 속에 머문다. 다시 잠들 때까지 3회 호흡.</span></div>
+  <div class="opt" data-o="1"><span class="key">X</span><b>숨소리 흉내</b><span>느린 날숨으로 방의 소리를 채운다. 실패하면 경보.</span></div>
+  <div class="opt" data-o="2"><span class="key">C</span><b>문틈으로 탈출</b><span>시계를 챙겨 도망. 방 05의 난이도가 오른다.</span></div>
+</div>
+<div class="toast" id="toastB"></div>
+
+<div class="breath" style="border-color:#4a2330">
+  <div class="lab">집주인의 숨 <b style="color:#ff9d90">불규칙 · 깨어나는 중</b></div>
+  <svg viewBox="0 0 1030 118" preserveAspectRatio="none">
+    <g stroke="#2a1822"><line x1="0" y1="59" x2="1030" y2="59"/></g>
+    <path id="waveB" d="" fill="none" stroke="#ff7a6a" stroke-width="2.5"/>
+    <path id="waveB2" d="" fill="none" stroke="#ff7a6a" stroke-width="10" opacity=".14"/>
+    <line x1="820" y1="0" x2="820" y2="118" stroke="#fff" stroke-opacity=".6"/>
+    <rect id="apR" x="600" y="4" width="130" height="110" fill="#ff5a4a" opacity=".12"/>
+    <text id="apT" x="606" y="18" fill="#ff9d90" font-size="11" font-family="monospace">APNEA 2.1s</text>
+  </svg>
+  <div class="phase"><div class="p">지금</div><div class="v" style="color:#ff6a5a">멈춤</div><div class="s">어떤 소리도 들린다</div></div>
+  <div class="hold">
+    <div class="p"><span>내 숨 참기</span><span id="holdTxtB">21%</span></div>
+    <div class="bar"><div class="fill" id="holdB" style="width:21%;background:linear-gradient(90deg,#ff5a4a,#ffb0a0)"></div></div>
+    <div class="noise"><div class="p"><span>의심</span><span>74</span></div><div class="bar"><div class="fill" style="width:74%"></div></div></div>
+  </div>
+</div>
+<style>@keyframes stir{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-2deg) translateY(-6px)}}</style>
+</section>
+
+<div class="tabs"><button data-t="a">1 · 잠입</button><button data-t="b">2 · 뒤척임</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='scale('+s+') translate(-50%,-50%)';stage.style.left='50%';stage.style.top='50%';stage.style.transformOrigin='0 0';
+    stage.style.transform='translate('+((innerWidth-1600*s)/2)+'px,'+((innerHeight-1000*s)/2)+'px) scale('+s+')';stage.style.left='0';stage.style.top='0';}
+  addEventListener('resize',fit);fit();
+  var cur='a';
+  function show(k){cur=(k==='b')?'b':'a';document.getElementById('sa').className='screen'+(cur==='a'?' on':'');document.getElementById('sb').className='screen'+(cur==='b'?' on':'');
+    var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].className=bs[i].getAttribute('data-t')===cur?'on':'';}
+  function fromHash(){show((location.hash||'#a').replace('#',''));}
+  addEventListener('hashchange',fromHash);fromHash();
+  var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-t');});
+
+  // audio
+  var ac=null;
+  function audio(){if(ac)return ac;try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;}return ac;}
+  function noise(dur,freq,gain,q){var a=audio();if(!a)return;try{var n=Math.floor(a.sampleRate*dur),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);
+    var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;f.Q.value=q||1;var g=a.createGain();g.gain.value=gain;s.connect(f);f.connect(g);g.connect(a.destination);s.start();}catch(e){}}
+  function tone(fr,dur,gain,type){var a=audio();if(!a)return;try{var o=a.createOscillator(),g=a.createGain();o.type=type||'sine';o.frequency.value=fr;g.gain.setValueAtTime(gain,a.currentTime);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+dur);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+dur);}catch(e){}}
+
+  // breath simulation (period 4.2s: inhale 1.6, exhale 2.6)
+  var T=4200,t0=performance.now(),hold=82,noiseV=18,holding=false,got=false;
+  function breathAt(ms){var p=((ms%T)+T)%T;if(p<1600){return -Math.sin(p/1600*Math.PI/2);}var q=(p-1600)/2600;return -Math.cos(q*Math.PI/2)+ (q<.6?Math.sin(q*40)*.06*(1-q):0);}
+  function isExhale(ms){var p=((ms%T)+T)%T;return p>=1600&&p<3900;}
+  function buildWave(ms,fn,id,id2){var d='';for(var x=0;x<=1030;x+=6){var tt=ms-(820-x)*9;var y=59+fn(tt)*40;d+=(x?'L':'M')+x+' '+y.toFixed(1);}var e=document.getElementById(id);if(e)e.setAttribute('d',d);var e2=document.getElementById(id2);if(e2)e2.setAttribute('d',d);}
+  function wins(ms){var g=document.getElementById('winsA');if(!g)return;var h='';for(var x=-200;x<1100;x+=1){}
+    var base=ms-820*9;var start=Math.floor(base/T)*T;for(var k=start;k<ms+300*9;k+=T){var a=k+1600,b=k+3900;var xa=820-(ms-a)/9,xb=820-(ms-b)/9;h+='<rect x="'+xa.toFixed(1)+'" y="0" width="'+(xb-xa).toFixed(1)+'" height="118" fill="url(#win)"/>';}g.innerHTML=h;}
+  function irregular(ms){var p=ms%6000;if(p>3200&&p<5300)return Math.sin(ms/300)*.05;return Math.sin(ms/260)*.7+Math.sin(ms/97)*.25;}
+  function loop(now){var ms=now-t0;
+    if(cur==='a'){buildWave(ms,breathAt,'waveA','waveA2');wins(ms);var ex=isExhale(ms);var pa=document.getElementById('phaseA');pa.textContent=ex?'내쉼':'들숨';pa.style.color=ex?'#7fe0c4':'#ffcf8a';
+      document.getElementById('phaseSA').textContent=ex?'소리가 묻힌다':'조용 · 움직이면 들린다';
+      var dv=document.getElementById('duvetG');if(dv)dv.style.transform='scaleY('+(1+(-breathAt(ms))*0.018)+')';
+      if(holding){hold=Math.max(0,hold-0.35);}else{hold=Math.min(100,hold+0.12);}noiseV=Math.max(8,noiseV-0.08);
+      if(hold<=0&&holding){noiseV=Math.min(100,noiseV+2);}
+      document.getElementById('holdA').style.width=hold+'%';document.getElementById('holdTxt').textContent=Math.round(hold)+'%';
+      document.getElementById('noiseA').style.width=noiseV+'%';document.getElementById('noiseTxt').textContent=Math.round(noiseV);}
+    else{buildWave(ms,irregular,'waveB','waveB2');var cyc=Math.floor(ms/6000)*6000;var st=cyc+3200;if(st>ms)st-=6000;var xa=820-(ms-st)/9,xb=Math.min(820,820-(ms-(st+2100))/9);var r=document.getElementById('apR'),tx=document.getElementById('apT');if(r&&tx){r.setAttribute('x',xa.toFixed(1));r.setAttribute('width',Math.max(0,xb-xa).toFixed(1));tx.setAttribute('x',(xa+6).toFixed(1));}var c=3.4-((ms/1000)%3.4);document.getElementById('countB').textContent=c.toFixed(1)+'초';}
+    requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+
+  function toast(id,txt,col){var e=document.getElementById(id);e.textContent=txt;e.style.color=col;e.style.background='rgba(6,9,16,.8)';e.style.border='1px solid '+col;e.className='toast show';clearTimeout(e._t);e._t=setTimeout(function(){e.className='toast';},1300);}
+  function steal(){if(got)return;var ms=performance.now()-t0;
+    if(isExhale(ms)){got=true;noise(.25,1800,.25,2);tone(880,.25,.05);document.getElementById('liWatch').className='li got';document.getElementById('lootCount').textContent='2 / 3';document.getElementById('tagWatch').className='tag done';document.getElementById('watch').style.opacity='0';toast('toastA','날숨에 묻혔다 · 손목시계 확보','#7fe0c4');}
+    else{noiseV=Math.min(100,noiseV+34);noise(.5,300,.6,4);tone(140,.4,.12,'triangle');toast('toastA','들숨 중 — 협탁이 삐걱였다','#ff7a6a');}}
+  document.getElementById('tagWatch').addEventListener('click',function(){audio();steal();});
+  var opts=document.querySelectorAll('.opt');for(var j=0;j<opts.length;j++)opts[j].addEventListener('click',function(e){audio();pick(+e.currentTarget.getAttribute('data-o'));});
+  function pick(o){var m=['숨을 참는다 · 심장 소리만 남았다','후— 낮게 내쉰다 · 집주인이 다시 눕는다','문틈으로 — 복도의 불이 켜졌다'][o];tone([180,240,320][o],.5,.08,'sine');noise(.4,[500,900,2400][o],.2,2);toast('toastB',m,o===2?'#ff7a6a':'#ffcf8a');}
+  addEventListener('keydown',function(e){audio();
+    if(e.key==='1'){location.hash='a';return;}
+    if(e.key==='2'){location.hash='b';return;}
+    if(cur==='a'){if(e.code==='Space'){e.preventDefault();if(!holding){holding=true;tone(90,.3,.05);}}if(e.key==='e'||e.key==='E')steal();}
+    else{var k=(e.key||'').toLowerCase();var ix='zxc'.indexOf(k);if(ix>=0&&k)pick(ix);}
+  });
+  addEventListener('keyup',function(e){if(e.code==='Space'&&holding){holding=false;noise(.35,700,.12,1);}});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "_": "거점 층. PLAN_TACTICS §4·§6. 빼앗은 보급으로 무엇을 고칠지 고르는 자리다.",
+  "_난수": "이 PoC에서 난수를 실제로 쓰는 유일한 곳이다. 회차 전개는 난수가 없다 — 전술이 운으로 결판나면 정찰이 의미를 잃는다. 거점은 반대로 '이번에 누가 다쳤는가'가 운이어야 회차마다 다른 선택이 나온다.",
+  "_밸브": "발산을 막는 것이 둘, 고갈을 막는 것이 둘이다. 발산: ceiling(저장 한계) · repairs(남는 보급을 흘려보낸다). 고갈: restRewards(못 나간 회차에도 마을이 내준다) · 값을 못 치르면 더 싼 임무를 고른다.",
+
+  "seed": 20260927,
+
+  "supplies": [
+    { "id": "ammo",     "name": "탄약",        "startAmount": 14, "floor": 0, "ceiling": 34 },
+    { "id": "medicine", "name": "의약품",      "startAmount": 12, "floor": 0, "ceiling": 26 },
+    { "id": "trust",    "name": "마을의 신뢰", "startAmount": 12, "floor": 0, "ceiling": 26 }
+  ],
+
+  "actionCosts": [
+    { "actionKind": "Shoot",       "supplyId": "ammo", "amount": 2 },
+    { "actionKind": "PlantTrap",   "supplyId": "ammo", "amount": 3 },
+    { "actionKind": "PlantCharge", "supplyId": "ammo", "amount": 4 },
+    { "actionKind": "Detonate",    "supplyId": "ammo", "amount": 0 },
+    { "actionKind": "Infiltrate",  "supplyId": "ammo", "amount": 0 }
+  ],
+
+  "missionRewards": [
+    { "missionId": "m_ridge_dusk",   "supplyId": "ammo",     "onSuccess": 3, "onFailure": 0 },
+    { "missionId": "m_ridge_dusk",   "supplyId": "medicine", "onSuccess": 1, "onFailure": 0 },
+    { "missionId": "m_ridge_dusk",   "supplyId": "trust",    "onSuccess": 0, "onFailure": 0 },
+
+    { "missionId": "m_rail_supply",  "supplyId": "ammo",     "onSuccess": 5, "onFailure": 0 },
+    { "missionId": "m_rail_supply",  "supplyId": "medicine", "onSuccess": 1, "onFailure": 0 },
+    { "missionId": "m_rail_supply",  "supplyId": "trust",    "onSuccess": 1, "onFailure": 0 },
+
+    { "missionId": "m_ridge_roster", "supplyId": "ammo",     "onSuccess": 1, "onFailure": 0 },
+    { "missionId": "m_ridge_roster", "supplyId": "medicine", "onSuccess": 1, "onFailure": 0 },
+    { "missionId": "m_ridge_roster", "supplyId": "trust",    "onSuccess": 2, "onFailure": 0 }
+  ],
+
+  "repairs": [
+    { "id": "r_cache",     "name": "탄약 은닉처 보수", "supplyId": "ammo",     "cost": 12, "bonusSupplyId": "ammo",     "bonusPerMission": 1 },
+    { "id": "r_infirmary", "name": "야전 치료소",      "supplyId": "medicine", "cost": 11, "bonusSupplyId": "medicine", "bonusPerMission": 1 },
+    { "id": "r_courier",   "name": "전령 길 정비",     "supplyId": "trust",    "cost": 10, "bonusSupplyId": "trust",    "bonusPerMission": 1 }
+  ],
+
+  "restRewards": [
+    { "supplyId": "trust",    "amount": 1 },
+    { "supplyId": "medicine", "amount": 1 }
+  ],
+
+  "recovery": {
+    "_": "잃는 것이 공짜가 아니어야 하고, 되돌릴 수 있어야 한다. 둘 중 하나만 깨져도 긴장이 죽는다.",
+    "woundedRecoverMissions": 2,
+    "medicineSupplyId": "medicine",
+    "medicineCost": 6,
+    "trustSupplyId": "trust",
+    "trustPenaltyOnLoss": 5,
+    "lossChancePercent": 30
+  }
+}

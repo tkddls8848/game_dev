@@ -1,0 +1,38 @@
+{
+  "_": "회차 하나. 전투 2 + 보스 1.",
+  "id": "run_01",
+  "seed": 20260927,
+  "playerMaxHp": 50,
+  "handSize": 5,
+  "energyPerTurn": 3,
+  "peekWindow": 5,
+  "_peekWindow": "보이는 수의 개수. 이 값이 규칙 자체다. 0으로 내리면 다른 게임이 된다.",
+  "maxRoundsPerBattle": 24,
+  "healAfterBattle": 4,
+  "rewardsPerBattle": 1,
+  "startingDeck": [
+    "card_blade",
+    "card_blade",
+    "card_blade",
+    "card_blade",
+    "card_mantle",
+    "card_mantle",
+    "card_mantle",
+    "card_brace",
+    "card_zeal",
+    "card_omen"
+  ],
+  "rewardPool": [
+    "card_wane",
+    "card_echo",
+    "card_invert",
+    "card_balm",
+    "card_verdict",
+    "card_veil"
+  ],
+  "battles": [
+    "enemy_hierophant",
+    "enemy_hanged"
+  ],
+  "boss": "enemy_tower"
+}

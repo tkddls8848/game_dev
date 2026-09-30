@@ -1,0 +1,630 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2f07ddd1-cf5f-4835-9971-a7bab4c4ce9f" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:50:07" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:50:07.8007532+09:00" queuing="2026-09-27T20:50:07.8007536+09:00" start="2026-09-27T20:50:07.0445497+09:00" finish="2026-09-27T20:50:09.7659126+09:00" />
+  <TestSettings name="default" id="cb5850f4-d702-463f-b03b-1ccf77498215">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_50_07" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9da4e6e1-c72c-4f2f-8ecd-8286d601ea16" testId="7855cd36-07ec-6736-f8a2-1415aa5d747f" testName="StageIndicesAreContiguousAndOrdered" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001789" startTime="2026-09-27T20:50:07.6909265+09:00" endTime="2026-09-27T20:50:07.6911047+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9da4e6e1-c72c-4f2f-8ecd-8286d601ea16" />
+    <UnitTestResult executionId="9f91467b-ce2c-4b6f-951e-8b652a8a4159" testId="9a87f5f8-baa4-5850-e92b-5477f36d0dc5" testName="TiltingWithoutLyingBeatsFaithfulForThePaymaster" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008850" startTime="2026-09-27T20:50:09.6669230+09:00" endTime="2026-09-27T20:50:09.6678078+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f91467b-ce2c-4b6f-951e-8b652a8a4159">
+      <Output>
+        <StdOut>고용주 편 815 vs 늘 정확 460 · 그 사이 한 거짓말 0번</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="816ae917-da5f-4149-85e9-ba29591a02c9" testId="5c00e2a0-72a3-287c-5b4d-357b12b98674" testName="EveryReferenceResolves" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0054520" startTime="2026-09-27T20:50:07.6848528+09:00" endTime="2026-09-27T20:50:07.6903040+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="816ae917-da5f-4149-85e9-ba29591a02c9" />
+    <UnitTestResult executionId="c503d484-8563-405e-89da-9d40365c3d57" testId="9d04eba7-95b9-03a5-bf0b-e90a3727f3c2" testName="MoodDoesNotDependOnWhatTheInterpreterChose" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0018950" startTime="2026-09-27T20:50:09.7117207+09:00" endTime="2026-09-27T20:50:09.7136158+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c503d484-8563-405e-89da-9d40365c3d57" />
+    <UnitTestResult executionId="67bf1412-c5f3-4b8d-ae5a-1480b55e99b9" testId="aaadfadd-f97f-d3c6-6f06-1c48cd5e6694" testName="KoreanIsTheSource" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002340" startTime="2026-09-27T20:50:07.7219484+09:00" endTime="2026-09-27T20:50:07.7221820+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="67bf1412-c5f3-4b8d-ae5a-1480b55e99b9" />
+    <UnitTestResult executionId="fda5a879-99b5-40cd-867d-bedc9df20f8f" testId="ed2cd984-28fc-c863-5a06-a877fd1bc45a" testName="SeedsActuallyDiffer" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003550" startTime="2026-09-27T20:50:09.7163317+09:00" endTime="2026-09-27T20:50:09.7166864+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fda5a879-99b5-40cd-867d-bedc9df20f8f" />
+    <UnitTestResult executionId="0d2a74f3-7f35-4dec-88b9-8df529fb27f9" testId="9b49fbe1-be26-09e8-90e7-805345675e78" testName="AlwaysHardBreaksTheRoom" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004680" startTime="2026-09-27T20:50:09.6554217+09:00" endTime="2026-09-27T20:50:09.6558895+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d2a74f3-7f35-4dec-88b9-8df529fb27f9">
+      <Output>
+        <StdOut>「늘 강경하게」가 깬 회담 7 / 7</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a50bf002-e300-4356-b7fb-4cec6d58aa6a" testId="2246036f-6d0f-d277-3b8a-a6fed18541d5" testName="TruthfulRegistersAloneAlreadyMoveTheTreaty" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003260" startTime="2026-09-27T20:50:09.7108449+09:00" endTime="2026-09-27T20:50:09.7111707+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a50bf002-e300-4356-b7fb-4cec6d58aa6a">
+      <Output>
+        <StdOut>거짓 없이(정확·완곡·강경 사이) 조약을 바꾼 낱말 522 · 그런 마디 12</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8bb8129c-b48e-46a8-9b7d-7fe3ea864bfe" testId="b26d1a30-9a23-0b0f-6da2-93b6c1e34d91" testName="BalanceNumbersAreSaneIntegers" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0419830" startTime="2026-09-27T20:50:07.6360806+09:00" endTime="2026-09-27T20:50:07.6780143+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8bb8129c-b48e-46a8-9b7d-7fe3ea864bfe" />
+    <UnitTestResult executionId="0bcde21c-9f02-430c-aeb4-1d3512c4403d" testId="ecaf3347-e29f-c553-4c36-ee6bcfe741d5" testName="SameSeedSamePolicyGivesTheIdenticalNight" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0026760" startTime="2026-09-27T20:50:09.7136355+09:00" endTime="2026-09-27T20:50:09.7163117+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bcde21c-9f02-430c-aeb4-1d3512c4403d" />
+    <UnitTestResult executionId="cdc9cef9-1f23-4bdc-b84b-aed002725681" testId="00408155-9d79-21a9-1c7f-8d0535c494bb" testName="FaithfulRenderingLeavesNothingMisunderstood" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005350" startTime="2026-09-27T20:50:07.7289690+09:00" endTime="2026-09-27T20:50:07.7295040+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cdc9cef9-1f23-4bdc-b84b-aed002725681" />
+    <UnitTestResult executionId="683fe6a7-0ebf-491c-9422-dc123e9a526c" testId="f70149d3-ac63-28b1-1fde-3aa94f45070d" testName="EveryEndingIsReachableUnderSomePolicyOrIsDocumented" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0045070" startTime="2026-09-27T20:50:07.6803262+09:00" endTime="2026-09-27T20:50:07.6848325+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="683fe6a7-0ebf-491c-9422-dc123e9a526c">
+      <Output>
+        <StdOut>정책 여섯이 닿은 결말: e_clear, e_caught, e_collapse_quiet, e_burned, e_unfinished, e_paper_peace, e_collapse_loud</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="db72164a-118d-4063-b799-c571e8c040f3" testId="1eeed819-9910-bb34-a8ca-964e1f0606ce" testName="PrintExactTrace" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0149360" startTime="2026-09-27T20:50:07.6927733+09:00" endTime="2026-09-27T20:50:07.7077084+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db72164a-118d-4063-b799-c571e8c040f3">
+      <Output>
+        <StdOut>── 늘 정확하게 옮긴 밤 (씨드 20260927) ──────────────&#xD;
+ 0 s_open           g_open_x  긴장 35 하란 68 케리아 71 의심  4 &#xD;
+ 1 s_border_claim   g_bc_x    긴장 37 하란 69 케리아 71 의심  4 →v_border_ridge&#xD;
+ 2 s_border_reply   g_brg_x   긴장 44 하란 69 케리아 73 의심  4 →v_border_line&#xD;
+ 3 s_garrison       g_gar_x   긴장 47 하란 70 케리아 74 의심  4 →v_gar_stay&#xD;
+ 4 s_garrison_when  g_gwl_x   긴장 54 하란 70 케리아 76 의심  4 →v_gar_reduce&#xD;
+ 5 s_reparations    g_rep_x   긴장 60 하란 71 케리아 76 의심  4 →v_rep_coin&#xD;
+ 6 s_grain          g_grg_x   긴장 64 하란 71 케리아 78 의심  4 →v_rep_grain&#xD;
+ 7 s_regret         g_reg_x   긴장 63 하란 73 케리아 80 의심  4 →v_pre_regret&#xD;
+ 8 s_prisoners      g_pri_x   긴장 63 하란 74 케리아 80 의심  4 →v_pri_named&#xD;
+ 9 s_named_list     g_nlw_x   긴장 69 하란 74 케리아 82 의심  4 →v_pri_staged&#xD;
+10 s_tongue         g_ton_x   긴장 73 하란 75 케리아 77 의심  4 →v_tongue_haran&#xD;
+11 s_reading        g_rd_x    긴장 78 하란 81 케리아 83 의심  2 &#xD;
+조약: c_preamble=v_pre_regret;c_border=v_border_line;c_garrison=v_gar_reduce;c_reparations=v_rep_grain;c_prisoners=v_pri_staged;c_tongue=v_tongue_haran;SIGNED&#xD;
+결말: e_clear · 남은 오해</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="088a1e14-2a0f-410f-a354-c8486c903294" testId="f28f4243-4771-c74f-9742-9964065e94a6" testName="OneWordChangesTheTreaty" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004170" startTime="2026-09-27T20:50:09.7096317+09:00" endTime="2026-09-27T20:50:09.7100490+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="088a1e14-2a0f-410f-a354-c8486c903294">
+      <Output>
+        <StdOut>── 한 낱말만 바꿔 보았다 ──────────────────────────────────&#xD;
+돌린 밤            42&#xD;
+바꿔 본 낱말        1527&#xD;
+조약이 달라진 것    1025&#xD;
+결말이 달라진 것    395&#xD;
+오해 목록이 달라진 것 830&#xD;
+★ 조약이 달라지는 지점 (씨드×정책×마디) 415&#xD;
+★ 그런 마디의 가짓수                     12 / 12&#xD;
+대조군(역어가 장식인 세계)에서 달라진 것  0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c11f7d75-ea30-40a5-9a3c-fdc4aa936e71" testId="e7cc5b0c-1d10-3d69-1fe7-ce7802ffc6a9" testName="ThePlayersOwnBriefNeedsAMixedHand" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1683850" startTime="2026-09-27T20:50:09.4867500+09:00" endTime="2026-09-27T20:50:09.6551343+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c11f7d75-ea30-40a5-9a3c-fdc4aa936e71">
+      <Output>
+        <StdOut>── o_mission 의 최선 계획 (씨드별) ─────────────────────────&#xD;
+씨드 20260927 점수   166 결 4가지  완곡 강경 강경 강경 강경 강경 강경 오역 정확 강경 정확 완곡&#xD;
+씨드       11 점수   150 결 3가지  완곡 정확 강경 정확 강경 강경 정확 정확 정확 강경 강경 정확&#xD;
+씨드      404 점수   155 결 4가지  완곡 강경 강경 완곡 오역 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드     1848 점수   169 결 4가지  완곡 정확 강경 정확 강경 강경 강경 오역 정확 강경 정확 정확&#xD;
+씨드    20261 점수   167 결 3가지  완곡 정확 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드      777 점수   167 결 3가지  완곡 정확 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드     5150 점수   171 결 3가지  완곡 강경 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+합계 1145</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b947e943-abd7-4220-af11-2e283d32ef73" testId="34ba5914-8ce8-f072-1735-0b9d3b5ab1d2" testName="MissingEnglishFallsBackToKorean" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001160" startTime="2026-09-27T20:50:07.7221942+09:00" endTime="2026-09-27T20:50:07.7223103+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b947e943-abd7-4220-af11-2e283d32ef73" />
+    <UnitTestResult executionId="99e7183d-b19c-49da-bc28-56dcb9daa013" testId="d4577236-1927-5e32-6c10-2535c7bc05aa" testName="LyingLeavesAPileOfIt" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005050" startTime="2026-09-27T20:50:07.7295187+09:00" endTime="2026-09-27T20:50:07.7300234+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99e7183d-b19c-49da-bc28-56dcb9daa013">
+      <Output>
+        <StdOut>「오역만」이 남긴 어긋난 낱말 합계 49</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9de4511c-1825-45ac-8ec6-9925e5a8af47" testId="e6928715-58a5-38f1-97fe-23d638fd9b1c" testName="PrintPolicyTable" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0125430" startTime="2026-09-27T20:50:07.7077452+09:00" endTime="2026-09-27T20:50:07.7202879+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9de4511c-1825-45ac-8ec6-9925e5a8af47">
+      <Output>
+        <StdOut>── 정책 × 씨드 ────────────────────────────────────────────────&#xD;
+정책            씨드     조인 긴장 의심 남은오해 드러남 favorA favorB 결말&#xD;
+p_exact        20260927     O   78    2      0      0     72     36  e_clear&#xD;
+p_exact            11     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_exact           404     X   84    2      0      0      0      0  e_collapse_quiet&#xD;
+p_exact          1848     O   74    2      0      0     72     36  e_clear&#xD;
+p_exact         20261     O   77    2      0      0     72     36  e_clear&#xD;
+p_exact           777     O   77    2      0      0     72     36  e_clear&#xD;
+p_exact          5150     O   70    2      0      0     72     36  e_clear&#xD;
+p_soft         20260927     O   42   45      2      2     24     30  e_caught&#xD;
+p_soft             11     O   48   45      2      2     24     30  e_caught&#xD;
+p_soft            404     O   48   45      2      2     24     30  e_caught&#xD;
+p_soft           1848     O   38   45      2      2     24     30  e_caught&#xD;
+p_soft          20261     O   41   45      2      2     24     30  e_caught&#xD;
+p_soft            777     O   38   31      3      1     17     23  e_unfinished&#xD;
+p_soft           5150     O   34   45      2      2     24     30  e_caught&#xD;
+p_hard         20260927     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard             11     X   87    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard            404     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard           1848     X   86    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard          20261     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard            777     X   85    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard           5150     X   90    4      0      0      0      0  e_collapse_loud&#xD;
+p_false        20260927     O   27  100      6      1     58    -22  e_caught&#xD;
+p_false            11     O   27  100      6      1     58    -22  e_caught&#xD;
+p_false           404     O   29  100      6      1     58    -22  e_caught&#xD;
+p_false          1848     O   23  100      5      2     65    -15  e_burned&#xD;
+p_false         20261     O   22  100      5      2     65    -15  e_burned&#xD;
+p_false           777     O   26  100      6      1     58    -22  e_caught&#xD;
+p_false          5150     O   24  100      6      1     58    -22  e_caught&#xD;
+p_situational  20260927     O   67   47      0      2     66     24  e_caught&#xD;
+p_situational      11     O   72   34      1      1     65     29  e_caught&#xD;
+p_situational     404     O   72   34      1      1     65     29  e_caught&#xD;
+p_situational    1848     O   65   34      1      1     85      3  e_caught&#xD;
+p_situational   20261     O   66   47      0      2     66     24  e_caught&#xD;
+p_situational     777     O   66   47      0      2     66     24  e_caught&#xD;
+p_situational    5150     O   60   34      1      1     85      3  e_caught&#xD;
+p_shade        20260927     O   66   39      2      2    124    -76  e_caught&#xD;
+p_shade            11     X   75   53      1      3      0      0  e_caught&#xD;
+p_shade           404     O   72   39      2      2    124    -76  e_caught&#xD;
+p_shade          1848     O   62   39      2      2    124    -76  e_caught&#xD;
+p_shade         20261     O   65   39      2      2    124    -76  e_caught&#xD;
+p_shade           777     O   62   25      3      1    117    -83  e_paper_peace&#xD;
+p_shade          5150     O   58   39      2      2    124    -76  e_caught&#xD;
+&#xD;
+── 목표별 합계 (씨드 7개) ─────────────────────────&#xD;
+정책                 o_peace     o_haran     o_keria   o_clarity   o_mission&#xD;
+p_exact                308         460         280         129         568&#xD;
+p_soft                 517         217         259        -263         299&#xD;
+p_hard                 106         -48         -48         -14          14&#xD;
+p_false                660         560           0        -587         381&#xD;
+p_situational          362         620         258         -21         571&#xD;
+p_shade                308         815        -385        -283         654</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="df810d75-6a93-41b0-aae1-ff27f291d5be" testId="cd18ed77-ad0f-6810-5eea-fa36cdde08a9" testName="NoDominantStrategy" computerName="DESKTOP-RU6F3DG" duration="00:00:00.7630550" startTime="2026-09-27T20:50:08.7236579+09:00" endTime="2026-09-27T20:50:09.4867122+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="df810d75-6a93-41b0-aae1-ff27f291d5be">
+      <Output>
+        <StdOut>── 목표별 최선 계획 (빔 탐색) vs 한 결만 되풀이하기 ───────────&#xD;
+자            최선   정확만   완곡만   강경만   오역만   쓴 결 가짓수&#xD;
+o_peace         722      308      517      106      660         4&#xD;
+o_haran        1260      460      217      -48      560         4&#xD;
+o_keria        1169      280      259      -48        0         4&#xD;
+o_clarity       192      129     -263      -14     -587         4&#xD;
+o_mission      1140      568      299       14      381         4</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6543ba6a-83f7-42e7-b0a9-c3b25b227620" testId="a8de126a-b353-18b2-78f0-04e35d541124" testName="ControlWorldWhereRenderingIsDecorationChangesNothing" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002300" startTime="2026-09-27T20:50:09.7093809+09:00" endTime="2026-09-27T20:50:09.7096116+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6543ba6a-83f7-42e7-b0a9-c3b25b227620" />
+    <UnitTestResult executionId="7e6538e0-9ff2-4d09-8062-4a8638af78a0" testId="f5d0ac29-28f0-c293-430a-c99df1abb5b9" testName="SofteningAloneAlreadyLeavesMisunderstandings" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007660" startTime="2026-09-27T20:50:07.7315345+09:00" endTime="2026-09-27T20:50:07.7322997+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7e6538e0-9ff2-4d09-8062-4a8638af78a0">
+      <Output>
+        <StdOut>거짓 없이 완곡하기만 해도 오해가 둘 이상 남은 밤 7 / 7</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1bfb3561-8cd0-4a35-95c5-8fe56305d9fc" testId="69c596ff-db45-7c96-bf74-083913f8bb32" testName="EveryRoundHasAFaithfulRenderingAndNoDuplicateIds" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005840" startTime="2026-09-27T20:50:07.6903284+09:00" endTime="2026-09-27T20:50:07.6909121+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1bfb3561-8cd0-4a35-95c5-8fe56305d9fc" />
+    <UnitTestResult executionId="aca621f5-35c7-44fb-8175-371e5d6e0825" testId="8528d5e2-51ab-4e02-cda3-379857e85ad1" testName="EveryClauseHasAtLeastTwoVariantsAndEveryVariantIsReachable" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0012130" startTime="2026-09-27T20:50:07.6790945+09:00" endTime="2026-09-27T20:50:07.6803073+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aca621f5-35c7-44fb-8175-371e5d6e0825" />
+    <UnitTestResult executionId="3bf00302-e3f2-45da-955a-5be4b8c410b7" testId="1141b1b2-022e-f2c7-c24b-3e7d3ac18e9c" testName="NoPolicyWinsEveryMeasure" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0048870" startTime="2026-09-27T20:50:09.6573047+09:00" endTime="2026-09-27T20:50:09.6621912+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3bf00302-e3f2-45da-955a-5be4b8c410b7">
+      <Output>
+        <StdOut>자를 이긴 횟수: p_exact 2 · p_soft 0 · p_hard 0 · p_false 1 · p_situational 0 · p_shade 2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="988955d8-6795-4399-9612-aa90e1850473" testId="047bde99-5063-a9b6-95a9-5ca946cff63e" testName="ReadingTheTreatyAloudActuallyExposesLies" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008160" startTime="2026-09-27T20:50:07.7307031+09:00" endTime="2026-09-27T20:50:07.7315193+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="988955d8-6795-4399-9612-aa90e1850473">
+      <Output>
+        <StdOut>낭독에서 되물었을 때 드러난 것 49 · 소리를 낮춰 넘겼을 때 9</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bdcf46cb-553a-4d49-beef-189d2bd92026" testId="a048c764-ff1b-8cf8-0208-cfc44198a5c3" testName="EvenFaithfulRenderingBreaksSomeNights" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0013820" startTime="2026-09-27T20:50:09.6559018+09:00" endTime="2026-09-27T20:50:09.6572840+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bdcf46cb-553a-4d49-beef-189d2bd92026">
+      <Output>
+        <StdOut>「늘 정확하게」가 깨진 밤 2 / 7 (씨드 11,404)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d50296c4-0e5b-4670-a701-4503ca5a2ebe" testId="e31ff702-af33-f0d0-6781-6a3276ec736e" testName="NoSafeWord" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0046800" startTime="2026-09-27T20:50:09.6622130+09:00" endTime="2026-09-27T20:50:09.6668931+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d50296c4-0e5b-4670-a701-4503ca5a2ebe">
+      <Output>
+        <StdOut>── 정책 × 자 (씨드 7개 합계) ───────────────────────&#xD;
+자 (누가 재는가)                          p_exact         p_soft         p_hard        p_false  p_situational        p_shade   이긴 정책&#xD;
+o_peace (메르텐에 사는 사람들)                   308            517            106            660            362            308   p_false&#xD;
+o_haran (벨크 장군)                         460            217            -48            560            620            815   p_shade&#xD;
+o_keria (오르멘 사절)                        280            259            -48              0            258           -385   p_exact&#xD;
+o_clarity (십 년 뒤의 역사가)                  129           -263            -14           -587            -21           -283   p_exact&#xD;
+o_mission (통역을 부른 하란 외무성)               568            299             14            381            571            654   p_shade&#xD;
+&#xD;
+「늘 정확하게」가 자 5개 가운데 3개에서 최선이 아니다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f9314b6e-2e00-4b0d-9dbe-dd34eda776df" testId="e5b490da-7d24-2577-e54e-146dc989b554" testName="ExposureRollIsStableAcrossProcessRuns" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002200" startTime="2026-09-27T20:50:09.7114903+09:00" endTime="2026-09-27T20:50:09.7117104+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9314b6e-2e00-4b0d-9dbe-dd34eda776df" />
+    <UnitTestResult executionId="012a4ee4-4e3a-4bf5-9fff-e8824b5b5aa9" testId="33459280-7bba-d403-f0c6-5cdc8b007da9" testName="MisunderstandingIsTracked" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006520" startTime="2026-09-27T20:50:07.7300374+09:00" endTime="2026-09-27T20:50:07.7306892+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="012a4ee4-4e3a-4bf5-9fff-e8824b5b5aa9">
+      <Output>
+        <StdOut>── 남은 오해 (씨드 20260927) ──────────────────────────&#xD;
+p_exact — e_clear · 남은 0 · 드러난 0&#xD;
+p_soft — e_caught · 남은 2 · 드러난 2&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「곡물」 — 하란: 세 해치 / 케리아: 한 해치  (제3조)&#xD;
+      → 첫 수확이 끝나고 하란 관리가 세 배를 받으러 온다&#xD;
+p_hard — e_collapse_quiet · 남은 0 · 드러난 0&#xD;
+p_false — e_caught · 남은 6 · 드러난 1&#xD;
+    「패배」 — 하란: 케리아가 이 방에서 패배를 인정했다 / 케리아: 우리는 그런 말을 한 적이 없다  (제0조)&#xD;
+      → 하란 신문 1면에 '케리아, 패배 인정'이 실리고 케리아 왕은 그 신문을 불태운다&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「묻지 않는다」 — 하란: 올해는 묻지 않는다 / 케리아: 다시는 묻지 않는다  (제3조)&#xD;
+      → 이듬해 가을 하란 징수관이 국경을 넘는다&#xD;
+    「유감」 — 하란: 케리아가 사죄했다 / 케리아: 왕께서는 유감을 표했을 뿐 사죄한 적이 없다  (제0조)&#xD;
+      → 케리아 왕이 조문 첫 줄에서 멈춘다. 조약을 물릴 것인가가 왕궁의 겨울 의제가 된다&#xD;
+    「명부」 — 하란: 하란이 적은 명부 / 케리아: 두 나라가 함께 적을 명부  (제4조)&#xD;
+      → 명부에 없는 사백 명이 어느 쪽 장부에도 없는 사람이 된다&#xD;
+    「공문서」 — 하란: 관청 문서만 / 케리아: 학교 교과서까지  (제5조)&#xD;
+      → 케리아 아이들이 어느 말로 배우는가가 두 해 뒤 메르텐 광장의 돌이 된다&#xD;
+p_situational — e_caught · 남은 0 · 드러난 2&#xD;
+p_shade — e_caught · 남은 2 · 드러난 2&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「곡물」 — 하란: 세 해치 / 케리아: 한 해치  (제3조)&#xD;
+      → 첫 수확이 끝나고 하란 관리가 세 배를 받으러 온다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="02c268ba-a884-4598-b74a-0a4c7d43457c" testId="1c1ec161-af9c-a276-e676-849d4ed74500" testName="PrintTheSharpestWords" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005440" startTime="2026-09-27T20:50:09.7100643+09:00" endTime="2026-09-27T20:50:09.7106085+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02c268ba-a884-4598-b74a-0a4c7d43457c">
+      <Output>
+        <StdOut>── 씨드 20260927 에서 결말까지 바꾼 낱말 (앞 12개) ─────────&#xD;
+s_regret         p_hard     강경→오역  조항 3개  e_collapse_quiet → e_collapse_loud&#xD;
+s_named_list     p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_prisoners      p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_regret         p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_garrison       p_situational 강경→오역  조항 2개  e_caught → e_burned&#xD;
+s_open           p_hard     강경→오역  조항 2개  e_collapse_quiet → e_collapse_loud&#xD;
+s_border_reply   p_hard     강경→오역  조항 2개  e_collapse_quiet → e_collapse_loud&#xD;
+s_reparations    p_shade    강경→오역  조항 1개  e_caught → e_burned&#xD;
+s_border_reply   p_shade    완곡→정확  조항 1개  e_caught → e_one_sided&#xD;
+s_tongue         p_situational 완곡→오역  조항 1개  e_caught → e_burned&#xD;
+s_tongue         p_situational 완곡→완곡  조항 1개  e_caught → e_burned&#xD;
+s_garrison_when  p_situational 강경→오역  조항 1개  e_caught → e_burned&#xD;
+(결말까지 바뀐 낱말 32개)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="386917bb-d56a-4d40-8e58-eeda1fb86a69" testId="7219f391-0741-215b-d370-c79624088e4e" testName="EnglishOverwritesAndDoesNotFreeze" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014370" startTime="2026-09-27T20:50:07.7204909+09:00" endTime="2026-09-27T20:50:07.7219273+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="386917bb-d56a-4d40-8e58-eeda1fb86a69" />
+    <UnitTestResult executionId="631b179d-a3ab-461a-adb6-7489e3dfab08" testId="40bdce80-c1e1-d3be-8b2d-37dcab857bba" testName="PlaceholdersNotConcatenation" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0065050" startTime="2026-09-27T20:50:07.7223195+09:00" endTime="2026-09-27T20:50:07.7288235+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="631b179d-a3ab-461a-adb6-7489e3dfab08" />
+    <UnitTestResult executionId="87b1a9ae-72aa-4d9c-b5fe-95f73d555289" testId="d9270848-e983-0d98-8333-cba0c8426128" testName="SomeWordsMoveExactlyOneArticle" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002170" startTime="2026-09-27T20:50:09.7106188+09:00" endTime="2026-09-27T20:50:09.7108358+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87b1a9ae-72aa-4d9c-b5fe-95f73d555289">
+      <Output>
+        <StdOut>조항 하나만 갈린 낱말 871 · 여럿이 갈린 낱말 154</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b7ce4eff-d7c1-4c20-8004-bf8580b86d91" testId="36dcaf12-538d-affc-d676-2282185da0a0" testName="EveryRenderingIsChosenByTheSearchUnderSomeMeasure" computerName="DESKTOP-RU6F3DG" duration="00:00:00.9911780" startTime="2026-09-27T20:50:07.7324439+09:00" endTime="2026-09-27T20:50:08.7236211+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7ce4eff-d7c1-4c20-8004-bf8580b86d91">
+      <Output>
+        <StdOut>후보 역어 66개 중 어느 계획에도 뽑히지 않은 것 2: g_grg_f, g_nlt_h</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="EveryRenderingIsChosenByTheSearchUnderSomeMeasure" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="36dcaf12-538d-affc-d676-2282185da0a0">
+      <Execution id="b7ce4eff-d7c1-4c20-8004-bf8580b86d91" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoDominantStrategyTests" name="EveryRenderingIsChosenByTheSearchUnderSomeMeasure" />
+    </UnitTest>
+    <UnitTest name="ExposureRollIsStableAcrossProcessRuns" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="e5b490da-7d24-2577-e54e-146dc989b554">
+      <Execution id="f9314b6e-2e00-4b0d-9dbe-dd34eda776df" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.SeedDeterminismTests" name="ExposureRollIsStableAcrossProcessRuns" />
+    </UnitTest>
+    <UnitTest name="ControlWorldWhereRenderingIsDecorationChangesNothing" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="a8de126a-b353-18b2-78f0-04e35d541124">
+      <Execution id="6543ba6a-83f7-42e7-b0a9-c3b25b227620" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.OneWordChangesTheTreatyTests" name="ControlWorldWhereRenderingIsDecorationChangesNothing" />
+    </UnitTest>
+    <UnitTest name="MissingEnglishFallsBackToKorean" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="34ba5914-8ce8-f072-1735-0b9d3b5ab1d2">
+      <Execution id="b947e943-abd7-4220-af11-2e283d32ef73" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.LocalizationTests" name="MissingEnglishFallsBackToKorean" />
+    </UnitTest>
+    <UnitTest name="MisunderstandingIsTracked" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="33459280-7bba-d403-f0c6-5cdc8b007da9">
+      <Execution id="012a4ee4-4e3a-4bf5-9fff-e8824b5b5aa9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.MisunderstandingIsTrackedTests" name="MisunderstandingIsTracked" />
+    </UnitTest>
+    <UnitTest name="PrintTheSharpestWords" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="1c1ec161-af9c-a276-e676-849d4ed74500">
+      <Execution id="02c268ba-a884-4598-b74a-0a4c7d43457c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.OneWordChangesTheTreatyTests" name="PrintTheSharpestWords" />
+    </UnitTest>
+    <UnitTest name="OneWordChangesTheTreaty" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="f28f4243-4771-c74f-9742-9964065e94a6">
+      <Execution id="088a1e14-2a0f-410f-a354-c8486c903294" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.OneWordChangesTheTreatyTests" name="OneWordChangesTheTreaty" />
+    </UnitTest>
+    <UnitTest name="NoDominantStrategy" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="cd18ed77-ad0f-6810-5eea-fa36cdde08a9">
+      <Execution id="df810d75-6a93-41b0-aae1-ff27f291d5be" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoDominantStrategyTests" name="NoDominantStrategy" />
+    </UnitTest>
+    <UnitTest name="PrintPolicyTable" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="e6928715-58a5-38f1-97fe-23d638fd9b1c">
+      <Execution id="9de4511c-1825-45ac-8ec6-9925e5a8af47" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DiagnosticTests" name="PrintPolicyTable" />
+    </UnitTest>
+    <UnitTest name="MoodDoesNotDependOnWhatTheInterpreterChose" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="9d04eba7-95b9-03a5-bf0b-e90a3727f3c2">
+      <Execution id="c503d484-8563-405e-89da-9d40365c3d57" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.SeedDeterminismTests" name="MoodDoesNotDependOnWhatTheInterpreterChose" />
+    </UnitTest>
+    <UnitTest name="PrintExactTrace" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="1eeed819-9910-bb34-a8ca-964e1f0606ce">
+      <Execution id="db72164a-118d-4063-b799-c571e8c040f3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DiagnosticTests" name="PrintExactTrace" />
+    </UnitTest>
+    <UnitTest name="SeedsActuallyDiffer" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="ed2cd984-28fc-c863-5a06-a877fd1bc45a">
+      <Execution id="fda5a879-99b5-40cd-867d-bedc9df20f8f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.SeedDeterminismTests" name="SeedsActuallyDiffer" />
+    </UnitTest>
+    <UnitTest name="NoSafeWord" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="e31ff702-af33-f0d0-6781-6a3276ec736e">
+      <Execution id="d50296c4-0e5b-4670-a701-4503ca5a2ebe" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoSafeWordTests" name="NoSafeWord" />
+    </UnitTest>
+    <UnitTest name="SameSeedSamePolicyGivesTheIdenticalNight" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="ecaf3347-e29f-c553-4c36-ee6bcfe741d5">
+      <Execution id="0bcde21c-9f02-430c-aeb4-1d3512c4403d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.SeedDeterminismTests" name="SameSeedSamePolicyGivesTheIdenticalNight" />
+    </UnitTest>
+    <UnitTest name="EveryReferenceResolves" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="5c00e2a0-72a3-287c-5b4d-357b12b98674">
+      <Execution id="816ae917-da5f-4149-85e9-ba29591a02c9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="EveryReferenceResolves" />
+    </UnitTest>
+    <UnitTest name="EnglishOverwritesAndDoesNotFreeze" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="7219f391-0741-215b-d370-c79624088e4e">
+      <Execution id="386917bb-d56a-4d40-8e58-eeda1fb86a69" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.LocalizationTests" name="EnglishOverwritesAndDoesNotFreeze" />
+    </UnitTest>
+    <UnitTest name="KoreanIsTheSource" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="aaadfadd-f97f-d3c6-6f06-1c48cd5e6694">
+      <Execution id="67bf1412-c5f3-4b8d-ae5a-1480b55e99b9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.LocalizationTests" name="KoreanIsTheSource" />
+    </UnitTest>
+    <UnitTest name="FaithfulRenderingLeavesNothingMisunderstood" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="00408155-9d79-21a9-1c7f-8d0535c494bb">
+      <Execution id="cdc9cef9-1f23-4bdc-b84b-aed002725681" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.MisunderstandingIsTrackedTests" name="FaithfulRenderingLeavesNothingMisunderstood" />
+    </UnitTest>
+    <UnitTest name="EvenFaithfulRenderingBreaksSomeNights" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="a048c764-ff1b-8cf8-0208-cfc44198a5c3">
+      <Execution id="bdcf46cb-553a-4d49-beef-189d2bd92026" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoSafeWordTests" name="EvenFaithfulRenderingBreaksSomeNights" />
+    </UnitTest>
+    <UnitTest name="ReadingTheTreatyAloudActuallyExposesLies" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="047bde99-5063-a9b6-95a9-5ca946cff63e">
+      <Execution id="988955d8-6795-4399-9612-aa90e1850473" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.MisunderstandingIsTrackedTests" name="ReadingTheTreatyAloudActuallyExposesLies" />
+    </UnitTest>
+    <UnitTest name="AlwaysHardBreaksTheRoom" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="9b49fbe1-be26-09e8-90e7-805345675e78">
+      <Execution id="0d2a74f3-7f35-4dec-88b9-8df529fb27f9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoSafeWordTests" name="AlwaysHardBreaksTheRoom" />
+    </UnitTest>
+    <UnitTest name="NoPolicyWinsEveryMeasure" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="1141b1b2-022e-f2c7-c24b-3e7d3ac18e9c">
+      <Execution id="3bf00302-e3f2-45da-955a-5be4b8c410b7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoSafeWordTests" name="NoPolicyWinsEveryMeasure" />
+    </UnitTest>
+    <UnitTest name="PlaceholdersNotConcatenation" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="40bdce80-c1e1-d3be-8b2d-37dcab857bba">
+      <Execution id="631b179d-a3ab-461a-adb6-7489e3dfab08" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.LocalizationTests" name="PlaceholdersNotConcatenation" />
+    </UnitTest>
+    <UnitTest name="TruthfulRegistersAloneAlreadyMoveTheTreaty" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="2246036f-6d0f-d277-3b8a-a6fed18541d5">
+      <Execution id="a50bf002-e300-4356-b7fb-4cec6d58aa6a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.OneWordChangesTheTreatyTests" name="TruthfulRegistersAloneAlreadyMoveTheTreaty" />
+    </UnitTest>
+    <UnitTest name="SomeWordsMoveExactlyOneArticle" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="d9270848-e983-0d98-8333-cba0c8426128">
+      <Execution id="87b1a9ae-72aa-4d9c-b5fe-95f73d555289" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.OneWordChangesTheTreatyTests" name="SomeWordsMoveExactlyOneArticle" />
+    </UnitTest>
+    <UnitTest name="TiltingWithoutLyingBeatsFaithfulForThePaymaster" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="9a87f5f8-baa4-5850-e92b-5477f36d0dc5">
+      <Execution id="9f91467b-ce2c-4b6f-951e-8b652a8a4159" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoSafeWordTests" name="TiltingWithoutLyingBeatsFaithfulForThePaymaster" />
+    </UnitTest>
+    <UnitTest name="EveryEndingIsReachableUnderSomePolicyOrIsDocumented" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="f70149d3-ac63-28b1-1fde-3aa94f45070d">
+      <Execution id="683fe6a7-0ebf-491c-9422-dc123e9a526c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="EveryEndingIsReachableUnderSomePolicyOrIsDocumented" />
+    </UnitTest>
+    <UnitTest name="EveryClauseHasAtLeastTwoVariantsAndEveryVariantIsReachable" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="8528d5e2-51ab-4e02-cda3-379857e85ad1">
+      <Execution id="aca621f5-35c7-44fb-8175-371e5d6e0825" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="EveryClauseHasAtLeastTwoVariantsAndEveryVariantIsReachable" />
+    </UnitTest>
+    <UnitTest name="StageIndicesAreContiguousAndOrdered" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="7855cd36-07ec-6736-f8a2-1415aa5d747f">
+      <Execution id="9da4e6e1-c72c-4f2f-8ecd-8286d601ea16" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="StageIndicesAreContiguousAndOrdered" />
+    </UnitTest>
+    <UnitTest name="ThePlayersOwnBriefNeedsAMixedHand" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="e7cc5b0c-1d10-3d69-1fe7-ce7802ffc6a9">
+      <Execution id="c11f7d75-ea30-40a5-9a3c-fdc4aa936e71" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.NoDominantStrategyTests" name="ThePlayersOwnBriefNeedsAMixedHand" />
+    </UnitTest>
+    <UnitTest name="BalanceNumbersAreSaneIntegers" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="b26d1a30-9a23-0b0f-6da2-93b6c1e34d91">
+      <Execution id="8bb8129c-b48e-46a8-9b7d-7fe3ea864bfe" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="BalanceNumbersAreSaneIntegers" />
+    </UnitTest>
+    <UnitTest name="SofteningAloneAlreadyLeavesMisunderstandings" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="f5d0ac29-28f0-c293-430a-c99df1abb5b9">
+      <Execution id="7e6538e0-9ff2-4d09-8062-4a8638af78a0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.MisunderstandingIsTrackedTests" name="SofteningAloneAlreadyLeavesMisunderstandings" />
+    </UnitTest>
+    <UnitTest name="LyingLeavesAPileOfIt" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="d4577236-1927-5e32-6c10-2535c7bc05aa">
+      <Execution id="99e7183d-b19c-49da-bc28-56dcb9daa013" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.MisunderstandingIsTrackedTests" name="LyingLeavesAPileOfIt" />
+    </UnitTest>
+    <UnitTest name="EveryRoundHasAFaithfulRenderingAndNoDuplicateIds" storage="c:\users\psi\orca\game\games\the-interpreter\testbuild\debug\net8.0\the-interpreter.tests.dll" id="69c596ff-db45-7c96-bf74-083913f8bb32">
+      <Execution id="1bfb3561-8cd0-4a35-95c5-8fe56305d9fc" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Interp.Tests.DataIntegrityTests" name="EveryRoundHasAFaithfulRenderingAndNoDuplicateIds" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7855cd36-07ec-6736-f8a2-1415aa5d747f" executionId="9da4e6e1-c72c-4f2f-8ecd-8286d601ea16" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9a87f5f8-baa4-5850-e92b-5477f36d0dc5" executionId="9f91467b-ce2c-4b6f-951e-8b652a8a4159" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5c00e2a0-72a3-287c-5b4d-357b12b98674" executionId="816ae917-da5f-4149-85e9-ba29591a02c9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d04eba7-95b9-03a5-bf0b-e90a3727f3c2" executionId="c503d484-8563-405e-89da-9d40365c3d57" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aaadfadd-f97f-d3c6-6f06-1c48cd5e6694" executionId="67bf1412-c5f3-4b8d-ae5a-1480b55e99b9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed2cd984-28fc-c863-5a06-a877fd1bc45a" executionId="fda5a879-99b5-40cd-867d-bedc9df20f8f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b49fbe1-be26-09e8-90e7-805345675e78" executionId="0d2a74f3-7f35-4dec-88b9-8df529fb27f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2246036f-6d0f-d277-3b8a-a6fed18541d5" executionId="a50bf002-e300-4356-b7fb-4cec6d58aa6a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b26d1a30-9a23-0b0f-6da2-93b6c1e34d91" executionId="8bb8129c-b48e-46a8-9b7d-7fe3ea864bfe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ecaf3347-e29f-c553-4c36-ee6bcfe741d5" executionId="0bcde21c-9f02-430c-aeb4-1d3512c4403d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00408155-9d79-21a9-1c7f-8d0535c494bb" executionId="cdc9cef9-1f23-4bdc-b84b-aed002725681" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f70149d3-ac63-28b1-1fde-3aa94f45070d" executionId="683fe6a7-0ebf-491c-9422-dc123e9a526c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1eeed819-9910-bb34-a8ca-964e1f0606ce" executionId="db72164a-118d-4063-b799-c571e8c040f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f28f4243-4771-c74f-9742-9964065e94a6" executionId="088a1e14-2a0f-410f-a354-c8486c903294" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7cc5b0c-1d10-3d69-1fe7-ce7802ffc6a9" executionId="c11f7d75-ea30-40a5-9a3c-fdc4aa936e71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34ba5914-8ce8-f072-1735-0b9d3b5ab1d2" executionId="b947e943-abd7-4220-af11-2e283d32ef73" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4577236-1927-5e32-6c10-2535c7bc05aa" executionId="99e7183d-b19c-49da-bc28-56dcb9daa013" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e6928715-58a5-38f1-97fe-23d638fd9b1c" executionId="9de4511c-1825-45ac-8ec6-9925e5a8af47" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd18ed77-ad0f-6810-5eea-fa36cdde08a9" executionId="df810d75-6a93-41b0-aae1-ff27f291d5be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a8de126a-b353-18b2-78f0-04e35d541124" executionId="6543ba6a-83f7-42e7-b0a9-c3b25b227620" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f5d0ac29-28f0-c293-430a-c99df1abb5b9" executionId="7e6538e0-9ff2-4d09-8062-4a8638af78a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="69c596ff-db45-7c96-bf74-083913f8bb32" executionId="1bfb3561-8cd0-4a35-95c5-8fe56305d9fc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8528d5e2-51ab-4e02-cda3-379857e85ad1" executionId="aca621f5-35c7-44fb-8175-371e5d6e0825" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1141b1b2-022e-f2c7-c24b-3e7d3ac18e9c" executionId="3bf00302-e3f2-45da-955a-5be4b8c410b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="047bde99-5063-a9b6-95a9-5ca946cff63e" executionId="988955d8-6795-4399-9612-aa90e1850473" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a048c764-ff1b-8cf8-0208-cfc44198a5c3" executionId="bdcf46cb-553a-4d49-beef-189d2bd92026" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e31ff702-af33-f0d0-6781-6a3276ec736e" executionId="d50296c4-0e5b-4670-a701-4503ca5a2ebe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e5b490da-7d24-2577-e54e-146dc989b554" executionId="f9314b6e-2e00-4b0d-9dbe-dd34eda776df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33459280-7bba-d403-f0c6-5cdc8b007da9" executionId="012a4ee4-4e3a-4bf5-9fff-e8824b5b5aa9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1c1ec161-af9c-a276-e676-849d4ed74500" executionId="02c268ba-a884-4598-b74a-0a4c7d43457c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7219f391-0741-215b-d370-c79624088e4e" executionId="386917bb-d56a-4d40-8e58-eeda1fb86a69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40bdce80-c1e1-d3be-8b2d-37dcab857bba" executionId="631b179d-a3ab-461a-adb6-7489e3dfab08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d9270848-e983-0d98-8333-cba0c8426128" executionId="87b1a9ae-72aa-4d9c-b5fe-95f73d555289" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="36dcaf12-538d-affc-d676-2282185da0a0" executionId="b7ce4eff-d7c1-4c20-8004-bf8580b86d91" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="34" executed="34" passed="34" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\the-interpreter\TestBuild\Debug\net8.0\the-interpreter.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 34 of 34 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+정책 여섯이 닿은 결말: e_clear, e_caught, e_collapse_quiet, e_burned, e_unfinished, e_paper_peace, e_collapse_loud&#xD;
+&#xD;
+&#xD;
+── 늘 정확하게 옮긴 밤 (씨드 20260927) ──────────────&#xD;
+ 0 s_open           g_open_x  긴장 35 하란 68 케리아 71 의심  4 &#xD;
+ 1 s_border_claim   g_bc_x    긴장 37 하란 69 케리아 71 의심  4 →v_border_ridge&#xD;
+ 2 s_border_reply   g_brg_x   긴장 44 하란 69 케리아 73 의심  4 →v_border_line&#xD;
+ 3 s_garrison       g_gar_x   긴장 47 하란 70 케리아 74 의심  4 →v_gar_stay&#xD;
+ 4 s_garrison_when  g_gwl_x   긴장 54 하란 70 케리아 76 의심  4 →v_gar_reduce&#xD;
+ 5 s_reparations    g_rep_x   긴장 60 하란 71 케리아 76 의심  4 →v_rep_coin&#xD;
+ 6 s_grain          g_grg_x   긴장 64 하란 71 케리아 78 의심  4 →v_rep_grain&#xD;
+ 7 s_regret         g_reg_x   긴장 63 하란 73 케리아 80 의심  4 →v_pre_regret&#xD;
+ 8 s_prisoners      g_pri_x   긴장 63 하란 74 케리아 80 의심  4 →v_pri_named&#xD;
+ 9 s_named_list     g_nlw_x   긴장 69 하란 74 케리아 82 의심  4 →v_pri_staged&#xD;
+10 s_tongue         g_ton_x   긴장 73 하란 75 케리아 77 의심  4 →v_tongue_haran&#xD;
+11 s_reading        g_rd_x    긴장 78 하란 81 케리아 83 의심  2 &#xD;
+조약: c_preamble=v_pre_regret;c_border=v_border_line;c_garrison=v_gar_reduce;c_reparations=v_rep_grain;c_prisoners=v_pri_staged;c_tongue=v_tongue_haran;SIGNED&#xD;
+결말: e_clear · 남은 오해 &#xD;
+&#xD;
+&#xD;
+&#xD;
+── 정책 × 씨드 ────────────────────────────────────────────────&#xD;
+정책            씨드     조인 긴장 의심 남은오해 드러남 favorA favorB 결말&#xD;
+p_exact        20260927     O   78    2      0      0     72     36  e_clear&#xD;
+p_exact            11     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_exact           404     X   84    2      0      0      0      0  e_collapse_quiet&#xD;
+p_exact          1848     O   74    2      0      0     72     36  e_clear&#xD;
+p_exact         20261     O   77    2      0      0     72     36  e_clear&#xD;
+p_exact           777     O   77    2      0      0     72     36  e_clear&#xD;
+p_exact          5150     O   70    2      0      0     72     36  e_clear&#xD;
+p_soft         20260927     O   42   45      2      2     24     30  e_caught&#xD;
+p_soft             11     O   48   45      2      2     24     30  e_caught&#xD;
+p_soft            404     O   48   45      2      2     24     30  e_caught&#xD;
+p_soft           1848     O   38   45      2      2     24     30  e_caught&#xD;
+p_soft          20261     O   41   45      2      2     24     30  e_caught&#xD;
+p_soft            777     O   38   31      3      1     17     23  e_unfinished&#xD;
+p_soft           5150     O   34   45      2      2     24     30  e_caught&#xD;
+p_hard         20260927     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard             11     X   87    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard            404     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard           1848     X   86    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard          20261     X   82    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard            777     X   85    4      0      0      0      0  e_collapse_quiet&#xD;
+p_hard           5150     X   90    4      0      0      0      0  e_collapse_loud&#xD;
+p_false        20260927     O   27  100      6      1     58    -22  e_caught&#xD;
+p_false            11     O   27  100      6      1     58    -22  e_caught&#xD;
+p_false           404     O   29  100      6      1     58    -22  e_caught&#xD;
+p_false          1848     O   23  100      5      2     65    -15  e_burned&#xD;
+p_false         20261     O   22  100      5      2     65    -15  e_burned&#xD;
+p_false           777     O   26  100      6      1     58    -22  e_caught&#xD;
+p_false          5150     O   24  100      6      1     58    -22  e_caught&#xD;
+p_situational  20260927     O   67   47      0      2     66     24  e_caught&#xD;
+p_situational      11     O   72   34      1      1     65     29  e_caught&#xD;
+p_situational     404     O   72   34      1      1     65     29  e_caught&#xD;
+p_situational    1848     O   65   34      1      1     85      3  e_caught&#xD;
+p_situational   20261     O   66   47      0      2     66     24  e_caught&#xD;
+p_situational     777     O   66   47      0      2     66     24  e_caught&#xD;
+p_situational    5150     O   60   34      1      1     85      3  e_caught&#xD;
+p_shade        20260927     O   66   39      2      2    124    -76  e_caught&#xD;
+p_shade            11     X   75   53      1      3      0      0  e_caught&#xD;
+p_shade           404     O   72   39      2      2    124    -76  e_caught&#xD;
+p_shade          1848     O   62   39      2      2    124    -76  e_caught&#xD;
+p_shade         20261     O   65   39      2      2    124    -76  e_caught&#xD;
+p_shade           777     O   62   25      3      1    117    -83  e_paper_peace&#xD;
+p_shade          5150     O   58   39      2      2    124    -76  e_caught&#xD;
+&#xD;
+── 목표별 합계 (씨드 7개) ─────────────────────────&#xD;
+정책                 o_peace     o_haran     o_keria   o_clarity   o_mission&#xD;
+p_exact                308         460         280         129         568&#xD;
+p_soft                 517         217         259        -263         299&#xD;
+p_hard                 106         -48         -48         -14          14&#xD;
+p_false                660         560           0        -587         381&#xD;
+p_situational          362         620         258         -21         571&#xD;
+p_shade                308         815        -385        -283         654&#xD;
+&#xD;
+&#xD;
+「오역만」이 남긴 어긋난 낱말 합계 49&#xD;
+&#xD;
+&#xD;
+── 남은 오해 (씨드 20260927) ──────────────────────────&#xD;
+p_exact — e_clear · 남은 0 · 드러난 0&#xD;
+p_soft — e_caught · 남은 2 · 드러난 2&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「곡물」 — 하란: 세 해치 / 케리아: 한 해치  (제3조)&#xD;
+      → 첫 수확이 끝나고 하란 관리가 세 배를 받으러 온다&#xD;
+p_hard — e_collapse_quiet · 남은 0 · 드러난 0&#xD;
+p_false — e_caught · 남은 6 · 드러난 1&#xD;
+    「패배」 — 하란: 케리아가 이 방에서 패배를 인정했다 / 케리아: 우리는 그런 말을 한 적이 없다  (제0조)&#xD;
+      → 하란 신문 1면에 '케리아, 패배 인정'이 실리고 케리아 왕은 그 신문을 불태운다&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「묻지 않는다」 — 하란: 올해는 묻지 않는다 / 케리아: 다시는 묻지 않는다  (제3조)&#xD;
+      → 이듬해 가을 하란 징수관이 국경을 넘는다&#xD;
+    「유감」 — 하란: 케리아가 사죄했다 / 케리아: 왕께서는 유감을 표했을 뿐 사죄한 적이 없다  (제0조)&#xD;
+      → 케리아 왕이 조문 첫 줄에서 멈춘다. 조약을 물릴 것인가가 왕궁의 겨울 의제가 된다&#xD;
+    「명부」 — 하란: 하란이 적은 명부 / 케리아: 두 나라가 함께 적을 명부  (제4조)&#xD;
+      → 명부에 없는 사백 명이 어느 쪽 장부에도 없는 사람이 된다&#xD;
+    「공문서」 — 하란: 관청 문서만 / 케리아: 학교 교과서까지  (제5조)&#xD;
+      → 케리아 아이들이 어느 말로 배우는가가 두 해 뒤 메르텐 광장의 돌이 된다&#xD;
+p_situational — e_caught · 남은 0 · 드러난 2&#xD;
+p_shade — e_caught · 남은 2 · 드러난 2&#xD;
+    「물러난다」 — 하란: 봄이 지나고 나서 / 케리아: 조인 즉시  (제2조)&#xD;
+      → 케리아 의회가 조인 열흘 뒤 '배신'이라는 낱말을 쓴다&#xD;
+    「곡물」 — 하란: 세 해치 / 케리아: 한 해치  (제3조)&#xD;
+      → 첫 수확이 끝나고 하란 관리가 세 배를 받으러 온다&#xD;
+&#xD;
+&#xD;
+낭독에서 되물었을 때 드러난 것 49 · 소리를 낮춰 넘겼을 때 9&#xD;
+&#xD;
+거짓 없이 완곡하기만 해도 오해가 둘 이상 남은 밤 7 / 7&#xD;
+&#xD;
+후보 역어 66개 중 어느 계획에도 뽑히지 않은 것 2: g_grg_f, g_nlt_h&#xD;
+&#xD;
+&#xD;
+── 목표별 최선 계획 (빔 탐색) vs 한 결만 되풀이하기 ───────────&#xD;
+자            최선   정확만   완곡만   강경만   오역만   쓴 결 가짓수&#xD;
+o_peace         722      308      517      106      660         4&#xD;
+o_haran        1260      460      217      -48      560         4&#xD;
+o_keria        1169      280      259      -48        0         4&#xD;
+o_clarity       192      129     -263      -14     -587         4&#xD;
+o_mission      1140      568      299       14      381         4&#xD;
+&#xD;
+&#xD;
+&#xD;
+── o_mission 의 최선 계획 (씨드별) ─────────────────────────&#xD;
+씨드 20260927 점수   166 결 4가지  완곡 강경 강경 강경 강경 강경 강경 오역 정확 강경 정확 완곡&#xD;
+씨드       11 점수   150 결 3가지  완곡 정확 강경 정확 강경 강경 정확 정확 정확 강경 강경 정확&#xD;
+씨드      404 점수   155 결 4가지  완곡 강경 강경 완곡 오역 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드     1848 점수   169 결 4가지  완곡 정확 강경 정확 강경 강경 강경 오역 정확 강경 정확 정확&#xD;
+씨드    20261 점수   167 결 3가지  완곡 정확 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드      777 점수   167 결 3가지  완곡 정확 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+씨드     5150 점수   171 결 3가지  완곡 강경 강경 정확 강경 강경 강경 정확 정확 강경 강경 정확&#xD;
+합계 1145&#xD;
+&#xD;
+&#xD;
+「늘 강경하게」가 깬 회담 7 / 7&#xD;
+&#xD;
+「늘 정확하게」가 깨진 밤 2 / 7 (씨드 11,404)&#xD;
+&#xD;
+자를 이긴 횟수: p_exact 2 · p_soft 0 · p_hard 0 · p_false 1 · p_situational 0 · p_shade 2&#xD;
+&#xD;
+&#xD;
+── 정책 × 자 (씨드 7개 합계) ───────────────────────&#xD;
+자 (누가 재는가)                          p_exact         p_soft         p_hard        p_false  p_situational        p_shade   이긴 정책&#xD;
+o_peace (메르텐에 사는 사람들)                   308            517            106            660            362            308   p_false&#xD;
+o_haran (벨크 장군)                         460            217            -48            560            620            815   p_shade&#xD;
+o_keria (오르멘 사절)                        280            259            -48              0            258           -385   p_exact&#xD;
+o_clarity (십 년 뒤의 역사가)                  129           -263            -14           -587            -21           -283   p_exact&#xD;
+o_mission (통역을 부른 하란 외무성)               568            299             14            381            571            654   p_shade&#xD;
+&#xD;
+「늘 정확하게」가 자 5개 가운데 3개에서 최선이 아니다&#xD;
+&#xD;
+고용주 편 815 vs 늘 정확 460 · 그 사이 한 거짓말 0번&#xD;
+&#xD;
+&#xD;
+── 한 낱말만 바꿔 보았다 ──────────────────────────────────&#xD;
+돌린 밤            42&#xD;
+바꿔 본 낱말        1527&#xD;
+조약이 달라진 것    1025&#xD;
+결말이 달라진 것    395&#xD;
+오해 목록이 달라진 것 830&#xD;
+★ 조약이 달라지는 지점 (씨드×정책×마디) 415&#xD;
+★ 그런 마디의 가짓수                     12 / 12&#xD;
+대조군(역어가 장식인 세계)에서 달라진 것  0&#xD;
+&#xD;
+&#xD;
+&#xD;
+── 씨드 20260927 에서 결말까지 바꾼 낱말 (앞 12개) ─────────&#xD;
+s_regret         p_hard     강경→오역  조항 3개  e_collapse_quiet → e_collapse_loud&#xD;
+s_named_list     p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_prisoners      p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_regret         p_situational 정확→오역  조항 2개  e_caught → e_burned&#xD;
+s_garrison       p_situational 강경→오역  조항 2개  e_caught → e_burned&#xD;
+s_open           p_hard     강경→오역  조항 2개  e_collapse_quiet → e_collapse_loud&#xD;
+s_border_reply   p_hard     강경→오역  조항 2개  e_collapse_quiet → e_collapse_loud&#xD;
+s_reparations    p_shade    강경→오역  조항 1개  e_caught → e_burned&#xD;
+s_border_reply   p_shade    완곡→정확  조항 1개  e_caught → e_one_sided&#xD;
+s_tongue         p_situational 완곡→오역  조항 1개  e_caught → e_burned&#xD;
+s_tongue         p_situational 완곡→완곡  조항 1개  e_caught → e_burned&#xD;
+s_garrison_when  p_situational 강경→오역  조항 1개  e_caught → e_burned&#xD;
+(결말까지 바뀐 낱말 32개)&#xD;
+&#xD;
+&#xD;
+조항 하나만 갈린 낱말 871 · 여럿이 갈린 낱말 154&#xD;
+&#xD;
+거짓 없이(정확·완곡·강경 사이) 조약을 바꾼 낱말 522 · 그런 마디 12&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

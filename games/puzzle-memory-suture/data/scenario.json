@@ -1,0 +1,39 @@
+{
+  "slug": "puzzle-memory-suture",
+  "kind": "memory",
+  "title": "기억의 봉합사",
+  "english": "MEMORY SUTURE",
+  "tagline": "한 장면을 바꾸면, 사랑의 이유가 달라진다.",
+  "instructions": "기억 조각의 인물·행동·감정을 교체하세요. 열쇠를 가진 사람이라는 고정 사실과 모순되지 않게 봉합합니다.",
+  "question": "논리를 맞추고도 감정을 남길지 고민하게 되는가?",
+  "values": [
+    3
+  ],
+  "items": [
+    {
+      "id": "person",
+      "title": "인물",
+      "text": "나 / 형",
+      "detail": "집 열쇠는 형만 가지고 있다."
+    },
+    {
+      "id": "act",
+      "title": "행동",
+      "text": "선물을 건넨다 / 문을 잠근다",
+      "detail": "고정 사실에 맞는 행동을 연결하세요."
+    },
+    {
+      "id": "emotion",
+      "title": "감정",
+      "text": "온기 / 두려움",
+      "detail": "감정은 모순과 별도로 후유증을 남긴다."
+    }
+  ],
+  "palette": {
+    "background": "#201c30",
+    "surface": "#302940",
+    "paper": "#f0e7f2",
+    "accent": "#e4b2cb",
+    "muted": "#bbb0cb"
+  }
+}

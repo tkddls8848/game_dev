@@ -1,0 +1,162 @@
+{
+  "_": "효과는 {type, amount, target} 세 필드의 평평한 배열이다 (PLAN_DECKBUILDER §6). 다형성을 쓰지 않는다.",
+  "_수치": "전부 정수. 값 없는 int 는 -1 을 명시한다.",
+  "_카드수": "11종. PLAN §7 Phase 1~2 규모다. 40종까지 늘리는 것은 이 PoC의 범위가 아니다.",
+  "_규칙": "brace·echo·swap_intent·skip_intent 넷이 이 PoC의 규칙을 만진다. 정보가 아니라 순서를 다루는 카드들이다.",
+  "cards": [
+    {
+      "id": "card_blade",
+      "nameKo": "칼날",
+      "textKo": "피해 6. 가장 단순한 수다.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 6,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_mantle",
+      "nameKo": "외투",
+      "textKo": "방어 6.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "block",
+          "amount": 6,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_brace",
+      "nameKo": "대비",
+      "textKo": "다음 수가 공격이면 그 값만큼 막고, 2를 더 막는다. 순서를 읽은 값이 그대로 수치가 된다.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "brace",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_omen",
+      "nameKo": "예조",
+      "textKo": "기력 0. 카드 2장을 뽑는다.",
+      "cost": 0,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "draw",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_zeal",
+      "nameKo": "열의",
+      "textKo": "힘 +2. 이번 전투의 모든 공격에 더해진다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "strength",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_wane",
+      "nameKo": "쇠퇴",
+      "textKo": "적에게 약화 2.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_echo",
+      "nameKo": "메아리",
+      "textKo": "보이는 다섯 수 중 공격 하나마다 피해 3. 정해진 운명을 세어 값으로 바꾼다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "echo",
+          "amount": 3,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_invert",
+      "nameKo": "역순",
+      "textKo": "적의 다음 두 수의 순서를 바꾼다. 큰 수를 뒤로 미룬다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "swap_intent",
+          "amount": 1,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_balm",
+      "nameKo": "약초",
+      "textKo": "체력 6 회복.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "heal",
+          "amount": 6,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_verdict",
+      "nameKo": "심판",
+      "textKo": "피해 14. 손 한 칸으로 끝나지만 기력 둘을 한 번에 쓴다.",
+      "cost": 2,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 14,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_veil",
+      "nameKo": "가림막",
+      "textKo": "적의 다음 한 수를 지운다. 일어나지 않은 것으로 친다.",
+      "cost": 2,
+      "rarity": "rare",
+      "effects": [
+        {
+          "type": "skip_intent",
+          "amount": 1,
+          "target": "enemy"
+        }
+      ]
+    }
+  ]
+}

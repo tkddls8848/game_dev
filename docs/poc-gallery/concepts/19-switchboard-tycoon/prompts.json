@@ -1,0 +1,17 @@
+{
+ "num": 19,
+ "slug": "switchboard-tycoon",
+ "title": "교환대 타이쿤",
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 러시아워 (오전 09:42, 코드 꽂기와 엿듣기)",
+   "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 screenshot of a 1950s telephone-operator tycoon game. Straight-on, slightly elevated first-person view of a large walnut switchboard filling the left two-thirds: a brass plate header, a 10 by 5 grid of brass jack holes, each with a small round indicator lamp above and a cream paper label below. Several amber lamps blink, others glow steady; colored cloth patch cords (oxblood red, bottle green, black, brass) droop in heavy catenary curves from plugs on the wooden desk up into jacks, casting soft shadows. On the right, stacked cream index-card call tickets with ruled blue lines and draining timer bars, and a dark eavesdrop panel with an audio waveform and two lines of overheard dialogue subtitles. Top HUD bar in dark wood with an analog clock and amber digital time. Warm tungsten lighting, film grain, vignette, rich brass highlights. Korean UI text: \"은하동 전화국\", \"09:42\", \"대기 통화\", \"엿듣기 +150\". Consistency: the analog clock hands point exactly to 9:42, matching the digital \"09:42\"; do not show any calendar date or year anywhere in the HUD."
+  },
+  {
+   "id": "b",
+   "screen": "B · 폭주 (오전 11:58, 오접속 클레임과 특종)",
+   "prompt": "Actual gameplay view, not poster, no device frame. Landscape 16:9 screenshot of the same 1950s switchboard tycoon game at peak overload. The walnut and brass switchboard is almost fully lit: dozens of lamps blinking red and amber, a chaotic tangle of red, green and black patch cords crossing each other in heavy drooping loops. A red alarm glow pulses over the board; a large tilted stamped-style banner in the center announces a wrong connection with a minus score floating up. Cream claim slips with red rubber stamps lie scattered across the desk. On the right, urgent shaking call tickets with nearly empty red timer bars, and a gold-glowing eavesdrop panel showing a secret vault code in large spaced digits with a big bonus reward and a supervisor suspicion meter at 91 percent. Warm tungsten light mixed with red emergency tint, film grain, tension. Korean UI text: \"잘못 연결!\", \"11:58\", \"클레임\", \"특종 +800\". Text constraints: money is shown in Korean won (e.g. \"₩ 2,430\"), never dollars; switchboard column plates read 1 to 10 left to right with no duplicates, same as the earlier rush-hour screen; the only company name is \"은하동 전화국\" — no \"BELL\" or any other English company or brand name anywhere. STRICT (retry): do not show any calendar date, year or weekday anywhere (no \"1958년 3월 14일 (금)\" or similar) — the top HUD shows only the clock \"11:58\" and \"은하동 전화국\", exactly like the earlier rush-hour screen."
+  }
+ ]
+}

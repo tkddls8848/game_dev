@@ -1,0 +1,94 @@
+{
+  "_": "밤에 창고를 노리는 것들. 행동은 pattern 을 순환한다 — 난수 없이 결정적이다.",
+  "_pattern": "{type, amount}. attack=공격(방어로 깎인다) · block=방어 · ramp=이후 공격에 더할 값",
+  "enemies": [
+    {
+      "id": "enemy_rat",
+      "nameKo": "들쥐 떼",
+      "nameEn": "Rat Swarm",
+      "hp": 16,
+      "glyph": "rat",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 7
+        },
+        {
+          "type": "attack",
+          "amount": 7
+        },
+        {
+          "type": "block",
+          "amount": 4
+        }
+      ]
+    },
+    {
+      "id": "enemy_crow",
+      "nameKo": "까마귀 떼",
+      "nameEn": "Crow Flock",
+      "hp": 20,
+      "glyph": "crow",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "attack",
+          "amount": 5
+        },
+        {
+          "type": "attack",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "enemy_fox",
+      "nameKo": "여우",
+      "nameEn": "Fox",
+      "hp": 22,
+      "glyph": "fox",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 10
+        },
+        {
+          "type": "block",
+          "amount": 6
+        },
+        {
+          "type": "attack",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "enemy_wolf",
+      "nameKo": "굶주린 이리",
+      "nameEn": "Starving Wolf",
+      "hp": 34,
+      "glyph": "wolf",
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "attack",
+          "amount": 9
+        },
+        {
+          "type": "ramp",
+          "amount": 3
+        },
+        {
+          "type": "attack",
+          "amount": 12
+        }
+      ]
+    }
+  ]
+}

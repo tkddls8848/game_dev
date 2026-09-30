@@ -1,0 +1,878 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f1449a4e-1b20-482a-b4b5-7a8ab3866bad" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:52:51" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:52:51.4866019+09:00" queuing="2026-09-27T20:52:51.4866023+09:00" start="2026-09-27T20:52:50.7867472+09:00" finish="2026-09-27T20:52:52.5079965+09:00" />
+  <TestSettings name="default" id="3cca8fcb-23a6-4fe9-8c0e-9f6ce2943828">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_52_51" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="151f8073-7600-41ba-8c93-1f5eaf6d6603" testId="62506fe0-b85a-4283-09ed-9c28f7850c2e" testName="씨드가_실제로_무엇을_바꾸는가" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0010100" startTime="2026-09-27T20:52:52.1295111+09:00" endTime="2026-09-27T20:52:52.1305209+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="151f8073-7600-41ba-8c93-1f5eaf6d6603">
+      <Output>
+        <StdOut>b_ga: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 5종&#xD;
+b_na: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 3종&#xD;
+b_da: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 3종</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="53515fe5-1eae-4818-951e-4bf2816b0da0" testId="e144848a-7f85-d407-7f1a-44b29564132a" testName="아무도_돕지_않는_것보다_나쁜_선택이_반드시_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003340" startTime="2026-09-27T20:52:51.8275201+09:00" endTime="2026-09-27T20:52:51.8278539+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53515fe5-1eae-4818-951e-4bf2816b0da0">
+      <Output>
+        <StdOut>b_ga: 여섯 선택 중 3개가 아무도 돕지 않는 것(226)보다 나쁘다&#xD;
+b_na: 여섯 선택 중 4개가 아무도 돕지 않는 것(177)보다 나쁘다&#xD;
+b_da: 여섯 선택 중 3개가 아무도 돕지 않는 것(188)보다 나쁘다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a7464ec4-7612-4b0c-921a-b31a2b23e7e5" testId="2f7e06f0-3b77-2788-22a0-6f8848c9586d" testName="겹쳐_들으면_거짓이_드러난다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008310" startTime="2026-09-27T20:52:51.8300756+09:00" endTime="2026-09-27T20:52:51.8309060+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7464ec4-7612-4b0c-921a-b31a2b23e7e5">
+      <Output>
+        <StdOut>겹쳐 들어 거짓이 드러난 경우 33가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6017e5fc-1c8a-455e-9a52-6693572b31f5" testId="78f8a8a7-3222-64e8-6d0f-05b172c89060" testName="B3_말할_수_없는_집을_고르는_것은_아무것도_안_하는_것보다_낫다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002820" startTime="2026-09-27T20:52:52.3317492+09:00" endTime="2026-09-27T20:52:52.3320310+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6017e5fc-1c8a-455e-9a52-6693572b31f5">
+      <Output>
+        <StdOut>b_ga: 최선 190 · 최악 205 · 아무것도 안 함 226 · 안 하는 것보다 나쁜 날 0/16&#xD;
+b_da: 최선 184 · 최악 194 · 아무것도 안 함 188 · 안 하는 것보다 나쁜 날 8/16</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="15b446da-7ae9-4ab0-af79-a3a937adb9e2" testId="a58ea38d-7015-176f-3476-388de534d68e" testName="되돌리기가_정확하다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004270" startTime="2026-09-27T20:52:51.8310091+09:00" endTime="2026-09-27T20:52:51.8314365+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15b446da-7ae9-4ab0-af79-a3a937adb9e2" />
+    <UnitTestResult executionId="2e9eb33a-27ff-446b-bf44-a9c7546fc495" testId="992a4138-e40b-41b0-da57-9cda586f285e" testName="한_문만_되풀이하는_것은_어느_건물에서도_최선이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0021080" startTime="2026-09-27T20:52:51.8528147+09:00" endTime="2026-09-27T20:52:51.8549220+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e9eb33a-27ff-446b-bf44-a9c7546fc495">
+      <Output>
+        <StdOut>b_ga: 한 문 되풀이 233 · 이웃의 말 213 · 전수 탐색 최선 198&#xD;
+b_na: 한 문 되풀이 206 · 이웃의 말 167 · 전수 탐색 최선 158&#xD;
+b_da: 한 문 되풀이 182 · 이웃의 말 179 · 전수 탐색 최선 174</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="26371480-c7b0-4401-a957-33573b1f3376" testId="60b72b74-d664-b7bb-3723-ced2af3971a3" testName="선택지_표를_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1095030" startTime="2026-09-27T20:52:51.4141238+09:00" endTime="2026-09-27T20:52:51.5236263+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26371480-c7b0-4401-a957-33573b1f3376">
+      <Output>
+        <StdOut>== 삼화연립 가동 (b_ga) 기본 손실 합 226 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 226 · 계획 노드 8953&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv1  유예2 건짐  5 물림 28 총 249 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 3개&#xD;
+  씨드 1 · 아무도 돕지 않으면 226 · 계획 노드 4194&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv2  유예2 건짐 30 물림 28 총 224 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv3  유예4 건짐 96 물림 60 총 190 엿듣기3(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 190 · 파레토 4개&#xD;
+  씨드 2 · 아무도 돕지 않으면 226 · 계획 노드 7285&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv2  유예2 건짐 30 물림 28 총 224 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 4개&#xD;
+  씨드 3 · 아무도 돕지 않으면 226 · 계획 노드 7757&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv1  유예2 건짐  5 물림 28 총 249 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 3개&#xD;
+== 삼화연립 나동 (b_na) 기본 손실 합 177 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 177 · 계획 노드 4772&#xD;
+    101 혼자 남은 사람       침묵=none   Lv3  유예4 건짐 84 물림 59 총 152 엿듣기2(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv1  유예2 건짐  3 물림 29 총 203 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 189 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 152 · 파레토 3개&#xD;
+  씨드 1 · 아무도 돕지 않으면 177 · 계획 노드 2264&#xD;
+    101 혼자 남은 사람       침묵=none   Lv2  유예4 건짐 71 물림 59 총 165 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv1  유예2 건짐  3 물림 29 총 203 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2  유예2 건짐 25 물림 28 총 180 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 165 · 파레토 3개&#xD;
+  씨드 2 · 아무도 돕지 않으면 177 · 계획 노드 1656&#xD;
+    101 혼자 남은 사람       침묵=none   Lv2  유예4 건짐 71 물림 59 총 165 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv2  유예1 건짐 17 물림 14 총 174 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2  유예2 건짐 25 물림 28 총 180 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 165 · 파레토 4개&#xD;
+  씨드 3 · 아무도 돕지 않으면 177 · 계획 노드 2548&#xD;
+    101 혼자 남은 사람       침묵=none   Lv3  유예4 건짐 84 물림 59 총 152 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv2  유예1 건짐 17 물림 14 총 174 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 189 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 152 · 파레토 4개&#xD;
+== 삼화연립 다동 (b_da) 기본 손실 합 188 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 188 · 계획 노드 4379&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv3  유예4 건짐 62 물림 58 총 184 엿듣기3(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv2  유예2 건짐 25 물림 28 총 191 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 4개&#xD;
+  씨드 1 · 아무도 돕지 않으면 188 · 계획 노드 11081&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv2  유예4 건짐 52 물림 58 총 194 엿듣기2(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 200 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 2개&#xD;
+  씨드 2 · 아무도 돕지 않으면 188 · 계획 노드 7702&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv3  유예4 건짐 62 물림 58 총 184 엿듣기3(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv1  유예2 건짐  4 물림 28 총 212 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 3개&#xD;
+  씨드 3 · 아무도 돕지 않으면 188 · 계획 노드 5949&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv2  유예4 건짐 52 물림 58 총 194 엿듣기2(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv2  유예3 건짐 49 물림 41 총 180 엿듣기1(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv1  유예2 건짐  4 물림 28 총 212 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 180 · 파레토 3개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="615ecee7-00db-4c61-96d7-37e3064c6363" testId="a2d9d302-558c-b38b-54f2-17c31719b2cd" testName="D2_침묵을_맹신하는_것과_무시하는_것이_모두_최선이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0121730" startTime="2026-09-27T20:52:52.4436337+09:00" endTime="2026-09-27T20:52:52.4558065+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="615ecee7-00db-4c61-96d7-37e3064c6363">
+      <Output>
+        <StdOut>b_ga: 최선 「이웃의 말을 따라간다」 213 · 침묵 맹신 228 · 침묵 무시 224 · 무시가 맹신보다 낫다&#xD;
+b_na: 최선 「이웃의 말을 따라간다」 167 · 침묵 맹신 195 · 침묵 무시 168 · 무시가 맹신보다 낫다&#xD;
+b_da: 최선 「가장 시끄러운 문」 174 · 침묵 맹신 201 · 침묵 무시 177 · 무시가 맹신보다 낫다&#xD;
+무시가 맹신보다 나은지가 건물에 따라 뒤바뀐 횟수: 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ef509727-3d9a-4f7c-a4f8-be44c8adc158" testId="fc6b8094-0dad-ab6f-369d-64a61a00d878" testName="세_세계를_나란히_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1594120" startTime="2026-09-27T20:52:52.1376654+09:00" endTime="2026-09-27T20:52:52.2970764+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ef509727-3d9a-4f7c-a4f8-be44c8adc158">
+      <Output>
+        <StdOut>== 삼화연립 가동 unable=h_ga_quiet gone=h_ga_empty&#xD;
+  씨드0 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드1 최선 켠190/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 190(Lv3,엿3) · 문막음 241 · 소리로바꿈 190(Lv3,엿2)&#xD;
+  씨드2 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드3 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드4 최선 켠190/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 190(Lv3,엿3) · 문막음 241 · 소리로바꿈 190(Lv3,엿2)&#xD;
+  씨드5 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드6 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드7 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+== 삼화연립 나동 unable=없음 gone=h_na_empty&#xD;
+  씨드0 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드1 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드2 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드3 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드4 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드5 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드6 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드7 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+== 삼화연립 다동 unable=h_da_sick gone=h_da_gone&#xD;
+  씨드0 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드1 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드2 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드3 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드4 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드5 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드6 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드7 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5d1192a4-462f-413b-9a73-d43039a4b268" testId="ddeb5f49-3018-2f0d-d662-c54f22985b70" testName="건물마다_최선_선택이_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004840" startTime="2026-09-27T20:52:51.8351793+09:00" endTime="2026-09-27T20:52:51.8356636+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5d1192a4-462f-413b-9a73-d43039a4b268">
+      <Output>
+        <StdOut>b_ga: 최선 302 소리 없는 집 (복도 소음 0, 침묵 unable) 16/16회&#xD;
+b_na: 최선 101 혼자 남은 사람 (복도 소음 11, 침묵 none) 16/16회&#xD;
+b_da: 최선 201 싸우는 소리 (복도 소음 88, 침묵 none) 16/16회</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="074fb42f-ae60-45d3-952c-dd66b5382534" testId="9c0caacd-474c-73e3-eb50-022766f3eefd" testName="침묵한_문에서는_아무_소리도_나지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008380" startTime="2026-09-27T20:52:51.4077234+09:00" endTime="2026-09-27T20:52:51.4085609+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="074fb42f-ae60-45d3-952c-dd66b5382534" />
+    <UnitTestResult executionId="e3109bac-c2e7-4439-8be4-1ae01ec35249" testId="ccd63823-c5bb-e8fe-062c-302da8a422df" testName="확인한_뒤에_들은_말은_확신이_되고_순서를_따지지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008500" startTime="2026-09-27T20:52:51.8321497+09:00" endTime="2026-09-27T20:52:51.8329998+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3109bac-c2e7-4439-8be4-1ae01ec35249" />
+    <UnitTestResult executionId="edd618ab-d04d-4e0d-9f73-2f5b34c95e19" testId="1092e1ca-3b06-f02e-da06-c1fd91a06850" testName="어떤_정책도_전수_탐색의_최선을_모든_회차에서_맞히지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0064760" startTime="2026-09-27T20:52:51.8453320+09:00" endTime="2026-09-27T20:52:51.8518073+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="edd618ab-d04d-4e0d-9f73-2f5b34c95e19">
+      <Output>
+        <StdOut>아무도 돕지 않는다         최선 일치 0/48&#xD;
+   호수 순서로 훑는다         최선 일치 7/48&#xD;
+   가장 시끄러운 문          최선 일치 16/48&#xD;
+   침묵한 칸부터            최선 일치 6/48&#xD;
+   침묵한 칸은 건너뛴다        최선 일치 23/48&#xD;
+   한 문만 되풀이           최선 일치 0/48&#xD;
+   가장 싼 사정            최선 일치 16/48&#xD;
+   이웃의 말을 따라간다        최선 일치 26/48</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="60fa5410-eb2c-4122-b61e-88aed78093e9" testId="8cd7cc62-5e40-0ede-05f6-c667aebe0548" testName="같은_씨드면_최선_계획과_총점이_똑같다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.2650230" startTime="2026-09-27T20:52:51.8644407+09:00" endTime="2026-09-27T20:52:52.1294634+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60fa5410-eb2c-4122-b61e-88aed78093e9" />
+    <UnitTestResult executionId="d277264c-a787-4af6-8e28-61e565355da2" testId="ec129d52-558f-b7de-4237-307654fa363c" testName="모든_참조가_실재한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0027210" startTime="2026-09-27T20:52:51.4104135+09:00" endTime="2026-09-27T20:52:51.4131337+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d277264c-a787-4af6-8e28-61e565355da2" />
+    <UnitTestResult executionId="4be203de-ec06-47db-bb06-a6e06421dca2" testId="896c8b47-d314-b718-f567-acec549e3ea5" testName="나머지_세대_하나하나가_더_나빠진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0008560" startTime="2026-09-27T20:52:51.8266427+09:00" endTime="2026-09-27T20:52:51.8274984+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4be203de-ec06-47db-bb06-a6e06421dca2" />
+    <UnitTestResult executionId="945ee055-b754-403f-95ee-efb25e5dd197" testId="5631cffc-e4d2-57f1-e948-62847630be0e" testName="영어를_켜면_표가_원문을_덮는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001689" startTime="2026-09-27T20:52:51.8346569+09:00" endTime="2026-09-27T20:52:51.8348262+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="945ee055-b754-403f-95ee-efb25e5dd197" />
+    <UnitTestResult executionId="4ad52110-6ca5-4557-bc2e-0fc082ee0b03" testId="f3a6b897-b7a5-d975-3f2a-afa87ebc93d6" testName="가장_크게_건지는_선택과_가장_덜_물리는_선택이_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.3028080" startTime="2026-09-27T20:52:51.5237886+09:00" endTime="2026-09-27T20:52:51.8265960+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ad52110-6ca5-4557-bc2e-0fc082ee0b03">
+      <Output>
+        <StdOut>b_ga: 가장 크게 건짐 302(81, 물림 60) · 가장 덜 물림 201(25, 물림 12)&#xD;
+b_na: 가장 크게 건짐 101(84, 물림 59) · 가장 덜 물림 102(3, 물림 13)&#xD;
+b_da: 가장 크게 건짐 102(62, 물림 58) · 가장 덜 물림 101(18, 물림 12)&#xD;
+둘이 같은 경우 0/48</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0b9460b0-e93c-4dc1-94df-7928d83293e4" testId="67e27e62-3e51-0398-bdc2-043fff09705a" testName="자리표시자를_쓰고_조각을_이어_붙이지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001670" startTime="2026-09-27T20:52:51.8348366+09:00" endTime="2026-09-27T20:52:51.8350031+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b9460b0-e93c-4dc1-94df-7928d83293e4" />
+    <UnitTestResult executionId="7d8d67cb-a0b2-4872-99e9-b93fe8849ce8" testId="114eef82-160b-3955-e028-a03014105cfc" testName="언어를_되돌리면_값도_되돌아온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0015250" startTime="2026-09-27T20:52:51.8331181+09:00" endTime="2026-09-27T20:52:51.8346429+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d8d67cb-a0b2-4872-99e9-b93fe8849ce8" />
+    <UnitTestResult executionId="d78e413e-6ba5-45f7-b2d5-2881fc98d7b2" testId="51682023-abf3-2045-dd04-3fc6f92ace37" testName="경감_백분율표가_단계마다_오른다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0023710" startTime="2026-09-27T20:52:51.4049346+09:00" endTime="2026-09-27T20:52:51.4073052+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d78e413e-6ba5-45f7-b2d5-2881fc98d7b2" />
+    <UnitTestResult executionId="d42f3834-c7d2-419d-a859-f0f67ec02611" testId="545325ce-c020-81a4-5adc-7cf94f5fb6eb" testName="침묵한_칸마다_이웃의_말이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002190" startTime="2026-09-27T20:52:51.4085697+09:00" endTime="2026-09-27T20:52:51.4087889+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d42f3834-c7d2-419d-a859-f0f67ec02611" />
+    <UnitTestResult executionId="20507fe2-26ac-4926-b987-ba8f26337a9b" testId="c6a2ca8c-49d1-3171-c2b1-c5861147bac5" testName="C2_침묵이_이_PoC의_불확실성을_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005030" startTime="2026-09-27T20:52:52.4359972+09:00" endTime="2026-09-27T20:52:52.4364999+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20507fe2-26ac-4926-b987-ba8f26337a9b">
+      <Output>
+        <StdOut>b_ga: 켠 세계 2가지 · 소리로 바꾼 세계 1가지&#xD;
+b_da: 켠 세계 2가지 · 소리로 바꾼 세계 1가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="39322aed-dff1-4f76-bdc8-51bbaacfc3ac" testId="57912f11-6759-e51a-ec8e-e8f2359a80ba" testName="C_침묵을_소리로_바꾸면_정보가_싸진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1037860" startTime="2026-09-27T20:52:52.3321746+09:00" endTime="2026-09-27T20:52:52.4359605+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39322aed-dff1-4f76-bdc8-51bbaacfc3ac">
+      <Output>
+        <StdOut>b_ga h_ga_quiet: 켠 세계 합 3175 · 소리로 바꾼 세계 합 3040 · 가장 크게 벌어진 날 15점&#xD;
+b_da h_da_sick: 켠 세계 합 3024 · 소리로 바꾼 세계 합 2944 · 가장 크게 벌어진 날 10점</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7a1525e4-fbc7-4c3f-9086-83abe5807954" testId="f8700542-ad8c-235a-5071-c554b9f80e56" testName="이웃의_말만_들으면_소문에_그친다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003980" startTime="2026-09-27T20:52:51.8314523+09:00" endTime="2026-09-27T20:52:51.8318504+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a1525e4-fbc7-4c3f-9086-83abe5807954" />
+    <UnitTestResult executionId="02cca734-f006-497a-9eae-4bdfe2ab7f61" testId="26dcb93d-f704-b6e3-5788-c5d07fe2d514" testName="A_침묵한_문에_귀를_대지_못하면_그_칸은_구할_수_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0282190" startTime="2026-09-27T20:52:52.3025334+09:00" endTime="2026-09-27T20:52:52.3307522+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02cca734-f006-497a-9eae-4bdfe2ab7f61">
+      <Output>
+        <StdOut>b_ga h_ga_quiet: 문 막으면 소리 없는 집 를 고른 최선이 241 (켠 세계 205)&#xD;
+b_da h_da_sick: 문 막으면 소리 없는 집 를 고른 최선이 207 (켠 세계 184)&#xD;
+가장 작은 벌어짐 13점 (기준 12)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e70d2d8b-9d03-41b1-8a85-000d69ab3c22" testId="d1abc730-9bd0-a85f-0b28-0448eefd8b7a" testName="최선_선택이_소음_순위로_설명되지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009480" startTime="2026-09-27T20:52:51.8518465+09:00" endTime="2026-09-27T20:52:51.8527940+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e70d2d8b-9d03-41b1-8a85-000d69ab3c22">
+      <Output>
+        <StdOut>b_ga: 최선 선택의 소음 순위 6/6&#xD;
+b_na: 최선 선택의 소음 순위 5/6&#xD;
+b_da: 최선 선택의 소음 순위 1/6</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="479b127b-597c-4e54-8f49-bf8fcde0278c" testId="59afac32-926d-ccf3-f9bd-f15f8cc9f7fa" testName="거짓이_될_수_있는_소리는_엉뚱한_사정을_가리킨다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0346040" startTime="2026-09-27T20:52:51.3686124+09:00" endTime="2026-09-27T20:52:51.4031647+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="479b127b-597c-4e54-8f49-bf8fcde0278c" />
+    <UnitTestResult executionId="ba2f4cbd-564d-4cf2-b9f4-56e47db17057" testId="0eb59c79-bdb6-0e4f-f35e-f781625d416d" testName="세_건물_전부에서_최선인_정책이_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0096190" startTime="2026-09-27T20:52:51.8356741+09:00" endTime="2026-09-27T20:52:51.8452926+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba2f4cbd-564d-4cf2-b9f4-56e47db17057">
+      <Output>
+        <StdOut>== b_ga&#xD;
+   아무도 돕지 않는다         평균  226&#xD;
+   호수 순서로 훑는다         평균  233&#xD;
+   가장 시끄러운 문          평균  229&#xD;
+   침묵한 칸부터            평균  228&#xD;
+   침묵한 칸은 건너뛴다        평균  224&#xD;
+   한 문만 되풀이           평균  233&#xD;
+   가장 싼 사정            평균  214&#xD;
+   이웃의 말을 따라간다        평균  213  ← 최선&#xD;
+== b_na&#xD;
+   아무도 돕지 않는다         평균  177&#xD;
+   호수 순서로 훑는다         평균  172&#xD;
+   가장 시끄러운 문          평균  191&#xD;
+   침묵한 칸부터            평균  195&#xD;
+   침묵한 칸은 건너뛴다        평균  168&#xD;
+   한 문만 되풀이           평균  206&#xD;
+   가장 싼 사정            평균  170&#xD;
+   이웃의 말을 따라간다        평균  167  ← 최선&#xD;
+== b_da&#xD;
+   아무도 돕지 않는다         평균  188&#xD;
+   호수 순서로 훑는다         평균  192&#xD;
+   가장 시끄러운 문          평균  174  ← 최선&#xD;
+   침묵한 칸부터            평균  201&#xD;
+   침묵한 칸은 건너뛴다        평균  177&#xD;
+   한 문만 되풀이           평균  182&#xD;
+   가장 싼 사정            평균  178&#xD;
+   이웃의 말을 따라간다        평균  179&#xD;
+어느 정책도 세 건물 전부에서 최선이 아니다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cbe365bd-e364-45b8-9d5b-826759d67c88" testId="977a202c-bca0-9094-73b9-e3b52b7d294a" testName="B2_이미_나간_집을_돕는_것은_아무도_돕지_않는_것보다_나쁘다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004240" startTime="2026-09-27T20:52:52.3313092+09:00" endTime="2026-09-27T20:52:52.3317327+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cbe365bd-e364-45b8-9d5b-826759d67c88">
+      <Output>
+        <StdOut>b_ga: 빈 집을 도우면 237 (아무도 돕지 않으면 226)&#xD;
+b_na: 빈 집을 도우면 187 (아무도 돕지 않으면 177)&#xD;
+b_da: 빈 집을 도우면 199 (아무도 돕지 않으면 188)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3db90a36-57f9-406f-81a7-f78ec0f29e59" testId="8f789b99-9082-a854-d7f1-b86c81e10126" testName="침묵한_문에_귀를_대면_침묵이_확인된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002760" startTime="2026-09-27T20:52:51.8318603+09:00" endTime="2026-09-27T20:52:51.8321359+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3db90a36-57f9-406f-81a7-f78ec0f29e59" />
+    <UnitTestResult executionId="e67bfa78-2178-4555-bb11-dcfcc3fbe6d6" testId="c809d7d6-ae00-6757-6345-f783e4b492e4" testName="이웃의_말은_인접한_칸에서만_들린다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003180" startTime="2026-09-27T20:52:51.4136774+09:00" endTime="2026-09-27T20:52:51.4139958+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e67bfa78-2178-4555-bb11-dcfcc3fbe6d6" />
+    <UnitTestResult executionId="7b1a2288-f265-4e7a-903d-5faf54736085" testId="8cb0400a-01c5-1c35-370e-d11403630194" testName="거짓을_믿고_도우면_유예는_빠지고_건지는_것은_거의_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009780" startTime="2026-09-27T20:52:51.8290817+09:00" endTime="2026-09-27T20:52:51.8300594+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b1a2288-f265-4e7a-903d-5faf54736085">
+      <Output>
+        <StdOut>거짓을 믿고 도와 벌을 받은 경우 48가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="06878216-624c-4081-8bd9-62a4e1a4beb5" testId="910ced0a-b404-1921-7fb6-54f6eb4dcd55" testName="모든_사정이_적어도_한_세대에_쓰인다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003710" startTime="2026-09-27T20:52:51.4073430+09:00" endTime="2026-09-27T20:52:51.4077140+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="06878216-624c-4081-8bd9-62a4e1a4beb5" />
+    <UnitTestResult executionId="4da8263d-7dea-44f6-9478-859d75a0f23a" testId="710de15c-aa16-f265-e453-6e501c9306bd" testName="D_침묵을_맹신하는_정책은_어느_건물에서도_이기지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0070850" startTime="2026-09-27T20:52:52.4365142+09:00" endTime="2026-09-27T20:52:52.4435987+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4da8263d-7dea-44f6-9478-859d75a0f23a">
+      <Output>
+        <StdOut>b_ga: 최선 정책 「이웃의 말을 따라간다」 평균 213 · 침묵 맹신 평균 228 · 벌어짐 14&#xD;
+b_na: 최선 정책 「이웃의 말을 따라간다」 평균 167 · 침묵 맹신 평균 195 · 벌어짐 28&#xD;
+b_da: 최선 정책 「가장 시끄러운 문」 평균 174 · 침묵 맹신 평균 201 · 벌어짐 26&#xD;
+가장 작은 벌어짐 14 (기준 10)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b88781f1-4930-4daf-ba58-2fc12fb82c0b" testId="025de285-c309-17e7-ea3d-3b9a2ea371bf" testName="건물마다_침묵한_칸이_있고_한_건물에는_두_종류가_같이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006510" startTime="2026-09-27T20:52:51.4042678+09:00" endTime="2026-09-27T20:52:51.4049185+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b88781f1-4930-4daf-ba58-2fc12fb82c0b" />
+    <UnitTestResult executionId="b5917105-4e1e-4a11-a0c5-42b12f0dac64" testId="20b09fd2-60d7-1c60-b053-baddce2b40cb" testName="어떤_선택도_나머지에게_물리는_값이_0이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005500" startTime="2026-09-27T20:52:51.8278696+09:00" endTime="2026-09-27T20:52:51.8284193+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5917105-4e1e-4a11-a0c5-42b12f0dac64">
+      <Output>
+        <StdOut>가장 싼 선택이 나머지에게 물린 값: 12</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d4bc26c1-8833-4b10-a4f5-7ac373fb9e98" testId="b980ba3e-5d4a-77e0-9f77-3c60f2f01754" testName="지배적_최선이_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004760" startTime="2026-09-27T20:52:51.8284375+09:00" endTime="2026-09-27T20:52:51.8289138+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4bc26c1-8833-4b10-a4f5-7ac373fb9e98">
+      <Output>
+        <StdOut>b_ga: 파레토 앞면 3~4개&#xD;
+b_na: 파레토 앞면 3~4개&#xD;
+b_da: 파레토 앞면 2~4개&#xD;
+앞면 크기 평균 x10 = 34 (기준 25 이상)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8c2905ab-5076-4822-856d-784aafd37204" testId="10da7394-fe17-0096-c448-f4590e642aaa" testName="같은_씨드로_두_번_돌리면_소리가_똑같이_난다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0092950" startTime="2026-09-27T20:52:51.8551122+09:00" endTime="2026-09-27T20:52:51.8644068+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8c2905ab-5076-4822-856d-784aafd37204" />
+    <UnitTestResult executionId="3259926b-5610-438f-94e6-03ebc2a64beb" testId="86dea2d3-6c9f-fd58-2fc2-8c7c355e3b16" testName="B_두_침묵의_결과가_뚜렷이_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005070" startTime="2026-09-27T20:52:52.3307887+09:00" endTime="2026-09-27T20:52:52.3312959+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3259926b-5610-438f-94e6-03ebc2a64beb">
+      <Output>
+        <StdOut>b_ga: 말할 수 없는 집 최선 190 · 이미 나간 집 최선 237 · 벌어짐 47&#xD;
+b_da: 말할 수 없는 집 최선 184 · 이미 나간 집 최선 199 · 벌어짐 15</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8a2e460e-9254-47ee-8ede-056572107a9f" testId="08df2d66-1586-6160-77ce-8f7eb98685ef" testName="정책들을_찍는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0052210" startTime="2026-09-27T20:52:52.2971135+09:00" endTime="2026-09-27T20:52:52.3023348+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a2e460e-9254-47ee-8ede-056572107a9f">
+      <Output>
+        <StdOut>== 삼화연립 가동&#xD;
+  아무도 돕지 않는다         합 1808 평균 226 최선일치0 | 226x 226x 226x 226x 226x 226x 226x 226x &#xD;
+  호수 순서로 훑는다         합 1914 평균 239 최선일치0 | 253 230 224 253 253 224 253 224 &#xD;
+  가장 시끄러운 문          합 1815 평균 226 최선일치0 | 213 250 213 213 250 213 250 213 &#xD;
+  침묵한 칸부터            합 1876 평균 234 최선일치2 | 255 205 241 205 255 205 255 255 &#xD;
+  침묵한 칸은 건너뛴다        합 1767 평균 220 최선일치0 | 213 226x 213 213 250 226x 213 213 &#xD;
+  한 문만 되풀이           합 1908 평균 238 최선일치0 | 253 224 224 253 253 224 253 224 &#xD;
+  가장 싼 사정            합 1704 평균 213 최선일치0 | 213 213 213 213 213 213 213 213 &#xD;
+  이웃의 말을 따라간다        합 1714 평균 214 최선일치4 | 205 224 205 226x 205 239 205 205 &#xD;
+== 삼화연립 나동&#xD;
+  아무도 돕지 않는다         합 1416 평균 177 최선일치0 | 177x 177x 177x 177x 177x 177x 177x 177x &#xD;
+  호수 순서로 훑는다         합 1366 평균 170 최선일치4 | 185 165 177x 152 165 185 152 185 &#xD;
+  가장 시끄러운 문          합 1546 평균 193 최선일치0 | 203 203 177 203 177 203 177 203 &#xD;
+  침묵한 칸부터            합 1592 평균 199 최선일치1 | 203 165 205 205 203 203 205 203 &#xD;
+  침묵한 칸은 건너뛴다        합 1357 평균 169 최선일치4 | 165 165 165 152 177x 177x 204 152 &#xD;
+  한 문만 되풀이           합 1648 평균 206 최선일치0 | 206 206 206 206 206 206 206 206 &#xD;
+  가장 싼 사정            합 1358 평균 169 최선일치4 | 165 165 165 185 187 165 174 152 &#xD;
+  이웃의 말을 따라간다        합 1362 평균 170 최선일치5 | 152 185 165 152 187 165 204 152 &#xD;
+== 삼화연립 다동&#xD;
+  아무도 돕지 않는다         합 1504 평균 188 최선일치0 | 188x 188x 188x 188x 188x 188x 188x 188x &#xD;
+  호수 순서로 훑는다         합 1530 평균 191 최선일치0 | 184 194 194 194 194 194 188x 188x &#xD;
+  가장 시끄러운 문          합 1404 평균 175 최선일치8 | 171 171 171 180 180 180 180 171 &#xD;
+  침묵한 칸부터            합 1616 평균 202 최선일치0 | 213 194 194 207 194 194 207 213 &#xD;
+  침묵한 칸은 건너뛴다        합 1404 평균 175 최선일치8 | 171 171 171 180 180 180 180 171 &#xD;
+  한 문만 되풀이           합 1456 평균 182 최선일치0 | 182 182 182 182 182 182 182 182 &#xD;
+  가장 싼 사정            합 1441 평균 180 최선일치3 | 171 171 182 182 180 182 191 182 &#xD;
+  이웃의 말을 따라간다        합 1466 평균 183 최선일치3 | 180 171 188x 194 180 188x 194 171</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0b6f2add-02c8-4e2f-a0e1-7dccbbd4fd96" testId="2cc3831b-e4f0-9c8f-6e9d-8e473855af4a" testName="표가_없는_열쇠는_한국어_원문을_그대로_준다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000740" startTime="2026-09-27T20:52:51.8350121+09:00" endTime="2026-09-27T20:52:51.8350857+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b6f2add-02c8-4e2f-a0e1-7dccbbd4fd96" />
+    <UnitTestResult executionId="60786b29-ccb6-47c3-8bbf-04756029688b" testId="20ee87f2-206f-e469-702a-d859124479ee" testName="정책도_같은_씨드면_같은_결과를_낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0068940" startTime="2026-09-27T20:52:52.1305505+09:00" endTime="2026-09-27T20:52:52.1374436+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60786b29-ccb6-47c3-8bbf-04756029688b" />
+    <UnitTestResult executionId="55211029-7df8-46da-b7c2-f185f9bf9646" testId="acf1dd08-f68d-4423-f901-67998938f1b1" testName="사정의_값이_모두_1_이상이다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005170" startTime="2026-09-27T20:52:51.4131505+09:00" endTime="2026-09-27T20:52:51.4136678+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55211029-7df8-46da-b7c2-f185f9bf9646" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="겹쳐_들으면_거짓이_드러난다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="2f7e06f0-3b77-2788-22a0-6f8848c9586d">
+      <Execution id="a7464ec4-7612-4b0c-921a-b31a2b23e7e5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.FalseCueTests" name="겹쳐_들으면_거짓이_드러난다" />
+    </UnitTest>
+    <UnitTest name="B3_말할_수_없는_집을_고르는_것은_아무것도_안_하는_것보다_낫다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="78f8a8a7-3222-64e8-6d0f-05b172c89060">
+      <Execution id="6017e5fc-1c8a-455e-9a52-6693572b31f5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceIsInformationTests" name="B3_말할_수_없는_집을_고르는_것은_아무것도_안_하는_것보다_낫다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓰고_조각을_이어_붙이지_않는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="67e27e62-3e51-0398-bdc2-043fff09705a">
+      <Execution id="0b9460b0-e93c-4dc1-94df-7928d83293e4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.LocalizationTests" name="자리표시자를_쓰고_조각을_이어_붙이지_않는다" />
+    </UnitTest>
+    <UnitTest name="A_침묵한_문에_귀를_대지_못하면_그_칸은_구할_수_없다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="26dcb93d-f704-b6e3-5788-c5d07fe2d514">
+      <Execution id="02cca734-f006-497a-9eae-4bdfe2ab7f61" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceIsInformationTests" name="A_침묵한_문에_귀를_대지_못하면_그_칸은_구할_수_없다" />
+    </UnitTest>
+    <UnitTest name="건물마다_최선_선택이_다르다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="ddeb5f49-3018-2f0d-d662-c54f22985b70">
+      <Execution id="5d1192a4-462f-413b-9a73-d43039a4b268" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.NoDominantStrategyTests" name="건물마다_최선_선택이_다르다" />
+    </UnitTest>
+    <UnitTest name="표가_없는_열쇠는_한국어_원문을_그대로_준다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="2cc3831b-e4f0-9c8f-6e9d-8e473855af4a">
+      <Execution id="0b6f2add-02c8-4e2f-a0e1-7dccbbd4fd96" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.LocalizationTests" name="표가_없는_열쇠는_한국어_원문을_그대로_준다" />
+    </UnitTest>
+    <UnitTest name="D_침묵을_맹신하는_정책은_어느_건물에서도_이기지_못한다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="710de15c-aa16-f265-e453-6e501c9306bd">
+      <Execution id="4da8263d-7dea-44f6-9478-859d75a0f23a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceTwoWorldsTests" name="D_침묵을_맹신하는_정책은_어느_건물에서도_이기지_못한다" />
+    </UnitTest>
+    <UnitTest name="되돌리기가_정확하다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="a58ea38d-7015-176f-3476-388de534d68e">
+      <Execution id="15b446da-7ae9-4ab0-af79-a3a937adb9e2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.KnowledgeGateTests" name="되돌리기가_정확하다" />
+    </UnitTest>
+    <UnitTest name="세_세계를_나란히_찍는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="fc6b8094-0dad-ab6f-369d-64a61a00d878">
+      <Execution id="ef509727-3d9a-4f7c-a4f8-be44c8adc158" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceDiagnostics" name="세_세계를_나란히_찍는다" />
+    </UnitTest>
+    <UnitTest name="정책들을_찍는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="08df2d66-1586-6160-77ce-8f7eb98685ef">
+      <Execution id="8a2e460e-9254-47ee-8ede-056572107a9f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceDiagnostics" name="정책들을_찍는다" />
+    </UnitTest>
+    <UnitTest name="확인한_뒤에_들은_말은_확신이_되고_순서를_따지지_않는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="ccd63823-c5bb-e8fe-062c-302da8a422df">
+      <Execution id="e3109bac-c2e7-4439-8be4-1ae01ec35249" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.KnowledgeGateTests" name="확인한_뒤에_들은_말은_확신이_되고_순서를_따지지_않는다" />
+    </UnitTest>
+    <UnitTest name="정책도_같은_씨드면_같은_결과를_낸다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="20ee87f2-206f-e469-702a-d859124479ee">
+      <Execution id="60786b29-ccb6-47c3-8bbf-04756029688b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SeedDeterminismTests" name="정책도_같은_씨드면_같은_결과를_낸다" />
+    </UnitTest>
+    <UnitTest name="거짓이_될_수_있는_소리는_엉뚱한_사정을_가리킨다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="59afac32-926d-ccf3-f9bd-f15f8cc9f7fa">
+      <Execution id="479b127b-597c-4e54-8f49-bf8fcde0278c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="거짓이_될_수_있는_소리는_엉뚱한_사정을_가리킨다" />
+    </UnitTest>
+    <UnitTest name="이웃의_말은_인접한_칸에서만_들린다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="c809d7d6-ae00-6757-6345-f783e4b492e4">
+      <Execution id="e67bfa78-2178-4555-bb11-dcfcc3fbe6d6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegrityTests" name="이웃의_말은_인접한_칸에서만_들린다" />
+    </UnitTest>
+    <UnitTest name="선택지_표를_찍는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="60b72b74-d664-b7bb-3723-ced2af3971a3">
+      <Execution id="26371480-c7b0-4401-a957-33573b1f3376" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DiagnosticTests" name="선택지_표를_찍는다" />
+    </UnitTest>
+    <UnitTest name="경감_백분율표가_단계마다_오른다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="51682023-abf3-2045-dd04-3fc6f92ace37">
+      <Execution id="d78e413e-6ba5-45f7-b2d5-2881fc98d7b2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="경감_백분율표가_단계마다_오른다" />
+    </UnitTest>
+    <UnitTest name="가장_크게_건지는_선택과_가장_덜_물리는_선택이_다르다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="f3a6b897-b7a5-d975-3f2a-afa87ebc93d6">
+      <Execution id="4ad52110-6ca5-4557-bc2e-0fc082ee0b03" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.EveryChoiceCostsTheOthersTests" name="가장_크게_건지는_선택과_가장_덜_물리는_선택이_다르다" />
+    </UnitTest>
+    <UnitTest name="세_건물_전부에서_최선인_정책이_없다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="0eb59c79-bdb6-0e4f-f35e-f781625d416d">
+      <Execution id="ba2f4cbd-564d-4cf2-b9f4-56e47db17057" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.NoDominantStrategyTests" name="세_건물_전부에서_최선인_정책이_없다" />
+    </UnitTest>
+    <UnitTest name="지배적_최선이_없다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="b980ba3e-5d4a-77e0-9f77-3c60f2f01754">
+      <Execution id="d4bc26c1-8833-4b10-a4f5-7ac373fb9e98" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.EveryChoiceCostsTheOthersTests" name="지배적_최선이_없다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드로_두_번_돌리면_소리가_똑같이_난다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="10da7394-fe17-0096-c448-f4590e642aaa">
+      <Execution id="8c2905ab-5076-4822-856d-784aafd37204" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SeedDeterminismTests" name="같은_씨드로_두_번_돌리면_소리가_똑같이_난다" />
+    </UnitTest>
+    <UnitTest name="침묵한_문에_귀를_대면_침묵이_확인된다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="8f789b99-9082-a854-d7f1-b86c81e10126">
+      <Execution id="3db90a36-57f9-406f-81a7-f78ec0f29e59" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.KnowledgeGateTests" name="침묵한_문에_귀를_대면_침묵이_확인된다" />
+    </UnitTest>
+    <UnitTest name="최선_선택이_소음_순위로_설명되지_않는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="d1abc730-9bd0-a85f-0b28-0448eefd8b7a">
+      <Execution id="e70d2d8b-9d03-41b1-8a85-000d69ab3c22" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.NoDominantStrategyTests" name="최선_선택이_소음_순위로_설명되지_않는다" />
+    </UnitTest>
+    <UnitTest name="이웃의_말만_들으면_소문에_그친다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="f8700542-ad8c-235a-5071-c554b9f80e56">
+      <Execution id="7a1525e4-fbc7-4c3f-9086-83abe5807954" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.KnowledgeGateTests" name="이웃의_말만_들으면_소문에_그친다" />
+    </UnitTest>
+    <UnitTest name="사정의_값이_모두_1_이상이다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="acf1dd08-f68d-4423-f901-67998938f1b1">
+      <Execution id="55211029-7df8-46da-b7c2-f185f9bf9646" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegrityTests" name="사정의_값이_모두_1_이상이다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드면_최선_계획과_총점이_똑같다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="8cd7cc62-5e40-0ede-05f6-c667aebe0548">
+      <Execution id="60fa5410-eb2c-4122-b61e-88aed78093e9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SeedDeterminismTests" name="같은_씨드면_최선_계획과_총점이_똑같다" />
+    </UnitTest>
+    <UnitTest name="어떤_선택도_나머지에게_물리는_값이_0이_아니다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="20b09fd2-60d7-1c60-b053-baddce2b40cb">
+      <Execution id="b5917105-4e1e-4a11-a0c5-42b12f0dac64" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.EveryChoiceCostsTheOthersTests" name="어떤_선택도_나머지에게_물리는_값이_0이_아니다" />
+    </UnitTest>
+    <UnitTest name="아무도_돕지_않는_것보다_나쁜_선택이_반드시_있다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="e144848a-7f85-d407-7f1a-44b29564132a">
+      <Execution id="53515fe5-1eae-4818-951e-4bf2816b0da0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.EveryChoiceCostsTheOthersTests" name="아무도_돕지_않는_것보다_나쁜_선택이_반드시_있다" />
+    </UnitTest>
+    <UnitTest name="영어를_켜면_표가_원문을_덮는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="5631cffc-e4d2-57f1-e948-62847630be0e">
+      <Execution id="945ee055-b754-403f-95ee-efb25e5dd197" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.LocalizationTests" name="영어를_켜면_표가_원문을_덮는다" />
+    </UnitTest>
+    <UnitTest name="C_침묵을_소리로_바꾸면_정보가_싸진다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="57912f11-6759-e51a-ec8e-e8f2359a80ba">
+      <Execution id="39322aed-dff1-4f76-bdc8-51bbaacfc3ac" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceTwoWorldsTests" name="C_침묵을_소리로_바꾸면_정보가_싸진다" />
+    </UnitTest>
+    <UnitTest name="침묵한_문에서는_아무_소리도_나지_않는다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="9c0caacd-474c-73e3-eb50-022766f3eefd">
+      <Execution id="074fb42f-ae60-45d3-952c-dd66b5382534" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="침묵한_문에서는_아무_소리도_나지_않는다" />
+    </UnitTest>
+    <UnitTest name="씨드가_실제로_무엇을_바꾸는가" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="62506fe0-b85a-4283-09ed-9c28f7850c2e">
+      <Execution id="151f8073-7600-41ba-8c93-1f5eaf6d6603" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SeedDeterminismTests" name="씨드가_실제로_무엇을_바꾸는가" />
+    </UnitTest>
+    <UnitTest name="D2_침묵을_맹신하는_것과_무시하는_것이_모두_최선이_아니다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="a2d9d302-558c-b38b-54f2-17c31719b2cd">
+      <Execution id="615ecee7-00db-4c61-96d7-37e3064c6363" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceTwoWorldsTests" name="D2_침묵을_맹신하는_것과_무시하는_것이_모두_최선이_아니다" />
+    </UnitTest>
+    <UnitTest name="B2_이미_나간_집을_돕는_것은_아무도_돕지_않는_것보다_나쁘다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="977a202c-bca0-9094-73b9-e3b52b7d294a">
+      <Execution id="cbe365bd-e364-45b8-9d5b-826759d67c88" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceIsInformationTests" name="B2_이미_나간_집을_돕는_것은_아무도_돕지_않는_것보다_나쁘다" />
+    </UnitTest>
+    <UnitTest name="언어를_되돌리면_값도_되돌아온다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="114eef82-160b-3955-e028-a03014105cfc">
+      <Execution id="7d8d67cb-a0b2-4872-99e9-b93fe8849ce8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.LocalizationTests" name="언어를_되돌리면_값도_되돌아온다" />
+    </UnitTest>
+    <UnitTest name="침묵한_칸마다_이웃의_말이_있다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="545325ce-c020-81a4-5adc-7cf94f5fb6eb">
+      <Execution id="d42f3834-c7d2-419d-a859-f0f67ec02611" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="침묵한_칸마다_이웃의_말이_있다" />
+    </UnitTest>
+    <UnitTest name="한_문만_되풀이하는_것은_어느_건물에서도_최선이_아니다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="992a4138-e40b-41b0-da57-9cda586f285e">
+      <Execution id="2e9eb33a-27ff-446b-bf44-a9c7546fc495" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.NoDominantStrategyTests" name="한_문만_되풀이하는_것은_어느_건물에서도_최선이_아니다" />
+    </UnitTest>
+    <UnitTest name="모든_사정이_적어도_한_세대에_쓰인다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="910ced0a-b404-1921-7fb6-54f6eb4dcd55">
+      <Execution id="06878216-624c-4081-8bd9-62a4e1a4beb5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="모든_사정이_적어도_한_세대에_쓰인다" />
+    </UnitTest>
+    <UnitTest name="B_두_침묵의_결과가_뚜렷이_다르다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="86dea2d3-6c9f-fd58-2fc2-8c7c355e3b16">
+      <Execution id="3259926b-5610-438f-94e6-03ebc2a64beb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceIsInformationTests" name="B_두_침묵의_결과가_뚜렷이_다르다" />
+    </UnitTest>
+    <UnitTest name="거짓을_믿고_도우면_유예는_빠지고_건지는_것은_거의_없다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="8cb0400a-01c5-1c35-370e-d11403630194">
+      <Execution id="7b1a2288-f265-4e7a-903d-5faf54736085" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.FalseCueTests" name="거짓을_믿고_도우면_유예는_빠지고_건지는_것은_거의_없다" />
+    </UnitTest>
+    <UnitTest name="어떤_정책도_전수_탐색의_최선을_모든_회차에서_맞히지_못한다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="1092e1ca-3b06-f02e-da06-c1fd91a06850">
+      <Execution id="edd618ab-d04d-4e0d-9f73-2f5b34c95e19" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.NoDominantStrategyTests" name="어떤_정책도_전수_탐색의_최선을_모든_회차에서_맞히지_못한다" />
+    </UnitTest>
+    <UnitTest name="모든_참조가_실재한다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="ec129d52-558f-b7de-4237-307654fa363c">
+      <Execution id="d277264c-a787-4af6-8e28-61e565355da2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegrityTests" name="모든_참조가_실재한다" />
+    </UnitTest>
+    <UnitTest name="C2_침묵이_이_PoC의_불확실성을_만든다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="c6a2ca8c-49d1-3171-c2b1-c5861147bac5">
+      <Execution id="20507fe2-26ac-4926-b987-ba8f26337a9b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.SilenceTwoWorldsTests" name="C2_침묵이_이_PoC의_불확실성을_만든다" />
+    </UnitTest>
+    <UnitTest name="건물마다_침묵한_칸이_있고_한_건물에는_두_종류가_같이_있다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="025de285-c309-17e7-ea3d-3b9a2ea371bf">
+      <Execution id="b88781f1-4930-4daf-ba58-2fc12fb82c0b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.DataIntegritySilenceTests" name="건물마다_침묵한_칸이_있고_한_건물에는_두_종류가_같이_있다" />
+    </UnitTest>
+    <UnitTest name="나머지_세대_하나하나가_더_나빠진다" storage="c:\users\psi\orca\game\games\last-tenants\testbuild\debug\net8.0\last-tenants.tests.dll" id="896c8b47-d314-b718-f567-acec549e3ea5">
+      <Execution id="4be203de-ec06-47db-bb06-a6e06421dca2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Tenants.Tests.EveryChoiceCostsTheOthersTests" name="나머지_세대_하나하나가_더_나빠진다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="62506fe0-b85a-4283-09ed-9c28f7850c2e" executionId="151f8073-7600-41ba-8c93-1f5eaf6d6603" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e144848a-7f85-d407-7f1a-44b29564132a" executionId="53515fe5-1eae-4818-951e-4bf2816b0da0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2f7e06f0-3b77-2788-22a0-6f8848c9586d" executionId="a7464ec4-7612-4b0c-921a-b31a2b23e7e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="78f8a8a7-3222-64e8-6d0f-05b172c89060" executionId="6017e5fc-1c8a-455e-9a52-6693572b31f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a58ea38d-7015-176f-3476-388de534d68e" executionId="15b446da-7ae9-4ab0-af79-a3a937adb9e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="992a4138-e40b-41b0-da57-9cda586f285e" executionId="2e9eb33a-27ff-446b-bf44-a9c7546fc495" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="60b72b74-d664-b7bb-3723-ced2af3971a3" executionId="26371480-c7b0-4401-a957-33573b1f3376" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2d9d302-558c-b38b-54f2-17c31719b2cd" executionId="615ecee7-00db-4c61-96d7-37e3064c6363" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fc6b8094-0dad-ab6f-369d-64a61a00d878" executionId="ef509727-3d9a-4f7c-a4f8-be44c8adc158" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ddeb5f49-3018-2f0d-d662-c54f22985b70" executionId="5d1192a4-462f-413b-9a73-d43039a4b268" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c0caacd-474c-73e3-eb50-022766f3eefd" executionId="074fb42f-ae60-45d3-952c-dd66b5382534" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ccd63823-c5bb-e8fe-062c-302da8a422df" executionId="e3109bac-c2e7-4439-8be4-1ae01ec35249" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1092e1ca-3b06-f02e-da06-c1fd91a06850" executionId="edd618ab-d04d-4e0d-9f73-2f5b34c95e19" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8cd7cc62-5e40-0ede-05f6-c667aebe0548" executionId="60fa5410-eb2c-4122-b61e-88aed78093e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec129d52-558f-b7de-4237-307654fa363c" executionId="d277264c-a787-4af6-8e28-61e565355da2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="896c8b47-d314-b718-f567-acec549e3ea5" executionId="4be203de-ec06-47db-bb06-a6e06421dca2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5631cffc-e4d2-57f1-e948-62847630be0e" executionId="945ee055-b754-403f-95ee-efb25e5dd197" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3a6b897-b7a5-d975-3f2a-afa87ebc93d6" executionId="4ad52110-6ca5-4557-bc2e-0fc082ee0b03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="67e27e62-3e51-0398-bdc2-043fff09705a" executionId="0b9460b0-e93c-4dc1-94df-7928d83293e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="114eef82-160b-3955-e028-a03014105cfc" executionId="7d8d67cb-a0b2-4872-99e9-b93fe8849ce8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="51682023-abf3-2045-dd04-3fc6f92ace37" executionId="d78e413e-6ba5-45f7-b2d5-2881fc98d7b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="545325ce-c020-81a4-5adc-7cf94f5fb6eb" executionId="d42f3834-c7d2-419d-a859-f0f67ec02611" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6a2ca8c-49d1-3171-c2b1-c5861147bac5" executionId="20507fe2-26ac-4926-b987-ba8f26337a9b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="57912f11-6759-e51a-ec8e-e8f2359a80ba" executionId="39322aed-dff1-4f76-bdc8-51bbaacfc3ac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f8700542-ad8c-235a-5071-c554b9f80e56" executionId="7a1525e4-fbc7-4c3f-9086-83abe5807954" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="26dcb93d-f704-b6e3-5788-c5d07fe2d514" executionId="02cca734-f006-497a-9eae-4bdfe2ab7f61" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1abc730-9bd0-a85f-0b28-0448eefd8b7a" executionId="e70d2d8b-9d03-41b1-8a85-000d69ab3c22" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="59afac32-926d-ccf3-f9bd-f15f8cc9f7fa" executionId="479b127b-597c-4e54-8f49-bf8fcde0278c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0eb59c79-bdb6-0e4f-f35e-f781625d416d" executionId="ba2f4cbd-564d-4cf2-b9f4-56e47db17057" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="977a202c-bca0-9094-73b9-e3b52b7d294a" executionId="cbe365bd-e364-45b8-9d5b-826759d67c88" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f789b99-9082-a854-d7f1-b86c81e10126" executionId="3db90a36-57f9-406f-81a7-f78ec0f29e59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c809d7d6-ae00-6757-6345-f783e4b492e4" executionId="e67bfa78-2178-4555-bb11-dcfcc3fbe6d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8cb0400a-01c5-1c35-370e-d11403630194" executionId="7b1a2288-f265-4e7a-903d-5faf54736085" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="910ced0a-b404-1921-7fb6-54f6eb4dcd55" executionId="06878216-624c-4081-8bd9-62a4e1a4beb5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="710de15c-aa16-f265-e453-6e501c9306bd" executionId="4da8263d-7dea-44f6-9478-859d75a0f23a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="025de285-c309-17e7-ea3d-3b9a2ea371bf" executionId="b88781f1-4930-4daf-ba58-2fc12fb82c0b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20b09fd2-60d7-1c60-b053-baddce2b40cb" executionId="b5917105-4e1e-4a11-a0c5-42b12f0dac64" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b980ba3e-5d4a-77e0-9f77-3c60f2f01754" executionId="d4bc26c1-8833-4b10-a4f5-7ac373fb9e98" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10da7394-fe17-0096-c448-f4590e642aaa" executionId="8c2905ab-5076-4822-856d-784aafd37204" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="86dea2d3-6c9f-fd58-2fc2-8c7c355e3b16" executionId="3259926b-5610-438f-94e6-03ebc2a64beb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="08df2d66-1586-6160-77ce-8f7eb98685ef" executionId="8a2e460e-9254-47ee-8ede-056572107a9f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2cc3831b-e4f0-9c8f-6e9d-8e473855af4a" executionId="0b6f2add-02c8-4e2f-a0e1-7dccbbd4fd96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20ee87f2-206f-e469-702a-d859124479ee" executionId="60786b29-ccb6-47c3-8bbf-04756029688b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="acf1dd08-f68d-4423-f901-67998938f1b1" executionId="55211029-7df8-46da-b7c2-f185f9bf9646" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="44" executed="44" passed="44" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\last-tenants\TestBuild\Debug\net8.0\last-tenants.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 44 of 44 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+== 삼화연립 가동 (b_ga) 기본 손실 합 226 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 226 · 계획 노드 8953&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv1  유예2 건짐  5 물림 28 총 249 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 3개&#xD;
+  씨드 1 · 아무도 돕지 않으면 226 · 계획 노드 4194&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv2  유예2 건짐 30 물림 28 총 224 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv3  유예4 건짐 96 물림 60 총 190 엿듣기3(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 190 · 파레토 4개&#xD;
+  씨드 2 · 아무도 돕지 않으면 226 · 계획 노드 7285&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv2  유예2 건짐 30 물림 28 총 224 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 4개&#xD;
+  씨드 3 · 아무도 돕지 않으면 226 · 계획 노드 7757&#xD;
+    101 세탁소 하던 노인      침묵=none   Lv1  유예2 건짐  5 물림 28 총 249 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 237 엿듣기2(침묵문1)&#xD;
+    201 말다툼하는 부부       침묵=none   Lv2  유예1 건짐 25 물림 12 총 213 엿듣기1(침묵문0)&#xD;
+    202 이어폰 낀 청년       침묵=none   Lv2  유예1 건짐 15 물림 13 총 224 엿듣기1(침묵문0)&#xD;
+    301 아이 있는 집        침묵=none   Lv2  유예3 건짐 37 물림 41 총 230 엿듣기1(침묵문0)&#xD;
+    302 소리 없는 집        침묵=unable Lv2  유예4 건짐 81 물림 60 총 205 엿듣기2(침묵문1)&#xD;
+    최선: 302 소리 없는 집 총 205 · 파레토 3개&#xD;
+== 삼화연립 나동 (b_na) 기본 손실 합 177 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 177 · 계획 노드 4772&#xD;
+    101 혼자 남은 사람       침묵=none   Lv3  유예4 건짐 84 물림 59 총 152 엿듣기2(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv1  유예2 건짐  3 물림 29 총 203 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 189 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 152 · 파레토 3개&#xD;
+  씨드 1 · 아무도 돕지 않으면 177 · 계획 노드 2264&#xD;
+    101 혼자 남은 사람       침묵=none   Lv2  유예4 건짐 71 물림 59 총 165 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv1  유예2 건짐  3 물림 29 총 203 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2  유예2 건짐 25 물림 28 총 180 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 165 · 파레토 3개&#xD;
+  씨드 2 · 아무도 돕지 않으면 177 · 계획 노드 1656&#xD;
+    101 혼자 남은 사람       침묵=none   Lv2  유예4 건짐 71 물림 59 총 165 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv2  유예1 건짐 17 물림 14 총 174 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2  유예2 건짐 25 물림 28 총 180 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 165 · 파레토 4개&#xD;
+  씨드 3 · 아무도 돕지 않으면 177 · 계획 노드 2548&#xD;
+    101 혼자 남은 사람       침묵=none   Lv3  유예4 건짐 84 물림 59 총 152 엿듣기1(침묵문0)&#xD;
+    102 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  3 물림 13 총 187 엿듣기2(침묵문1)&#xD;
+    201 가게 정리하는 부부     침묵=none   Lv2  유예2 건짐 20 물림 28 총 185 엿듣기1(침묵문0)&#xD;
+    202 밤에 들어오는 사람     침묵=none   Lv2  유예1 건짐 17 물림 14 총 174 엿듣기1(침묵문0)&#xD;
+    301 자취하는 학생들       침묵=none   Lv2  유예1 건짐 13 물림 13 총 177 엿듣기1(침묵문0)&#xD;
+    302 짐이 많은 집        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 189 엿듣기1(침묵문0)&#xD;
+    최선: 101 혼자 남은 사람 총 152 · 파레토 4개&#xD;
+== 삼화연립 다동 (b_da) 기본 손실 합 188 · 유예 6일&#xD;
+  씨드 0 · 아무도 돕지 않으면 188 · 계획 노드 4379&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv3  유예4 건짐 62 물림 58 총 184 엿듣기3(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv2  유예2 건짐 25 물림 28 총 191 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 4개&#xD;
+  씨드 1 · 아무도 돕지 않으면 188 · 계획 노드 11081&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv2  유예4 건짐 52 물림 58 총 194 엿듣기2(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv2* 유예1 건짐  1 물림 13 총 200 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 2개&#xD;
+  씨드 2 · 아무도 돕지 않으면 188 · 계획 노드 7702&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv3  유예4 건짐 62 물림 58 총 184 엿듣기3(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv3  유예3 건짐 58 물림 41 총 171 엿듣기2(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv1  유예2 건짐  4 물림 28 총 212 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 171 · 파레토 3개&#xD;
+  씨드 3 · 아무도 돕지 않으면 188 · 계획 노드 5949&#xD;
+    101 시장 나가는 사람      침묵=none   Lv2  유예1 건짐 18 물림 12 총 182 엿듣기1(침묵문0)&#xD;
+    102 소리 없는 집        침묵=unable Lv2  유예4 건짐 52 물림 58 총 194 엿듣기2(침묵문1)&#xD;
+    201 싸우는 소리         침묵=none   Lv2  유예3 건짐 49 물림 41 총 180 엿듣기1(침묵문0)&#xD;
+    202 오래 산 노인        침묵=none   Lv1  유예2 건짐  4 물림 28 총 212 엿듣기1(침묵문0)&#xD;
+    301 얼마 전 들어온 사람    침묵=none   Lv2  유예1 건짐 11 물림 12 총 189 엿듣기1(침묵문0)&#xD;
+    302 비어 보이는 집       침묵=gone   Lv3  유예1 건짐  2 물림 13 총 199 엿듣기2(침묵문1)&#xD;
+    최선: 201 싸우는 소리 총 180 · 파레토 3개&#xD;
+&#xD;
+&#xD;
+b_ga: 가장 크게 건짐 302(81, 물림 60) · 가장 덜 물림 201(25, 물림 12)&#xD;
+b_na: 가장 크게 건짐 101(84, 물림 59) · 가장 덜 물림 102(3, 물림 13)&#xD;
+b_da: 가장 크게 건짐 102(62, 물림 58) · 가장 덜 물림 101(18, 물림 12)&#xD;
+둘이 같은 경우 0/48&#xD;
+&#xD;
+&#xD;
+b_ga: 여섯 선택 중 3개가 아무도 돕지 않는 것(226)보다 나쁘다&#xD;
+b_na: 여섯 선택 중 4개가 아무도 돕지 않는 것(177)보다 나쁘다&#xD;
+b_da: 여섯 선택 중 3개가 아무도 돕지 않는 것(188)보다 나쁘다&#xD;
+&#xD;
+&#xD;
+가장 싼 선택이 나머지에게 물린 값: 12&#xD;
+&#xD;
+&#xD;
+b_ga: 파레토 앞면 3~4개&#xD;
+b_na: 파레토 앞면 3~4개&#xD;
+b_da: 파레토 앞면 2~4개&#xD;
+앞면 크기 평균 x10 = 34 (기준 25 이상)&#xD;
+&#xD;
+&#xD;
+거짓을 믿고 도와 벌을 받은 경우 48가지&#xD;
+&#xD;
+겹쳐 들어 거짓이 드러난 경우 33가지&#xD;
+&#xD;
+b_ga: 최선 302 소리 없는 집 (복도 소음 0, 침묵 unable) 16/16회&#xD;
+b_na: 최선 101 혼자 남은 사람 (복도 소음 11, 침묵 none) 16/16회&#xD;
+b_da: 최선 201 싸우는 소리 (복도 소음 88, 침묵 none) 16/16회&#xD;
+&#xD;
+&#xD;
+== b_ga&#xD;
+   아무도 돕지 않는다         평균  226&#xD;
+   호수 순서로 훑는다         평균  233&#xD;
+   가장 시끄러운 문          평균  229&#xD;
+   침묵한 칸부터            평균  228&#xD;
+   침묵한 칸은 건너뛴다        평균  224&#xD;
+   한 문만 되풀이           평균  233&#xD;
+   가장 싼 사정            평균  214&#xD;
+   이웃의 말을 따라간다        평균  213  ← 최선&#xD;
+== b_na&#xD;
+   아무도 돕지 않는다         평균  177&#xD;
+   호수 순서로 훑는다         평균  172&#xD;
+   가장 시끄러운 문          평균  191&#xD;
+   침묵한 칸부터            평균  195&#xD;
+   침묵한 칸은 건너뛴다        평균  168&#xD;
+   한 문만 되풀이           평균  206&#xD;
+   가장 싼 사정            평균  170&#xD;
+   이웃의 말을 따라간다        평균  167  ← 최선&#xD;
+== b_da&#xD;
+   아무도 돕지 않는다         평균  188&#xD;
+   호수 순서로 훑는다         평균  192&#xD;
+   가장 시끄러운 문          평균  174  ← 최선&#xD;
+   침묵한 칸부터            평균  201&#xD;
+   침묵한 칸은 건너뛴다        평균  177&#xD;
+   한 문만 되풀이           평균  182&#xD;
+   가장 싼 사정            평균  178&#xD;
+   이웃의 말을 따라간다        평균  179&#xD;
+어느 정책도 세 건물 전부에서 최선이 아니다&#xD;
+&#xD;
+&#xD;
+   아무도 돕지 않는다         최선 일치 0/48&#xD;
+   호수 순서로 훑는다         최선 일치 7/48&#xD;
+   가장 시끄러운 문          최선 일치 16/48&#xD;
+   침묵한 칸부터            최선 일치 6/48&#xD;
+   침묵한 칸은 건너뛴다        최선 일치 23/48&#xD;
+   한 문만 되풀이           최선 일치 0/48&#xD;
+   가장 싼 사정            최선 일치 16/48&#xD;
+   이웃의 말을 따라간다        최선 일치 26/48&#xD;
+&#xD;
+&#xD;
+b_ga: 최선 선택의 소음 순위 6/6&#xD;
+b_na: 최선 선택의 소음 순위 5/6&#xD;
+b_da: 최선 선택의 소음 순위 1/6&#xD;
+&#xD;
+&#xD;
+b_ga: 한 문 되풀이 233 · 이웃의 말 213 · 전수 탐색 최선 198&#xD;
+b_na: 한 문 되풀이 206 · 이웃의 말 167 · 전수 탐색 최선 158&#xD;
+b_da: 한 문 되풀이 182 · 이웃의 말 179 · 전수 탐색 최선 174&#xD;
+&#xD;
+&#xD;
+b_ga: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 5종&#xD;
+b_na: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 3종&#xD;
+b_da: 서로 다른 하루 16가지 · 거짓으로 뽑힌 소리 3종&#xD;
+&#xD;
+&#xD;
+== 삼화연립 가동 unable=h_ga_quiet gone=h_ga_empty&#xD;
+  씨드0 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드1 최선 켠190/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 190(Lv3,엿3) · 문막음 241 · 소리로바꿈 190(Lv3,엿2)&#xD;
+  씨드2 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드3 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드4 최선 켠190/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 190(Lv3,엿3) · 문막음 241 · 소리로바꿈 190(Lv3,엿2)&#xD;
+  씨드5 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드6 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+  씨드7 최선 켠205/문막음213/소리190 · none 226 · gone 237 · unable 켠세계 205(Lv2,엿2) · 문막음 241 · 소리로바꿈 190(Lv3,엿1)&#xD;
+== 삼화연립 나동 unable=없음 gone=h_na_empty&#xD;
+  씨드0 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드1 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드2 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드3 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드4 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드5 최선 켠165/문막음165/소리165 · none 177 · gone 187 · -&#xD;
+  씨드6 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+  씨드7 최선 켠152/문막음152/소리152 · none 177 · gone 187 · -&#xD;
+== 삼화연립 다동 unable=h_da_sick gone=h_da_gone&#xD;
+  씨드0 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드1 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드2 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드3 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드4 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드5 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 194(Lv2,엿2) · 문막음 207 · 소리로바꿈 184(Lv3,엿1)&#xD;
+  씨드6 최선 켠180/문막음180/소리180 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+  씨드7 최선 켠171/문막음171/소리171 · none 188 · gone 199 · unable 켠세계 184(Lv3,엿3) · 문막음 207 · 소리로바꿈 184(Lv3,엿2)&#xD;
+&#xD;
+&#xD;
+== 삼화연립 가동&#xD;
+  아무도 돕지 않는다         합 1808 평균 226 최선일치0 | 226x 226x 226x 226x 226x 226x 226x 226x &#xD;
+  호수 순서로 훑는다         합 1914 평균 239 최선일치0 | 253 230 224 253 253 224 253 224 &#xD;
+  가장 시끄러운 문          합 1815 평균 226 최선일치0 | 213 250 213 213 250 213 250 213 &#xD;
+  침묵한 칸부터            합 1876 평균 234 최선일치2 | 255 205 241 205 255 205 255 255 &#xD;
+  침묵한 칸은 건너뛴다        합 1767 평균 220 최선일치0 | 213 226x 213 213 250 226x 213 213 &#xD;
+  한 문만 되풀이           합 1908 평균 238 최선일치0 | 253 224 224 253 253 224 253 224 &#xD;
+  가장 싼 사정            합 1704 평균 213 최선일치0 | 213 213 213 213 213 213 213 213 &#xD;
+  이웃의 말을 따라간다        합 1714 평균 214 최선일치4 | 205 224 205 226x 205 239 205 205 &#xD;
+== 삼화연립 나동&#xD;
+  아무도 돕지 않는다         합 1416 평균 177 최선일치0 | 177x 177x 177x 177x 177x 177x 177x 177x &#xD;
+  호수 순서로 훑는다         합 1366 평균 170 최선일치4 | 185 165 177x 152 165 185 152 185 &#xD;
+  가장 시끄러운 문          합 1546 평균 193 최선일치0 | 203 203 177 203 177 203 177 203 &#xD;
+  침묵한 칸부터            합 1592 평균 199 최선일치1 | 203 165 205 205 203 203 205 203 &#xD;
+  침묵한 칸은 건너뛴다        합 1357 평균 169 최선일치4 | 165 165 165 152 177x 177x 204 152 &#xD;
+  한 문만 되풀이           합 1648 평균 206 최선일치0 | 206 206 206 206 206 206 206 206 &#xD;
+  가장 싼 사정            합 1358 평균 169 최선일치4 | 165 165 165 185 187 165 174 152 &#xD;
+  이웃의 말을 따라간다        합 1362 평균 170 최선일치5 | 152 185 165 152 187 165 204 152 &#xD;
+== 삼화연립 다동&#xD;
+  아무도 돕지 않는다         합 1504 평균 188 최선일치0 | 188x 188x 188x 188x 188x 188x 188x 188x &#xD;
+  호수 순서로 훑는다         합 1530 평균 191 최선일치0 | 184 194 194 194 194 194 188x 188x &#xD;
+  가장 시끄러운 문          합 1404 평균 175 최선일치8 | 171 171 171 180 180 180 180 171 &#xD;
+  침묵한 칸부터            합 1616 평균 202 최선일치0 | 213 194 194 207 194 194 207 213 &#xD;
+  침묵한 칸은 건너뛴다        합 1404 평균 175 최선일치8 | 171 171 171 180 180 180 180 171 &#xD;
+  한 문만 되풀이           합 1456 평균 182 최선일치0 | 182 182 182 182 182 182 182 182 &#xD;
+  가장 싼 사정            합 1441 평균 180 최선일치3 | 171 171 182 182 180 182 191 182 &#xD;
+  이웃의 말을 따라간다        합 1466 평균 183 최선일치3 | 180 171 188x 194 180 188x 194 171 &#xD;
+&#xD;
+&#xD;
+b_ga h_ga_quiet: 문 막으면 소리 없는 집 를 고른 최선이 241 (켠 세계 205)&#xD;
+b_da h_da_sick: 문 막으면 소리 없는 집 를 고른 최선이 207 (켠 세계 184)&#xD;
+가장 작은 벌어짐 13점 (기준 12)&#xD;
+&#xD;
+&#xD;
+b_ga: 말할 수 없는 집 최선 190 · 이미 나간 집 최선 237 · 벌어짐 47&#xD;
+b_da: 말할 수 없는 집 최선 184 · 이미 나간 집 최선 199 · 벌어짐 15&#xD;
+&#xD;
+&#xD;
+b_ga: 빈 집을 도우면 237 (아무도 돕지 않으면 226)&#xD;
+b_na: 빈 집을 도우면 187 (아무도 돕지 않으면 177)&#xD;
+b_da: 빈 집을 도우면 199 (아무도 돕지 않으면 188)&#xD;
+&#xD;
+&#xD;
+b_ga: 최선 190 · 최악 205 · 아무것도 안 함 226 · 안 하는 것보다 나쁜 날 0/16&#xD;
+b_da: 최선 184 · 최악 194 · 아무것도 안 함 188 · 안 하는 것보다 나쁜 날 8/16&#xD;
+&#xD;
+&#xD;
+b_ga h_ga_quiet: 켠 세계 합 3175 · 소리로 바꾼 세계 합 3040 · 가장 크게 벌어진 날 15점&#xD;
+b_da h_da_sick: 켠 세계 합 3024 · 소리로 바꾼 세계 합 2944 · 가장 크게 벌어진 날 10점&#xD;
+&#xD;
+&#xD;
+b_ga: 켠 세계 2가지 · 소리로 바꾼 세계 1가지&#xD;
+b_da: 켠 세계 2가지 · 소리로 바꾼 세계 1가지&#xD;
+&#xD;
+&#xD;
+b_ga: 최선 정책 「이웃의 말을 따라간다」 평균 213 · 침묵 맹신 평균 228 · 벌어짐 14&#xD;
+b_na: 최선 정책 「이웃의 말을 따라간다」 평균 167 · 침묵 맹신 평균 195 · 벌어짐 28&#xD;
+b_da: 최선 정책 「가장 시끄러운 문」 평균 174 · 침묵 맹신 평균 201 · 벌어짐 26&#xD;
+가장 작은 벌어짐 14 (기준 10)&#xD;
+&#xD;
+&#xD;
+b_ga: 최선 「이웃의 말을 따라간다」 213 · 침묵 맹신 228 · 침묵 무시 224 · 무시가 맹신보다 낫다&#xD;
+b_na: 최선 「이웃의 말을 따라간다」 167 · 침묵 맹신 195 · 침묵 무시 168 · 무시가 맹신보다 낫다&#xD;
+b_da: 최선 「가장 시끄러운 문」 174 · 침묵 맹신 201 · 침묵 무시 177 · 무시가 맹신보다 낫다&#xD;
+무시가 맹신보다 나은지가 건물에 따라 뒤바뀐 횟수: 0&#xD;
+&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,38 @@
+{
+  "_": "회차 하나. 전투 2 + 보스 1. 되감기 충전은 회차 자원이라 전투 사이에 이어진다.",
+  "id": "run_01",
+  "seed": 20260927,
+  "playerMaxHp": 50,
+  "handSize": 5,
+  "energyPerTurn": 3,
+  "rewindCharges": 3,
+  "maxRewindsPerBattle": 3,
+  "maxRoundsPerBattle": 24,
+  "healAfterBattle": 4,
+  "rewardsPerBattle": 1,
+  "startingDeck": [
+    "card_probe",
+    "card_probe",
+    "card_probe",
+    "card_probe",
+    "card_shield",
+    "card_shield",
+    "card_shield",
+    "card_shield",
+    "card_calibrate",
+    "card_reindex"
+  ],
+  "rewardPool": [
+    "card_purge",
+    "card_dampen",
+    "card_suture",
+    "card_thesis",
+    "card_surge",
+    "card_regress"
+  ],
+  "battles": [
+    "enemy_sentry",
+    "enemy_annealer"
+  ],
+  "boss": "enemy_archivist"
+}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--
+  연출 목업 — 겨울 요새 · 등불.
+
+  손으로 그린 그림이 아니다. 아래 파일들을 **실제로 읽어** 그린다:
+    ../data/crops.json ../data/cards.json ../data/seasons.json
+    ../data/plots.json ../data/enemies.json ../data/runs/year_01.json
+    ./palette.json  ./sample_year.json (검사기가 구운 '실제로 돌린 한 해')
+
+  띄우는 법 — file:// 은 fetch 가 막힌다. PoC 뿌리에서:
+    python -m http.server 8000
+    http://localhost:8000/presentation/index.html
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>겨울 요새 — 밭이 덱을 만든다</title>
+<style>
+  @font-face { font-family:"DoHyeon";   src:url("assets/fonts/DoHyeon-Regular.ttf") format("truetype"); font-display:swap; }
+  @font-face { font-family:"GothicA1";  src:url("assets/fonts/GothicA1-Regular.ttf") format("truetype"); font-display:swap; }
+  @font-face { font-family:"NotoEmoji"; src:url("assets/fonts/NotoEmoji-VariableFont_wght.ttf") format("truetype"); font-display:swap; }
+
+  :root{
+    --void:#080C11; --night:#0E141C; --surface:#16202B; --steel:#2C3D4E; --ice:#3E5468;
+    --snow:#C9D6E0; --snow-dim:#7E90A0; --frost:#5A7488;
+    --lantern:#E8913A; --lantern-glow:#FFC978; --danger:#B3472F; --worn:#6A5A4A;
+    --fresh:#C9D6E0; --half:#9A8A6A; --spent:#6A4A3A; --bar-h:3px;
+    --s-title:42px; --s-heading:20px; --s-body:14px; --s-hint:11px; --s-qty:24px;
+    --tex-op:.16; --lantern-r:420px; --vignette:.55;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0; background:var(--void); color:var(--snow);
+    font-family:"GothicA1", sans-serif; font-size:var(--s-body); line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .glyph{font-family:"NotoEmoji", sans-serif; font-variant-emoji:text}
+  .num{font-variant-numeric:tabular-nums}
+  h1,h2,.display{font-family:"DoHyeon", sans-serif; font-weight:400}
+
+  .keep{position:relative; min-height:100vh; padding:36px 16px 80px; overflow:hidden;
+    background:var(--night)}
+  /* 눈 질감: 실제로 내려받은 CC0 눈 텍스처 */
+  .keep::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:url("assets/img/snow-night.jpg"); background-size:380px;
+    opacity:var(--tex-op); mix-blend-mode:screen; filter:grayscale(.5) brightness(.7);
+  }
+  /* 등불 하나. 이 화면에서 따뜻한 색은 여기뿐이다 */
+  .keep::after{
+    content:""; position:absolute; left:50%; top:-60px; width:calc(var(--lantern-r)*2);
+    height:calc(var(--lantern-r)*2); transform:translateX(-50%); pointer-events:none;
+    background:radial-gradient(circle, rgba(232,145,58,.20) 0%, rgba(232,145,58,.07) 38%, transparent 68%);
+  }
+  .wrap{position:relative; z-index:1; max-width:1180px; margin:0 auto}
+
+  header{text-align:center; margin-bottom:34px}
+  .sub{color:var(--snow-dim); font-size:var(--s-hint); letter-spacing:.32em; text-transform:uppercase}
+  h1{font-size:var(--s-title); margin:6px 0 2px; letter-spacing:.08em}
+  h1 .lit{color:var(--lantern-glow)}
+  .verdict{display:inline-block; margin-top:10px; font-size:var(--s-hint); letter-spacing:.24em;
+    padding:5px 16px; border:1px solid var(--steel); color:var(--snow-dim)}
+  .verdict.held{border-color:var(--lantern); color:var(--lantern-glow)}
+  .verdict.fell{border-color:var(--danger); color:var(--danger)}
+
+  .two{display:grid; grid-template-columns:1fr 58px 1fr; gap:0; align-items:start}
+  .col h2{font-size:var(--s-heading); letter-spacing:.14em; margin:0 0 3px; color:var(--snow)}
+  .col .cap{font-size:var(--s-hint); color:var(--snow-dim); margin:0 0 16px; min-height:34px}
+  .col.left{padding-right:24px}
+  .col.right{padding-left:24px; border-left:1px solid var(--steel)}
+  .gutter{display:flex; flex-direction:column; align-items:center; padding-top:84px; color:var(--lantern)}
+  .gutter .arrow{font-size:26px}
+  .gutter .lbl{writing-mode:vertical-rl; font-size:var(--s-hint); letter-spacing:.3em; margin-top:10px; color:var(--snow-dim)}
+
+  /* ── 밭 ── */
+  .season{margin-bottom:16px}
+  .season-hd{display:flex; align-items:center; gap:8px; font-size:var(--s-hint);
+    letter-spacing:.2em; color:var(--frost); border-bottom:1px solid var(--steel); padding-bottom:5px}
+  .season-hd b{font-family:"DoHyeon",sans-serif; font-size:15px; color:var(--snow); letter-spacing:.1em; font-weight:400}
+  .plots{display:grid; grid-template-columns:repeat(auto-fill,minmax(98px,1fr)); gap:7px; margin-top:8px}
+  .plot{background:var(--surface); border:1px solid var(--steel); padding:7px 8px; min-height:70px}
+  .plot.empty{border-style:dashed; opacity:.4}
+  .plot .pid{font-size:10px; letter-spacing:.1em; color:var(--frost)}
+  .plot .row{display:flex; align-items:center; gap:5px; margin-top:3px}
+  .plot .g{font-size:18px; color:var(--snow)}
+  .plot .nm{font-size:12px}
+  .plot .yield{font-size:var(--s-qty); line-height:1.1; margin-top:4px; color:var(--lantern-glow)}
+  .plot .yield small{font-size:10px; color:var(--snow-dim); margin-left:3px}
+  .plot.lost .yield{color:var(--danger); font-size:12px}
+
+  /* ── 성에 쌓인 덱 ── */
+  .card{background:var(--surface); border:1px solid var(--steel); padding:10px 12px; margin-bottom:7px;
+    display:grid; grid-template-columns:30px 1fr auto; gap:10px; align-items:center}
+  .card.gone{opacity:.35; border-style:dashed}
+  .card .g{font-size:20px; text-align:center; color:var(--snow)}
+  .card .nm{font-size:15px; font-family:"DoHyeon",sans-serif}
+  .card .cost{display:inline-block; min-width:17px; text-align:center; border:1px solid var(--frost);
+    border-radius:50%; font-size:10px; line-height:15px; margin-right:6px; color:var(--frost);
+    font-family:"GothicA1",sans-serif}
+  .card .from{display:block; font-size:var(--s-hint); color:var(--snow-dim)}
+  .card .from .gg{font-size:11px}
+  .card .qty{font-size:var(--s-qty); line-height:1; text-align:right}
+  .card .qty small{display:block; font-size:10px; color:var(--snow-dim); letter-spacing:.06em}
+  .bar{grid-column:1/-1; height:var(--bar-h); background:var(--steel); margin-top:3px; position:relative}
+  .bar i{position:absolute; inset:0 auto 0 0; display:block}
+  .barnote{grid-column:1/-1; font-size:10px; color:var(--worn); letter-spacing:.08em}
+
+  /* ── 네 밤 ── */
+  .nights{margin-top:34px; border-top:1px solid var(--steel); padding-top:18px}
+  .nights h2{font-size:var(--s-heading); letter-spacing:.14em; margin:0 0 12px}
+  .siege-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px}
+  .siege{background:var(--surface); border:1px solid var(--steel); padding:11px 13px; position:relative}
+  .siege.boss{border-color:var(--lantern)}
+  .siege.fell{border-color:var(--danger)}
+  .siege .when{font-size:var(--s-hint); letter-spacing:.2em; color:var(--frost)}
+  .siege .who{display:flex; align-items:center; gap:7px; margin:5px 0 3px}
+  .siege .who .g{font-size:20px}
+  .siege .who .nm{font-family:"DoHyeon",sans-serif; font-size:15px}
+  .siege .stat{font-size:var(--s-hint); color:var(--snow-dim)}
+  .siege .mark{position:absolute; top:10px; right:12px; font-size:var(--s-hint); letter-spacing:.14em}
+  .siege .mark.ok{color:var(--lantern-glow)} .siege .mark.no{color:var(--danger)}
+
+  .note{margin-top:28px; border-left:2px solid var(--lantern); padding:2px 0 2px 14px;
+    font-size:var(--s-hint); color:var(--snow-dim); max-width:780px; line-height:1.9}
+  code{background:#0A1017; padding:1px 6px; border-radius:2px; color:var(--lantern-glow); font-size:11px}
+  .err{max-width:720px; margin:80px auto; line-height:2; color:var(--snow)}
+
+  @media (max-width:900px){
+    .two{grid-template-columns:1fr}
+    .col.left{padding-right:0}
+    .col.right{padding-left:0; border-left:none; border-top:1px solid var(--steel); padding-top:20px; margin-top:20px}
+    .gutter{flex-direction:row; padding:12px 0}
+    .gutter .lbl{writing-mode:horizontal-tb; margin:0 0 0 10px}
+  }
+</style>
+</head>
+<body>
+<div id="root" class="keep"><div class="wrap"><div class="err">등불을 켜는 중…</div></div></div>
+
+<script>
+const F = (p) => fetch(p).then(r => { if(!r.ok) throw new Error(p+" → "+r.status); return r.json(); });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Promise.all([
+  F("palette.json"), F("sample_year.json"),
+  F("../data/crops.json"), F("../data/cards.json"), F("../data/seasons.json"),
+  F("../data/plots.json"), F("../data/enemies.json"), F("../data/runs/year_01.json")
+]).then(draw).catch(err => {
+  document.querySelector("#root .wrap").innerHTML =
+    '<div class="err"><b>데이터를 읽지 못했다.</b><br>' + esc(err.message) +
+    '<br><br>이 목업은 <code>data/</code> 의 실제 JSON 을 읽어 그린다. ' +
+    '<code>file://</code> 로는 fetch 가 막히므로 PoC 뿌리에서 서버를 띄운다:' +
+    '<br><br><code>python -m http.server 8000</code><br>' +
+    '<code>http://localhost:8000/presentation/index.html</code></div>';
+});
+
+function draw([pal, sample, cropsF, cardsF, seasonsF, plotsF, enemiesF, year]){
+  const r = document.documentElement.style;
+  const c = pal.color, t = pal.type, g = pal.grade, w = pal.wear;
+  const set = (k,v) => r.setProperty(k,v);
+  set("--void",c.void); set("--night",c.night); set("--surface",c.surface); set("--steel",c.steel);
+  set("--ice",c.ice); set("--snow",c.snow); set("--snow-dim",c.snowDim); set("--frost",c.frost);
+  set("--lantern",c.lantern); set("--lantern-glow",c.lanternGlow); set("--danger",c.danger); set("--worn",c.worn);
+  set("--fresh",w.fresh); set("--half",w.half); set("--spent",w.spent); set("--bar-h",w.barHeightPx+"px");
+  set("--s-title",t.sizeTitle+"px"); set("--s-heading",t.sizeHeading+"px"); set("--s-body",t.sizeBody+"px");
+  set("--s-hint",t.sizeHint+"px"); set("--s-qty",t.sizeQuantity+"px");
+  set("--tex-op",g.snowTextureOpacity); set("--lantern-r",g.lanternRadiusPx+"px"); set("--vignette",g.vignette);
+
+  const G       = id => pal.glyph[id] || "";
+  const crops   = Object.fromEntries(cropsF.crops.map(x=>[x.id,x]));
+  const cards   = Object.fromEntries(cardsF.cards.map(x=>[x.id,x]));
+  const plots   = Object.fromEntries(plotsF.plots.map(x=>[x.id,x]));
+  const seasons = Object.fromEntries(seasonsF.seasons.map(x=>[x.id,x]));
+  const enemies = Object.fromEntries(enemiesF.enemies.map(x=>[x.id,x]));
+  const planting = seasonsF.seasons.filter(s=>s.plantable).sort((a,b)=>a.order-b.order);
+
+  // ── 왼쪽: 밭 ─────────────────────────────────────────────────
+  const fieldHtml = planting.map(s => {
+    const rows = sample.plantings.filter(p => p.seasonId === s.id);
+    const water = rows.reduce((a,p)=>a + crops[p.cropId].waterPerTurn*crops[p.cropId].growTurns, 0);
+    const seed  = rows.reduce((a,p)=>a + crops[p.cropId].seedCost, 0);
+    const cells = rows.length ? rows.map(p => {
+      const cr = crops[p.cropId], lost = p.harvestTurn < 0;
+      return `<div class="plot${lost?" lost":""}">
+        <div class="pid">${esc(plots[p.plotId] ? plots[p.plotId].nameKo : p.plotId)} · <span class="num">${plots[p.plotId]?plots[p.plotId].fertility:100}</span>%</div>
+        <div class="row"><span class="g glyph">${G(cr.id)}</span><span class="nm">${esc(cr.nameKo)}</span></div>
+        <div class="yield num">${lost ? "얼어 죽음" : p.cardsYielded}${lost?"":`<small>장 · ${esc(cards[p.cardId].nameKo)}</small>`}</div>
+      </div>`;
+    }).join("") : `<div class="plot empty"><div class="pid">비어 있음</div></div>`;
+    return `<div class="season">
+      <div class="season-hd"><span class="glyph" style="font-size:14px">${G(s.id)}</span>
+        <b>${esc(s.nameKo)}</b> · 물 <span class="num">${water}</span>/${s.waterBudget}
+        · 씨앗 <span class="num">${seed}</span>/${s.seedBudget}</div>
+      <div class="plots">${cells}</div></div>`;
+  }).join("") + `<div class="season"><div class="season-hd">
+      <span class="glyph" style="font-size:14px">${G("season_winter")}</span>
+      <b>겨울</b> · 심지 못한다 — 이때 쓰는 것은 아직 닳지 않은 카드뿐이다</div></div>`;
+
+  // ── 오른쪽: 성에 쌓인 덱 (닳은 정도까지) ─────────────────────
+  const deckHtml = sample.deck.map(d => {
+    const cd = cards[d.cardId];
+    const src = d.fromCrops.map(id => `<span class="gg glyph">${G(id)}</span> ${esc(crops[id].nameKo)}`).join(", ");
+    const pct = d.usesMax === 0 ? 0 : Math.round(d.usesLeft * 100 / d.usesMax);
+    const col = pct > 66 ? "var(--fresh)" : pct > 33 ? "var(--half)" : "var(--spent)";
+    return `<div class="card${d.count===0?" gone":""}">
+      <span class="g glyph">${G(d.cardId)}</span>
+      <span><span class="nm"><span class="cost num">${cd.cost}</span>${esc(cd.nameKo)}</span>
+        <span class="from">${src} 에서만 나온다 — 상점 없음 · 새 카드는 <span class="num">${cd.durability}</span>번 쓰면 부서진다</span></span>
+      <span class="qty num">${d.count === 0 ? "—" : d.count}<small>${d.count===0?"없음":"장"}</small></span>
+      <span class="bar"><i style="width:${pct}%; background:${col}"></i></span>
+      <span class="barnote">남은 횟수 <span class="num">${d.usesLeft}</span> / ${d.usesMax} · ${d.wornPct}% 닳음</span>
+    </div>`;
+  }).join("");
+
+  // ── 네 밤 ────────────────────────────────────────────────────
+  const siegeHtml = sample.sieges.map(s => {
+    const e = enemies[s.enemyId], se = seasons[s.seasonId];
+    const base = year.sieges.find(x => x.seasonId === s.seasonId);
+    return `<div class="siege${s.isBoss?" boss":""}${s.held?"":" fell"}">
+      <div class="mark ${s.held?"ok":"no"}">${s.held?"막았다":"뚫렸다"}</div>
+      <div class="when"><span class="glyph">${G(s.seasonId)}</span> ${esc(se.nameKo)} · 격화 <span class="num">${base?base.escalationPct:100}</span>%</div>
+      <div class="who"><span class="g glyph">${G(s.enemyId)}</span><span class="nm">${esc(e.nameKo)}${s.isBoss?" · 보스":""}</span></div>
+      <div class="stat">체력 <span class="num">${s.enemyHp}</span> · 덱 <span class="num">${s.deckBefore}</span>장으로 맞섰다</div>
+      <div class="stat">부서진 카드 <span class="num">${s.cardsBroken}</span>장 · 남은 체력 <span class="num">${s.playerHpLeft}</span></div>
+    </div>`;
+  }).join("");
+
+  document.querySelector("#root .wrap").innerHTML = `
+    <header>
+      <div class="sub">${esc(pal.name)} · 씨드 <span class="num">${sample.seed}</span></div>
+      <h1>제 <span class="lit num">${sample.year}</span> 해 · <span class="lit">네 밤</span></h1>
+      <div class="verdict ${sample.held?"held":"fell"}">${sample.held?"네 밤을 모두 지켰다":"문이 뚫렸다"}</div>
+    </header>
+
+    <div class="two">
+      <section class="col left">
+        <h2>밭</h2>
+        <p class="cap">세 계절 동안 심는다. 밭 <span class="num">${sample.unlockedPlots}</span>칸 ·
+          씨앗 <span class="num">${sample.seedsAtStart}</span>로 시작해 <span class="num">${sample.seedsSpent}</span>을 썼다.
+          ${sample.harvestLost>0?`<b style="color:var(--danger)">털린 수확 ${sample.harvestLost}장.</b>`:""}</p>
+        ${fieldHtml}
+      </section>
+
+      <div class="gutter"><div class="arrow">→</div><div class="lbl">밭이 덱이 된다</div></div>
+
+      <section class="col right">
+        <h2>성에 쌓인 덱</h2>
+        <p class="cap">한 판이 아니라 해를 넘겨 남는다. 그래서 <b style="color:var(--lantern-glow)">닳는다.</b>
+          지금 <span class="num">${sample.deckAfter}</span>장 · 앞으로 쓸 수 있는 횟수 <span class="num">${sample.deckUsesAfter}</span>회.</p>
+        ${deckHtml}
+      </section>
+    </div>
+
+    <div class="nights">
+      <h2>계절마다 한 번, 갈수록 세게</h2>
+      <div class="siege-row">${siegeHtml}</div>
+    </div>
+
+    <p class="note">
+      이 화면의 수량은 손으로 적은 것이 아니다. <code>src/</code> 의 시뮬레이터가 씨드
+      <span class="num">${sample.seed}</span>으로 한 해를 실제로 돌려 <code>presentation/sample_year.json</code> 에 구운 값이고,
+      작물·카드·계절·적은 <code>data/</code> 의 JSON 을 그대로 읽었다.<br>
+      <b>hybrid-harvest-deck 과 다른 점은 오른쪽 막대 하나다</b> — 저쪽 덱은 밤이 끝나면 사라지고,
+      이쪽 덱은 남은 채로 닳는다. 강한 카드를 아낄지 지금 쓸지가 그래서 물음이 된다.
+    </p>`;
+}
+</script>
+</body>
+</html>

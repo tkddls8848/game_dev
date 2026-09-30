@@ -1,0 +1,107 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood 의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(사건 파일·청사진 모눈·목판화 타로·납 활자 인쇄소·바랜 측량도·필사본 연감·전보 시세판·크라프트 장부·겨울 요새·식물 표본집·구성주의 포스터·자수 지도)과 겹치지 않는다. 여기만 **글이 세로로 흐르고**(vertical-rl), 바탕이 **한지의 섬유**이며, 결정의 흔적이 색이 아니라 **주묵 인장과 이름 위의 붉은 줄**로 남는다. mystery-blackwood 도 붉은색을 쓰지만 그쪽은 어두운 바탕의 붉은 잉크이고 여기는 밝은 한지 위의 주묵이다 — 명도가 반대다.",
+
+  "name": "한지 족보와 제례 기록",
+  "oneLine": "대대로 이어 적은 가문의 장부. 앞 세대의 결정이 위쪽에 그대로 남아 있고, 바친 이름 위에는 붉은 줄이 그어져 있다",
+  "reference": "한지에 먹으로 쓴 세로쓰기 족보 — 섬유가 비치는 누런 종이, 붉은 주묵 인장, 칸을 나눈 가는 계선, 이름 위에 곧게 그은 붉은 주선, 여러 대에 걸쳐 색이 다르게 바랜 먹",
+
+  "color": {
+    "hanji": "#E5DAC0",
+    "hanjiLit": "#F0E8D4",
+    "hanjiDim": "#D5C7A7",
+    "hanjiFold": "#C2B190",
+    "fiber": "#B9A67F",
+    "ink": "#241F19",
+    "inkFaded": "#4C4237",
+    "inkAncient": "#6E6151",
+    "_먹의_세단": "ink=이번 대 · inkFaded=아버지 대 · inkAncient=증조부 대. 먹이 바랜 정도가 곧 몇 대 전인가다. 색이 시간을 말한다",
+    "vermilion": "#A8281F",
+    "vermilionSoft": "#C0564A",
+    "sealFill": "#9E2118",
+    "gold": "#8C6A2B",
+    "_주묵": "붉은색 하나만 강하다. 인장(sealFill)과 붉은 줄(vermilion)에만 쓴다 — 이 색이 다른 데 번지면 '누가 죽었는가'가 안 보인다"
+  },
+
+  "ledger": {
+    "_": "★ 이 연출의 핵. 족보는 **오른쪽에서 왼쪽으로** 자라고, 글은 위에서 아래로 흐른다. 오른쪽이 앞 세대다",
+    "writingMode": "vertical-rl",
+    "columnWidthPx": 132,
+    "columnGapPx": 0,
+    "ruleWidthPx": 1,
+    "ruleColor": "#B9A67F",
+    "_계선": "칸을 나누는 선. 굵으면 표가 되고 없으면 종이가 된다. 1px 이 족보다",
+    "headerBandPx": 74,
+    "priorColumnOpacity": 62,
+    "_앞_세대": "앞선 네 대의 칸은 62% 로 깔린다. 지우지 않는다 — 대대로 이어진 장부라 앞 세대의 결정이 그대로 남아 있어야 한다",
+    "strikeWidthPx": 3,
+    "strikeInsetPx": 4,
+    "strikeColor": "#A8281F",
+    "_붉은_줄": "세로쓰기이므로 이름 **위에** 그은 줄은 화면에서 세로선이다. 이름 글자를 덮지 않게 strikeInsetPx 만큼 안으로 넣는다",
+    "sealSizePx": 46,
+    "sealRotateDeg": -4,
+    "sealGridCells": 4,
+    "_인장": "주묵 전각 인장. 이미지를 받지 않고 4x4 칸에 획을 찍어 SVG로 만든다. 제례를 올린 칸에만 찍힌다",
+    "billMarkSizePx": 15,
+    "_청구서_표시": "이 대에 도착한 앞 세대의 청구서. 칸 옆에 작은 주묵 점으로 찍고, 어느 대에서 온 것인지 선으로 잇는다"
+  },
+
+  "paper": {
+    "_": "한지 섬유. 이미지를 한 장도 받지 않고 겹친 그라디언트로 짠다",
+    "fiberPitchPx": 3,
+    "fiberOpacity": 7,
+    "flecksPerThousandPx": 9,
+    "fleckSizePx": 2,
+    "fleckOpacity": 13,
+    "_티": "한지에는 닥나무 껍질의 티가 박혀 있다. flecks 가 그것이고, 자리는 **씨드로 고정**한다 — 매번 달라지면 눈으로 대조할 수 없다",
+    "fleckSeed": 20260927,
+    "foldEveryPx": 264,
+    "foldOpacity": 10,
+    "_접힘": "장부를 접어 보관한 자리. 칸 두 개마다 한 번 접힌다",
+    "edgeStainPx": 26,
+    "edgeStainOpacity": 16
+  },
+
+  "type": {
+    "family": "Kirang Haerang",
+    "familyBody": "Gowun Batang",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "이름은 붓으로 쓴 것처럼 읽혀야 해서 손글씨 계열(Kirang Haerang)을 쓴다. 본문은 획이 곧은 바탕(Gowun Batang)이라 세로쓰기에서 글자가 흔들리지 않는다. **명조(Nanum Myeongjo)는 쓰지 않는다** — mystery-blackwood 의 연출과 겹친다",
+    "sizeTitle": 52,
+    "sizeHeading": 26,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeNumeral": 13,
+    "sizeName": 21,
+    "sizeGeneration": 14,
+    "trackingVertical": 2,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "grade": {
+    "saturation": 0.58,
+    "contrast": 1.06,
+    "blackLift": 0.03,
+    "vignette": 0.18,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 티여야 한지가 된다",
+    "_채도": "0.58. 주묵 하나만 강하면 되고, 나머지가 올라오면 붉은 줄이 묻힌다"
+  },
+
+  "motion": {
+    "_": "연출은 부드럽고 판정은 **대(generation)** 에서만 내려간다. 이 값들은 눈속임이다",
+    "columnRevealMs": 240,
+    "strikeDrawMs": 380,
+    "sealStampMs": 160,
+    "billTravelMs": 520,
+    "easing": "cubic-bezier(.22,.7,.2,1)",
+    "_붉은_줄_긋기": "한 번에 켜지 않고 위에서 아래로 긋는다 — 붓이 지나가는 것처럼 보인다",
+    "_청구서_이동": "앞 세대의 칸에서 이번 대의 칸으로 선이 흐른다. 이 움직임이 '결과가 늦게 온다'를 화면에서 보이는 것으로 만든다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 종이·붓·인장에 맞는 CC0 소리를 손에 든 팩에서 찾지 못했고, 없는 것을 있는 척 적지 않는다. CREDITS.md 의 '버린 것'에 같은 사실을 적었다"
+  }
+}

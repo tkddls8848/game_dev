@@ -1,0 +1,118 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 연출(사건 파일 · 청사진 모눈 · 목판화 타로 · 납 활자 · 바랜 측량도 · 필사본 연감 · 전보 시세판 · 크라프트 장부 · 겨울 요새 · 식물 표본집 · 구성주의 포스터 · 자수 지도)과 겹치지 않는다. 여기만 **흰 실험지**이고, 선이 잉크가 아니라 **번져 오른 용매 자국**이며, 색이 칠해지는 것이 아니라 **겹친 자리에서 실제로 섞여 나온다**.",
+  "name": "크로마토그램",
+  "oneLine": "흰 종이 위로 향이 번져 올라 띠가 된다. 겹친 자리의 색은 칠한 색이 아니라 섞인 값이다",
+  "reference": "종이 크로마토그래피 — 실험지에 찍은 시료가 용매를 타고 번져 오르며 성분별로 갈라진 띠. 탁한 색 셋(먹색·쑥색·녹슨 주황), 연필로 그은 출발선과 용매 전선, 가장자리 물자국",
+  "color": {
+    "paper": "#F4F1E8",
+    "paperLit": "#FBF9F3",
+    "paperShade": "#E6E1D2",
+    "paperStain": "#DCD5C0",
+    "grid": "#D9D3C1",
+    "ink": "#24261F",
+    "inkSoft": "#5C5E51",
+    "pencil": "#7E7C6E",
+    "sooty": "#3A3C33",
+    "mugwort": "#6E7A3A",
+    "rust": "#B4662C",
+    "solventFront": "#8A8468",
+    "_탁한_색_셋": "sooty(먹색) · mugwort(쑥색) · rust(녹슨 주황) 셋이 강조의 전부다. paper 계열 넷은 종이의 농도이고 색이 아니다",
+    "_계열색은_어디_있나": "향 계열 12종의 띠 색은 여기가 아니라 data/notes.json 의 color 에 있다. **띠 색은 데이터다** — 연출이 고르는 것이 아니라 성분이 정하는 것이라야 겹친 자리의 섞임이 거짓말이 아니게 된다"
+  },
+  "actorThread": {
+    "_": "사람마다 색 하나. **겹친 자리의 색은 이 색들을 기여량으로 가중 평균한 값**이다 — 그래서 칸의 색이 곧 '누가 얼마씩 냈는가'다. 덮어 칠하는 색이 아니다.",
+    "_왜_탁한가": "다섯 색 전부 채도를 눌렀다. 순색을 쓰면 섞인 자리가 회색으로 죽어 섞임이 그림에서 사라진다 — 탁한 색끼리 섞여야 섞인 색도 색으로 남는다.",
+    "a_housekeeper": "#B4662C",
+    "a_gardener": "#6E7A3A",
+    "a_cook": "#3A3C33",
+    "a_doctor": "#4E6B78",
+    "a_son": "#7E4452",
+    "ambient": "#CFC7B0"
+  },
+  "chromatogram": {
+    "_": "★ 이 연출의 핵. 띠 하나가 향 계열 하나이고, 가로가 시간, 세로가 세기다.",
+    "laneHeightPx": 26,
+    "laneGapPx": 3,
+    "originLineDash": [
+      4,
+      3
+    ],
+    "originLabel": "출발선 — 그날이 시작된 자리",
+    "solventLineWidthPx": 2,
+    "solventLabel": "용매 전선 — 조사가 시작된 자리(22:00)",
+    "columnMinutes": 15,
+    "_칸": "한 칸이 감쇠 한 걸음(15분)이다. data/notes.json 의 decayStepMin 과 같아야 한다 — 다르면 그림이 규칙을 속인다",
+    "floorHatch": true,
+    "floorHatchLabel": "역치 아래 — 코에 잡히지 않는 구간. 빗금으로 지운다",
+    "mixRule": "additive-weighted",
+    "_섞임_규칙": "겹친 자리의 색은 **기여량으로 가중한 실제 평균**이다. 위에 덮어 칠하지 않는다 — 덮어 칠하면 두 냄새가 섞인 것이 아니라 하나가 다른 하나를 가린 그림이 되고, 이 PoC의 주장이 그림에서 거짓이 된다",
+    "bleedPx": 2,
+    "_번짐": "띠 가장자리를 2px 흐린다. 크로마토그램의 띠는 칼로 자른 듯 끝나지 않는다",
+    "intensityScale": "log-over-floor",
+    "intensityMinOpacityPermille": 90,
+    "_세기": "역치 위에서 로그로 편다. 세기를 그대로 불투명도로 쓰면 첫 칸만 새까맣고 나머지가 안 보인다. 눈속임이지 규칙이 아니다.",
+    "mixOutlineOpacityPermille": 420,
+    "_섞인_칸_테두리": "둘 이상이 기여한 칸에만 가는 테두리를 두른다. 색만으로는 '탁한 색 하나'와 '섞여서 탁해진 색'을 구별할 수 없다."
+  },
+  "window": {
+    "_": "사실마다 '맡을 수 있었던 창'을 막대로 그린다. 이 그림이 검사기 DecayIsFair 그 자체다.",
+    "barHeightPx": 13,
+    "barGapPx": 6,
+    "openColor": "#6E7A3A",
+    "shutColor": "#E6E1D2",
+    "missedColor": "#B4662C",
+    "routeTickWidthPx": 2,
+    "routeColor": "#24261F",
+    "_놓친_것": "한 번 훑기가 못 잡은 사실은 녹슨 주황으로 칠한다. 다섯 개가 한눈에 보여야 한다"
+  },
+  "type": {
+    "family": "NanumMyeongjo",
+    "familyMono": "IBMPlexMono",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "실험 보고서는 활자로 찍혀 있었다 — 표제는 명조(NanumMyeongjo)여야 종이 위에 인쇄된 것으로 읽힌다. 수치는 폭이 고른 글꼴(IBMPlexMono)이라야 세로로 줄이 맞고, 크로마토그램의 눈금과 어긋나지 않는다",
+    "sizeTitle": 54,
+    "sizeHeading": 25,
+    "sizeBody": 16,
+    "sizeHint": 13,
+    "sizeNumeral": 13,
+    "trackingTitle": 2,
+    "trackingBody": 0,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+  "layout": {
+    "_": "방 차례. data/house.json 에는 좌표가 없다(설계 원칙 3) — 배치는 연출이 정하므로 여기 있다.",
+    "roomOrder": [
+      "r_porch",
+      "r_kitchen",
+      "r_cellar",
+      "r_study",
+      "r_bath",
+      "r_greenhouse"
+    ],
+    "maxWidthPx": 1120,
+    "gutterPx": 20,
+    "sectionGapPx": 30
+  },
+  "grade": {
+    "saturation": 0.58,
+    "contrast": 1.06,
+    "blackLift": 0.03,
+    "vignette": 0.14,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 결이어야 종이가 된다",
+    "_채도": "0.58. 띠가 열두 색이라 채도를 올리면 크리스마스 전구가 된다. 눌러야 '탁한 색'이 된다"
+  },
+  "motion": {
+    "_": "연출은 부드럽고 판정은 15분 격자에서만 내려간다. 이 값들은 눈속임이다",
+    "bandRiseMs": 620,
+    "panelRevealMs": 160,
+    "easing": "cubic-bezier(.2,.7,.2,1)",
+    "_띠_올라오기": "띠를 한 번에 켜지 않고 아래에서 위로 올린다 — 용매가 종이를 타고 오르는 것처럼 보인다"
+  },
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 후각만 남은 게임에 소리를 붙이는 것 자체가 규칙을 어기고, 대신 쓸 CC0 소리도 찾지 않았다. CREDITS.md 의 '버린 것'에 같은 사실을 적었다"
+  }
+}

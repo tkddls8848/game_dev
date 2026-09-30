@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>두 단 대역 조약문 — the-interpreter</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 회담도 여기서 다시 돌린다.
+  난수는 .NET 의 Random(seed) 을 그대로 옮겨 놓았으므로 헤드리스 테스트와 **같은 밤**이 나온다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/the-interpreter && python -m http.server 8101
+      → http://localhost:8101/presentation/index.html
+-->
+<style>
+@font-face { font-family:"CutiveMono"; src:url("assets/fonts/CutiveMono-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"PlexKR"; src:url("assets/fonts/IBMPlexSansKR-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다 */
+  --paper:#E7E1D1; --paperLit:#F3EEE1; --paperDim:#D7CFB9; --paperEdge:#BEB49A;
+  --ink:#241F19; --inkWeak:#5B5346; --carbon:#403A66; --carbonWeak:#6E6795;
+  --rule:#7C7360; --bleed:#9E2B22; --bleedWash:#C46A5C; --stamp:#B0372B;
+  --sTitle:46px; --sHead:24px; --sBody:15px; --sHint:12px; --sNum:13px; --sClause:16px;
+  --trkTitle:2px; --lhBody:1.75;
+  --colGap:34px; --margin:26px; --ruleW:1px; --fold:3px; --vig:.12;
+  --regExact:#403A66; --regSoft:#5E7A63; --regHard:#8A6A2B; --regFalse:#9E2B22;
+  --bleedSpread:7px; --splitHatch:6px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"PlexKR",system-ui,sans-serif; font-size:var(--sBody); line-height:var(--lhBody);
+  -webkit-font-smoothing:antialiased;
+}
+/* 아마지 결 — 이미지를 받지 않고 그라디언트로 만든다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,rgba(36,31,25,.016) 0 1px,transparent 1px 5px),
+    repeating-linear-gradient(90deg,rgba(36,31,25,.011) 0 1px,transparent 1px 7px);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,transparent 56%,rgba(36,31,25,var(--vig)) 100%);
+}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:36px 18px 100px}
+
+.sheet{
+  position:relative;background:linear-gradient(180deg,var(--paperLit),var(--paper) 45%,var(--paperDim));
+  border:1px solid var(--paperEdge);border-radius:1px;
+  padding:22px var(--margin) 26px;margin:0 0 26px;
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 -1px 0 rgba(36,31,25,.10) inset,0 2px 7px rgba(36,31,25,.09);
+}
+.sheet::after{ /* 서류철에 꽂혀 있던 접힌 자국 */
+  content:"";position:absolute;inset:var(--fold);pointer-events:none;border:1px solid rgba(124,115,96,.20);
+}
+h1{font-family:"CutiveMono",monospace;font-size:var(--sTitle);letter-spacing:var(--trkTitle);
+   margin:0 0 4px;line-height:1.08;font-weight:400}
+h1 .sub{display:block;font-family:"PlexKR",sans-serif;font-size:calc(var(--sHead)*.64);
+        color:var(--inkWeak);letter-spacing:0;margin-top:6px}
+h2{font-family:"CutiveMono",monospace;font-size:var(--sHead);font-weight:400;margin:0 0 6px}
+h2 .no{color:var(--bleed);margin-right:10px}
+h3{font-size:var(--sBody);margin:16px 0 4px;color:var(--inkWeak);font-weight:400}
+p{margin:6px 0 12px;max-width:80ch}
+.hint{font-size:var(--sHint);color:var(--inkWeak)}
+.lede{font-size:calc(var(--sBody) + 2px)}
+em{font-style:normal;background:linear-gradient(transparent 62%,rgba(158,43,34,.22) 62%)}
+b,strong{color:var(--ink)}
+code,.mono{font-family:"CutiveMono",monospace;font-size:var(--sNum);color:var(--inkWeak)}
+
+/* ── 두 단 ─────────────────────────────────────────────────────────── */
+.bicol{display:grid;grid-template-columns:1fr var(--ruleW) 1fr;gap:0 calc(var(--colGap)/2);align-items:stretch}
+.bicol > .rule{background:var(--rule);opacity:.85;width:var(--ruleW)}
+.colhead{font-family:"CutiveMono",monospace;font-size:var(--sHint);letter-spacing:1px;
+         text-transform:uppercase;color:var(--inkWeak);border-bottom:1px solid rgba(124,115,96,.4);
+         padding-bottom:3px;margin-bottom:8px}
+.left{color:var(--ink)}
+/* 오른쪽 단은 먹지로 한 번에 찍힌 사본이다 — 자줏빛이 돌고 왼쪽보다 옅다 */
+.right{color:var(--carbon)}
+.right .article .body{color:var(--carbon);opacity:.88;letter-spacing:.2px}
+.right .article .num{color:var(--carbonWeak)}
+.right .said{color:var(--carbon)}
+.right .colhead{color:var(--carbonWeak);border-color:rgba(64,58,102,.35)}
+
+/* 조항 한 줄 */
+.article{padding:9px 0 9px;border-bottom:1px dotted rgba(124,115,96,.35)}
+.article .num{font-family:"CutiveMono",monospace;font-size:var(--sHint);color:var(--stamp);
+              letter-spacing:1px;display:block;margin-bottom:2px}
+.article .body{font-size:var(--sClause);line-height:1.6}
+.article.unset .body{color:var(--inkWeak);font-style:italic}
+.article.split{background:
+    repeating-linear-gradient(45deg,rgba(158,43,34,.10) 0 2px,transparent 2px var(--splitHatch));
+  box-shadow:inset 2px 0 0 var(--bleed)}
+.article.split .body{padding-left:8px}
+.splitnote{display:block;margin-top:5px;font-size:var(--sHint);color:var(--bleed)}
+
+/* ── 회담 기록 ─────────────────────────────────────────────────────── */
+.turn{padding:12px 0;border-bottom:1px solid rgba(124,115,96,.25)}
+.turn .meta{font-family:"CutiveMono",monospace;font-size:var(--sHint);color:var(--inkWeak);
+            display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+.turn .who{color:var(--ink)}
+.said{font-size:var(--sClause);line-height:1.6}
+.gloss{font-size:var(--sHint);color:var(--inkWeak);margin-top:4px}
+.heard{font-size:var(--sHint);color:var(--carbonWeak);margin-top:4px}
+.opts{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.opt{display:flex;gap:8px;align-items:baseline;cursor:pointer;padding:3px 6px;border:0;
+     background:none;text-align:left;font:inherit;color:var(--carbon);width:100%;line-height:1.5}
+.opt:hover{background:rgba(64,58,102,.07)}
+.opt .reg{font-family:"CutiveMono",monospace;font-size:var(--sHint);min-width:54px;flex:0 0 auto}
+.opt.r-exact .reg{color:var(--regExact)} .opt.r-soft .reg{color:var(--regSoft)}
+.opt.r-hard .reg{color:var(--regHard)}   .opt.r-false .reg{color:var(--regFalse)}
+.opt.on{ /* 고른 역어 — 종이에 번진다 */
+  background:radial-gradient(ellipse at 6% 50%,rgba(158,43,34,.16) 0%,rgba(158,43,34,.06) 46%,transparent 78%);
+  box-shadow:inset 0 -2px 0 -1px var(--bleed); color:var(--ink);
+}
+.opt .why{color:var(--inkWeak);font-size:var(--sHint)}
+.stamp{display:inline-block;font-family:"CutiveMono",monospace;font-size:10px;color:var(--stamp);
+       border:2px solid var(--stamp);border-radius:50%;padding:3px 5px;transform:rotate(-7deg);
+       margin-left:6px;line-height:1;opacity:.85}
+.seeded{color:var(--bleed);font-size:var(--sHint)}
+.exposed{color:var(--bleed);font-family:"CutiveMono",monospace;font-size:var(--sHint)}
+
+/* ── 조종간 ────────────────────────────────────────────────────────── */
+.controls{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:10px 0 4px;
+          font-size:var(--sHint);font-family:"CutiveMono",monospace}
+.controls label{color:var(--inkWeak)}
+select,button.reset{font:inherit;font-family:"CutiveMono",monospace;font-size:var(--sHint);
+  background:var(--paperLit);color:var(--ink);border:1px solid var(--paperEdge);padding:3px 6px;border-radius:1px}
+button.reset{cursor:pointer}
+.gauges{display:flex;gap:16px;flex-wrap:wrap;font-family:"CutiveMono",monospace;font-size:var(--sNum);
+        color:var(--inkWeak);margin-top:6px}
+.gauges b{color:var(--ink);font-weight:400}
+
+table{border-collapse:collapse;width:100%;font-size:var(--sNum);margin:8px 0 6px}
+th,td{text-align:left;padding:4px 7px;border-bottom:1px dotted rgba(124,115,96,.35);vertical-align:top}
+th{font-family:"CutiveMono",monospace;color:var(--carbon);font-weight:400;font-size:var(--sHint);
+   letter-spacing:.5px;border-bottom:1px solid rgba(124,115,96,.5)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:"CutiveMono",monospace}
+tr.hi td{background:rgba(158,43,34,.07)}
+tr.win td{background:rgba(64,58,102,.07)}
+.win-tag{color:var(--bleed);font-family:"CutiveMono",monospace}
+.bar{display:inline-block;height:7px;background:var(--carbon);opacity:.55;vertical-align:middle}
+.bar.red{background:var(--bleed)}
+.err{color:var(--bleed);font-family:"CutiveMono",monospace;font-size:var(--sHead)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:var(--sHint);color:var(--inkWeak);margin:8px 0}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:middle}
+@media (max-width:760px){ .bicol{grid-template-columns:1fr;gap:0} .bicol > .rule{height:1px;width:auto;margin:10px 0} }
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">종이를 펴는 중… (fetch 가 막혔다면 <code>python -m http.server 8101</code> 로 열어야 한다)</p>
+</main>
+
+<script>
+"use strict";
+
+/* ═══ 1. data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ══════════════════ */
+const FILES = ["nations","treaty","session","endings","balance"];
+async function load(){
+  const out={};
+  await Promise.all(FILES.map(async n=>{ out[n]=await (await fetch("../data/"+n+".json")).json(); }));
+  out.palette=await (await fetch("palette.json")).json();
+  return out;
+}
+
+/* ═══ 2. .NET 의 Random(seed) 를 그대로 옮긴다 ═════════════════════════
+   이걸 옮기지 않으면 목업이 테스트와 **다른 밤**을 보여 준다.
+   (Knuth 뺄셈식 생성기. .NET 8 의 seeded Random 도 이 호환 구현을 쓴다) */
+const MBIG=2147483647, MSEED=161803398;
+function NetRandom(seed){
+  const a=new Int32Array(56);
+  const sub = (seed===-2147483648)?2147483647:Math.abs(seed);
+  let mj=MSEED-sub; a[55]=mj; let mk=1, ii=0;
+  for(let i=1;i<55;i++){
+    if((ii+=21)>=55) ii-=55;
+    a[ii]=mk; mk=mj-mk; if(mk<0) mk+=MBIG; mj=a[ii];
+  }
+  for(let k=1;k<5;k++) for(let i=1;i<56;i++){
+    let n=i+30; if(n>=55) n-=55;
+    a[i]=a[i]-a[1+n]; if(a[i]<0) a[i]+=MBIG;
+  }
+  let inext=0, inextp=21;
+  this.sample=function(){
+    let ni=inext+1, np=inextp+1;
+    if(ni>=56) ni=1; if(np>=56) np=1;
+    let r=a[ni]-a[np];
+    if(r===MBIG) r--;
+    if(r<0) r+=MBIG;
+    a[ni]=r; inext=ni; inextp=np;
+    return r;
+  };
+  this.next=function(min,max){ return Math.floor(this.sample()*(1.0/MBIG)*(max-min))+min; };
+}
+const i32 = n => n|0;
+function stableHash(s){ let h=5381; for(let i=0;i<s.length;i++) h=i32(Math.imul(h,33)+s.charCodeAt(i)); return h & 0x7FFFFFF; }
+function mood(b,seed,stage){ return new NetRandom(i32(Math.imul(seed,1000003)+stage*7717+17)).next(b.moodJitterMin,b.moodJitterMax+1); }
+function exposureRoll(seed,stage,mid,risk){
+  if(risk<=0) return false;
+  return new NetRandom(i32(Math.imul(seed,7919)+stage*131+stableHash(mid))).next(0,100) < risk;
+}
+
+/* ═══ 3. 회담. src/SessionSim.cs 와 같은 규칙을 data/ 만 읽어 다시 돈다 ══ */
+const clamp=(v,lo,hi)=>v<lo?lo:(v>hi?hi:v);
+
+function idx(D){
+  const clause={}, variant={}, vClause={}, misread={};
+  D.treaty.clauses.forEach(c=>{ clause[c.id]=c; c.variants.forEach(v=>{ variant[v.id]=v; vClause[v.id]=c.id; }); });
+  D.session.misunderstandings.forEach(m=>misread[m.id]=m);
+  return {clause,variant,vClause,misread};
+}
+
+function matches(c,st){
+  if(!c) return true;
+  if(c.tensionMin>=0 && st.tension<c.tensionMin) return false;
+  if(c.tensionMax>=0 && st.tension>c.tensionMax) return false;
+  if(c.suspicionMin>=0 && st.suspicion<c.suspicionMin) return false;
+  if(c.clauseId){
+    const cur=st.clauses[c.clauseId]||"";
+    if(c.variantId && cur!==c.variantId) return false;
+    if(c.notVariantId && cur===c.notVariantId) return false;
+  }
+  return true;
+}
+const exactOf = r => r.renderings.find(x=>x.register==="exact") || r.renderings[0];
+
+const POLICIES = {
+  p_exact:{name:"늘 정확하게 옮긴다", pick:(r)=>pure(r,"exact")},
+  p_soft:{name:"늘 완곡하게 옮긴다",  pick:(r)=>pure(r,"soft")},
+  p_hard:{name:"늘 강경하게 옮긴다",  pick:(r)=>pure(r,"hard")},
+  p_false:{name:"옮길 수 있는 곳마다 틀리게 옮긴다", pick:(r)=>pure(r,"false")},
+  p_situational:{name:"방을 읽는다", pick:(r,st)=>{
+    const g=k=>r.renderings.find(x=>x.register===k);
+    if(st.tension>=58) return g("soft")||exactOf(r);
+    if(st.suspicion<18 && g("false")) return g("false");
+    if(st.tension<=34 && g("hard")) return g("hard");
+    return exactOf(r);
+  }},
+  p_shade:{name:"고용주 쪽으로 기울여 옮긴다", pick:(r,st)=>{
+    const g=k=>r.renderings.find(x=>x.register===k);
+    if(r.revisits && r.revisits.length) return g("soft")||exactOf(r);
+    if(r.speaker==="n_haran") return (st.tension<70 ? (g("hard")||exactOf(r)) : exactOf(r));
+    return g("soft")||exactOf(r);
+  }}
+};
+function pure(r,reg){ return r.renderings.find(x=>x.register===reg) || exactOf(r); }
+
+function runSession(D,I,seed,policyId,overrides,renderingMatters){
+  const b=D.balance, pol=POLICIES[policyId];
+  if(renderingMatters===undefined) renderingMatters=true;
+  const st={tension:b.startTension,trustA:b.startTrustA,trustB:b.startTrustB,suspicion:b.startSuspicion,clauses:{},standing:[]};
+  D.treaty.clauses.forEach(c=>st.clauses[c.id]="");
+  const res={trace:[],standing:[],exposed:[],collapsed:false,collapsedAt:"",signed:false};
+  const risk={};
+
+  for(let i=0;i<D.session.stages.length;i++){
+    const stage=D.session.stages[i];
+    st.stageIndex=i;
+    const round = stage.rounds.find(r=>matches(r.condition,st)) || stage.rounds[stage.rounds.length-1];
+    let pick=null;
+    if(overrides && overrides[stage.id]) pick=round.renderings.find(x=>x.id===overrides[stage.id]);
+    if(!pick) pick=pol.pick(round,st);
+    if(!pick) pick=exactOf(round);
+    const ap = renderingMatters ? pick : exactOf(round);
+
+    const step={stageIndex:i,stageId:stage.id,round,pick,setClause:"",setVariant:"",seeded:"",exposed:[]};
+    st.tension=clamp(st.tension+(ap.tensionDelta||0),0,100);
+    st.trustA=clamp(st.trustA+(ap.trustADelta||0),0,100);
+    st.trustB=clamp(st.trustB+(ap.trustBDelta||0),0,100);
+    st.suspicion=clamp(st.suspicion+(ap.suspicionDelta||0),0,100);
+
+    if(ap.setsClause && ap.setsVariant){ st.clauses[ap.setsClause]=ap.setsVariant; step.setClause=ap.setsClause; step.setVariant=ap.setsVariant; }
+    if(ap.seedsMisunderstanding && res.standing.indexOf(ap.seedsMisunderstanding)<0 && res.exposed.indexOf(ap.seedsMisunderstanding)<0){
+      res.standing.push(ap.seedsMisunderstanding);
+      risk[ap.seedsMisunderstanding]= (ap.exposureRiskPercent<0?0:ap.exposureRiskPercent);
+      step.seeded=ap.seedsMisunderstanding;
+    }
+
+    const revisit=[];
+    if(round.topicClause) revisit.push(round.topicClause);
+    (round.revisits||[]).forEach(c=>{ if(revisit.indexOf(c)<0) revisit.push(c); });
+    if(revisit.length){
+      for(let k=res.standing.length-1;k>=0;k--){
+        const mid=res.standing[k];
+        if(mid===step.seeded) continue;
+        const m=I.misread[mid];
+        if(!m || revisit.indexOf(m.clauseId)<0) continue;
+        if(!exposureRoll(seed,i,mid,(risk[mid]||0)+(ap.revealBonusPercent||0))) continue;
+        res.standing.splice(k,1); res.exposed.push(mid); step.exposed.push(mid);
+        st.suspicion=clamp(st.suspicion+b.exposureSuspicion,0,100);
+        st.tension=clamp(st.tension+b.exposureTension,0,100);
+        st.trustA=clamp(st.trustA-b.exposureTrust,0,100);
+        st.trustB=clamp(st.trustB-b.exposureTrust,0,100);
+      }
+    }
+    step.mood=mood(b,seed,i);
+    st.tension=clamp(st.tension+step.mood,0,100);
+    step.tension=st.tension; step.trustA=st.trustA; step.trustB=st.trustB; step.suspicion=st.suspicion;
+    res.trace.push(step);
+    if(st.tension>=b.collapseTension){ res.collapsed=true; res.collapsedAt=stage.id; break; }
+  }
+
+  if(!res.collapsed){
+    st.tension=clamp(st.tension+res.standing.length*b.misunderstandingTension,0,100);
+    if(st.tension>=b.collapseTension){ res.collapsed=true; res.collapsedAt="s_sign"; }
+  }
+  res.tension=st.tension; res.trustA=st.trustA; res.trustB=st.trustB; res.suspicion=st.suspicion;
+  res.clauses=st.clauses;
+  res.signed = !res.collapsed && st.trustA>=b.signTrustMin && st.trustB>=b.signTrustMin;
+
+  res.paperFavorA=0; res.paperFavorB=0; res.unset=0;
+  D.treaty.clauses.forEach(c=>{
+    const vid=res.clauses[c.id];
+    if(!vid){ res.unset++; return; }
+    const v=I.variant[vid]; res.paperFavorA+=v.favorA; res.paperFavorB+=v.favorB;
+  });
+  const loss=res.standing.length*b.misunderstandingFavorLoss;
+  res.favorA=res.signed?res.paperFavorA-loss:0;
+  res.favorB=res.signed?res.paperFavorB-loss:0;
+  res.ending=resolveEnding(D,res);
+  return res;
+}
+
+function resolveEnding(D,r){
+  const list=D.endings.endings.slice().sort((a,b)=>a.priority-b.priority);
+  for(const e of list){
+    if(e.requiresSigned===1 && !r.signed) continue;
+    if(e.requiresSigned===0 && r.signed) continue;
+    if(e.tensionMin>=0 && r.tension<e.tensionMin) continue;
+    if(e.tensionMax>=0 && r.tension>e.tensionMax) continue;
+    if(e.suspicionMin>=0 && r.suspicion<e.suspicionMin) continue;
+    if(e.suspicionMax>=0 && r.suspicion>e.suspicionMax) continue;
+    if(e.standingMin>=0 && r.standing.length<e.standingMin) continue;
+    if(e.standingMax>=0 && r.standing.length>e.standingMax) continue;
+    if(e.exposedMin>=0 && r.exposed.length<e.exposedMin) continue;
+    if(e.unsetClauseMin>=0 && r.unset<e.unsetClauseMin) continue;
+    if(e.favorGapMin>=0 && Math.abs(r.favorA-r.favorB)<e.favorGapMin) continue;
+    return e;
+  }
+  return {id:"e_unclassified",name:"분류되지 않음",text:""};
+}
+
+function score(o,r){
+  let s=0;
+  if(r.signed) s+=o.signBonus;
+  s+=Math.trunc((100-r.tension)*o.peaceWeight/100);
+  s+=Math.trunc(r.favorA*o.favorAWeight/100);
+  s+=Math.trunc(r.favorB*o.favorBWeight/100);
+  s-=Math.trunc(r.suspicion*o.suspicionWeight/100);
+  s-=r.standing.length*o.standingWeight;
+  s-=r.exposed.length*o.exposedWeight;
+  s-=r.unset*o.unsetWeight;
+  return s;
+}
+const allSeeds = D => [D.balance.seed].concat(D.balance.extraSeeds||[]);
+
+/* ═══ 4. palette.json 을 CSS 변수로 옮긴다. 색을 코드에 적지 않는다 ═════ */
+function applyPalette(p){
+  const r=document.documentElement.style, c=p.color, t=p.type, s=p.sheet;
+  const set=(k,v)=>r.setProperty(k,v);
+  set("--paper",c.paper); set("--paperLit",c.paperLit); set("--paperDim",c.paperDim); set("--paperEdge",c.paperEdge);
+  set("--ink",c.typeInk); set("--inkWeak",c.typeInkWeak); set("--carbon",c.carbon); set("--carbonWeak",c.carbonWeak);
+  set("--rule",c.rule); set("--bleed",c.bleed); set("--bleedWash",c.bleedWash); set("--stamp",c.stamp);
+  set("--sTitle",t.sizeTitle+"px"); set("--sHead",t.sizeHeading+"px"); set("--sBody",t.sizeBody+"px");
+  set("--sHint",t.sizeHint+"px"); set("--sNum",t.sizeNumeral+"px"); set("--sClause",t.sizeClause+"px");
+  set("--trkTitle",t.trackingTitle+"px"); set("--lhBody",(t.lineHeightBody/100));
+  set("--colGap",s.columnGapPx+"px"); set("--margin",s.marginPx+"px");
+  set("--ruleW",s.ruleWidthPx+"px"); set("--fold",s.edgeFoldPx+"px"); set("--vig",p.grade.vignette);
+  set("--bleedSpread",p.bleedMark.spreadPx+"px"); set("--splitHatch",p.split.hatchPitchPx+"px");
+  Object.keys(p.register).forEach(k=>{ if(k[0]!=="_") set("--reg"+k[0].toUpperCase()+k.slice(1),p.register[k].color); });
+}
+
+/* ═══ 5. 화면 ═════════════════════════════════════════════════════════ */
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+let D,I,UI={seed:null,policy:"p_shade",overrides:{}};   // 기본값은 이 PoC의 논지 — 거짓말 없이 조약을 기울이는 방침
+
+function regLabel(p,reg){ const r=p.register[reg]; return r? r.mark+" "+r.label : reg; }
+
+/* §01 조약문 두 단 — 왼쪽은 하란이 읽는 조문, 오른쪽은 케리아가 읽는 조문 */
+function treatyColumns(res){
+  const A=[],B=[];
+  D.treaty.clauses.forEach(c=>{
+    const vid=res.clauses[c.id];
+    const v=vid?I.variant[vid]:null;
+    const mis=res.standing.map(m=>I.misread[m]).filter(m=>m.clauseId===c.id);
+    const cls="article"+(v?"":" unset")+(mis.length?" split":"");
+    const num='<span class="num">'+(c.article===0?"전문":"제 "+c.article+" 조")+"</span>";
+    const text=v?esc(v.text):esc(c.unsetText);
+    const noteA=mis.map(m=>'<span class="splitnote">「'+esc(m.word)+'」 → '+esc(m.aBelieves)+"</span>").join("");
+    const noteB=mis.map(m=>'<span class="splitnote">「'+esc(m.word)+'」 → '+esc(m.bBelieves)+"</span>").join("");
+    A.push('<div class="'+cls+'">'+num+'<div class="body">'+text+noteA+"</div></div>");
+    B.push('<div class="'+cls+'">'+num+'<div class="body">'+text+noteB+"</div></div>");
+  });
+  const na=D.nations.nations[0], nb=D.nations.nations[1];
+  return '<div class="bicol">'
+    +'<div class="left"><div class="colhead">'+esc(na.name)+" 정서본 · "+esc(na.tongue)+"</div>"+A.join("")+"</div>"
+    +'<div class="rule"></div>'
+    +'<div class="right"><div class="colhead">'+esc(nb.name)+" 정서본 · "+esc(nb.tongue)+"</div>"+B.join("")+"</div>"
+    +"</div>";
+}
+
+/* §02 회담 기록 — 왼쪽 원 발화, 오른쪽 후보 역어. 누르면 그 낱말만 바뀐다 */
+function transcript(res){
+  const P=D.palette, rows=[];
+  res.trace.forEach(step=>{
+    const r=step.round, sp=D.nations.nations.find(n=>n.id===r.speaker);
+    const stamp = step.setClause ? '<span class="stamp">'+(I.clause[step.setClause].article===0?"전문":"제"+I.clause[step.setClause].article+"조")+"</span>" : "";
+    const opts=r.renderings.map(g=>{
+      const on = g.id===step.pick.id;
+      const changes = g.setsClause ? "제"+(I.clause[g.setsClause].article)+"조→"+esc(I.variant[g.setsVariant].text.slice(0,16))+"…" : "";
+      const seeds = g.seedsMisunderstanding ? " · 오해「"+esc(I.misread[g.seedsMisunderstanding].word)+"」" : "";
+      return '<button class="opt r-'+g.register+(on?" on":"")+'" data-stage="'+esc(step.stageId)+'" data-r="'+esc(g.id)+'">'
+        +'<span class="reg">'+esc(regLabel(P,g.register))+"</span>"
+        +'<span><span class="said" style="font-size:var(--sBody)">'+esc(g.text)+"</span>"
+        +'<span class="why"> '+(changes?" ▸ "+changes:"")+seeds+(g.note?" — "+esc(g.note):"")+"</span></span></button>";
+    }).join("");
+    const exposed = step.exposed.length
+      ? '<div class="exposed">✱ 이 자리에서 드러났다: '+step.exposed.map(m=>"「"+esc(I.misread[m].word)+"」").join(" ")+"</div>" : "";
+    rows.push('<div class="turn"><div class="meta">'
+      +'<span class="mono">'+String(step.stageIndex+1).padStart(2,"0")+"</span>"
+      +'<span class="who">'+esc(sp.shortName)+" 가 말한다</span>"
+      +'<span>긴장 '+step.tension+" · 하란 "+step.trustA+" · 케리아 "+step.trustB+" · 나에 대한 의심 "+step.suspicion+"</span>"
+      +"</div>"
+      +'<div class="bicol"><div class="left">'
+        +'<div class="said">'+esc(r.sourceText)+"</div>"
+        +'<div class="gloss">직역 — '+esc(r.literalGloss)+"</div>"
+      +'</div><div class="rule"></div><div class="right">'
+        +'<div class="said">'+esc(step.pick.text)+stamp+"</div>"
+        +'<div class="heard">들린 뜻 — '+esc(step.pick.heardAs)+"</div>"
+      +"</div></div>"
+      +'<div class="opts">'+opts+"</div>"+exposed+"</div>");
+  });
+  return rows.join("");
+}
+
+/* §03 한 낱말이 바꾸는 것 — 지금 이 밤에서 직접 센다 (핵 검사기 1과 같은 계산) */
+function flipTable(){
+  const rows=[]; let points=0, tried=0;
+  const base=runSession(D,I,UI.seed,UI.policy,UI.overrides,true);
+  const baseT=treatySig(base);
+  base.trace.forEach(step=>{
+    let n=0, endings=0;
+    step.round.renderings.forEach(g=>{
+      if(g.id===step.pick.id) return;
+      tried++;
+      const ov=Object.assign({},UI.overrides); ov[step.stageId]=g.id;
+      const f=runSession(D,I,UI.seed,UI.policy,ov,true);
+      if(treatySig(f)!==baseT) n++;
+      if(f.ending.id!==base.ending.id) endings++;
+    });
+    if(n>0) points++;
+    const w=Math.round(n/Math.max(1,step.round.renderings.length-1)*100);
+    rows.push("<tr"+(n>0?' class="hi"':"")+"><td>"+String(step.stageIndex+1).padStart(2,"0")+" "+esc(step.round.id)
+      +'</td><td class="n">'+n+" / "+(step.round.renderings.length-1)+"</td>"
+      +'<td><span class="bar red" style="width:'+w+'px"></span></td>'
+      +'<td class="n">'+endings+"</td></tr>");
+  });
+  return {html:"<table><thead><tr><th>마디</th><th class='n'>조약이 달라지는 역어</th><th></th><th class='n'>결말까지</th></tr></thead><tbody>"
+    +rows.join("")+"</tbody></table>", points, tried};
+}
+const treatySig=r=>D.treaty.clauses.map(c=>c.id+"="+(r.clauses[c.id]||"-")).join(";")+(r.signed?"|S":"|X");
+
+/* §04 안전한 낱말이 없다 — 정책 × 자 (핵 검사기 2와 같은 계산) */
+function objectiveTable(){
+  const seeds=allSeeds(D), pols=Object.keys(POLICIES);
+  const t={};
+  D.balance.objectives.forEach(o=>{
+    t[o.id]={};
+    pols.forEach(p=>{ let s=0; seeds.forEach(sd=>{ s+=score(o,runSession(D,I,sd,p,null,true)); }); t[o.id][p]=s; });
+  });
+  let head="<tr><th>자 — 누가 재는가</th>"+pols.map(p=>"<th class='n'>"+esc(p.replace("p_",""))+"</th>").join("")+"<th>이긴 쪽</th></tr>";
+  const body=D.balance.objectives.map(o=>{
+    let best=pols[0]; pols.forEach(p=>{ if(t[o.id][p]>t[o.id][best]) best=p; });
+    return "<tr><td>"+esc(o.name)+' <span class="hint">'+esc(o.whose)+"</span></td>"
+      +pols.map(p=>"<td class='n'"+(p===best?" style='color:var(--bleed)'":"")+">"+t[o.id][p]+"</td>").join("")
+      +'<td class="win-tag">'+esc(best.replace("p_",""))+"</td></tr>";
+  }).join("");
+  const exactWins=D.balance.objectives.filter(o=>{
+    let best=pols[0]; pols.forEach(p=>{ if(t[o.id][p]>t[o.id][best]) best=p; }); return best==="p_exact";
+  }).length;
+  return {html:"<table><thead>"+head+"</thead><tbody>"+body+"</tbody></table>", exactWins, total:D.balance.objectives.length};
+}
+
+function render(){
+  const P=D.palette;
+  const res=runSession(D,I,UI.seed,UI.policy,UI.overrides,true);
+  const flips=flipTable();
+  const obj=objectiveTable();
+  const seeds=allSeeds(D);
+  const overridden=Object.keys(UI.overrides).length;
+
+  const h=[];
+  h.push('<section class="sheet"><h1>'+esc(P.name)
+    +'<span class="sub">'+esc(P.oneLine)+"</span></h1>"
+    +'<p class="lede">플레이어는 두 나라 사이 <em>통역만</em> 맡는다. 말하는 것도 결정하는 것도 남이 한다. '
+    +"고를 수 있는 것은 <em>어느 낱말로 옮길 것인가</em> 하나뿐이고, 그 하나가 조약을 바꾼다.</p>"
+    +'<p class="hint">이 화면의 모든 글과 수치는 <code>data/</code> 의 JSON을 그 자리에서 읽은 것이고, '
+    +"회담도 여기서 다시 돌린다 — 난수까지 헤드리스 테스트와 같은 밤이다. "
+    +"색·크기·번짐은 <code>presentation/palette.json</code> 이 정한다.</p>"
+    +'<div class="controls">'
+      +"<label>밤(씨드) <select id=\"seed\">"+seeds.map(s=>'<option value="'+s+'"'+(s===UI.seed?" selected":"")+">"+s+"</option>").join("")+"</select></label>"
+      +"<label>통역의 방침 <select id=\"pol\">"+Object.keys(POLICIES).map(p=>'<option value="'+p+'"'+(p===UI.policy?" selected":"")+">"+esc(POLICIES[p].name)+"</option>").join("")+"</select></label>"
+      +'<button class="reset" id="reset">고친 낱말 되돌리기'+(overridden?" ("+overridden+")":"")+"</button>"
+      +'<span class="hint">§02 에서 <b>역어 한 줄을 누르면</b> 그 낱말만 바뀌고 이 장 전체가 다시 그려진다</span>'
+    +"</div>"
+    +'<div class="gauges">'
+      +"<span>긴장 <b>"+res.tension+"</b>/"+D.balance.collapseTension+"</span>"
+      +"<span>하란의 믿음 <b>"+res.trustA+"</b></span><span>케리아의 믿음 <b>"+res.trustB+"</b></span>"
+      +"<span>나에 대한 의심 <b>"+res.suspicion+"</b></span>"
+      +"<span>조인 <b>"+(res.signed?"했다":"하지 않았다")+"</b></span>"
+      +"<span>실익 하란 <b>"+res.favorA+"</b> · 케리아 <b>"+res.favorB+"</b></span>"
+    +"</div></section>");
+
+  // §01
+  h.push('<section class="sheet"><h2><span class="no">01</span>'+esc(D.session.title)+"</h2>"
+    +"<p>"+esc(D.session.place)+". <b>같은 종이의 두 단</b>이고, 왼쪽은 하란이 읽는 조문, 오른쪽은 케리아가 읽는 조문이다. "
+    +"두 단이 같으면 조약은 하나다. <em>갈라진 자리가 이 게임이다.</em></p>"
+    +treatyColumns(res)
+    +'<p class="hint" style="margin-top:12px">붉은 빗금이 친 조항은 <b>두 나라가 같은 줄을 다르게 읽고 있는 자리</b>다. '
+    +"조문의 글자는 똑같다 — 아래 한 줄이 다르다.</p>"
+    +'<div class="sheet" style="margin:14px 0 0;background:var(--paperDim);box-shadow:none">'
+      +"<b>"+esc(res.ending.name)+"</b> <span class=\"mono\">"+esc(res.ending.id)+"</span><br>"
+      +'<span class="hint">'+esc(res.ending.text)+"</span>"
+      +(res.standing.length?"<br>"+res.standing.map(m=>'<span class="seeded">· 「'+esc(I.misread[m].word)+"」 "+esc(I.misread[m].consequence)+"</span>").join("<br>"):"")
+    +"</div></section>");
+
+  // §02
+  h.push('<section class="sheet"><h2><span class="no">02</span>회담 기록 — 열두 마디</h2>'
+    +"<p>왼쪽은 <b>실제로 나온 말</b>, 오른쪽은 <b>내가 옮긴 말</b>과 상대가 받아들인 뜻이다. "
+    +"고른 역어는 종이에 <em>붉게 번지고</em>, 그 때문에 굳은 조항 번호가 옆에 도장으로 찍힌다.</p>"
+    +transcript(res)+"</section>");
+
+  // §03
+  h.push('<section class="sheet"><h2><span class="no">03</span>한 낱말이 조약을 바꾼다</h2>'
+    +"<p>지금 이 밤에서 <b>역어 하나씩만</b> 바꿔 보고 최종 조약이 달라지는지 센다. "
+    +"핵 검사기 <code>OneWordChangesTheTreaty</code> 가 이것을 씨드 "+seeds.length+"개 × 정책 "+Object.keys(POLICIES).length+"가지로 돌린 것이다.</p>"
+    +flips.html
+    +'<p class="hint">바꿔 본 낱말 <b>'+flips.tried+"</b>개 · 조약이 달라지는 마디 <b>"+flips.points+" / "+res.trace.length+"</b>. "
+    +"난수는 <b>씨드와 마디 번호로만</b> 굴린다 — 그래서 달라진 것이 있다면 그것은 바꾼 낱말 하나 때문이다.</p></section>");
+
+  // §04
+  h.push('<section class="sheet"><h2><span class="no">04</span>안전한 낱말이 없다</h2>'
+    +"<p>정책 여섯을 씨드 "+seeds.length+"개에 돌려 <b>자 다섯</b>으로 잰다. "
+    +"「늘 정확하게」가 모든 자에서 최선이면 고민이 사라진다 — 지금 <b>"+obj.exactWins+" / "+obj.total+"</b>에서만 이긴다.</p>"
+    +obj.html
+    +'<p class="hint">「고용주 쪽으로 기울여 옮긴다」는 <b>거짓말을 한마디도 하지 않는다.</b> '
+    +"정확·완곡·강경만 골라 쓰는데도 조약이 기운다 — 이 PoC가 하려는 말이 이것이다.</p></section>");
+
+  // §05 데이터
+  h.push('<section class="sheet"><h2><span class="no">05</span>어긋날 수 있는 낱말들</h2>'
+    +"<table><thead><tr><th>낱말</th><th>조항</th><th>하란이 믿는 것</th><th>케리아가 믿는 것</th><th>그래서</th></tr></thead><tbody>"
+    +D.session.misunderstandings.map(m=>{
+        const live=res.standing.indexOf(m.id)>=0, gone=res.exposed.indexOf(m.id)>=0;
+        return "<tr"+(live?' class="hi"':"")+"><td>「"+esc(m.word)+"」"+(live?" <span class='win-tag'>남았다</span>":(gone?" <span class='hint'>드러났다</span>":""))
+          +"</td><td>"+esc(I.clause[m.clauseId].name)+"</td><td>"+esc(m.aBelieves)+"</td><td>"+esc(m.bBelieves)+"</td><td>"+esc(m.consequence)+"</td></tr>";
+      }).join("")
+    +"</tbody></table></section>");
+
+  document.getElementById("app").innerHTML=h.join("");
+  document.getElementById("seed").onchange=e=>{ UI.seed=parseInt(e.target.value,10); UI.overrides={}; render(); };
+  document.getElementById("pol").onchange=e=>{ UI.policy=e.target.value; UI.overrides={}; render(); };
+  document.getElementById("reset").onclick=()=>{ UI.overrides={}; render(); };
+  document.querySelectorAll(".opt").forEach(b=>{
+    b.onclick=()=>{ UI.overrides[b.dataset.stage]=b.dataset.r; render(); };
+  });
+}
+
+load().then(d=>{
+  D=d; I=idx(D); applyPalette(D.palette); UI.seed=D.balance.seed;
+  render();
+}).catch(e=>{
+  document.getElementById("boot").textContent="데이터를 읽지 못했다: "+e+" — 저장소에서 python -m http.server 로 열어야 한다";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "slug": "mystery-locked-phone",
+  "kind": "phone",
+  "title": "잠금 해제 불가",
+  "english": "STILL LOCKED",
+  "tagline": "그가 죽었다는 것을, 이 전화는 아직 모른다.",
+  "instructions": "잠금 화면에서 전화에 반응하고 알림을 펼치세요. 위치 단서를 모아 지금 위험에 처한 사람에게 도움을 보냅니다.",
+  "question": "앱을 열 수 없어도 알림에 반응하는 일이 능동적인 조사로 느껴지는가?",
+  "values": [
+    12
+  ],
+  "items": [
+    {
+      "id": "yoon",
+      "title": "윤서",
+      "text": "부재중 전화 · 어제 17:03",
+      "detail": "구청 기록실"
+    },
+    {
+      "id": "calendar",
+      "title": "일정",
+      "text": "원본 인계 · 어제 17:00",
+      "detail": "구청 B2"
+    },
+    {
+      "id": "owner",
+      "title": "도현",
+      "text": "잠금 화면의 주인",
+      "detail": ""
+    }
+  ],
+  "palette": {
+    "background": "#101219",
+    "surface": "#202633",
+    "paper": "#f2f4fa",
+    "accent": "#8ab9ff",
+    "muted": "#a6b0c2"
+  }
+}

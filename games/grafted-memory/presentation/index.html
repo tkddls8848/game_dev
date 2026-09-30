@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>꿈의 배선도 — grafted-memory</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 그래야 다른 PoC와 견줄 수 있고, 데이터를 고치면 화면이 따라온다.
+
+  ★ 이 목업은 거부 규칙을 **JS로 다시 구현한다**(§03 의 evaluate). 그림이 살아 있으려면
+    선택을 바꿀 때마다 떨림이 다시 계산되어야 하기 때문이다. 저울·문턱·정서 거리는 전부
+    balance.json / net.json 에서 읽으므로 숫자가 몰래 갈라질 수는 없다. 규칙의 *모양*이 갈라질 수는
+    있으므로, 규칙을 고칠 때는 src/GraftRules.cs 와 이 파일을 같이 고쳐야 한다. 진실은 C# 쪽이다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/grafted-memory && python -m http.server 8099
+      -> http://localhost:8099/presentation/index.html
+-->
+<style>
+@font-face { font-family:"Orbit";   src:url("assets/fonts/Orbit-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"Stylish"; src:url("assets/fonts/Stylish-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --void:#04060D; --deep:#080D19; --glass:#0E1728; --glassLit:#152238; --rail:#1C2C46;
+  --phosphor:#74E4FF; --phosphorDim:#2E6C82; --filament:#BDF2FF; --violet:#8E7BD8;
+  --amber:#FFC26B; --tremor:#FF4A5A; --tremorDim:#8E2230;
+  --ink:#C6DCE7; --inkSoft:#6E8798; --inkFaint:#3E5364;
+  --sTitle:54px; --sHead:26px; --sBody:16px; --sHint:13px; --sNum:14px; --trkTitle:.06em;
+  --blur:6px; --blurT:10px; --amp:2px; --period:420ms; --vig:.42; --scan:.05;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--void); color:var(--ink);
+  font-family:"Stylish",system-ui,sans-serif; font-size:var(--sBody); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+/* 유리판 — 정지한 입자 한 겹 + 주사선 + 비네트. 이미지를 한 장도 받지 않았다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, rgba(116,228,255,var(--scan)) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 30%, rgba(142,123,216,.10), transparent 60%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 42%, transparent 46%, rgba(4,6,13,var(--vig)) 100%);
+}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:44px 20px 100px}
+
+.plate{
+  position:relative;
+  background:linear-gradient(160deg,var(--glassLit),var(--glass) 42%,var(--deep));
+  border:1px solid var(--rail); border-radius:3px;
+  padding:22px 24px 26px; margin:0 0 28px;
+  box-shadow:0 1px 0 rgba(189,242,255,.06) inset, 0 -1px 0 rgba(4,6,13,.6) inset,
+             0 0 28px rgba(46,108,130,.10);
+}
+h1{font-family:"Orbit","Stylish",sans-serif;font-size:var(--sTitle);letter-spacing:var(--trkTitle);
+   margin:0 0 4px;line-height:1.05;color:var(--filament);
+   text-shadow:0 0 var(--blur) rgba(116,228,255,.35)}
+h1 .sub{display:block;font-family:"Stylish";font-size:calc(var(--sHead)*.7);letter-spacing:0;color:var(--inkSoft)}
+h2{font-family:"Orbit","Stylish",sans-serif;font-size:var(--sHead);margin:0 0 6px;color:var(--phosphor)}
+h2 .no{color:var(--violet);margin-right:10px}
+h3{font-size:var(--sBody);margin:20px 0 6px;color:var(--inkSoft);font-weight:400}
+p{margin:6px 0 12px;max-width:76ch}
+.hint{font-size:var(--sHint);color:var(--inkSoft)}
+.lede{font-size:calc(var(--sBody) + 2px);color:var(--filament)}
+b,strong{color:var(--filament)}
+em{font-style:normal;border-bottom:1px solid var(--tremor)}
+code{font-family:"Orbit",monospace;font-size:var(--sNum);color:var(--amber)}
+
+table{border-collapse:collapse;width:100%;font-size:var(--sNum);margin:8px 0 6px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid rgba(28,44,70,.9)}
+th{font-family:"Orbit","Stylish",sans-serif;color:var(--violet);font-weight:400}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:"Orbit",monospace}
+tr.hi td{background:rgba(255,74,90,.10)}
+tr.ok td{background:rgba(116,228,255,.06)}
+
+svg{display:block;max-width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:var(--sHint);margin:10px 0 4px;color:var(--inkSoft)}
+.legend i{display:inline-block;width:44px;height:0;border-top:2px solid;margin-right:7px;vertical-align:middle}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px 26px}
+
+.ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;margin:6px 0 14px}
+.ctl label{display:flex;flex-direction:column;gap:3px;font-size:var(--sHint);color:var(--inkSoft)}
+select,input[type=range]{
+  background:var(--deep);color:var(--filament);border:1px solid var(--rail);border-radius:2px;
+  font-family:"Stylish",sans-serif;font-size:var(--sNum);padding:4px 6px;min-width:150px;
+}
+input[type=range]{padding:0;min-width:190px;accent-color:var(--phosphor)}
+button{
+  background:var(--deep);color:var(--phosphor);border:1px solid var(--phosphorDim);border-radius:2px;
+  font-family:"Orbit",sans-serif;font-size:var(--sNum);padding:6px 12px;cursor:pointer;
+}
+button:hover{background:var(--glassLit);color:var(--filament)}
+
+.verdict{font-family:"Orbit",sans-serif;font-size:calc(var(--sHead)*.9);letter-spacing:.04em}
+.verdict.no{color:var(--tremor);text-shadow:0 0 var(--blurT) rgba(255,74,90,.45)}
+.verdict.yes{color:var(--phosphor);text-shadow:0 0 var(--blur) rgba(116,228,255,.45)}
+.bar{height:8px;background:var(--deep);border:1px solid var(--rail);border-radius:1px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--phosphorDim),var(--tremor))}
+.pill{display:inline-block;font-size:var(--sHint);padding:1px 8px;border-radius:9px;border:1px solid currentColor;margin-right:5px}
+.pill.logic{color:var(--amber)} .pill.feel{color:var(--violet)}
+@keyframes tremble{0%,100%{transform:translate(0,0)}25%{transform:translate(var(--amp),0)}75%{transform:translate(calc(var(--amp)*-1),0)}}
+.trembling{animation:tremble var(--period) ease-in-out infinite}
+.err{color:var(--tremor);font-family:"Orbit",sans-serif;font-size:var(--sHead)}
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">유리판을 올리는 중… (fetch 가 막혔다면 <code>python -m http.server 8099</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ───────────────────────────
+const FILES = ["net", "selfnet", "commissions", "balance"];
+
+async function load(){
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+// ── palette.json 을 CSS 변수로 옮긴다. 색을 코드에 적지 않는다 ────────────────
+function applyPalette(p){
+  const r = document.documentElement.style;
+  for (const [k,v] of Object.entries(p.color)) r.setProperty("--" + k, v);
+  r.setProperty("--sTitle", p.type.sizeTitle + "px");
+  r.setProperty("--sHead",  p.type.sizeHeading + "px");
+  r.setProperty("--sBody",  p.type.sizeBody + "px");
+  r.setProperty("--sHint",  p.type.sizeHint + "px");
+  r.setProperty("--sNum",   p.type.sizeNum + "px");
+  r.setProperty("--trkTitle", p.type.trackTitle);
+  r.setProperty("--blur",  p.glow.blurPx + "px");
+  r.setProperty("--blurT", p.glow.blurTremorPx + "px");
+  r.setProperty("--amp",   p.tremble.amplitudePx + "px");
+  r.setProperty("--period", p.tremble.periodMs + "ms");
+  r.setProperty("--vig",   p.grade.vignette);
+  r.setProperty("--scan",  p.grade.scanlineAlpha);
+}
+
+// ══ 규칙 — src/GraftRules.cs 를 그대로 옮긴 것. 저울은 balance.json 에서 읽는다 ══
+// 떨림 = 저울 x 크기 의 정수 곱. 나눗셈이 한 번도 없다.
+
+const W = {};   // 세계 하나로 묶어 둔다
+
+function moodDist(a,b){
+  const ms = W.net.moods, n = ms.length;
+  return W.net.moodDistance[ms.findIndex(m=>m.id===a)*n + ms.findIndex(m=>m.id===b)];
+}
+function person(id){ return W.net.people.find(p=>p.id===id); }
+function place(id){ return W.net.places.find(p=>p.id===id); }
+function moodName(id){ return W.net.moods.find(m=>m.id===id).name; }
+function personPresent(id,day){
+  const p = person(id);
+  return day >= p.presentFromDay && (p.presentUntilDay < 0 || day <= p.presentUntilDay);
+}
+function placeExists(id,day){
+  const p = place(id);
+  return day >= p.existsFromDay && (p.existsUntilDay < 0 || day <= p.existsUntilDay);
+}
+
+/** 눈 하나. distorted 에 든 기억은 참값이 이긴다. known 이 있으면 그 기억만 보인다. */
+function view(subject, distorted, known, corroborated){
+  const byId = new Map(subject.memories.map(m=>[m.id,m]));
+  const D = new Set(distorted || []);
+  const C = new Set(corroborated || []);
+  const truthy = id => !known || C.has(id);      // 겹쳐 물었으면 참값이 보인다
+  return {
+    ids: known ? known.slice() : subject.memories.map(m=>m.id),
+    has: id => byId.has(id) && (!known || known.includes(id)),
+    day: id => (D.has(id) && truthy(id) && byId.get(id).trueDayIndex >= 0)
+               ? byId.get(id).trueDayIndex : byId.get(id).dayIndex,
+    span: id => byId.get(id).spanDays,
+    place: id => (D.has(id) && truthy(id) && byId.get(id).truePlaceId)
+                 ? byId.get(id).truePlaceId : byId.get(id).placeId,
+    mood: id => (D.has(id) && truthy(id) && byId.get(id).trueMoodId)
+                ? byId.get(id).trueMoodId : byId.get(id).moodId,
+    inten: id => byId.get(id).intensityPercent,
+    fix: id => byId.get(id).fixityPercent,
+    people: id => byId.get(id).peopleIds || [],
+    name: id => byId.get(id).name
+  };
+}
+
+/** src/GraftRules.cs Evaluate 와 같은 순서·같은 이름으로. */
+function evaluate(com, choice, v){
+  const b = W.balance, out = {tremors:[], total:0, worst:0, worstRule:""};
+  const add = (rule,to,ref,strength,detail) => {
+    out.tremors.push({rule,to,ref,strength,detail}); };
+
+  const gs = choice.day, ge = choice.day + com.spanDays - 1;
+
+  if (!placeExists(choice.place, gs) || !placeExists(choice.place, ge))
+    add("PlaceWindow","",choice.place, b.placeWindowWeight*100,
+        place(choice.place).name + " 은 그 날 그 자리에 없었다");
+
+  for (const pid of com.requiredPeopleIds)
+    if (!(personPresent(pid,gs) && personPresent(pid,ge)))
+      add("PersonAbsent","",pid, b.personAbsentWeight*100,
+          person(pid).name + " 는 그 날 거기 있을 수 없다");
+
+  for (const mid of v.ids){
+    const ms = v.day(mid), me = ms + v.span(mid) - 1;
+    const overlap = ms <= ge && gs <= me;
+    const fix = v.fix(mid);
+
+    if (overlap && v.place(mid) !== choice.place){
+      add("TimePlaceConflict",mid,"", b.timePlaceWeight*fix,
+          "몸이 두 곳에 있을 수 없다: " + v.name(mid));
+      for (const pid of com.requiredPeopleIds)
+        if (v.people(mid).includes(pid))
+          add("PersonElsewhere",mid,pid, b.personElsewhereWeight*fix,
+              person(pid).name + " 는 그 날 다른 곳에 있었다: " + v.name(mid));
+    }
+
+    if (mid === choice.anchor) continue;
+    if (Math.abs(ms - choice.day) > b.eraWindowDays) continue;
+    const ed = moodDist(choice.mood, v.mood(mid));
+    if (ed <= b.eraTolerance) continue;
+    add("MoodClashEra",mid,"", b.eraWeight*(ed-b.eraTolerance)*fix,
+        "그 무렵에 이런 것은 하나도 없었다: " + v.name(mid));
+  }
+
+  if (v.has(choice.anchor)){
+    const af = v.fix(choice.anchor), an = v.name(choice.anchor);
+    const d = moodDist(choice.mood, v.mood(choice.anchor));
+    if (d > b.moodTolerance)
+      add("MoodClashAnchor",choice.anchor,"", b.moodAnchorWeight*(d-b.moodTolerance)*af,
+          "이어 붙인 자리가 " + an + " 와 다르게 느껴진다");
+    const diff = Math.abs(choice.inten - v.inten(choice.anchor));
+    if (diff > b.intensityTolerance)
+      add("IntensityClash",choice.anchor,"", b.intensityWeight*(diff-b.intensityTolerance)*af,
+          "이어 붙인 자리에 비해 너무 크다: " + an);
+  }
+
+  for (const t of out.tremors){
+    out.total += t.strength;
+    if (t.strength > out.worst){ out.worst = t.strength; out.worstRule = t.rule; }
+  }
+  out.blatant = out.worst > com.singleEdgeCap;
+  out.accepted = !out.blatant && out.total <= com.toleranceBudget;
+  return out;
+}
+
+const LOGIC = new Set(["TimePlaceConflict","PersonElsewhere","PersonAbsent","PlaceWindow"]);
+
+// ══ 배선도 그리기 ═══════════════════════════════════════════════════════════
+// x 는 날(일), y 는 장소 궤도. 간선은 굽은 선이고 **연상의 종류는 선의 결**로 나눈다.
+
+function layout(subject, extraNode){
+  const mem = subject.memories;
+  const placesUsed = [];
+  for (const m of mem) if (!placesUsed.includes(m.placeId)) placesUsed.push(m.placeId);
+  if (extraNode && !placesUsed.includes(extraNode.place)) placesUsed.push(extraNode.place);
+  placesUsed.sort((a,b)=> place(a).existsFromDay - place(b).existsFromDay || a.localeCompare(b));
+
+  const days = mem.map(m=>m.dayIndex).concat(extraNode ? [extraNode.day] : []);
+  const d0 = Math.min(...days) - 400, d1 = Math.max(...days) + 400;
+  const L = 148, R = 30, T = 30, rowH = 58;   // 궁도 간격 — 이름표가 위아래로 번갈아 날 자리가 있어야 한다
+  const w = 1080, h = T + placesUsed.length*rowH + 34;
+  const x = d => L + (d - d0) * (w - L - R) / (d1 - d0);
+  const y = p => T + placesUsed.indexOf(p)*rowH + rowH/2;
+  return {placesUsed, x, y, w, h, L, R, T, rowH, d0, d1};
+}
+
+function wire(lay, a, b, curve){
+  const dx = (b.x - a.x) * curve, dy = Math.abs(b.y - a.y) * curve;
+  return `M${a.x} ${a.y} C ${a.x+dx} ${a.y+dy} ${b.x-dx} ${b.y-dy} ${b.x} ${b.y}`;
+}
+
+function drawNet(subject, opts){
+  const o = Object.assign({distorted:[], graft:null, tremors:[], known:null, title:""}, opts||{});
+  const P = W.palette;
+  const extra = o.graft ? {place:o.graft.place, day:o.graft.day} : null;
+  const lay = layout(subject, extra);
+  const pos = new Map(subject.memories.map(m=>[m.id,{x:lay.x(m.dayIndex), y:lay.y(m.placeId)}]));
+  if (o.graft) pos.set("__graft", {x:lay.x(o.graft.day), y:lay.y(o.graft.place)});
+
+  const worstBy = new Map();
+  for (const t of o.tremors){
+    if (!t.to) continue;
+    if (!worstBy.has(t.to) || t.strength > worstBy.get(t.to).strength) worstBy.set(t.to, t);
+  }
+
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  let s = `<svg viewBox="0 0 ${lay.w} ${lay.h}" role="img" aria-label="기억망 배선도">
+  <defs>
+    <filter id="gl" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="${P.glow.blurPx/2}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glT" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="${P.glow.blurTremorPx/2}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+
+  // 장소 궤도
+  for (const p of lay.placesUsed){
+    const yy = lay.y(p);
+    s += `<line x1="${lay.L-8}" y1="${yy}" x2="${lay.w-lay.R}" y2="${yy}"
+            stroke="${P.color.rail}" stroke-width="1"/>
+          <text x="${lay.L-16}" y="${yy+4}" text-anchor="end" font-size="${P.type.sizeHint}"
+            fill="${P.color.inkFaint}" font-family="Stylish">${esc(place(p).name)}</text>`;
+  }
+
+  // 간선 — 종류는 선의 결로
+  for (const l of subject.links){
+    const a = pos.get(l.a), b2 = pos.get(l.b);
+    if (!a || !b2) continue;
+    const dash = P.wire.kindDash[l.kind];
+    s += `<path d="${wire(lay,a,b2,P.wire.curve)}" fill="none" stroke="${P.color.phosphorDim}"
+            stroke-width="${P.wire.widthPx}" opacity=".85"
+            ${dash && dash!=="none" ? `stroke-dasharray="${dash}"` : ""}/>`;
+  }
+
+  // 심은 기억의 간선 — 이어 붙인 자리로 굵게, 어긋난 기억으로는 붉게 떨리며
+  if (o.graft){
+    const g = pos.get("__graft");
+    const an = pos.get(o.graft.anchor);
+    if (an) s += `<path d="${wire(lay,an,g,P.wire.curve)}" fill="none" stroke="${P.color.amber}"
+                    stroke-width="${P.wire.widthStrongPx}" filter="url(#gl)"/>`;
+    for (const [mid,t] of worstBy){
+      const m = pos.get(mid); if (!m) continue;
+      const cls = LOGIC.has(t.rule) ? "trembling" : "trembling";
+      s += `<g class="${cls}"><path d="${wire(lay,m,g,P.wire.curve)}" fill="none"
+              stroke="${P.color.tremor}" stroke-width="${P.wire.widthTremorPx}"
+              stroke-linecap="round" filter="url(#glT)" opacity=".92"/></g>`;
+    }
+  }
+
+  // 같은 궤도 위에 나란히 선 기억들은 이름표가 겹친다. 날 순으로 위아래를 번갈아 둔다
+  const below = new Map();
+  for (const pl of lay.placesUsed){
+    const onRail = subject.memories.filter(m=>m.placeId===pl).sort((a,b)=>a.dayIndex-b.dayIndex);
+    onRail.forEach((m,i)=>below.set(m.id, i % 2 === 1));
+  }
+
+  // 노드
+  for (const m of subject.memories){
+    const p = pos.get(m.id);
+    const dim = o.known && !o.known.includes(m.id);
+    const grafted = m.graftedOnDay >= 0;
+    const screen = m.distortable;
+    const trembling = worstBy.has(m.id);
+    const fill = grafted ? P.color.amber : (dim ? P.color.deep : P.color.glassLit);
+    const ring = trembling ? P.color.tremor : (dim ? P.color.inkFaint : P.color.phosphor);
+    s += `<g ${trembling ? 'class="trembling"' : ""}>
+      <circle cx="${p.x}" cy="${p.y}" r="${P.node.radiusPx}" fill="${fill}"
+        stroke="${ring}" stroke-width="${trembling ? 2 : P.node.ringPx}"
+        ${screen ? `stroke-dasharray="${P.node.screenRingDash}"` : ""}
+        ${dim ? 'opacity=".5"' : `filter="url(#gl)"`}/>
+      <text x="${p.x}" y="${p.y + (below.get(m.id) ? P.node.radiusPx + 14 : -P.node.radiusPx - 6)}"
+        text-anchor="middle"
+        font-size="${P.type.sizeHint - 1}" font-family="Stylish"
+        fill="${trembling ? P.color.tremor : (dim ? P.color.inkFaint : P.color.inkSoft)}">${esc(m.name)}</text>
+    </g>`;
+  }
+
+  if (o.graft){
+    const g = pos.get("__graft");
+    s += `<g><circle cx="${g.x}" cy="${g.y}" r="${P.node.radiusGraftPx}" fill="${P.color.deep}"
+        stroke="${P.color.amber}" stroke-width="2" filter="url(#gl)"/>
+      <circle cx="${g.x}" cy="${g.y}" r="3" fill="${P.color.amber}"/>
+      <rect x="${g.x - 34}" y="${g.y + P.node.radiusGraftPx + 16}" width="68" height="17" rx="2"
+        fill="${P.color.void}" opacity=".82"/>
+      <text x="${g.x}" y="${g.y + P.node.radiusGraftPx + 28}" text-anchor="middle"
+        font-size="${P.type.sizeHint}" font-family="Orbit" fill="${P.color.amber}">심은 기억</text></g>`;
+  }
+
+  // 날 눈금
+  for (let i=0;i<=4;i++){
+    const d = Math.round(lay.d0 + (lay.d1-lay.d0)*i/4);
+    s += `<text x="${lay.x(d)}" y="${lay.h-8}" text-anchor="middle" font-size="${P.type.sizeHint-1}"
+            font-family="Orbit" fill="${P.color.inkFaint}">${d}일</text>`;
+  }
+  return s + `</svg>`;
+}
+
+// ══ §03 심어 본다 — 조작판 ═══════════════════════════════════════════════════
+
+function graftPanel(){
+  const coms = W.commissions.commissions;
+  const sel = document.getElementById("comSel");
+  const state = {};
+
+  function fillControls(){
+    const com = coms.find(c=>c.id===sel.value);
+    const subject = W.net.subjects.find(s=>s.id===com.subjectId);
+    state.com = com; state.subject = subject;
+    // 이 밤에 스크린이 되는 기억 — 데이터가 정한 개수만큼, 여기서는 후보 전부를 보여 준다
+    state.distorted = subject.memories.filter(m=>m.distortable).map(m=>m.id);
+
+    const anchors = subject.memories.map(m=>`<option value="${m.id}">${m.name}</option>`).join("");
+    const places  = com.allowedPlaceIds.map(p=>`<option value="${p}">${place(p).name}</option>`).join("");
+    const moods   = com.allowedMoodIds.map(m=>`<option value="${m}">${moodName(m)}</option>`).join("");
+    const intens  = [];
+    for (let i=com.intensityMin;i<=com.intensityMax;i+=com.intensityStep)
+      intens.push(`<option value="${i}">${i}%</option>`);
+
+    document.getElementById("anchorSel").innerHTML = anchors;
+    document.getElementById("placeSel").innerHTML = places;
+    document.getElementById("moodSel").innerHTML = moods;
+    document.getElementById("intenSel").innerHTML = intens.join("");
+    const day = document.getElementById("daySel");
+    day.min = com.dayWindowStart; day.max = com.dayWindowEnd;
+    day.step = W.balance.dayStep; day.value = com.dayWindowStart;
+    document.getElementById("comNote").textContent = com.clientNote;
+    document.getElementById("comGraft").textContent = com.graftName;
+    best();
+  }
+
+  function choices(com, subject){
+    const out = [];
+    for (const m of subject.memories)
+      for (const p of com.allowedPlaceIds)
+        for (let d=com.dayWindowStart; d<=com.dayWindowEnd; d+=W.balance.dayStep)
+          for (const mo of com.allowedMoodIds)
+            for (let i=com.intensityMin;i<=com.intensityMax;i+=com.intensityStep)
+              out.push({anchor:m.id, place:p, day:d, mood:mo, inten:i});
+    return out;
+  }
+
+  /** 참값을 다 아는 눈으로 가장 덜 떨리는 자리를 찾는다 (따져 심는 쪽). */
+  function best(){
+    const {com, subject, distorted} = state;
+    const v = view(subject, distorted, null, null);
+    let pick=null, low=Infinity;
+    for (const c of choices(com, subject)){
+      const r = evaluate(com, c, v);
+      if (r.blatant) continue;
+      if (r.total < low){ low=r.total; pick=c; }
+    }
+    if (pick) set(pick);
+    return pick;
+  }
+
+  /** 가장 크게 거부되는 자리 (아무렇게나 심는 쪽의 최악). */
+  function worst(){
+    const {com, subject, distorted} = state;
+    const v = view(subject, distorted, null, null);
+    let pick=null, high=-1;
+    for (const c of choices(com, subject)){
+      const r = evaluate(com, c, v);
+      if (r.total > high){ high=r.total; pick=c; }
+    }
+    if (pick) set(pick);
+  }
+
+  function set(c){
+    document.getElementById("anchorSel").value = c.anchor;
+    document.getElementById("placeSel").value = c.place;
+    document.getElementById("daySel").value = c.day;
+    document.getElementById("moodSel").value = c.mood;
+    document.getElementById("intenSel").value = c.inten;
+    render();
+  }
+
+  function current(){
+    return {
+      anchor: document.getElementById("anchorSel").value,
+      place: document.getElementById("placeSel").value,
+      day: +document.getElementById("daySel").value,
+      mood: document.getElementById("moodSel").value,
+      inten: +document.getElementById("intenSel").value
+    };
+  }
+
+  function render(){
+    const {com, subject, distorted} = state;
+    const c = current();
+    document.getElementById("dayOut").textContent = c.day + "일";
+    const v = view(subject, distorted, null, null);
+    const r = evaluate(com, c, v);
+
+    document.getElementById("wiring").innerHTML =
+      drawNet(subject, {distorted, graft:c, tremors:r.tremors});
+
+    const pct = Math.min(100, Math.round(r.total * 100 / com.toleranceBudget));
+    const rows = r.tremors.slice().sort((a,b)=>b.strength-a.strength).map(t=>`
+      <tr class="${t.strength > com.singleEdgeCap ? "hi" : ""}">
+        <td><span class="pill ${LOGIC.has(t.rule)?"logic":"feel"}">${LOGIC.has(t.rule)?"논리":"정서"}</span>
+            <code>${t.rule}</code></td>
+        <td>${t.detail}</td><td class="n">${t.strength}</td></tr>`).join("");
+
+    document.getElementById("verdict").innerHTML = r.accepted
+      ? `<span class="verdict yes">자리를 잡았다</span>
+         <span class="hint"> 떨림 합 ${r.total} / 허용 ${com.toleranceBudget}</span>`
+      : `<span class="verdict no">꿈이 거부한다</span>
+         <span class="hint"> 떨림 합 ${r.total} / 허용 ${com.toleranceBudget}
+         ${r.blatant ? ` · 한 간선이 상한 ${com.singleEdgeCap} 를 넘었다 (${r.worst})` : ""}</span>`;
+    document.getElementById("bar").innerHTML = `<i style="width:${pct}%"></i>`;
+    document.getElementById("tremorList").innerHTML = r.tremors.length
+      ? `<table><thead><tr><th>이유</th><th>무엇과 어긋났나</th><th class="n">떨림</th></tr></thead><tbody>${rows}</tbody></table>`
+      : `<p class="hint">어긋나는 것이 하나도 없다. 이 기억은 그 사람의 것이 된다.</p>`;
+  }
+
+  sel.innerHTML = coms.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+  sel.addEventListener("change", fillControls);
+  for (const id of ["anchorSel","placeSel","daySel","moodSel","intenSel"])
+    document.getElementById(id).addEventListener("input", render);
+  document.getElementById("bestBtn").addEventListener("click", best);
+  document.getElementById("worstBtn").addEventListener("click", worst);
+  fillControls();
+}
+
+// ══ §04 선택의 지형 — 데이터에서 바로 세는 수치 ═══════════════════════════════
+
+function terrain(){
+  const rows = W.commissions.commissions.map(com=>{
+    const subject = W.net.subjects.find(s=>s.id===com.subjectId);
+    const distorted = subject.memories.filter(m=>m.distortable).map(m=>m.id);
+    const v = view(subject, distorted, null, null);
+    let n=0, ok=0, blatant=0, low=Infinity;
+    for (const m of subject.memories)
+      for (const p of com.allowedPlaceIds)
+        for (let d=com.dayWindowStart; d<=com.dayWindowEnd; d+=W.balance.dayStep)
+          for (const mo of com.allowedMoodIds)
+            for (let i=com.intensityMin;i<=com.intensityMax;i+=com.intensityStep){
+              const r = evaluate(com,{anchor:m.id,place:p,day:d,mood:mo,inten:i},v);
+              n++; if (r.accepted) ok++; if (r.blatant) blatant++;
+              if (!r.blatant && r.total<low) low=r.total;
+            }
+    return {com, n, ok, blatant, low};
+  });
+  return `<table><thead><tr>
+      <th>의뢰</th><th>고를 수 있는 자리</th><th class="n">자리를 잡는다</th>
+      <th class="n">노골적</th><th class="n">최소 떨림</th><th class="n">허용</th><th class="n">명료도</th>
+    </tr></thead><tbody>${rows.map(r=>`<tr class="ok">
+      <td><b>${r.com.name}</b><br><span class="hint">${r.com.graftName}</span></td>
+      <td class="n">${r.n}</td>
+      <td class="n">${r.ok} <span class="hint">(${Math.round(r.ok*100/r.n)}%)</span></td>
+      <td class="n">${r.blatant}</td><td class="n">${r.low}</td>
+      <td class="n">${r.com.toleranceBudget}</td><td class="n">${r.com.lucidityBudget}</td>
+    </tr>`).join("")}</tbody></table>`;
+}
+
+function ruleTable(){
+  const b = W.balance;
+  const w = {
+    TimePlaceConflict:["논리","몸이 두 곳에 있을 수 없다", b.timePlaceWeight+" x 굳기"],
+    PersonElsewhere:["논리","그 사람도 그 날 다른 곳에 있었다", b.personElsewhereWeight+" x 굳기"],
+    PersonAbsent:["논리","그 날 그 사람이 없었다", b.personAbsentWeight+" x 100"],
+    PlaceWindow:["논리","그 날 그 자리가 없었다", b.placeWindowWeight+" x 100"],
+    MoodClashAnchor:["정서","이어 붙인 자리와 다르게 느껴진다", "(거리-"+b.moodTolerance+") x 굳기"],
+    MoodClashEra:["정서","그 시절 전체와 어긋난다", "(거리-"+b.eraTolerance+") x 굳기"],
+    IntensityClash:["정서","세기가 맞지 않는다", "(차-"+b.intensityTolerance+") x 굳기"]
+  };
+  return `<table><thead><tr><th>이유</th><th>갈래</th><th>말</th><th class="n">떨림</th></tr></thead><tbody>
+    ${b.statedRules.map(r=>`<tr><td><code>${r}</code></td>
+      <td><span class="pill ${w[r][0]==="논리"?"logic":"feel"}">${w[r][0]}</span></td>
+      <td>${w[r][1]}</td><td class="n">${w[r][2]}</td></tr>`).join("")}</tbody></table>`;
+}
+
+// ══ §05 내 기억망 — 같은 자로 나를 잰다 ═══════════════════════════════════════
+
+function selfScan(){
+  const subject = W.selfnet.subjects[0];
+  const net = subject;
+  const v = view(subject, [], null, null);
+  const sig = W.balance.selfSignature;
+
+  const strongest = id => {
+    let best="", cost=Infinity;
+    for (const l of net.links){
+      if (l.a!==id && l.b!==id) continue;
+      const o = l.a===id ? l.b : l.a;
+      if (l.probeCost < cost || (l.probeCost===cost && o < best)){ best=o; cost=l.probeCost; }
+    }
+    return best;
+  };
+
+  const rows = subject.memories.map(m=>{
+    const anchor = strongest(m.id);
+    if (!anchor) return {m, secondary:0, edges:0, suspect:false, tremors:[]};
+    const asIf = {
+      spanDays:m.spanDays, requiredPeopleIds:m.peopleIds||[],
+      allowedPlaceIds:[m.placeId], allowedMoodIds:[m.moodId],
+      toleranceBudget:1e12, singleEdgeCap:1e12
+    };
+    const hidden = {...v, ids: v.ids.filter(x=>x!==m.id), has:(id)=>id!==m.id && v.has(id)};
+    const r = evaluate(asIf, {anchor, place:m.placeId, day:m.dayIndex, mood:m.moodId, inten:m.intensityPercent}, hidden);
+    const sigT = r.tremors.filter(t=>t.rule!=="IntensityClash");
+    const total = sigT.reduce((a,t)=>a+t.strength,0);
+    const worst = sigT.reduce((a,t)=>Math.max(a,t.strength),0);
+    const secondary = total - worst;
+    const suspect = sigT.length >= sig.minTrembleEdges && secondary >= sig.secondaryFloor;
+    return {m, secondary, edges:sigT.length, suspect, tremors:sigT, anchor};
+  });
+
+  const suspects = rows.filter(r=>r.suspect);
+  const grafted = rows.filter(r=>r.m.graftedOnDay>=0);
+  const tremors = [];
+  for (const r of suspects) for (const t of r.tremors) tremors.push({to:r.m.id, strength:t.strength, rule:t.rule});
+
+  return {
+    svg: drawNet(subject, {tremors}),
+    table: `<table><thead><tr><th>내 기억</th><th class="n">둘째 떨림</th><th class="n">이유 수</th>
+        <th>기계의 판정</th><th>데이터가 아는 진실</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr class="${r.suspect?"hi":""}">
+        <td>${r.m.name}</td><td class="n">${r.secondary}</td><td class="n">${r.edges}</td>
+        <td>${r.suspect?`<b style="color:var(--tremor)">떨고 있다</b>`:`<span class="hint">조용하다</span>`}</td>
+        <td>${r.m.graftedOnDay>=0?`<span style="color:var(--amber)">${r.m.graftedOnDay}일에 심어졌다</span>`:`<span class="hint">—</span>`}</td>
+      </tr>`).join("")}</tbody></table>`,
+    line: `떠는 자리 <b>${suspects.length}</b> · 실제로 심어진 것 <b>${grafted.length}</b> ·
+           문턱 <code>${sig.secondaryFloor}</code> (둘째 떨림) · 이유 <code>${sig.minTrembleEdges}</code>개 이상`
+  };
+}
+
+// ══ 조립 ════════════════════════════════════════════════════════════════════
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+async function main(){
+  const data = await load();
+  Object.assign(W, data);
+  applyPalette(W.palette);
+
+  const client = W.net.subjects[0];
+  const self = selfScan();
+  const p = W.palette;
+
+  document.getElementById("app").innerHTML = `
+  <section class="plate">
+    <h1>${esc(p.name)}<span class="sub">grafted-memory — ${esc(p.oneLine)}</span></h1>
+    <p class="lede">남의 꿈에 들어가 <b>특정 기억을 자연스럽게 끼워 넣는다.</b>
+      기존 기억과 논리나 정서가 어긋나면 꿈이 거부 반응을 일으킨다.</p>
+    <p>플레이어가 고치는 것은 세계가 아니라 <b>세계의 모형</b>이다. 모형을 고치면 세계가 따라오거나,
+      맞출 수 없어 거부한다. 아래 §03 의 손잡이 다섯을 움직이면 어느 간선이 붉게 떨리는지 그 자리에서 보인다.</p>
+    <p class="hint">이 화면의 모든 수치는 <code>data/*.json</code> 에서 읽은 것이다.
+      색·굽힘·번짐·떨림의 진폭은 <code>presentation/palette.json</code> 에 값으로 적혀 있다.</p>
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">01</span>적힌 규칙 일곱</h2>
+    <p>꿈이 거부하는 이유는 이 일곱뿐이다. <b>여기 없는 이유로 거부되면 그것은 규칙이 아니라 운이고</b>,
+      검사기 <code>RejectionIsPredictable</code> 가 <code>RuleUnstated</code> 로 잡는다.</p>
+    ${ruleTable()}
+    <p class="hint">떨림은 언제나 <code>저울 x 크기</code> 의 정수 곱이다 — 나눗셈이 한 번도 없다.
+      한 간선이 <code>singleEdgeCap</code> 을 넘으면 총합과 무관하게 거부된다: 눈에 보이는 모순이다.</p>
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">02</span>의뢰인의 기억망</h2>
+    <p>가로는 날(태어난 날부터 센 일), 세로는 장소 궤도. 선의 결이 연상의 종류다.
+      <b>테두리가 점선인 노드는 스크린 기억이 될 수 있는 자리</b>다 — 겉값과 참값이 다를 수 있고,
+      서로 다른 길로 겹쳐 물어야 참값이 드러난다.</p>
+    <div class="legend">
+      <span><i style="border-color:var(--phosphorDim)"></i>장소</span>
+      <span><i style="border-color:var(--phosphorDim);border-top-style:dashed"></i>사람</span>
+      <span><i style="border-color:var(--phosphorDim);border-top-style:dotted"></i>시간</span>
+      <span><i style="border-color:var(--phosphorDim);border-top-style:double"></i>인과</span>
+      <span><i style="border-color:var(--tremor)"></i>어긋남 (떨린다)</span>
+      <span><i style="border-color:var(--amber)"></i>심은 기억</span>
+    </div>
+    ${drawNet(client, {distorted: client.memories.filter(m=>m.distortable).map(m=>m.id)})}
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">03</span>심어 본다 — 어느 간선이 떨리는가</h2>
+    <p id="comNote" class="hint"></p>
+    <p>심을 것: <b id="comGraft"></b></p>
+    <div class="ctl">
+      <label>의뢰<select id="comSel"></select></label>
+      <label>이어 붙일 자리<select id="anchorSel"></select></label>
+      <label>장소<select id="placeSel"></select></label>
+      <label>날 <span id="dayOut" class="hint"></span><input type="range" id="daySel"></label>
+      <label>정서<select id="moodSel"></select></label>
+      <label>세기<select id="intenSel"></select></label>
+      <button id="bestBtn">가장 덜 떨리는 자리</button>
+      <button id="worstBtn">가장 크게 거부되는 자리</button>
+    </div>
+    <div id="verdict"></div>
+    <div class="bar" id="bar"></div>
+    <div id="wiring"></div>
+    <div id="tremorList"></div>
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">04</span>선택의 지형</h2>
+    <p>의뢰마다 고를 수 있는 자리가 수천 개인데 <b>자리를 잡는 것은 그 가운데 몇 %</b>다.
+      아무렇게나 골라도 되는 의뢰가 하나도 없다는 것을 검사기
+      <code>ConsistencyIsNotTrivial</code> 가 지킨다(25% 상한).</p>
+    ${terrain()}
+    <p class="hint">「노골적」은 한 간선이 상한을 넘어 총합과 무관하게 거부되는 선택의 수다.
+      「명료도」는 캐묻는 데 쓸 수 있는 값의 총량 — 기억망 전부를 띄우는 데 드는 값의 절반쯤이다.</p>
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">05</span>그리고 내 기억망</h2>
+    <p><b>같은 자로 나를 잰다.</b> 의뢰에 쓰는 규칙 일곱을 제 기억망에 그대로 돌려,
+      가장 센 떨림 하나를 뺀 나머지(둘째 떨림)가 문턱을 넘는 자리를 찾는다.
+      가장 가까운 기억과 정서가 다른 것은 삶이 그런 것이다 — 흔적은 <b>두 번째 어긋남</b>이다.</p>
+    ${self.svg}
+    <p>${self.line}</p>
+    ${self.table}
+    <p class="hint"><b>여기가 이 PoC가 기계에게 맡기지 않은 자리다.</b>
+      심은 기억은 이웃까지 떨게 만들므로 검사기는 「이 근처에 심어진 것이 있다」까지만 판정한다.
+      어느 것인지는 말해 주지 않는다. 재현율은 100%로 지키고 정확도는 통과 조건에서 뺐다 —
+      이 컨셉에서는 그 모호함이 결함이 아니라 끝맺음이기 때문이다.</p>
+  </section>
+
+  <section class="plate">
+    <h2><span class="no">06</span>검사기가 본 것 / 못 본 것</h2>
+    <div class="grid2">
+      <div><h3>기계가 판정한다</h3>
+        <p class="hint">거부가 적힌 규칙으로 설명되는가 · 따져 심는 것이 실제로 이득인가 ·
+          한 가지 수를 반복하는 것이 최적이 아닌가 · 같은 씨드가 같은 밤을 만드는가 ·
+          심어진 기억을 하나도 놓치지 않는가</p></div>
+      <div><h3>사람만 판정한다 — 미확인</h3>
+        <p class="hint">캐묻기를 아끼는 것이 손에 걸리는가 · 스크린 기억에 속는 것이 분한가 억울한가 ·
+          붉은 떨림이 <em>거부</em>로 읽히는가 아니면 그냥 빨간 선으로 보이는가 ·
+          마지막에 자기 기억망을 보는 것이 무서운가</p></div>
+    </div>
+    <p class="hint">검사기 통과를 재미로 착각하지 않는다. 자세한 것은 <code>README.md</code> 의 「판정」 칸.</p>
+  </section>`;
+
+  graftPanel();
+}
+
+main().catch(e=>{
+  document.getElementById("app").innerHTML =
+    `<p class="err">유리판을 올리지 못했다: ${esc(e.message)}<br>
+     <span class="hint">file:// 로 열면 fetch 가 막힌다.
+     <code>cd games/grafted-memory &amp;&amp; python -m http.server 8099</code> 뒤
+     <code>http://localhost:8099/presentation/index.html</code></span></p>`;
+});
+</script>
+</body>
+</html>

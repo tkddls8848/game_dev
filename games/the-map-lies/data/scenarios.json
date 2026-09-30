@@ -1,0 +1,39 @@
+{
+  "_": "잘못 그은 선들. MistakesAreSurvivable 과 ButNotFree 가 이것을 대상으로 판정한다.",
+  "_왜basisChapterId가있나": "보통 지도에서 시작하면 어느 선이 사람을 가뒀는지가 섞인다. 이 장을 Targeted 로 풀어 도시가 닿은 다음에 아래 edits 를 그어야 사고 하나만 재는 것이 된다.",
+
+  "mistakes": [
+    {
+      "id": "mk-seal-neck",
+      "name": "안마당 목을 건물로 그었다",
+      "note": "(7,4) 하나가 안마당의 유일한 목이다. 지도에서는 건물 한 칸이지만 도시가 그것을 지으면 두 사람이 나올 길이 없어진다.",
+      "basisChapterId": "ch-soft",
+      "edits": [ { "x": 7, "y": 4, "kind": "B" } ],
+      "expectTrapped": [ "cz-nam", "cz-oh" ],
+      "seed": 20260927
+    },
+    {
+      "id": "mk-brick-in",
+      "name": "목과 안쪽을 같이 그었다",
+      "note": "안마당을 통째로 건물로 그었다. 밀려날 칸이 하나도 남지 않으면 사람은 묻힌다 — 해가 더 빨리 쌓이고, 꺼내려면 설 자리와 나갈 길을 둘 다 그어야 한다.",
+      "basisChapterId": "ch-soft",
+      "edits": [ { "x": 7, "y": 4, "kind": "B" }, { "x": 7, "y": 5, "kind": "B" }, { "x": 8, "y": 5, "kind": "B" } ],
+      "expectTrapped": [ "cz-nam", "cz-oh" ],
+      "seed": 20261014
+    },
+    {
+      "id": "mk-wall-soft",
+      "name": "무른 구역을 건물로 채웠다",
+      "note": "지도를 처음 받은 날 무른 구역을 통째로 건물로 그었다. 조씨가 그 안에 산다 — 가게를 비우지 않으니 그 자리를 벗어나지 못한다. 이미 건물인 칸은 넘어가므로 실제로 그어지는 것은 그 중 한 칸뿐이고, 남은 한 칸은 도시가 제 짐작으로 메운다. basisChapterId 를 비워 둔 이유: 장을 풀고 나면 무른 구역의 필지가 세 번을 다 써서 잘못 그은 선조차 지어지지 않는다.",
+      "basisChapterId": "",
+      "edits": [
+        { "x": 11, "y": 5, "kind": "B" },
+        { "x": 12, "y": 4, "kind": "B" },
+        { "x": 12, "y": 6, "kind": "B" },
+        { "x": 13, "y": 5, "kind": "B" }
+      ],
+      "expectTrapped": [ "cz-jo" ],
+      "seed": 20261212
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는_곳": "presentation/index.html 이 이 파일을 fetch 해서 CSS 변수로 심는다. 색을 고치려면 여기만 고친다.",
+
+  "name": "전보 · 시세판",
+  "oneLine": "내 밭이 남에게 정보로 간다는 것을, 밭을 한 번도 그리지 않고 보여 준다",
+  "reference": "야간 전신국 · 인광 표시관 · 딱딱거리는 스플릿플랩 시세판 · 종이 테이프에 찍힌 전문",
+
+  "_밭을_그리지_않는다": "이 PoC의 규칙이 연출의 규칙이기도 하다. 밭은 숫자와 전문으로만 나타난다 — 관측 등록부의 열두 줄이 열두 칸이고, 격자 그림은 어디에도 없다. 플레이어가 자기 밭을 보는 방식이 남이 보는 방식과 같아진다.",
+
+  "color": {
+    "void": "#05070A",
+    "ink": "#0A0E12",
+    "surface": "#101519",
+    "panel": "#0D1216",
+    "phosphor": "#A8D538",
+    "_phosphor": "황록 인광. 표시관의 P1 형광체 색. 이 색 하나가 화면의 목소리다 — 두 번째 색을 들이면 인광이 아니라 네온이 된다.",
+    "phosphorGlow": "#D6F27A",
+    "phosphorDim": "#4E6B1E",
+    "phosphorFaint": "#2A3A12",
+    "amber": "#E0A33C",
+    "_amber": "경고. 시세가 내려가는 중 · 도둑이 밭을 세는 중. 아끼지 않으면 인광이 죽는다.",
+    "alarm": "#C8422E",
+    "_alarm": "붕괴와 침입에만. 한 화면에 두 번 넘게 나오면 안 된다.",
+    "tape": "#D8CFB8",
+    "tapeInk": "#23201A",
+    "_tape": "종이 테이프. 화면에서 유일하게 빛나지 않는 것 — 전문은 인광이 아니라 종이에 찍힌다. 그 대비가 '밖에서 들어온 소식'을 만든다.",
+    "grid": "#1B242A",
+    "muted": "#55686E"
+  },
+
+  "type": {
+    "family": "IBM Plex Mono",
+    "familyKo": "Sinho Mono (Nanum Gothic Coding 부분집합)",
+    "_글꼴": "둘 다 OFL · 둘 다 등폭. 시세판은 숫자가 칸에 맞아떨어져야 하므로 비례 글꼴을 쓰면 안 된다. 한글도 등폭이어야 등록부의 열이 맞는다. CREDITS.md 참고.",
+    "sizeTitle": 34,
+    "sizeHeading": 15,
+    "sizeBody": 13,
+    "sizeHint": 11,
+    "sizeCell": 15,
+    "sizeTape": 13,
+    "outlinePx": 0,
+    "_외곽선": "0. 인광은 번지는 것이고 테두리를 두르는 것이 아니다.",
+    "trackingTitle": 6,
+    "trackingTape": 2
+  },
+
+  "board": {
+    "_": "스플릿플랩 시세판. 숫자가 칸으로 딸깍딸깍 바뀐다.",
+    "cellWidthPx": 34,
+    "cellHeightPx": 26,
+    "cellGapPx": 3,
+    "seamOpacity": 0.55,
+    "_seam": "칸 가운데의 접힘선. 이것 하나가 '판이 뒤집힌다'를 만든다 — 없으면 그냥 표다.",
+    "flapStepMs": 55,
+    "flapStepsMax": 6,
+    "glowPx": 7,
+    "labelWidthPx": 96
+  },
+
+  "tape": {
+    "_": "종이 테이프 전문. 천공 구멍은 CSS 로 뚫는다.",
+    "heightPx": 108,
+    "perforationPx": 7,
+    "perforationGapPx": 14,
+    "marginPx": 13,
+    "lineHeight": 1.75
+  },
+
+  "grade": {
+    "saturation": 0.9,
+    "contrast": 1.15,
+    "blackLift": 0.015,
+    "vignette": 0.62,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 표시관이 된다.",
+    "scanlineOpacity": 0.16,
+    "scanlinePitchPx": 3,
+    "glowOpacity": 0.34,
+    "tapeTextureOpacity": 0.22
+  },
+
+  "sfx": {
+    "flap": "assets/switch_002.ogg",
+    "key": "assets/tick_002.ogg",
+    "wire": "assets/confirmation_002.ogg",
+    "alarm": "assets/error_003.ogg",
+    "close": "assets/bong_001.ogg",
+    "_": "CC0 (Kenney Interface Sounds). flap=시세 칸이 뒤집힘 · key=전신 키 · wire=전문 도착 · alarm=도둑 · close=계절 장 마감."
+  }
+}

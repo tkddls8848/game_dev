@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>향신료 항로</title>
+<style>
+:root{
+  --wood:#5a3a22; --wood-d:#2e1c10; --wood-l:#8a5f3a; --tar:#1a110a;
+  --parch:#ecdcb4; --parch-d:#cdb888; --ink:#2b1d12; --ink-s:#6a5236;
+  --gold:#e8b44a; --gold-l:#ffd98a; --bad:#c23b2e; --ok:#6fae5a; --sea:#0f2a33;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#080604;overflow:hidden}
+body{font-family:"Noto Sans KR","Noto Sans CJK KR",sans-serif;color:var(--ink)}
+.serif{font-family:"Noto Serif KR","Noto Serif CJK KR",serif}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;background:#140c06}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.1;mix-blend-mode:overlay;z-index:40}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse 75% 70% at 40% 50%,transparent 50%,rgba(0,0,0,.7))}
+
+/* backdrop */
+.bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 50% 40% at 34% 34%,rgba(255,170,70,.18),transparent 70%),
+  linear-gradient(180deg,#1d130b 0,#140d07 55%,#0b1d24 62%,#07141a 100%)}
+#b .bg{background:
+  radial-gradient(ellipse 40% 50% at 45% 10%,rgba(255,200,120,.35),transparent 70%),
+  linear-gradient(180deg,#6a4a3a 0,#a36a45 12%,#3a2415 30%,#1a120b 55%,#16333b 62%,#0b2028 100%)}
+svg.hull{position:absolute;left:0;top:0}
+.sea{position:absolute;left:0;width:1070px;top:596px;height:404px;overflow:hidden;pointer-events:none}
+.wave{position:absolute;left:-200px;width:1500px;height:40px;top:-18px;animation:wv 7s ease-in-out infinite alternate}
+@keyframes wv{from{transform:translateX(0)}to{transform:translateX(90px)}}
+
+/* hold */
+.hold{position:absolute;left:0;top:0;width:1070px;height:1000px;z-index:6}
+.mist{position:absolute;left:0;top:0;width:1070px;height:1000px;pointer-events:none;mix-blend-mode:screen;clip-path:path('M52 238 L1038 238 C1033 480 980 700 815 780 L265 780 C100 700 57 480 52 238 Z')}
+.puff{position:absolute;border-radius:50%;filter:blur(18px);animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{0%{transform:translate(-10px,6px) scale(.95)}100%{transform:translate(14px,-10px) scale(1.12)}}
+.cell{position:absolute;width:140px;height:150px;cursor:pointer}
+.cell .slot{position:absolute;inset:6px;border:1px dashed rgba(255,220,160,.14);border-radius:4px}
+.cell svg{position:absolute;left:8px;top:8px;width:124px;height:136px;filter:drop-shadow(0 10px 8px rgba(0,0,0,.6));transition:transform .15s}
+.cell:hover svg{transform:translateY(-4px)}
+.cell .lbl{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font:700 13px/1 "Noto Serif CJK KR",serif;color:#2a1a0c;background:rgba(236,220,180,.92);padding:4px 8px;border-radius:2px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.cell.ghost .slot{border:3px solid var(--bad);background:rgba(194,59,46,.18);box-shadow:0 0 22px rgba(255,70,50,.55) inset,0 0 18px rgba(255,70,50,.5);animation:blink 1s infinite alternate}
+.cell.safe .slot{border:2px solid var(--ok);background:rgba(111,174,90,.12);box-shadow:0 0 14px rgba(120,220,100,.35) inset}
+@keyframes blink{from{opacity:.55}to{opacity:1}}
+.link{position:absolute;font:800 14px/1 "Noto Sans CJK KR",sans-serif;padding:5px 8px;border-radius:12px;white-space:nowrap;z-index:6;transform:translate(-50%,-50%);box-shadow:0 3px 8px rgba(0,0,0,.6)}
+.link.up{background:linear-gradient(#ffe29a,#d99a2b);color:#3a2000;border:1px solid #fff2c4}
+.link.dn{background:linear-gradient(#e0574a,#9a2419);color:#fff;border:1px solid #ffb0a0}
+.held{position:absolute;width:140px;height:150px;pointer-events:none;z-index:20;transform:rotate(-6deg);filter:drop-shadow(0 30px 18px rgba(0,0,0,.75))}
+.held svg{width:124px;height:136px;margin:8px}
+.warnbox{position:absolute;z-index:21;background:rgba(30,8,4,.92);border:1px solid #e0574a;color:#ffd8cf;padding:10px 14px;border-radius:4px;font-size:14px;line-height:1.45;box-shadow:0 8px 20px rgba(0,0,0,.6);width:240px}
+.warnbox b{color:#ff8a78;font-size:15px}
+.warnbox .k{display:inline-block;background:#e0574a;color:#fff;font-size:11px;padding:2px 6px;border-radius:2px;margin-right:4px}
+
+/* top bar */
+.top{position:absolute;left:0;right:0;top:0;height:66px;z-index:30;display:flex;align-items:center;gap:26px;padding:0 26px;
+  background:linear-gradient(#3a2413,#24160b);border-bottom:3px solid #0e0804;box-shadow:0 8px 20px rgba(0,0,0,.6);color:#f1dfb8}
+.top .brand{font:900 26px/1 "Noto Serif CJK KR",serif;letter-spacing:.12em;color:var(--gold-l);text-shadow:0 2px 0 #000,0 0 14px rgba(232,180,74,.35)}
+.top .sep{width:1px;height:34px;background:#5a3c22}
+.st{display:flex;flex-direction:column;line-height:1.15}
+.st span{font-size:11px;letter-spacing:.16em;color:#b89a70}
+.st b{font:800 21px/1.1 "Noto Serif CJK KR",serif;color:#f6e7c4}
+.days{display:flex;gap:4px;align-items:center}
+.days i{width:14px;height:14px;border-radius:50%;border:1px solid #8a6a40;background:#2a1a0e}
+.days i.p{background:radial-gradient(circle at 35% 35%,#ffe7a8,#c98a2a)}
+.days i.c{background:#ffd98a;box-shadow:0 0 10px #ffc45a;animation:blink .8s infinite alternate}
+.coin{margin-left:auto;display:flex;align-items:center;gap:10px;font:900 26px/1 "Noto Serif CJK KR",serif;color:var(--gold-l)}
+.coin i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff1b8,#e8b44a 45%,#8a5a12);box-shadow:0 0 10px rgba(255,200,80,.5)}
+
+/* right panel */
+.chart{position:absolute;left:1086px;top:86px;width:496px;height:520px;border-radius:4px;padding:18px 20px;
+  background:radial-gradient(ellipse at 30% 25%,#f5e7c3,#e2cc98 60%,#c9ad74);box-shadow:0 20px 34px rgba(0,0,0,.7),inset 0 0 40px rgba(120,80,30,.45);transform:rotate(.8deg)}
+.chart h3{font:900 20px/1 "Noto Serif CJK KR",serif;letter-spacing:.14em;color:#3a2612;display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #5a3c1e;padding-bottom:8px}
+.chart h3 small{font:600 12px "Noto Sans CJK KR";letter-spacing:.1em;color:#7a5a36}
+.chart svg{position:absolute;left:14px;top:56px}
+.port{position:absolute;font:700 13px/1.35 "Noto Serif CJK KR",serif;color:#2b1d12;background:rgba(245,232,200,.9);border:1px solid #8a6a40;padding:5px 8px;border-radius:2px;box-shadow:0 2px 5px rgba(60,30,0,.35)}
+.port em{font-style:normal;display:block;font:600 11px/1.3 "Noto Sans CJK KR";color:#7a3a1a}
+.port.dest{border:2px solid #a0301e;background:#fff1d0}
+.rules{position:absolute;left:1086px;top:628px;width:496px;height:244px;border-radius:4px;padding:16px 18px;
+  background:linear-gradient(#2d1d10,#1f140a);border:1px solid #6a4a28;box-shadow:0 16px 30px rgba(0,0,0,.6);color:#ecd8b0}
+.rules h4{font:800 14px/1 "Noto Sans CJK KR";letter-spacing:.22em;color:#c9a46a;margin-bottom:12px}
+.rule{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(200,160,100,.2);font-size:15px}
+.dot{width:16px;height:16px;border-radius:50%;box-shadow:0 0 8px currentColor;flex:none}
+.rule .eff{margin-left:auto;font-weight:800}
+.eff.up{color:#ffd26a}.eff.dn{color:#ff7a66}.eff.mid{color:#a9c7a0}
+
+/* tray */
+.tray{position:absolute;left:30px;top:884px;width:1040px;height:100px;z-index:12;display:flex;align-items:center;gap:14px;padding:0 20px;
+  background:linear-gradient(#3b2614,#26180c);border:2px solid #120a04;border-radius:6px;box-shadow:0 -6px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,220,160,.15);color:#ecd8b0}
+.tray .tt{font:800 13px/1.3 "Noto Sans CJK KR";letter-spacing:.2em;color:#c9a46a;width:84px}
+.card{width:104px;height:78px;border-radius:4px;background:rgba(0,0,0,.35);border:1px solid #6a4a28;position:relative;cursor:pointer;transition:transform .15s}
+.card:hover{transform:translateY(-6px)}
+.card svg{position:absolute;left:24px;top:2px;width:56px;height:60px}
+.card span{position:absolute;left:0;right:0;bottom:4px;text-align:center;font-size:12px;font-weight:700}
+.card.empty{opacity:.35;border-style:dashed}
+.sail{margin-left:auto;font:900 20px/1 "Noto Serif CJK KR",serif;letter-spacing:.12em;padding:18px 26px;border-radius:4px;border:2px solid #ffe7a8;cursor:pointer;
+  background:linear-gradient(#e8b44a,#a0681c);color:#2a1600;box-shadow:0 0 20px rgba(255,190,80,.4),0 6px 0 #5a3a0a}
+.sail:active{transform:translateY(4px);box-shadow:0 0 20px rgba(255,190,80,.4),0 2px 0 #5a3a0a}
+.hint{position:absolute;left:1086px;top:884px;width:496px;height:100px;border-radius:4px;background:rgba(0,0,0,.4);border:1px solid #4a3218;color:#bfa27a;font-size:14px;line-height:1.6;padding:14px 18px}
+.hint b{color:#ffd98a}
+
+/* screen B */
+.badge{position:absolute;z-index:8;transform:translate(-50%,0);font:900 20px/1 "Noto Serif CJK KR",serif;padding:6px 10px;border-radius:3px;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.6)}
+.badge.up{background:linear-gradient(#fff0b8,#e0a53a);color:#3a2000;border:1px solid #fff8d8}
+.badge.dn{background:linear-gradient(#e0574a,#8a1f16);color:#fff;border:1px solid #ffb0a0}
+.badge.eq{background:#3a3024;color:#e8d8b8;border:1px solid #8a7050;font-size:16px}
+.stamp{position:absolute;z-index:9;font:900 34px/1 "Noto Serif CJK KR",serif;color:#d8281a;border:5px double #d8281a;padding:6px 12px;transform:rotate(-14deg);letter-spacing:.1em;opacity:.92;
+  text-shadow:0 0 1px #d8281a;background:rgba(255,230,210,.1);mix-blend-mode:normal}
+.rot{position:absolute;pointer-events:none;border-radius:6px;background:radial-gradient(circle,rgba(90,110,60,.7),rgba(40,50,20,.4) 60%,transparent 75%);z-index:7}
+.beam{position:absolute;left:340px;top:66px;width:380px;height:720px;pointer-events:none;z-index:2;mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(255,210,140,.55),rgba(255,190,110,.12) 70%,transparent);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);animation:bm 5s ease-in-out infinite alternate}
+@keyframes bm{from{opacity:.75}to{opacity:1}}
+.dust{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffe0a8;z-index:6;pointer-events:none;opacity:.7;animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(0)}to{transform:translateY(420px);opacity:0}}
+.ledger{position:absolute;left:1080px;top:84px;width:504px;height:788px;padding:22px 26px;border-radius:3px;transform:rotate(-.6deg);
+  background:radial-gradient(ellipse at 40% 20%,#f7ead0,#e4cf9f 70%,#cfb27a);box-shadow:0 24px 40px rgba(0,0,0,.75),inset 0 0 50px rgba(120,80,30,.4)}
+.ledger h3{font:900 24px/1 "Noto Serif CJK KR",serif;letter-spacing:.14em;color:#3a2612;text-align:center}
+.ledger .sub{text-align:center;font:600 13px "Noto Sans CJK KR";color:#7a5a36;margin:8px 0 14px;letter-spacing:.1em}
+.lrow{display:grid;grid-template-columns:22px 1fr 70px 26px 70px;align-items:center;gap:6px;padding:8px 2px;border-bottom:1px solid rgba(90,60,30,.25);font:600 15px "Noto Serif CJK KR",serif}
+.lrow .o{color:#8a7050;text-align:right;text-decoration:line-through}
+.lrow .ar{text-align:center;color:#8a7050}
+.lrow .n{text-align:right;font-weight:900}
+.lrow.g .n{color:#8a5a00}.lrow.r .n{color:#b0281a}.lrow.r{background:rgba(200,50,30,.08)}
+.lrow .why{grid-column:2/6;font:500 12px "Noto Sans CJK KR";color:#7a5a36;margin-top:-2px}
+.total{margin-top:14px;border-top:3px double #3a2612;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;font:900 30px/1 "Noto Serif CJK KR",serif;color:#3a2612}
+.total small{font:700 16px "Noto Sans CJK KR";color:#6a8a2a}
+.merch{position:absolute;left:26px;right:26px;bottom:20px;display:flex;gap:12px;align-items:center;background:rgba(60,35,15,.12);border:1px solid rgba(90,60,30,.35);padding:10px 12px;border-radius:3px;font:500 14px/1.5 "Noto Serif CJK KR",serif;color:#3a2612}
+.merch .face{width:58px;height:58px;flex:none;border-radius:50%;background:radial-gradient(circle at 50% 40%,#c98a5a,#7a4a2a);border:2px solid #5a3a1a;position:relative;overflow:hidden}
+.timeline{position:absolute;left:30px;top:884px;width:1040px;height:100px;z-index:12;display:flex;align-items:center;gap:22px;padding:0 20px;
+  background:linear-gradient(#3b2614,#26180c);border:2px solid #120a04;border-radius:6px;color:#ecd8b0}
+.mini{display:grid;grid-template-columns:repeat(6,16px);grid-template-rows:repeat(3,14px);gap:2px;padding:6px;background:#140c06;border:1px solid #5a3c22;border-radius:3px}
+.mini i{border-radius:2px}
+.tl{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:#c9a46a;font-weight:700}
+.tlarrow{color:#8a6a40;font-size:22px}
+.coins{position:absolute;inset:0;pointer-events:none;z-index:25}
+.cn{position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff1b8,#e8b44a 45%,#8a5a12);box-shadow:0 0 12px rgba(255,210,100,.7);animation:pop 1.4s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes pop{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1);opacity:0}}
+
+.order{position:relative;margin-top:22px;padding:14px 16px;border:1px solid rgba(90,60,30,.4);background:rgba(255,245,220,.35);border-radius:2px}
+.order h5{font:800 13px "Noto Sans CJK KR";letter-spacing:.18em;color:#7a3a1a;margin-bottom:8px}
+.ord{display:flex;align-items:center;gap:8px;font:600 15px/1.9 "Noto Serif CJK KR",serif;color:#3a2612}
+.ord span{margin-left:auto;margin-right:90px;color:#8a5a00;font-weight:900}
+.seal{position:absolute;right:14px;top:26px;width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#d8483a,#8a1a10 70%);color:#ffd8c8;
+  display:flex;align-items:center;justify-content:center;text-align:center;font:900 16px/1.2 "Noto Serif CJK KR",serif;box-shadow:0 4px 8px rgba(60,10,0,.5),inset 0 0 0 5px rgba(0,0,0,.18);transform:rotate(12deg)}
+.tabs{position:absolute;right:12px;bottom:6px;z-index:60;display:flex;gap:6px}
+.tabs button{font:700 11px/1 "Noto Sans CJK KR",sans-serif;padding:5px 9px;border-radius:3px;border:1px solid rgba(255,220,160,.3);background:rgba(20,10,4,.75);color:#d8c29a;cursor:pointer}
+.tabs button.on{background:#e8b44a;color:#2a1600;border-color:#e8b44a}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= SCREEN A ================= -->
+<section class="screen" id="a">
+  <div class="bg"></div>
+  <div class="sea"><svg class="wave" viewBox="0 0 1500 40" preserveAspectRatio="none"><path d="M0 20 Q 40 4 80 20 T 160 20 T 240 20 T 320 20 T 400 20 T 480 20 T 560 20 T 640 20 T 720 20 T 800 20 T 880 20 T 960 20 T 1040 20 T 1120 20 T 1200 20 T 1280 20 T 1360 20 T 1440 20 T 1520 20 V40 H0Z" fill="#12343e" opacity=".9"/><path d="M0 20 Q 40 4 80 20 T 160 20 T 240 20 T 320 20 T 400 20 T 480 20 T 560 20 T 640 20 T 720 20 T 800 20 T 880 20 T 960 20 T 1040 20 T 1120 20 T 1200 20 T 1280 20 T 1360 20 T 1440 20 T 1520 20" fill="none" stroke="#7ab8c0" stroke-width="2" opacity=".5"/></svg></div>
+  <svg class="hull" id="hullA" width="1070" height="1000"></svg>
+  
+  <div class="hold" id="holdA"><div class="mist" id="mistA"></div></div>
+
+  <div class="top">
+    <div class="brand">향신료 항로</div><div class="sep"></div>
+    <div class="st"><span>항해</span><b>7일째 / 14일</b></div>
+    <div class="days" id="daysA"></div><div class="sep"></div>
+    <div class="st"><span>현재 해역</span><b>계피만 앞바다</b></div><div class="sep"></div>
+    <div class="st"><span>선창 적재</span><b>13 / 16칸</b></div>
+    <div class="coin"><i></i>금화 1,240</div>
+  </div>
+
+  <div class="chart">
+    <h3>해도 · 서풍 항로 <small>향은 하루 한 칸씩 번진다</small></h3>
+    <svg width="468" height="450" viewBox="0 0 468 450" id="chartSvg"></svg>
+    <div class="port" style="left:24px;top:376px">소금곶<em>차 · 사프란 선호</em></div>
+    <div class="port" style="left:190px;top:196px">계피만<em>정박 없음 · 통과</em></div>
+    <div class="port dest" style="left:316px;top:70px">백단항 ◆ 목적지<em>후추·계피 향 비싸게 삼</em></div>
+    <div class="port" style="left:300px;top:392px">검은모래섬<em>정향만 받음</em></div>
+  </div>
+
+  <div class="rules">
+    <h4>향 섞임 규칙 · 알려진 것</h4>
+    <div class="rule"><i class="dot" style="color:#9aa0c0;background:#9aa0c0"></i>후추 + <i class="dot" style="color:#d9743a;background:#d9743a"></i>계피<span class="eff up">값 +12% / 일</span></div>
+    <div class="rule"><i class="dot" style="color:#a8407a;background:#a8407a"></i>정향 + <i class="dot" style="color:#6fbf6a;background:#6fbf6a"></i>차<span class="eff dn">차 오염 −60%</span></div>
+    <div class="rule"><i class="dot" style="color:#f0a830;background:#f0a830"></i>사프란 + <i class="dot" style="color:#d8b050;background:#d8b050"></i>육두구<span class="eff up">+6% / 일</span></div>
+    <div class="rule"><i class="dot" style="color:#6fbf6a;background:#6fbf6a"></i>차 + <i class="dot" style="color:#f0a830;background:#f0a830"></i>사프란<span class="eff mid">± 0 · 안전</span></div>
+    <div class="rule" style="border:0"><span style="color:#8a7050">??? + ???</span><span class="eff" style="color:#8a7050">항구에서 알게 된다</span></div>
+  </div>
+
+  <div class="tray">
+    <div class="tt">대기<br>화물</div>
+    <div class="card empty"><span style="color:#8a7050">들어 올림</span></div>
+    <div class="card" data-k="clove"><svg viewBox="0 0 124 136" data-draw="clove"></svg><span>정향</span></div>
+    <div class="card" data-k="pepper"><svg viewBox="0 0 124 136" data-draw="pepper"></svg><span>후추</span></div>
+    <div class="card empty"><span style="color:#8a7050">—</span></div>
+    <button class="sail serif" id="sail">닻 올려 · 다음 날 ▸</button>
+  </div>
+  <div class="hint"><b>차 궤짝</b>을 드는 중 · 빈 칸 위에서 이웃 향이 미리 보인다.<br>클릭으로 내려놓기 · 우클릭으로 90° 돌리기 · <b>한 번 번진 향은 빠지지 않는다</b></div>
+
+  <div class="held" id="held"><svg viewBox="0 0 124 136" data-draw="tea"></svg></div>
+  <div class="warnbox" id="warn" style="left:836px;top:586px"><span class="k">경고</span><b>정향 두 자루와 맞닿음</b><br>7일 뒤 도착 시 차 향 오염 예상<br><span style="color:#ffb0a0">판매가 180 → 약 72</span></div>
+</section>
+
+<!-- ================= SCREEN B ================= -->
+<section class="screen" id="b">
+  <div class="bg"></div>
+  <div class="sea"><svg class="wave" viewBox="0 0 1500 40" preserveAspectRatio="none"><path d="M0 20 Q 40 8 80 20 T 160 20 T 240 20 T 320 20 T 400 20 T 480 20 T 560 20 T 640 20 T 720 20 T 800 20 T 880 20 T 960 20 T 1040 20 T 1120 20 T 1200 20 T 1280 20 T 1360 20 T 1440 20 T 1520 20 V40 H0Z" fill="#1d4a52" opacity=".9"/><path d="M0 20 Q 40 8 80 20 T 160 20 T 240 20 T 320 20 T 400 20 T 480 20 T 560 20 T 640 20 T 720 20 T 800 20 T 880 20 T 960 20 T 1040 20 T 1120 20 T 1200 20 T 1280 20 T 1360 20 T 1440 20 T 1520 20" fill="none" stroke="#ffd8a0" stroke-width="2" opacity=".45"/></svg></div>
+  <svg class="hull" id="hullB" width="1070" height="1000"></svg>
+  
+  <div class="beam"></div>
+  <div class="hold" id="holdB"><div class="mist" id="mistB"></div></div>
+  <div class="coins" id="coins"></div>
+
+  <div class="top">
+    <div class="brand">향신료 항로</div><div class="sep"></div>
+    <div class="st"><span>입항</span><b>백단항 · 14일째</b></div>
+    <div class="days" id="daysB"></div><div class="sep"></div>
+    <div class="st"><span>하역</span><b>선창 문 개방</b></div><div class="sep"></div>
+    <div class="st"><span>향 번짐</span><b>14칸 / 16칸</b></div>
+    <div class="coin"><i></i><span id="goldB">금화 3,722</span></div>
+  </div>
+
+  <div class="ledger">
+    <h3>백단항 하역 장부</h3>
+    <div class="sub">검향관 확인 · 향 섞임에 따라 값 재산정</div>
+    <div id="lrows"></div>
+    <div class="total"><span>합계</span><span>금화 2,482 <small>▲ 적재가 대비 +552</small></span></div>
+    <div class="order"><h5>백단항 · 다음 입항 주문서</h5>
+      <div class="ord"><i class="dot" style="background:#d9743a;color:#d9743a"></i>계피 향 밴 후추 ×6<span>1자루 240</span></div>
+      <div class="ord"><i class="dot" style="background:#f0a830;color:#f0a830"></i>사프란 곁 육두구 ×4<span>1자루 130</span></div>
+      <div class="ord"><i class="dot" style="background:#6fbf6a;color:#6fbf6a"></i>향 없는 차 ×3<span>1궤짝 220</span></div>
+      <div class="seal">검향<br>완료</div></div>
+    <div class="merch">
+      <div class="face"><svg width="58" height="58" viewBox="0 0 58 58"><path d="M10 26 Q29 2 48 26 Q44 14 29 12 Q14 14 10 26Z" fill="#e8e0c8"/><path d="M8 26 Q29 16 50 26 L50 30 L8 30Z" fill="#b83a2a"/><circle cx="22" cy="36" r="2.4" fill="#2a160a"/><circle cx="36" cy="36" r="2.4" fill="#2a160a"/><path d="M20 46 Q29 52 38 46" stroke="#2a160a" stroke-width="2.4" fill="none"/><path d="M14 44 Q29 64 44 44 L44 58 L14 58Z" fill="#3a2a1a"/></svg></div>
+      <div>“계피 냄새가 후추에 제대로 뱄구려. 이런 건 부르는 게 값이지. 하지만 이 차는… 정향 냄새뿐이오.”</div>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="tt" style="font:800 13px/1.3 'Noto Sans CJK KR';letter-spacing:.2em;color:#c9a46a;width:84px">향 번짐<br>기록</div>
+    <div class="tl"><div class="mini" id="m1"></div>1일째</div><div class="tlarrow">▸</div>
+    <div class="tl"><div class="mini" id="m7"></div>7일째</div><div class="tlarrow">▸</div>
+    <div class="tl"><div class="mini" id="m14"></div>14일째 · 입항</div>
+    <button class="sail serif" id="next">장부 서명 · 다음 항로 ▸</button>
+  </div>
+</section>
+
+<canvas id="grainC" width="256" height="256" style="display:none"></canvas>
+<div class="grain" id="grain"></div>
+<div class="vig"></div>
+<div class="tabs"><button data-s="a">1 · 적재</button><button data-s="b">2 · 입항 정산</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transformOrigin='50% 50%';stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){if(k!=='a'&&k!=='b')k='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id===k);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var t=0;t<tb.length;t++)tb[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  // grain (pre-rendered once)
+  var gc=document.getElementById('grainC'),gx=gc.getContext('2d'),id=gx.createImageData(256,256),seed=7;
+  function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+  for(var p=0;p<id.data.length;p+=4){var v=(rnd()*255)|0;id.data[p]=id.data[p+1]=id.data[p+2]=v;id.data[p+3]=255;}
+  gx.putImageData(id,0,0);document.getElementById('grain').style.backgroundImage='url('+gc.toDataURL()+')';
+
+  var SP={
+    pepper:{n:"후추",c:"#9aa0c0",fill:"#8a7862",dark:"#40342a",seed:'#1c1814',kind:'sack'},
+    cinnamon:{n:'계피',c:'#d9743a',fill:'#a0643a',dark:'#5a3218',seed:'#6a2a10',kind:'bundle'},
+    nutmeg:{n:'육두구',c:'#d8b050',fill:'#9a7a4a',dark:'#5a4222',seed:'#7a4a22',kind:'sack'},
+    clove:{n:'정향',c:'#a8407a',fill:'#6a4a3a',dark:'#3a2218',seed:'#3a1a14',kind:'sack'},
+    saffron:{n:'사프란',c:'#f0a830',fill:'#8a5a2a',dark:'#4a2a12',seed:'#e0501a',kind:'jar'},
+    tea:{n:'차',c:'#6fbf6a',fill:'#8a6038',dark:'#4a3018',seed:'#3a5a2a',kind:'crate'}
+  };
+  var UID=0;function art(k,rotten){var s=SP[k],o='',u=k+(UID++);
+    if(s.kind==='sack'){
+      o+='<defs><linearGradient id="g'+u+'" x1="0" x2="1"><stop offset="0" stop-color="'+s.dark+'"/><stop offset=".45" stop-color="'+s.fill+'"/><stop offset="1" stop-color="'+s.dark+'"/></linearGradient><pattern id="w'+u+'" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 3H6M3 0V6" stroke="rgba(0,0,0,.18)" stroke-width="1"/></pattern></defs>';
+      o+='<path d="M28 34 Q20 60 16 96 Q14 124 40 130 Q62 134 84 130 Q110 124 108 96 Q104 60 96 34 Q62 24 28 34Z" fill="url(#g'+u+')"/><path d="M28 34 Q20 60 16 96 Q14 124 40 130 Q62 134 84 130 Q110 124 108 96 Q104 60 96 34 Q62 24 28 34Z" fill="url(#w'+u+')"/>';
+      o+='<path d="M36 34 Q48 14 44 6 Q62 14 80 6 Q76 16 88 34" fill="'+s.fill+'" stroke="'+s.dark+'" stroke-width="2"/><path d="M34 34 Q62 42 90 34" stroke="#d8c08a" stroke-width="5" fill="none"/>';
+      for(var i=0;i<14;i++)o+='<circle cx="'+(44+((i*37)%40))+'" cy="'+(14+((i*13)%16))+'" r="3" fill="'+s.seed+'"/>';
+      o+='<rect x="34" y="66" width="56" height="34" rx="2" fill="rgba(240,220,170,.2)" stroke="rgba(30,15,5,.5)" stroke-dasharray="3 2"/><text x="62" y="90" text-anchor="middle" font-family="Noto Serif CJK KR" font-weight="900" font-size="20" fill="rgba(30,15,5,.7)">'+s.n.charAt(0)+'</text>';
+    }else if(s.kind==='bundle'){
+      for(var j=0;j<9;j++){var x=18+j*10;o+='<rect x="'+x+'" y="'+(22+(j%3)*4)+'" width="12" height="104" rx="5" fill="'+(j%2?s.fill:'#b8743f')+'" stroke="'+s.dark+'" stroke-width="1.5"/><path d="M'+(x+3)+' '+(26+(j%3)*4)+'V'+(122)+'" stroke="rgba(60,20,5,.5)" stroke-width="1.5"/>';}
+      o+='<rect x="12" y="46" width="100" height="10" fill="#c8a868" stroke="#5a3a18"/><rect x="12" y="96" width="100" height="10" fill="#c8a868" stroke="#5a3a18"/>';
+    }else if(s.kind==='jar'){
+      o+='<path d="M34 30 H90 V44 Q108 56 106 92 Q104 126 62 130 Q20 126 18 92 Q16 56 34 44Z" fill="#8a4a22" stroke="#3a1a08" stroke-width="2"/><path d="M28 60 Q62 70 98 60" stroke="#d89a4a" stroke-width="3" fill="none"/><rect x="30" y="18" width="64" height="16" rx="3" fill="#c89a5a" stroke="#3a1a08"/><path d="M40 76 Q62 118 86 76" fill="rgba(255,190,60,.25)"/>';
+      o+='<ellipse cx="44" cy="80" rx="6" ry="16" fill="rgba(255,255,255,.12)"/><text x="62" y="104" text-anchor="middle" font-family="Noto Serif CJK KR" font-weight="900" font-size="18" fill="#ffd27a">사</text>';
+    }else{
+      o+='<rect x="10" y="26" width="104" height="104" rx="3" fill="'+s.fill+'" stroke="#2a1808" stroke-width="3"/>';
+      for(var q=0;q<4;q++)o+='<rect x="10" y="'+(26+q*26)+'" width="104" height="26" fill="none" stroke="rgba(30,15,5,.45)"/>';
+      o+='<path d="M14 30 L110 126 M110 30 L14 126" stroke="#5a3a18" stroke-width="7"/><rect x="34" y="56" width="56" height="42" fill="#e8dcc0" stroke="#3a2a14"/><text x="62" y="86" text-anchor="middle" font-family="Noto Serif CJK KR" font-weight="900" font-size="24" fill="#2a5a24">茶</text>';
+      o+='<path d="M20 22 Q40 10 62 22 Q84 10 104 22" stroke="#6a9a4a" stroke-width="4" fill="none"/>';
+    }
+    if(rotten){o+='<rect x="8" y="10" width="108" height="124" fill="rgba(70,90,40,.45)"/>';for(var r=0;r<16;r++)o+='<circle cx="'+(18+(r*47)%90)+'" cy="'+(30+(r*29)%96)+'" r="'+(3+r%4)+'" fill="rgba(160,170,110,.55)"/>';}
+    return o;}
+  function drawAll(root){var ds=root.querySelectorAll('svg[data-draw]');for(var i=0;i<ds.length;i++)ds[i].innerHTML=art(ds[i].getAttribute('data-draw'));}
+
+  function hull(svg,day){
+    var h='<defs><linearGradient id="plk'+day+'" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="'+(day?'#6a4424':'#4a2e18')+'"/><stop offset="1" stop-color="#1e120a"/></linearGradient>'+
+      '<radialGradient id="lamp'+day+'" cx="'+(day?'.5':'.5')+'" cy="0.1" r=".75"><stop offset="0" stop-color="'+(day?'rgba(255,210,150,.5)':'rgba(255,170,70,.55)')+'"/><stop offset="1" stop-color="rgba(0,0,0,0)"/></radialGradient>'+
+      '<pattern id="pl'+day+'" width="1070" height="30" patternUnits="userSpaceOnUse"><rect width="1070" height="30" fill="url(#plk'+day+')" opacity="0"/><path d="M0 29.5H1070" stroke="rgba(0,0,0,.55)"/><path d="M0 1H1070" stroke="rgba(255,200,140,.08)"/></pattern></defs>';
+    var P='M40 226 L1050 226 C1045 480 990 710 820 796 L260 796 C90 710 45 480 40 226 Z';
+    var I='M52 238 L1038 238 C1033 480 980 700 815 780 L265 780 C100 700 57 480 52 238 Z';
+    h+='<path d="'+P+'" fill="#2a1a0e" stroke="#0a0604" stroke-width="6"/>';
+    h+='<path d="'+I+'" fill="#24160c"/><path d="'+I+'" fill="url(#pl'+day+')" opacity=".9"/><path d="'+I+'" fill="url(#lamp'+day+')"/>';
+    // ribs
+    for(var i=0;i<8;i++){var x=150+i*112;h+='<path d="M'+x+' 238 V'+(x<300||x>900?680:780)+'" stroke="rgba(0,0,0,.35)" stroke-width="10"/><path d="M'+(x-4)+' 238 V'+(x<300||x>900?680:780)+'" stroke="rgba(255,190,120,.06)" stroke-width="2"/>';}
+    // shelves
+    h+='<path d="M60 410 H1030 M70 560 H1010 M250 712 H830" stroke="#140a04" stroke-width="10"/><path d="M60 404 H1030 M70 554 H1010 M250 706 H830" stroke="rgba(255,190,120,.18)" stroke-width="2"/>';
+    // hull outer planks
+    for(var k=0;k<14;k++)h+='<path d="M'+(40+k*2)+' '+(250+k*40)+' Q'+(90+k*14)+' '+(520+k*18)+' '+(260+k*4)+' 796" stroke="rgba(0,0,0,.25)" fill="none" opacity="0"/>';
+    // deck
+    h+='<rect x="20" y="192" width="1050" height="36" fill="#5a3a20" stroke="#1a0e06" stroke-width="3"/>';
+    for(var d=0;d<22;d++)h+='<path d="M'+(20+d*48)+' 194 V226" stroke="rgba(0,0,0,.35)"/>';
+    h+='<rect x="0" y="182" width="1070" height="12" fill="#3a2412"/><rect x="0" y="226" width="1070" height="6" fill="#140a04"/>';
+    // hatch
+    if(day){h+='<rect x="440" y="186" width="200" height="46" fill="#ffd8a0" opacity=".85"/><rect x="440" y="186" width="200" height="46" fill="none" stroke="#1a0e06" stroke-width="4"/><path d="M430 186 L400 120 L620 120 L650 186" fill="#4a2e18" stroke="#1a0e06" stroke-width="3" opacity=".9"/>';}
+    else{h+='<rect x="440" y="186" width="200" height="46" fill="#1a0e06"/>';for(var g=0;g<9;g++)h+='<rect x="'+(446+g*22)+'" y="190" width="14" height="38" fill="#2a1a0e"/>';}
+    // mast base & rope
+    h+='<rect x="250" y="70" width="34" height="126" fill="#4a2c16" stroke="#1a0e06" stroke-width="3"/><path d="M284 90 Q420 140 560 110" stroke="#8a6a40" stroke-width="3" fill="none"/>';
+    if(!day){ // lantern
+      h+='<path d="M720 232 V262" stroke="#1a0e06" stroke-width="3"/><circle cx="720" cy="290" r="130" fill="url(#lamp0)" opacity=".6"/><rect x="706" y="262" width="28" height="40" rx="4" fill="#ffcf6a" stroke="#3a2412" stroke-width="3"/><circle cx="720" cy="282" r="9" fill="#fff4c8"/><path d="M702 262 H738 M702 302 H738" stroke="#3a2412" stroke-width="4"/>';
+    }
+    // outer hull ribs
+    h+='<path d="'+P+'" fill="none" stroke="#7a5230" stroke-width="2" opacity=".6"/>';
+    svg.innerHTML=h;}
+  hull(document.getElementById('hullA'),0);hull(document.getElementById('hullB'),1);
+
+  var cs='<defs><pattern id="hat" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><path d="M0 0V6" stroke="rgba(90,60,30,.35)"/></pattern></defs>';
+  cs+='<path d="M0 300 Q40 280 70 310 Q110 350 90 400 Q70 440 0 450Z" fill="#d8c08a" stroke="#6a4a24" stroke-width="2"/><path d="M0 300 Q40 280 70 310 Q110 350 90 400 Q70 440 0 450Z" fill="url(#hat)"/>';
+  cs+='<path d="M300 0 Q330 30 380 26 Q430 40 468 20 V0Z" fill="#d8c08a" stroke="#6a4a24" stroke-width="2"/><path d="M468 70 Q420 60 400 90 Q380 120 420 140 Q450 150 468 130Z" fill="#d8c08a" stroke="#6a4a24" stroke-width="2"/>';
+  cs+='<path d="M150 170 Q200 130 250 160 Q280 190 240 215 Q190 230 160 210 Q140 195 150 170Z" fill="#d8c08a" stroke="#6a4a24" stroke-width="2"/><path d="M300 360 Q340 330 380 350 Q400 380 370 395 Q320 405 300 360Z" fill="#cdb070" stroke="#4a3018" stroke-width="2"/>';
+  for(var w=0;w<7;w++)cs+='<path d="M'+(30+w*60)+' '+(60+(w%3)*90)+' q8 -6 16 0 t16 0" stroke="rgba(90,60,30,.4)" fill="none" stroke-width="1.5"/>';
+  cs+='<path d="M60 330 C120 300 160 260 190 230 S300 190 330 150 S360 80 380 60" stroke="#8a2a1a" stroke-width="3" stroke-dasharray="8 7" fill="none"/>';
+  cs+='<path d="M60 330 C120 300 160 260 190 230" stroke="#8a2a1a" stroke-width="5" fill="none" opacity=".35"/>';
+  cs+='<circle cx="380" cy="60" r="9" fill="none" stroke="#a0301e" stroke-width="3"/><circle cx="380" cy="60" r="3" fill="#a0301e"/>';
+  cs+='<g transform="translate(212 214)"><circle r="24" fill="rgba(255,210,120,.35)"><animate attributeName="r" values="18;30;18" dur="2.4s" repeatCount="indefinite"/></circle><path d="M-14 4 L14 4 L9 12 L-9 12Z" fill="#4a2a12"/><path d="M0 4 V-16 M0 -16 L12 0 L0 0Z" stroke="#2a160a" stroke-width="2" fill="#f5ebd0"/></g>';
+  cs+='<g transform="translate(410 330)" stroke="#5a3c1e" fill="none"><circle r="34" stroke-width="1.5"/><circle r="4" fill="#5a3c1e"/><path d="M0 -40 L6 0 L0 40 L-6 0Z M-40 0 L0 6 L40 0 L0 -6Z" fill="rgba(90,60,30,.35)"/><text y="-44" text-anchor="middle" font-size="12" fill="#5a3c1e" stroke="none" font-family="Noto Serif CJK KR" font-weight="900">북</text></g>';
+  cs+='<path d="M120 380 q10 -20 24 -6 q12 -18 22 0 q10 -14 18 4" stroke="#4a3018" stroke-width="2" fill="none"/><path d="M250 290 l28 -10 m-6 -4 l6 4 l-6 6 M260 310 l28 -10 m-6 -4 l6 4 l-6 6" stroke="#6a4a24" stroke-width="2" fill="none"/><text x="244" y="336" font-size="11" fill="#6a4a24" font-family="Noto Sans CJK KR" font-weight="700">서풍</text>';
+  cs+='<text x="100" y="120" font-size="13" fill="rgba(90,60,30,.6)" font-family="Noto Serif CJK KR" font-style="italic">잔잔한 바다</text>';
+  document.getElementById('chartSvg').innerHTML=cs;
+  function pos(r,c){return {x:120+c*140,y:260+r*150};}
+  var gridA=[['pepper','cinnamon','nutmeg',null,'clove','saffron'],['cinnamon','pepper','saffron','clove','GHOST','SAFE'],[null,'nutmeg','pepper',null,'saffron',null]];
+  var gridB=[['pepper','cinnamon','nutmeg','pepper','clove','saffron'],['cinnamon','pepper','saffron','clove','tea','tea'],[null,'nutmeg','pepper','cinnamon','saffron',null]];
+  function build(holdId,mistId,grid,isB){
+    var hold=document.getElementById(holdId),mist=document.getElementById(mistId);
+    for(var r=0;r<3;r++)for(var c=0;c<6;c++){if(r===2&&(c===0||c===5))continue;
+      var k=grid[r][c],p=pos(r,c),el=document.createElement('div');el.className='cell';el.style.left=p.x+'px';el.style.top=p.y+'px';
+      el.innerHTML='<div class="slot"></div>';
+      if(k==='GHOST'){el.classList.add('ghost');}
+      else if(k==='SAFE'){el.classList.add('safe');el.innerHTML+='<div class="lbl" style="background:rgba(111,174,90,.9)">안전 · ±0</div>';}
+      else if(k){var rot=isB&&r===1&&c===4;el.innerHTML+='<svg viewBox="0 0 124 136">'+art(k,rot)+'</svg><div class="lbl">'+SP[k].n+'</div>';el.setAttribute('data-k',k);
+        var pu=document.createElement('div');pu.className='puff';var R=isB?230:170;pu.style.width=pu.style.height=R+'px';
+        pu.style.left=(p.x+70-R/2)+'px';pu.style.top=(p.y+75-R/2)+'px';
+        pu.style.background='radial-gradient(circle,'+SP[k].c+' 0,'+SP[k].c+'55 40%,transparent 70%)';pu.style.opacity=isB?.4:.62;
+        pu.style.animationDelay=(-(r*3+c)*1.3)+'s';mist.appendChild(pu);}
+      hold.appendChild(el);}
+    return hold;}
+  var hA=build('holdA','mistA',gridA,false),hB=build('holdB','mistB',gridB,true);
+  function link(hold,x,y,t,cls){var l=document.createElement('div');l.className='link '+cls;l.style.left=x+'px';l.style.top=y+'px';l.textContent=t;hold.appendChild(l);}
+  link(hA,260,300,'+12%','up');link(hA,260,480,'+12%','up');link(hA,190,410,'+12%','up');link(hA,330,410,'+12%','up');
+  link(hA,680,410,'오염','dn');link(hA,750,560,'!','dn');link(hA,470,560,'+6%','up');
+  drawAll(document);
+
+  // screen B badges
+  function badge(r,c,t,cls){var p=pos(r,c),b=document.createElement('div');b.className='badge '+cls;b.style.left=(p.x+70)+'px';b.style.top=(p.y+2)+'px';b.textContent=t;hB.appendChild(b);}
+  badge(0,0,'+84%','up');badge(0,1,'+72%','up');badge(1,0,'+96%','up');badge(1,1,'+118%','up');badge(0,3,'+60%','up');badge(2,2,'+84%','up');badge(2,3,'+48%','up');
+  badge(0,2,'+30%','up');badge(1,2,'+24%','up');badge(0,5,'±0','eq');badge(2,4,'+12%','up');badge(0,4,'±0','eq');badge(1,3,'±0','eq');badge(2,1,'+18%','up');
+  badge(1,5,'−20%','dn');
+  var st=document.createElement('div');st.className='stamp';st.textContent='향 오염';var p4=pos(1,4);st.style.left=(p4.x-14)+'px';st.style.top=(p4.y+52)+'px';hB.appendChild(st);
+  var rt=document.createElement('div');rt.className='rot';rt.style.left=(p4.x-20)+'px';rt.style.top=(p4.y-10)+'px';rt.style.width='190px';rt.style.height='180px';hB.appendChild(rt);
+  // gold highlight around pepper/cinnamon block
+  var gl=document.createElement('div');gl.style.cssText='position:absolute;left:114px;top:254px;width:292px;height:312px;border:2px solid #ffd98a;border-radius:8px;box-shadow:0 0 30px rgba(255,210,120,.55),inset 0 0 30px rgba(255,210,120,.25);pointer-events:none;z-index:7';hB.appendChild(gl);
+  var gt=document.createElement('div');gt.className='link up';gt.style.cssText+=';left:260px;top:246px;font-size:15px';gt.textContent='후추·계피 결속 · 14일 숙성';hB.appendChild(gt);
+  for(var d=0;d<26;d++){var ds=document.createElement('div');ds.className='dust';ds.style.left=(400+(d*53)%260)+'px';ds.style.top=(240+(d*37)%200)+'px';ds.style.animationDuration=(6+(d%5)*1.7)+'s';ds.style.animationDelay=(-d*0.9)+'s';hB.appendChild(ds);}
+
+  // days
+  function days(id,n,cur){var e=document.getElementById(id);for(var i=1;i<=14;i++){var x=document.createElement('i');if(i<cur)x.className='p';if(i===cur)x.className='c';e.appendChild(x);}}
+  days('daysA',14,7);days('daysB',14,14);
+
+  // ledger rows
+  var L=[['후추','pepper',4,'480','','884','g','계피 향 스밈 · 백단항 최상급'],['계피','cinnamon',3,'420','','722','g','후추와 결속 · 14일 숙성'],['육두구','nutmeg',2,'180','','212','g','사프란 곁 +6%/일'],['사프란','saffron',3,'330','','360','g',''],['정향','clove',2,'160','','160','',''],['차','tea',2,'360','','144','r','정향 인접 · 향 오염 −60%']];
+  var lr=document.getElementById('lrows'),h='';
+  for(var i=0;i<L.length;i++){var x=L[i];h+='<div class="lrow '+x[6]+'"><i class="dot" style="width:14px;height:14px;background:'+SP[x[1]].c+';color:'+SP[x[1]].c+'"></i><span>'+x[0]+' × '+x[2]+'</span><span class="o">'+x[3]+'</span><span class="ar">→</span><span class="n">'+x[5]+'</span>'+(x[7]?'<span class="why">'+x[7]+'</span>':'')+'</div>';}
+  lr.innerHTML=h;
+
+  // mini diffusion maps
+  function mini(id,spread){var e=document.getElementById(id),g=gridB;for(var r=0;r<3;r++)for(var c=0;c<6;c++){var k=g[r][c],i=document.createElement('i');
+    if(r===2&&(c===0||c===5)){i.style.background='transparent';}
+    else if(k){var col=SP[k].c;i.style.background=col;i.style.opacity=spread<1?.55:1;if(spread>1)i.style.boxShadow='0 0 '+(spread*3)+'px '+col;}
+    else{i.style.background=spread>1?'#6a5a3a':'#2a1a0e';}
+    if(r===1&&c===4&&spread>1)i.style.background='#5a6a2a';
+    e.appendChild(i);}}
+  mini('m1',0);mini('m7',1);mini('m14',3);
+
+  // held crate follows mouse (A)
+  var held=document.getElementById('held'),warn=document.getElementById('warn');
+  function place(x,y){held.style.left=(x-60)+'px';held.style.top=(y-90)+'px';}
+  place(750,450);
+  stage.addEventListener('mousemove',function(e){if(!document.getElementById('a').classList.contains('on'))return;var r=stage.getBoundingClientRect(),s=r.width/1600;var x=(e.clientX-r.left)/s,y=(e.clientY-r.top)/s;if(x>60&&x<1040&&y>240&&y<860)place(x,y);});
+
+  // audio
+  var AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function thud(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(45,t+.2);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.32);
+    var n=c.sampleRate*.15,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);var s=c.createBufferSource(),f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=900;s.buffer=b;s.connect(f).connect(c.destination);s.start(t);}
+  function chime(){var c=ac();if(!c)return;var t=c.currentTime;[1320,1760,2217].forEach(function(fq,i){var o=c.createOscillator(),g=c.createGain();o.frequency.value=fq;g.gain.setValueAtTime(0,t+i*.07);g.gain.linearRampToValueAtTime(.18,t+i*.07+.01);g.gain.exponentialRampToValueAtTime(.001,t+i*.07+.6);o.connect(g).connect(c.destination);o.start(t+i*.07);o.stop(t+i*.07+.7);});}
+  function creak(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(70,t);o.frequency.linearRampToValueAtTime(95,t+.5);f.type='bandpass';f.frequency.value=400;f.Q.value=6;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.15,t+.1);g.gain.exponentialRampToValueAtTime(.001,t+.7);o.connect(f).connect(g).connect(c.destination);o.start(t);o.stop(t+.75);}
+  hA.addEventListener('click',function(e){var c=e.target.closest('.cell');if(!c)return;thud();c.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:260});});
+  hB.addEventListener('click',function(e){var c=e.target.closest('.cell');if(!c)return;chime();});
+  document.getElementById('sail').addEventListener('click',creak);
+  document.getElementById('next').addEventListener('click',function(){chime();var co=document.getElementById('coins');for(var i=0;i<18;i++){var n=document.createElement('div');n.className='cn';n.style.left='1330px';n.style.top='700px';n.style.setProperty('--dx',(Math.cos(i*.35)*260)+'px');n.style.setProperty('--dy',(-80-Math.sin(i*.9)*220)+'px');n.style.animationDelay=(i*.03)+'s';co.appendChild(n);setTimeout(function(n){return function(){n.remove();};}(n),1800);}});
+  var cards=document.querySelectorAll('.card:not(.empty)');for(var q=0;q<cards.length;q++)cards[q].addEventListener('click',thud);
+
+  show((location.hash||'#a').slice(1));
+})();
+</script>
+</body>
+</html>

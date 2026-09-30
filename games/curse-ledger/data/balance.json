@@ -1,0 +1,59 @@
+{
+  "_": "수치는 전부 정수. 배율은 백분율 정수이고 나머지는 상태의 carry 에 누적한다 (설계 원칙 4).",
+
+  "flow": {
+    "blessingPerBindingPercent": 18,
+    "blightPerWrathPercent": 40,
+    "prosperityDecayPerGeneration": 9,
+    "resentmentEasePerGeneration": 2,
+    "wrathPerUnpaidPercent": 100,
+    "bindingLossPerUnpaidPercent": 120,
+    "surplusBindingPercent": 30,
+    "postponeInterestPercent": 220,
+    "_미룬_공물의_이자": "장부를 덮어 미룬 공물은 그대로 오지 않는다. 이 배율만큼 불어서 다음 대의 요구에 얹힌다 — 미루는 것이 공짜가 되면 다른 수가 전부 죽는다(NoDominantStrategy 가 실제로 그것을 잡았다)",
+    "_잉여": "요구보다 많이 갚으면 남는 몫의 30%가 속박으로 간다"
+  },
+
+  "limits": {
+    "prosperityMax": 120,
+    "bindingMax": 100,
+    "wrathMax": 100,
+    "houseVitalityMax": 100,
+    "resentmentMax": 100,
+    "coffersMax": 90
+  },
+
+  "ending": {
+    "uprisingResentment": 100,
+    "releaseComplete": 100,
+    "releaseFamineDrop": 70,
+    "_기근": "저주가 사라지면 저주가 주던 풍요도 같이 사라진다. 이 한 줄이 '저주를 풀면 마을이 몰락한다'의 전부다. 해제를 **결말에서 배제하지 않는다** — 번영이 이 낙차를 견디면 살아남은 것으로 센다. NoCleanExit 은 그런 길이 없음을 전수로 보인다",
+    "villageAliveFloor": 12,
+    "_살아남는_조건": "번영 >= villageAliveFloor 이고 결말이 몰락/봉기/창궐/단절/멈춤이 아니다. 해제 완수는 기근을 견디면 통과한다",
+    "_살아있다": "마지막에 번영이 이 선 이상이고 몰락/봉기/창궐/기근으로 끝나지 않았을 때만 '마을이 살아 있다'고 센다"
+  },
+
+  "score": {
+    "_": "★ 이것은 **검사기의 잣대**이고 게임의 도덕이 아니다. NoDominantStrategy 가 정책을 견주는 데만 쓴다.",
+    "perSurvivedGeneration": 1000,
+    "perProsperity": 10,
+    "perHouseVitality": 5,
+    "perVictim": -120,
+    "perResentment": -3,
+    "villageAliveBonus": 2500
+  },
+
+  "checkers": {
+    "exhaustiveGenerations": 8,
+    "noCleanExitSeeds": [20260927, 91, 4404],
+    "_씨드": "저주는 흉년/풍년을 씨드로 흔든다. 깨끗한 출구가 한 씨드에서만 없는 것은 증명이 아니다",
+    "minSurvivingPoliciesWithVictims": 1,
+    "minDistinctRitesInBestPolicy": 3,
+    "monoDominanceMarginPoints": 500,
+    "deferredDivergenceMinPolicies": 200,
+    "deferredMinChangedEndings": 40,
+    "minAncestorShareInGenerationPercent": 30,
+    "minRitesMajorityDeferred": 3,
+    "minLongestDelayGenerations": 3
+  }
+}

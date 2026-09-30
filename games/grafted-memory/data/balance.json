@@ -1,0 +1,40 @@
+{
+  "_": "떨림은 언제나 `저울 x 크기` 의 정수 곱이다. 나눗셈이 한 번도 없다 (설계 원칙 4).",
+  "_저울읽는법": "timePlaceWeight 90 x 굳기 95 = 8550. singleEdgeCap 6000 을 넘으므로 굳은 기억과 시간·장소가 어긋나면 총합과 무관하게 거부된다. 굳기 60 이면 5400 으로 살아남는다 — 흐릿한 기억은 덮어쓸 수 있고 흉터는 못 덮는다.",
+
+  "seed": 20260927,
+  "trialSeeds": 60,
+  "dayStep": 30,
+  "corroborateRoutes": 2,
+
+  "timePlaceWeight": 90,
+  "personElsewhereWeight": 70,
+  "personAbsentWeight": 130,
+  "placeWindowWeight": 130,
+  "moodAnchorWeight": 1,
+  "eraWeight": 1,
+  "intensityWeight": 1,
+
+  "moodTolerance": 30,
+  "eraTolerance": 50,
+  "eraWindowDays": 420,
+  "intensityTolerance": 10,
+
+  "statedRules": [
+    "TimePlaceConflict",
+    "PersonElsewhere",
+    "PersonAbsent",
+    "PlaceWindow",
+    "MoodClashAnchor",
+    "MoodClashEra",
+    "IntensityClash"
+  ],
+
+  "selfSignature": {
+    "_": "심어진 기억이 남기는 흔적의 문턱. 의뢰에 쓰는 것과 같은 규칙으로 잰 잔여 떨림이다.",
+    "_세기는안셈다": "흔적에서 IntensityClash 는 제외한다. 기억이 얼마나 큰가는 살아 지는 동안 제저절로 바뀌고 스톬린 값도 없다. 넣으면 의뢰인의 자연스러운 기억망에서도 네 자리가 싶어진 것으로 읽혔다(1425).",
+    "_왜둘째떨림인가": "잔여 떨림 총량을 문턱으로 한 번 해 보고 버렸다. 자연스러운 기억망도 가장 가까운 기억과 정서가 반대인 짝을 흔히 갖는다(운동장에서 넘어진 일 <-> 선화를 처음 본 일: 3725). 그 자리까지 심어진 것으로 읽혔다. 가장 센 떨림 하나를 빼면 의뢰인의 기억망 열여섯 자리가 전부 350 밑으로 내려간다.",
+    "secondaryFloor": 1000,
+    "minTrembleEdges": 2
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "_": "표본집을 노리고 밤에 오는 것들. 행동은 pattern 을 순환한다 — 난수 없이 결정적이다.",
+  "_pattern": "{type, amount}. attack=공격(방어로 깎인다) · block=방어 · ramp=이후 공격에 더할 값",
+  "enemies": [
+    {
+      "id": "enemy_hare",
+      "nameKo": "산토끼",
+      "nameEn": "Hare",
+      "hp": 27,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 8
+        },
+        {
+          "type": "attack",
+          "amount": 8
+        },
+        {
+          "type": "block",
+          "amount": 4
+        }
+      ]
+    },
+    {
+      "id": "enemy_roe",
+      "nameKo": "노루",
+      "nameEn": "Roe Deer",
+      "hp": 40,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 11
+        },
+        {
+          "type": "block",
+          "amount": 5
+        },
+        {
+          "type": "attack",
+          "amount": 9
+        }
+      ]
+    },
+    {
+      "id": "enemy_boar",
+      "nameKo": "멧돼지",
+      "nameEn": "Boar",
+      "hp": 62,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 10
+        },
+        {
+          "type": "block",
+          "amount": 6
+        },
+        {
+          "type": "attack",
+          "amount": 12
+        },
+        {
+          "type": "ramp",
+          "amount": 6
+        },
+        {
+          "type": "attack",
+          "amount": 16
+        }
+      ]
+    }
+  ]
+}

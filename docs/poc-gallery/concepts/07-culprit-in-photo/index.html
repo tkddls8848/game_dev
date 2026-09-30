@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>사진 속 범인</title>
+<style>
+html,body{margin:0;height:100%;background:#0c0f0c;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;margin:-500px 0 0 -800px;transform-origin:50% 50%;overflow:hidden;
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:#2a241c;
+  background:radial-gradient(ellipse 70% 60% at 42% 40%,#3f5a44 0%,#2a3f2f 45%,#16231a 100%)}
+#stage:before{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .35 0 0 0 0 .3 0 0 0 .8 0'/></filter><rect width='260' height='260' filter='url(%23n)'/></svg>")}
+.screen{position:absolute;inset:0;display:none}.screen.on{display:block}
+.lamp{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 50% at 38% 36%,rgba(255,226,160,.22),rgba(0,0,0,0) 60%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);z-index:1}
+.print{position:absolute;background:#f3efe6;box-shadow:0 30px 50px rgba(0,0,0,.55),0 4px 10px rgba(0,0,0,.4);padding:22px 22px 44px}
+.print .cap{position:absolute;left:24px;bottom:12px;font:italic 15px/1 "Nanum Myeongjo","Noto Serif KR",serif;color:#6a6152}
+.card{position:absolute;background:linear-gradient(180deg,#f6f0de,#ece2c6);box-shadow:0 16px 30px rgba(0,0,0,.45);border-radius:2px}
+.card:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 31px,rgba(120,150,190,.35) 31px 32px);pointer-events:none}
+.card .h{position:relative;font-size:12px;letter-spacing:4px;color:#8a7a5a}
+.case{left:1080px;top:70px;width:450px;height:520px;padding:26px 30px;box-sizing:border-box;transform:rotate(1.2deg);z-index:3}
+.case .no{font:800 44px/1 "Bahnschrift","DejaVu Sans",sans-serif;color:#2a241c;margin-top:6px;position:relative}
+.case .q{position:relative;margin-top:14px;font-size:24px;font-weight:800;line-height:34px}
+.case ul{position:relative;list-style:none;margin:18px 0 0;padding:0;font-size:17px;line-height:32px}
+.case li:before{content:"□ ";color:#8a7a5a}
+.case li.ok:before{content:"☑ ";color:#b3261e}
+.thumb{position:absolute;right:30px;bottom:30px;width:210px;background:#f3efe6;padding:8px 8px 24px;box-shadow:0 10px 18px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.thumb .cap{position:absolute;left:10px;bottom:6px;font:italic 12px/1 "Nanum Myeongjo",serif;color:#6a6152}
+.tape{position:absolute;width:90px;height:26px;background:rgba(240,230,190,.7);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tools{position:absolute;left:1080px;top:640px;width:450px;z-index:3;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.tool{height:92px;border-radius:6px;background:linear-gradient(180deg,#2a2a24,#161612);color:#e8dcc0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;
+  box-shadow:0 6px 0 #070705,0 10px 16px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .06s,box-shadow .06s}
+.tool:active{transform:translateY(4px);box-shadow:0 2px 0 #070705,0 4px 8px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12)}
+.tool small{font-weight:400;font-size:12px;color:#a89c80;letter-spacing:2px}
+.tool.on{background:linear-gradient(180deg,#c9a55a,#8a6a2a);color:#1a140a}.tool.on small{color:#3a2a10}
+.tool.red{background:linear-gradient(180deg,#b3261e,#6e120c);color:#fff0e0}.tool.red small{color:#ffc0b0}
+.status{position:absolute;left:1080px;top:790px;width:450px;z-index:3;color:#e8dcc0;font-size:14px;line-height:24px}
+.status b{color:#ffd98a}
+.hudtop{position:absolute;left:80px;top:26px;z-index:3;color:#e8dcc0;font-size:13px;letter-spacing:4px}
+.hudtop b{font-size:20px;letter-spacing:2px;color:#fff3d6;margin-left:10px}
+.clues{position:absolute;left:80px;top:790px;z-index:3;display:flex;gap:16px;align-items:flex-end}
+.clues .ttl{color:#e8dcc0;font-size:13px;letter-spacing:2px;width:100px;white-space:nowrap;line-height:22px}
+.clues .ttl b{display:block;font-size:30px;letter-spacing:0;color:#ffd98a}
+.clue{width:178px;background:#f3efe6;padding:7px 7px 28px;box-shadow:0 10px 18px rgba(0,0,0,.45);position:relative}
+.clue .cp{position:absolute;left:9px;bottom:7px;font-size:13px;font-weight:700;color:#3a3226}
+.clue.new{box-shadow:0 0 0 3px #c9a55a,0 0 24px rgba(255,210,120,.5),0 10px 18px rgba(0,0,0,.45);transform:translateY(-8px)}
+.clue.q{background:rgba(243,239,230,.12);border:2px dashed rgba(243,239,230,.35);box-shadow:none;height:134px;display:flex;align-items:center;justify-content:center;color:#e8dcc0;font-size:14px;padding:0}
+.tabs{position:absolute;right:16px;top:12px;z-index:60;display:flex;gap:6px}
+.tab{font:12px/1 "DejaVu Sans",sans-serif;color:#e8dcc0;background:rgba(10,14,10,.8);border:1px solid #4a5a44;padding:6px 10px;cursor:pointer}
+.tab.on{background:#e8dcc0;color:#111}
+/* B */
+.stamp{position:absolute;z-index:6;border:6px solid #b3261e;color:#b3261e;font:900 58px/1 "Noto Sans KR",sans-serif;letter-spacing:10px;padding:14px 26px;transform:rotate(-11deg);opacity:.88;mix-blend-mode:multiply;
+  box-shadow:inset 0 0 0 3px rgba(179,38,30,.4)}
+.lineup{position:absolute;left:80px;top:780px;display:flex;gap:18px;z-index:4}
+.sus{width:150px;height:186px;background:#f3efe6;padding:8px 8px 30px;box-sizing:border-box;box-shadow:0 10px 18px rgba(0,0,0,.4);position:relative}
+.sus .nm{position:absolute;left:10px;bottom:7px;font-size:13px;font-weight:700;color:#3a3226}
+.sus.pick{transform:translateY(-16px) rotate(-2deg);box-shadow:0 0 0 4px #b3261e,0 18px 26px rgba(0,0,0,.5)}
+.ledger{left:1080px;top:70px;width:450px;height:880px;padding:26px 30px;box-sizing:border-box;transform:rotate(-.6deg);z-index:3}
+.grid100{position:relative;display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:14px}
+.grid100 i{height:26px;border:1.5px solid #b9ab88;border-radius:2px}
+.grid100 i.d{background:#3a3226;border-color:#3a3226}
+.grid100 i.n{background:#b3261e;border-color:#b3261e;box-shadow:0 0 12px rgba(179,38,30,.7);animation:pop 1.2s ease-in-out infinite}
+@keyframes pop{50%{transform:scale(1.15)}}
+.chain{position:relative;margin-top:18px;font-size:16px;line-height:28px}
+.chain div{display:flex;gap:10px}
+.chain em{font-style:normal;color:#b3261e;font-weight:800;min-width:26px}
+</style>
+</head>
+<body>
+<div id="stage">
+ <div class="tabs"><div class="tab" data-s="a">1 · 확대</div><div class="tab" data-s="b">2 · 지목</div></div>
+
+ <!-- photo sources -->
+ <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+   <filter id="silver" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation=".55"/></filter>
+   <filter id="grainF" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="9"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+   <radialGradient id="pv" cx="50%" cy="48%" r="70%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+   <linearGradient id="wallP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e6e6e"/><stop offset="1" stop-color="#8e8e8e"/></linearGradient>
+   <linearGradient id="winP" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e2e2e2"/><stop offset="1" stop-color="#c4c4c4"/></linearGradient>
+   <linearGradient id="coatD" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1c1c1c"/><stop offset=".7" stop-color="#2e2e2e"/><stop offset="1" stop-color="#4a4a4a"/></linearGradient>
+   <linearGradient id="coatG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#555"/><stop offset=".7" stop-color="#6c6c6c"/><stop offset="1" stop-color="#8a8a8a"/></linearGradient>
+   <linearGradient id="dressL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9a9a9a"/><stop offset=".6" stop-color="#bdbdbd"/><stop offset="1" stop-color="#d6d6d6"/></linearGradient>
+   <g id="photo-before"></g>
+   <g id="photo-after"></g>
+   <clipPath id="loupeClip"><circle id="lc" cx="628" cy="382" r="118"/></clipPath>
+   <clipPath id="pclip"><rect width="900" height="620"/></clipPath>
+  </defs>
+ </svg>
+
+ <!-- ============ A ============ -->
+ <section class="screen" id="sa">
+  <div class="lamp"></div>
+  <div class="hudtop">박제된 사진관 · 사건 파일<b>023 / 100</b></div>
+  <div class="print" style="left:80px;top:70px;width:900px;height:620px;transform:rotate(-.8deg);z-index:2">
+   <svg id="mainPhoto" width="900" height="620" viewBox="0 0 900 620" style="display:block;cursor:none">
+    <g clip-path="url(#pclip)"><use href="#photo-after"/></g>
+    <rect width="900" height="620" filter="url(#grainF)" opacity=".5" style="mix-blend-mode:overlay" pointer-events="none"/>
+    <g id="loupeView" clip-path="url(#loupeClip)"><g id="zoomG" transform="translate(628 382) scale(3.2) translate(-628 -382)"><use href="#photo-after"/></g><g transform="translate(0 0) scale(1.6)"><rect width="600" height="420" filter="url(#grainF)" opacity=".75" style="mix-blend-mode:overlay"/></g></g>
+    <g id="loupeRing" transform="translate(628 382)">
+     <circle r="118" fill="none" stroke="#1a140a" stroke-width="16"/><circle r="118" fill="none" stroke="#c9a55a" stroke-width="10"/><circle r="112" fill="none" stroke="#f3dca0" stroke-width="2" opacity=".7"/>
+     <path d="M-80 -70 A106 106 0 0 1 20 -104" fill="none" stroke="#fff" stroke-width="10" opacity=".25" stroke-linecap="round"/>
+     <rect x="80" y="80" width="30" height="130" rx="10" transform="rotate(-45 95 145)" fill="#3a2414"/><rect x="84" y="80" width="10" height="126" rx="5" transform="rotate(-45 95 145)" fill="#6a4424"/>
+     <text x="0" y="148" text-anchor="middle" font-size="15" font-weight="800" fill="#f3dca0" font-family="Noto Sans KR,sans-serif" style="paint-order:stroke" stroke="#1a140a" stroke-width="4">×3.2</text>
+    </g>
+   </svg>
+   <div class="cap">1953. 11. 7 · 21:50 · 한남동 윤 회장 댁 응접실 (두 번째 장)</div>
+  </div>
+  <div class="card case">
+   <div class="h">사건 023 · 목걸이 실종</div>
+   <div class="no">누가 가져갔나?</div>
+   <div class="q">21:40에는 있었고,<br>21:50에는 없다.</div>
+   <ul>
+    <li class="ok">피아노 앞 윤 여사 · 목걸이 사라짐</li>
+    <li class="ok">창가 중절모 남자 · 왼손이 주머니 속</li>
+    <li>주머니에서 무언가 반사된다?</li>
+    <li>집사의 쟁반 · 잔이 하나 줄었다</li>
+   </ul>
+   <div class="thumb"><svg width="194" height="134" viewBox="0 0 900 620" style="display:block"><g clip-path="url(#pclip)"><use href="#photo-before"/></g></svg><div class="cap">21:40 · 첫 번째 장</div></div>
+   <div class="tape" style="right:90px;bottom:170px;transform:rotate(8deg)"></div>
+  </div>
+  <div class="clues">
+   <div class="ttl">수집한 단서<b>3 / 4</b></div>
+   <div class="clue"><svg width="164" height="112" viewBox="318 346 48 33" style="display:block"><use href="#photo-before"/></svg><div class="cp">21:40 · 진주 목걸이</div></div>
+   <div class="clue"><svg width="164" height="112" viewBox="160 318 44 30" style="display:block"><use href="#photo-after"/></svg><div class="cp">21:50 · 피아노 위 걸쇠</div></div>
+   <div class="clue new"><svg width="164" height="112" viewBox="604 386 48 33" style="display:block"><use href="#photo-after"/></svg><div class="cp">주머니 속 반사 · 새 단서</div></div>
+   <div class="clue q">? 집사의 쟁반</div>
+  </div>
+  <div class="tools">
+   <div class="tool on" id="tZoom">확대<small>휠 · ×3.2</small></div>
+   <div class="tool" id="tCmp">비교<small>두 장 겹치기</small></div>
+   <div class="tool red" id="tAcc">지목<small>5명 중 1명</small></div>
+  </div>
+  <div class="status">돋보기를 사진 위로 움직인다 · 확대할수록 <b>입자가 거칠어지고</b> 디테일이 드러난다.<br>오답 지목 1회당 별 하나를 잃는다 · 현재 <b>★★★</b></div>
+ </section>
+
+ <!-- ============ B ============ -->
+ <section class="screen" id="sb">
+  <div class="lamp"></div>
+  <div class="hudtop">박제된 사진관 · 사건 파일<b>023 / 100 · 해결</b></div>
+  <div class="print" style="left:80px;top:70px;width:900px;height:620px;transform:rotate(-.8deg);z-index:2">
+   <svg width="900" height="620" viewBox="0 0 900 620" style="display:block">
+    <g clip-path="url(#pclip)"><use href="#photo-after"/></g>
+    <rect width="900" height="620" filter="url(#grainF)" opacity=".5" style="mix-blend-mode:overlay"/>
+    <!-- red grease pencil -->
+    <g fill="none" stroke="#c0271d" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:multiply">
+     <path d="M548 190 C520 240 530 330 560 390 C590 440 660 450 690 400 C720 350 700 230 660 196 C630 172 580 170 552 196" stroke-width="7" opacity=".9" stroke-dasharray="900" stroke-dashoffset="900"><animate attributeName="stroke-dashoffset" from="900" to="0" dur="1.1s" fill="freeze"/></path>
+     <path d="M760 520 C720 480 680 440 640 396" stroke-width="5"/><path d="M640 396 L660 402 M640 396 L644 416" stroke-width="5"/>
+    </g>
+    <text x="640" y="585" font-family="Nanum Pen Script,cursive" font-size="32" fill="#c0271d" transform="rotate(-6 640 585)">주머니 속 체인!</text>
+   </svg>
+   <div class="cap">1953. 11. 7 · 21:50 · 한남동 윤 회장 댁 응접실 (두 번째 장)</div>
+  </div>
+  <div class="stamp" style="left:120px;top:585px">범인 지목</div>
+  <div class="lineup" id="lineup"></div>
+  <div class="card ledger">
+   <div class="h">사건 대장 · 박제된 사진관</div>
+   <div class="no" style="font:800 40px/1 'Bahnschrift','DejaVu Sans',sans-serif;margin-top:6px;position:relative">023 해결 <span style="color:#c9a55a">★★★</span></div>
+   <div class="chain">
+    <div><em>①</em>21:40 · 윤 여사 목에 진주 목걸이 (첫 장)</div>
+    <div><em>②</em>21:50 · 목걸이 없음 · 걸쇠 조각이 피아노 위에</div>
+    <div><em>③</em>중절모 남자 왼쪽 주머니 · 체인 반사 ×3.2</div>
+    <div><em>④</em>집사의 쟁반 · 잔 수는 같다 → 무관</div>
+   </div>
+   <div class="h" style="margin-top:22px">진행 · 100건</div>
+   <div class="grid100" id="grid"></div>
+   <div style="position:relative;margin-top:22px;display:flex;gap:26px;font-size:14px;color:#5a4e3a"><div>소요<b style="display:block;font-size:26px;color:#2a241c">4:12</b></div><div>확대<b style="display:block;font-size:26px;color:#2a241c">9회</b></div><div>비교<b style="display:block;font-size:26px;color:#2a241c">3회</b></div><div>오답<b style="display:block;font-size:26px;color:#2a241c">0</b></div></div>
+   <div style="position:relative;margin-top:22px;font-size:15px;line-height:26px;color:#5a4e3a">다음 · <b>사건 024 — 부둣가의 우산</b><br>사진 3장 · 인물 9명 · 비교 필수</div>
+  </div>
+ </section>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ function show(id){var ss=document.querySelectorAll('.screen'),i;for(i=0;i<ss.length;i++){ss[i].classList.toggle('on',ss[i].id==='s'+id);}
+  var ts=document.querySelectorAll('.tab');for(i=0;i<ts.length;i++){ts[i].classList.toggle('on',ts[i].getAttribute('data-s')===id);}
+  try{if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}catch(e){}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);
+ var tabs=document.querySelectorAll('.tab');for(var t=0;t<tabs.length;t++){tabs[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});}
+ fromHash();
+
+ /* ---------- the photograph (tonal, grainy, silver) ---------- */
+ function person(o){var x=o.x,y=o.y,s=o.s||1,h='';
+  h+='<ellipse cx="'+x+'" cy="'+(y+4)+'" rx="'+(40*s)+'" ry="'+(7*s)+'" fill="#000" opacity=".35"/>';
+  if(o.dress){h+='<path d="M'+(x-22*s)+' '+(y-120*s)+' L'+(x+22*s)+' '+(y-120*s)+' L'+(x+40*s)+' '+y+' L'+(x-40*s)+' '+y+' Z" fill="'+o.fill+'"/>';}
+  else{h+='<rect x="'+(x-17*s)+'" y="'+(y-70*s)+'" width="'+(14*s)+'" height="'+(70*s)+'" fill="#161616"/><rect x="'+(x+3*s)+'" y="'+(y-70*s)+'" width="'+(14*s)+'" height="'+(70*s)+'" fill="#202020"/>';
+   h+='<path d="M'+(x-24*s)+' '+(y-128*s)+' L'+(x+24*s)+' '+(y-128*s)+' L'+(x+22*s)+' '+(y-58*s)+' L'+(x-22*s)+' '+(y-58*s)+' Z" fill="'+o.fill+'"/>';}
+  h+='<path d="M'+(x-26*s)+' '+(y-126*s)+' Q'+x+' '+(y-140*s)+' '+(x+26*s)+' '+(y-126*s)+'" fill="'+o.fill+'"/>';
+  if(o.shirt)h+='<path d="M'+(x-6*s)+' '+(y-130*s)+' L'+(x+6*s)+' '+(y-130*s)+' L'+x+' '+(y-92*s)+' Z" fill="#e6e6e6"/>';
+  h+='<rect x="'+(x-5*s)+'" y="'+(y-142*s)+'" width="'+(10*s)+'" height="'+(12*s)+'" fill="#8a8a8a"/>';
+  h+='<ellipse cx="'+x+'" cy="'+(y-156*s)+'" rx="'+(12*s)+'" ry="'+(15*s)+'" fill="#a8a8a8"/><ellipse cx="'+(x+4*s)+'" cy="'+(y-156*s)+'" rx="'+(7*s)+'" ry="'+(12*s)+'" fill="#bdbdbd"/>';
+  if(o.hat)h+='<rect x="'+(x-18*s)+'" y="'+(y-172*s)+'" width="'+(36*s)+'" height="'+(4*s)+'" fill="#111"/><path d="M'+(x-12*s)+' '+(y-172*s)+' Q'+x+' '+(y-192*s)+' '+(x+12*s)+' '+(y-172*s)+' Z" fill="#161616"/>';
+  if(o.hair)h+='<path d="M'+(x-13*s)+' '+(y-156*s)+' Q'+(x-12*s)+' '+(y-176*s)+' '+x+' '+(y-172*s)+' Q'+(x+14*s)+' '+(y-172*s)+' '+(x+13*s)+' '+(y-160*s)+' Q'+x+' '+(y-166*s)+' '+(x-13*s)+' '+(y-156*s)+'" fill="'+o.hair+'"/>';
+  if(o.glasses)h+='<g fill="none" stroke="#222" stroke-width="'+(1.2*s)+'"><circle cx="'+(x-2*s)+'" cy="'+(y-158*s)+'" r="'+(3.5*s)+'"/><circle cx="'+(x+7*s)+'" cy="'+(y-158*s)+'" r="'+(3.5*s)+'"/></g>';
+  return h;}
+ function photo(after){var p='<g filter="url(#silver)">';
+  p+='<rect width="900" height="620" fill="url(#wallP)"/>';
+  for(var i=0;i<9;i++){p+='<rect x="'+(i*100+10)+'" y="360" width="80" height="100" fill="none" stroke="#5e5e5e" stroke-width="3"/>';}
+  p+='<rect y="460" width="900" height="160" fill="#4a4a4a"/>';
+  for(var j=0;j<24;j++){p+='<line x1="'+(j*40-120)+'" y1="620" x2="'+(j*40)+'" y2="460" stroke="#3a3a3a" stroke-width="2"/>';}
+  p+='<rect x="600" y="40" width="160" height="380" fill="url(#winP)"/><g stroke="#3a3a3a" stroke-width="7"><rect x="600" y="40" width="160" height="380" fill="none"/><line x1="680" y1="40" x2="680" y2="420"/><line x1="600" y1="170" x2="760" y2="170"/><line x1="600" y1="300" x2="760" y2="300"/></g>';
+  p+='<path d="M570 20 C590 200 560 360 585 440 L550 440 C540 300 560 160 540 20 Z" fill="#3c3c3c"/><path d="M790 20 C770 200 800 360 775 440 L810 440 C820 300 800 160 820 20 Z" fill="#3c3c3c"/>';
+  p+='<polygon points="600,470 760,470 700,620 470,620" fill="#bbb" opacity=".22"/>';
+  /* chandelier */
+  p+='<line x1="420" y1="0" x2="420" y2="40" stroke="#222" stroke-width="2"/><path d="M380 50 Q420 80 460 50" fill="none" stroke="#222" stroke-width="3"/>';
+  for(var c=0;c<5;c++){p+='<circle cx="'+(385+c*17.5)+'" cy="'+(48+Math.abs(c-2)*-3+10)+'" r="5" fill="#f0f0f0"/>';}
+  p+='<circle cx="420" cy="55" r="46" fill="#fff" opacity=".08"/>';
+  /* grand piano */
+  p+='<path d="M50 330 L300 320 C330 320 340 350 320 372 L300 420 L60 430 Z" fill="#141414"/><path d="M60 330 L300 322" stroke="#8a8a8a" stroke-width="2"/>';
+  p+='<rect x="70" y="430" width="10" height="70" fill="#0c0c0c"/><rect x="286" y="420" width="10" height="80" fill="#0c0c0c"/>';
+  p+='<rect x="230" y="372" width="72" height="12" fill="#e8e8e8"/><g stroke="#222" stroke-width="1">'+[0,1,2,3,4,5,6,7,8].map(function(k){return '<line x1="'+(234+k*8)+'" y1="372" x2="'+(234+k*8)+'" y2="384"/>';}).join('')+'</g>';
+  if(after)p+='<circle cx="180" cy="336" r="2" fill="#fff"/><path d="M178 336 l6 -2" stroke="#fff" stroke-width="1"/>';
+  /* people */
+  p+=person({x:150,y:500,s:1.05,fill:'#1e1e1e',dress:true,hair:'#1a1a1a'});
+  p+='<path d="M170 360 l18 -10 l4 12 Z" fill="#dcdcdc"/>';
+  p+='<rect x="300" y="450" width="80" height="12" fill="#1a1a1a"/>';
+  p+=person({x:340,y:495,s:.95,fill:'url(#dressL)',dress:true,hair:'#2a2a2a'});
+  if(!after){for(var n=0;n<9;n++){var a=(n/8)*Math.PI;p+='<circle cx="'+(340+Math.cos(a)*9).toFixed(1)+'" cy="'+(362+Math.sin(a)*6).toFixed(1)+'" r="1.6" fill="#fff"/>';}}
+  p+=person({x:450,y:505,s:1.08,fill:'url(#coatD)',shirt:true,hair:'#555'});
+  p+='<ellipse cx="490" cy="400" rx="30" ry="6" fill="#d8d8d8"/>';
+  var glasses=after?3:4;for(var g=0;g<glasses;g++){p+='<path d="M'+(474+g*11)+' 398 l2 -14 h6 l2 14 Z" fill="#f4f4f4" opacity=".85"/>';}
+  p+=person({x:640,y:500,s:1.12,fill:'url(#coatD)',hat:true});
+  p+='<path d="M604 356 C596 380 600 400 616 410" fill="none" stroke="#1c1c1c" stroke-width="12" stroke-linecap="round"/>';
+  if(after){p+='<g fill="none" stroke="#fff" stroke-width=".9">';for(var k=0;k<7;k++){p+='<circle cx="'+(618+k*2.1).toFixed(1)+'" cy="'+(404+Math.sin(k)*1.6).toFixed(1)+'" r=".9"/>';}p+='</g><circle cx="633" cy="405" r="1.8" fill="#fff"/><circle cx="633" cy="405" r="5" fill="#fff" opacity=".25"/>';}
+  p+=person({x:800,y:510,s:1.0,fill:'url(#coatG)',glasses:true,hair:'#d8d8d8'});
+  p+='<line x1="826" y1="420" x2="836" y2="512" stroke="#111" stroke-width="4"/>';
+  p+='</g>';
+  /* grain + vignette + scratches */
+  p+='<rect width="900" height="620" fill="url(#pv)"/>';
+  p+='<path d="M120 0 L128 620" stroke="#fff" stroke-width=".7" opacity=".25"/><path d="M700 40 L690 300" stroke="#000" stroke-width=".6" opacity=".3"/>';
+  /* evidence numbers */
+  var tags=[[150,290,'1'],[340,300,'2'],[450,300,'3'],[640,262,'4'],[800,300,'5']];
+  for(var q=0;q<tags.length;q++){p+='<g font-family="Nanum Pen Script,cursive" font-size="26" fill="#fff"><circle cx="'+tags[q][0]+'" cy="'+(tags[q][1]-8)+'" r="15" fill="none" stroke="#fff" stroke-width="2"/><text x="'+tags[q][0]+'" y="'+(tags[q][1])+'" text-anchor="middle">'+tags[q][2]+'</text></g>';}
+  return p;}
+ document.getElementById('photo-before').innerHTML=photo(false);
+ document.getElementById('photo-after').innerHTML=photo(true);
+
+ /* ---------- loupe follows the mouse ---------- */
+ var mp=document.getElementById('mainPhoto'),lc=document.getElementById('lc'),zg=document.getElementById('zoomG'),ring=document.getElementById('loupeRing'),zoom=3.2;
+ function setLoupe(x,y){x=Math.max(0,Math.min(900,x));y=Math.max(0,Math.min(620,y));lc.setAttribute('cx',x);lc.setAttribute('cy',y);
+  zg.setAttribute('transform','translate('+x+' '+y+') scale('+zoom+') translate('+(-x)+' '+(-y)+')');ring.setAttribute('transform','translate('+x+' '+y+')');
+  var tx=ring.querySelector('text');if(tx)tx.textContent='×'+zoom.toFixed(1);}
+ setLoupe(628,398);
+ mp.addEventListener('mousemove',function(e){if(e.clientX===0&&e.clientY===0)return;var r=mp.getBoundingClientRect();setLoupe((e.clientX-r.left)/r.width*900,(e.clientY-r.top)/r.height*620);});
+ mp.addEventListener('wheel',function(e){e.preventDefault();zoom=Math.max(1.5,Math.min(6,zoom+(e.deltaY<0?.3:-.3)));var cx=+lc.getAttribute('cx'),cy=+lc.getAttribute('cy');setLoupe(cx,cy);click(700+zoom*80);},{passive:false});
+ /* compare: flip between the two prints */
+ var cmp=false;document.getElementById('tCmp').addEventListener('click',function(){cmp=!cmp;this.classList.toggle('on',cmp);var us=mp.querySelectorAll('use');for(var i=0;i<us.length;i++){us[i].setAttribute('href',cmp?'#photo-before':'#photo-after');}click(520);});
+ document.getElementById('tAcc').addEventListener('click',function(){show('b');thunk();});
+ /* ---------- B: lineup + ledger ---------- */
+ var names=['① 박 부인','② 윤 여사','③ 집사 김','④ 중절모 남자','⑤ 노 교수'],cx=[150,340,450,640,800],cy=[340,350,350,330,350];
+ var lu='';for(var i=0;i<5;i++){lu+='<div class="sus'+(i===3?' pick':'')+'"><svg width="134" height="148" viewBox="'+(cx[i]-55)+' '+(cy[i]-60)+' 110 121" style="display:block;background:#555"><use href="#photo-after"/></svg><div class="nm">'+names[i]+'</div></div>';}
+ document.getElementById('lineup').innerHTML=lu;
+ var gh='';for(var k=0;k<100;k++){gh+='<i class="'+(k<22?'d':(k===22?'n':''))+'"></i>';}document.getElementById('grid').innerHTML=gh;
+ /* ---------- audio: shutter-ish clicks, stamp thunk ---------- */
+ var ac=null;function actx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return ac;}
+ function click(f){var a=actx();if(!a)return;var n=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.08,n);g.gain.exponentialRampToValueAtTime(.0001,n+.06);o.connect(g);g.connect(a.destination);o.start(n);o.stop(n+.07);}
+ function thunk(){var a=actx();if(!a)return;var n=a.currentTime,b=a.createBuffer(1,a.sampleRate*.25,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,5);}
+  var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=380;var g=a.createGain();g.gain.value=1.4;s.connect(f);f.connect(g);g.connect(a.destination);s.start(n);}
+ document.getElementById('sb').addEventListener('click',thunk);
+ document.addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "slug": "mystery-scent-layers",
+  "kind": "scent",
+  "title": "잔향 감식실",
+  "english": "THE SCENT ARCHIVE",
+  "tagline": "사람은 떠나도, 냄새의 순서는 남는다.",
+  "instructions": "세 시간층을 오가며 냄새를 채취하세요. 남은 기록을 비교한 뒤 외투가 이동한 경로를 추론합니다.",
+  "question": "냄새의 겹침만으로 외투의 이동을 추론하는 순간이 즐거운가?",
+  "values": [
+    3
+  ],
+  "items": [
+    {
+      "id": "early",
+      "title": "18:10",
+      "text": "젖은 흙과 흰 꽃향기",
+      "detail": "온실: 관리인이 젖은 흙을 밟았다. 외투의 안쪽에서 오래된 흙 냄새가 난다."
+    },
+    {
+      "id": "middle",
+      "title": "18:40",
+      "text": "마른 담배와 외투의 잔향",
+      "detail": "현관: 관리인이 서기에게 외투를 빌려줬다. 담배 냄새가 흙 냄새 위에 얹혔다."
+    },
+    {
+      "id": "late",
+      "title": "19:05",
+      "text": "서기의 향수와 촛농",
+      "detail": "서재: 가장 바깥층에는 서기의 향수와 촛농이 남아 있다. 흙은 안쪽에서 희미하게 이어진다."
+    }
+  ],
+  "palette": {
+    "background": "#101b20",
+    "surface": "#192a30",
+    "paper": "#e7eee8",
+    "accent": "#93dbb8",
+    "muted": "#a0b5b6"
+  }
+}

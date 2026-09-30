@@ -1,0 +1,37 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs가 같은 역할을 한다. 그 게임이 '가벼워 보인다'는 지적을 받은 원인 넷(채도·외곽선·환경광·발광 토큰)을 여기서 값으로 못 박았다.",
+
+  "name": "<연출 이름>",
+  "oneLine": "<이 연출이 만들려는 정서 한 줄>",
+  "reference": "<참고한 시각 언어 — 판화 / 청사진 / 세피아 사진 등>",
+
+  "color": {
+    "void": "#0E0E10",
+    "ink": "#141416",
+    "surface": "#1C1C20",
+    "paper": "#D0CCC2",
+    "accent": "#8A2E2A",
+    "muted": "#6B5F52",
+    "highlight": "#C8A96A"
+  },
+
+  "type": {
+    "family": "<폰트 이름 (OFL만)>",
+    "sizeTitle": 64,
+    "sizeHeading": 40,
+    "sizeBody": 26,
+    "sizeHint": 22,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+
+  "grade": {
+    "saturation": 0.72,
+    "contrast": 1.10,
+    "blackLift": 0.035,
+    "vignette": 0.35,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 필름이 된다."
+  }
+}

@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>크로마토그램 — scent-layers</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 감쇠·역치·순도·나이 맞춤을 여기서 다시 계산한다.
+  그래서 데이터를 고치면 그림이 따라오고, 그림과 검사기가 어긋나면 그것 자체가 고장이다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/scent-layers && python -m http.server 8099
+      → http://localhost:8099/presentation/index.html
+-->
+<style>
+@font-face { font-family:"NanumMyeongjo"; src:url("assets/fonts/NanumMyeongjo-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"IBMPlexMono";   src:url("assets/fonts/IBMPlexMono-Regular.ttf")   format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --paper:#F4F1E8; --paperLit:#FBF9F3; --paperShade:#E6E1D2; --paperStain:#DCD5C0;
+  --grid:#D9D3C1; --ink:#24261F; --inkSoft:#5C5E51; --pencil:#7E7C6E;
+  --sooty:#3A3C33; --mugwort:#6E7A3A; --rust:#B4662C; --front:#8A8468;
+  --sTitle:54px; --sHead:25px; --sBody:16px; --sHint:13px; --sNum:13px;
+  --trkTitle:2px; --lane:26px; --laneGap:3px; --maxW:1120px; --gutter:20px; --secGap:30px;
+  --vig:.14;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"NanumMyeongjo",serif; font-size:var(--sBody); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+/* 종이 결 — 이미지를 받지 않고 겹친 그라디언트로 만든다 */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, rgba(36,38,31,.030) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(36,38,31,.018) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 18% 8%, rgba(220,213,192,.55), transparent 42%),
+    radial-gradient(ellipse at 88% 78%, rgba(220,213,192,.45), transparent 38%);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%, transparent 56%, rgba(36,38,31,var(--vig)) 100%);
+}
+main{position:relative; z-index:1; max-width:var(--maxW); margin:0 auto; padding:38px var(--gutter) 90px}
+
+.sheet{
+  position:relative; background:linear-gradient(180deg,var(--paperLit),var(--paper) 45%,var(--paperShade));
+  border:1px solid var(--paperShade); border-radius:2px;
+  padding:20px 22px 24px; margin:0 0 var(--secGap);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 8px rgba(36,38,31,.07);
+}
+.sheet::after{content:""; position:absolute; inset:6px; pointer-events:none; border:1px solid rgba(126,124,110,.20)}
+
+h1{font-size:var(--sTitle); letter-spacing:var(--trkTitle); margin:0 0 4px; line-height:1.05; font-weight:400}
+h1 .sub{display:block; font-size:calc(var(--sHead)*.66); letter-spacing:0; color:var(--inkSoft); margin-top:8px}
+h2{font-size:var(--sHead); margin:0 0 6px; font-weight:400}
+h2 .no{font-family:"IBMPlexMono",monospace; font-size:calc(var(--sHead)*.62); color:var(--rust); margin-right:10px}
+h3{font-size:var(--sBody); margin:18px 0 6px; color:var(--inkSoft); font-weight:400}
+p{margin:6px 0 12px; max-width:76ch}
+.hint{font-size:var(--sHint); color:var(--inkSoft)}
+.lede{font-size:calc(var(--sBody)+2px)}
+em{font-style:normal; border-bottom:2px solid var(--rust)}
+b,strong{font-weight:400; box-shadow:inset 0 -.5em 0 rgba(110,122,58,.16)}
+code,.n{font-family:"IBMPlexMono",monospace; font-size:var(--sNum); font-variant-numeric:tabular-nums}
+code{color:var(--rust)}
+
+table{border-collapse:collapse; width:100%; font-size:var(--sNum); margin:8px 0 6px}
+th,td{text-align:left; padding:5px 8px; border-bottom:1px solid rgba(126,124,110,.22)}
+th{font-family:"NanumMyeongjo",serif; font-size:calc(var(--sNum)+2px); color:var(--mugwort)}
+td.n,th.n{text-align:right; font-family:"IBMPlexMono",monospace; font-variant-numeric:tabular-nums}
+tr.hi td{background:rgba(180,102,44,.10)}
+tr.ok td{background:rgba(110,122,58,.10)}
+
+.legend{display:flex; flex-wrap:wrap; gap:10px 20px; align-items:center; font-size:var(--sHint); margin:10px 0 4px; color:var(--inkSoft)}
+.sw{display:inline-block; width:22px; height:10px; margin-right:6px; vertical-align:-1px; border:1px solid rgba(36,38,31,.25)}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:14px 26px}
+svg{display:block; max-width:100%; height:auto; overflow:visible}
+.err{color:var(--rust); font-size:var(--sHead)}
+.tag{display:inline-block; font-size:var(--sHint); padding:0 7px; border:1px solid currentColor; border-radius:2px; margin-right:5px}
+.tag.top{color:var(--rust)} .tag.heart{color:var(--sooty)} .tag.base{color:var(--mugwort)}
+.kpi{display:flex; flex-wrap:wrap; gap:10px 26px; margin:10px 0 4px}
+.kpi div{min-width:150px}
+.kpi b{display:block; font-family:"IBMPlexMono",monospace; font-size:30px; box-shadow:none; line-height:1.15}
+.kpi span{font-size:var(--sHint); color:var(--inkSoft)}
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">종이를 펴는 중… (fetch 가 막혔다면 <code>python -m http.server 8099</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ────────────────────────────
+const FILES = ["notes", "house", "actors", "day", "balance"];
+
+async function load(){
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+// ── palette.json 을 CSS 변수로 옮긴다. 색을 코드에 적지 않는다 ────────────────
+function applyPalette(p){
+  const c = p.color, t = p.type, ch = p.chromatogram, L = p.layout, g = p.grade;
+  const r = document.documentElement.style;
+  r.setProperty("--paper",c.paper); r.setProperty("--paperLit",c.paperLit);
+  r.setProperty("--paperShade",c.paperShade); r.setProperty("--paperStain",c.paperStain);
+  r.setProperty("--grid",c.grid); r.setProperty("--ink",c.ink); r.setProperty("--inkSoft",c.inkSoft);
+  r.setProperty("--pencil",c.pencil); r.setProperty("--sooty",c.sooty);
+  r.setProperty("--mugwort",c.mugwort); r.setProperty("--rust",c.rust); r.setProperty("--front",c.solventFront);
+  r.setProperty("--sTitle",t.sizeTitle+"px"); r.setProperty("--sHead",t.sizeHeading+"px");
+  r.setProperty("--sBody",t.sizeBody+"px"); r.setProperty("--sHint",t.sizeHint+"px");
+  r.setProperty("--sNum",t.sizeNumeral+"px"); r.setProperty("--trkTitle",t.trackingTitle+"px");
+  r.setProperty("--lane",ch.laneHeightPx+"px"); r.setProperty("--laneGap",ch.laneGapPx+"px");
+  r.setProperty("--maxW",L.maxWidthPx+"px"); r.setProperty("--gutter",L.gutterPx+"px");
+  r.setProperty("--secGap",L.sectionGapPx+"px"); r.setProperty("--vig",g.vignette);
+}
+
+// ═══ 규칙 — src/ 의 C# 을 그대로 옮긴 것. 정수 연산만 쓴다 ═══════════════════
+
+/** 감쇠. 나머지를 이월해 누적한다 (설계 원칙 4). src/Decay.cs 와 같아야 한다. */
+function remain(initial, retainPermille, steps){
+  if (steps <= 0) return initial;
+  let v = initial, rem = 0;
+  for (let i = 0; i < steps; i++){
+    if (v <= 0) return 0;
+    const num = v * retainPermille + rem;
+    v = Math.floor(num / 1000);
+    rem = num % 1000;
+  }
+  return v;
+}
+function stepsOf(depositedAt, at, stepMin){ return at <= depositedAt ? 0 : Math.floor((at - depositedAt) / stepMin); }
+function gridTimeFromSteps(at, steps, stepMin){ return Math.floor((at - steps * stepMin) / stepMin) * stepMin; }
+
+/** 씨드 난수 — C# 의 System.Random 과 같은 수열이어야 잡내가 검사기와 맞는다. */
+function randomCs(seed){
+  const MBIG = 2147483647, MSEED = 161803398;
+  const sa = new Int32Array(56);
+  let mj = MSEED - Math.abs(seed | 0);   // .NET 의 씨앗 있는 Random 은 지금도 옛 뺄셈식을 쓴다
+  sa[55] = mj; let mk = 1;
+  for (let i = 1; i < 55; i++){
+    const ii = (21 * i) % 55;
+    sa[ii] = mk; mk = mj - mk; if (mk < 0) mk += MBIG; mj = sa[ii];
+  }
+  for (let k = 1; k < 5; k++)
+    for (let i = 1; i < 56; i++){
+      let x = sa[i] - sa[1 + (i + 30) % 55]; if (x < 0) x += MBIG; sa[i] = x;
+    }
+  let inext = 0, inextp = 21;
+  function sample(){
+    if (++inext >= 56) inext = 1;
+    if (++inextp >= 56) inextp = 1;
+    let ret = sa[inext] - sa[inextp]; if (ret === MBIG) ret--; if (ret < 0) ret += MBIG;
+    sa[inext] = ret; return ret * (1.0 / MBIG);
+  }
+  return { next: n => Math.floor(sample() * n) };
+}
+
+/** 세계 하나를 세운다: 층(방문 + 씨드가 만든 잡내)과 조회표. */
+function buildWorld(D){
+  const notes = D.notes.notes, stepMin = D.notes.decayStepMin, floor = D.notes.perceptionFloor;
+  const ni = {}; notes.forEach((n,i) => ni[n.id] = i);
+  const rooms = D.house.rooms.map(r => r.id);
+  const actor = {}; D.actors.actors.forEach(a => actor[a.id] = a);
+  const units = D.day.depositUnits;
+
+  const layers = [];
+  D.day.visits.forEach(v => {
+    const init = new Array(notes.length).fill(0);
+    actor[v.actor].profile.forEach(w => {
+      init[ni[w.note]] = Math.floor(Math.floor(units * v.strengthPercent / 100) * w.permille / 1000);
+    });
+    layers.push({ id:v.id, actorId:v.actor, roomId:v.room, atMin:v.atMin, initial:init, visit:true });
+  });
+  const s = D.day.ambient, rng = randomCs(D.day.seed);
+  let an = 0;
+  rooms.forEach(roomId => {
+    const count = s.perRoomMin + rng.next(s.perRoomMax - s.perRoomMin + 1);
+    for (let i = 0; i < count; i++){
+      const noteId = s.notePool[rng.next(s.notePool.length)];
+      const strength = s.strengthMin + rng.next(s.strengthMax - s.strengthMin + 1);
+      const at = s.atMinMin + rng.next(Math.floor((s.atMinMax - s.atMinMin) / stepMin) + 1) * stepMin;
+      const init = new Array(notes.length).fill(0); init[ni[noteId]] = strength;
+      layers.push({ id:"amb_"+(++an), actorId:null, roomId, atMin:at, initial:init, visit:false });
+    }
+  });
+  layers.sort((a,b) => a.atMin - b.atMin);
+
+  // 감쇠표를 미리 깐다 — 브라우저에서 720가지 순열을 돌리려면 이게 필요하다
+  const maxSteps = D.balance.perception.maxAgeSteps;
+  layers.forEach(L => {
+    L.table = L.initial.map((v,i) => {
+      if (v <= 0) return null;
+      const arr = new Int32Array(maxSteps + 1); let cur = v, rem = 0;
+      arr[0] = v;
+      for (let k = 1; k <= maxSteps; k++){
+        const num = cur * notes[i].retainPermille + rem;
+        cur = Math.floor(num / 1000); rem = num % 1000; arr[k] = cur;
+      }
+      return arr;
+    });
+  });
+  const pred = {};
+  D.actors.actors.forEach(a => {
+    pred[a.id] = {};
+    a.profile.forEach(w => {
+      const I = Math.floor(units * w.permille / 1000), idx = ni[w.note];
+      const arr = new Int32Array(maxSteps + 1); let cur = I, rem = 0; arr[0] = I;
+      for (let k = 1; k <= maxSteps; k++){
+        const num = cur * notes[idx].retainPermille + rem;
+        cur = Math.floor(num/1000); rem = num % 1000; arr[k] = cur;
+      }
+      pred[a.id][idx] = arr;
+    });
+  });
+
+  const byRoom = {}; rooms.forEach(r => byRoom[r] = []);
+  layers.forEach(L => byRoom[L.roomId].push(L));
+
+  // 방 사이 최단 도보
+  const INF = 1e6, W = {};
+  rooms.forEach(a => { W[a] = {}; rooms.forEach(b => W[a][b] = a===b ? 0 : INF); });
+  D.house.edges.forEach(e => { W[e.a][e.b] = Math.min(W[e.a][e.b], e.walkMin); W[e.b][e.a] = W[e.a][e.b]; });
+  rooms.forEach(k => rooms.forEach(i => rooms.forEach(j => {
+    if (W[i][k] + W[k][j] < W[i][j]) W[i][j] = W[i][k] + W[k][j];
+  })));
+
+  return { D, notes, ni, stepMin, floor, rooms, actor, layers, byRoom, pred, W,
+           visit: Object.fromEntries(D.day.visits.map(v => [v.id, v])) };
+}
+
+/** 한 층의 한 계열이 지금 얼마나 남아 있는가. 역치 아래는 0이다. */
+function sense(w, L, n, at, world){
+  if (at < L.atMin) return 0;
+  const tb = L.table[n]; if (!tb) return 0;
+  let v;
+  if (world.decay){ const k = stepsOf(L.atMin, at, w.stepMin); v = k >= tb.length ? 0 : tb[k]; }
+  else v = L.initial[n];
+  return v < w.floor ? 0 : v;
+}
+
+/** 한 번 맡는다. src/Perception.cs 의 Nose.Sniff 와 같은 규칙이다. */
+function sniff(w, roomId, at, world){
+  const P = w.D.balance.perception, nn = w.notes.length;
+  const present = w.byRoom[roomId].filter(L => L.atMin <= at);
+  const total = new Array(nn).fill(0);
+  const sensed = present.map(L => {
+    const row = new Array(nn).fill(0);
+    for (let n = 0; n < nn; n++){ const v = sense(w, L, n, at, world); row[n] = v; total[n] += v; }
+    return row;
+  });
+
+  const byActor = {};
+  present.forEach((L,i) => { if (!L.visit) return; (byActor[L.actorId] = byActor[L.actorId] || []).push(i); });
+
+  const recognized = [], dated = [];
+  for (const aId in byActor){
+    const idxs = byActor[aId];
+    const mine = new Array(nn).fill(0); let any = false;
+    idxs.forEach(i => { for (let n = 0; n < nn; n++){ mine[n] += sensed[i][n]; if (sensed[i][n] > 0) any = true; } });
+    if (!any) continue;
+    const against = world.mixing ? total : mine;
+
+    let ok = false;
+    for (let n = 0; n < nn; n++){
+      if (mine[n] < w.floor) continue;
+      if (mine[n] * 100 >= P.dominancePercent * against[n]) { ok = true; break; }
+    }
+    if (!ok) continue;
+    recognized.push(aId);
+    if (idxs.length !== 1) continue;
+
+    const L = present[idxs[0]], row = sensed[idxs[0]];
+    if (!world.decay){ dated.push({ layerId:L.id, actorId:aId, fittedAtMin:L.atMin }); continue; }
+
+    let fast = -1, slow = -1;
+    for (let n = 0; n < nn; n++){
+      if (row[n] < P.datingFloor) continue;
+      if (row[n] * 100 < P.purityPercent * against[n]) continue;
+      if (fast < 0 || w.notes[n].retainPermille < w.notes[fast].retainPermille) fast = n;
+      if (slow < 0 || w.notes[n].retainPermille > w.notes[slow].retainPermille) slow = n;
+    }
+    if (fast < 0 || slow < 0 || fast === slow) continue;
+    const pf = w.pred[aId][fast], ps = w.pred[aId][slow];
+    if (!pf || !ps) continue;
+    const obs = Math.floor(against[fast] * P.ratioScale / against[slow]);
+    let hit = -1, hits = 0;
+    for (let k = 0; k <= P.maxAgeSteps; k++){
+      if (ps[k] <= 0) break;
+      const p = Math.floor(pf[k] * P.ratioScale / ps[k]); if (p <= 0) break;
+      if (Math.abs(obs - p) * 1000 <= P.ratioTolPermille * p){ hits++; hit = k; if (hits > 1) break; }
+    }
+    if (hits !== 1) continue;
+    dated.push({ layerId:L.id, actorId:aId, fittedAtMin:gridTimeFromSteps(at, hit, w.stepMin) });
+  }
+  return { roomId, at, total, sensed, present, recognized, dated };
+}
+
+/** 방 차례 하나를 걸어 본다. */
+function runRoute(w, route, world){
+  const iv = w.D.balance.investigation;
+  let at = iv.startRoom, t = iv.startMin;
+  const got = new Set(), steps = [], gain = [];
+  for (let i = 0; i < route.length && i < iv.maxSniffs; i++){
+    t += w.W[at][route[i]]; at = route[i]; t += iv.sniffCostMin;
+    if (t > iv.endMin) break;
+    const r = sniff(w, at, t, world);
+    steps.push({ roomId:at, atMin:t, reading:r });
+    const before = got.size;
+    r.dated.forEach(d => { if (w.visit[d.layerId] && w.visit[d.layerId].atMin === d.fittedAtMin) got.add(d.layerId); });
+    gain.push(got.size - before);
+  }
+  return { steps, gain, got, endMin:t };
+}
+
+function bestSweep(w, world){
+  const rooms = w.rooms.slice();
+  let best = { count:-1 }, sum = 0, n = 0; const ever = new Set();
+  (function perm(a, k){
+    if (k === a.length){
+      const r = runRoute(w, a, world); n++; sum += r.got.size;
+      r.got.forEach(id => ever.add(id));
+      if (r.got.size > best.count) best = { count:r.got.size, route:a.slice(), result:r };
+      return;
+    }
+    for (let i = k; i < a.length; i++){ [a[k],a[i]]=[a[i],a[k]]; perm(a,k+1); [a[k],a[i]]=[a[i],a[k]]; }
+  })(rooms, 0);
+  return { best, avg:Math.floor(sum/n), sweeps:n, ever };
+}
+
+function bestRevisit(w, world, beam){
+  const iv = w.D.balance.investigation;
+  const rng = randomCs(w.D.day.seed);
+  let frontier = [[]], best = runRoute(w, [], world);
+  for (let d = 0; d < iv.maxSniffs; d++){
+    const scored = [];
+    frontier.forEach(path => w.rooms.forEach(room => {
+      const next = path.concat([room]);
+      const r = runRoute(w, next, world);
+      if (r.steps.length < next.length) return;
+      scored.push([ r.got.size*1000 - Math.floor((r.endMin - iv.startMin)/10) + rng.next(3), next ]);
+      if (r.got.size > best.got.size || (r.got.size === best.got.size && r.endMin < best.endMin)) best = r;
+    }));
+    if (!scored.length) break;
+    scored.sort((a,b) => b[0]-a[0]);
+    frontier = scored.slice(0, beam).map(s => s[1]);
+  }
+  return best;
+}
+
+/** 사실 하나를 맡을 수 있었던 순간들(1분 격자). DecayIsFair 가 보는 것과 같은 창이다. */
+function windowOf(w, visitId, world){
+  const iv = w.D.balance.investigation, v = w.visit[visitId], out = [];
+  for (let t = iv.startMin; t <= iv.endMin; t++){
+    const r = sniff(w, v.room, t, world);
+    if (r.dated.some(d => d.layerId === visitId && d.fittedAtMin === v.atMin)) out.push(t);
+  }
+  return out;
+}
+
+// ── 그리기 도우미 ──────────────────────────────────────────────────────────
+const ON  = { mixing:true,  decay:true  };
+const OFF = { mixing:false, decay:false };
+const MIXONLY = { mixing:true,  decay:false };
+const DECONLY = { mixing:false, decay:true  };
+
+const clock = m => String(Math.floor(m/60)%24).padStart(2,"0") + ":" + String(m%60).padStart(2,"0");
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function hex2rgb(h){ return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)]; }
+/** 겹친 자리의 색 — 기여량으로 가중한 **실제 평균**. 덮어 칠하지 않는다. */
+function mixColors(parts){
+  let tw = 0, r = 0, g = 0, b = 0;
+  parts.forEach(([hex,wt]) => { const c = hex2rgb(hex); tw += wt; r += c[0]*wt; g += c[1]*wt; b += c[2]*wt; });
+  if (tw <= 0) return null;
+  return "rgb(" + Math.round(r/tw) + "," + Math.round(g/tw) + "," + Math.round(b/tw) + ")";
+}
+
+// 사람마다 색 하나 — 섞인 자리에서 "누구와 누구가 섞였는지"가 색으로 보이게 한다.
+// 색은 palette.json 의 actorThread 에 값으로 있다. 여기서 고르지 않는다.
+function actorColors(w, pal){
+  const t = pal.actorThread || {}, out = {};
+  const fallback = [pal.color.rust, pal.color.mugwort, pal.color.sooty, pal.color.solventFront, pal.color.pencil];
+  w.D.actors.actors.forEach((a,i) => out[a.id] = t[a.id] || fallback[i % fallback.length]);
+  out.__ambient = t.ambient || pal.color.paperStain;
+  return out;
+}
+
+// ═══ 절 ═══════════════════════════════════════════════════════════════════
+
+function secTitle(D, pal){
+  return `<section class="sheet">
+    <h1>크로마토그램<span class="sub">${esc(pal.oneLine)}</span></h1>
+    <p class="lede"><b>보이지도 들리지도 않는다. 남은 감각은 후각 하나다.</b>
+    방마다 냄새가 <em>층</em>으로 쌓여 있다. 누가 다녀가면 층이 하나 얹히고, 층은 옅어지고 서로 섞인다.
+    ${D.day.visits.length}개의 사실 — 누가 · 어느 방에 · 몇 시에 다녀갔는가 — 을 냄새만으로 되짚는다.</p>
+    <p class="hint">이 화면의 수치는 전부 <code>data/*.json</code> 을 읽어 여기서 다시 계산한 것이다.
+    감쇠·역치·순도·나이 맞춤을 <code>src/</code> 의 C# 과 같은 정수 연산으로 옮겼다 —
+    그림과 검사기가 어긋나면 그것 자체가 고장이다.</p>
+  </section>`;
+}
+
+function secRules(w, pal){
+  const D = w.D, P = D.balance.perception;
+  const rows = w.notes.map(n => `<tr><td><span class="tag ${n.klass}">${n.klass}</span> ${esc(n.ko)}</td>
+    <td class="n">${n.retainPermille}‰</td>
+    <td><span class="sw" style="background:${n.color}"></span><code>${n.color}</code></td></tr>`).join("");
+  const who = D.actors.actors.map(a => {
+    const prof = a.profile.map(x => esc(w.notes[w.ni[x.note]].ko) + " " + x.permille).join(" · ");
+    return `<tr><td>${esc(a.ko)}</td><td class="hint">표지 ${esc(w.notes[w.ni[a.marker]].ko)}</td><td class="hint">${prof}</td></tr>`;
+  }).join("");
+  return `<section class="sheet">
+    <h2><span class="no">01</span>규칙 — 코가 할 수 있는 것과 할 수 없는 것</h2>
+    <div class="grid2">
+      <div>
+        <h3>알아보기 (누가)</h3>
+        <p>어느 계열에서 그 사람 몫이 방 전체의 <code>${P.dominancePercent}%</code> 이상이면 누구인지 안다.
+        사람마다 <b>자기만 가진 잔향</b>이 하나씩 있어서 이것은 늦게라도 늘 된다.</p>
+        <h3>되짚기 (언제)</h3>
+        <p>어렵다. <b>절대 세기로는 못 잰다</b> — 그날 얼마나 진하게 남겼는지를 모르기 때문이다.
+        대신 <em>머리향과 잔향의 비율</em>을 본다. 비율은 진하기에 상관없이 나이에만 달려 있다.
+        두 계열 모두 <code>${P.purityPercent}%</code> 이상 순수하고 <code>${P.datingFloor}</code> 이상 남아 있어야 한다.</p>
+        <p class="hint">그래서 되짚기는 두 힘에 함께 물린다. <b>감쇠</b>가 뒷문을 잡고(늦으면 머리향이 죽는다),
+        <b>섞임</b>이 앞문을 잡는다(남의 몫이 역치 <code>${D.notes.perceptionFloor}</code> 아래로 내려가야 순도가 열린다).
+        창이 방마다 어긋나 있고, 그래서 되돌아가야 한다.</p>
+      </div>
+      <div>
+        <table><tr><th>향 계열 ${w.notes.length}종</th><th class="n">15분마다 남는 양</th><th>띠 색</th></tr>${rows}</table>
+        <p class="hint">머리향(top)만이 시각을 말해 준다. 중간향·잔향은 잔향과 감쇠율이 너무 가까워
+        비율로 나이를 가르지 못한다 — 누구인지만 알려 주고 언제인지는 끝내 말하지 않는다.</p>
+      </div>
+    </div>
+    <table><tr><th>사람 ${D.actors.actors.length}명</th><th>표지 잔향</th><th>향 지문 (천분율)</th></tr>${who}</table>
+  </section>`;
+}
+
+/** ★ 핵 화면 — 방마다의 크로마토그램. 겹친 자리의 색이 실제로 섞인 값이다. */
+function secChromatogram(w, pal){
+  const D = w.D, ch = pal.chromatogram, iv = D.balance.investigation;
+  const t0 = D.day.ambient.atMinMin, t1 = iv.endMin;
+  const cols = Math.ceil((t1 - t0) / ch.columnMinutes);
+  const cw = 15, lh = ch.laneHeightPx, lg = ch.laneGapPx, padL = 92, padT = 26;
+  const W = padL + cols*cw + 14, H = padT + w.notes.length*(lh+lg) + 30;
+  const ac = actorColors(w, pal);
+  const minOp = ch.intensityMinOpacityPermille / 1000;
+  // 방마다 가장 진했던 칸을 1로 잡고, 역치 위에서 로그로 편다
+  const peak = {};
+  pal.layout.roomOrder.forEach(roomId => {
+    let m = w.floor;
+    for (let c = 0; c < cols; c++){
+      const t = t0 + c*ch.columnMinutes;
+      for (let n = 0; n < w.notes.length; n++){
+        let s = 0; w.byRoom[roomId].forEach(L => s += sense(w, L, n, t, ON));
+        if (s > m) m = s;
+      }
+    }
+    peak[roomId] = m;
+  });
+
+  const lanes = pal.layout.roomOrder.map(roomId => {
+    const room = D.house.rooms.find(r => r.id === roomId);
+    let g = "";
+    // 세로 눈금
+    for (let c = 0; c <= cols; c += 4){
+      const x = padL + c*cw, t = t0 + c*ch.columnMinutes;
+      g += `<line x1="${x}" y1="${padT-6}" x2="${x}" y2="${padT + w.notes.length*(lh+lg)}" stroke="${pal.color.grid}" stroke-width="1"/>`;
+      g += `<text x="${x}" y="${padT-10}" font-size="9" fill="${pal.color.pencil}" text-anchor="middle" font-family="IBMPlexMono,monospace">${clock(t)}</text>`;
+    }
+    // 용매 전선 — 조사가 시작된 자리
+    const xf = padL + ((iv.startMin - t0)/ch.columnMinutes)*cw;
+    g += `<line x1="${xf}" y1="${padT-6}" x2="${xf}" y2="${padT + w.notes.length*(lh+lg)}" stroke="${pal.color.solventFront}" stroke-width="${ch.solventLineWidthPx}"/>`;
+    g += `<text x="${xf+4}" y="${padT + w.notes.length*(lh+lg) + 14}" font-size="9" fill="${pal.color.solventFront}" font-family="IBMPlexMono,monospace">용매 전선 ${clock(iv.startMin)} · 조사 시작</text>`;
+
+    w.notes.forEach((note, n) => {
+      const y = padT + n*(lh+lg);
+      g += `<text x="${padL-8}" y="${y+lh*0.72}" font-size="10" fill="${pal.color.inkSoft}" text-anchor="end">${esc(note.ko)}</text>`;
+      g += `<rect x="${padL}" y="${y}" width="${cols*cw}" height="${lh}" fill="${pal.color.paperLit}" stroke="${pal.color.grid}" stroke-width=".5"/>`;
+      for (let c = 0; c < cols; c++){
+        const t = t0 + c*ch.columnMinutes;
+        const parts = [], raw = [];
+        let tot = 0;
+        w.byRoom[roomId].forEach(L => {
+          const v = sense(w, L, n, t, ON);
+          if (v <= 0) return;
+          tot += v;
+          parts.push([ L.visit ? ac[L.actorId] : ac.__ambient, v ]);
+          raw.push([ L.visit ? L.actorId : "잡내", v ]);
+        });
+        if (tot <= 0) continue;
+        // 세기 → 불투명도. 역치 위에서 로그로 편다(눈속임이고 규칙이 아니다)
+        const rel = Math.log(tot / w.floor) / Math.log(peak[roomId] / w.floor);
+        const op = Math.min(1, Math.max(minOp, rel));
+        const fill = mixColors(parts);
+        const mixed = parts.length > 1;
+        const tip = `${esc(room.ko)} · ${esc(note.ko)} · ${clock(t)} — ` +
+          raw.map(([a,v]) => `${a==="잡내"?"잡내":esc(w.actor[a].ko)} ${v}`).join(" + ")
+          + (parts.length > 1 ? "  ← 섞인 자리" : "");
+        g += `<rect x="${padL+c*cw}" y="${y+1}" width="${cw}" height="${lh-2}" fill="${fill}" fill-opacity="${op.toFixed(3)}"` +
+             (mixed ? ` stroke="${pal.color.ink}" stroke-opacity="${(ch.mixOutlineOpacityPermille/1000).toFixed(2)}" stroke-width=".8"` : "") +
+             `><title>${tip}</title></rect>`;
+      }
+      // 방문이 얹힌 자리에 연필 표시
+      w.byRoom[roomId].forEach(L => {
+        if (!L.visit || L.initial[n] <= 0) return;
+        const x = padL + ((L.atMin - t0)/ch.columnMinutes)*cw;
+        g += `<line x1="${x}" y1="${y}" x2="${x}" y2="${y+lh}" stroke="${ac[L.actorId]}" stroke-width="1.4" stroke-dasharray="2 2"/>`;
+      });
+    });
+    return `<div style="margin:0 0 18px">
+      <h3 style="margin:0 0 2px">${esc(room.ko)}
+        <span class="hint">${w.byRoom[roomId].filter(L=>L.visit).map(L=>esc(w.actor[L.actorId].ko)+" "+clock(L.atMin)).join(" · ")}</span></h3>
+      <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${g}</svg></div>`;
+  }).join("");
+
+  const key = D.actors.actors.map(a => `<span><span class="sw" style="background:${ac[a.id]}"></span>${esc(a.ko)}</span>`).join("")
+    + `<span><span class="sw" style="background:${ac.__ambient}"></span>집의 잡내(씨드 ${D.day.seed})</span>`
+    + `<span><span class="sw" style="background:${pal.color.paper};border-color:${pal.color.ink}"></span>테두리 있는 칸 = 둘 이상이 섞인 자리</span>`;
+
+  return `<section class="sheet">
+    <h2><span class="no">02</span>크로마토그램 — 방 여섯 장</h2>
+    <p>가로가 시간(한 칸 ${ch.columnMinutes}분), 세로가 향 계열이다. 칸의 진하기가 남은 양이고,
+    <b>겹친 자리의 색은 칠한 색이 아니라 기여량으로 가중한 실제 평균</b>이다 —
+    덮어 칠하면 두 냄새가 섞인 것이 아니라 하나가 다른 하나를 가린 그림이 되고, 이 PoC의 주장이 그림에서 거짓이 된다.
+    칸에 마우스를 올리면 누가 얼마씩 냈는지 나온다.</p>
+    <div class="legend">${key}</div>
+    ${lanes}
+  </section>`;
+}
+
+/** ★ 핵 검사기 화면 — 사실마다의 창과, 한 번 훑기가 놓치는 것. */
+function secWindows(w, pal, sweepOn, revisitOn){
+  const D = w.D, iv = D.balance.investigation, wc = pal.window;
+  const t0 = iv.startMin, t1 = iv.endMin, span = t1 - t0;
+  const padL = 250, barW = 760, lh = wc.barHeightPx + wc.barGapPx;
+  const H = 34 + D.day.visits.length*lh + 30;
+  let g = "";
+  for (let t = t0; t <= t1; t += 60){
+    const x = padL + (t-t0)/span*barW;
+    g += `<line x1="${x}" y1="18" x2="${x}" y2="${24 + D.day.visits.length*lh}" stroke="${pal.color.grid}"/>`;
+    g += `<text x="${x}" y="14" font-size="9" fill="${pal.color.pencil}" text-anchor="middle" font-family="IBMPlexMono,monospace">${clock(t)}</text>`;
+  }
+  const caught = sweepOn.best.result.got;
+  D.day.visits.forEach((v, i) => {
+    const y = 24 + i*lh;
+    const win = windowOf(w, v.id, ON);
+    const got = caught.has(v.id);
+    g += `<rect x="${padL}" y="${y}" width="${barW}" height="${wc.barHeightPx}" fill="${wc.shutColor}"/>`;
+    if (win.length){
+      const x0 = padL + (win[0]-t0)/span*barW, x1 = padL + (win[win.length-1]-t0)/span*barW;
+      g += `<rect x="${x0}" y="${y}" width="${Math.max(2,x1-x0)}" height="${wc.barHeightPx}" fill="${got ? wc.openColor : wc.missedColor}"><title>${clock(win[0])}~${clock(win[win.length-1])} (${win.length}분)</title></rect>`;
+    }
+    g += `<text x="${padL-8}" y="${y+wc.barHeightPx-2}" font-size="10" fill="${pal.color.ink}" text-anchor="end">${esc(w.actor[v.actor].ko)} · ${esc(D.house.rooms.find(r=>r.id===v.room).ko)} · ${clock(v.atMin)}</text>`;
+  });
+  // 한 번 훑기가 실제로 코를 댄 자리
+  sweepOn.best.result.steps.forEach(s => {
+    const x = padL + (s.atMin-t0)/span*barW;
+    g += `<line x1="${x}" y1="20" x2="${x}" y2="${24 + D.day.visits.length*lh}" stroke="${wc.routeColor}" stroke-width="${wc.routeTickWidthPx}" stroke-opacity=".55"><title>한 번 훑기: ${esc(D.house.rooms.find(r=>r.id===s.roomId).ko)} ${clock(s.atMin)}</title></line>`;
+  });
+
+  const missed = D.day.visits.filter(v => !caught.has(v.id));
+  return `<section class="sheet">
+    <h2><span class="no">03</span>되짚기 창 — 한 번 훑기로는 왜 모자란가</h2>
+    <p>막대 하나가 사실 하나다. 색칠된 구간이 <b>그 사실을 맡을 수 있었던 시간</b>이고,
+    세로줄이 <b>가장 좋은 한 번 훑기</b>가 실제로 코를 댄 순간이다.
+    <span style="color:${wc.missedColor}">녹슨 주황</span>은 그 훑기가 놓친 사실 ${missed.length}개다 —
+    창이 너무 늦게 열려서 한 바퀴로는 닿지 못한다.</p>
+    <svg viewBox="0 0 ${padL+barW+20} ${H}" width="${padL+barW+20}" height="${H}">${g}</svg>
+    <div class="kpi">
+      <div><b>${sweepOn.best.count}/${D.day.visits.length}</b><span>가장 좋은 한 번 훑기 (순열 ${sweepOn.sweeps}가지 전수)</span></div>
+      <div><b>${revisitOn.got.size}/${D.day.visits.length}</b><span>되돌아간 길 (맡은 횟수 ${revisitOn.steps.length})</span></div>
+      <div><b>${new Set(revisitOn.steps.map(s=>s.roomId)).size < revisitOn.steps.length ? revisitOn.steps.length - new Set(revisitOn.steps.map(s=>s.roomId)).size : 0}</b><span>되돌아간 횟수</span></div>
+      <div><b>${sweepOn.avg}</b><span>훑기 720가지의 평균</span></div>
+    </div>
+    <p class="hint">되돌아간 길: ${revisitOn.steps.map(s => esc(D.house.rooms.find(r=>r.id===s.roomId).ko)+" "+clock(s.atMin)).join(" → ")}</p>
+  </section>`;
+}
+
+/** 네 세계 비교 — 이 PoC가 실제로 배운 것. */
+function secWorlds(w, pal, table){
+  const D = w.D;
+  const rows = table.map(r => `<tr class="${r.on?"hi":""}"><td>${r.label}</td>
+     <td class="n">${r.best}/${D.day.visits.length}</td><td class="n">${r.avg}</td>
+     <td class="n">${r.revisit}/${D.day.visits.length}</td><td class="n">${r.sniffs}</td>
+     <td class="hint">${r.note}</td></tr>`).join("");
+  return `<section class="sheet">
+    <h2><span class="no">04</span>네 세계 — 섞임과 감쇠를 켜고 끈다</h2>
+    <p>같은 데이터·같은 씨드·같은 정책으로 네 번 돌린다. 끈 세계 하나만 두면
+    "무언가가 어렵게 만들었다"까지만 보이고 <b>무엇이</b> 그랬는지는 모른다. 셋을 견주면 드러난다 —
+    <em>섞임 단독도 감쇠 단독도 한 번 훑기를 막지 못한다. 둘이 물려야 막힌다.</em></p>
+    <table><tr><th>세계</th><th class="n">한 번 훑기 최고</th><th class="n">720가지 평균</th>
+      <th class="n">되돌아가면</th><th class="n">그때 맡은 횟수</th><th>무엇을 보여 주는가</th></tr>${rows}</table>
+    <p class="hint">옅어져야 남의 냄새가 역치 아래로 내려가고, 그제서야 내 냄새의 순도가 열린다.
+    섞임은 정지한 방해물이 아니라 <b>감쇠가 시간을 주면서 풀리는 자물쇠</b>다. 그것이 이 PoC의 유일한 주장이다.</p>
+  </section>`;
+}
+
+function secVerdict(D){
+  return `<section class="sheet">
+    <h2><span class="no">05</span>기계가 본 것과 사람만 볼 수 있는 것</h2>
+    <div class="grid2">
+      <div><h3>기계가 판정했다 — 통과</h3>
+        <ul class="hint">
+          <li>한 번 훑기로는 모자라고, 되돌아가면 전부 복원된다</li>
+          <li>섞임 단독·감쇠 단독으로는 아무것도 막히지 않는다 (대조군 둘)</li>
+          <li>모든 사실이 어느 순간엔가 맡을 수 있었고, 그 창이 끊기지 않는다</li>
+          <li>한 방에 죽치기·같은 순서로 두 바퀴·제자리 재시도가 전부 최적보다 나쁘다</li>
+          <li>같은 씨드로 두 번 돌려 같은 결과가 나온다</li>
+        </ul></div>
+      <div><h3>사람만 볼 수 있다 — <b>미확인</b></h3>
+        <ul class="hint">
+          <li><b>냄새만으로 노는 것이 답답한가, 집중되는가.</b> 이 PoC의 생사가 여기 걸려 있다</li>
+          <li>창이 닫힌 뒤에 도착했을 때 억울한가, 내 잘못으로 느껴지는가</li>
+          <li>띠 그림을 읽는 법을 말 없이 배울 수 있는가</li>
+          <li>사람 다섯이 냄새로 구별되는 인물로 느껴지는가</li>
+        </ul></div>
+    </div>
+  </section>`;
+}
+
+// ── 조립 ──────────────────────────────────────────────────────────────────
+(async function main(){
+  let D;
+  try { D = await load(); }
+  catch(e){ document.getElementById("boot").textContent = "data/ 를 읽지 못했다: " + e + " — python -m http.server 8099 로 열어야 한다"; return; }
+  applyPalette(D.palette);
+  const w = buildWorld(D);
+
+  const worlds = [
+    { label:"섞임x · 감쇠x", world:OFF,     note:"대조군. 층이 굳어 그대로 읽힌다" },
+    { label:"섞임o · 감쇠x", world:MIXONLY, note:"섞이지만 옅어지지 않는다" },
+    { label:"섞임x · 감쇠o", world:DECONLY, note:"옅어지지만 섞이지 않는다" },
+    { label:"섞임o · 감쇠o", world:ON,      note:"이 PoC. 둘이 물린다", on:true }
+  ];
+  const table = worlds.map(x => {
+    const s = bestSweep(w, x.world), rv = bestRevisit(w, x.world, 10);
+    return { label:x.label, note:x.note, on:!!x.on, best:s.best.count, avg:s.avg,
+             revisit:rv.got.size, sniffs:rv.steps.length, sweep:s, rev:rv };
+  });
+  const onRow = table.find(r => r.on);
+
+  document.getElementById("app").innerHTML =
+      secTitle(D, D.palette)
+    + secRules(w, D.palette)
+    + secChromatogram(w, D.palette)
+    + secWindows(w, D.palette, onRow.sweep, onRow.rev)
+    + secWorlds(w, D.palette, table)
+    + secVerdict(D);
+})();
+</script>
+</body>
+</html>

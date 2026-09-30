@@ -1,0 +1,64 @@
+{
+  "_": "작물 8종(PLAN_FARMING의 3~8종 상한). 수치는 전부 정수.",
+  "_copyAppeal": "남들이 보고 달려들 이유. 0~100. 이것이 시세 하락을 정한다 — 순무를 심는 것을 보여도 아무도 순무로 밭을 덮지 않는다. 싸면 시세는 버한다(대신 수입이 얇다).",
+  "_신호_열": "visibility(눈에 띄는 정도) · screenHeight(뒤를 가리는 키) · renownGain(평판) · theftAppeal(도둑이 노리는 정도). 이 넷이 '남이 무엇을 보고 무엇을 할까'를 정한다.",
+  "_growDays": "100% 날씨·100% 토질에서의 이상 일수다. 하루 성장은 날씨·토질·물로 깎이므로 실제 일수는 이보다 길다.",
+  "crops": [
+    {
+      "id": "turnip", "nameKo": "순무", "nameEn": "Turnip",
+      "seasons": ["spring", "autumn", "winter"],
+      "growDays": 5, "waterPerDay": 2, "yieldUnits": 3, "soilDrain": 3, "minSoil": 15,
+      "copyAppeal": 10, "visibility": 25, "screenHeight": 0, "renownGain": 0, "theftAppeal": 4,
+      "noteKo": "빨리 돌고 눈에 안 띈다. 시세가 버티는 대신 수입이 얇다"
+    },
+    {
+      "id": "barley", "nameKo": "보리", "nameEn": "Barley",
+      "seasons": ["spring", "autumn"],
+      "growDays": 9, "waterPerDay": 2, "yieldUnits": 4, "soilDrain": 4, "minSoil": 20,
+      "copyAppeal": 14, "visibility": 30, "screenHeight": 20, "renownGain": 0, "theftAppeal": 5,
+      "noteKo": "밑작. 아무도 보리를 따라 심지 않는다"
+    },
+    {
+      "id": "flax", "nameKo": "아마", "nameEn": "Flax",
+      "seasons": ["spring", "summer"],
+      "growDays": 10, "waterPerDay": 2, "yieldUnits": 4, "soilDrain": 4, "minSoil": 25,
+      "copyAppeal": 40, "visibility": 40, "screenHeight": 25, "renownGain": 6, "theftAppeal": 12,
+      "noteKo": "중간값. 꽃이 파래서 조금 눈에 띈다"
+    },
+    {
+      "id": "sorghum", "nameKo": "수수", "nameEn": "Sorghum",
+      "seasons": ["summer", "autumn"],
+      "growDays": 14, "waterPerDay": 3, "yieldUnits": 5, "soilDrain": 5, "minSoil": 25,
+      "copyAppeal": 22, "visibility": 35, "screenHeight": 70, "renownGain": 0, "theftAppeal": 6,
+      "noteKo": "키가 크다. 길 쪽에 세우면 뒤 칸이 안 보인다 — 가림막이 작물이다"
+    },
+    {
+      "id": "winterRye", "nameKo": "겨울호밀", "nameEn": "Winter Rye",
+      "seasons": ["winter", "spring"],
+      "growDays": 16, "waterPerDay": 1, "yieldUnits": 3, "soilDrain": -3, "minSoil": 10,
+      "copyAppeal": 8, "visibility": 20, "screenHeight": 55, "renownGain": 0, "theftAppeal": 3,
+      "noteKo": "겨울에 심어 봄에 걷는다. 돈은 거의 안 되지만 땅을 살리고 뒤를 가린다"
+    },
+    {
+      "id": "lavender", "nameKo": "라벤더", "nameEn": "Lavender",
+      "seasons": ["summer", "autumn"],
+      "growDays": 15, "waterPerDay": 1, "yieldUnits": 3, "soilDrain": 2, "minSoil": 30,
+      "copyAppeal": 45, "visibility": 90, "screenHeight": 15, "renownGain": 30, "theftAppeal": 10,
+      "noteKo": "가장 잘 보이는데 훔칠 값은 없다. 보이는 것이 그대로 평판이 된다 — 이 밭의 유일한 '좋은 노출'"
+    },
+    {
+      "id": "melon", "nameKo": "참외", "nameEn": "Melon",
+      "seasons": ["summer"],
+      "growDays": 12, "waterPerDay": 4, "yieldUnits": 3, "soilDrain": 7, "minSoil": 40,
+      "copyAppeal": 85, "visibility": 75, "screenHeight": 0, "renownGain": 4, "theftAppeal": 40,
+      "noteKo": "여름 돈작물. 물을 많이 먹고 길에서 다 보인다"
+    },
+    {
+      "id": "saffron", "nameKo": "사프란", "nameEn": "Saffron",
+      "seasons": ["autumn"],
+      "growDays": 13, "waterPerDay": 2, "yieldUnits": 2, "soilDrain": 6, "minSoil": 45,
+      "copyAppeal": 100, "visibility": 85, "screenHeight": 0, "renownGain": 12, "theftAppeal": 60,
+      "noteKo": "가장 값나가고 가장 위험하다. 가을 밭을 사프란으로 덮으면 이듬해 시세가 무너지고 도둑이 온다"
+    }
+  ]
+}

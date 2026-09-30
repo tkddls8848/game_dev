@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>해킹 탈출 방</title>
+<style>
+html,body{margin:0;height:100%;background:#050605;overflow:hidden;font-family:"D2Coding","Nanum Gothic Coding","Consolas","DejaVu Sans Mono",monospace}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;margin:-500px 0 0 -800px;transform-origin:50% 50%;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 120%,#1b1c18 0%,#0b0c0a 55%,#040404 100%)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+/* ---------- bezel ---------- */
+.bezel{position:absolute;left:34px;top:26px;width:1532px;height:948px;border-radius:46px;
+  background:linear-gradient(160deg,#3a3a33 0%,#24241f 30%,#191914 70%,#2a2a24 100%);
+  box-shadow:0 30px 80px #000,inset 0 2px 0 #55554b,inset 0 -3px 8px #0a0a08}
+.bezel:after{content:"";position:absolute;inset:0;border-radius:46px;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 2px,rgba(0,0,0,.02) 2px 4px)}
+.brand{position:absolute;bottom:14px;left:70px;font:700 13px/1 Arial,sans-serif;letter-spacing:6px;color:#6d6c5e;text-shadow:0 1px 0 #111}
+.led{position:absolute;bottom:16px;right:80px;width:9px;height:9px;border-radius:50%;background:#58ff7a;box-shadow:0 0 10px #58ff7a,0 0 2px #fff}
+.knob{position:absolute;bottom:9px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#666,#1a1a17 70%);box-shadow:0 2px 3px #000}
+.tube{position:absolute;left:28px;top:26px;right:28px;bottom:44px;border-radius:38px/44px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 45%,#0c1a10 0%,#07110a 55%,#020503 100%);
+  box-shadow:inset 0 0 90px rgba(0,0,0,.95),inset 0 0 18px #000,0 0 0 3px #0c0c0a}
+.tube .glass{position:absolute;inset:0;pointer-events:none;z-index:20;border-radius:inherit;
+  background:radial-gradient(ellipse at 28% 12%,rgba(255,255,255,.07) 0%,rgba(255,255,255,0) 35%),
+             radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.55) 100%)}
+.tube .scan{position:absolute;inset:0;pointer-events:none;z-index:19;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,rgba(0,0,0,0) 1px 3px);mix-blend-mode:multiply}
+.tube .roll{position:absolute;left:0;right:0;height:180px;z-index:18;pointer-events:none;
+  background:linear-gradient(180deg,rgba(120,255,160,0),rgba(120,255,160,.045),rgba(120,255,160,0));animation:roll 6.5s linear infinite}
+@keyframes roll{from{top:-200px}to{top:1000px}}
+.flick{animation:flick .12s steps(2) infinite}
+@keyframes flick{0%{opacity:.985}50%{opacity:1}}
+/* ---------- phosphor text ---------- */
+.ph{color:#8dffb0;text-shadow:0 0 2px #c9ffd9,0 0 8px rgba(80,255,130,.65),0 0 22px rgba(40,200,90,.35)}
+.dim{color:#3f9c5c;text-shadow:0 0 6px rgba(60,200,100,.35)}
+.ghost{color:#ff5a78;text-shadow:0 0 2px #ffc3cf,0 0 10px rgba(255,60,100,.8),-2px 0 0 rgba(80,200,255,.45),2px 0 0 rgba(255,0,60,.4)}
+.inv{background:#8dffb0;color:#031006;text-shadow:none;padding:0 6px;box-shadow:0 0 14px rgba(120,255,160,.6)}
+/* ---------- layout A ---------- */
+.hud{position:absolute;left:44px;right:44px;top:30px;height:74px;display:flex;align-items:center;gap:26px;font-size:18px;
+  border-bottom:1px dashed rgba(120,255,160,.35);z-index:5}
+.hud .stage-no{font-size:15px;letter-spacing:3px}
+.hud .title{font-size:26px;font-weight:700;letter-spacing:1px}
+.hud .sp{flex:1}
+.timer{font-size:54px;font-weight:700;letter-spacing:2px}
+.timer small{font-size:26px}
+.trace{width:220px}
+.trace .bar{height:12px;border:1px solid #57d27e;margin-top:6px;position:relative;box-shadow:0 0 8px rgba(80,255,130,.4)}
+.trace .fill{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(90deg,#8dffb0 0 7px,rgba(0,0,0,0) 7px 9px);box-shadow:0 0 10px #6f6}
+.log{position:absolute;left:44px;top:124px;width:930px;height:560px;font-size:20px;line-height:31px;white-space:pre;z-index:5;overflow:hidden}
+.log .ln{display:block}
+.side{position:absolute;right:44px;top:124px;width:470px;height:560px;z-index:5;border-left:1px dashed rgba(120,255,160,.3);padding-left:26px;box-sizing:border-box}
+.side h3{margin:0 0 10px;font-size:16px;letter-spacing:4px;font-weight:400}
+.race{position:absolute;left:44px;right:44px;bottom:40px;height:230px;z-index:6;border-top:1px dashed rgba(120,255,160,.35);padding-top:20px;box-sizing:border-box}
+.cmdline{font-size:34px;line-height:48px;white-space:pre}
+.cmdline .todo{color:#1f5a33;text-shadow:none}
+.cmdline .cur{display:inline-block;width:18px;height:36px;vertical-align:-6px;background:#8dffb0;box-shadow:0 0 12px #8dffb0;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.gline{font-size:28px;line-height:44px;white-space:pre;margin-top:6px;animation:jit 2.3s infinite}
+@keyframes jit{0%,91%,100%{transform:none}92%{transform:translate(3px,-1px)}94%{transform:translate(-4px,1px)}96%{transform:translate(1px,0)}}
+.meters{display:flex;gap:40px;margin-top:16px;font-size:16px;letter-spacing:1px}
+.meter{flex:1}
+.meter .track{height:16px;border:1px solid currentColor;margin-top:6px;position:relative}
+.meter .track i{position:absolute;left:0;top:0;bottom:0;background:currentColor;box-shadow:0 0 12px currentColor;transition:width .08s}
+.hint{position:absolute;right:0;top:22px;font-size:15px;text-align:right;line-height:24px}
+.flash{position:absolute;inset:0;z-index:17;pointer-events:none;background:rgba(140,255,170,.0);transition:background .25s}
+/* ---------- B : takeover ---------- */
+#sb .tube{background:radial-gradient(ellipse at 50% 45%,#220810 0%,#12040a 55%,#050103 100%)}
+#sb .roll{background:linear-gradient(180deg,rgba(255,80,110,0),rgba(255,80,110,.08),rgba(255,80,110,0));animation-duration:2.2s}
+.shake{animation:shake .18s infinite}
+@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-2px)}}
+.slice{position:absolute;left:0;right:0;z-index:16;pointer-events:none;background:rgba(255,70,110,.13);mix-blend-mode:screen;animation:slice 1.4s steps(1) infinite}
+@keyframes slice{0%{top:210px;height:14px;transform:translateX(30px)}20%{top:520px;height:40px;transform:translateX(-50px)}40%{top:88px;height:6px;transform:translateX(12px)}60%{top:760px;height:22px;transform:translateX(-18px)}80%{top:400px;height:9px;transform:translateX(64px)}}
+.bighead{position:absolute;left:0;right:0;top:40px;text-align:center;z-index:6}
+.bighead .w{font-size:22px;letter-spacing:12px}
+.bighead .t{font-size:150px;font-weight:700;line-height:1;margin-top:8px;letter-spacing:6px}
+.mirror{position:absolute;left:60px;top:300px;width:700px;height:360px;font-size:19px;line-height:29px;white-space:pre;z-index:5;overflow:hidden}
+.mirror .rev{display:block;transform:scaleX(-1);transform-origin:center;opacity:.85}
+.face{position:absolute;margin:0;right:70px;top:225px;width:640px;height:440px;z-index:5;font-size:11px;line-height:11px;white-space:pre;letter-spacing:1px;overflow:hidden;opacity:.95;animation:breath 3s ease-in-out infinite}
+@keyframes breath{50%{opacity:.6;transform:scale(1.015)}}
+.counter{position:absolute;left:60px;right:60px;bottom:44px;z-index:7;border:2px solid #ff5a78;box-shadow:0 0 30px rgba(255,60,100,.45),inset 0 0 30px rgba(255,60,100,.2);padding:20px 26px;box-sizing:border-box}
+.counter .lbl{font-size:16px;letter-spacing:6px}
+.counter .cmd{font-size:40px;margin-top:8px;white-space:pre}
+.counter .row{display:flex;justify-content:space-between;margin-top:12px;font-size:17px}
+/* tabs */
+.tabs{position:absolute;right:18px;top:12px;z-index:50;display:flex;gap:6px}
+.tab{font:12px/1 "Consolas",monospace;color:#8dffb0;background:rgba(0,0,0,.6);border:1px solid #2e6e44;padding:6px 10px;cursor:pointer;letter-spacing:1px}
+.tab.on{background:#8dffb0;color:#021;box-shadow:0 0 10px #8dffb0}
+</style>
+</head>
+<body>
+<div id="stage">
+ <div class="tabs"><div class="tab" data-s="a">1 · 돌파</div><div class="tab" data-s="b">2 · 역명령</div></div>
+
+ <!-- ================= SCREEN A ================= -->
+ <section class="screen" id="sa">
+  <div class="bezel">
+   <div class="tube flick">
+    <div class="hud ph">
+     <div><div class="stage-no dim">STAGE 07 / 30</div><div class="title">블랙게이트 교정시설 · 관제 서버</div></div>
+     <div class="sp"></div>
+     <div class="trace"><div class="dim" style="font-size:14px;letter-spacing:3px">역추적</div><div class="bar"><div class="fill" style="width:62%"></div></div><div style="font-size:14px;margin-top:4px">62% · 관리자 로그인 감지</div></div>
+     <div style="text-align:right"><div class="dim" style="font-size:14px;letter-spacing:3px">남은 시간</div><div class="timer" id="timerA">03:47<small>.2</small></div></div>
+    </div>
+    <div class="log ph" id="logA"><span class="ln dim">── 세션 7 · 10.0.7.0/24 · 유령 프로세스 1개 상주 ──────────────</span><span class="ln">root@블랙게이트:~$ scan --ports 10.0.7.0/24</span><span class="ln dim">   22/tcp   열림    ssh        10.0.7.12</span><span class="ln dim">   8080     열림    관제-웹    10.0.7.40</span><span class="ln">root@블랙게이트:~$ crack ssh 10.0.7.12 --dict 교도관.txt</span><span class="ln">   [██████████████░░░░░░░░] 64%</span><span class="ln ghost">[유령] &gt; kill -9 crack          # 늦었어. 네 손가락이 느려.</span><span class="ln dim">   ! 프로세스 1142 강제 종료됨</span><span class="ln">root@블랙게이트:~$ crack ssh 10.0.7.12 --resume</span><span class="ln">   [██████████████████████] 접속 성공 · uid=0(교도관2)</span><span class="ln ghost">[유령] &gt; chmod 000 /cells       # 문은 내 거야.</span><span class="ln dim">   ! /cells/7 권한 000 · 전자석 잠금 유지</span><span class="ln">root@블랙게이트:~$ <span class="inv">unlock 명령으로 7번 방 문을 열어라</span></span></div>
+    <div class="side ph">
+     <h3 class="dim">네트워크 · 층 B2</h3>
+     <svg width="440" height="330" viewBox="0 0 440 330" style="filter:drop-shadow(0 0 6px rgba(90,255,140,.6))">
+      <g stroke="#6fe895" stroke-width="2" fill="none">
+       <path d="M60 60 L200 60 L200 160 L360 160"/><path d="M200 160 L200 270 L90 270"/><path d="M360 160 L360 280"/>
+       <path d="M60 60 L60 190" stroke-dasharray="4 6" opacity=".6"/>
+      </g>
+      <path d="M200 160 L360 160" stroke="#ff5a78" stroke-width="3" stroke-dasharray="8 6" style="filter:drop-shadow(0 0 6px #ff3d66)"><animate attributeName="stroke-dashoffset" from="0" to="-28" dur=".6s" repeatCount="indefinite"/></path>
+      <g font-family="Consolas,monospace" font-size="13" fill="#8dffb0">
+       <rect x="36" y="44" width="48" height="32" fill="#8dffb0"/><text x="46" y="65" fill="#021">YOU</text><text x="30" y="98">침투지점</text>
+       <rect x="178" y="44" width="44" height="32" fill="#07130b" stroke="#8dffb0" stroke-width="2"/><text x="186" y="65">SSH</text><text x="174" y="98">✓ 뚫림</text>
+       <rect x="178" y="144" width="44" height="32" fill="#07130b" stroke="#8dffb0" stroke-width="2"/><text x="185" y="165">HUB</text>
+       <rect x="334" y="144" width="52" height="32" fill="#1a0409" stroke="#ff5a78" stroke-width="2"/><text x="340" y="165" fill="#ff8aa0">CELL</text><text x="318" y="198" fill="#ff8aa0">유령 점유</text>
+       <rect x="66" y="254" width="48" height="32" fill="#07130b" stroke="#3f9c5c" stroke-width="2"/><text x="72" y="275" fill="#3f9c5c">CAM</text>
+       <rect x="336" y="264" width="48" height="32" fill="#07130b" stroke="#3f9c5c" stroke-width="2"/><text x="340" y="285" fill="#3f9c5c">EXIT</text><text x="330" y="318" fill="#3f9c5c">잠김</text>
+      </g>
+      <circle r="5" fill="#ff5a78"><animateMotion dur="1.4s" repeatCount="indefinite" path="M360 160 L200 160"/></circle>
+     </svg>
+     <div class="dim" style="font-size:15px;line-height:24px;margin-top:6px">
+      · 유령은 <span class="ghost">네가 친 명령</span>을 읽고 반대로 되받는다<br>
+      · 같은 명령을 더 빨리 끝내면 문이 열린다<br>
+      · 오타 1회 = 유령에게 0.8초
+     </div>
+    </div>
+    <div class="race">
+     <div class="cmdline ph"><span class="dim">root@블랙게이트:~$ </span><span id="typed"></span><span class="cur"></span><span class="todo" id="todo"></span></div>
+     <div class="gline ghost" id="gline">[유령]  &gt; </div>
+     <div class="meters">
+      <div class="meter ph">당신 · <b id="wpm">312</b>타/분 <span class="dim">· 오타 1</span><div class="track"><i id="pbar" style="width:40%"></i></div></div>
+      <div class="meter ghost">유령 · 되받아치기 <b id="gpct">0</b>%<div class="track"><i id="gbar" style="width:0%"></i></div></div>
+     </div>
+     <div class="hint dim">아무 글자 키로 타이핑<br>유령보다 먼저 [Enter]</div>
+    </div>
+    <div class="flash" id="flashA"></div>
+    <div class="roll"></div><div class="scan"></div><div class="glass"></div>
+   </div>
+   <div class="brand">PHOSPHOR · P31</div><div class="knob" style="right:130px"></div><div class="knob" style="right:170px"></div><div class="led"></div>
+  </div>
+ </section>
+
+ <!-- ================= SCREEN B ================= -->
+ <section class="screen" id="sb">
+  <div class="bezel">
+   <div class="tube shake">
+    <div class="bighead ghost">
+     <div class="w">유령이 명령을 되받아쳤다 · 제어권 상실</div>
+     <div class="t" id="timerB">00:09</div>
+    </div>
+    <div class="mirror ghost"><span class="rev">root@블랙게이트:~$ unlock cell-block --door 7</span><span class="rev">[유령] &gt; kcolnu --door 7 --ton</span><span class="rev">   ! 7번 방 전자석 재잠금</span><span class="rev">   ! 탈출 경로 EXIT 봉쇄</span><span class="rev">[유령] &gt; 너도 여기 갇히는 거야</span><span class="ln ph" style="display:block;margin-top:14px">root@블랙게이트:~$ █</span><span class="ln ph" style="display:block;opacity:.6">4e 61 67 61 20 ?? ?? 6f 75 74 ██ ██ 00 00</span><span class="ln ph" style="display:block;opacity:.4">역추적 97% ··· 관리자 콘솔이 당신 IP를 보고 있다</span></div>
+    <pre class="face ghost" id="face"></pre>
+    <div class="counter">
+     <div class="lbl ghost">역명령 · 유령의 명령을 그대로 뒤집어 쳐라</div>
+     <div class="cmd"><span class="ph">trace --reverse </span><span class="ph" style="opacity:.35">ghost.1142</span><span class="cur" style="display:inline-block;width:18px;height:36px;vertical-align:-6px;background:#ff5a78;box-shadow:0 0 12px #ff5a78;animation:blink .5s steps(1) infinite"></span></div>
+     <div class="row"><span class="ph">당신 16 / 26자 · 344타/분</span><span class="ghost">유령 재잠금까지 ▮▮▮▮▮▮▮▯▯▯ 0.9초</span><span class="ph">성공 시 · 유령 명령권 12초 탈취</span></div>
+    </div>
+    <div class="slice"></div>
+    <div class="roll"></div><div class="scan"></div><div class="glass"></div>
+   </div>
+   <div class="brand">PHOSPHOR · P31</div><div class="knob" style="right:130px"></div><div class="knob" style="right:170px"></div><div class="led" style="background:#ff4d6d;box-shadow:0 0 12px #ff4d6d"></div>
+  </div>
+ </section>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ function show(id){
+  var ss=document.querySelectorAll('.screen'),i;
+  for(i=0;i<ss.length;i++){ss[i].classList.toggle('on',ss[i].id==='s'+id);}
+  var ts=document.querySelectorAll('.tab');for(i=0;i<ts.length;i++){ts[i].classList.toggle('on',ts[i].getAttribute('data-s')===id);}
+  try{if(location.hash!=='#'+id)history.replaceState(null,'','#'+id);}catch(e){}
+ }
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);
+ var tabs=document.querySelectorAll('.tab');for(var t=0;t<tabs.length;t++){tabs[t].addEventListener('click',function(){show(this.getAttribute('data-s'));});}
+ fromHash();
+
+ /* audio: key clicks on interaction only */
+ var ac=null;
+ function actx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;}}return ac;}
+ function click(hi){var a=actx();if(!a)return;var n=a.currentTime,b=a.createBuffer(1,a.sampleRate*0.03,a.sampleRate),d=b.getChannelData(0);
+  for(var i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,6);}
+  var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=hi?3800:2200;f.Q.value=1.2;
+  var g=a.createGain();g.gain.value=.5;s.connect(f);f.connect(g);g.connect(a.destination);s.start(n);}
+ function tone(fr,dur,type){var a=actx();if(!a)return;var n=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type=type||'square';o.frequency.value=fr;
+  g.gain.setValueAtTime(.06,n);g.gain.exponentialRampToValueAtTime(.0001,n+dur);o.connect(g);g.connect(a.destination);o.start(n);o.stop(n+dur);}
+
+ /* typing race */
+ var target='unlock cell-block --door 7',ghostCmd='chmod 000 /cells/7 && lock',typed=10,gi=0;
+ var elT=document.getElementById('typed'),elD=document.getElementById('todo'),elG=document.getElementById('gline'),pb=document.getElementById('pbar'),gb=document.getElementById('gbar'),gp=document.getElementById('gpct'),fl=document.getElementById('flashA');
+ function render(){elT.textContent=target.slice(0,typed);elD.textContent=target.slice(typed);
+  elG.textContent='[유령]  > '+ghostCmd.slice(0,gi)+(gi<ghostCmd.length?'▌':'');
+  pb.style.width=(typed/target.length*100)+'%';var g=Math.round(gi/ghostCmd.length*100);gb.style.width=g+'%';gp.textContent=g;}
+ function reset(){typed=0;gi=0;render();}
+ render();
+ setInterval(function(){if(!document.getElementById('sa').classList.contains('on'))return;
+  if(gi<ghostCmd.length){gi++;render();}
+  else{fl.style.background='rgba(255,60,100,.35)';tone(90,.4,'sawtooth');setTimeout(function(){fl.style.background='rgba(0,0,0,0)';},200);setTimeout(reset,700);}
+ },260);
+ document.addEventListener('keydown',function(e){
+  if(e.key==='1'){show('a');return;} if(e.key==='2'){show('b');return;}
+  if(!document.getElementById('sa').classList.contains('on'))return;
+  if(e.key.length===1||e.key==='Enter'){click(e.key===' ');
+   if(typed<target.length){typed++;render();}
+   else{fl.style.background='rgba(140,255,170,.35)';tone(880,.12);setTimeout(function(){tone(1320,.18);},90);setTimeout(function(){fl.style.background='rgba(0,0,0,0)';},180);setTimeout(reset,600);}
+  }
+ });
+ /* timers */
+ var tA=227.2,tB=9.9,eA=document.getElementById('timerA'),eB=document.getElementById('timerB');
+ setInterval(function(){tA-=0.1;if(tA<0)tA=227.2;var m=Math.floor(tA/60),s=Math.floor(tA%60),d=Math.floor((tA*10)%10);
+  eA.innerHTML=(m<10?'0':'')+m+':'+(s<10?'0':'')+s+'<small>.'+d+'</small>';
+  tB-=0.1;if(tB<0)tB=9.9;eB.textContent='00:0'+Math.floor(tB)+'.'+Math.floor((tB*10)%10);},100);
+ /* ghost face, ascii from ellipse fields */
+ var face=document.getElementById('face'),ch=' .:-=+*#%@';
+ function drawFace(ph){var out='';for(var y=0;y<40;y++){var row='';for(var x=0;x<96;x++){
+   var nx=(x-48)/34,ny=(y-19)/19,r=nx*nx+ny*ny,v=0;
+   if(r<1){v=0.35+0.3*(1-r);}
+   var ex=Math.abs(Math.abs(nx)-0.38),ey=ny+0.18; if(ex*ex*3+ey*ey*9<0.07){v=0.0;} else if(ex*ex*3+ey*ey*9<0.1){v=0.95;}
+   var my=ny-0.45; if(Math.abs(nx)<0.5-my*0.2&&my*my*14<0.02+0.03*(1+Math.sin(ph))){v=0.0;}
+   v+=Math.sin(x*0.7+y*1.3+ph*3)*0.08;
+   if(r>=1&&r<1.15)v=0.12+Math.random()*0.2;
+   var k=Math.max(0,Math.min(ch.length-1,Math.floor(v*ch.length)));row+=ch.charAt(k);}out+=row+'\n';}face.textContent=out;}
+ var ph=0;setInterval(function(){if(!document.getElementById('sb').classList.contains('on'))return;ph+=0.25;drawFace(ph);},120);drawFace(0);
+ document.getElementById('sb').addEventListener('click',function(){tone(70,.5,'sawtooth');tone(1760,.08);});
+})();
+</script>
+</body>
+</html>

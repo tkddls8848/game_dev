@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교정지 — red-pen</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 원고를 주고받는 다섯 회차도 여기서 다시 돈다.
+  난수는 .NET 의 Random(seed) 를 그대로 옮겨 놓았으므로 헤드리스 테스트와 **같은 원고**가 나온다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/red-pen && python -m http.server 8102
+      → http://localhost:8102/presentation/index.html
+-->
+<style>
+@font-face { font-family:"NGC"; src:url("assets/fonts/NanumGothicCoding-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"Dokdo"; src:url("assets/fonts/Dokdo-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다 */
+  --paper:#EFE7D3; --paperLit:#F7F1E2; --paperDim:#E0D6BE; --paperEdge:#C4B99C;
+  --grid:#7E9AA6; --gridStrong:#5E7F8D; --ink:#2A2A2E; --inkWeak:#5E5B57;
+  --margin:#8A8069; --coffee:#9C7244;
+  --pen:#C9301F;
+  --sTitle:44px; --sHead:23px; --sBody:15px; --sHint:12px; --sNum:13px;
+  --sMs:17px; --sHand:21px; --lhMs:2.0;
+  --cell:26px; --gridA:.26; --rowA:.42; --vig:.10;
+  --gConf:#4B6B8A; --gTrust:#5E7F5C; --gStub:#8A6A2B; --gQuit:#C9301F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"NGC",ui-monospace,monospace; font-size:var(--sBody); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,transparent 58%,rgba(42,42,46,var(--vig)) 100%);
+}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:34px 18px 100px}
+
+.sheet{
+  position:relative;background:linear-gradient(180deg,var(--paperLit),var(--paper) 45%,var(--paperDim));
+  border:1px solid var(--paperEdge);padding:20px 24px 26px;margin:0 0 26px;
+  box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 -1px 0 rgba(42,42,46,.08) inset,0 2px 7px rgba(42,42,46,.08);
+}
+/* 원고지 칸 — 인쇄된 괘선이라 청색이다 */
+.sheet.ruled::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    repeating-linear-gradient(90deg,rgba(126,154,166,var(--gridA)) 0 1px,transparent 1px var(--cell)),
+    repeating-linear-gradient(0deg,rgba(126,154,166,var(--rowA)) 0 1px,transparent 1px calc(var(--cell)*2));
+}
+.sheet > *{position:relative;z-index:1}
+
+h1{font-family:"NGC",monospace;font-size:var(--sTitle);letter-spacing:1px;margin:0 0 4px;line-height:1.1;font-weight:400}
+h1 .sub{display:block;font-size:calc(var(--sHead)*.62);color:var(--inkWeak);letter-spacing:0;margin-top:6px}
+h2{font-family:"NGC",monospace;font-size:var(--sHead);font-weight:400;margin:0 0 6px}
+h2 .no{color:var(--pen);margin-right:10px;font-family:"Dokdo",cursive}
+h3{font-size:var(--sBody);margin:16px 0 4px;color:var(--inkWeak);font-weight:400}
+p{margin:6px 0 12px;max-width:80ch}
+.hint{font-size:var(--sHint);color:var(--inkWeak)}
+.lede{font-size:calc(var(--sBody) + 2px)}
+em{font-style:normal;border-bottom:2px solid var(--pen)}
+code{font-family:"NGC",monospace;font-size:var(--sNum);color:var(--margin)}
+.hand{font-family:"Dokdo","NGC",cursive;font-size:var(--sHand);line-height:1.2}
+
+/* ── 교정지 ────────────────────────────────────────────────────────── */
+.ms{position:relative;padding-left:calc(var(--cell)*2)}
+.line{position:relative;padding:6px 0 10px;min-height:calc(var(--cell)*2)}
+.line .txt{font-size:var(--sMs);line-height:var(--lhMs);white-space:pre-wrap}
+.line.gone .txt{color:var(--inkWeak)}
+.line .flaws{font-size:var(--sHint);color:var(--margin);margin-top:2px}
+.line .flaws b{color:var(--pen);font-weight:400}
+.line svg.over{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.line .memo{position:absolute;left:calc(var(--cell)*-2 + 2px);top:4px;width:calc(var(--cell)*2 - 4px);
+            color:var(--pen);font-family:"Dokdo","NGC",cursive;font-size:calc(var(--sHand) - 3px);
+            line-height:1.05;text-align:right}
+.line .sid{position:absolute;right:2px;top:2px;font-size:10px;color:var(--margin);opacity:.7}
+.gift{border-left:3px solid var(--gTrust);padding-left:10px;margin-left:-13px}
+.gift .txt{color:#2E4A2C}
+.coffee{position:absolute;pointer-events:none;z-index:0}
+
+/* ── 조종간 ────────────────────────────────────────────────────────── */
+.controls{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:10px 0 4px;font-size:var(--sHint)}
+.controls label{color:var(--inkWeak)}
+select{font:inherit;font-size:var(--sHint);background:var(--paperLit);color:var(--ink);
+       border:1px solid var(--paperEdge);padding:3px 6px;font-family:"NGC",monospace}
+.gauges{display:flex;gap:16px;flex-wrap:wrap;font-size:var(--sNum);color:var(--inkWeak);margin-top:6px}
+.gauges b{color:var(--ink);font-weight:400}
+
+table{border-collapse:collapse;width:100%;font-size:var(--sNum);margin:8px 0 6px}
+th,td{text-align:left;padding:4px 7px;border-bottom:1px dotted rgba(138,128,105,.45);vertical-align:top}
+th{color:var(--gridStrong);font-weight:400;font-size:var(--sHint);border-bottom:1px solid rgba(94,127,141,.55)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.hi td{background:rgba(201,48,31,.07)}
+.win{color:var(--pen)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:var(--sHint);color:var(--inkWeak);margin:8px 0}
+.legend i{display:inline-block;width:22px;height:0;border-top:2px solid;margin-right:6px;vertical-align:middle}
+.err{color:var(--pen);font-size:var(--sHead)}
+@media (max-width:760px){ .ms{padding-left:0} .line .memo{position:static;width:auto;text-align:left;margin-bottom:2px} }
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">봉투를 여는 중… (fetch 가 막혔다면 <code>python -m http.server 8102</code> 로 열어야 한다)</p>
+</main>
+
+<script>
+"use strict";
+
+/* ═══ 1. data/ 를 읽는다 ══════════════════════════════════════════════ */
+const FILES=["manuscript","marks","author","balance","endings"];
+async function load(){
+  const out={};
+  await Promise.all(FILES.map(async n=>{ out[n]=await (await fetch("../data/"+n+".json")).json(); }));
+  out.palette=await (await fetch("palette.json")).json();
+  return out;
+}
+
+/* ═══ 2. .NET 의 Random(seed) 를 그대로 옮긴다 ═════════════════════════
+   이걸 옮기지 않으면 목업이 테스트와 **다른 원고**를 보여 준다. */
+const MBIG=2147483647, MSEED=161803398;
+function NetRandom(seed){
+  const a=new Int32Array(56);
+  const sub=(seed===-2147483648)?2147483647:Math.abs(seed);
+  let mj=MSEED-sub; a[55]=mj; let mk=1, ii=0;
+  for(let i=1;i<55;i++){ if((ii+=21)>=55) ii-=55; a[ii]=mk; mk=mj-mk; if(mk<0) mk+=MBIG; mj=a[ii]; }
+  for(let k=1;k<5;k++) for(let i=1;i<56;i++){ let n=i+30; if(n>=55) n-=55; a[i]=a[i]-a[1+n]; if(a[i]<0) a[i]+=MBIG; }
+  let inext=0,inextp=21;
+  this.sample=function(){
+    let ni=inext+1,np=inextp+1; if(ni>=56) ni=1; if(np>=56) np=1;
+    let r=a[ni]-a[np]; if(r===MBIG) r--; if(r<0) r+=MBIG;
+    a[ni]=r; inext=ni; inextp=np; return r;
+  };
+  this.next=function(min,max){ return Math.floor(this.sample()*(1.0/MBIG)*(max-min))+min; };
+}
+const i32=n=>n|0;
+function stableHash(s){ let h=5381; for(let i=0;i<s.length;i++) h=i32(Math.imul(h,33)+s.charCodeAt(i)); return h & 0x7FFFFFF; }
+const day=(a,seed,round)=>new NetRandom(i32(Math.imul(seed,1000003)+round*7717+17)).next(a.dayJitterMin,a.dayJitterMax+1);
+const masterpieceRoll=(seed,round,pct)=>pct>0 && new NetRandom(i32(Math.imul(seed,7919)+round*131+stableHash("masterpiece"))).next(0,100)<pct;
+const introduceRoll=(seed,round,sid,mid,pct)=>pct>0 &&
+  new NetRandom(i32(Math.imul(seed,6997)+round*211+stableHash(sid)*3+stableHash(mid))).next(0,100)<pct;
+
+/* ═══ 3. 원고 주고받기. src/ManuscriptSim.cs 와 같은 규칙 ══════════════ */
+const clamp=(v,lo,hi)=>v<lo?lo:(v>hi?hi:v);
+function idx(D){
+  const mark={},flaw={};
+  D.marks.marks.forEach(m=>mark[m.id]=m);
+  D.manuscript.flaws.forEach(f=>flaw[f.id]=f);
+  return {mark,flaw};
+}
+function helps(m,s){
+  if(!m.fixes) return false;
+  if(m.removesSentence===1) return true;
+  for(const f of m.fixes){ if(f==="*") return s.flaws.length>0; if(s.flaws.indexOf(f)>=0) return true; }
+  return false;
+}
+const fixes=(m,f)=>(m.fixes||[]).some(x=>x==="*"||x===f);
+const effective=(I,s)=>Math.max(0,s.quality - s.flaws.reduce((a,f)=>a+I.flaw[f].weight,0));
+const avgQ=(I,r)=>{const l=r.sentences.filter(s=>!s.deleted); return l.length?Math.floor(l.reduce((a,s)=>a+effective(I,s),0)/l.length):0;};
+const avgV=r=>{const l=r.sentences.filter(s=>!s.deleted); return l.length?Math.floor(l.reduce((a,s)=>a+s.voice,0)/l.length):0;};
+
+const POLICIES={
+  p_harsh:{name:"늘 혹독하게", pick:(D,I,s)=>{
+    if(s.flaws.length===0) return I.mark.m_leave;
+    if(s.flaws.length>=3) return I.mark.m_delete;
+    if(helps(I.mark.m_insert,s)) return I.mark.m_insert;
+    if(helps(I.mark.m_cut,s)) return I.mark.m_cut;
+    if(helps(I.mark.m_move,s)) return I.mark.m_move;
+    return I.mark.m_delete;
+  }},
+  p_gentle:{name:"늘 관대하게", pick:(D,I,s)=>
+    (s.flaws.length>0 && helps(I.mark.m_query,s)) ? I.mark.m_query : I.mark.m_praise},
+  p_middle:{name:"작가를 읽는다", pick:(D,I,s,a)=>{
+    if(s.flaws.length===0) return I.mark.m_praise;
+    if(a.trust<46) return I.mark.m_praise;
+    if(a.confidence<=34) return I.mark.m_praise;
+    if(a.stubborn>58) return I.mark.m_query;
+    if(s.flaws.indexOf("f_order")>=0 && s.flaws.length===1) return I.mark.m_move;
+    if(s.flaws.length>=3 && s.prideGuard<40) return I.mark.m_delete;
+    if(s.flaws.indexOf("f_bloat")>=0 && s.flaws.length<=2) return I.mark.m_cut;
+    if(helps(I.mark.m_query,s)) return I.mark.m_query;
+    if(a.confidence>=74 && helps(I.mark.m_insert,s)) return I.mark.m_insert;
+    return I.mark.m_praise;
+  }},
+  p_none:{name:"손대지 않고 돌려보낸다", pick:(D,I)=>I.mark.m_leave},
+  p_praise:{name:"칭찬만 되풀이한다", pick:(D,I)=>I.mark.m_praise},
+  p_query:{name:"물음표만 되풀이한다", pick:(D,I)=>I.mark.m_query},
+  p_cut:{name:"도려내기만 되풀이한다", pick:(D,I)=>I.mark.m_cut},
+  p_insert:{name:"삽입만 되풀이한다", pick:(D,I)=>I.mark.m_insert},
+  p_delete:{name:"삭제선만 되풀이한다", pick:(D,I)=>I.mark.m_delete},
+  p_move:{name:"이동만 되풀이한다", pick:(D,I)=>I.mark.m_move}
+};
+
+function run(D,I,seed,polId,editsMatter){
+  if(editsMatter===undefined) editsMatter=true;
+  const af=D.author, b=D.balance, pol=POLICIES[polId];
+  const res={sentences:[],rounds:[],masterpieces:0,lost:0,redness:0,withdrawn:false,silenced:false};
+  D.manuscript.sentences.slice().sort((x,y)=>x.order-y.order).forEach(sd=>{
+    res.sentences.push({id:sd.id,order:sd.order,kind:sd.kind,text:sd.text,quality:sd.quality,
+      voice:sd.voice,prideGuard:sd.prideGuard,flaws:(sd.flaws||[]).slice(),deleted:false,
+      gift:false,history:[]});
+  });
+  const a={confidence:af.startConfidence,trust:af.startTrust,stubborn:af.startStubborn};
+
+  for(let round=0;round<b.rounds;round++){
+    const log={round,harshness:0,refused:[],wasted:[],hollow:[],introduced:[],masterpiece:false};
+    const picks=[];
+    res.sentences.forEach(s=>{
+      if(s.deleted) return;
+      const m=pol.pick(D,I,s,a,round);
+      if(!m) return;
+      picks.push([s,m]);
+      log.harshness += Math.floor(m.harshness*(100+Math.floor(s.prideGuard*af.prideAmplifyPercent/100))/100);
+      res.redness += m.harshness;
+      s.history.push({mark:m.id,round,took:false});
+    });
+
+    if(!editsMatter){
+      log.confidence=a.confidence; log.trust=a.trust; log.stubborn=a.stubborn;
+      log.quality=avgQ(I,res); log.voice=avgV(res); log.band="none"; log.day=0;
+      res.rounds.push(log); continue;
+    }
+
+    let cs=0,ts=0,ss=0;
+    picks.forEach(([s,m])=>{
+      const pride=100+Math.floor(s.prideGuard*af.prideAmplifyPercent/100);
+      cs += m.confidenceDelta<0 ? Math.trunc(m.confidenceDelta*pride/100) : m.confidenceDelta;
+      ts += m.trustDelta<0 ? Math.trunc(m.trustDelta*pride/100) : m.trustDelta;
+      ss += m.stubbornDelta;
+    });
+    const n=Math.max(1,picks.length);
+    a.confidence=clamp(a.confidence+Math.trunc(cs/n),0,100);
+    a.trust=clamp(a.trust+Math.trunc(ts/n),0,100);
+    a.stubborn=clamp(a.stubborn+Math.trunc(ss/n),0,100);
+    a.stubborn=clamp(a.stubborn+Math.floor(log.harshness*af.stubbornPerHarsh/100)
+                     -Math.floor(a.trust*af.trustCalmsStubborn/100),0,100);
+
+    let wasted=0, hollow=0;
+    picks.forEach(([s,m])=>{
+      const slot=s.history.filter(h=>h.round===round).pop();
+      if(m.harshness===0 && !helps(m,s) && s.flaws.length>0){ hollow++; log.hollow.push(s.id+":"+m.id); }
+      let refuses=false;
+      if(a.stubborn>=af.ignoreStubborn && m.harshness>=af.hardMarkFrom) refuses=true;
+      if(m.needsTrustMin>=0 && a.trust<m.needsTrustMin) refuses=true;
+      if(m.needsStubbornMax>=0 && a.stubborn>m.needsStubbornMax) refuses=true;
+      if(refuses){ log.refused.push(s.id+":"+m.id); return; }
+      slot.took=true;
+      if(m.removesSentence===1){ s.deleted=true; res.lost++; return; }
+      const cap=Math.max(1,m.maxFixes||1);
+      let removed=0;
+      for(let k=s.flaws.length-1;k>=0 && removed<cap;k--)
+        if(fixes(m,s.flaws[k])){ s.flaws.splice(k,1); removed++; }
+      if(removed===0 && m.harshness>0){ wasted++; log.wasted.push(s.id+":"+m.id); return; }
+      s.quality=clamp(s.quality+m.qualityGain,0,100);
+      s.voice=clamp(s.voice+m.voiceDelta,0,100);
+      if(m.introducesFlaw && m.introducesPercent>0 && s.flaws.indexOf(m.introducesFlaw)<0
+         && introduceRoll(seed,round,s.id,m.id,m.introducesPercent)){
+        s.flaws.push(m.introducesFlaw); log.introduced.push(s.id+":"+m.introducesFlaw);
+      }
+    });
+    a.confidence=clamp(a.confidence+Math.trunc(af.wasteConfidence*wasted/n),0,100);
+    a.trust=clamp(a.trust+Math.trunc(af.wasteTrust*wasted/n),0,100);
+    a.stubborn=clamp(a.stubborn+Math.trunc(af.wasteStubborn*wasted/n),0,100);
+    a.trust=clamp(a.trust+Math.trunc(af.hollowTrust*hollow/n),0,100);
+
+    const d=day(af,seed,round); log.day=d;
+    let dq,dv;
+    if(a.confidence>=af.goodConfidence && a.trust>=af.goodTrust){ dq=af.reviseGoodQuality; dv=af.reviseGoodVoice; log.band="good"; }
+    else if(a.confidence<=af.timidConfidence){ dq=af.reviseTimidQuality; dv=af.reviseTimidVoice; log.band="timid"; }
+    else { dq=af.reviseNormalQuality; dv=af.reviseNormalVoice; log.band="normal"; }
+    res.sentences.forEach(s=>{ if(s.deleted) return;
+      s.quality=clamp(s.quality+dq+d,0,100); s.voice=clamp(s.voice+dv,0,100); });
+
+    const q=avgQ(I,res), v=avgV(res);
+    if(a.confidence>=b.masterpieceConfidence && a.trust>=b.masterpieceTrust
+       && v>=b.masterpieceVoice && q>=b.masterpieceQuality
+       && masterpieceRoll(seed,round,b.masterpieceChancePercent)){
+      res.sentences.push({id:"s_gift_"+round,order:1000+round,kind:"k_gift",
+        text:"아무도 청하지 않은 문장이 한 줄 딸려 왔다",
+        quality:b.masterpieceSentenceQuality,voice:b.masterpieceSentenceVoice,
+        prideGuard:b.masterpieceSentencePride,flaws:[],deleted:false,gift:true,history:[]});
+      res.masterpieces++; log.masterpiece=true;
+    }
+    log.confidence=a.confidence; log.trust=a.trust; log.stubborn=a.stubborn;
+    log.quality=avgQ(I,res); log.voice=avgV(res);
+    res.rounds.push(log);
+    if(a.trust<=af.quitTrust){ res.withdrawn=true; break; }
+    if(a.confidence<=af.silenceConfidence){ res.silenced=true; break; }
+  }
+
+  res.confidence=a.confidence; res.trust=a.trust; res.stubborn=a.stubborn;
+  res.quality=avgQ(I,res); res.voice=avgV(res);
+  res.surviving=res.sentences.filter(s=>!s.deleted).length;
+  res.publishable = !res.withdrawn && !res.silenced
+    && res.quality>=b.publishQuality && res.voice>=b.publishVoice
+    && res.surviving>=b.publishMinSentences;
+  res.ending=resolveEnding(D,res);
+  return res;
+}
+
+function resolveEnding(D,r){
+  const list=D.endings.endings.slice().sort((a,b)=>a.priority-b.priority);
+  for(const e of list){
+    if(e.requiresWithdrawn===1&&!r.withdrawn) continue;
+    if(e.requiresWithdrawn===0&&r.withdrawn) continue;
+    if(e.requiresSilenced===1&&!r.silenced) continue;
+    if(e.requiresSilenced===0&&r.silenced) continue;
+    if(e.requiresPublishable===1&&!r.publishable) continue;
+    if(e.requiresPublishable===0&&r.publishable) continue;
+    if(e.masterpieceMin>=0&&r.masterpieces<e.masterpieceMin) continue;
+    if(e.qualityMin>=0&&r.quality<e.qualityMin) continue;
+    if(e.qualityMax>=0&&r.quality>e.qualityMax) continue;
+    if(e.voiceMin>=0&&r.voice<e.voiceMin) continue;
+    if(e.voiceMax>=0&&r.voice>e.voiceMax) continue;
+    if(e.trustMax>=0&&r.trust>e.trustMax) continue;
+    if(e.confidenceMax>=0&&r.confidence>e.confidenceMax) continue;
+    if(e.lostSentenceMin>=0&&r.lost<e.lostSentenceMin) continue;
+    return e;
+  }
+  return {id:"e_unclassified",name:"분류되지 않음",text:""};
+}
+
+function score(o,r){
+  let s=0;
+  s+=Math.trunc(r.quality*o.qualityWeight/100);
+  s+=Math.trunc(r.voice*o.voiceWeight/100);
+  s+=Math.trunc(r.confidence*o.confidenceWeight/100);
+  s+=Math.trunc(r.trust*o.trustWeight/100);
+  s-=Math.trunc(r.stubborn*o.stubbornPenalty/100);
+  s+=r.masterpieces*o.masterpieceBonus;
+  if(r.publishable) s+=o.publishBonus;
+  s-=r.lost*o.lostSentencePenalty;
+  if(r.withdrawn||r.silenced) s-=o.withdrawnPenalty;
+  return s;
+}
+const allSeeds=D=>[D.balance.seed].concat(D.balance.extraSeeds||[]);
+
+/* ═══ 4. palette.json 을 CSS 변수로 ══════════════════════════════════ */
+function applyPalette(p){
+  const r=document.documentElement.style, c=p.color, t=p.type, g=p.grid, ga=p.gauge;
+  const set=(k,v)=>r.setProperty(k,v);
+  set("--paper",c.paper); set("--paperLit",c.paperLit); set("--paperDim",c.paperDim); set("--paperEdge",c.paperEdge);
+  set("--grid",c.grid); set("--gridStrong",c.gridStrong); set("--ink",c.bodyInk); set("--inkWeak",c.bodyInkWeak);
+  set("--margin",c.margin); set("--coffee",c.coffee);
+  set("--pen",p.pen.roundInk[p.pen.roundInk.length-1]);
+  set("--sTitle",t.sizeTitle+"px"); set("--sHead",t.sizeHeading+"px"); set("--sBody",t.sizeBody+"px");
+  set("--sHint",t.sizeHint+"px"); set("--sNum",t.sizeNumeral+"px");
+  set("--sMs",t.sizeManuscript+"px"); set("--sHand",t.sizeHand+"px");
+  set("--lhMs",t.lineHeightManuscript/100);
+  set("--cell",g.cellPx+"px"); set("--gridA",g.lineAlpha/100); set("--rowA",g.rowRuleAlpha/100);
+  set("--vig",p.grade.vignette);
+  set("--gConf",ga.confidence); set("--gTrust",ga.trust); set("--gStub",ga.stubborn); set("--gQuit",ga.quitLine);
+}
+
+/* ═══ 5. 화면 ════════════════════════════════════════════════════════ */
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+let D,I,UI={seed:null,policy:"p_middle"};
+
+const inkOf=(P,round)=>P.pen.roundInk[Math.min(round,P.pen.roundInk.length-1)];
+const alphaOf=(P,round)=>P.pen.roundAlpha[Math.min(round,P.pen.roundAlpha.length-1)]/100;
+/* 손떨림은 **문장 id 로 정해진 값**이다 — 난수가 아니라 다시 그려도 같은 자리다 */
+const jitter=(P,sid,k)=>((stableHash(sid+k)%(P.pen.handJitterPx*200+1))/100)-P.pen.handJitterPx;
+
+/* 문장 하나에 쌓인 붉은 획을 겹쳐 그린다.
+   좌표계는 1000×100 의 고정 상자이고 preserveAspectRatio="none" 로 줄 높이에 맞춰 늘린다 —
+   그래서 **path 안에는 % 를 쓸 수 없다**(숫자만). 늘어나도 획 굵기가 변하지 않도록
+   모든 획에 vector-effect="non-scaling-stroke" 를 건다. 글자(?·○)도 path 로 그린다 —
+   늘어난 좌표계 안의 <text> 는 찌그러진다. */
+const VB_W = 1000, VB_H = 100;
+function strokes(P,s){
+  const parts=[], w=P.pen.strokeWidthPx;
+  const ns=' vector-effect="non-scaling-stroke"';
+  s.history.forEach((h,i)=>{
+    const spec=P.marks[h.mark]; if(!spec||spec.glyph==="none") return;
+    const col=inkOf(P,h.round), op=alphaOf(P,h.round)*(h.took?1:.7);
+    const dash=h.took?"":' stroke-dasharray="'+P.pen.refusedDash.join(" ")+'"';
+    const jx=jitter(P,s.id,i)*6, jy=jitter(P,s.id,i+9)*2;
+    const y=30+i*7+jy;
+    const common='fill="none" stroke="'+col+'" stroke-width="'+w+'" opacity="'+op+'" stroke-linecap="round"'+ns+dash;
+    if(spec.glyph==="strike")
+      parts.push('<line x1="'+(8+jx)+'" y1="'+y+'" x2="'+(992+jx)+'" y2="'+(y+5)+'" stroke="'+col+'" stroke-width="'+(w+1)+'" opacity="'+op+'"'+ns+dash+'/>');
+    else if(spec.glyph==="caret"){
+      const x=90+i*70+jx;
+      parts.push('<path d="M '+x+' '+(y+9)+' l 16 -'+P.marks.caretHeightPx+' l 16 '+P.marks.caretHeightPx+'" '+common+'/>');
+    } else if(spec.glyph==="bracket"){
+      const x=150+i*80+jx;
+      parts.push('<path d="M '+x+' '+(y-7)+' l -22 0 l 0 16 l 22 0" '+common+'/>');
+    } else if(spec.glyph==="arrow"){
+      const x=40+i*40+jx;
+      parts.push('<path d="M '+x+' '+(y+10)+' q 90 -'+P.marks.arrowCurve+' 190 -3" '+common+' marker-end="url(#ah'+esc(s.id)+')"/>');
+    } else if(spec.glyph==="query"){
+      const x=60+i*58+jx;
+      // 물음표를 획으로 긋는다: 위 갈고리 + 아래 점
+      parts.push('<path d="M '+x+' '+(y-4)+' q 0 -8 11 -8 q 11 0 11 8 q 0 7 -11 9 l 0 5" '+common+'/>');
+      parts.push('<circle cx="'+(x+11)+'" cy="'+(y+15)+'" r="2.2" fill="'+col+'" opacity="'+op+'"/>');
+    } else if(spec.glyph==="circle"){
+      const x=70+i*58+jx, r=P.marks.circleRadiusPx;
+      parts.push('<ellipse cx="'+x+'" cy="'+(y+3)+'" rx="'+(r*2.2)+'" ry="'+r+'" '+common.replace('stroke-linecap="round"','')+' opacity="'+(op*.85)+'"/>');
+    }
+  });
+  if(!parts.length) return "";
+  return '<svg class="over" viewBox="0 0 '+VB_W+' '+VB_H+'" preserveAspectRatio="none">'
+    +'<defs><marker id="ah'+esc(s.id)+'" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="strokeWidth">'
+    +'<path d="M0,0 L7,3.5 L0,7 z" fill="'+inkOf(P,4)+'"/></marker></defs>'+parts.join("")+"</svg>";
+}
+
+function manuscript(res){
+  const P=D.palette, rows=[];
+  res.sentences.slice().sort((a,b)=>a.order-b.order).forEach(s=>{
+    const last=s.history[s.history.length-1];
+    const memo=last && P.marks[last.mark] ? P.marks[last.mark].marginText : "";
+    const flaws=s.flaws.length
+      ? '<div class="flaws">남은 흠 — '+s.flaws.map(f=>"<b>"+esc(I.flaw[f].symbol+" "+I.flaw[f].name)+"</b>").join(" · ")+"</div>"
+      : '<div class="flaws">흠 없음</div>';
+    rows.push('<div class="line'+(s.deleted?" gone":"")+(s.gift?" gift":"")+'">'
+      +(memo?'<div class="memo">'+esc(memo)+"</div>":"")
+      +'<div class="sid">'+esc(s.id)+" q"+s.quality+" v"+s.voice+"</div>"
+      +'<div class="txt"'+(s.deleted?' style="text-decoration:line-through;text-decoration-color:'+inkOf(P,4)+';text-decoration-thickness:2px"':"")+">"
+      +esc(s.text)+"</div>"
+      +flaws
+      + (s.history.length
+          ? '<div class="flaws">'+s.history.map(h=>{
+              const spec=P.marks[h.mark];
+              return '<span style="color:'+inkOf(P,h.round)+'">'+(h.round+1)+"회 "
+                +esc(spec?spec.label:h.mark)+(h.took?"":" (작가가 버텼다)")+"</span>";
+            }).join(" · ")+"</div>"
+          : "")
+      +strokes(P,s)
+      +"</div>");
+  });
+  const c=P.coffee;
+  const coffee='<svg class="coffee" style="left:'+c.xPercent+'%;top:'+c.yPercent+'%" width="'+(c.outerRadiusPx*2)+'" height="'+(c.outerRadiusPx*2)+'">'
+    +'<circle cx="'+c.outerRadiusPx+'" cy="'+c.outerRadiusPx+'" r="'+(c.outerRadiusPx-c.ringWidthPx/2)+'" fill="none" stroke="'+P.color.coffee+'" stroke-width="'+c.ringWidthPx+'" opacity="'+(c.outerAlpha/100)+'"/>'
+    +'<circle cx="'+c.outerRadiusPx+'" cy="'+c.outerRadiusPx+'" r="'+(c.outerRadiusPx-c.ringWidthPx)+'" fill="'+P.color.coffee+'" opacity="'+(c.innerAlpha/100)+'"/></svg>';
+  return coffee+'<div class="ms">'+rows.join("")+"</div>";
+}
+
+/* 작가의 상태 셋을 한 축 위에 겹쳐 그린다 */
+function authorChart(res){
+  const P=D.palette, g=P.gauge, W=620, H=g.heightPx, pad=6;
+  const n=res.rounds.length;
+  if(!n) return "";
+  const x=i=>pad+(n===1?0:i/(n-1))*(W-pad*2);
+  const y=v=>H-pad-(v/100)*(H-pad*2);
+  const line=(key,col)=>'<polyline fill="none" stroke="'+col+'" stroke-width="'+g.strokeWidthPx
+    +'" points="'+res.rounds.map((l,i)=>x(i)+","+y(l[key])).join(" ")+'"/>'
+    +res.rounds.map((l,i)=>'<circle cx="'+x(i)+'" cy="'+y(l[key])+'" r="2.5" fill="'+col+'"/>').join("");
+  return '<svg viewBox="0 0 '+W+" "+H+'" style="width:100%;height:auto">'
+    +'<line x1="'+pad+'" y1="'+y(D.author.quitTrust)+'" x2="'+(W-pad)+'" y2="'+y(D.author.quitTrust)
+    +'" stroke="'+g.quitLine+'" stroke-width="1" stroke-dasharray="2 4" opacity=".7"/>'
+    +line("confidence",g.confidence)+line("trust",g.trust)+line("stubborn",g.stubborn)+"</svg>";
+}
+
+/* §03 교정이 원고를 움직인다 — 켠 세계 vs 끈 세계 */
+function spreadTable(){
+  const pols=Object.keys(POLICIES), seeds=allSeeds(D);
+  const rows=pols.map(p=>{
+    let q=0,v=0,c=0,t=0,m=0,l=0; const es=new Set();
+    seeds.forEach(sd=>{ const r=run(D,I,sd,p,true);
+      q+=r.quality; v+=r.voice; c+=r.confidence; t+=r.trust; m+=r.masterpieces; l+=r.lost; es.add(r.ending.id); });
+    const n=seeds.length;
+    const o=run(D,I,seeds[0],p,false);
+    return {p,q:Math.floor(q/n),v:Math.floor(v/n),c:Math.floor(c/n),t:Math.floor(t/n),m,l,
+            e:[...es].join(","),oq:o.quality,ov:o.voice};
+  });
+  const span=k=>Math.max(...rows.map(r=>r[k]))-Math.min(...rows.map(r=>r[k]));
+  const offSpan=Math.max(...rows.map(r=>r.oq))-Math.min(...rows.map(r=>r.oq));
+  return {
+    html:"<table><thead><tr><th>붉은 펜</th><th class='n'>질</th><th class='n'>목소리</th><th class='n'>자신감</th>"
+      +"<th class='n'>신뢰</th><th class='n'>걸작</th><th class='n'>지움</th><th>결말</th>"
+      +"<th class='n'>대조군 질</th></tr></thead><tbody>"
+      +rows.map(r=>"<tr"+(r.p==="p_middle"?' class="hi"':"")+"><td>"+esc(POLICIES[r.p].name)+"</td>"
+        +"<td class='n'>"+r.q+"</td><td class='n'>"+r.v+"</td><td class='n'>"+r.c+"</td><td class='n'>"+r.t+"</td>"
+        +"<td class='n'>"+r.m+"</td><td class='n'>"+r.l+"</td><td>"+esc(r.e)+"</td>"
+        +"<td class='n' style='color:var(--inkWeak)'>"+r.oq+"</td></tr>").join("")
+      +"</tbody></table>",
+    q:span("q"), v:span("v"), c:span("c"), t:span("t"), m:span("m"), off:offSpan
+  };
+}
+
+/* §04 혹독함은 양날이다 */
+function bothWaysTable(){
+  const three=["p_harsh","p_gentle","p_middle"], seeds=allSeeds(D);
+  const t={};
+  D.balance.objectives.forEach(o=>{ t[o.id]={};
+    three.forEach(p=>{ let s=0; seeds.forEach(sd=>{ s+=score(o,run(D,I,sd,p,true)); }); t[o.id][p]=s; }); });
+  let hOverG=0,gOverH=0;
+  const body=D.balance.objectives.map(o=>{
+    let best=three[0]; three.forEach(p=>{ if(t[o.id][p]>t[o.id][best]) best=p; });
+    if(t[o.id].p_harsh>t[o.id].p_gentle) hOverG++; else if(t[o.id].p_gentle>t[o.id].p_harsh) gOverH++;
+    return "<tr><td>"+esc(o.name)+' <span class="hint">'+esc(o.whose)+"</span></td>"
+      +three.map(p=>"<td class='n'"+(p===best?" style='color:var(--pen)'":"")+">"+t[o.id][p]+"</td>").join("")
+      +'<td class="win">'+esc(POLICIES[best].name)+"</td></tr>";
+  }).join("");
+  return {html:"<table><thead><tr><th>자 — 누가 재는가</th>"
+    +three.map(p=>"<th class='n'>"+esc(POLICIES[p].name)+"</th>").join("")+"<th>이긴 쪽</th></tr></thead><tbody>"
+    +body+"</tbody></table>", hOverG, gOverH};
+}
+
+function render(){
+  const P=D.palette;
+  const res=run(D,I,UI.seed,UI.policy,true);
+  const sp=spreadTable(), bw=bothWaysTable(), seeds=allSeeds(D);
+  const h=[];
+
+  h.push('<section class="sheet"><h1>'+esc(P.name)+'<span class="sub">'+esc(P.oneLine)+"</span></h1>"
+    +'<p class="lede">플레이어는 편집자다. 조작은 대화 선택지가 아니라 <em>붉은 펜으로 문장을 고치는 것</em>이다 — '
+    +"삭제 · 삽입 · 이동 · 주석. 작가는 상처받고, 화내고, 가끔 <em>진짜 걸작</em>을 보내온다.</p>"
+    +'<p class="hint">이 화면의 모든 글과 수치는 <code>data/</code> 의 JSON을 그 자리에서 읽은 것이고, '
+    +"다섯 회차도 여기서 다시 돈다 — 난수까지 헤드리스 테스트와 같은 원고다. "
+    +"색·칸·획은 <code>presentation/palette.json</code> 이 정한다.</p>"
+    +'<div class="controls">'
+      +"<label>원고(씨드) <select id=\"seed\">"+seeds.map(s=>'<option value="'+s+'"'+(s===UI.seed?" selected":"")+">"+s+"</option>").join("")+"</select></label>"
+      +"<label>붉은 펜 <select id=\"pol\">"+Object.keys(POLICIES).map(p=>'<option value="'+p+'"'+(p===UI.policy?" selected":"")+">"+esc(POLICIES[p].name)+"</option>").join("")+"</select></label>"
+    +"</div>"
+    +'<div class="gauges"><span>「'+esc(D.manuscript.title)+"」 · "+esc(D.manuscript.author)+"</span>"
+      +"<span>원고의 질 <b>"+res.quality+"</b>/"+D.balance.publishQuality+"</span>"
+      +"<span>목소리 <b>"+res.voice+"</b>/"+D.balance.publishVoice+"</span>"
+      +"<span>걸작 <b>"+res.masterpieces+"</b></span><span>지운 문장 <b>"+res.lost+"</b></span>"
+      +"<span>붉기 <b>"+res.redness+"</b></span>"
+      +"<span>실을 수 <b>"+(res.publishable?"있다":"없다")+"</b></span></div>"
+    +"</section>");
+
+  // §01 교정지
+  h.push('<section class="sheet ruled"><h2><span class="no">01</span>교정지 — 다섯 번 오간 뒤</h2>'
+    +"<p>붉은 획은 <b>지워지지 않고 쌓인다.</b> 1회차의 잉크는 바래고 5회차는 새 잉크다 — "
+    +"<em>얼마나 붉어졌는지가 이 관계의 역사다.</em> 점선은 작가가 <b>받아들이지 않은</b> 표시다. 지우지 않는다.</p>"
+    +'<div class="legend">'+P.pen.roundInk.map((c,i)=>'<span><i style="border-color:'+c+'"></i>'+(i+1)+"회차</span>").join("")+"</div>"
+    +manuscript(res)
+    +'<div class="sheet" style="margin:18px 0 0;background:var(--paperDim);box-shadow:none">'
+      +'<span class="hand" style="color:var(--pen)">'+esc(res.ending.name)+'</span> <code>'+esc(res.ending.id)+"</code><br>"
+      +'<span class="hint">'+esc(res.ending.text)+"</span></div>"
+    +"</section>");
+
+  // §02 작가
+  h.push('<section class="sheet"><h2><span class="no">02</span>작가 — '+esc(D.author.name)+"</h2>"
+    +"<p>자신감 · 신뢰 · 고집이 회차마다 움직인다. 붉은 선은 <b>원고를 거둬 가는 문턱</b>("
+    +D.author.quitTrust+")이다.</p>"
+    +'<div class="legend">'
+      +'<span><i style="border-color:var(--gConf)"></i>자신감</span>'
+      +'<span><i style="border-color:var(--gTrust)"></i>신뢰</span>'
+      +'<span><i style="border-color:var(--gStub)"></i>고집</span></div>'
+    +authorChart(res)
+    +"<table><thead><tr><th>회차</th><th class='n'>혹독함</th><th class='n'>자신감</th><th class='n'>신뢰</th>"
+    +"<th class='n'>고집</th><th>돌아온 원고</th><th>버틴 표시</th><th>빈 칭찬</th><th>새로 생긴 흠</th></tr></thead><tbody>"
+    +res.rounds.map(l=>"<tr"+(l.masterpiece?' class="hi"':"")+"><td>"+(l.round+1)+"회"+(l.masterpiece?" ★걸작":"")+"</td>"
+      +"<td class='n'>"+l.harshness+"</td><td class='n'>"+l.confidence+"</td><td class='n'>"+l.trust+"</td>"
+      +"<td class='n'>"+l.stubborn+"</td><td>"+({good:"청하지 않은 데까지 좋아졌다",normal:"시킨 만큼",timid:"짧고 겁먹은 채",none:"—"}[l.band]||l.band)+"</td>"
+      +"<td>"+(l.refused.length?esc(l.refused.join(" ")):"—")+"</td>"
+      +"<td>"+(l.hollow.length?l.hollow.length+"개":"—")+"</td>"
+      +"<td>"+(l.introduced.length?esc(l.introduced.join(" ")):"—")+"</td></tr>").join("")
+    +"</tbody></table></section>");
+
+  // §03
+  h.push('<section class="sheet"><h2><span class="no">03</span>교정이 원고를 움직인다</h2>'
+    +"<p>같은 원고를 붉은 펜 "+Object.keys(POLICIES).length+"가지로 씨드 "+seeds.length+"개씩 돌린다. "
+    +"핵 검사기 <code>EditsMoveTheManuscript</code> 와 같은 계산이다.</p>"
+    +sp.html
+    +'<p class="hint">★ 벌어진 폭 — 질 <b>'+sp.q+"</b> · 목소리 <b>"+sp.v+"</b> · 자신감 <b>"+sp.c
+    +"</b> · 신뢰 <b>"+sp.t+"</b> · 걸작 <b>"+sp.m+"</b>. "
+    +"맨 오른쪽 <b>대조군</b>은 <em>붉은 펜이 장식인 세계</em>(작가가 표시를 전부 무시한다)의 값이다 — "
+    +"거기서는 어떤 펜을 들어도 결과가 같아야 하고, 실제로 벌어진 폭이 <b>"+sp.off+"</b>이다.</p></section>");
+
+  // §04
+  h.push('<section class="sheet"><h2><span class="no">04</span>혹독함은 양날이다</h2>'
+    +"<p>두 극단과 중간을 자 다섯으로 잰다. 한쪽이 전부를 가져가면 작가의 감정 상태는 장식이다.</p>"
+    +bw.html
+    +'<p class="hint">혹독이 관대를 이긴 자 <b>'+bw.hOverG+"</b>개 · 관대가 혹독을 이긴 자 <b>"+bw.gOverH+"</b>개. "
+    +"<em>둘 다 1 이상이어야 양날이다.</em></p></section>");
+
+  // §05 데이터
+  h.push('<section class="sheet"><h2><span class="no">05</span>붉은 펜의 어휘</h2>'
+    +"<table><thead><tr><th>부호</th><th class='n'>거칠기</th><th>고치는 흠</th><th class='n'>질</th>"
+    +"<th class='n'>목소리</th><th class='n'>자신감</th><th class='n'>신뢰</th><th>고치다가 생기는 것</th><th>—</th></tr></thead><tbody>"
+    +D.marks.marks.map(m=>"<tr><td><span style='color:var(--pen)'>"+esc(m.symbol||"·")+"</span> "+esc(m.name)+"</td>"
+      +"<td class='n'>"+m.harshness+"</td><td>"+esc((m.fixes||[]).map(f=>f==="*"?"전부":I.flaw[f].name).join(" · ")||"—")+"</td>"
+      +"<td class='n'>"+(m.qualityGain||0)+"</td><td class='n'>"+(m.voiceDelta||0)+"</td>"
+      +"<td class='n'>"+(m.confidenceDelta||0)+"</td><td class='n'>"+(m.trustDelta||0)+"</td>"
+      +"<td>"+(m.introducesFlaw?esc(I.flaw[m.introducesFlaw].name)+" "+m.introducesPercent+"%":"—")+"</td>"
+      +"<td class='hint'>"+esc(m.note)+"</td></tr>").join("")
+    +"</tbody></table></section>");
+
+  document.getElementById("app").innerHTML=h.join("");
+  document.getElementById("seed").onchange=e=>{ UI.seed=parseInt(e.target.value,10); render(); };
+  document.getElementById("pol").onchange=e=>{ UI.policy=e.target.value; render(); };
+}
+
+load().then(d=>{
+  D=d; I=idx(D); applyPalette(D.palette); UI.seed=D.balance.seed; render();
+}).catch(e=>{
+  document.getElementById("boot").textContent="데이터를 읽지 못했다: "+e+" — python -m http.server 로 열어야 한다";
+});
+</script>
+</body>
+</html>

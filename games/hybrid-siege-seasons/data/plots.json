@@ -1,0 +1,43 @@
+{
+  "_": "밭. fertility 는 백분율 정수 — 수확량에 곱하고 나머지는 그 밭에 누적한다(부동소수 금지).",
+  "startPlots": 4,
+  "maxPlots": 6,
+  "plots": [
+    {
+      "id": "plot_01",
+      "nameKo": "성벽 밑 밭",
+      "fertility": 100,
+      "unlockYear": 1
+    },
+    {
+      "id": "plot_02",
+      "nameKo": "우물 밭",
+      "fertility": 120,
+      "unlockYear": 1
+    },
+    {
+      "id": "plot_03",
+      "nameKo": "남쪽 비탈",
+      "fertility": 100,
+      "unlockYear": 1
+    },
+    {
+      "id": "plot_04",
+      "nameKo": "바람받이",
+      "fertility": 80,
+      "unlockYear": 1
+    },
+    {
+      "id": "plot_05",
+      "nameKo": "해자 안쪽",
+      "fertility": 90,
+      "unlockYear": -1
+    },
+    {
+      "id": "plot_06",
+      "nameKo": "등불 밭",
+      "fertility": 110,
+      "unlockYear": -1
+    }
+  ]
+}

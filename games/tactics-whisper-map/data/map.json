@@ -1,0 +1,59 @@
+{
+  "_": "구역 + 인접 관계. 좌표가 없다 (PLAN_TACTICS §6). 수치는 전부 백분율 정수.",
+  "_은폐": "coverPercent + 분대원 stealthPercent + 은폐지점 - 노출 - 같은구역벌점 >= 100 이면 보이지 않는다. balance.json 의 concealFloorPercent 가 100이다.",
+  "_시야": "sightLines 는 방향이 있다. 축이 둘이다 — (1) 과수원은 안에서 밖이 보이지만 밖에서 안은 보이지 않는다. (2) 종루는 종루에서만 보인다(골목에서는 처마에, 검문소에서는 등 뒤에 가린다). 그래서 과수원은 위상을 몰라도 쓸 수 있고, 종루는 순찰이 비는 시각을 알아야 쓸 수 있다. 이 대비가 이 PoC의 경제다.",
+  "_소음": "noiseBlocked 의 과수원 세 링크가 '과수원에서 쏘면 아무도 듣지 않는다'를 만든다. 총성 90 - 홉 40 - 차폐 40 = 10 < 20.",
+  "_보복": "reprisalWeightPercent 는 이 구역에서 들켰을 때 **마을이** 무는 값이다. 골목(마을 안)이 100, 과수원이 20. 이게 임무 층과 거점 층을 잇는 둘째 줄이다 (첫째 줄은 신뢰로 사는 정찰).",
+  "_정찰_아님": "reconVantages 가 없다. 이 PoC에서 순찰 시각은 **눈으로 보는 것이 아니라 마을 사람에게 묻는 것**이다 (village.json). 지형(구역·엄폐·시야·인접)만 공짜다 — 그건 눈에 보인다.",
+
+  "maps": [
+    {
+      "id": "map_village_edge",
+      "name": "마을 끝",
+      "entryZone": "z_flax",
+      "extractionZone": "z_flax",
+
+      "zones": [
+        { "id": "z_flax",       "name": "아마밭",   "coverPercent": 70, "reprisalWeightPercent": 25, "note": "분대가 여기서 들어오고 여기로 빠진다. 키 큰 아마가 가린다. 이 천의 실이 여기서 난다" },
+        { "id": "z_orchard",    "name": "과수원",   "coverPercent": 65, "reprisalWeightPercent": 20, "note": "나무 아래. 여기서 골목과 곳간이 보이지만 여기는 아무 데서도 보이지 않는다. 소리도 먹는다" },
+        { "id": "z_belfry",     "name": "종루",     "coverPercent": 45, "reprisalWeightPercent": 60, "note": "여기서 마을이 내려다보인다. 순찰이 선다" },
+        { "id": "z_lane",       "name": "골목",     "coverPercent": 20, "reprisalWeightPercent": 100, "note": "순찰 통로. 마을 안이라 여기서 들키면 마을이 값을 치른다" },
+        { "id": "z_checkpoint", "name": "검문소",   "coverPercent": 0,  "reprisalWeightPercent": 40, "note": "엄폐가 없다. 순찰이 선다" },
+        { "id": "z_granary",    "name": "곳간",     "coverPercent": 60, "reprisalWeightPercent": 70, "note": "징발한 곡물과 장부가 여기 있다. 순찰은 들어오지 않고 내려다보기만 한다. 엄폐 60 + 공병의 은밀 40 = 딱 100, 걸어 들어가는 것까지는 보이지 않는다" }
+      ],
+
+      "links": [
+        { "a": "z_flax",     "b": "z_orchard",    "extraAttenuation": -1 },
+        { "a": "z_flax",     "b": "z_lane",       "extraAttenuation": -1 },
+        { "a": "z_flax",     "b": "z_belfry",     "extraAttenuation": -1 },
+        { "a": "z_orchard",  "b": "z_lane",       "extraAttenuation": -1 },
+        { "a": "z_orchard",  "b": "z_granary",    "extraAttenuation": -1 },
+        { "a": "z_belfry",   "b": "z_lane",       "extraAttenuation": -1 },
+        { "a": "z_lane",     "b": "z_checkpoint", "extraAttenuation": -1 },
+        { "a": "z_lane",     "b": "z_granary",    "extraAttenuation": -1 },
+        { "a": "z_granary",  "b": "z_checkpoint", "extraAttenuation": -1 }
+      ],
+
+      "sightLines": [
+        { "from": "z_flax",       "sees": ["z_flax", "z_lane"] },
+        { "from": "z_orchard",    "sees": ["z_orchard", "z_lane", "z_granary"] },
+        { "from": "z_belfry",     "sees": ["z_belfry", "z_lane", "z_checkpoint", "z_granary", "z_flax"] },
+        { "from": "z_lane",       "sees": ["z_lane", "z_checkpoint", "z_granary"] },
+        { "from": "z_checkpoint", "sees": ["z_checkpoint", "z_lane"] },
+        { "from": "z_granary",    "sees": ["z_granary", "z_lane"] }
+      ],
+
+      "noiseBlocked": [
+        { "a": "z_orchard", "b": "z_flax",    "extraAttenuation": 40 },
+        { "a": "z_orchard", "b": "z_lane",    "extraAttenuation": 40 },
+        { "a": "z_orchard", "b": "z_granary", "extraAttenuation": 40 }
+      ],
+
+      "concealment": [
+        { "id": "c_granary_sacks", "zone": "z_granary", "name": "곡물 자루 뒤",   "hideBonusPercent": 35, "settleMs": 6000 },
+        { "id": "c_orchard_hedge", "zone": "z_orchard", "name": "산울타리 그늘",   "hideBonusPercent": 20, "settleMs": 5000 },
+        { "id": "c_belfry_stair",  "zone": "z_belfry",  "name": "종루 계단 밑",   "hideBonusPercent": 40, "settleMs": 8000 }
+      ]
+    }
+  ]
+}

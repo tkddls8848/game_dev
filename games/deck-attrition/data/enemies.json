@@ -1,0 +1,87 @@
+{
+  "_": "행동 패턴은 순환하고 다음 한 수는 플레이어에게 보인다. 숨기지 않는 이유는 규칙 때문이다 — 무엇이 오는지 알아야 '지금 쓸까 아껴 둘까'가 도박이 아니라 결정이 된다.",
+  "_적수": "3종. 회차 하나(전투 3 + 보스 1)를 이 셋으로 채운다. 늘리지 않는다.",
+  "enemies": [
+    {
+      "id": "enemy_proof",
+      "nameKo": "교정쇄",
+      "maxHp": 46,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 13,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 6,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 16,
+          "target": "player"
+        }
+      ]
+    },
+    {
+      "id": "enemy_quoin",
+      "nameKo": "조임쇠",
+      "maxHp": 60,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 3,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 13,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 9,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "enemy_platen",
+      "nameKo": "압판",
+      "maxHp": 128,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 15,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 13,
+          "target": "player"
+        },
+        {
+          "type": "heal",
+          "amount": 8,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 20,
+          "target": "player"
+        }
+      ]
+    }
+  ]
+}

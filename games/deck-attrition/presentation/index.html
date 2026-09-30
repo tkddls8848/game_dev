@@ -1,0 +1,557 @@
+<!doctype html>
+<!--
+  연출 목업. data/ 의 실제 JSON 과 SceneExportTests 가 구운 scene.json 을 읽어 그린다.
+  손으로 그린 그림이면 다른 PoC와 견줄 수 없다 — 데이터를 고치면 이 화면이 같이 바뀌어야 한다.
+
+  색·크기·질감은 하나도 여기 박혀 있지 않다. 전부 palette.json 에서 온다.
+  file:// 로 열면 브라우저가 fetch 를 막는다:
+      cd games/deck-attrition && python -m http.server 8000
+      http://localhost:8000/presentation/
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>deck-attrition — 납 활자 · 인쇄소</title>
+<style>
+  /* 값은 전부 palette.json 에서 주입된다. 여기 있는 것은 뼈대뿐이다. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--void);
+    color: var(--paperDim);
+    font-family: "Hahmlet", "Libre Caslon Text", serif;
+    font-size: var(--sizeBody);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::after {  /* 정지한 입자. 매 프레임 흔들면 인쇄물이 아니라 TV 노이즈가 된다 */
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+    background-image: var(--leadTex);
+    background-size: 420px;
+    opacity: var(--leadTexOpacity);
+    filter: saturate(var(--leadSat)) contrast(1.4);
+    mix-blend-mode: overlay;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px 96px; }
+
+  /* ---------- 괘선. 활판에서 선은 납 조각이고 얇거나 두껍다 ---------- */
+  .rule-thick { height: var(--ruleThick); background: var(--leadLight); margin: 0; border: 0; }
+  .rule-thin  { height: var(--ruleThin);  background: var(--lead);      margin: 0; border: 0; }
+
+  /* ---------- 머리 ---------- */
+  header { padding: 56px 0 26px; }
+  h1 {
+    font-family: "Libre Caslon Text", "Hahmlet", serif;
+    font-size: var(--sizeTitle); font-weight: 700; line-height: 1.05;
+    letter-spacing: var(--trackingTitle);
+    margin: 0 0 6px; color: var(--paper);
+  }
+  .slug {
+    font-family: "Libre Caslon Text", serif; font-size: var(--sizeHint);
+    letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+  }
+  .oneline { color: var(--paperDim); margin: 14px 0 0; max-width: 62ch; }
+  .rulebox {
+    margin-top: 20px; padding: 14px 18px;
+    border-left: var(--ruleThick) solid var(--vermilion);
+    background: var(--surface); color: var(--paperDim); max-width: 74ch;
+  }
+  .meta { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 16px;
+          font-size: var(--sizeHint); color: var(--muted); }
+  .meta b { color: var(--paperDim); font-weight: 400; }
+
+  section { margin-top: 54px; }
+  h2 {
+    font-size: var(--sizeHeading); font-weight: 700; color: var(--paper);
+    margin: 0 0 4px; letter-spacing: 1px;
+  }
+  .sub { font-size: var(--sizeHint); color: var(--muted); margin: 0 0 18px; max-width: 70ch; }
+
+  /* ---------- 활자 하나. 카드가 아니라 금속 덩어리다 ---------- */
+  .case-row { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+  .sort {
+    width: var(--sortW); position: relative;
+    background: linear-gradient(176deg, var(--leadLight) 0%, var(--lead) 38%, var(--ink) 100%);
+    border-top: 1px solid var(--leadEdge);
+    border-left: 1px solid var(--leadEdge);
+    border-right: 1px solid var(--void);
+    border-bottom: 1px solid var(--void);
+    padding: 10px 10px 8px;
+    box-shadow: 0 10px 18px rgba(0,0,0,.55);
+  }
+  .sort .nick {  /* 활자 몸통의 홈. 식자공이 손으로 위아래를 가리는 자리 */
+    position: relative; z-index: 2; height: var(--nick); margin: 8px -10px 0;
+    background: linear-gradient(180deg, var(--void) 0%, var(--void) 55%, var(--leadEdge) 100%);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
+  }
+  .sort::after {   /* 납 질감 */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: var(--leadTex); background-size: 180px;
+    filter: saturate(var(--leadSat));
+    opacity: var(--leadTexOpacity); mix-blend-mode: overlay;
+  }
+  /* 녹은 활자. 회색 필터를 통째로 걸면 '녹임' 표식의 주홍까지 죽는다 —
+     납만 식히고 글자만 지운다. */
+  .sort.melted { background: linear-gradient(176deg, var(--lead) 0%, var(--ink) 60%, var(--void) 100%); }
+  .sort.melted .face { opacity: var(--meltedAlpha); }
+  .sort.melted .nick { opacity: .35; }
+  .sort .face {
+    min-height: 58px; display: flex; align-items: center; justify-content: center;
+    text-align: center; color: var(--paper); font-weight: 700;
+    padding: 6px 2px; position: relative; z-index: 1;
+    text-shadow: 0 1px 0 var(--void), 0 -1px 0 rgba(255,255,255,.18);
+  }
+  .sort .foot {
+    position: relative; z-index: 1; margin-top: 8px; padding-top: 6px;
+    border-top: 1px solid rgba(0,0,0,.5);
+    font-size: var(--sizeHint); color: var(--paperDim); display: flex; justify-content: space-between;
+  }
+  .sort .foot .gone { color: var(--vermilion); font-weight: 700; letter-spacing: 1px; }
+
+  /* 남은 횟수는 숫자가 아니라 잉크로 보인다 — 몸통 옆의 줄 */
+  .tally { display: flex; gap: 3px; align-items: flex-end; height: 12px; }
+  .tally i { display: block; width: 3px; height: 12px; background: var(--paperDim); }
+  .tally i.spent { background: var(--vermilionDeep); height: 4px; }
+
+  /* ---------- 찍힌 자국. 종이 위의 잉크 ---------- */
+  .sheet {
+    background: var(--paper); color: var(--ink); position: relative;
+    padding: 16px 18px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), 0 14px 30px rgba(0,0,0,.5);
+  }
+  .sheet::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: var(--paperTex); background-size: 340px;
+    opacity: var(--paperTexOpacity); mix-blend-mode: multiply;
+  }
+  .sheet > * { position: relative; z-index: 1; }
+
+  /* 한 장 찍힌 카드. 선명도가 전부 여기로 들어온다 */
+  .impression {
+    background: var(--paper); color: var(--ink);
+    padding: 10px 12px 9px; min-width: 0;
+    box-shadow: inset 0 var(--debossPx) 0 rgba(0,0,0,var(--debossAlpha)),
+                inset 0 calc(var(--debossPx) * -1) 0 rgba(255,255,255,.35);
+  }
+  .impression .nm { font-weight: 700; display: block; }
+  .impression .tx { font-size: var(--sizeHint); line-height: 1.55; display: block; margin-top: 3px; }
+  .impression .cost {
+    font-family: "Libre Caslon Text", serif; font-weight: 700;
+    float: right; margin-left: 8px;
+  }
+  .impression.consumable .nm { color: var(--vermilionDeep); }
+
+  /* 손에 든 것은 아직 <금속>이고, 낸 것은 종이 위의 <찍힘>이다.
+     같은 카드를 두 재료로 그려야 "낸다 = 찍는다 = 닳는다"가 한눈에 읽힌다. */
+  .row { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; }
+  .row + .row { margin-top: 8px; }
+  .row .lab {
+    font-size: var(--sizeHint); color: var(--muted); text-align: right;
+    padding-top: 5px; letter-spacing: 1px;
+  }
+  .hand, .played { display: flex; gap: 7px; flex-wrap: wrap; }
+  .slug-card {
+    flex: 0 1 142px; min-width: 116px; padding: 7px 9px 6px;
+    background: linear-gradient(176deg, var(--leadLight) 0%, var(--lead) 45%, var(--ink) 100%);
+    border-top: 1px solid var(--leadEdge); border-left: 1px solid var(--leadEdge);
+    border-right: 1px solid var(--void); border-bottom: 1px solid var(--void);
+    color: var(--paper); position: relative;
+  }
+  .slug-card .nm { font-weight: 700; display: block; font-size: var(--sizeHint);
+                   text-shadow: 0 1px 0 var(--void); }
+  .slug-card .cost { float: right; margin-left: 6px; font-family: "Libre Caslon Text", serif; }
+  .slug-card.consumable .nm { color: var(--vermilion); }
+  .slug-card .tally { margin-top: 5px; height: 9px; }
+  .slug-card .tally i { height: 9px; }
+  .played .impression { flex: 0 1 142px; min-width: 116px; padding: 7px 9px 6px; }
+  .played .impression .nm { font-size: var(--sizeHint); }
+  .played .impression .tally i { background: var(--ink); }
+  .played .impression .tally i.spent { background: var(--paperDim); }
+
+  /* ---------- 판(전투) ---------- */
+  .turn { display: grid; grid-template-columns: 54px 1fr; gap: 0; }
+  .turn + .turn { margin-top: 10px; }
+  .turn .no {
+    font-family: "Libre Caslon Text", serif; font-size: var(--sizeNumeral);
+    color: var(--leadEdge); text-align: right; padding: 14px 12px 0 0; line-height: 1;
+  }
+  .turn .body { border-left: var(--ruleThin) solid var(--lead); padding: 12px 0 12px 18px; }
+  .turn.melt .no { color: var(--vermilion); }
+  .turn.melt .body { border-left-color: var(--vermilion); }
+
+  .bars { display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
+          font-size: var(--sizeHint); color: var(--muted); margin-bottom: 9px; }
+  .bar { display: flex; align-items: center; gap: 7px; }
+  .bar .track { width: 108px; height: 7px; background: var(--ink); box-shadow: inset 0 0 0 1px var(--lead); }
+  .bar .fill { height: 100%; background: var(--paperDim); }
+  .bar .fill.enemy { background: var(--leadEdge); }
+  .bar .fill.block { background: var(--lead); }
+  .intent { color: var(--paperDim); }
+  .intent b { color: var(--vermilion); font-weight: 700; }
+
+  .enemyline { margin-top: 8px; font-size: var(--sizeHint); color: var(--muted); }
+  .melted-note {
+    margin-top: 9px; font-size: var(--sizeHint); color: var(--vermilion);
+    border-top: var(--ruleThin) solid var(--vermilionDeep); padding-top: 6px;
+  }
+
+  /* ---------- 활자 목록 ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); gap: 14px; }
+  .grid .impression { padding: 13px 14px 12px; }
+  .wear { margin-top: 9px; padding-top: 7px; border-top: 1px solid rgba(0,0,0,.22);
+          font-size: var(--sizeHint); display: flex; justify-content: space-between; gap: 8px; }
+  .wear .k { color: var(--muted); }
+  .steps { display: flex; gap: 6px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+  .steps .step { font-size: var(--sizeHint); }
+
+  .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+  .legend .sheet { padding: 14px 16px; }
+  .legend h3 { margin: 0 0 6px; font-size: var(--sizeBody); color: var(--vermilionDeep); }
+  .legend p { margin: 0; font-size: var(--sizeHint); line-height: 1.6; color: var(--ink); }
+
+  /* 소리. 경로는 palette.json 의 sfx 에서 온다 — 파일명을 코드에 박지 않는다 */
+  .sfx { display: flex; gap: 12px; flex-wrap: wrap; }
+  .sfx button {
+    font: inherit; cursor: pointer; text-align: left; color: var(--paper);
+    padding: 10px 12px 9px; min-width: 168px;
+    background: linear-gradient(176deg, var(--leadLight) 0%, var(--lead) 45%, var(--ink) 100%);
+    border-top: 1px solid var(--leadEdge); border-left: 1px solid var(--leadEdge);
+    border-right: 1px solid var(--void); border-bottom: 1px solid var(--void);
+  }
+  .sfx button:hover { border-color: var(--vermilion); }
+  .sfx button b { display: block; font-weight: 700; }
+  .sfx button small { display: block; color: var(--muted); font-size: var(--sizeHint); margin-top: 3px; }
+
+  .foot-note { margin-top: 44px; font-size: var(--sizeHint); color: var(--muted); max-width: 80ch; }
+  .enemies { display: flex; gap: 14px; flex-wrap: wrap; }
+  .enemy { flex: 1 1 260px; }
+  .pattern { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .pattern span {
+    font-size: var(--sizeHint); padding: 2px 7px; background: var(--ink);
+    color: var(--paperDim); box-shadow: inset 0 0 0 1px var(--lead);
+  }
+  .pattern span.atk { color: var(--vermilion); }
+  @media (max-width: 620px) { .turn { grid-template-columns: 38px 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p style="padding:60px 0;color:#777">활자를 고르는 중…</p></div>
+
+<script>
+const J = p => fetch(p).then(r => { if (!r.ok) throw new Error(p + " — " + r.status); return r.json(); });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const lerp = (a, b, t) => a + (b - a) * t;
+
+// 글자마다 미세하게 다른 농도. 난수가 아니라 글자 코드에서 뽑는다 —
+// 같은 글자는 늘 같게 찍혀야 인쇄물이고, 매 프레임 흔들리면 노이즈다.
+function inkify(text, jitter) {
+  let out = "";
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === " ") { out += " "; continue; }
+    const h = (text.charCodeAt(i) * 37 + i * 101) % 100 / 100;
+    const a = (1 - jitter / 2 + h * jitter).toFixed(3);
+    out += '<span style="opacity:' + a + '">' + esc(ch) + "</span>";
+  }
+  return out;
+}
+
+let P = null;   // palette.json
+
+// 선명도(백분율 정수) → 실제 픽셀. 이 함수가 이 연출의 전부다.
+function impressionStyle(sharpPct) {
+  const im = P.impression;
+  const floor = im.sharpFloorPct;
+  const t = Math.max(0, Math.min(1, (sharpPct - floor) / (100 - floor)));
+  const alpha = lerp(im.inkAlphaAtWorn, im.inkAlphaAtFresh, t);
+  const blur = lerp(im.bleedPxAtWorn, im.bleedPxAtFresh, t);
+  const spread = lerp(im.spreadPxAtWorn, im.spreadPxAtFresh, t);
+  const track = lerp(im.trackingAtWorn, im.trackingAtFresh, t);
+  return "opacity:" + alpha.toFixed(3)
+       + ";filter:blur(" + blur.toFixed(2) + "px)"
+       + ";letter-spacing:" + track.toFixed(2) + "px"
+       + ";text-shadow:0 0 " + spread.toFixed(2) + "px currentColor";
+}
+
+// 남은 횟수를 숫자로 적지 않는다. 쓴 만큼 짧아지는 눈금으로 보인다.
+function tally(usesLeft, usesTotal) {
+  if (usesTotal <= 0) return "";
+  let s = '<span class="tally">';
+  for (let i = 0; i < usesTotal; i++)
+    s += '<i class="' + (i < usesLeft ? "" : "spent") + '"></i>';
+  return s + "</span>";
+}
+
+// 손에 든 활자. 아직 찍히지 않았으므로 종이가 아니라 금속으로 그린다.
+// 선명도는 여기서 <활자 면이 얼마나 뭉갰는가>로 보인다.
+function slugCard(h) {
+  const st = impressionStyle(h.sharpnessPct == null ? 100 : h.sharpnessPct);
+  return '<div class="slug-card' + (h.consumable ? " consumable" : "") + '">'
+    + '<span class="nm" style="' + st + '">'
+    + '<span class="cost">' + h.cost + "</span>"
+    + inkify(h.nameKo, P.impression.glyphJitterAlpha) + "</span>"
+    + (h.consumable ? tally(h.usesLeft, h.usesTotal) : "")
+    + "</div>";
+}
+
+function impression(card, sharpPct, opts) {
+  opts = opts || {};
+  const st = impressionStyle(sharpPct == null ? 100 : sharpPct);
+  const cls = "impression" + (card.consumable || card.uses > 0 ? " consumable" : "");
+  return '<div class="' + cls + '">'
+    + '<span class="nm" style="' + st + '">'
+    + '<span class="cost">' + card.cost + '</span>'
+    + inkify(card.nameKo, P.impression.glyphJitterAlpha) + "</span>"
+    + (opts.text ? '<span class="tx" style="' + st + '">' + esc(card.textKo || "") + "</span>" : "")
+    + (opts.foot || "")
+    + "</div>";
+}
+
+function sortEl(entry, card) {
+  const melted = entry.usesLeft <= 0;
+  const st = impressionStyle(entry.sharpnessPct);
+  return '<div class="sort' + (melted ? " melted" : "") + '">'
+    + '<div class="face" style="' + st + '"><span>'
+    + inkify(entry.nameKo, P.impression.glyphJitterAlpha) + "</span></div>"
+    + '<div class="nick"></div>'
+    + '<div class="foot">'
+    + (melted ? '<span class="gone">녹임</span><span>&mdash;</span>'
+              : tally(entry.usesLeft, entry.usesTotal) + "<span>" + entry.sharpnessPct + "%</span>")
+    + "</div></div>";
+}
+
+function bar(label, value, max, cls) {
+  const pct = max <= 0 ? 0 : Math.max(0, Math.min(100, Math.round(value * 100 / max)));
+  return '<span class="bar">' + esc(label)
+    + '<span class="track"><span class="fill ' + (cls || "") + '" style="width:' + pct + '%"></span></span>'
+    + "<span>" + value + "</span></span>";
+}
+
+function applyPalette(p) {
+  const c = p.color, t = p.type, im = p.impression, s = p.sort, pr = p.print;
+  const r = document.documentElement.style;
+  Object.entries(c).forEach(([k, v]) => { if (k[0] !== "_") r.setProperty("--" + k, v); });
+  r.setProperty("--sizeTitle", t.sizeTitle + "px");
+  r.setProperty("--sizeHeading", t.sizeHeading + "px");
+  r.setProperty("--sizeBody", t.sizeBody + "px");
+  r.setProperty("--sizeHint", t.sizeHint + "px");
+  r.setProperty("--sizeNumeral", t.sizeNumeral + "px");
+  r.setProperty("--trackingTitle", t.trackingTitle + "px");
+  r.setProperty("--debossPx", im.debossPx + "px");
+  r.setProperty("--debossAlpha", im.debossAlpha);
+  r.setProperty("--sortW", s.widthPx + "px");
+  r.setProperty("--shoulder", s.shoulderPx + "px");
+  r.setProperty("--nick", s.nickPx + "px");
+  r.setProperty("--meltedAlpha", s.meltedAlpha);
+  r.setProperty("--ruleThick", pr.ruleThickPx + "px");
+  r.setProperty("--ruleThin", pr.ruleThinPx + "px");
+  r.setProperty("--paperTex", 'url("' + pr.paperTexture + '")');
+  r.setProperty("--paperTexOpacity", pr.paperTextureOpacity);
+  r.setProperty("--leadTex", 'url("' + pr.leadTexture + '")');
+  r.setProperty("--leadTexOpacity", pr.leadTextureOpacity);
+  r.setProperty("--leadSat", pr.leadTextureSaturation);
+
+  const face = (name, file, weight) =>
+    "@font-face{font-family:'" + name + "';src:url('" + file + "') format('truetype');"
+    + "font-weight:" + weight + ";font-display:swap}";
+  const st = document.createElement("style");
+  st.textContent = face(t.family, t.familyFile, "100 900")
+                 + face(t.familyLatin, t.familyLatinFile, "100 900");
+  document.head.appendChild(st);
+}
+
+Promise.all([
+  J("palette.json"), J("scene.json"),
+  J("../data/cards.json"), J("../data/enemies.json"),
+  J("../data/runs/run_01.json"), J("../data/balance.json")
+]).then(([palette, scene, cardFile, enemyFile, run, balance]) => {
+  P = palette;
+  applyPalette(P);
+
+  const cards = cardFile.cards;
+  const byId = Object.fromEntries(cards.map(c => [c.id, c]));
+  const consumables = cards.filter(c => c.uses > 0);
+
+  const html = [];
+
+  // ---------- 머리 ----------
+  html.push('<header>'
+    + '<div class="slug">deck-attrition &nbsp;·&nbsp; roguelike deckbuilder</div>'
+    + "<h1>" + inkify(P.name, P.impression.glyphJitterAlpha) + "</h1>"
+    + '<p class="oneline">' + esc(P.oneLine) + "</p>"
+    + '<div class="rulebox">' + esc(scene.rule) + "</div>"
+    + '<div class="meta">'
+    + "<span>씨드 <b>" + scene.seed + "</b></span>"
+    + "<span>정책 <b>" + esc(scene.policy) + "</b></span>"
+    + "<span>결과 <b>" + (scene.won ? "이김" : "짐") + "</b></span>"
+    + "<span>마감 <b>" + scene.deadlineRounds + "판</b></span>"
+    + "<span>활자 <b>" + cards.length + "종</b> · 닳는 것 <b>" + consumables.length + "종</b></span>"
+    + "<span>적 <b>" + enemyFile.enemies.length + "종</b></span>"
+    + "</div></header>");
+  html.push('<hr class="rule-thick">');
+
+  // ---------- 활자 상자 ----------
+  html.push('<section><h2>활자 상자</h2>'
+    + '<p class="sub">회차 하나를 따라간다. 상자는 전투가 끝나도 <b>차지 않는다</b> — '
+    + "찍은 만큼 눈금이 줄고 글자가 뭉개지다가, 다 쓰면 녹여 버린다. "
+    + "여기 적힌 백분율은 설명용이고, 게임 화면에서 플레이어가 보는 것은 <b>찍힘 그 자체</b>다.</p>");
+  scene.battles.forEach(b => {
+    html.push('<div style="margin-bottom:22px">'
+      + '<div class="bars"><span class="intent">'
+      + (b.isBoss ? "<b>마지막 판</b> · " : "판 " + (b.index + 1) + " · ")
+      + esc(b.enemyNameKo) + " (" + b.enemyMaxHp + ")</span>"
+      + bar("체력", b.hpAtStart, scene.playerMaxHp)
+      + (b.melted.length ? '<span class="intent">이 판에서 녹음 <b>'
+          + b.melted.map(id => esc(byId[id].nameKo)).join(" · ") + "</b></span>" : "")
+      + "</div>"
+      + '<div class="case-row">'
+      + b.caseAtStart.map(e => sortEl(e, byId[e.id])).join("")
+      + "</div></div>");
+  });
+  html.push('<hr class="rule-thin"><div class="bars" style="margin-top:14px">'
+    + '<span class="intent">회차가 끝났을 때</span></div>'
+    + '<div class="case-row">' + scene.caseAtEnd.map(e => sortEl(e, byId[e.id])).join("") + "</div>");
+  html.push("</section>");
+
+  // ---------- 판 ----------
+  const f = scene.focus;
+  html.push('<section><h2>' + esc(f.enemyNameKo) + " — 아껴 둔 것을 쓰는 자리</h2>"
+    + '<p class="sub">' + (f.isBoss ? "마지막 판이다. " : "")
+    + "앞의 판들에서 아껴 둔 활자가 여기서 나간다. "
+    + "손에 든 것이 얼마나 선명한지가 이 게임에서 '얼마나 남았는가'를 읽는 방법이다.</p>");
+  f.turns.forEach(t => {
+    const melted = t.meltedNow && t.meltedNow.length;
+    html.push('<div class="turn' + (melted ? " melt" : "") + '">'
+      + '<div class="no">' + t.round + "</div>"
+      + '<div class="body">'
+      + '<div class="bars">'
+      + bar("나", t.playerHp, scene.playerMaxHp)
+      + bar("적", t.enemyHp, f.enemyMaxHp, "enemy")
+      + (t.playerBlock ? bar("방어", t.playerBlock, scene.playerMaxHp, "block") : "")
+      + '<span class="intent">다음 수 <b>'
+      + (t.intentType === "attack" ? "공격 " + t.intentAmount
+         : t.intentType === "block" ? "방어 " + t.intentAmount
+         : t.intentType === "heal" ? "회복 " + t.intentAmount : "강화 " + t.intentAmount)
+      + "</b></span>"
+      + "</div>"
+      + '<div class="row"><div class="lab">손</div><div class="hand">'
+      + t.hand.map(h => slugCard(h)).join("")
+      + "</div></div>"
+      + (t.played.length
+        ? '<div class="row"><div class="lab">찍음</div><div class="played">'
+          + t.played.map(p => impression(
+              { nameKo: p.nameKo, cost: p.cost, consumable: p.consumable }, p.sharpnessPct, {})
+            ).join("") + "</div></div>"
+        : '<div class="row"><div class="lab">찍음</div><div class="enemyline">없음</div></div>')
+      + '<div class="enemyline">' + esc(t.enemyAction) + "</div>"
+      + (melted
+        ? '<div class="melted-note">' + t.meltedNow.map(id => esc(byId[id].nameKo)).join(" · ")
+          + " — 다 찍었다. 녹인다.</div>"
+        : "")
+      + "</div></div>");
+  });
+  html.push("</section>");
+
+  // ---------- 활자 목록 ----------
+  html.push('<section><h2>활자</h2>'
+    + '<p class="sub">data/cards.json 그대로다. 닳는 활자는 이름이 주홍이고, '
+    + "아래 줄이 찍을 때마다 어떻게 뭉개지는지를 보여 준다.</p>"
+    + '<div class="grid">');
+  cards.forEach(c => {
+    let foot = "";
+    if (c.uses > 0) {
+      const steps = [];
+      for (let i = 0; i <= c.uses; i++) {
+        const sharp = Math.max(balance.minSharpnessPct, 100 - c.wearPerUsePct * i);
+        if (i === c.uses) { steps.push('<span class="step" style="color:var(--vermilionDeep)">녹임</span>'); break; }
+        steps.push('<span class="step" style="' + impressionStyle(sharp) + '">가</span>');
+      }
+      foot = '<div class="wear"><span class="k">회차에 ' + c.uses + "번</span>"
+           + "<span>" + tally(c.uses, c.uses) + "</span></div>"
+           + '<div class="steps">' + steps.join('<span class="k" style="color:var(--muted)">→</span>') + "</div>";
+    } else {
+      foot = '<div class="wear"><span class="k">닳지 않는다</span><span>&infin;</span></div>';
+    }
+    html.push(impression(
+      { nameKo: c.nameKo, textKo: c.textKo, cost: c.cost, consumable: c.uses > 0 },
+      100, { text: true, foot }));
+  });
+  html.push("</div></section>");
+
+  // ---------- 적 ----------
+  html.push('<section><h2>적</h2>'
+    + '<p class="sub">다음 한 수는 늘 보인다. 숨기지 않는 이유는 규칙 때문이다 — '
+    + "무엇이 오는지 알아야 '지금 쓸까'가 도박이 아니라 결정이 된다.</p>"
+    + '<div class="enemies">');
+  enemyFile.enemies.forEach(e => {
+    html.push('<div class="enemy sheet">'
+      + '<div style="font-weight:700">' + inkify(e.nameKo, P.impression.glyphJitterAlpha)
+      + ' <span style="color:var(--muted);font-weight:400">' + e.maxHp + "</span></div>"
+      + '<div class="pattern">' + e.pattern.map(p =>
+          '<span class="' + (p.type === "attack" ? "atk" : "") + '">'
+          + ({ attack: "공격", block: "방어", heal: "회복", strengthen: "강화" }[p.type] || p.type)
+          + " " + p.amount + "</span>").join("")
+      + "</div></div>");
+  });
+  html.push("</div></section>");
+
+  // ---------- 읽는 법 ----------
+  html.push('<section><h2>읽는 법</h2><div class="legend">'
+    + '<div class="sheet"><h3>선명도가 남은 횟수다</h3><p>'
+    + "카드에 '3회 남음' 이라고 적지 않는다. 많이 쓴 활자는 모서리가 뭉개져 흐리게 찍힌다. "
+    + "선명도 바닥은 " + balance.minSharpnessPct + "% 다 — 그 아래로 내려가면 '남았는데 아무 일도 "
+    + "안 일어나는 카드'가 되고, 그건 규칙이 아니라 고장으로 읽힌다.</p></div>"
+    + '<div class="sheet"><h3>회차 전체에서 닳는다</h3><p>'
+    + "판이 끝나도 상자는 차지 않는다. 전투 " + (run.battles.length + 1) + "개가 한 상자를 나눠 쓴다. "
+    + "그래서 '지금 쓸까 아껴 둘까'가 매 턴의 결정이 된다.</p></div>"
+    + '<div class="sheet"><h3>녹인 활자는 돌아오지 않는다</h3><p>'
+    + "다 쓴 활자는 덱·손·버림 어디에 있든 전부 사라진다. 보상으로도 돌아오지 않는다. "
+    + "돌아오면 '다 썼다'가 무를 수 있는 일이 되고, 무를 수 있으면 아끼고 말고가 없다.</p></div>"
+    + '<div class="sheet"><h3>붉은 것은 하나뿐이다</h3><p>'
+    + "이 인쇄소에 주홍은 주홍 잉크 한 종류와 '녹임' 표식에만 쓴다. "
+    + "검정과 납회색 둘이 화면의 전부고, 붉은 것이 늘어나면 그 순간 아무 데도 눈이 가지 않는다.</p></div>"
+    + "</div></section>");
+
+  // ---------- 소리 ----------
+  const SFX_KO = {
+    press: "압판이 내려앉는다",
+    sortPlace: "활자를 조판대에 놓는다",
+    sortSpent: "다 쓴 활자를 용해 냄비에"
+  };
+  html.push('<section><h2>소리</h2>'
+    + '<p class="sub">경로는 <code>palette.json</code> 의 <code>sfx</code> 에서 온다 — '
+    + "파일명을 코드에 박지 않는다. 전부 CC0 다.</p>"
+    + '<div class="sfx">'
+    + Object.keys(P.sfx).filter(k => k[0] !== "_").map(k =>
+        '<button data-sfx="' + esc(P.sfx[k]) + '"><b>' + esc(SFX_KO[k] || k)
+        + "</b><small>" + esc(P.sfx[k]) + "</small></button>").join("")
+    + "</div></section>");
+
+  html.push('<hr class="rule-thin"><p class="foot-note">'
+    + "이 화면의 숫자는 하나도 손으로 쓰지 않았다. "
+    + "<code>presentation/scene.json</code> 은 <code>tests/SceneExportTests.cs</code> 가 "
+    + "실제 시뮬레이션에서 굽고, 카드·적·회차·한계값은 <code>data/</code> 의 JSON 을 그대로 읽는다. "
+    + "색·크기·질감도 <code>presentation/palette.json</code> 에서 온다. "
+    + "에셋은 전부 CC0 · 퍼블릭 도메인 · OFL 이고 출처는 <code>CREDITS.md</code> 에 있다.</p>");
+
+  const root = document.getElementById("app");
+  root.innerHTML = html.join("");
+  root.querySelectorAll(".sfx button").forEach(b => {
+    b.addEventListener("click", () => {
+      const a = new Audio(b.dataset.sfx);
+      a.volume = 0.6;
+      a.play().catch(() => {});
+    });
+  });
+}).catch(err => {
+  document.getElementById("app").innerHTML =
+    '<pre style="color:#C4381C;padding:40px 0;white-space:pre-wrap">'
+    + esc(err.message) + "\n\nfile:// 로 열면 브라우저가 fetch 를 막는다. 이렇게 연다:\n\n"
+    + "  cd games/deck-attrition\n  python -m http.server 8000\n  http://localhost:8000/presentation/\n\n"
+    + "scene.json 이 없으면 먼저 테스트를 한 번 돌린다:\n"
+    + "  C:/Users/PSI/.dotnet/dotnet.exe test games/deck-attrition/tests/deck-attrition.Tests.csproj</pre>";
+});
+</script>
+</body>
+</html>

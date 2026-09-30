@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기억의 봉합사</title>
+<style>
+:root{
+  --bg0:#140f1e; --bg1:#241a33; --plum:#3a2a4d; --rose:#e4b2cb; --rose2:#f7d3e3; --gold:#f2c58a; --cold:#8fb7ff;
+  --red:#ff4d6a; --paper:#f0e7f2; --ink:#2a1f36; --dim:#a898bd;
+  --serif:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo",serif;
+  --sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#07050b;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;overflow:hidden;font-family:var(--sans);color:var(--paper);
+  background:
+   radial-gradient(ellipse 46% 42% at 46% 40%,rgba(228,178,203,.28),transparent 70%),
+   radial-gradient(ellipse 80% 70% at 50% 110%,#2c1e3c,transparent 70%),
+   linear-gradient(180deg,#1a1326,#110c19)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+/* velvet bench texture */
+.bench{position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/><feColorMatrix values='0 0 0 0 .9 0 0 0 0 .7 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 72% 70% at 48% 45%,transparent 45%,rgba(4,2,8,.85) 100%)}
+.dust{position:absolute;inset:0;pointer-events:none}
+.dust i{position:absolute;width:3px;height:3px;border-radius:50%;background:#ffd9ec;box-shadow:0 0 8px #ffb4d6;opacity:.0;animation:mote 9s linear infinite}
+@keyframes mote{0%{opacity:0;transform:translate(0,0)}20%{opacity:.8}100%{opacity:0;transform:translate(40px,-160px)}}
+
+.head{position:absolute;left:48px;top:36px}
+.head .k{font-family:var(--serif);font-size:40px;letter-spacing:6px;color:var(--rose2);text-shadow:0 0 24px rgba(228,178,203,.45)}
+.head .e{font-size:11px;letter-spacing:7px;color:var(--dim);margin-top:4px}
+.head .m{margin-top:16px;font-size:15px;color:#d8c7e6;display:flex;gap:10px;align-items:center}
+.head .m b{font-family:var(--serif);font-weight:600;font-size:19px;color:#fff}
+.chip{font-size:11px;letter-spacing:2px;padding:3px 8px;border:1px solid #6b5288;border-radius:20px;color:#cdb6e6}
+
+/* tile tray */
+.tray{position:absolute;left:40px;top:220px;width:270px}
+.tray h5{font-size:11px;letter-spacing:5px;color:var(--dim);font-weight:500;margin:16px 0 8px}
+.tile{position:relative;display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:8px;border-radius:6px;cursor:pointer;
+  background:linear-gradient(160deg,#f3e6ee,#d7c1d6 60%,#bda6c3);color:var(--ink);font-family:var(--serif);font-size:17px;font-weight:600;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 -2px 0 rgba(0,0,0,.15) inset,0 8px 18px rgba(0,0,0,.45);transition:transform .15s,box-shadow .15s,opacity .2s}
+.tile:hover{transform:translateY(-3px) rotate(-.6deg);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 14px 26px rgba(0,0,0,.55),0 0 0 2px rgba(247,211,227,.6)}
+.tile:active{transform:translateY(1px)}
+.tile .ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#2a1f36;color:#f7d3e3;font-size:12px;font-family:var(--sans)}
+.tile small{margin-left:auto;font-family:var(--sans);font-size:10px;letter-spacing:2px;color:#6d5a80;font-weight:500}
+.tile.used{opacity:.35;filter:grayscale(.6)}
+.tile.lift{transform:translate(18px,-10px) rotate(-4deg);box-shadow:0 30px 40px rgba(0,0,0,.6),0 0 0 2px var(--gold),0 0 30px rgba(242,197,138,.5);z-index:3}
+.tile.thread{background:linear-gradient(160deg,#3a2a4d,#2a1f36);color:var(--rose2);border:1px dashed #7a5c96}
+.tile.thread .ic{background:var(--rose);color:#2a1f36}
+
+/* request card */
+.req{position:absolute;right:40px;top:40px;width:340px;padding:20px 22px 22px;background:linear-gradient(180deg,#efe3ea,#d9c7d8);color:var(--ink);border-radius:3px;transform:rotate(1.2deg);
+  box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.req:before{content:"";position:absolute;left:50%;top:-10px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd1e2,#b0507a);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+.req .l{font-size:11px;letter-spacing:4px;color:#7a5f8e}
+.req .q{font-family:var(--serif);font-size:21px;line-height:1.45;margin-top:8px;font-weight:600}
+.req .who{font-size:12px;color:#6d5a80;margin-top:10px}
+.seal{position:absolute;right:52px;top:268px;width:320px;height:150px}
+.seal .wax{position:absolute;left:0;top:0;width:128px;height:128px;border-radius:50%;
+  background:radial-gradient(circle at 36% 30%,#ff9fb8,#b3244d 46%,#6d0f2c 90%);box-shadow:0 10px 20px rgba(0,0,0,.6),inset 0 -6px 12px rgba(0,0,0,.4),inset 0 4px 8px rgba(255,210,220,.4);
+  display:grid;place-items:center}
+.seal .wax:after{content:"";position:absolute;inset:14px;border-radius:50%;border:2px solid rgba(255,200,215,.35)}
+.seal .wax svg{width:58px;height:58px}
+.seal .txt{position:absolute;left:142px;top:16px;width:180px}
+.seal .txt b{display:block;font-size:11px;letter-spacing:4px;color:#ff9fb8;font-weight:600}
+.seal .txt span{display:block;font-family:var(--serif);font-size:19px;line-height:1.4;margin-top:6px;color:#fff}
+.after{position:absolute;right:40px;top:440px;width:340px;padding:16px 18px;border:1px solid #4a3862;border-radius:6px;background:rgba(26,18,38,.75)}
+.after h5{font-size:11px;letter-spacing:4px;color:var(--dim);font-weight:500;margin-bottom:10px}
+.after .row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-top:1px dashed #3a2a4d}
+.after .row em{font-style:normal;font-family:var(--serif);color:var(--rose2)}
+.meter{height:8px;border-radius:4px;background:#2a1f36;margin-top:8px;overflow:hidden}
+.meter i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#f2c58a,#e4b2cb);transition:width .5s}
+
+/* suture bar */
+.suture{position:absolute;left:350px;right:420px;bottom:44px;height:210px;border-radius:10px;
+  background:linear-gradient(180deg,rgba(40,28,56,.92),rgba(22,15,32,.96));border:1px solid #4a3862;box-shadow:0 -10px 50px rgba(0,0,0,.55)}
+.suture .cap{position:absolute;left:24px;top:16px;font-size:11px;letter-spacing:5px;color:var(--dim)}
+.suture .st{position:absolute;right:24px;top:12px;font-size:15px;font-weight:700;letter-spacing:1px}
+.slots{position:absolute;left:24px;right:24px;top:52px;height:90px}
+.slot{position:absolute;top:0;width:210px;height:84px;border-radius:8px;border:1.5px dashed #6b5288;display:flex;flex-direction:column;justify-content:center;padding:0 16px;background:rgba(255,255,255,.02)}
+.slot .t{font-size:10px;letter-spacing:4px;color:var(--dim)}
+.slot .v{font-family:var(--serif);font-size:22px;font-weight:700;margin-top:4px;color:#fff}
+.slot.fill{border-style:solid;border-color:#b68fcf;background:linear-gradient(160deg,rgba(243,230,238,.95),rgba(215,193,214,.95));}
+.slot.fill .v{color:var(--ink)}
+.slot.fill .t{color:#6d5a80}
+.slot.pulse{animation:pul 1.2s ease-in-out infinite}
+@keyframes pul{50%{box-shadow:0 0 0 3px rgba(242,197,138,.6),0 0 30px rgba(242,197,138,.4)}}
+.slots svg{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.btns{position:absolute;left:24px;right:24px;bottom:16px;display:flex;gap:10px;align-items:center}
+.btn{font-family:var(--sans);font-size:14px;padding:10px 18px;border-radius:4px;border:1px solid #6b5288;background:#2a1f36;color:#e8d8f3;cursor:pointer;transition:all .15s}
+.btn:hover{background:#3a2a4d;transform:translateY(-1px)}
+.btn.main{margin-left:auto;background:linear-gradient(180deg,#f2c58a,#d99a5e);color:#2a1a10;border-color:#ffd9a8;font-weight:700;letter-spacing:1px;box-shadow:0 6px 20px rgba(242,197,138,.35)}
+.btn.main:hover{filter:brightness(1.08)}
+.kbd{font-family:ui-monospace,monospace;font-size:10px;border:1px solid currentColor;border-radius:3px;padding:0 4px;margin-left:6px;opacity:.7}
+
+/* photo */
+.photo{position:absolute;left:360px;top:140px;width:760px;height:520px}
+.photo svg{width:100%;height:100%;overflow:visible}
+.status-toast{position:absolute;left:50%;top:96px;transform:translateX(-50%);font-family:var(--serif);font-size:17px;color:#fff;padding:8px 18px;border-radius:30px;background:rgba(20,14,30,.8);border:1px solid #6b5288;white-space:nowrap;transition:opacity .3s}
+
+/* B */
+.reject{position:absolute;left:0;right:0;top:44px;text-align:center;pointer-events:none}
+.reject .k{font-family:var(--serif);font-size:58px;letter-spacing:8px;color:#ffd6de;text-shadow:0 0 30px rgba(255,77,106,.8),0 0 2px #fff}
+.reject .s{font-family:var(--serif);font-size:18px;color:#ffb0bf;margin-top:10px;letter-spacing:1px}
+.redflash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 55% at 48% 45%,rgba(255,40,80,.0),rgba(255,40,80,.28));animation:rf 1.6s ease-in-out infinite}
+@keyframes rf{50%{opacity:.45}}
+.shake{animation:shk .12s infinite}
+@keyframes shk{0%{transform:translate(0,0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}}
+.tabs{position:absolute;left:14px;bottom:14px;display:flex;gap:6px;z-index:40}
+.tabs button{font-family:var(--sans);font-size:11px;background:rgba(20,14,30,.8);color:#a898bd;border:1px solid #4a3862;padding:4px 10px;border-radius:12px;cursor:pointer}
+.tabs button.on{color:#fff;border-color:var(--rose)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="paperTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2" result="n"/><feColorMatrix in="n" values="0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .35 0 0 0 .18 0" result="c"/><feComposite in="c" in2="SourceGraphic" operator="in" result="t"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="t"/></feMerge></filter>
+    <filter id="dream"><feGaussianBlur stdDeviation="1.1"/></filter>
+    <filter id="bloom"><feGaussianBlur stdDeviation="10"/></filter>
+    <radialGradient id="candle" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff2c8" stop-opacity=".95"/><stop offset=".4" stop-color="#ffb866" stop-opacity=".45"/><stop offset="1" stop-color="#ff8a4a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="roomWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b4468"/><stop offset="1" stop-color="#8a6478"/></linearGradient>
+    <linearGradient id="roomFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5460"/><stop offset="1" stop-color="#4a3246"/></linearGradient>
+    <clipPath id="torn"><path d="M18 14 L120 22 L180 10 L260 26 L330 12 L420 20 L500 8 L590 24 L680 12 L742 20 L748 110 L738 200 L752 300 L740 400 L748 504 L660 494 L560 510 L470 498 L380 512 L290 500 L190 510 L100 498 L14 506 L22 420 L10 320 L24 220 L12 120Z"/></clipPath>
+    <!-- memory scene used in both screens -->
+    <g id="memscene">
+      <rect x="0" y="0" width="760" height="520" fill="url(#roomWall)"/>
+      <rect x="0" y="340" width="760" height="180" fill="url(#roomFloor)"/>
+      <path d="M0 340 L760 340" stroke="#a07a86" stroke-width="3"/>
+      <!-- wallpaper stripes -->
+      <g stroke="#fff" stroke-opacity=".05" stroke-width="14"><path d="M40 0v340M110 0v340M180 0v340M250 0v340M320 0v340M390 0v340M460 0v340M530 0v340M600 0v340M670 0v340M740 0v340"/></g>
+      <!-- the front door (right) with key hook -->
+      <g transform="translate(560,110)">
+        <rect x="0" y="0" width="150" height="232" fill="#3a2432"/>
+        <rect x="10" y="10" width="130" height="222" fill="#5a3444"/>
+        <rect x="24" y="26" width="102" height="80" fill="#4a2a3a"/><rect x="24" y="122" width="102" height="96" fill="#4a2a3a"/>
+        <circle cx="122" cy="130" r="6" fill="#f2c58a"/>
+        <rect x="108" y="140" width="14" height="10" rx="2" fill="#2a1f28"/>
+      </g>
+      <!-- empty key hook on wall -->
+      <g transform="translate(508,150)"><rect x="-14" y="-8" width="28" height="10" rx="2" fill="#c9a07a"/><path d="M-6 2 v10 q0 6 6 6" stroke="#c9a07a" stroke-width="3" fill="none"/></g>
+      <!-- window w/ evening -->
+      <g transform="translate(60,60)"><rect width="170" height="150" fill="#f3b890"/><rect width="170" height="150" fill="url(#candle)" opacity=".4"/><path d="M85 0v150M0 75h170" stroke="#5a3444" stroke-width="8"/><rect x="-8" y="-8" width="186" height="166" fill="none" stroke="#5a3444" stroke-width="10"/></g>
+      <!-- garland -->
+      <path d="M20 30 Q200 90 380 34 Q540 80 740 26" stroke="#e8c0d0" stroke-width="2" fill="none"/>
+      <g><polygon points="70,48 84,48 77,66" fill="#f2c58a"/><polygon points="140,64 154,64 147,82" fill="#e48aa8"/><polygon points="210,70 224,70 217,88" fill="#8fb7ff"/><polygon points="290,58 304,58 297,76" fill="#f2c58a"/><polygon points="440,50 454,50 447,68" fill="#e48aa8"/><polygon points="520,62 534,62 527,80" fill="#8fb7ff"/><polygon points="620,52 634,52 627,70" fill="#f2c58a"/></g>
+      <!-- table with cake -->
+      <ellipse cx="300" cy="380" rx="170" ry="34" fill="#2a1a24" opacity=".5"/>
+      <rect x="150" y="300" width="300" height="20" rx="4" fill="#d9b8a0"/>
+      <rect x="170" y="320" width="14" height="80" fill="#8a6070"/><rect x="416" y="320" width="14" height="80" fill="#8a6070"/>
+      <g transform="translate(300,268)">
+        <ellipse cx="0" cy="30" rx="70" ry="12" fill="#f7eae8"/>
+        <rect x="-60" y="0" width="120" height="30" fill="#fbe2e6"/><ellipse cx="0" cy="0" rx="60" ry="11" fill="#fff4f4"/>
+        <path d="M-60 12 q10 8 20 0 q10 8 20 0 q10 8 20 0 q10 8 20 0 q10 8 20 0 q10 8 20 0" stroke="#e48aa8" stroke-width="4" fill="none"/>
+        <g stroke="#8fb7ff" stroke-width="3"><path d="M-44 -2v-18M-32 -6v-18M-20 -8v-18M-8 -9v-18M4 -9v-18M16 -8v-18M28 -6v-18M40 -2v-18"/></g>
+        <circle cx="0" cy="-30" r="70" fill="url(#candle)"/>
+      </g>
+      <!-- younger me (12) at table, left -->
+      <g transform="translate(200,210)">
+        <path d="M-30 150 C-34 90 -18 60 10 58 C40 60 52 90 50 150Z" fill="#7aa0c8"/>
+        <circle cx="10" cy="34" r="28" fill="#e8b89c"/>
+        <path d="M-18 30 q28 -40 56 0 q-6 -28 -28 -30 q-22 2 -28 30z" fill="#2a1a20"/>
+        <path d="M-2 36 q3 2 6 0 M16 36 q3 2 6 0" stroke="#4a2a24" stroke-width="2" fill="none"/>
+        <!-- party hat -->
+        <polygon points="-4,8 24,8 10,-26" fill="#f2c58a"/><circle cx="10" cy="-26" r="4" fill="#e48aa8"/>
+      </g>
+      <!-- older brother standing by the door — slot-dependent figure -->
+      <g id="brother" transform="translate(520,160)">
+        <path d="M-30 200 C-34 110 -14 72 18 70 C52 72 66 110 64 200Z" fill="#48405a"/>
+        <circle cx="18" cy="44" r="30" fill="#e0ae92"/>
+        <path d="M-12 40 q30 -46 60 0 q-6 -32 -30 -34 q-24 2 -30 34z" fill="#1e141a"/>
+        <path d="M6 46 q3 2 6 0 M24 46 q3 2 6 0" stroke="#4a2a24" stroke-width="2" fill="none"/>
+        <!-- arm reaching to lock -->
+        <path id="brArm" d="M56 110 C80 120 100 124 116 122" stroke="#48405a" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <circle cx="120" cy="122" r="9" fill="#e0ae92"/>
+        <!-- the key, glinting -->
+        <g transform="translate(118,112)"><circle r="6" fill="none" stroke="#ffe2a0" stroke-width="3"/><path d="M5 2 h14 v6 M14 2 v5" stroke="#ffe2a0" stroke-width="3" fill="none"/><circle r="16" fill="#ffe2a0" opacity=".3"/></g>
+      </g>
+      <!-- glow wash -->
+      <rect width="760" height="520" fill="#ffc6de" opacity=".08"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ============== SCREEN A ============== -->
+<section class="screen" id="sa">
+  <div class="bench"></div><div class="vig"></div>
+  <div class="dust" id="dustA"></div>
+
+  <div class="head">
+    <div class="k">기억의 봉합사</div><div class="e">MEMORY SUTURE</div>
+    <div class="m"><b>기억 07 · 열두 번째 생일</b><span class="chip">꿈 깊이 3</span></div>
+  </div>
+
+  <div class="tray">
+    <h5>인물 조각</h5>
+    <div class="tile used" data-g="p" data-v="나"><span class="ic">人</span>나<small>12세</small></div>
+    <div class="tile used" data-g="p" data-v="형"><span class="ic">人</span>형<small>19세</small></div>
+    <h5>행동 조각</h5>
+    <div class="tile" data-g="a" data-v="선물을 건넨다"><span class="ic">手</span>선물을 건넨다<small>원본</small></div>
+    <div class="tile lift" data-g="a" data-v="문을 잠근다"><span class="ic">手</span>문을 잠근다<small>교체 중</small></div>
+    <h5>감정 실</h5>
+    <div class="tile thread" data-g="e" data-v="온기"><span class="ic">~</span>온기<small>원본</small></div>
+    <div class="tile thread" data-g="e" data-v="두려움"><span class="ic">~</span>두려움</div>
+  </div>
+
+  <div class="photo">
+    <svg viewBox="0 0 760 520">
+      <g transform="rotate(-1.6 380 260)">
+        <!-- shadow -->
+        <path d="M30 30 L760 34 L766 530 L26 528Z" fill="#000" opacity=".5" filter="url(#bloom)"/>
+        <!-- white photo border -->
+        <path d="M18 14 L120 22 L180 10 L260 26 L330 12 L420 20 L500 8 L590 24 L680 12 L742 20 L748 110 L738 200 L752 300 L740 400 L748 504 L660 494 L560 510 L470 498 L380 512 L290 500 L190 510 L100 498 L14 506 L22 420 L10 320 L24 220 L12 120Z" fill="#f4ecee"/>
+        <g clip-path="url(#torn)" transform="translate(8,8) scale(.979)">
+          <use href="#memscene" filter="url(#dream)"/>
+        </g>
+        <!-- slot highlight: the brother's action is being replaced -->
+        <g id="swapMark">
+          <rect x="492" y="150" width="200" height="230" rx="10" fill="none" stroke="#f2c58a" stroke-width="2.5" stroke-dasharray="8 6"><animate attributeName="stroke-dashoffset" from="0" to="-28" dur="1.2s" repeatCount="indefinite"/></rect>
+          <rect x="560" y="126" width="132" height="24" rx="12" fill="#f2c58a"/>
+          <text x="626" y="143" text-anchor="middle" font-size="13" font-weight="700" fill="#2a1a10" font-family="Noto Sans KR,sans-serif">행동 교체 미리보기</text>
+        </g>
+        <!-- suture stitches along the top tear -->
+        <g stroke="#ffd4e6" stroke-width="2.4" stroke-linecap="round">
+          <path d="M140 6 l14 28 M200 4 l10 30 M300 4 l12 28 M400 6 l12 28 M520 2 l10 30 M640 4 l12 28"/>
+        </g>
+      </g>
+      <!-- glowing suture threads anchoring photo to pins -->
+      <g fill="none" stroke-linecap="round">
+        <path id="thrA1" d="M-20 -40 C60 20 90 60 150 20" stroke="#f2c58a" stroke-width="7" opacity=".25"/>
+        <path d="M-20 -40 C60 20 90 60 150 20" stroke="#ffe1b8" stroke-width="2"/>
+        <path d="M790 -30 C720 10 700 40 650 16" stroke="#f2c58a" stroke-width="7" opacity=".25"/>
+        <path d="M790 -30 C720 10 700 40 650 16" stroke="#ffe1b8" stroke-width="2"/>
+        <path d="M-40 560 C40 520 80 500 120 508" stroke="#f2c58a" stroke-width="7" opacity=".25"/>
+        <path d="M-40 560 C40 520 80 500 120 508" stroke="#ffe1b8" stroke-width="2"/>
+        <path d="M800 560 C740 530 700 510 660 500" stroke="#f2c58a" stroke-width="7" opacity=".25"/>
+        <path d="M800 560 C740 530 700 510 660 500" stroke="#ffe1b8" stroke-width="2"/>
+      </g>
+      <g fill="#f7d3e3"><circle cx="-20" cy="-40" r="7"/><circle cx="790" cy="-30" r="7"/><circle cx="-40" cy="560" r="7"/><circle cx="800" cy="560" r="7"/></g>
+      <!-- link from key (fixed fact) to the brother's hand: logic established -->
+      <path id="logicThread" d="M634 240 C700 180 760 170 830 176" stroke="#ffe1b8" stroke-width="2.4" fill="none" stroke-dasharray="6 5"><animate attributeName="stroke-dashoffset" from="0" to="-22" dur="1s" repeatCount="indefinite"/></path>
+    </svg>
+  </div>
+  <div class="status-toast" id="toastA">논리 연결 성립 · 열쇠를 쥔 형이 문을 잠근다</div>
+
+  <div class="req">
+    <div class="l">의뢰 · 기억 07</div>
+    <div class="q">형의 보호를<br>감시로 의심하게 만들기</div>
+    <div class="who">의뢰인 · 한서진 (31) — "형은 늘 나를 지켜봤어요. 왜였는지 알고 싶어요."</div>
+  </div>
+
+  <div class="seal">
+    <div class="wax"><svg viewBox="0 0 60 60"><circle cx="20" cy="30" r="11" fill="none" stroke="#ffd1dc" stroke-width="4"/><path d="M31 30 h22 v8 M45 30 v7" stroke="#ffd1dc" stroke-width="4" fill="none"/></svg></div>
+    <div class="txt"><b>확립된 사실 · 변경 불가</b><span>집 열쇠는<br>형만 가지고 있다.</span></div>
+  </div>
+
+  <div class="after">
+    <h5>봉합 미리보기</h5>
+    <div class="row"><span>논리 연결</span><em id="logicV">성립</em></div>
+    <div class="row"><span>모순</span><em id="contraV">0</em></div>
+    <div class="row"><span>남는 감정</span><em id="emoV">온기</em></div>
+    <div style="font-size:12px;color:#a898bd;margin-top:10px">실 장력</div>
+    <div class="meter"><i id="tension" style="width:62%"></i></div>
+    <div id="afterTxt" style="font-family:var(--serif);font-size:14px;color:#d8c7e6;margin-top:12px;line-height:1.55">생일의 온기를 남기면, 의뢰인은 형을 의심하면서도 대화할 여지를 잃지 않는다.</div>
+  </div>
+
+  <div class="suture">
+    <div class="cap">봉합선</div>
+    <div class="st" id="stA" style="color:#f2c58a">● 논리 연결 성립</div>
+    <div class="slots">
+      <svg viewBox="0 0 782 90" preserveAspectRatio="none">
+        <path d="M210 42 C236 20 260 64 286 42" stroke="#f2c58a" stroke-width="6" opacity=".25" fill="none"/>
+        <path id="t1" d="M210 42 C236 20 260 64 286 42" stroke="#ffe1b8" stroke-width="2" fill="none"/>
+        <path d="M496 42 C522 20 546 64 572 42" stroke="#f2c58a" stroke-width="6" opacity=".25" fill="none"/>
+        <path id="t2" d="M496 42 C522 20 546 64 572 42" stroke="#ffe1b8" stroke-width="2" fill="none"/>
+      </svg>
+      <div class="slot fill" style="left:0"><span class="t">인물</span><span class="v" id="sP">형</span></div>
+      <div class="slot fill pulse" style="left:286px"><span class="t">행동 · 교체 중</span><span class="v" id="sA">문을 잠근다</span></div>
+      <div class="slot fill" style="left:572px" id="slotE"><span class="t">감정 실</span><span class="v" id="sE">온기</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn" data-b="p">인물 조각 교체<span class="kbd">Q</span></button>
+      <button class="btn" data-b="a">행동 조각 교체<span class="kbd">W</span></button>
+      <button class="btn" data-b="e">감정 실 바꾸기<span class="kbd">E</span></button>
+      <button class="btn main" data-b="s">이 기억을 봉합<span class="kbd">ENTER</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SCREEN B : rejection ============== -->
+<section class="screen" id="sb">
+  <div class="bench"></div><div class="vig"></div>
+  <div class="redflash"></div>
+
+  <div class="head">
+    <div class="k">기억의 봉합사</div><div class="e">MEMORY SUTURE</div>
+    <div class="m"><b>기억 07 · 열두 번째 생일</b><span class="chip" style="border-color:#ff4d6a;color:#ffb0bf">모순 1</span></div>
+  </div>
+
+  <div class="reject"><div class="k">꿈의 거부 반응</div><div class="s">열쇠를 쥔 사람과 문을 잠근 행동이 연결되지 않는다.</div></div>
+
+  <div class="photo" style="top:170px;left:330px;width:820px;height:540px">
+    <svg viewBox="0 0 760 520" style="overflow:visible">
+      <defs>
+        <clipPath id="halfL"><path d="M0 0 L402 0 L372 90 L416 170 L360 260 L408 350 L366 440 L396 520 L0 520Z"/></clipPath>
+        <clipPath id="halfR"><path d="M402 0 L760 0 L760 520 L396 520 L366 440 L408 350 L360 260 L416 170 L372 90Z"/></clipPath>
+      </defs>
+      <!-- left half, drifting away -->
+      <g transform="translate(-34,10) rotate(-5 200 260)">
+        <g clip-path="url(#halfL)">
+          <path d="M18 14 L120 22 L180 10 L260 26 L330 12 L420 20 L500 8 L590 24 L680 12 L742 20 L748 110 L738 200 L752 300 L740 400 L748 504 L660 494 L560 510 L470 498 L380 512 L290 500 L190 510 L100 498 L14 506 L22 420 L10 320 L24 220 L12 120Z" fill="#f4ecee"/>
+          <g clip-path="url(#torn)" transform="translate(8,8) scale(.979)"><use href="#memscene"/></g>
+          <!-- "나" now placed at the door: the wrong person -->
+          
+        </g>
+      </g>
+      <!-- right half, desaturated, burning at the edge -->
+      <g transform="translate(40,-6) rotate(4 560 260)">
+        <g clip-path="url(#halfR)">
+          <path d="M18 14 L120 22 L180 10 L260 26 L330 12 L420 20 L500 8 L590 24 L680 12 L742 20 L748 110 L738 200 L752 300 L740 400 L748 504 L660 494 L560 510 L470 498 L380 512 L290 500 L190 510 L100 498 L14 506 L22 420 L10 320 L24 220 L12 120Z" fill="#e6dce0"/>
+          <g clip-path="url(#torn)" transform="translate(8,8) scale(.979)" style="filter:grayscale(.85) brightness(.75)"><use href="#memscene"/></g>
+          <!-- the brother figure is erased: a hole shaped like him -->
+          <path d="M490 370 C486 280 506 242 538 240 C572 242 586 280 584 370Z" fill="#140f1e"/>
+          <circle cx="538" cy="214" r="30" fill="#140f1e"/>
+          <path d="M490 370 C486 280 506 242 538 240 C572 242 586 280 584 370Z M508 214 a30 30 0 1 0 60 0 a30 30 0 1 0 -60 0" fill="none" stroke="#ff4d6a" stroke-width="2" stroke-dasharray="4 4"/>
+        </g>
+        <!-- burn edge -->
+        <path d="M402 0 L372 90 L416 170 L360 260 L408 350 L366 440 L396 520" stroke="#ff7a4a" stroke-width="10" fill="none" opacity=".35" filter="url(#bloom)"/>
+        <path d="M402 0 L372 90 L416 170 L360 260 L408 350 L366 440 L396 520" stroke="#ffd0a0" stroke-width="2" fill="none"/>
+      </g>
+      <!-- the snapped red contradiction thread: key ↔ '나' -->
+      <g fill="none" stroke-linecap="round">
+        <path d="M150 250 C220 200 280 210 330 240" stroke="#ff4d6a" stroke-width="10" opacity=".3"/>
+        <path d="M150 250 C220 200 280 210 330 240" stroke="#ff8fa3" stroke-width="3"/>
+        <path d="M330 240 q10 8 4 22 q-8 10 2 22" stroke="#ff8fa3" stroke-width="3"/>
+        <path d="M470 196 C520 170 580 190 620 150" stroke="#ff4d6a" stroke-width="10" opacity=".3"/>
+        <path d="M470 196 C520 170 580 190 620 150" stroke="#ff8fa3" stroke-width="3"/>
+        <path d="M470 196 q-12 6 -8 20 q6 12 -6 20" stroke="#ff8fa3" stroke-width="3"/>
+      </g>
+      <!-- snap sparks -->
+      <g fill="#ffd0dc"><circle cx="352" cy="232" r="3"/><circle cx="364" cy="214" r="2"/><circle cx="440" cy="206" r="2.5"/><circle cx="452" cy="226" r="3"/><circle cx="400" cy="190" r="2"/><circle cx="410" cy="250" r="2"/></g>
+      <circle cx="400" cy="220" r="60" fill="#ff4d6a" opacity=".22" filter="url(#bloom)"/>
+      <!-- labels on the halves -->
+      <g font-family="Noto Sans KR,sans-serif" font-size="14" font-weight="700">
+        <rect x="80" y="440" width="170" height="30" rx="15" fill="#2a1f36" stroke="#ff4d6a"/><text x="165" y="460" text-anchor="middle" fill="#ffd6de">인물: 나 · 열쇠 없음</text>
+        <rect x="520" y="440" width="170" height="30" rx="15" fill="#2a1f36" stroke="#ff4d6a"/><text x="605" y="460" text-anchor="middle" fill="#ffd6de">행동: 문을 잠근다</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="seal" style="right:auto;left:40px;top:300px;width:280px">
+    <div class="wax" style="animation:none;box-shadow:0 0 0 4px rgba(255,77,106,.5),0 0 50px rgba(255,77,106,.7),inset 0 -6px 12px rgba(0,0,0,.4)"><svg viewBox="0 0 60 60"><circle cx="20" cy="30" r="11" fill="none" stroke="#ffd1dc" stroke-width="4"/><path d="M31 30 h22 v8 M45 30 v7" stroke="#ffd1dc" stroke-width="4" fill="none"/></svg></div>
+    <div class="txt" style="width:140px"><b>충돌한 사실</b><span style="font-size:17px">집 열쇠는<br>형만 가지고 있다.</span></div>
+  </div>
+  <div class="tray" style="top:480px;width:270px">
+    <h5 style="color:#ff9fb8">거부된 봉합</h5>
+    <div class="tile" style="background:linear-gradient(160deg,#f3d6de,#c98a9c)"><span class="ic">人</span>나<small style="color:#8a2a44">모순</small></div>
+    <div class="tile" style="background:linear-gradient(160deg,#f3d6de,#c98a9c)"><span class="ic">手</span>문을 잠근다<small style="color:#8a2a44">모순</small></div>
+    <div class="tile thread"><span class="ic">~</span>온기</div>
+  </div>
+
+  <div class="after" style="top:300px;border-color:#7a2a44;background:rgba(40,12,24,.8)">
+    <h5 style="color:#ff9fb8">결과</h5>
+    <div class="row"><span>모순</span><em style="color:#ff8fa3;font-size:22px">1</em></div>
+    <div class="row"><span>감정</span><em>온기</em></div>
+    <div class="row"><span>기억 안정도</span><em style="color:#ff8fa3">붕괴</em></div>
+    <div style="font-family:var(--serif);font-size:15px;color:#f3d6de;margin-top:14px;line-height:1.6">꿈은 모순을 찾아 새 기억을 밀어냈다.<br><span style="color:#a898bd;font-size:13px">논리의 연결과 감정의 대가를 따로 살펴보세요.</span></div>
+  </div>
+
+  <div class="suture" style="border-color:#7a2a44;left:400px;right:420px">
+    <div class="cap" style="color:#ff9fb8">봉합선 · 파열</div>
+    <div class="st" style="color:#ff6a84">✕ 모순 1</div>
+    <div class="slots">
+      <svg viewBox="0 0 760 90" preserveAspectRatio="none">
+        <path d="M205 42 C225 20 238 30 246 44" stroke="#ff8fa3" stroke-width="2.4" fill="none"/>
+        <path d="M252 30 C262 50 270 60 280 42" stroke="#ff8fa3" stroke-width="2.4" fill="none"/>
+        <path d="M485 42 C515 20 535 64 560 42" stroke="#ffe1b8" stroke-width="2" fill="none"/>
+      </svg>
+      <div class="slot fill shake" style="left:0;width:205px;border-color:#ff4d6a;background:linear-gradient(160deg,#f3d6de,#d7a0b0)"><span class="t">인물</span><span class="v">나</span></div>
+      <div class="slot fill shake" style="left:280px;width:205px;border-color:#ff4d6a;background:linear-gradient(160deg,#f3d6de,#d7a0b0)"><span class="t">행동</span><span class="v">문을 잠근다</span></div>
+      <div class="slot fill" style="left:560px;width:172px"><span class="t">감정 실</span><span class="v">온기</span></div>
+    </div>
+    <div class="btns">
+      <button class="btn" id="retry">봉합 풀고 다시<span class="kbd">R</span></button>
+      <span style="font-size:13px;color:#a898bd">의뢰인이 잠에서 뒤척인다 · 남은 시도 2</span>
+    </div>
+  </div>
+</section>
+
+<div class="tabs"><button data-t="a">1 · 봉합</button><button data-t="b">2 · 거부 반응</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate('+((innerWidth-1600*s)/2)+'px,'+((innerHeight-1000*s)/2)+'px) scale('+s+')';}
+  addEventListener('resize',fit);fit();
+  var cur='a';
+  function show(k){cur=(k==='b')?'b':'a';document.getElementById('sa').className='screen'+(cur==='a'?' on':'');document.getElementById('sb').className='screen'+(cur==='b'?' on':'');
+    var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].className=bs[i].getAttribute('data-t')===cur?'on':'';}
+  function fromHash(){show((location.hash||'#a').replace('#',''));}
+  addEventListener('hashchange',fromHash);fromHash();
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-t');});
+
+  // dust motes
+  var dA=document.getElementById('dustA');if(dA){var h='';for(var k=0;k<22;k++){h+='<i style="left:'+(380+((k*137)%740))+'px;top:'+(260+((k*89)%420))+'px;animation-delay:'+(-(k*0.43)).toFixed(2)+'s;animation-duration:'+(7+(k%5))+'s"></i>';}dA.innerHTML=h;}
+
+  var ac=null;
+  function audio(){if(ac)return ac;try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;}return ac;}
+  function pluck(f,dur,g0,type){var a=audio();if(!a)return;try{var o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.type=type||'triangle';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(g0,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur);}catch(e){}}
+  function tear(){var a=audio();if(!a)return;try{var n=Math.floor(a.sampleRate*.6),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2)*(Math.random()<.3?1:.3);
+    var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='highpass';f.frequency.value=1200;var g=a.createGain();g.gain.value=.35;s.connect(f);f.connect(g);g.connect(a.destination);s.start();}catch(e){}pluck(110,.8,.12,'sawtooth');}
+
+  var st={p:'형',a:'문을 잠근다',e:'온기'};
+  function evalA(){var logic,contra=0,col,txt;
+    if(st.a==='문을 잠근다'&&st.p==='나'){contra=1;logic='모순';col='#ff6a84';txt='✕ 모순 — 열쇠는 형만 가지고 있다';}
+    else if(st.a==='문을 잠근다'){logic='성립';col='#f2c58a';txt='● 논리 연결 성립';}
+    else{logic='미충족';col='#a898bd';txt='○ 의뢰 미충족 — 원본 그대로';}
+    document.getElementById('sP').textContent=st.p;document.getElementById('sA').textContent=st.a;document.getElementById('sE').textContent=st.e;
+    var s=document.getElementById('stA');s.textContent=txt;s.style.color=col;
+    document.getElementById('logicV').textContent=logic;document.getElementById('contraV').textContent=contra;document.getElementById('emoV').textContent=st.e;
+    var warm=st.e==='온기';var thr=warm?'#ffe1b8':'#b8d0ff';var ids=['t1','t2','logicThread'];for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el)el.setAttribute('stroke',contra?'#ff8fa3':thr);}
+    document.getElementById('tension').style.width=(contra?96:(logic==='성립'?62:30))+'%';
+    document.getElementById('tension').style.background=contra?'linear-gradient(90deg,#ff8fa3,#ff4d6a)':(warm?'linear-gradient(90deg,#f2c58a,#e4b2cb)':'linear-gradient(90deg,#8fb7ff,#b8a0ff)');
+    document.getElementById('afterTxt').textContent=contra?'열쇠를 쥔 사람과 문을 잠근 행동이 연결되지 않는다. 봉합하면 거부 반응이 난다.':
+      (logic!=='성립'?'원본 기억 그대로. 의뢰인의 의심은 자라지 않는다.':(warm?'생일의 온기를 남기면, 의뢰인은 형을 의심하면서도 대화할 여지를 잃지 않는다.':'감시로 정착한다. 의뢰는 성공하지만, 의뢰인은 가족의 관심도 두려워하게 된다.'));
+    var tiles=document.querySelectorAll('#sa .tile');for(var j=0;j<tiles.length;j++){var t=tiles[j],g=t.getAttribute('data-g'),v=t.getAttribute('data-v');t.classList.remove('lift');t.classList.remove('used');if(g&&st[g]===v)t.classList.add(g==='a'?'lift':'used');}
+    var bro=document.getElementById('brother');if(bro)bro.setAttribute('opacity',st.p==='형'?'1':'.35');
+    var t=document.getElementById('toastA');t.textContent=contra?'모순 감지 · 나에게는 집 열쇠가 없다':(logic==='성립'?'논리 연결 성립 · 열쇠를 쥔 '+st.p+'이 문을 잠근다':'원본 장면 · 형이 선물을 건넨다');t.style.borderColor=col;}
+  function swap(g){var opts={p:['나','형'],a:['선물을 건넨다','문을 잠근다'],e:['온기','두려움']}[g];st[g]=st[g]===opts[0]?opts[1]:opts[0];pluck(g==='e'?660:440,.35,.08);evalA();}
+  function seal(){if(st.p==='나'&&st.a==='문을 잠근다'){tear();location.hash='b';return;}pluck(523,.9,.07,'sine');pluck(784,1.2,.05,'sine');
+    var t=document.getElementById('toastA');t.textContent=st.a==='문을 잠근다'?(st.e==='온기'?'봉합 완료 · 남아 있는 온기':'봉합 완료 · 봉합된 의심'):'봉합할 변경이 없습니다';}
+  var bt=document.querySelectorAll('#sa .btn');for(var b=0;b<bt.length;b++)bt[b].addEventListener('click',function(e){audio();var k=e.currentTarget.getAttribute('data-b');if(k==='s')seal();else swap(k);});
+  var ts=document.querySelectorAll('#sa .tile');for(var q=0;q<ts.length;q++)ts[q].addEventListener('click',function(e){audio();var g=e.currentTarget.getAttribute('data-g'),v=e.currentTarget.getAttribute('data-v');if(g&&st[g]!==v){st[g]=v;pluck(g==='e'?660:440,.35,.08);evalA();}});
+  var rt=document.getElementById('retry');if(rt)rt.addEventListener('click',function(){audio();pluck(330,.5,.07);st.p='형';evalA();location.hash='a';});
+  addEventListener('keydown',function(e){audio();var k=(e.key||'').toLowerCase();
+    if(k==='1'){location.hash='a';return;}if(k==='2'){location.hash='b';tear();return;}
+    if(cur==='a'){if(k==='q')swap('p');if(k==='w')swap('a');if(k==='e')swap('e');if(k==='enter')seal();}
+    else if(k==='r'){st.p='형';evalA();location.hash='a';}});
+  evalA();
+})();
+</script>
+</body>
+</html>

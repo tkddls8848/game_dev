@@ -1,0 +1,76 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는곳": "presentation/index.html 이 이 파일을 읽어 CSS 변수로 깐다. 색을 고치려면 여기만 고친다.",
+
+  "name": "저택 창고 장부",
+  "oneLine": "밭도 덱도 같은 장부에 적힌다 — 갈색 크라프트지에 잉크로 눌러 쓴 수량",
+  "reference": "19세기 창고 수불부 · 고무 잉크 도장 · 상자에 붙은 손글씨 라벨",
+
+  "color": {
+    "void": "#171310",
+    "ink": "#2B2118",
+    "surface": "#C7B58E",
+    "paper": "#D9C9A4",
+    "paperEdge": "#B49C6E",
+    "accent": "#8A2E22",
+    "muted": "#7A6A52",
+    "highlight": "#6B5A2E",
+    "rule": "#B6A176",
+    "crop": "#4E5D3A",
+    "card": "#3B4B63"
+  },
+
+  "type": {
+    "family": "Nanum Myeongjo",
+    "familyNumeric": "Gothic A1",
+    "familyGlyph": "Noto Emoji",
+    "sizeTitle": 40,
+    "sizeHeading": 22,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeQuantity": 26,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+
+  "grade": {
+    "saturation": 0.78,
+    "contrast": 1.06,
+    "blackLift": 0.02,
+    "vignette": 0.30,
+    "grainStatic": true,
+    "paperTextureOpacity": 0.38,
+    "stampRotationDeg": -7,
+    "ruleSpacingPx": 26,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 종이가 된다."
+  },
+
+  "glyph": {
+    "_": "작물·카드·계절의 문양. Noto Emoji(OFL) 의 글리프를 쓴다 — 색은 CSS 로 입힌다.",
+    "crop_turnip": "🥕",
+    "crop_pumpkin": "🎃",
+    "crop_chili": "🌶",
+    "crop_herb": "🌿",
+    "crop_wheat": "🌾",
+    "card_slash": "🗡",
+    "card_bulwark": "🛡",
+    "card_ember": "🔥",
+    "card_sort": "🧹",
+    "card_harvest": "🧺",
+    "season_spring": "🌱",
+    "season_summer": "☀",
+    "season_autumn": "🍂",
+    "season_winter": "❄",
+    "enemy_rat": "🐀",
+    "enemy_crow": "🐦",
+    "enemy_fox": "🦊",
+    "enemy_wolf": "🐺"
+  },
+
+  "sound": {
+    "_": "목업에서는 소리를 틀지 않는다. 어떤 소리를 쓰기로 했는지만 값으로 남긴다.",
+    "cardPlace": "assets/audio/card-place.ogg",
+    "harvest": "assets/audio/harvest.ogg",
+    "nightDoor": "assets/audio/night-door.ogg"
+  }
+}

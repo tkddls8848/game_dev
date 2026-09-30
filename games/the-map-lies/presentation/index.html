@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>트레이싱지 겹친 도시 계획 — the-map-lies</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 그래야 다른 PoC와 견줄 수 있고, 데이터를 고치면 화면이 따라온다.
+
+  ★ 이 목업은 도시가 지도에 맞추는 규칙을 **JS로 다시 구현한다**(아래 step 함수). 날을 끌 때마다
+    도시가 다시 계산되어야 그림이 살아 있기 때문이다. 압력·값·짐작 문턱·필지 상한은 전부
+    balance.json 에서 읽으므로 숫자가 몰래 갈라질 수는 없다. 규칙의 *모양*이 갈라질 수는 있으므로,
+    규칙을 고칠 때는 src/CitySim.cs 와 이 파일을 같이 고쳐야 한다. 진실은 C# 쪽이다.
+
+  ★ 사람은 걷지 않는다. 게임의 예측 화면(Policies.Predict)이 쓰는 것과 같은 모드다 —
+    C#의 System.Random 을 JS로 똑같이 재현할 수 없고, 그렇게 하면 화면의 수치가 테스트와 갈라진다.
+    갇힘 판정은 집이 든 덩어리가 문에 닿는지로 나므로 걸음 없이도 그대로 나온다.
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/the-map-lies && python -m http.server 8098
+      -> http://localhost:8098/presentation/index.html
+-->
+<style>
+@font-face { font-family:"Sunflower";   src:url("assets/fonts/Sunflower-Light.ttf") format("truetype"); font-weight:300; font-display:swap; }
+@font-face { font-family:"GamjaFlower"; src:url("assets/fonts/GamjaFlower-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --photoBlack:#16150F; --photoDark:#2A2A22; --photoMid:#5E5D52; --photoLight:#8E8D80; --photoHaze:#B4B3A6;
+  --vellum:#E6E0CE; --vellumLit:#F1ECDD; --vellumEdge:#C4BCA4;
+  --graphite:#34332E; --graphiteSoft:#6B6A61; --graphiteFaint:#9A9890; --eraser:#D9D3BE;
+  --stamp:#4A463C; --redDot:#B4352A; --redDotGlow:#E06A58; --warn:#8A6A22;
+  --ink:#2B2A24; --inkSoft:#63615A;
+  --sTitle:50px; --sHead:25px; --sBody:16px; --sHint:13px; --sNum:14px; --sHand:19px; --trkTitle:.02em;
+  --vig:.30;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--vellum); color:var(--ink);
+  font-family:"Sunflower",system-ui,sans-serif; font-size:var(--sBody); line-height:1.75; font-weight:300;
+  -webkit-font-smoothing:antialiased;
+}
+/* 종이 결 — 이미지를 한 장도 받지 않고 겹친 그라디언트로 짠다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, rgba(43,42,36,.035) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg,  rgba(43,42,36,.025) 0 1px, transparent 1px 4px);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 38%, transparent 52%, rgba(22,21,15,var(--vig)) 100%);
+}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:44px 20px 100px}
+
+/* 트레이싱지 한 장 — 가장자리가 살짝 들린 반투명 종이 */
+.sheet{
+  position:relative;
+  background:linear-gradient(170deg,var(--vellumLit),var(--vellum) 46%,#DED7C2);
+  border:1px solid var(--vellumEdge);
+  padding:22px 24px 26px; margin:0 0 28px;
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset, 0 -1px 0 rgba(22,21,15,.10) inset,
+             2px 3px 0 rgba(22,21,15,.05), 4px 6px 0 rgba(22,21,15,.03);
+}
+h1{font-family:"Sunflower",sans-serif;font-weight:300;font-size:var(--sTitle);
+   letter-spacing:var(--trkTitle);margin:0 0 4px;line-height:1.08;color:var(--ink)}
+h1 .sub{display:block;font-size:calc(var(--sHead)*.7);letter-spacing:0;color:var(--inkSoft)}
+h2{font-size:var(--sHead);margin:0 0 6px;color:var(--ink);font-weight:300}
+h2 .no{font-family:"GamjaFlower",cursive;color:var(--redDot);margin-right:12px}
+h3{font-size:var(--sBody);margin:20px 0 6px;color:var(--inkSoft);font-weight:300}
+p{margin:6px 0 12px;max-width:76ch}
+.hint{font-size:var(--sHint);color:var(--inkSoft)}
+.hand{font-family:"GamjaFlower",cursive;font-size:var(--sHand);color:var(--stamp)}
+.lede{font-size:calc(var(--sBody) + 2px)}
+b,strong{color:var(--ink);font-weight:300;border-bottom:1px solid var(--graphiteFaint)}
+em{font-style:normal;border-bottom:2px solid var(--redDot)}
+code{font-family:"Sunflower",monospace;font-size:var(--sNum);color:var(--stamp);
+     background:rgba(74,70,60,.07);padding:0 3px}
+
+table{border-collapse:collapse;width:100%;font-size:var(--sNum);margin:8px 0 6px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid rgba(52,51,46,.18)}
+th{font-family:"GamjaFlower",cursive;font-size:calc(var(--sNum) + 4px);color:var(--stamp);font-weight:400}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.hi td{background:rgba(180,53,42,.08)}
+tr.ok td{background:rgba(52,51,46,.04)}
+
+svg{display:block;max-width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:var(--sHint);margin:10px 0 6px;color:var(--inkSoft)}
+.legend i{display:inline-block;width:20px;height:12px;margin-right:7px;vertical-align:middle;border:1px solid rgba(52,51,46,.35)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px 26px}
+
+.ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-end;margin:6px 0 14px}
+.ctl label{display:flex;flex-direction:column;gap:3px;font-size:var(--sHint);color:var(--inkSoft)}
+select,input[type=range]{
+  background:var(--vellumLit);color:var(--ink);border:1px solid var(--vellumEdge);border-radius:1px;
+  font-family:"Sunflower",sans-serif;font-size:var(--sNum);padding:4px 6px;min-width:170px;
+}
+input[type=range]{padding:0;min-width:260px;accent-color:var(--stamp)}
+button{
+  background:var(--vellumLit);color:var(--stamp);border:1px solid var(--vellumEdge);border-radius:1px;
+  font-family:"GamjaFlower",cursive;font-size:calc(var(--sNum) + 3px);padding:5px 14px;cursor:pointer;
+}
+button:hover{background:#fff}
+.stamp{
+  display:inline-block;font-family:"GamjaFlower",cursive;font-size:calc(var(--sNum) + 3px);
+  border:2px solid currentColor;padding:1px 10px;transform:rotate(-2deg);
+}
+.stamp.ok{color:var(--stamp)} .stamp.no{color:var(--redDot)}
+.err{color:var(--redDot);font-family:"GamjaFlower",cursive;font-size:var(--sHead)}
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">도면을 펴는 중… (fetch 가 막혔다면 <code>python -m http.server 8098</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+// ── data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ───────────────────────────
+const FILES = ["city", "chapters", "scenarios", "balance"];
+const W = {};
+
+async function load(){
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+function applyPalette(p){
+  const r = document.documentElement.style;
+  for (const [k,v] of Object.entries(p.color)) r.setProperty("--" + k, v);
+  r.setProperty("--sTitle", p.type.sizeTitle + "px");
+  r.setProperty("--sHead",  p.type.sizeHeading + "px");
+  r.setProperty("--sBody",  p.type.sizeBody + "px");
+  r.setProperty("--sHint",  p.type.sizeHint + "px");
+  r.setProperty("--sNum",   p.type.sizeNum + "px");
+  r.setProperty("--sHand",  p.type.sizeHand + "px");
+  r.setProperty("--trkTitle", p.type.trackTitle);
+  r.setProperty("--vig", p.grade.vignette);
+}
+
+// ══ 규칙 — src/CitySim.cs 를 그대로 옮긴 것. 저울은 balance.json 에서 읽는다 ══
+
+const BLOCK = "B", STREET = "S", PLAZA = "P", UNSPEC = ".";
+const WALK = k => k === STREET || k === PLAZA;
+const KIND_NAME = { B:"건물", S:"길", P:"광장", ".":"미지정" };
+
+function idx(x,y){ return y * W.city.width + x; }
+function inside(x,y){ return x>=0 && y>=0 && x<W.city.width && y<W.city.height; }
+const DX = [0,1,0,-1], DY = [-1,0,1,0];
+function nbrs(x,y){
+  const out=[];
+  for (let d=0;d<4;d++){ const nx=x+DX[d], ny=y+DY[d]; if (inside(nx,ny)) out.push([nx,ny]); }
+  return out;
+}
+function rowsToCells(rows){
+  const c=[];
+  for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++) c.push(rows[y][x]);
+  return c;
+}
+function cellsToRows(cells){
+  const rows=[];
+  for (let y=0;y<W.city.height;y++) rows.push(cells.slice(y*W.city.width,(y+1)*W.city.width).join(""));
+  return rows;
+}
+function countNbr(cells,x,y,kind){
+  let n=0;
+  for (const [nx,ny] of nbrs(x,y)) if (cells[idx(nx,ny)]===kind) n++;
+  return n;
+}
+function flipCost(kind){
+  const b=W.balance;
+  return kind===BLOCK ? b.flipCostBlock : kind===STREET ? b.flipCostStreet : b.flipCostPlaza;
+}
+function editCost(kind){
+  const b=W.balance;
+  return kind===BLOCK ? b.editCostBlock : kind===STREET ? b.editCostStreet : b.editCostPlaza;
+}
+
+/** 지도가 안 그린 칸을 도시가 스스로 메운다. 첫 줄이 진동의 씨앗이다. */
+function infer(cells,x,y){
+  const b=W.balance;
+  const s=countNbr(cells,x,y,STREET), p=countNbr(cells,x,y,PLAZA);
+  if (s >= b.inferBlockOverStreets) return BLOCK;
+  if (s >= b.inferStreetMin) return STREET;
+  if (p >= b.inferPlazaMin) return PLAZA;
+  return BLOCK;
+}
+
+/** 하루. **어제의 사진에서 동시에** 갱신한다 — 하루의 공사는 어제의 측량으로 계획된다. */
+function step(st){
+  const b=W.balance, today=st.cells.slice();
+  let flips=0;
+  for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++){
+    const i=idx(x,y), planned=st.plan[i], specified=planned!==UNSPEC;
+    const target = specified ? planned : infer(st.cells,x,y);
+    if (target===st.cells[i]){ st.pressure[i]=0; continue; }
+    st.pressure[i] += specified ? b.conformPressurePerDay : b.inferPressurePerDay;
+    if (st.pressure[i] < flipCost(target)) continue;
+    if (b.maxFlipsPerCell>=0 && st.flips[i]>=b.maxFlipsPerCell){ st.pressure[i]=flipCost(target); continue; }
+    today[i]=target; st.pressure[i]=0; st.flips[i]++; flips++;
+  }
+  st.cells=today; st.day++;
+  st.history.push({day:st.day, flips, cells:today.slice(), trapped:trappedNow(st), refused:refusedNow(st)});
+  return flips;
+}
+
+function walkComponent(cells,x,y){
+  const seen=new Set();
+  if (!inside(x,y) || !WALK(cells[idx(x,y)])) return seen;
+  const q=[[x,y]]; seen.add(idx(x,y));
+  while (q.length){
+    const [cx,cy]=q.pop();
+    for (const [nx,ny] of nbrs(cx,cy)){
+      if (!WALK(cells[idx(nx,ny)])) continue;
+      const i=idx(nx,ny);
+      if (seen.has(i)) continue;
+      seen.add(i); q.push([nx,ny]);
+    }
+  }
+  return seen;
+}
+function reachesExit(cells,x,y){
+  const comp=walkComponent(cells,x,y);
+  if (!comp.size) return false;
+  return W.city.exits.some(e=>comp.has(idx(e.x,e.y)));
+}
+/** 사람은 걷지 않는다(맨 위 주석). 집이 든 덩어리가 문에 닿는지로 갇힘이 난다. */
+function trappedNow(st){
+  return W.city.citizens.filter(c=>!reachesExit(st.cells,c.x,c.y)).map(c=>c.id);
+}
+/** 지도가 무슨 말을 해도 도시가 끝내 듣지 않는 칸. **거부다.** */
+function refusedNow(st){
+  const b=W.balance, out=[];
+  if (b.maxFlipsPerCell<0) return out;
+  for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++){
+    const i=idx(x,y);
+    if (st.plan[i]===UNSPEC || st.cells[i]===st.plan[i]) continue;
+    if (st.flips[i]>=b.maxFlipsPerCell) out.push([x,y]);
+  }
+  return out;
+}
+
+function fresh(){
+  const n=W.city.width*W.city.height;
+  const st={
+    cells:rowsToCells(W.city.actualRows), plan:rowsToCells(W.city.planRows),
+    pressure:new Array(n).fill(0), flips:new Array(n).fill(0),
+    day:0, strokes:[], drawn:new Array(n).fill(0), permit:0, history:[]
+  };
+  st.locked=new Set();
+  for (const c of W.city.lockedCells) st.locked.add(idx(c.x,c.y));
+  for (const e of W.city.exits) st.locked.add(idx(e.x,e.y));
+  if (W.balance.borderLocked)
+    for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++)
+      if (x===0||y===0||x===W.city.width-1||y===W.city.height-1) st.locked.add(idx(x,y));
+  st.history.push({day:0,flips:0,cells:st.cells.slice(),trapped:trappedNow(st),refused:[]});
+  return st;
+}
+
+function draw(st,x,y,kind){
+  const i=idx(x,y);
+  if (st.locked.has(i) || st.plan[i]===kind) return false;
+  const redraw=st.drawn[i]>0;
+  const cost=editCost(kind)+(redraw?W.balance.redrawSurcharge:0);
+  const was=st.plan[i];
+  st.plan[i]=kind; st.drawn[i]++; st.permit+=cost;
+  st.strokes.push({day:st.day,x,y,kind,was,cost,redraw});
+  return true;
+}
+
+function runToRest(st,limit){
+  const b=W.balance;
+  let quiet=0;
+  for (let i=0;i<(limit||b.convergeDays);i++){
+    if (step(st)===0){ quiet++; if (quiet>=b.quietDays) return true; } else quiet=0;
+  }
+  return false;
+}
+
+// ── 골라 그리는 정책 (src/Policies.cs 의 Targeted) ─────────────────────────
+
+function predict(st){
+  const copy={...st, cells:st.cells.slice(), plan:st.plan.slice(),
+              pressure:st.pressure.slice(), flips:st.flips.slice(), history:[]};
+  copy.history.push({day:0,flips:0,cells:copy.cells.slice(),trapped:[],refused:[]});
+  runToRest(copy);
+  return copy.cells;
+}
+
+function reachTargets(ch){
+  const all=ch.reachCells.map(c=>[c.x,c.y]);
+  if (!ch.requireNoTrapped) return all;
+  for (const c of W.city.citizens)
+    if (!all.some(t=>t[0]===c.x&&t[1]===c.y)) all.push([c.x,c.y]);
+  return all;
+}
+
+function plazaComponent(cells,x,y){
+  const seen=new Set();
+  if (cells[idx(x,y)]!==PLAZA) return seen;
+  const q=[[x,y]]; seen.add(idx(x,y));
+  while (q.length){
+    const [cx,cy]=q.pop();
+    for (const [nx,ny] of nbrs(cx,cy))
+      if (cells[idx(nx,ny)]===PLAZA && !seen.has(idx(nx,ny))){ seen.add(idx(nx,ny)); q.push([nx,ny]); }
+  }
+  return seen;
+}
+
+function drawTargeted(st,ch){
+  for (let round=0;round<6;round++){
+    const pred=predict(st);
+    let progress=false;
+    if (ch.plazaMin>0 && plazaComponent(pred,ch.plazaSeed.x,ch.plazaSeed.y).size<ch.plazaMin){
+      if (growPlaza(st,ch,pred)) progress=true;
+    }
+    for (const [tx,ty] of reachTargets(ch)){
+      if (reachesExit(pred,tx,ty)) continue;
+      if (carveTo(st,ch,tx,ty,pred)) progress=true;
+    }
+    if (!progress) break;
+  }
+}
+
+function growPlaza(st,ch,pred){
+  const g=pred.slice();
+  let any=false, guard=0;
+  if (g[idx(ch.plazaSeed.x,ch.plazaSeed.y)]!==PLAZA && !st.locked.has(idx(ch.plazaSeed.x,ch.plazaSeed.y))){
+    if (draw(st,ch.plazaSeed.x,ch.plazaSeed.y,PLAZA)){ g[idx(ch.plazaSeed.x,ch.plazaSeed.y)]=PLAZA; any=true; }
+  }
+  while (plazaComponent(g,ch.plazaSeed.x,ch.plazaSeed.y).size<ch.plazaMin && guard++<200){
+    let pick=null;
+    for (const i of plazaComponent(g,ch.plazaSeed.x,ch.plazaSeed.y)){
+      const cx=i%W.city.width, cy=(i-cx)/W.city.width;
+      for (const [nx,ny] of nbrs(cx,cy)){
+        if (g[idx(nx,ny)]===PLAZA || st.locked.has(idx(nx,ny))) continue;
+        if (!pick || ny<pick[1] || (ny===pick[1]&&nx<pick[0])) pick=[nx,ny];
+      }
+    }
+    if (!pick || !draw(st,pick[0],pick[1],PLAZA)) break;
+    g[idx(pick[0],pick[1])]=PLAZA; any=true;
+  }
+  return any;
+}
+
+/** 문까지 파야 하는 칸이 가장 적은 길. 값이 0/1 이므로 앞뒤로 넣는 큐 하나로 충분하다. */
+function carveTo(st,ch,fx,fy,pred){
+  const n=W.city.width*W.city.height;
+  const dist=new Array(n).fill(Infinity), prev=new Array(n).fill(-1);
+  const start=idx(fx,fy);
+  dist[start]=WALK(pred[start])?0:1;
+  const dq=[start];
+  while (dq.length){
+    const cur=dq.shift();
+    const cx=cur%W.city.width, cy=(cur-cx)/W.city.width;
+    for (const [nx,ny] of nbrs(cx,cy)){
+      const i=idx(nx,ny), walk=WALK(pred[i]);
+      if (!walk && st.locked.has(i)) continue;
+      const w=walk?0:1;
+      if (dist[cur]+w>=dist[i]) continue;
+      dist[i]=dist[cur]+w; prev[i]=cur;
+      if (w===0) dq.unshift(i); else dq.push(i);
+    }
+  }
+  let best=-1;
+  for (const e of W.city.exits){ const i=idx(e.x,e.y); if (dist[i]!==Infinity && (best<0||dist[i]<dist[best])) best=i; }
+  if (best<0) return false;
+  let drew=false;
+  for (let at=best; at>=0; at=prev[at]){
+    const x=at%W.city.width, y=(at-x)/W.city.width;
+    if (WALK(pred[at]) || st.locked.has(at)) continue;
+    if (draw(st,x,y,STREET)) drew=true;
+  }
+  return drew;
+}
+
+// ══ 그리기 ══════════════════════════════════════════════════════════════════
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/** 항공사진 한 장 + 그 위에 트레이싱지. 겹의 수는 고친 날 수다. */
+function drawPlate(st, opt){
+  const o = Object.assign({sheets:0, showPlan:true, trapped:[], refused:[], strokes:[], cells:null, label:""}, opt||{});
+  const P=W.palette, C=P.photo.cellPx;
+  const cells = o.cells || st.cells;
+  const w=W.city.width*C, h=W.city.height*C;
+  const pad=P.vellumSheet.offsetPx*Math.min(o.sheets,P.vellumSheet.maxSheets)+10;
+
+  const grey = k => k===BLOCK ? P.color.photoDark : k===STREET ? P.color.photoHaze : P.color.photoLight;
+
+  let s=`<svg viewBox="${-pad} ${-pad} ${w+pad*2} ${h+pad*2+22}" role="img" aria-label="항공사진과 트레이싱지">
+  <defs>
+    <pattern id="grain" width="${P.photo.grainPitchPx}" height="${P.photo.grainPitchPx}" patternUnits="userSpaceOnUse">
+      <rect width="${P.photo.grainPitchPx}" height="${P.photo.grainPitchPx}" fill="none"/>
+      <rect width="1" height="1" fill="${P.color.photoBlack}" opacity="${P.photo.grainAlpha}"/>
+      <rect x="${P.photo.grainPitchPx-1}" y="${P.photo.grainPitchPx-1}" width="1" height="1"
+            fill="#fff" opacity="${P.photo.grainAlpha*0.6}"/>
+    </pattern>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="${P.color.redDot}" stroke-width="1.2" opacity=".75"/>
+    </pattern>
+  </defs>`;
+
+  // 뒤에 쌓인 트레이싱지 — 고친 날 하나에 한 장. 두께가 횟수다
+  const sheets=Math.min(o.sheets,P.vellumSheet.maxSheets);
+  for (let i=sheets;i>=1;i--){
+    const d=i*P.vellumSheet.offsetPx;
+    s+=`<rect x="${-d}" y="${-d}" width="${w}" height="${h}" fill="${P.color.vellum}"
+          opacity="${P.vellumSheet.alpha}" stroke="${P.color.vellumEdge}"
+          stroke-opacity="${P.vellumSheet.edgeAlpha}" stroke-width="1"/>`;
+  }
+
+  // ① 항공사진 — 칸마다 회색값
+  for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++)
+    s+=`<rect x="${x*C}" y="${y*C}" width="${C}" height="${C}" fill="${grey(cells[idx(x,y)])}"/>`;
+  s+=`<rect x="0" y="0" width="${w}" height="${h}" fill="url(#grain)"/>`;
+
+  // ② 트레이싱지 — 반투명 한 장을 사진 위에 덮는다
+  if (o.showPlan){
+    s+=`<rect x="0" y="0" width="${w}" height="${h}" fill="${P.color.vellum}" opacity="${P.vellumSheet.overlayAlpha}"/>`;
+
+    // 연필선: 지도가 그린 칸의 경계. 미지정 칸은 점선 테두리만
+    for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++){
+      const p=st.plan[idx(x,y)];
+      if (p===UNSPEC){
+        s+=`<rect x="${x*C+3}" y="${y*C+3}" width="${C-6}" height="${C-6}" fill="none"
+              stroke="${P.color.graphiteFaint}" stroke-width="${P.pencil.widthPx}"
+              stroke-dasharray="${P.pencil.dashUndrawn}"/>`;
+        continue;
+      }
+      if (p===BLOCK)
+        s+=`<rect x="${x*C+2}" y="${y*C+2}" width="${C-4}" height="${C-4}" fill="none"
+              stroke="${P.color.graphite}" stroke-width="${P.pencil.widthPx}"/>`;
+      else if (p===PLAZA){
+        s+=`<rect x="${x*C+2}" y="${y*C+2}" width="${C-4}" height="${C-4}" fill="none"
+              stroke="${P.color.graphiteSoft}" stroke-width="${P.pencil.widthPx}"/>`;
+        s+=`<line x1="${x*C+2}" y1="${y*C+C-2}" x2="${x*C+C-2}" y2="${y*C+2}"
+              stroke="${P.color.graphiteFaint}" stroke-width="${P.pencil.widthPx}"/>`;
+      }
+      // 길은 선을 긋지 않는다 — 도면에서 길은 빈 자리다
+    }
+
+    // 지우개 자국 — 같은 칸을 다시 그은 횟수가 진하기다
+    for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++){
+      const n=st.drawn[idx(x,y)];
+      if (n<2) continue;
+      s+=`<rect x="${x*C+1}" y="${y*C+1}" width="${C-2}" height="${C-2}" fill="${P.color.eraser}"
+            opacity="${Math.min(P.pencil.eraserAlpha, 0.18*(n-1))}"/>`;
+    }
+  }
+
+  // ③ 도시가 거부한 칸 — 지도가 영원히 거짓말이 된 자리
+  for (const [x,y] of o.refused)
+    s+=`<rect x="${x*C}" y="${y*C}" width="${C}" height="${C}" fill="url(#hatch)"/>`;
+
+  // ④ 이번에 그은 획
+  for (const k of o.strokes)
+    s+=`<rect x="${k.x*C+1}" y="${k.y*C+1}" width="${C-2}" height="${C-2}" fill="none"
+          stroke="${P.color.stamp}" stroke-width="${P.pencil.widthStrongPx}"
+          stroke-dasharray="4 2"/>`;
+
+  // ⑤ 사람 — 선 사이의 작은 점. 갇히면 붉다
+  for (const c of W.city.citizens){
+    const trapped=o.trapped.includes(c.id);
+    const cx=c.x*C+C/2, cy=c.y*C+C/2;
+    const r=trapped?P.dot.radiusTrappedPx:P.dot.radiusPx;
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r}"
+          fill="${trapped?P.color.redDot:P.color.stamp}"
+          stroke="${trapped?P.color.redDotGlow:"none"}" stroke-width="${P.dot.ringPx}"/>`;
+    if (trapped)
+      s+=`<circle cx="${cx}" cy="${cy}" r="${r+4}" fill="none" stroke="${P.color.redDot}"
+            stroke-width="1" opacity=".45"/>`;
+  }
+
+  // ⑥ 문
+  for (const e of W.city.exits)
+    s+=`<text x="${e.x*C+C/2}" y="${e.y*C+C/2+5}" text-anchor="middle"
+          font-family="GamjaFlower" font-size="${P.type.sizeNum+3}" fill="${P.color.stamp}">문</text>`;
+
+  if (o.label)
+    s+=`<text x="0" y="${h+16}" font-family="GamjaFlower" font-size="${P.type.sizeHand}"
+          fill="${P.color.stamp}">${esc(o.label)}</text>`;
+  return s+`</svg>`;
+}
+
+// ══ §03 지도를 고치면 ═══════════════════════════════════════════════════════
+
+function chapterPanel(){
+  const sel=document.getElementById("chSel");
+  const daySel=document.getElementById("chDay");
+  let st=null, ch=null;
+
+  function build(){
+    ch=W.chapters.chapters.find(c=>c.id===sel.value);
+    st=fresh();
+    if (document.getElementById("chDraw").checked) drawTargeted(st,ch);
+    runToRest(st,ch.dayLimit);
+    daySel.min=0; daySel.max=st.history.length-1; daySel.value=st.history.length-1;
+    document.getElementById("chNote").textContent=ch.councilNote;
+    render();
+  }
+
+  function render(){
+    const i=+daySel.value, h=st.history[i];
+    const editDays=new Set(st.strokes.map(s=>s.day)).size;
+    document.getElementById("chDayOut").textContent=h.day+"일";
+    document.getElementById("chPlate").innerHTML=drawPlate(st,{
+      cells:h.cells, sheets:editDays, trapped:h.trapped, refused:h.refused, strokes:st.strokes,
+      label: h.day+"일 — 그은 획 "+st.strokes.length+" · 트레이싱지 "+editDays+"장 · 허가비 "+st.permit+"원"
+        + (h.trapped.length?" · 갇힌 사람 "+h.trapped.length+"명":"")
+    });
+
+    const last=st.history[st.history.length-1];
+    const dwell=dwellings(last.cells);
+    const plaza=ch.plazaMin>0?plazaComponent(last.cells,ch.plazaSeed.x,ch.plazaSeed.y).size:-1;
+    const reachOk=ch.reachCells.every(c=>reachesExit(last.cells,c.x,c.y));
+    const met=reachOk && (ch.dwellingMin<0||dwell>=ch.dwellingMin)
+              && (ch.plazaMin<0||plaza>=ch.plazaMin) && (!ch.requireNoTrapped||last.trapped.length===0);
+    document.getElementById("chVerdict").innerHTML=
+      `<span class="stamp ${met?"ok":"no"}">${met?"승인":"반송"}</span>
+       <span class="hint"> 닿는가 ${reachOk?"○":"×"} ·
+       집 ${dwell}/${ch.dwellingMin} ${dwell>=ch.dwellingMin?"○":"×"} ·
+       광장 ${plaza<0?"—":plaza+"/"+ch.plazaMin+" "+(plaza>=ch.plazaMin?"○":"×")} ·
+       갇힌 사람 ${last.trapped.length} ${last.trapped.length===0?"○":"×"} ·
+       ${last.day}일 · 허가비 ${st.permit}/${ch.permitBudget}원</span>`;
+
+    document.getElementById("chStrokes").innerHTML = st.strokes.length
+      ? `<table><thead><tr><th>획</th><th>칸</th><th>무엇에서 무엇으로</th><th class="n">값</th><th>겹</th></tr></thead>
+         <tbody>${st.strokes.map((k,n)=>`<tr><td class="n">${n+1}</td>
+           <td>(${k.x},${k.y})</td>
+           <td>${KIND_NAME[k.was]||"미지정"} → ${KIND_NAME[k.kind]}</td>
+           <td class="n">${k.cost}</td><td>${k.redraw?"다시 그음":"처음"}</td></tr>`).join("")}</tbody></table>`
+      : `<p class="hand">한 획도 긋지 않았다. 그래도 도시는 움직인다 — 미지정 칸을 제 짐작으로 메운다.</p>`;
+  }
+
+  sel.innerHTML=W.chapters.chapters.map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+  sel.addEventListener("change",build);
+  document.getElementById("chDraw").addEventListener("change",build);
+  daySel.addEventListener("input",render);
+  build();
+}
+
+function dwellings(cells){
+  let n=0;
+  for (let y=0;y<W.city.height;y++) for (let x=0;x<W.city.width;x++)
+    if (cells[idx(x,y)]===BLOCK && countNbr(cells,x,y,STREET)>0) n++;
+  return n;
+}
+
+// ══ §04 잘못 그으면 ═════════════════════════════════════════════════════════
+
+function mistakePanel(){
+  const sel=document.getElementById("mkSel");
+  const daySel=document.getElementById("mkDay");
+  let st=null, mk=null, trapDay=-1, rescue=null;
+
+  function build(){
+    mk=W.scenarios.mistakes.find(m=>m.id===sel.value);
+    st=fresh();
+    if (mk.basisChapterId){
+      const ch=W.chapters.chapters.find(c=>c.id===mk.basisChapterId);
+      drawTargeted(st,ch);
+      runToRest(st,ch.dayLimit);
+    }
+    const before=st.permit;
+    for (const e of mk.edits) if (st.plan[idx(e.x,e.y)]!==e.kind) draw(st,e.x,e.y,e.kind);
+    st.mistakeCost=st.permit-before;
+    st.mistakeStrokes=st.strokes.slice(st.strokes.length-mk.edits.length);
+
+    trapDay=-1;
+    for (let i=0;i<W.balance.convergeDays;i++){
+      step(st);
+      if (st.history[st.history.length-1].trapped.length){ trapDay=st.day; break; }
+    }
+    rescue=findRescue(st);
+    daySel.min=0; daySel.max=st.history.length-1; daySel.value=st.history.length-1;
+    document.getElementById("mkNote").textContent=mk.note;
+    render();
+  }
+
+  /** 갇힌 사람 주변에서 한 획씩 그어 보고, 정해진 날 안에 다 빠져나오는 획을 찾는다. */
+  function findRescue(src){
+    const trapped=src.history[src.history.length-1].trapped;
+    if (!trapped.length) return null;
+    const cand=[];
+    for (const id of trapped){
+      const c=W.city.citizens.find(z=>z.id===id);
+      const seen=new Map([[idx(c.x,c.y),0]]);
+      const q=[[c.x,c.y]];
+      while (q.length){
+        const [cx,cy]=q.shift();
+        const d=seen.get(idx(cx,cy));
+        if (d>=W.balance.rescueFrontier) continue;
+        for (const [nx,ny] of nbrs(cx,cy)){
+          if (seen.has(idx(nx,ny))) continue;
+          seen.set(idx(nx,ny),d+1); q.push([nx,ny]);
+        }
+      }
+      for (const i of seen.keys()){
+        const x=i%W.city.width, y=(i-x)/W.city.width;
+        if (src.locked.has(i)) continue;
+        if (!cand.some(k=>k[0]===x&&k[1]===y)) cand.push([x,y]);
+      }
+    }
+    cand.sort((a,b)=>a[1]-b[1]||a[0]-b[0]);
+    for (const kind of [STREET,PLAZA])
+      for (const [x,y] of cand){
+        const t={...src, cells:src.cells.slice(), plan:src.plan.slice(),
+                 pressure:src.pressure.slice(), flips:src.flips.slice(),
+                 drawn:src.drawn.slice(), strokes:src.strokes.slice(), history:[]};
+        t.history.push(src.history[src.history.length-1]);
+        if (!draw(t,x,y,kind)) continue;
+        const cost=t.permit-src.permit;
+        for (let d=0;d<W.balance.rescueMaxDays;d++){
+          step(t);
+          if (!t.history[t.history.length-1].trapped.length)
+            return {x,y,kind,cost,days:d+1};
+        }
+      }
+    return null;
+  }
+
+  function render(){
+    const i=+daySel.value, h=st.history[i];
+    const editDays=new Set(st.strokes.map(s=>s.day)).size;
+    document.getElementById("mkDayOut").textContent=h.day+"일";
+    document.getElementById("mkPlate").innerHTML=drawPlate(st,{
+      cells:h.cells, sheets:editDays, trapped:h.trapped, refused:h.refused,
+      strokes:st.mistakeStrokes,
+      label: h.day+"일 — "+(h.trapped.length?"갇힌 사람 "+h.trapped.length+"명":"아직 아무도 갇히지 않았다")
+    });
+    const last=st.history[st.history.length-1];
+    document.getElementById("mkVerdict").innerHTML=
+      `<span class="stamp no">${trapDay<0?"아무도 갇히지 않았다":trapDay+"일째 갇혔다"}</span>
+       <span class="hint"> ${last.trapped.map(id=>W.city.citizens.find(c=>c.id===id).name).join(" · ")}
+       · 잘못 그은 값 ${st.mistakeCost}원</span>`;
+    document.getElementById("mkRescue").innerHTML = rescue
+      ? `<p><span class="stamp ok">되돌릴 수 있다</span>
+           <span class="hint"> (${rescue.x},${rescue.y}) 를 ${KIND_NAME[rescue.kind]}(으)로 —
+           허가비 <b>${rescue.cost}원</b> · 도시가 따라오는 데 <b>${rescue.days}일</b></span></p>
+         <p class="hand">그런데 공짜는 아니다. 갇혀 있던 날마다 쌓인 해는 되돌려도 돌아오지 않는다.</p>`
+      : `<p><span class="stamp no">되돌릴 길을 못 찾았다</span></p>`;
+  }
+
+  sel.innerHTML=W.scenarios.mistakes.map(m=>`<option value="${m.id}">${m.name}</option>`).join("");
+  sel.addEventListener("change",build);
+  daySel.addEventListener("input",render);
+  build();
+}
+
+// ══ §05 진동 — 필지 상한을 없앤 세계 ════════════════════════════════════════
+
+function churn(){
+  const capped=fresh(); runToRest(capped);
+  const saved=W.balance.maxFlipsPerCell;
+  W.balance.maxFlipsPerCell=-1;
+  const free=fresh(); runToRest(free);
+  W.balance.maxFlipsPerCell=saved;
+
+  const tail=n=>{
+    const seen=new Map(); let prev=null;
+    for (let i=Math.max(0,n.history.length-90);i<n.history.length;i++){
+      const key=n.history[i].cells.join("");
+      if (key!==prev){
+        if (seen.has(key) && i-seen.get(key)>=2) return i-seen.get(key);
+        if (!seen.has(key)) seen.set(key,i);
+      }
+      prev=key;
+    }
+    return 0;
+  };
+
+  return {
+    capped, free,
+    cappedDay:capped.day, freeDay:free.day,
+    cappedPeriod:tail(capped), freePeriod:tail(free)
+  };
+}
+
+// ══ 조립 ════════════════════════════════════════════════════════════════════
+
+async function main(){
+  Object.assign(W, await load());
+  applyPalette(W.palette);
+  const p=W.palette;
+  const base=fresh();
+  const soft=W.city.districts.find(d=>d.id==="d-soft");
+  const court=W.city.districts.find(d=>d.id==="d-court");
+  const c=churn();
+
+  document.getElementById("app").innerHTML=`
+  <section class="sheet">
+    <h1>${esc(p.name)}<span class="sub">the-map-lies — ${esc(p.oneLine)}</span></h1>
+    <p class="lede"><b>지도는 완벽하다.</b> 대신 도시가 매일 조금씩 지도에 맞춰 스스로를 고친다.
+      지도를 고치면 다음 날 도시가 바뀐다. 잘못 그리면 <em>건물 사이에 사람이 갇힌다.</em></p>
+    <p>플레이어가 고치는 것은 세계가 아니라 <b>세계의 모형</b>이다. 모형을 고치면 세계가 따라오거나,
+      맞출 수 없어 거부한다 — 한 필지를 <code>${W.balance.maxFlipsPerCell}</code>번까지만 다시 지을 수 있고,
+      다 쓰면 그 자리는 지도가 무슨 말을 해도 그대로 남는다.</p>
+    <p class="hint">이 화면의 모든 수치는 <code>data/*.json</code> 에서 읽은 것이다.
+      회색값·겹 두께·연필 굵기·점 크기는 <code>presentation/palette.json</code> 에 값으로 적혀 있다.
+      사람은 걷지 않는다 — 게임의 예측 화면과 같은 모드다(맨 위 주석).</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">01</span>항공사진과 트레이싱지</h2>
+    <p>아래가 처음 받은 자료다. <b>회색 칸이 실제로 서 있는 도시</b>(항공사진)이고
+      그 위에 덮인 반투명 종이가 <b>지도</b>다. 지도가 아직 안 그린 칸은 점선 테두리로 남아 있다 —
+      <b>${esc(soft.name)}</b> 아홉 칸이 그것이고, 도시는 그 칸을 제 짐작으로 메운다.</p>
+    <div class="legend">
+      <span><i style="background:${p.color.photoDark}"></i>건물</span>
+      <span><i style="background:${p.color.photoHaze}"></i>길</span>
+      <span><i style="background:${p.color.photoLight}"></i>광장</span>
+      <span><i style="border-style:dashed;background:none"></i>지도가 안 그린 칸</span>
+      <span><i style="background:${p.color.redDot};border-radius:50%;width:12px"></i>갇힌 사람</span>
+      <span><i style="background:url(#hatch);border-color:${p.color.redDot}"></i>도시가 거부한 칸</span>
+    </div>
+    ${drawPlate(base,{sheets:0,trapped:[],label:"0일 — 아직 아무 획도 긋지 않았다"})}
+    <p class="hint"><b>${esc(court.name)}</b> ${court.cells.map(z=>"("+z.x+","+z.y+")").join(" ")} 는
+      한 필지 안의 골목이고 걸어 나갈 자리가 딱 한 군데다. 그 한 칸을 건물로 그으면 그 안의 사람이 갇힌다 —
+      검사기 <code>DataValidator</code> 가 「걸어 나갈 자리가 하나인가」를 지킨다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">02</span>지도를 고치면 다음 날 도시가 바뀐다</h2>
+    <p id="chNote" class="hand"></p>
+    <div class="ctl">
+      <label>장<select id="chSel"></select></label>
+      <label>날 <span id="chDayOut" class="hint"></span><input type="range" id="chDay"></label>
+      <label>지도를 고친다<input type="checkbox" id="chDraw" checked></label>
+    </div>
+    <div id="chVerdict"></div>
+    <div id="chPlate"></div>
+    <div id="chStrokes"></div>
+    <p class="hint">「지도를 고친다」를 끄면 <b>아무것도 그리지 않은 세계</b>가 된다.
+      그래도 도시는 움직이고, 그 짐작이 사람을 건물 사이에 남긴다 —
+      <code>NoDominantStrategy</code> 의 「가만히 있기가 안전하지 않다」가 이것이다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">03</span>잘못 그으면 — 그리고 되돌리면</h2>
+    <p id="mkNote" class="hand"></p>
+    <div class="ctl">
+      <label>잘못 그은 선<select id="mkSel"></select></label>
+      <label>날 <span id="mkDayOut" class="hint"></span><input type="range" id="mkDay"></label>
+    </div>
+    <div id="mkVerdict"></div>
+    <div id="mkPlate"></div>
+    <div id="mkRescue"></div>
+    <p class="hint">되돌릴 획은 <b>화면에서 찾는다</b> — 갇힌 사람에서
+      <code>${W.balance.rescueFrontier}</code>걸음 안의 칸을 하나씩 그어 보고
+      <code>${W.balance.rescueMaxDays}</code>일 안에 다 빠져나오는 것을 고른다.
+      데이터에 정답을 적어 두지 않았다. 같은 탐색을 검사기
+      <code>MistakesAreSurvivable</code> 가 더 깊이(획 <code>${W.balance.rescueMaxEdits}</code>개까지) 돈다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">04</span>무엇이 도시를 멈추게 하는가</h2>
+    <p><b>필지 상한 하나다.</b> 한 필지를 <code>${W.balance.maxFlipsPerCell}</code>번까지만 다시 지을 수 있으므로
+      뒤집기의 총수가 막혀 있고 고정점이 반드시 있다. 상한을 없애면 무른 구역이 영원히 진동한다 —
+      오늘 길인 칸이 모레 건물이고 다시 글피에 길이다. 그러면 지도를 고친 결과가 없는 것과 같다.</p>
+    <table><thead><tr><th>세계</th><th class="n">멈췄나</th><th class="n">돌린 날</th><th class="n">끝자락의 주기</th></tr></thead>
+      <tbody>
+        <tr class="ok"><td>필지를 <b>${W.balance.maxFlipsPerCell}번</b>까지 (실제 설계)</td>
+          <td class="n">멈췄다</td><td class="n">${c.cappedDay}일</td><td class="n">${c.cappedPeriod||"없다"}</td></tr>
+        <tr class="hi"><td>상한 없음 (음성 대조군)</td>
+          <td class="n">안 멈췄다</td><td class="n">${c.freeDay}일</td><td class="n">${c.freePeriod}일</td></tr>
+      </tbody></table>
+    <div class="grid2">
+      <div><h3>필지 상한이 있는 세계 — ${c.cappedDay}일째</h3>
+        ${drawPlate(c.capped,{sheets:0,showPlan:false,cells:c.capped.cells,
+            trapped:c.capped.history[c.capped.history.length-1].trapped,label:"멈췄다"})}</div>
+      <div><h3>상한이 없는 세계 — ${c.freeDay}일째 (여전히 움직인다)</h3>
+        ${drawPlate(c.free,{sheets:0,showPlan:false,cells:c.free.cells,
+            trapped:c.free.history[c.free.history.length-1].trapped,label:"주기 "+c.freePeriod+"일"})}</div>
+    </div>
+    <p class="hint">그리고 이 규칙은 게임의 말이기도 하다 —
+      <b>필지가 닳으면 도시는 지도를 무시하고 그 자리에 그대로 남는다. 지도는 그 칸에 대해 영원히 거짓말이 된다.</b>
+      §02 에서 같은 칸을 두 번 그으면 붉은 해칭으로 그 자리가 보인다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">05</span>검사기가 본 것 / 못 본 것</h2>
+    <div class="grid2">
+      <div><h3>기계가 판정한다</h3>
+        <p class="hint">도시가 반드시 멈추는가 · 상한을 없애면 진동하는가 ·
+          잘못 그은 선을 되돌릴 수 있는가 · 그런데 공짜는 아닌가 ·
+          한 종류로 덮는 것이 최적이 아닌가 · 같은 씨드가 같은 연대기를 만드는가</p></div>
+      <div><h3>사람만 판정한다 — 미확인</h3>
+        <p class="hint">트레이싱지가 쌓이는 것이 <em>무게</em>로 느껴지는가 ·
+          붉은 점이 사람으로 읽히는가 아니면 그냥 빨간 점인가 ·
+          도시가 따라오기를 기다리는 사흘이 긴장인가 지루함인가 ·
+          「지도는 완벽하다」는 말이 무섭게 들리는가</p></div>
+    </div>
+    <p class="hint">검사기 통과를 재미로 착각하지 않는다. 자세한 것은 <code>README.md</code> 의 「판정」 칸.</p>
+  </section>`;
+
+  chapterPanel();
+  mistakePanel();
+}
+
+main().catch(e=>{
+  document.getElementById("app").innerHTML=
+    `<p class="err">도면을 펴지 못했다: ${esc(e.message)}<br>
+     <span class="hint">file:// 로 열면 fetch 가 막힌다.
+     <code>cd games/the-map-lies &amp;&amp; python -m http.server 8098</code> 뒤
+     <code>http://localhost:8098/presentation/index.html</code></span></p>`;
+});
+</script>
+</body>
+</html>

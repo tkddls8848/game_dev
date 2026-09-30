@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    헤드리스 PoC 하나. Unity를 참조하지 않는다.
+
+    `src/`의 순수 C#과 `tests/`의 NUnit 테스트를 한 어셈블리로 컴파일한다.
+    PoC 단계에서는 로직과 테스트를 가르는 값이 작다 — 가르는 비용이 값을 넘는 시점에
+    로직을 별도 csproj로 떼어 내면 된다(연출 변형이 로직을 공유할 때가 그 시점이다).
+
+    red-pen — 교정지.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>red-pen.Tests</AssemblyName>
+    <RootNamespace>RedPen</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+    <!--
+      산출물을 PoC 폴더 안의 TestBuild/ 에 둔다.
+      테스트가 실제 JSON을 찾을 때 TestContext.TestDirectory 에서 위로 올라가며
+      `data/...` 를 뒤지므로, 조상 중에 PoC 뿌리가 있어야 한다.
+      이름이 TestBuild인 이유: Windows에서 `build`와 `Build`가 같은 폴더다.
+    -->
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\TestBuild\</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\src\**\*.cs" Link="src\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="$(MSBuildThisFileDirectory)*.cs" Link="tests\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <!-- JSON 읽기. Unity의 JsonUtility가 없는 환경이므로 여기서는 이것을 쓴다. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+{
+  "_": "판정에 쓰는 수치. 전부 정수다.",
+  "investigation": {
+    "_": "조사 한 판. 코는 지치고(maxSniffs) 밤은 끝난다(endMin).",
+    "startMin": 1320,
+    "startRoom": "r_porch",
+    "sniffCostMin": 15,
+    "maxSniffs": 11,
+    "endMin": 1560
+  },
+  "perception": {
+    "_알아보기": "dominancePercent — 어느 계열에서 그 사람 몫이 방 전체의 이만큼이면 누군지 안다. 사람마다 자기만 가진 표지 잔향이 있어 이것은 늦게라도 늘 된다.",
+    "_되짚기": "purityPercent 이상 순수하고 datingFloor 이상 남은 계열 둘(머리향 하나 + 잔향 하나)의 **비율**로 나이를 맞춘다. 절대 세기를 쓰지 않는 이유: 그날 얼마나 진하게 남겼는지를 플레이어가 모른다.",
+    "_허용오차": "ratioTolPermille 은 비율 맞춤의 허용 오차다. 머리향-잔향은 걸음마다 비율이 283‰ 꺾이므로 110‰ 는 이웃 나이를 함께 받아들이지 않는다. 중간향-잔향은 100‰ 도 못 꺾여 오차 안에 묻힌다 — 그래서 중간향은 시각을 말하지 못한다.",
+    "dominancePercent": 60,
+    "purityPercent": 97,
+    "datingFloor": 26,
+    "ratioTolPermille": 110,
+    "ratioScale": 1000000,
+    "maxAgeSteps": 200
+  },
+  "checkers": {
+    "_": "핵 검사기가 요구하는 하한. **통과시키려고 내리지 않는다** — 못 넘으면 데이터를 고친다.",
+    "_실제값": "2026-09-27 기준 실제로 나온 값: 모자란 사실 5 · 되돌아간 방 5 · 가장 좁은 창 45분 · 죽치기 최고 3/14(=21%).",
+    "sweepShortfallMin": 4,
+    "revisitRoomsMin": 4,
+    "fairWindowSlotsMin": 30,
+    "campRecoveryMaxPercent": 30,
+    "seedsToCheck": 8
+  }
+}

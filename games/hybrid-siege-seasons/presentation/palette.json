@@ -1,0 +1,89 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_읽는곳": "presentation/index.html 이 이 파일을 읽어 CSS 변수로 깐다. 색을 고치려면 여기만 고친다.",
+
+  "name": "겨울 요새 · 등불",
+  "oneLine": "청회색 눈과 주황 등불 하나 — 지켜 내는 밤의 감각. 빛이 닿는 데까지가 내 것이다",
+  "reference": "달빛 눈밭의 푸른 그림자 · 홑등 하나의 따뜻한 빛 · 서리 낀 철",
+
+  "_대비": "이 연출의 전부는 대비다. 화면의 95%는 차갑고 어둡고, 따뜻한 색은 등불 하나뿐이다. 주황을 두 군데 이상 쓰면 무너진다.",
+
+  "color": {
+    "void": "#080C11",
+    "night": "#0E141C",
+    "surface": "#16202B",
+    "steel": "#2C3D4E",
+    "ice": "#3E5468",
+    "snow": "#C9D6E0",
+    "snowDim": "#7E90A0",
+    "frost": "#5A7488",
+    "lantern": "#E8913A",
+    "lanternGlow": "#FFC978",
+    "danger": "#B3472F",
+    "worn": "#6A5A4A"
+  },
+
+  "type": {
+    "family": "Do Hyeon",
+    "familyNumeric": "Gothic A1",
+    "familyGlyph": "Noto Emoji",
+    "sizeTitle": 42,
+    "sizeHeading": 20,
+    "sizeBody": 14,
+    "sizeHint": 11,
+    "sizeQuantity": 24,
+    "outlinePx": 0,
+    "letterSpacingTitle": 0.08,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다."
+  },
+
+  "grade": {
+    "saturation": 0.68,
+    "contrast": 1.22,
+    "blackLift": 0.01,
+    "vignette": 0.55,
+    "grainStatic": true,
+    "snowTextureOpacity": 0.16,
+    "lanternRadiusPx": 420,
+    "lanternFlickerPct": 0,
+    "_등불": "깜박임 0. 목업에서 깜박이면 눈이 그리로만 간다. 흔들림은 실제 화면에서 정한다.",
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 입자여야 눈보라가 된다."
+  },
+
+  "wear": {
+    "_": "카드가 닳는 것을 색으로 보여 준다. 성한 것은 눈빛, 닳은 것은 녹슨 빛.",
+    "fresh": "#C9D6E0",
+    "half": "#9A8A6A",
+    "spent": "#6A4A3A",
+    "barHeightPx": 3
+  },
+
+  "glyph": {
+    "_": "작물·카드·계절의 문양. Noto Emoji(OFL) 의 글리프를 쓴다 — 색은 CSS 로 입힌다.",
+    "crop_turnip": "🥕",
+    "crop_pumpkin": "🎃",
+    "crop_chili": "🌶",
+    "crop_herb": "🌿",
+    "crop_wheat": "🌾",
+    "card_slash": "🗡",
+    "card_bulwark": "🛡",
+    "card_ember": "🔥",
+    "card_sort": "🔧",
+    "card_harvest": "🧺",
+    "season_spring": "🌱",
+    "season_summer": "☀",
+    "season_autumn": "🍂",
+    "season_winter": "❄",
+    "enemy_cur": "🐕",
+    "enemy_crow": "🐦",
+    "enemy_bear": "🐻",
+    "enemy_captain": "⚔"
+  },
+
+  "sound": {
+    "_": "목업에서는 소리를 틀지 않는다. 어떤 소리를 쓰기로 했는지만 값으로 남긴다.",
+    "cardPlace": "assets/audio/card-place.ogg",
+    "harvest": "assets/audio/harvest.ogg",
+    "gateKnock": "assets/audio/gate-knock.ogg"
+  }
+}

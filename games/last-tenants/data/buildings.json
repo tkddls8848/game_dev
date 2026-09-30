@@ -1,0 +1,50 @@
+{
+  "_": "시나리오 하나 = 건물 하나 = 하루. 인접은 데이터에 적지 않고 층·좌우에서 끌어낸다 — 같은 층 옆칸이거나, 같은 쪽 위아랫칸이면 인접이다. 대각선은 인접이 아니다. 이웃의 말은 인접한 칸에서만 들린다(DataValidator 가 본다).",
+  "buildings": [
+    {
+      "id": "b_ga", "name": "삼화연립 가동", "address": "성북구 정릉동 41-7",
+      "noticeNo": "제2026-3117호", "noticeDate": "2026년 9월 27일",
+      "demolitionNote": "내일 06시 00분 이후 본 건물의 출입을 금한다",
+      "seed": 20260927, "graceDaysTotal": 6,
+      "note": "소리가 없는 칸이 가장 큰 사정이다. 그리고 소리가 없는 칸이 둘인데 하나는 빈 집이다",
+      "units": [
+        { "id": "u_ga_101", "unitNo": "101", "floor": 1, "side": "left",  "householdId": "h_ga_laundry" },
+        { "id": "u_ga_102", "unitNo": "102", "floor": 1, "side": "right", "householdId": "h_ga_empty" },
+        { "id": "u_ga_201", "unitNo": "201", "floor": 2, "side": "left",  "householdId": "h_ga_couple" },
+        { "id": "u_ga_202", "unitNo": "202", "floor": 2, "side": "right", "householdId": "h_ga_youth" },
+        { "id": "u_ga_301", "unitNo": "301", "floor": 3, "side": "left",  "householdId": "h_ga_child" },
+        { "id": "u_ga_302", "unitNo": "302", "floor": 3, "side": "right", "householdId": "h_ga_quiet" }
+      ]
+    },
+    {
+      "id": "b_na", "name": "삼화연립 나동", "address": "성북구 정릉동 41-8",
+      "noticeNo": "제2026-3118호", "noticeDate": "2026년 9월 27일",
+      "demolitionNote": "내일 06시 00분 이후 본 건물의 출입을 금한다",
+      "seed": 20260928, "graceDaysTotal": 6,
+      "note": "가장 작은 소리가 가장 큰 사정이다. 소리 없는 칸은 그냥 빈 집이다 — 침묵을 무조건 따라가면 여기서 크게 진다",
+      "units": [
+        { "id": "u_na_101", "unitNo": "101", "floor": 1, "side": "left",  "householdId": "h_na_widow" },
+        { "id": "u_na_102", "unitNo": "102", "floor": 1, "side": "right", "householdId": "h_na_empty" },
+        { "id": "u_na_201", "unitNo": "201", "floor": 2, "side": "left",  "householdId": "h_na_shop" },
+        { "id": "u_na_202", "unitNo": "202", "floor": 2, "side": "right", "householdId": "h_na_driver" },
+        { "id": "u_na_301", "unitNo": "301", "floor": 3, "side": "left",  "householdId": "h_na_students" },
+        { "id": "u_na_302", "unitNo": "302", "floor": 3, "side": "right", "householdId": "h_na_hoarder" }
+      ]
+    },
+    {
+      "id": "b_da", "name": "삼화연립 다동", "address": "성북구 정릉동 41-9",
+      "noticeNo": "제2026-3119호", "noticeDate": "2026년 9월 27일",
+      "demolitionNote": "내일 06시 00분 이후 본 건물의 출입을 금한다",
+      "seed": 20260929, "graceDaysTotal": 6,
+      "note": "소리 없는 칸의 사정이 가장 크지만 그 집을 돕는 값이 가장 비싸다 — 그 집에는 최선이면서 전체로는 최선이 아니다",
+      "units": [
+        { "id": "u_da_101", "unitNo": "101", "floor": 1, "side": "left",  "householdId": "h_da_market" },
+        { "id": "u_da_102", "unitNo": "102", "floor": 1, "side": "right", "householdId": "h_da_sick" },
+        { "id": "u_da_201", "unitNo": "201", "floor": 2, "side": "left",  "householdId": "h_da_fight" },
+        { "id": "u_da_202", "unitNo": "202", "floor": 2, "side": "right", "householdId": "h_da_old" },
+        { "id": "u_da_301", "unitNo": "301", "floor": 3, "side": "left",  "householdId": "h_da_new" },
+        { "id": "u_da_302", "unitNo": "302", "floor": 3, "side": "right", "householdId": "h_da_gone" }
+      ]
+    }
+  ]
+}

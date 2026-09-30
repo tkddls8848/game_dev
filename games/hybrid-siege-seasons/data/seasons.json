@@ -1,0 +1,50 @@
+{
+  "_": "한 해. 계절마다 심고, 그 계절이 끝날 때 침입을 맞는다 — 겨울로 갈수록 격화된다.",
+  "_겨울": "겨울에는 심지 못한다. 그때 쓰는 것은 세 계절 동안 쌓아 두고 아직 닳지 않은 카드뿐이다.",
+  "seasons": [
+    {
+      "id": "season_spring",
+      "nameKo": "봄",
+      "nameEn": "Spring",
+      "order": 0,
+      "turns": 6,
+      "waterBudget": 6,
+      "seedBudget": 5,
+      "plantable": true,
+      "isNight": false
+    },
+    {
+      "id": "season_summer",
+      "nameKo": "여름",
+      "nameEn": "Summer",
+      "order": 1,
+      "turns": 6,
+      "waterBudget": 9,
+      "seedBudget": 5,
+      "plantable": true,
+      "isNight": false
+    },
+    {
+      "id": "season_autumn",
+      "nameKo": "가을",
+      "nameEn": "Autumn",
+      "order": 2,
+      "turns": 6,
+      "waterBudget": 10,
+      "seedBudget": 6,
+      "plantable": true,
+      "isNight": false
+    },
+    {
+      "id": "season_winter",
+      "nameKo": "겨울",
+      "nameEn": "Winter",
+      "order": 3,
+      "turns": 0,
+      "waterBudget": 0,
+      "seedBudget": 0,
+      "plantable": false,
+      "isNight": true
+    }
+  ]
+}

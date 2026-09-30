@@ -1,0 +1,33 @@
+{
+  "_": "한 해의 네 침입. 계절마다 하나씩, 겨울로 갈수록 격화된다.",
+  "_체력": "체력은 침입마다 가득 찬다 — 이 PoC 가 쌓는 자원은 체력이 아니라 카드의 남은 횟수다.",
+  "id": "year_01",
+  "nameKo": "첫 해의 네 밤",
+  "playerHp": 60,
+  "sieges": [
+    {
+      "seasonId": "season_spring",
+      "enemyId": "enemy_cur",
+      "escalationPct": 100,
+      "isBoss": false
+    },
+    {
+      "seasonId": "season_summer",
+      "enemyId": "enemy_crow",
+      "escalationPct": 120,
+      "isBoss": false
+    },
+    {
+      "seasonId": "season_autumn",
+      "enemyId": "enemy_bear",
+      "escalationPct": 150,
+      "isBoss": false
+    },
+    {
+      "seasonId": "season_winter",
+      "enemyId": "enemy_captain",
+      "escalationPct": 190,
+      "isBoss": true
+    }
+  ]
+}

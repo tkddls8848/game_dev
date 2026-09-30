@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>작물이 정보다</title>
+<style>
+:root{--bg:#050704;--panel:#0b0f09;--ph:#a8d538;--ph2:#6f9a1f;--phd:#2f4410;--amber:#e8a93a;--red:#e2553a;--paper:#e9e1c8;--paper2:#d5caa9;--ink:#222018;
+  --mono:"JetBrains Mono","D2Coding","Nanum Gothic Coding","Consolas","Menlo",monospace;
+  --sans:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  --serif:"Nanum Myeongjo","Noto Serif KR","Batang",serif}
+html,body{margin:0;height:100%;overflow:hidden;background:#000}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:center;overflow:hidden;background:radial-gradient(1200px 800px at 40% 40%,#0e1409,#040503 80%);color:var(--ph);font-family:var(--mono)}
+.scr{position:absolute;inset:0;display:none}
+body[data-scr=a] #A, body[data-scr=b] #B{display:block}
+.scan{position:absolute;inset:0;pointer-events:none;z-index:40;background:repeating-linear-gradient(180deg,rgba(0,0,0,.0) 0 2px,rgba(0,0,0,.14) 2px 3px);mix-blend-mode:multiply}
+.roll{position:absolute;left:0;right:0;height:180px;z-index:41;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(168,213,56,.04),transparent);animation:roll 7s linear infinite}
+@keyframes roll{from{top:-200px}to{top:1000px}}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:39;background:radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,.6) 100%)}
+.glow{text-shadow:0 0 6px rgba(168,213,56,.7),0 0 18px rgba(168,213,56,.25)}
+.head{position:absolute;left:36px;right:36px;top:24px;display:flex;align-items:center;gap:22px;z-index:20;border-bottom:1px solid var(--phd);padding-bottom:14px}
+.head b{font-size:28px;letter-spacing:6px;font-weight:700}
+.head small{display:block;font-size:11px;letter-spacing:4px;color:var(--ph2)}
+.head .eye{width:46px;height:46px}
+.head .meta{margin-left:auto;display:flex;gap:26px;font-size:13px;color:var(--ph2)}
+.head .meta b{display:block;font-size:22px;letter-spacing:1px;color:var(--ph)}
+.head .live{display:flex;align-items:center;gap:8px;border:1px solid var(--ph2);padding:6px 12px;font-size:12px;letter-spacing:2px}
+.head .live i{width:9px;height:9px;border-radius:50%;background:var(--ph);box-shadow:0 0 8px var(--ph);animation:bl 1.4s steps(2) infinite}
+@keyframes bl{50%{opacity:.2}}
+/* split flap */
+.board{position:absolute;left:36px;top:110px;width:1060px;box-sizing:border-box;padding:12px 18px;background:linear-gradient(180deg,#0d110b,#080a07);border:1px solid #1c2612;box-shadow:inset 0 0 40px rgba(0,0,0,.8),0 20px 40px rgba(0,0,0,.6);z-index:10}
+.board h4{margin:0 0 10px;font-size:12px;letter-spacing:4px;color:var(--ph2);font-weight:500;display:flex;justify-content:space-between}
+.rowf{display:grid;grid-template-columns:150px 160px 1fr 110px;align-items:center;gap:18px;padding:3px 0;border-bottom:1px solid #141b0e}
+.rowf .nm{font-family:var(--sans);font-size:17px;font-weight:700;letter-spacing:2px}
+.flaps{display:flex;gap:4px}
+.fl{position:relative;width:26px;height:33px;background:#16190f;border-radius:3px;box-shadow:inset 0 0 0 1px #26301a;font-size:22px;font-weight:700;display:grid;place-items:center;color:#d9f07a;overflow:hidden}
+.fl::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:#050704}
+.fl.flip{animation:flip .25s steps(3) 2}
+@keyframes flip{0%{transform:scaleY(1)}50%{transform:scaleY(.1)}100%{transform:scaleY(1)}}
+.rowf .pct{font-size:22px;text-align:right}
+.rowf .tr{font-size:13px;text-align:right;letter-spacing:1px}
+.up{color:var(--ph)} .dn{color:var(--amber)} .crash{color:var(--red);text-shadow:0 0 10px rgba(226,85,58,.7)}
+.rowf.hot{background:rgba(168,213,56,.06)}
+.rowf.bad{background:rgba(226,85,58,.10);animation:warn 1s steps(2) infinite}
+@keyframes warn{50%{background:rgba(226,85,58,.02)}}
+.spark{width:100%;height:30px}
+/* register */
+.reg{position:absolute;left:36px;top:506px;width:1060px;z-index:10;border:1px solid #1c2612;background:#070906}
+.reg h4{margin:0;padding:10px 16px;font-size:12px;letter-spacing:4px;color:var(--ph2);font-weight:500;border-bottom:1px solid #1c2612;display:flex;justify-content:space-between}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-weight:500;color:var(--ph2);text-align:left;padding:6px 12px;font-size:11px;letter-spacing:2px;border-bottom:1px solid #1c2612}
+td{padding:4px 12px;border-bottom:1px solid #10160b}
+td.k{font-family:var(--sans);font-weight:700}
+tr.sel td{background:rgba(168,213,56,.12);color:#e6ff9a}
+tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--ph)}
+tr:hover td{background:rgba(168,213,56,.06);cursor:pointer}
+.bar{display:inline-block;height:9px;background:var(--ph);box-shadow:0 0 6px rgba(168,213,56,.6);vertical-align:middle}
+.bar.a{background:var(--amber);box-shadow:0 0 6px rgba(232,169,58,.6)}
+/* tape */
+.tapewrap{position:absolute;right:36px;top:110px;width:430px;bottom:150px;z-index:10;overflow:hidden}
+.tapewrap h4{margin:0 0 10px;font-size:12px;letter-spacing:4px;color:var(--ph2);font-weight:500}
+.tape{position:relative;background:linear-gradient(90deg,#d9cfb0,#ece4ca 20%,#e9e1c8 80%,#d2c7a4);color:var(--ink);padding:14px 26px 14px 38px;box-shadow:0 10px 30px rgba(0,0,0,.7);font-family:var(--sans);font-size:15px;line-height:1.55;margin-bottom:14px}
+.tape::before{content:"";position:absolute;left:10px;top:8px;bottom:8px;width:10px;background:radial-gradient(circle,#0b0f09 3px,transparent 3.5px) 0 0/10px 14px repeat-y}
+.tape small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:2px;color:#6b624a;margin-bottom:4px}
+.tape b{font-family:var(--sans);font-weight:800}
+.tape .stampT{position:absolute;right:14px;top:10px;border:2px solid #a8412c;color:#a8412c;font-size:11px;padding:2px 6px;transform:rotate(-6deg);font-family:var(--sans);font-weight:800}
+.tape.new{animation:feed 2.4s ease-out infinite alternate}
+@keyframes feed{0%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+/* choose */
+.choose{position:absolute;right:36px;bottom:30px;width:430px;z-index:10}
+.choose .crops{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.cb{border:1px solid var(--phd);padding:7px 6px;text-align:center;font-family:var(--sans);font-size:13px;cursor:pointer;background:#0a0d08;transition:background .15s,transform .1s}
+.cb small{display:block;font-family:var(--mono);font-size:10px;color:var(--ph2)}
+.cb:hover{background:#141c0d}
+.cb:active{transform:scale(.97)}
+.cb.on{background:var(--ph);color:#0a0d08;box-shadow:0 0 16px rgba(168,213,56,.5)}
+.cb.on small{color:#1b2a07}
+.go{width:100%;height:54px;border:1px solid var(--ph);background:transparent;color:var(--ph);font-family:var(--sans);font-size:18px;letter-spacing:4px;font-weight:700;cursor:pointer}
+.go:hover{background:rgba(168,213,56,.12)}
+.foot{position:absolute;left:36px;bottom:14px;font-size:11px;color:var(--ph2);letter-spacing:1px;z-index:10}
+/* B */
+.alarm{position:absolute;left:36px;top:110px;width:1060px;box-sizing:border-box;padding:14px 20px;border:1px solid var(--red);background:rgba(226,85,58,.10);color:#ffb3a0;z-index:12;display:flex;align-items:center;gap:18px;font-family:var(--sans)}
+.alarm b{font-size:26px;letter-spacing:3px;color:#ffd0c2}
+.alarm small{font-family:var(--mono);font-size:12px;letter-spacing:2px}
+.alarm i{width:14px;height:14px;background:var(--red);box-shadow:0 0 12px var(--red);animation:bl .7s steps(2) infinite}
+.obs{position:absolute;left:36px;top:606px;width:1060px;box-sizing:border-box;padding:12px 18px;border:1px solid #1c2612;background:#070906;z-index:10}
+.obs h4{margin:0 0 8px;font-size:12px;letter-spacing:4px;color:var(--ph2);font-weight:500;display:flex;justify-content:space-between}
+.ob{display:grid;grid-template-columns:90px 440px 60px 1fr;align-items:center;gap:12px;padding:4px 0;font-size:14px}
+.ob span{font-family:var(--sans);font-weight:700}
+.ob i{display:block;height:14px;background:var(--ph);box-shadow:0 0 8px rgba(168,213,56,.5)}
+.ob i.a{background:var(--red);box-shadow:0 0 10px rgba(226,85,58,.6)}
+.ob em{font-style:normal;color:var(--ph2);font-size:12px}
+.ledger{position:absolute;left:36px;top:782px;width:1060px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;z-index:10}
+.ledger div{border:1px solid #1c2612;background:#070906;padding:12px 16px}
+.ledger small{display:block;font-size:11px;color:var(--ph2);letter-spacing:2px}
+.ledger b{font-size:28px}
+.tabs{position:absolute;right:12px;bottom:6px;display:flex;gap:6px;z-index:60}
+.tabs button{background:#0a0d08;border:1px solid var(--ph2);color:var(--ph2);font:600 11px var(--mono);padding:3px 8px;cursor:pointer}
+.tabs button.on{background:var(--ph);color:#0a0d08}
+</style>
+</head>
+<body data-scr="a">
+<div id="stage">
+
+<!-- ============ A : 가을 파종 · 남이 본다 ============ -->
+<section class="scr" id="A">
+  <header class="head">
+    <svg class="eye" viewBox="0 0 46 46"><path d="M3 23 C12 10 34 10 43 23 C34 36 12 36 3 23Z" fill="none" stroke="#a8d538" stroke-width="2"/><circle cx="23" cy="23" r="7" fill="#a8d538"/><circle cx="23" cy="23" r="3" fill="#050704"/></svg>
+    <div><b class="glow">작물이 정보다</b><small>FARM-SIGNAL · 관측 전신국</small></div>
+    <div class="live"><i></i>남이 본다 · 신호 켬</div>
+    <div class="meta"><div>계절<b class="glow">2년차 · 가을</b></div><div>코인<b class="glow">1,946</b></div><div>평판<b class="glow">84</b></div><div>방문객<b class="glow">4 / 일</b></div></div>
+  </header>
+
+  <div class="board"><h4><span>읍내 시세판 · 다음 계절 시세지수</span><span>기준가 × 지수 · 7일마다 갱신</span></h4><div id="boardA"></div></div>
+
+  <div class="reg"><h4><span>관측 등록부 · 길에서 보이는 밭 12칸</span><span>밭은 그리지 않는다 — 남의 눈으로만 본다</span></h4>
+    <table><thead><tr><th>칸</th><th>길 노출</th><th>심은 것</th><th>가림</th><th>유효 노출</th><th>관측치 / 일</th></tr></thead><tbody id="regA"></tbody></table></div>
+
+  <div class="tapewrap"><h4>수신 전문 · 종이 테이프</h4>
+    <div class="tape new"><small>09:42 · 읍내 전보</small><b>윗마을 셋이 사프란 씨를 샀다.</b><br>지난가을 길가에 핀 보라 꽃을 보고.</div>
+    <div class="tape"><small>08:10 · 장터 소식</small>라벤더 밭을 보러 온 사람 <b>4명</b>.<br>밭에서 직접 사 감 · 웃돈 <b>+8%</b></div>
+    <div class="tape"><small>어제 · 순경 보고</small>아랫말 참외 밭 <b>도둑</b> 두 번째.<br>길가 칸부터 털렸다 함.</div>
+    <div class="tape" style="opacity:.8"><small>그저께 · 곡물상</small>보리 시세 그대로. 아무도 보리는 따라 심지 않는다.<span class="stampT">평이</span></div>
+    <div class="tape" style="opacity:.75"><small>지난주 · 윗마을 소식</small>수수 밭 뒤는 길에서 안 보인다더라.<br>B2 · C3 — <b>가림 −70 / −55</b></div>
+  </div>
+
+  <div class="choose">
+    <div class="crops" id="crops"></div>
+    <button class="go" id="go">계절 넘기기 ▸ 전보를 기다린다</button>
+  </div>
+  <div class="foot">행을 눌러 칸을 고르고, 아래에서 작물을 정합니다 · 1 / 2 화면</div>
+</section>
+
+<!-- ============ B : 겨울 · 시세 붕괴 ============ -->
+<section class="scr" id="B">
+  <header class="head">
+    <svg class="eye" viewBox="0 0 46 46"><path d="M3 23 C12 10 34 10 43 23 C34 36 12 36 3 23Z" fill="none" stroke="#a8d538" stroke-width="2"/><circle cx="23" cy="23" r="7" fill="#a8d538"/><circle cx="23" cy="23" r="3" fill="#050704"/></svg>
+    <div><b class="glow">작물이 정보다</b><small>FARM-SIGNAL · 관측 전신국</small></div>
+    <div class="live" style="border-color:#e2553a;color:#ffb3a0"><i style="background:#e2553a;box-shadow:0 0 8px #e2553a"></i>계절 전환 · 판 갱신 중</div>
+    <div class="meta"><div>계절<b class="glow">2년차 · 겨울</b></div><div>코인<b class="glow">2,918</b></div><div>평판<b class="glow">102</b></div><div>방문객<b class="glow">5 / 일</b></div></div>
+  </header>
+  <div class="alarm"><i></i><div><b>사프란 시세 붕괴 · 100% → 46%</b><br><small>당신의 가을 밭이 길에서 보였다 · 관측합 412 · 남들이 따라 심었다</small></div></div>
+  <div class="board" style="top:196px"><h4><span>읍내 시세판 · 겨울</span><span>딸깍 — 판이 바뀐다</span></h4><div id="boardB"></div></div>
+
+  <div class="tapewrap" style="bottom:30px"><h4>수신 전문 · 계절 끝</h4>
+    <div class="tape new"><small>동지 · 순경 보고</small><b>도둑 · A2 사프란 절반.</b><br>길가 칸이 먼저 털렸다. 뒤 칸 C3은 무사.<span class="stampT">피해</span></div>
+    <div class="tape"><small>동지 · 곡물상</small>사프란 재고가 넘친다. 다음 가을까지 값이 안 선다.<br>"누가 먼저 심었는지 다 봤지."</div>
+    <div class="tape"><small>동지 · 장터 소식</small>라벤더 밭 이야기가 이웃 읍까지. 평판 <b>84 → 102</b>.<br>방문객 웃돈 <b>+10%</b></div>
+    <div class="tape"><small>동지 · 윗마을</small>수수 밭 뒤는 아무도 못 봤다. 겨울호밀 한 줄, 뒤를 가린다.</div>
+    <div class="tape" style="opacity:.7"><small>동지 · 곡물상</small>아마 꽃이 파래서 조금 눈에 띄었다.</div>
+  </div>
+  <div class="obs"><h4><span>이번 가을 · 길에서 본 것 (관측합)</span><span>관측합이 클수록 남들이 따라 심는다</span></h4>
+    <div class="ob"><span>사프란</span><i class="a" style="width:412px"></i><b>412</b><em>A2 · 길가 88</em></div>
+    <div class="ob"><span>라벤더</span><i style="width:380px"></i><b>380</b><em>A1 · 평판으로</em></div>
+    <div class="ob"><span>참외</span><i style="width:96px"></i><b>96</b><em>B3</em></div>
+    <div class="ob"><span>수수</span><i style="width:44px"></i><b>44</b><em>A3 · 뒤를 가림</em></div></div>
+  <div class="ledger">
+    <div><small>가을 매출</small><b class="glow">1,284</b></div>
+    <div><small>도둑 손실</small><b class="crash">−312</b></div>
+    <div><small>방문객 웃돈</small><b class="glow">+10%</b></div>
+    <div><small>사프란 다음 가을</small><b class="crash">46%</b></div>
+  </div>
+</section>
+
+<div class="vig"></div><div class="scan"></div><div class="roll"></div>
+<nav class="tabs"><button data-k="a">A 파종</button><button data-k="b">B 붕괴</button></nav>
+</div>
+
+<script>
+(function(){
+  var st=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  var tabs=document.querySelectorAll('.tabs button');
+  var flipped=false;
+  function show(k){k=(k==='b')?'b':'a';document.body.setAttribute('data-scr',k);
+    for(var i=0;i<tabs.length;i++){tabs[i].className=(tabs[i].getAttribute('data-k')===k)?'on':'';}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}
+    if(k==='b')flipAll();}
+  for(var i=0;i<tabs.length;i++){tabs[i].addEventListener('click',function(){show(this.getAttribute('data-k'));});}
+  window.addEventListener('hashchange',function(){show(location.hash.replace('#',''));});
+
+  var CROPS=[['turnip','순무',25,4],['barley','보리',30,5],['flax','아마',40,12],['sorghum','수수',35,6],['winterRye','겨울호밀',20,3],['lavender','라벤더',90,10],['melon','참외',75,40],['saffron','사프란',85,60]];
+  var A={turnip:[98,97,99,101,100,99],barley:[100,100,100,100,100,100],flax:[104,101,97,94,92,90],sorghum:[100,102,103,103,104,104],winterRye:[100,100,101,101,102,102],lavender:[108,112,115,117,118,118],melon:[100,92,84,79,76,74],saffron:[112,118,124,126,110,100]};
+  var B={turnip:[99,101,100,101,100,100],barley:[100,100,100,100,100,100],flax:[90,88,86,86,85,85],sorghum:[104,105,106,108,108,108],winterRye:[102,103,104,104,104,104],lavender:[118,119,122,124,124,124],melon:[74,72,72,73,74,76],saffron:[100,92,81,70,58,46]};
+  function spark(v,col){var mn=40,mx=130,o='<svg class="spark" viewBox="0 0 110 30" preserveAspectRatio="none"><path d="M0 '+(30-(100-mn)/(mx-mn)*30)+' H110" stroke="#2f4410" stroke-dasharray="2 3"/>';var d='';
+    for(var i=0;i<v.length;i++){var x=i*22,y=30-(v[i]-mn)/(mx-mn)*30;d+=(i?'L':'M')+x+' '+y.toFixed(1)+' ';}
+    return o+'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="2"/></svg>';}
+  function pad(n){var s=String(n);while(s.length<3)s=' '+s;return s;}
+  function board(id,data,crash){var h='';for(var i=0;i<CROPS.length;i++){var c=CROPS[i],v=data[c[0]],now=v[v.length-1],prev=v[v.length-2];
+      var col=now<60?'#e2553a':(now<80?'#e8a93a':'#a8d538');var cls=now<60?'crash':(now<prev?'dn':'up');
+      var digits=pad(now).split('');
+      h+='<div class="rowf'+(c[0]==='saffron'&&crash?' bad':(c[0]==='lavender'?' hot':''))+'"><span class="nm">'+c[1]+'</span><span class="flaps">'+
+        digits.map(function(d){return '<span class="fl" data-d="'+d+'">'+(d===' '?'':d)+'</span>';}).join('')+'<span class="fl">%</span></span>'+
+        spark(v,col)+'<span class="tr '+cls+'">'+(now>prev?'▲ ':(now<prev?'▼ ':'■ '))+(now-prev>0?'+':'')+(now-prev)+'</span></div>';}
+    document.getElementById(id).innerHTML=h;}
+  board('boardA',A,false);board('boardB',B,true);
+
+  var PL=[['A1',92,'라벤더',0,92,83],['A2',88,'사프란 ?',0,88,75],['A3',84,'수수',0,84,29],['A4',78,'순무',0,78,20],
+          ['B1',56,'아마',0,56,22],['B2',52,'보리',70,0,0],['B3',48,'참외',0,48,36],['B4',44,'겨울호밀',0,44,9],
+          ['C1',30,'보리',0,30,9],['C2',26,'순무',0,26,6],['C3',22,'사프란',55,0,0],['C4',18,'—',0,18,0]];
+  var reg=document.getElementById('regA'),rh='';
+  for(var r=0;r<PL.length;r++){var p=PL[r];
+    rh+='<tr data-i="'+r+'"'+(p[0]==='A2'?' class="sel"':'')+'><td class="k">'+p[0]+'</td><td><span class="bar" style="width:'+p[1]+'px"></span> '+p[1]+'</td><td class="k">'+p[2]+'</td><td>'+(p[3]?'<span style="color:#e8a93a">수수 뒤 −'+p[3]+'</span>':'—')+'</td><td>'+p[4]+'</td><td><span class="bar'+(p[5]>60?' a':'')+'" style="width:'+Math.round(p[5]*1.1)+'px"></span> '+p[5]+'</td></tr>';}
+  reg.innerHTML=rh;
+  var cr=document.getElementById('crops'),ch='';
+  for(var c=0;c<CROPS.length;c++){ch+='<div class="cb'+(CROPS[c][0]==='saffron'?' on':'')+'" data-c="'+c+'">'+CROPS[c][1]+'<small>눈 '+CROPS[c][2]+' · 도 '+CROPS[c][3]+'</small></div>';}
+  cr.innerHTML=ch;
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}}catch(e){ac=null;}return ac;}
+  function clack(n){var a=ctx();if(!a)return;for(var i=0;i<n;i++){var t=a.currentTime+i*.045,bs=a.createBufferSource(),b=a.createBuffer(1,Math.floor(a.sampleRate*.02),a.sampleRate),d=b.getChannelData(0);
+    for(var k=0;k<d.length;k++)d[k]=(Math.random()*2-1)*Math.pow(1-k/d.length,4);var f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=2200+(i%3)*400;f.Q.value=2;var g=a.createGain();g.gain.value=.5;
+    bs.buffer=b;bs.connect(f);f.connect(g);g.connect(a.destination);bs.start(t);}}
+  function key(){var a=ctx();if(!a)return;var t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='square';o.frequency.value=880;g.gain.setValueAtTime(.05,t);g.gain.setValueAtTime(0,t+.06);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.08);}
+  function flipAll(){var f=document.querySelectorAll('#boardB .fl');for(var i=0;i<f.length;i++){(function(el,j){el.className='fl';setTimeout(function(){el.className='fl flip';},j*8);})(f[i],i);}}
+  reg.addEventListener('click',function(e){var tr=e.target;while(tr&&tr.tagName!=='TR')tr=tr.parentNode;if(!tr)return;var rows=reg.querySelectorAll('tr');for(var i=0;i<rows.length;i++)rows[i].className='';tr.className='sel';key();});
+  cr.addEventListener('click',function(e){var b=e.target;while(b&&b!==cr&&!(b.className&&String(b.className).indexOf('cb')===0))b=b.parentNode;if(!b||b===cr)return;
+    var all=cr.querySelectorAll('.cb');for(var i=0;i<all.length;i++)all[i].className='cb';b.className='cb on';
+    var sel=reg.querySelector('tr.sel');if(sel){var c=CROPS[+b.getAttribute('data-c')];sel.children[2].textContent=c[1];var ex=+sel.children[1].textContent.replace(/[^0-9]/g,'');
+      var ob=Math.round(ex*c[2]/100);sel.children[5].innerHTML='<span class="bar'+(ob>60?' a':'')+'" style="width:'+Math.round(ob*1.1)+'px"></span> '+ob;}
+    clack(3);});
+  document.getElementById('go').addEventListener('click',function(){clack(14);setTimeout(function(){show('b');clack(20);},300);});
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2'){show('b');clack(20);}});
+  show(location.hash.replace('#','')||'a');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(사건 파일 · 청사진 모눈 · 목판화 타로 · 납 활자 인쇄소 · 바랜 측량도 · 필사본 연감 · 전보 시세판 · 창고 장부 · 겨울 요새 · 식물 표본집 · 구성주의 포스터 · 자수 지도)과 겹치지 않는다. 여기만 **관공서 서식**이다 — 종이가 갱지이고, 글자가 활자이며, 색이 검정과 붉은 직인 둘뿐이고, 그림이 하나도 없다. 창고 장부(크라프트지)와는 종이와 글꼴이 다르고, 납 활자 인쇄소와는 「인쇄물」이 아니라 「고지된 문서」라는 점이 다르다 — 여기서는 활자가 아름답지 않고 사무적이다.",
+
+  "name": "철거 고지서",
+  "oneLine": "관공서가 붙인 흰 갱지 한 장. 차가운 표 위에 여섯 집의 사정이 얹힌다",
+  "reference": "철거 계고장 — 흰 갱지에 검은 활자, 붉은 원형 직인, 세대별 칸이 표로 늘어선 배치도, 도장 눌린 자리에 잉크가 번진 흔적, 접혀 있던 자국",
+
+  "color": {
+    "newsprint": "#E6E1D3",
+    "newsprintLit": "#F2EFE5",
+    "newsprintDim": "#D5CFBC",
+    "newsprintShade": "#BEB7A2",
+    "rule": "#9C9684",
+    "ruleHeavy": "#5F5A4C",
+    "ink": "#17160F",
+    "inkSoft": "#4B483C",
+    "inkFaint": "#7A7566",
+    "seal": "#A81F17",
+    "sealFaded": "#C4685F",
+    "_색이_둘뿐이다": "검정(ink)과 붉은 직인(seal). newsprint 계열 넷은 종이의 농도이고 색이 아니다. 관공서 서식에 색이 셋이면 서식이 아니라 전단이 된다",
+    "_무엇이_붉은가": "직인 · 「침묵」이라고 적힌 칸 · 나머지가 물어 준 값. 즉 **관청이 찍은 것과 대가**만 붉다. 사람의 사정은 검정으로만 적힌다"
+  },
+
+  "grid": {
+    "_": "★ 이 연출의 뼈대. 배치도는 층 x 좌우의 표이고, 표의 칸이 곧 세대다",
+    "cellWidthPx": 232,
+    "cellHeightPx": 132,
+    "cellGapPx": 0,
+    "ruleWidthPx": 1,
+    "ruleHeavyWidthPx": 2,
+    "headerHeightPx": 30,
+    "labelPadPx": 8,
+    "_격자선을_지우지_않는다": "선을 없애면 표가 카드가 된다. 관공서 서식은 칸이 닫혀 있다",
+    "floorLabelWidthPx": 44
+  },
+
+  "waveform": {
+    "_": "★★ **이 연출의 핵.** 귀를 댄 칸에만 파형이 뜬다. 파형은 들은 소리의 크기에서 계산되고 손으로 그리지 않는다",
+    "barCount": 26,
+    "barWidthPx": 3,
+    "barGapPx": 2,
+    "slotHeightPx": 34,
+    "minBarPx": 2,
+    "maxBarPx": 32,
+    "strokeColor": "#17160F",
+    "_계산": "막대 높이 = minBarPx + (maxBarPx - minBarPx) x loudnessPercent / 100 을 기준으로 두고, 막대마다 씨드 없는 고정 무늬(사인 두 겹)를 곱한다. 매 프레임 흔들지 않는다 — 흔들면 표가 아니라 오디오 플레이어가 된다",
+    "silenceStrokeDash": [3, 4],
+    "silenceStrokeColor": "#A81F17",
+    "silenceLabel": "파형 없음",
+    "_침묵한_칸": "파형 자리를 **비워 두고** 붉은 점선 테두리만 남긴다. 다른 칸에 막대가 빽빽한데 이 칸만 비어 있는 것이 이 화면에서 가장 눈에 띄어야 한다",
+    "unheardLabel": "미청취",
+    "unheardStrokeDash": [1, 5],
+    "unheardStrokeColor": "#9C9684",
+    "_아직_안_들은_칸": "회색 점선. 침묵(붉은 점선)과 **반드시 달라 보여야 한다** — 둘이 같아 보이면 이 PoC의 핵이 화면에서 사라진다"
+  },
+
+  "seal": {
+    "_": "붉은 원형 직인. 이미지를 받지 않고 SVG 로 그린다",
+    "radiusPx": 56,
+    "ringWidthPx": 3,
+    "innerRingWidthPx": 1,
+    "innerGapPx": 6,
+    "rotateDeg": -7,
+    "inkOpacity": 82,
+    "bleedBlurPx": 1,
+    "textTop": "성북구청",
+    "textBottom": "철거",
+    "_왜_비뚤어져_있나": "rotateDeg 로 기울인다. 똑바로 찍힌 도장은 인쇄물처럼 보이고, 기울어진 도장만 사람이 손으로 누른 것처럼 보인다"
+  },
+
+  "paper": {
+    "_": "갱지. 질감 이미지를 한 장도 받지 않고 값으로 만든다",
+    "fibrePitchPx": 3,
+    "fibreOpacity": 6,
+    "flecksPerThousandPx": 7,
+    "fleckSizePx": 2,
+    "fleckOpacity": 11,
+    "foldLineXPercent": [33, 67],
+    "foldOpacity": 9,
+    "_접힌_자국": "고지서는 접어서 가져온 종이다. 세로 두 줄이 이 화면에서 유일한 「사용감」이다",
+    "edgeShadowPx": 14,
+    "vignette": 0.14
+  },
+
+  "type": {
+    "family": "GothicA1",
+    "familyNumeral": "NanumGothicCoding",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일 · URL · SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "표제와 본문은 고딕(Gothic A1) — 관공서 서식은 손글씨도 명조도 쓰지 않는다. 숫자와 호수는 타자기 폭이 고른 글꼴(Nanum Gothic Coding) 이어야 칸이 흔들리지 않고, 계고장의 타자기 느낌이 거기서 나온다",
+    "sizeTitle": 34,
+    "sizeHeading": 21,
+    "sizeBody": 15,
+    "sizeHint": 12,
+    "sizeNumeral": 13,
+    "sizeStamp": 15,
+    "trackingTitle": 8,
+    "trackingHeading": 2,
+    "trackingBody": 0,
+    "outlinePx": 0,
+    "_자간": "표제의 자간을 8px 까지 벌린다. 관공서 문서의 표제는 글자를 띄워 찍는다 — 이 한 값이 「고지서」와 「포스터」를 가른다",
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "layout": {
+    "_": "배치도의 자리는 데이터의 floor/side 에서 계산한다 — 좌표를 여기 적지 않는다. 층이 위로 갈수록 위에 놓이고, side 가 left 면 왼쪽 칸이다",
+    "maxWidthPx": 1140,
+    "gutterPx": 20,
+    "sectionGapPx": 34,
+    "tableGapPx": 18
+  },
+
+  "grade": {
+    "saturation": 0.35,
+    "contrast": 1.12,
+    "blackLift": 0.02,
+    "grainStatic": true,
+    "_채도": "0.35. 화면에 색이 붉은 직인 하나뿐이라 채도를 올리면 그 하나만 튀어 나와 서식이 광고가 된다",
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 섬유여야 갱지가 된다"
+  },
+
+  "motion": {
+    "_": "고지서는 움직이지 않는다. 움직이는 것은 파형이 그려지는 순간뿐이다",
+    "waveDrawMs": 260,
+    "cellRevealMs": 120,
+    "easing": "cubic-bezier(.2,.75,.25,1)",
+    "_파형_그리기": "막대를 왼쪽에서 오른쪽으로 세운다 — 귀를 대고 있는 시간이 흐르는 것처럼 보인다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 엿듣기가 주제인 PoC에 소리가 없는 것이 이상해 보이지만, 맞는 CC0 소리를 원 페이지에서 확인하지 못했고 **없는 것을 있는 척 적지 않는다.** CREDITS.md 의 「버린 것」에 같은 사실을 적었다"
+  }
+}

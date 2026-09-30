@@ -1,0 +1,392 @@
+{
+  "_": "손으로 쓰지 말 것. tests/SceneExportTests.cs 가 실제 시뮬레이션에서 굽는다.",
+  "generatedBy": "deck-rewind.Tests / SceneExportTests",
+  "rule": "되감기 — 적의 의도는 보이지 않는다. 되감으면 적이 기억하고 더 세게 때린다.",
+  "seed": 4254,
+  "enemyId": "enemy_archivist",
+  "enemyNameKo": "기록관",
+  "enemyPatternLength": 6,
+  "memoryDamagePctPerStack": 22,
+  "outcome": "PlayerWon",
+  "rewindsUsed": 1,
+  "finalMemory": 1,
+  "turns": [
+    {
+      "round": 1,
+      "playerHp": 50,
+      "playerHpAfter": 47,
+      "playerMaxHp": 50,
+      "playerBlock": 12,
+      "enemyHp": 112,
+      "enemyHpAfter": 106,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_shield",
+        "card_probe",
+        "card_shield",
+        "card_probe",
+        "card_probe"
+      ],
+      "played": [
+        "card_shield",
+        "card_shield",
+        "card_probe"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy attack 15 dealt=3 hp=47",
+      "rewoundAfter": false
+    },
+    {
+      "round": 2,
+      "playerHp": 47,
+      "playerHpAfter": 47,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 106,
+      "enemyHpAfter": 98,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 0,
+      "discard": 5,
+      "hand": [
+        "card_reindex",
+        "card_shield",
+        "card_calibrate",
+        "card_shield",
+        "card_probe"
+      ],
+      "played": [
+        "card_calibrate",
+        "card_probe",
+        "card_shield",
+        "card_reindex"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy block 13",
+      "rewoundAfter": false
+    },
+    {
+      "round": 3,
+      "playerHp": 47,
+      "playerHpAfter": 35,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 98,
+      "enemyHpAfter": 87,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 2,
+      "discard": 3,
+      "hand": [
+        "card_shield",
+        "card_probe",
+        "card_probe",
+        "card_probe",
+        "card_probe"
+      ],
+      "played": [
+        "card_probe",
+        "card_probe",
+        "card_probe"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy attack 12 dealt=12 hp=35",
+      "rewoundAfter": false
+    },
+    {
+      "round": 4,
+      "playerHp": 35,
+      "playerHpAfter": 35,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 87,
+      "enemyHpAfter": 71,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_shield",
+        "card_reindex",
+        "card_calibrate",
+        "card_probe",
+        "card_probe"
+      ],
+      "played": [
+        "card_probe",
+        "card_probe",
+        "card_shield",
+        "card_reindex"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy weak 2",
+      "rewoundAfter": false
+    },
+    {
+      "round": 5,
+      "playerHp": 35,
+      "playerHpAfter": 27,
+      "playerMaxHp": 50,
+      "playerBlock": 12,
+      "enemyHp": 71,
+      "enemyHpAfter": 65,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_shield",
+        "card_shield",
+        "card_shield",
+        "card_probe",
+        "card_probe"
+      ],
+      "played": [
+        "card_shield",
+        "card_shield",
+        "card_probe"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy attack 20 dealt=8 hp=27",
+      "rewoundAfter": false
+    },
+    {
+      "round": 6,
+      "playerHp": 27,
+      "playerHpAfter": 27,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 65,
+      "enemyHpAfter": 53,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 0,
+      "discard": 5,
+      "hand": [
+        "card_reindex",
+        "card_shield",
+        "card_probe",
+        "card_calibrate",
+        "card_probe"
+      ],
+      "played": [
+        "card_shield",
+        "card_probe",
+        "card_probe",
+        "card_reindex"
+      ],
+      "knownIntentType": null,
+      "knownIntentAmount": -1,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy strengthen 3",
+      "rewoundAfter": false
+    },
+    {
+      "round": 7,
+      "playerHp": 27,
+      "playerHpAfter": 9,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 53,
+      "enemyHpAfter": 29,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 2,
+      "discard": 3,
+      "hand": [
+        "card_shield",
+        "card_probe",
+        "card_probe",
+        "card_reindex",
+        "card_probe"
+      ],
+      "played": [
+        "card_probe",
+        "card_probe",
+        "card_probe",
+        "card_reindex"
+      ],
+      "knownIntentType": "attack",
+      "knownIntentAmount": 15,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy attack 15 dealt=18 hp=9",
+      "rewoundAfter": false
+    },
+    {
+      "round": 8,
+      "playerHp": 9,
+      "playerHpAfter": 9,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 29,
+      "enemyHpAfter": 13,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_probe",
+        "card_reindex",
+        "card_probe",
+        "card_shield",
+        "card_shield"
+      ],
+      "played": [
+        "card_probe",
+        "card_probe",
+        "card_reindex",
+        "card_shield"
+      ],
+      "knownIntentType": "block",
+      "knownIntentAmount": 13,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy block 13",
+      "rewoundAfter": false
+    },
+    {
+      "round": 9,
+      "playerHp": 9,
+      "playerHpAfter": 0,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 13,
+      "enemyHpAfter": 10,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_probe",
+        "card_probe",
+        "card_calibrate",
+        "card_probe",
+        "card_shield"
+      ],
+      "played": [
+        "card_shield",
+        "card_probe",
+        "card_probe"
+      ],
+      "knownIntentType": "attack",
+      "knownIntentAmount": 12,
+      "memory": 0,
+      "rewindCharges": 3,
+      "enemyAction": "enemy attack 12 dealt=9 hp=0",
+      "rewoundAfter": true
+    },
+    {
+      "round": 8,
+      "playerHp": 9,
+      "playerHpAfter": 3,
+      "playerMaxHp": 50,
+      "playerBlock": 12,
+      "enemyHp": 29,
+      "enemyHpAfter": 21,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_probe",
+        "card_reindex",
+        "card_probe",
+        "card_shield",
+        "card_shield"
+      ],
+      "played": [
+        "card_shield",
+        "card_shield",
+        "card_probe",
+        "card_reindex"
+      ],
+      "knownIntentType": "attack",
+      "knownIntentAmount": 12,
+      "memory": 1,
+      "rewindCharges": 2,
+      "enemyAction": "enemy attack 12 dealt=6 hp=3",
+      "rewoundAfter": false
+    },
+    {
+      "round": 9,
+      "playerHp": 3,
+      "playerHpAfter": 3,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 21,
+      "enemyHpAfter": 5,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_probe",
+        "card_probe",
+        "card_calibrate",
+        "card_shield",
+        "card_reindex"
+      ],
+      "played": [
+        "card_probe",
+        "card_probe",
+        "card_reindex",
+        "card_shield"
+      ],
+      "knownIntentType": "weak",
+      "knownIntentAmount": 2,
+      "memory": 1,
+      "rewindCharges": 2,
+      "enemyAction": "enemy weak 2",
+      "rewoundAfter": false
+    },
+    {
+      "round": 10,
+      "playerHp": 3,
+      "playerHpAfter": 3,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 5,
+      "enemyHpAfter": -1,
+      "enemyMaxHp": 112,
+      "energy": 3,
+      "deck": 5,
+      "discard": 0,
+      "hand": [
+        "card_probe",
+        "card_shield",
+        "card_probe",
+        "card_probe",
+        "card_calibrate"
+      ],
+      "played": [
+        "card_probe"
+      ],
+      "knownIntentType": "attack",
+      "knownIntentAmount": 20,
+      "memory": 1,
+      "rewindCharges": 2,
+      "enemyAction": "(없음)",
+      "rewoundAfter": false
+    }
+  ]
+}

@@ -1,0 +1,914 @@
+{
+  "_": "손으로 쓰지 말 것. tests/SceneExportTests.cs 가 실제 시뮬레이션에서 굽는다.",
+  "generatedBy": "deck-openhand.Tests / SceneExportTests",
+  "rule": "공개 덱 — 적의 다음 다섯 수가 늘 보인다. 정보가 아니라 순서가 퍼즐이다.",
+  "seed": 4242,
+  "peekWindow": 5,
+  "enemyId": "enemy_tower",
+  "enemyNameKo": "탑",
+  "enemyPatternLength": 7,
+  "outcome": "PlayerWon",
+  "intentsSkipped": 0,
+  "intentsSwapped": 2,
+  "turns": [
+    {
+      "round": 1,
+      "playerHp": 50,
+      "playerHpAfter": 50,
+      "playerMaxHp": 50,
+      "playerBlock": 19,
+      "enemyHp": 124,
+      "enemyHpAfter": 110,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_blade",
+        "card_mantle",
+        "card_verdict",
+        "card_brace",
+        "card_invert"
+      ],
+      "played": [
+        "card_brace",
+        "card_verdict"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        }
+      ],
+      "braceValue": 17,
+      "attacksAhead": 3,
+      "enemyAction": "enemy attack 17 dealt=0 hp=50"
+    },
+    {
+      "round": 2,
+      "playerHp": 50,
+      "playerHpAfter": 50,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 110,
+      "enemyHpAfter": 102,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 1,
+      "discard": 5,
+      "hand": [
+        "card_zeal",
+        "card_balm",
+        "card_echo",
+        "card_veil",
+        "card_wane"
+      ],
+      "played": [
+        "card_zeal",
+        "card_echo",
+        "card_wane"
+      ],
+      "peek": [
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "braceValue": 0,
+      "attacksAhead": 2,
+      "enemyAction": "enemy block 14"
+    },
+    {
+      "round": 3,
+      "playerHp": 50,
+      "playerHpAfter": 50,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 102,
+      "enemyHpAfter": 100,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_omen",
+        "card_veil",
+        "card_invert",
+        "card_mantle",
+        "card_verdict"
+      ],
+      "played": [
+        "card_verdict",
+        "card_invert",
+        "card_omen"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ],
+      "braceValue": 10,
+      "attacksAhead": 3,
+      "enemyAction": "enemy weak 2"
+    },
+    {
+      "round": 4,
+      "playerHp": 50,
+      "playerHpAfter": 50,
+      "playerMaxHp": 50,
+      "playerBlock": 16,
+      "enemyHp": 100,
+      "enemyHpAfter": 90,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_echo",
+        "card_balm",
+        "card_wane",
+        "card_brace",
+        "card_mantle"
+      ],
+      "played": [
+        "card_brace",
+        "card_echo",
+        "card_wane"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        }
+      ],
+      "braceValue": 14,
+      "attacksAhead": 4,
+      "enemyAction": "enemy attack 14 dealt=0 hp=50"
+    },
+    {
+      "round": 5,
+      "playerHp": 50,
+      "playerHpAfter": 50,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 90,
+      "enemyHpAfter": 78,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 1,
+      "discard": 5,
+      "hand": [
+        "card_zeal",
+        "card_verdict",
+        "card_omen",
+        "card_blade",
+        "card_invert"
+      ],
+      "played": [
+        "card_invert",
+        "card_verdict",
+        "card_omen"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        }
+      ],
+      "braceValue": 18,
+      "attacksAhead": 3,
+      "enemyAction": "enemy strengthen 4"
+    },
+    {
+      "round": 6,
+      "playerHp": 50,
+      "playerHpAfter": 22,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 78,
+      "enemyHpAfter": 48,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 2,
+      "discard": 4,
+      "hand": [
+        "card_omen",
+        "card_verdict",
+        "card_invert",
+        "card_balm",
+        "card_echo"
+      ],
+      "played": [
+        "card_verdict",
+        "card_echo",
+        "card_omen"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        }
+      ],
+      "braceValue": 28,
+      "attacksAhead": 4,
+      "enemyAction": "enemy attack 24 dealt=28 hp=22"
+    },
+    {
+      "round": 7,
+      "playerHp": 22,
+      "playerHpAfter": 28,
+      "playerMaxHp": 50,
+      "playerBlock": 18,
+      "enemyHp": 48,
+      "enemyHpAfter": 37,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_brace",
+        "card_balm",
+        "card_mantle",
+        "card_omen",
+        "card_invert"
+      ],
+      "played": [
+        "card_brace",
+        "card_balm",
+        "card_omen",
+        "card_echo"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        }
+      ],
+      "braceValue": 16,
+      "attacksAhead": 3,
+      "enemyAction": "enemy attack 12 dealt=0 hp=28"
+    },
+    {
+      "round": 8,
+      "playerHp": 28,
+      "playerHpAfter": 7,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 37,
+      "enemyHpAfter": 10,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_blade",
+        "card_verdict",
+        "card_wane",
+        "card_veil",
+        "card_echo"
+      ],
+      "played": [
+        "card_verdict",
+        "card_echo"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        }
+      ],
+      "braceValue": 21,
+      "attacksAhead": 3,
+      "enemyAction": "enemy attack 17 dealt=21 hp=7"
+    },
+    {
+      "round": 9,
+      "playerHp": 7,
+      "playerHpAfter": 13,
+      "playerMaxHp": 50,
+      "playerBlock": 6,
+      "enemyHp": 10,
+      "enemyHpAfter": 10,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 1,
+      "discard": 5,
+      "hand": [
+        "card_invert",
+        "card_zeal",
+        "card_mantle",
+        "card_brace",
+        "card_balm"
+      ],
+      "played": [
+        "card_balm",
+        "card_mantle",
+        "card_zeal"
+      ],
+      "peek": [
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "block",
+          "amount": 14,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        }
+      ],
+      "braceValue": 0,
+      "attacksAhead": 2,
+      "enemyAction": "enemy block 14"
+    },
+    {
+      "round": 10,
+      "playerHp": 13,
+      "playerHpAfter": 13,
+      "playerMaxHp": 50,
+      "playerBlock": 20,
+      "enemyHp": 10,
+      "enemyHpAfter": 6,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_omen",
+        "card_blade",
+        "card_verdict",
+        "card_wane",
+        "card_brace"
+      ],
+      "played": [
+        "card_brace",
+        "card_verdict",
+        "card_omen"
+      ],
+      "peek": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "attack",
+          "amount": 14,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        }
+      ],
+      "braceValue": 18,
+      "attacksAhead": 3,
+      "enemyAction": "enemy attack 14 dealt=0 hp=13"
+    },
+    {
+      "round": 11,
+      "playerHp": 13,
+      "playerHpAfter": 13,
+      "playerMaxHp": 50,
+      "playerBlock": 0,
+      "enemyHp": 6,
+      "enemyHpAfter": -7,
+      "enemyMaxHp": 124,
+      "energy": 3,
+      "deck": 6,
+      "discard": 0,
+      "hand": [
+        "card_veil",
+        "card_zeal",
+        "card_balm",
+        "card_echo",
+        "card_blade"
+      ],
+      "played": [
+        "card_echo"
+      ],
+      "peek": [
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        }
+      ],
+      "peekAfterPlay": [
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 24,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 4,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 17,
+          "target": "player"
+        }
+      ],
+      "braceValue": 0,
+      "attacksAhead": 3,
+      "enemyAction": "(없음)"
+    }
+  ]
+}

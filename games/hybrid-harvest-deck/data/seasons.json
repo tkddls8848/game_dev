@@ -1,0 +1,11 @@
+{
+  "_": "한 해. 봄·여름·가을에 심고, 겨울 밤에 침입을 막는다.",
+  "_turns": "그 계절의 성장 턴 수. 작물의 growTurns 가 여기에 들어가야 수확된다.",
+  "_seedBudget": "한 계절에 쓸 수 있는 씨앗 상한. 봄에 한 해치를 다 써 버리면 가을 작물을 심을 수 없다.",
+  "seasons": [
+    { "id": "season_spring", "nameKo": "봄", "nameEn": "Spring", "order": 0, "turns": 6, "waterBudget": 8,  "seedBudget": 5, "plantable": true,  "isNight": false },
+    { "id": "season_summer", "nameKo": "여름", "nameEn": "Summer", "order": 1, "turns": 6, "waterBudget": 9,  "seedBudget": 5, "plantable": true,  "isNight": false },
+    { "id": "season_autumn", "nameKo": "가을", "nameEn": "Autumn", "order": 2, "turns": 6, "waterBudget": 10, "seedBudget": 6, "plantable": true,  "isNight": false },
+    { "id": "season_winter", "nameKo": "겨울", "nameEn": "Winter", "order": 3, "turns": 0, "waterBudget": 0,  "seedBudget": 0, "plantable": false, "isNight": true }
+  ]
+}

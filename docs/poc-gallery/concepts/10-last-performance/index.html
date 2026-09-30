@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>마지막 공연</title>
+<style>
+:root{--velvet:#6d0f16;--velvet-d:#2a0306;--gold:#d9a852;--gold-l:#f3d79a;--wood:#5a3519;--ink:#f6e9d2;--cold:#9fb5c9}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#050302}
+body{font-family:"Nanum Myeongjo","Noto Serif KR","Batang","AppleMyungjo",serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:#0b0604}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+/* curtains */
+.curtain{position:absolute;top:0;bottom:0;width:360px;background:
+ repeating-linear-gradient(90deg,rgba(0,0,0,.55) 0 6px,rgba(0,0,0,0) 22px,rgba(255,90,90,.10) 34px,rgba(0,0,0,0) 46px,rgba(0,0,0,.5) 60px),
+ linear-gradient(180deg,#8d1620,#5e0b12 60%,#2a0306);box-shadow:inset 0 -80px 120px rgba(0,0,0,.7)}
+.curtain.l{left:0;border-radius:0 0 60% 0/0 0 20% 0}
+.curtain.r{right:0;border-radius:0 0 0 60%/0 0 0 20%}
+.valance{position:absolute;left:0;right:0;top:0;height:120px;background:
+ radial-gradient(60px 50px at 60px 100%,transparent 58px,#7a121b 60px) 0 0/120px 120px repeat-x,
+ linear-gradient(#4a070d,#7a121b);filter:drop-shadow(0 12px 18px rgba(0,0,0,.8))}
+.fringe{position:absolute;left:0;right:0;top:112px;height:22px;background:repeating-linear-gradient(90deg,var(--gold) 0 2px,transparent 2px 7px);opacity:.75;-webkit-mask:linear-gradient(#000,transparent);mask:linear-gradient(#000,transparent)}
+.floor{position:absolute;left:0;right:0;bottom:0;height:330px;background:
+ repeating-linear-gradient(90deg,rgba(0,0,0,.35) 0 2px,transparent 2px 118px),
+ linear-gradient(180deg,#6d4322,#3a2010 55%,#140905);transform:perspective(700px) rotateX(38deg);transform-origin:50% 0}
+.apron{position:absolute;left:0;right:0;bottom:170px;height:14px;background:linear-gradient(#e0b36a,#6b4518);box-shadow:0 8px 20px #000}
+.spot{position:absolute;left:50%;top:-80px;width:900px;height:1080px;margin-left:-450px;pointer-events:none;
+ background:radial-gradient(ellipse 360px 120px at 50% 88%,rgba(255,220,150,.55),transparent 70%),
+ linear-gradient(180deg,rgba(255,226,170,.0),rgba(255,214,140,.16));
+ clip-path:polygon(44% 0,56% 0,92% 100%,8% 100%);mix-blend-mode:screen;animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.85}}
+.dust{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 20% 30%,#fff8,transparent),radial-gradient(1px 1px at 60% 50%,#fff6,transparent),radial-gradient(1.2px 1.2px at 45% 70%,#fff7,transparent),radial-gradient(1px 1px at 52% 20%,#fff5,transparent);background-size:300px 300px;animation:drift 14s linear infinite;mix-blend-mode:screen;clip-path:polygon(44% 0,56% 0,80% 100%,20% 100%)}
+@keyframes drift{to{background-position:40px -300px,-30px -300px,20px -300px,-10px -300px}}
+.audience{position:absolute;left:-20px;right:-20px;bottom:-40px;height:190px;pointer-events:none}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.16;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 65% at 50% 45%,transparent 50%,rgba(0,0,0,.85))}
+/* HUD */
+.plaque{position:absolute;left:50%;top:26px;transform:translateX(-50%);padding:10px 46px 12px;text-align:center;background:linear-gradient(#2b1a0c,#140a04);border:2px solid var(--gold);border-radius:4px;box-shadow:0 0 0 5px #140a04,0 0 0 6px #a57a38,0 10px 30px #000}
+.plaque small{display:block;font-size:14px;letter-spacing:.4em;color:var(--gold)}
+.plaque b{font-size:30px;letter-spacing:.12em;color:var(--gold-l);text-shadow:0 0 12px rgba(255,200,120,.4)}
+.script{position:absolute;left:56px;bottom:40px;width:470px;padding:22px 26px;background:linear-gradient(#f1e2c2,#d9c49a);color:#2a170a;border-radius:3px;transform:rotate(-1.4deg);box-shadow:0 20px 40px rgba(0,0,0,.7),inset 0 0 40px rgba(120,70,20,.35)}
+.script h4{font-size:15px;letter-spacing:.2em;color:#7a2a12;margin-bottom:8px}
+.script p{font-size:21px;line-height:1.55}
+.script em{font-style:normal;background:linear-gradient(transparent 60%,rgba(200,60,30,.3) 60%)}
+.script .cue{margin-top:10px;font-size:14px;color:#6a4a2a;font-family:"Courier New",monospace}
+.gauge{position:absolute;right:52px;bottom:40px;width:420px;padding:20px 24px;background:rgba(18,9,4,.82);border:1px solid rgba(217,168,82,.5);border-radius:6px;box-shadow:0 20px 50px #000}
+.gauge .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.gauge .lbl{font-size:15px;letter-spacing:.2em;color:var(--gold)}
+.gauge .val{font-size:34px;color:#ffcf8a;font-variant-numeric:tabular-nums}
+.gauge svg{display:block;width:100%;height:60px}
+.bar{height:10px;border-radius:5px;background:#2a1a0e;overflow:hidden;margin:6px 0 14px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#8fd18a,#f0d060,#e06040)}
+.roster{position:absolute;right:52px;top:40px;display:flex;gap:10px}
+.roster div{width:64px;height:84px;border-radius:6px;background:linear-gradient(#2a1a0e,#120804);border:1px solid #5a3d1e;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;font-size:13px;color:#caa56a;padding-bottom:6px;opacity:.6}
+.roster div.on{opacity:1;border-color:var(--gold);box-shadow:0 0 16px rgba(240,190,100,.45)}
+.roster svg{width:40px;height:52px}
+.hint{position:absolute;left:56px;top:44px;font-size:15px;color:#c9a877;letter-spacing:.08em;line-height:1.7}
+.hint b{color:var(--gold-l)}
+#tabs{position:absolute;right:14px;bottom:10px;z-index:50;display:flex;gap:4px}
+#tabs a{font:12px/1 sans-serif;color:#d9c29a;text-decoration:none;padding:6px 9px;border:1px solid #6b4b25;background:#1a0e06cc;border-radius:3px}
+#tabs a.on{background:#d9a852;color:#1a0e06}
+/* B */
+#sb .curtain.l{width:560px}#sb .curtain.r{width:560px}
+#sb .spot{filter:hue-rotate(-10deg) saturate(.6);opacity:.55;animation:dying 3.2s infinite}
+@keyframes dying{0%,100%{opacity:.55}47%{opacity:.5}50%{opacity:.25}53%{opacity:.5}}
+.coldwash{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(120,150,190,.12),rgba(10,20,40,.55));mix-blend-mode:multiply;pointer-events:none}
+.monologue{position:absolute;left:50%;bottom:120px;transform:translateX(-50%);width:880px;text-align:center;font-size:30px;line-height:1.6;color:#efe3cf;text-shadow:0 2px 12px #000}
+.monologue small{display:block;font-size:16px;letter-spacing:.3em;color:#9fb5c9;margin-bottom:8px}
+.prompt{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);padding:12px 30px;border:1px solid rgba(240,210,160,.6);border-radius:30px;font-size:19px;color:#f6d9a8;background:rgba(20,10,4,.6);cursor:pointer;animation:pulse 2.2s infinite}
+.prompt:active{transform:translateX(-50%) scale(.97)}
+@keyframes pulse{50%{box-shadow:0 0 30px rgba(255,200,120,.45)}}
+.tremorB{position:absolute;left:56px;top:44px;width:360px;padding:18px 22px;background:rgba(10,12,18,.75);border:1px solid rgba(160,180,200,.4);border-radius:6px}
+.tremorB .val{font-size:44px;color:#ff9a7a}
+.tremorB .lbl{font-size:14px;letter-spacing:.25em;color:#9fb5c9}
+.tremorB p{font-size:15px;color:#b8c4cf;margin-top:6px;line-height:1.6}
+.nights{position:absolute;right:56px;top:44px;text-align:right;font-size:15px;color:#9fb5c9;letter-spacing:.15em;line-height:1.9}
+.nights span{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid #9fb5c9;margin-left:6px;vertical-align:middle}
+.nights span.d{background:#9fb5c9}
+.nights span.now{background:#ffb070;border-color:#ffb070;box-shadow:0 0 10px #ffb070}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <!-- SCREEN A -->
+ <section class="screen" id="sa">
+  <div class="floor"></div>
+  <svg width="1600" height="1000" style="position:absolute;inset:0">
+   <defs>
+    <radialGradient id="bgG" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#2b160a"/><stop offset="1" stop-color="#080302"/></radialGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5d9b8"/><stop offset="1" stop-color="#c79a74"/></linearGradient>
+    <linearGradient id="dress" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6aa3c8"/><stop offset="1" stop-color="#244a6b"/></linearGradient>
+    <linearGradient id="bark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a2210"/><stop offset=".5" stop-color="#8a5a2e"/><stop offset="1" stop-color="#3a2210"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="shadowF"><feGaussianBlur stdDeviation="10"/></filter>
+   </defs>
+   <rect width="1600" height="640" fill="url(#bgG)"/>
+   <!-- painted backdrop: moonlit castle -->
+   <g>
+    <rect x="360" y="120" width="880" height="520" fill="#1c2a3a" opacity=".55"/>
+    <g fill="#f5e6c0" opacity=".7"><circle cx="520" cy="200" r="1.6"/><circle cx="640" cy="170" r="1.2"/><circle cx="760" cy="230" r="1.4"/><circle cx="1180" cy="300" r="1.3"/><circle cx="980" cy="160" r="1.1"/><circle cx="700" cy="300" r="1"/></g>
+    <circle cx="1080" cy="220" r="90" fill="#f2e2b8" opacity=".08"/>
+    <circle cx="1080" cy="220" r="60" fill="#e9d6a4" opacity=".75"/>
+    <circle cx="1060" cy="205" r="10" fill="#cdb67e" opacity=".5"/><circle cx="1098" cy="238" r="7" fill="#cdb67e" opacity=".5"/>
+    <path d="M420 640 L420 420 L470 420 L470 380 L500 380 L500 420 L560 420 L560 340 L600 300 L640 340 L640 420 L700 420 L700 640Z" fill="#120a06"/>
+    <rect x="540" y="430" width="10" height="16" fill="#ffc870" opacity=".8"/><rect x="600" y="370" width="10" height="16" fill="#ffc870" opacity=".7"/>
+    <path d="M900 640 L900 460 L960 460 L960 400 L1000 360 L1040 400 L1040 460 L1180 460 L1180 640Z" fill="#1b0f08"/>
+    <path d="M360 640 Q560 520 800 590 T1240 560 L1240 640Z" fill="#2a1a0c"/>
+    <path d="M360 640 Q500 590 700 620 T1240 610 L1240 640Z" fill="#3a2410"/>
+   </g>
+  </svg>
+  <div class="spot"></div><div class="dust"></div>
+  <div class="curtain l"></div><div class="curtain r"></div>
+  <div class="valance"></div><div class="fringe"></div>
+  <div class="apron"></div>
+  <svg width="1600" height="1000" style="position:absolute;inset:0;pointer-events:none">
+   <!-- string target (ghost pose) -->
+   <g opacity=".5" stroke="#f3d79a" stroke-dasharray="6 6" fill="none" stroke-width="2">
+    <circle cx="880" cy="420" r="26"/>
+    <path d="M880 446 L880 540 M880 470 L840 440 M880 470 L930 500 M880 540 L850 620 M880 540 L905 620"/>
+   </g>
+   <text x="920" y="410" fill="#f3d79a" font-size="15" opacity=".8" letter-spacing="2">목표 자세 · 인사</text>
+   <!-- hand + control bar (moved by JS) -->
+   <g id="rig">
+    <g id="hand">
+     <path d="M-110 -30 L110 -30 L110 -18 L-110 -18Z" fill="url(#bark)" stroke="#1a0c04"/>
+     <path d="M-8 -80 L8 -80 L8 30 L-8 30Z" fill="url(#bark)" stroke="#1a0c04"/>
+     <!-- old hand -->
+     <path d="M-50 -320 L50 -320 L44 -150 L-44 -150Z" fill="#2e211b"/><path d="M-50 -320 L-44 -150 M50 -320 L44 -150" stroke="#000" stroke-opacity=".4" stroke-width="6"/><rect x="-47" y="-166" width="94" height="18" rx="4" fill="#4a3a30"/>
+     <path d="M-40 -150 C-48 -110 -50 -76 -46 -44 L46 -44 C50 -76 48 -112 40 -150Z" fill="#d2ab88" stroke="#6a4630" stroke-width="2"/>
+     <path d="M-20 -140 C-24 -110 -18 -80 -26 -56 M6 -144 C2 -110 10 -86 4 -58 M24 -130 C28 -104 22 -84 28 -60" stroke="#7d8fb0" stroke-opacity=".45" stroke-width="2.4" fill="none"/>
+     <circle cx="-14" cy="-118" r="4" fill="#8a5a3a" opacity=".35"/><circle cx="18" cy="-96" r="3" fill="#8a5a3a" opacity=".35"/><circle cx="-28" cy="-88" r="2.5" fill="#8a5a3a" opacity=".35"/>
+     <path d="M-46 -110 C-70 -96 -74 -60 -58 -34 C-52 -26 -44 -30 -44 -40Z" fill="#d2ab88" stroke="#6a4630" stroke-width="2"/>
+     <g fill="#d2ab88" stroke="#6a4630" stroke-width="2"><rect x="-44" y="-52" width="21" height="44" rx="10"/><rect x="-22" y="-54" width="21" height="48" rx="10"/><rect x="0" y="-54" width="21" height="46" rx="10"/><rect x="22" y="-50" width="20" height="40" rx="10"/></g>
+     <path d="M-40 -30 h14 M-18 -30 h14 M4 -30 h14 M26 -28 h12" stroke="#6a4630" stroke-opacity=".6" stroke-width="1.5"/>
+    </g>
+    <g id="strings" stroke="#e8dcc0" stroke-width="1.2" opacity=".8">
+     <line id="s1" x1="-100" y1="-24" x2="0" y2="0"/><line id="s2" x1="100" y1="-24" x2="0" y2="0"/>
+     <line id="s3" x1="0" y1="30" x2="0" y2="0"/><line id="s4" x1="-60" y1="-24" x2="0" y2="0"/><line id="s5" x1="60" y1="-24" x2="0" y2="0"/>
+    </g>
+   </g>
+   <!-- puppet -->
+   <g id="puppet">
+    <ellipse cx="0" cy="210" rx="70" ry="14" fill="#000" opacity=".55" filter="url(#shadowF)" id="pshadow"/>
+    <g id="pbody">
+     <path d="M-34 40 C-50 110 -70 160 -80 200 L80 200 C70 160 50 110 34 40Z" fill="url(#dress)" stroke="#132a3e" stroke-width="2"/>
+     <path d="M-80 200 C-40 188 40 188 80 200" stroke="#f3d79a" stroke-width="3" fill="none"/>
+     <path d="M-24 40 L24 40 L20 70 L-20 70Z" fill="#dbe8f0"/>
+     <g id="armL"><path d="M-26 50 L-70 20" stroke="#f0d3b0" stroke-width="10" stroke-linecap="round"/><circle cx="-72" cy="18" r="7" fill="url(#skin)"/></g>
+     <g id="armR"><path d="M26 50 L70 90" stroke="#f0d3b0" stroke-width="10" stroke-linecap="round"/><circle cx="72" cy="92" r="7" fill="url(#skin)"/></g>
+     <circle cx="0" cy="12" r="30" fill="url(#skin)" stroke="#8a6040" stroke-width="2"/>
+     <path d="M-32 6 C-30 -30 30 -30 32 6 C24 -6 -24 -6 -32 6Z" fill="#3a1e0e"/>
+     <path d="M-16 -16 L-10 -34 L0 -20 L10 -34 L16 -16Z" fill="#e8c060" stroke="#8a6a20"/>
+     <circle cx="-10" cy="14" r="2.5" fill="#241208"/><circle cx="10" cy="14" r="2.5" fill="#241208"/>
+     <path d="M-6 26 Q0 30 6 26" stroke="#8a3a2a" stroke-width="2" fill="none"/>
+     <circle cx="-16" cy="22" r="5" fill="#e88a7a" opacity=".45"/><circle cx="16" cy="22" r="5" fill="#e88a7a" opacity=".45"/>
+    </g>
+   </g>
+  </svg>
+  <svg class="audience" viewBox="0 0 1640 190" preserveAspectRatio="none">
+   <g fill="#050201">
+    <ellipse cx="80" cy="150" rx="70" ry="80"/><ellipse cx="240" cy="160" rx="64" ry="78"/><ellipse cx="400" cy="140" rx="60" ry="76"/>
+    <ellipse cx="1240" cy="150" rx="66" ry="80"/><ellipse cx="1400" cy="140" rx="62" ry="78"/><ellipse cx="1560" cy="160" rx="70" ry="80"/>
+    <ellipse cx="560" cy="170" rx="56" ry="64"/><ellipse cx="1080" cy="170" rx="58" ry="66"/>
+   </g>
+  </svg>
+  <div class="plaque"><small>제 3 막</small><b>공주의 인사</b></div>
+  <div class="hint">마우스로 <b>조종대</b>를 움직인다<br>떨림은 손이 아니라 <b>이야기</b>다</div>
+  <div class="roster">
+   <div class="on"><svg viewBox="0 0 40 52"><circle cx="20" cy="12" r="8" fill="#f0d3b0"/><path d="M12 22 L28 22 L34 50 L6 50Z" fill="#4a86b0"/><path d="M15 5 L20 0 L25 5" stroke="#e8c060" stroke-width="2" fill="none"/></svg>공주</div>
+   <div><svg viewBox="0 0 40 52"><circle cx="20" cy="12" r="8" fill="#b8b8c0"/><path d="M10 22 L30 22 L30 50 L10 50Z" fill="#6a6a78"/></svg>기사</div>
+   <div><svg viewBox="0 0 40 52"><path d="M8 20 L14 4 L20 14 L26 4 L32 20 L28 34 L12 34Z" fill="#5a4a40"/><path d="M10 34 L30 34 L32 50 L8 50Z" fill="#3a2e28"/></svg>늑대</div>
+   <div><svg viewBox="0 0 40 52"><circle cx="20" cy="12" r="8" fill="#e0c8a8"/><path d="M10 6 Q20 -4 30 6 L30 14 L10 14Z" fill="#8a8a8a"/><path d="M12 22 L28 22 L32 50 L8 50Z" fill="#6a3a4a"/></svg>할멈</div>
+   <div><svg viewBox="0 0 40 52"><circle cx="20" cy="12" r="8" fill="#f4e0d0"/><path d="M10 6 L6 -2 M30 6 L34 -2" stroke="#c03030" stroke-width="3"/><path d="M12 22 L28 22 L32 50 L8 50Z" fill="#c8a030"/></svg>광대</div>
+  </div>
+  <div class="script">
+   <h4>대본 · 12쪽</h4>
+   <p>공주는 무릎을 굽혀 <em>천천히</em> 인사한다.<br>"오늘 밤, 이 성의 마지막 손님이 되어 주세요."</p>
+   <div class="cue">▸ 오른팔을 들고 3초 유지 · 객석 반응 대기</div>
+  </div>
+  <div class="gauge">
+   <div class="row"><span class="lbl">손 떨림</span><span class="val" id="tv">37%</span></div>
+   <svg viewBox="0 0 400 60" preserveAspectRatio="none"><path id="tline" d="M0 30 L400 30" stroke="#ffcf8a" stroke-width="2" fill="none"/><line x1="0" y1="30" x2="400" y2="30" stroke="#ffffff22"/></svg>
+   <div class="row" style="margin-top:10px"><span class="lbl">자세 일치</span><span class="val" id="mv" style="font-size:26px">82%</span></div>
+   <div class="bar"><i id="mbar" style="width:82%"></i></div>
+   <div class="row"><span class="lbl">객석 숨소리</span><span style="color:#caa56a;font-size:16px">고요함 · 집중</span></div>
+  </div>
+ </section>
+
+ <!-- SCREEN B -->
+ <section class="screen" id="sb">
+  <div class="floor" style="filter:brightness(.6) saturate(.7)"></div>
+  <svg width="1600" height="1000" style="position:absolute;inset:0">
+   <defs>
+    <radialGradient id="bgB" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#1a1210"/><stop offset="1" stop-color="#030203"/></radialGradient>
+    <linearGradient id="dressB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a88a8"/><stop offset="1" stop-color="#1c3448"/></linearGradient>
+    <linearGradient id="barkB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a180a"/><stop offset=".5" stop-color="#6a4420"/><stop offset="1" stop-color="#2a180a"/></linearGradient>
+    <filter id="blurB"><feGaussianBlur stdDeviation="2.4"/></filter>
+   </defs>
+   <rect width="1600" height="640" fill="url(#bgB)"/>
+  </svg>
+  <div class="spot"></div>
+  <div class="curtain l"></div><div class="curtain r"></div>
+  <div class="valance" style="filter:brightness(.6) drop-shadow(0 12px 18px #000)"></div><div class="fringe" style="opacity:.4"></div>
+  <div class="apron" style="filter:brightness(.5)"></div>
+  <svg width="1600" height="1000" style="position:absolute;inset:0;pointer-events:none">
+   <!-- trembling hand, motion-blurred ghosts -->
+   <g id="handB" transform="translate(800 150) rotate(-8)">
+    <g opacity=".25" transform="translate(-14 4)" filter="url(#blurB)"><path d="M-110 -30 L110 -30 L110 -18 L-110 -18Z" fill="#6a4420"/></g>
+    <g opacity=".25" transform="translate(16 -6)" filter="url(#blurB)"><path d="M-110 -30 L110 -30 L110 -18 L-110 -18Z" fill="#6a4420"/></g>
+    <path d="M-110 -30 L110 -30 L110 -18 L-110 -18Z" fill="url(#barkB)" stroke="#120804"/>
+    <path d="M-8 -80 L8 -80 L8 30 L-8 30Z" fill="url(#barkB)"/>
+    <path d="M-50 -320 L50 -320 L44 -150 L-44 -150Z" fill="#2e211b"/><path d="M-50 -320 L-44 -150 M50 -320 L44 -150" stroke="#000" stroke-opacity=".4" stroke-width="6"/><rect x="-47" y="-166" width="94" height="18" rx="4" fill="#4a3a30"/>
+     <path d="M-40 -150 C-48 -110 -50 -76 -46 -44 L46 -44 C50 -76 48 -112 40 -150Z" fill="#bb9476" stroke="#4a2e1c" stroke-width="2"/>
+     <path d="M-20 -140 C-24 -110 -18 -80 -26 -56 M6 -144 C2 -110 10 -86 4 -58 M24 -130 C28 -104 22 -84 28 -60" stroke="#7d8fb0" stroke-opacity=".45" stroke-width="2.4" fill="none"/>
+     <circle cx="-14" cy="-118" r="4" fill="#8a5a3a" opacity=".35"/><circle cx="18" cy="-96" r="3" fill="#8a5a3a" opacity=".35"/><circle cx="-28" cy="-88" r="2.5" fill="#8a5a3a" opacity=".35"/>
+     <path d="M-46 -110 C-70 -96 -74 -60 -58 -34 C-52 -26 -44 -30 -44 -40Z" fill="#bb9476" stroke="#4a2e1c" stroke-width="2"/>
+     <g fill="#bb9476" stroke="#4a2e1c" stroke-width="2"><rect x="-44" y="-52" width="21" height="44" rx="10"/><rect x="-22" y="-54" width="21" height="48" rx="10"/><rect x="0" y="-54" width="21" height="46" rx="10"/><rect x="22" y="-50" width="20" height="40" rx="10"/></g>
+     <path d="M-40 -30 h14 M-18 -30 h14 M4 -30 h14 M26 -28 h12" stroke="#4a2e1c" stroke-opacity=".6" stroke-width="1.5"/>
+   </g>
+   <!-- slack / tangled strings -->
+   <g stroke="#d8ccb0" stroke-width="1.2" fill="none" opacity=".75">
+    <path d="M700 135 C720 300 760 420 740 560 C735 600 760 610 790 612"/>
+    <path d="M900 110 C860 280 900 400 860 520 C840 580 830 600 820 612"/>
+    <path d="M760 125 C740 260 820 330 780 420 C750 480 840 480 800 540 C780 570 812 600 806 610"/>
+    <path d="M840 120 C860 200 840 260 870 320" /><path d="M870 320 l6 8" stroke="#ff9a7a"/>
+   </g>
+   <!-- collapsed puppet -->
+   <g transform="translate(800 640)">
+    <ellipse cx="0" cy="18" rx="130" ry="18" fill="#000" opacity=".6"/>
+    <path d="M-110 10 C-60 -30 40 -40 100 6 C60 18 -60 20 -110 10Z" fill="url(#dressB)" stroke="#0f1e2c" stroke-width="2"/>
+    <path d="M-40 -20 L-90 -6" stroke="#d8bc9c" stroke-width="9" stroke-linecap="round"/>
+    <path d="M40 -18 L120 -2" stroke="#d8bc9c" stroke-width="9" stroke-linecap="round"/>
+    <g transform="translate(-20 -28) rotate(-70)"><circle r="28" fill="#dcbfa0" stroke="#6a4a30" stroke-width="2"/><path d="M-30 -6 C-28 -40 28 -40 30 -6 C22 -18 -22 -18 -30 -6Z" fill="#2e180c"/><path d="M-8 18 Q0 14 8 18" stroke="#6a2a1a" stroke-width="2" fill="none"/><circle cx="-9" cy="4" r="2.5" fill="#1a0c06"/><circle cx="9" cy="4" r="2.5" fill="#1a0c06"/></g>
+    <path d="M150 12 L162 -2 L172 10 L184 -2 L192 12Z" fill="#c8a040" stroke="#6a5010" transform="rotate(14 170 6)"/>
+   </g>
+   <!-- one small audience member -->
+   <g transform="translate(1060 960)" stroke="#6f86a0" stroke-opacity=".55" stroke-width="2"><ellipse cx="0" cy="0" rx="44" ry="56" fill="#050302"/><circle cx="0" cy="-66" r="28" fill="#050302"/><path d="M-30 -34 L-54 -96 M30 -34 L54 -96" stroke="#141a24" stroke-width="13" stroke-linecap="round"/><circle cx="-56" cy="-102" r="9" fill="#050302"/><circle cx="56" cy="-102" r="9" fill="#050302"/></g><g fill="#050302"><ellipse cx="260" cy="990" rx="80" ry="70"/><ellipse cx="480" cy="1000" rx="70" ry="60"/><ellipse cx="1400" cy="995" rx="80" ry="66"/></g>
+  </svg>
+  <div class="coldwash"></div>
+  <div class="tremorB"><div class="lbl">손 떨림</div><div class="val">91%</div><p>조종대가 세 번 미끄러졌다.<br>줄 하나가 끊어졌다 — <b style="color:#ff9a7a">오른팔</b></p></div>
+  <div class="nights">마지막 공연 · 7일째 밤<br><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="now"></span></div>
+  <div class="monologue"><small>— 인형사의 독백 —</small>"손이 말을 듣지 않는구나.<br>그래도, 저 아이는 아직 박수를 치고 있어."</div>
+  <div class="prompt" id="lift">[ 클릭 ] 한 번만 더 들어 올린다</div>
+ </section>
+ <div class="grain"></div><div class="vig"></div>
+ <nav id="tabs"><a href="#a" data-k="a">1 · 무대</a><a href="#b" data-k="b">2 · 마지막 밤</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ window.addEventListener('keydown',function(e){if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';});
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function creak(f,d){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(f,c.currentTime);o.frequency.exponentialRampToValueAtTime(f*0.7,c.currentTime+d);g.gain.setValueAtTime(0.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(0.12,c.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d+0.05);}
+ // rig follows mouse with tremor
+ var mx=870,my=218,px=870,py=408,t=0,tremor=0.37;
+ st.addEventListener('mousemove',function(e){var r=st.getBoundingClientRect();var s=r.width/1600;mx=Math.max(560,Math.min(1060,(e.clientX-r.left)/s));my=Math.max(180,Math.min(300,(e.clientY-r.top)/s));});
+ st.addEventListener('mousedown',function(){creak(180+Math.random()*60,0.35);});
+ var rig=document.getElementById('rig'),pup=document.getElementById('puppet'),tl=document.getElementById('tline'),tv=document.getElementById('tv'),mv=document.getElementById('mv'),mb=document.getElementById('mbar');
+ var S=[['s1',-100,-24,-72,18],['s2',100,-24,72,92],['s3',0,30,0,-18],['s4',-60,-24,-20,160],['s5',60,-24,20,160]];
+ var hist=[];for(var h0=0;h0<100;h0++){hist.push((Math.sin(h0*1.7)*0.6+Math.sin(h0*2.9)*0.4)*8+(Math.random()-0.5)*4);}
+ function loop(){
+  t+=0.016;
+  var n=(Math.sin(t*23)*0.6+Math.sin(t*37.3)*0.4)*tremor*22+(Math.random()-0.5)*tremor*8;
+  var n2=(Math.cos(t*19)*0.6+Math.sin(t*41)*0.4)*tremor*14;
+  var hx=mx+n,hy=my+n2;
+  if(rig)rig.setAttribute('transform','translate('+hx.toFixed(1)+' '+hy.toFixed(1)+') rotate('+(n*0.15).toFixed(2)+')');
+  px+=(hx-px)*0.08;py+=((hy+190)-py)*0.08;
+  var sw=Math.max(-14,Math.min(14,(hx-px)*0.3));
+  if(pup)pup.setAttribute('transform','translate('+px.toFixed(1)+' '+py.toFixed(1)+') rotate('+sw.toFixed(2)+')');
+  for(var i=0;i<S.length;i++){var el=document.getElementById(S[i][0]);if(!el)continue;
+   el.setAttribute('x2',(px-hx+S[i][3]).toFixed(1));el.setAttribute('y2',(py-hy+S[i][4]).toFixed(1));el.setAttribute('x1',S[i][1]);el.setAttribute('y1',S[i][2]);}
+  hist.push(n);if(hist.length>100)hist.shift();
+  var d='M0 30';for(var j=0;j<hist.length;j++){d+=' L'+(j*4)+' '+(30+hist[j]*1.2).toFixed(1);}
+  if(tl)tl.setAttribute('d',d);
+  var dist=Math.sqrt((px-880)*(px-880)+(py-420)*(py-420));
+  var m=Math.max(8,Math.min(99,Math.round(100-dist/5-Math.abs(n)*0.6)));
+  if(mv)mv.textContent=m+'%';if(mb)mb.style.width=m+'%';
+  if(tv&&Math.random()<0.05){tremor=0.33+Math.random()*0.09;tv.textContent=Math.round(tremor*100)+'%';}
+  window.requestAnimationFrame(loop);
+ }
+ window.requestAnimationFrame(loop);
+ // B: trembling hand + click
+ var hb=document.getElementById('handB'),tb=0,kick=0;
+ function loopB(){tb+=0.016;var a=Math.sin(tb*29)*6+Math.sin(tb*53)*4+(Math.random()-0.5)*6+kick;kick*=0.9;
+  if(hb)hb.setAttribute('transform','translate('+(800+a).toFixed(1)+' '+(150+Math.cos(tb*31)*4-kick*2).toFixed(1)+') rotate('+(-8+a*0.4).toFixed(2)+')');window.requestAnimationFrame(loopB);}
+ window.requestAnimationFrame(loopB);
+ var lift=document.getElementById('lift');
+ if(lift)lift.addEventListener('click',function(){kick=-18;creak(140,0.6);setTimeout(function(){creak(95,0.8);},180);});
+})();
+</script>
+</body>
+</html>

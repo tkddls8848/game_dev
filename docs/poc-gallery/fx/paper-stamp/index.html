@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>종이·도장·찢김 — 이펙트 샘플</title>
+<style>
+:root{--bg:#0d0e10;--panel:#15171a;--panel2:#1b1e22;--line:#2a2e34;--tx:#d9d9d6;--mut:#8b9098;--acc:#e3a857}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:13px/1.5 "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;overflow:hidden}
+#app{display:grid;grid-template-columns:1fr 372px;grid-template-rows:46px 1fr;width:100vw;height:100vh}
+header{grid-column:1/3;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.ttl b{font-size:16px;margin-right:12px;letter-spacing:.02em}.ttl span{color:var(--mut)}
+.hdr-r{display:flex;gap:12px;align-items:center;color:var(--mut)}
+.keys{font-size:12px}
+button{background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:4px;padding:3px 9px;font:inherit;font-size:12px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+#snd.on{color:var(--acc);border-color:#6b5230}
+#fps{font:12px ui-monospace,Consolas,monospace;min-width:56px;text-align:right}
+#grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;padding:8px;min-height:0;min-width:0}
+.cell{position:relative;background:#000;border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:0;min-width:0;cursor:crosshair}
+.cell.sel{border-color:var(--acc);box-shadow:0 0 0 1px #6b5230 inset}
+.cell canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.cell .lbl{position:absolute;left:8px;top:7px;pointer-events:none;background:rgba(10,11,13,.62);padding:3px 8px;border-radius:4px;backdrop-filter:blur(2px)}
+.cell .lbl b{font-weight:600}.cell .lbl i{font-style:normal;color:var(--acc);margin-left:6px;font-size:12px}
+.cell .hint{position:absolute;left:8px;bottom:7px;pointer-events:none;color:#c9c9c4;font-size:12px;background:rgba(10,11,13,.55);padding:2px 7px;border-radius:4px}
+.cell .stat{position:absolute;right:8px;top:7px;pointer-events:none;font:12px ui-monospace,Consolas,monospace;color:#e8dcc4;background:rgba(10,11,13,.55);padding:2px 7px;border-radius:4px;white-space:pre}
+.cell .num{position:absolute;right:8px;bottom:7px;pointer-events:none;color:var(--mut);font-size:11px}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:4px 14px 14px}
+aside section{border-bottom:1px solid var(--line);padding:9px 0}
+aside h3{margin:0;font-size:15px}aside h4{margin:0 0 6px;font-size:12px;color:var(--mut);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.con{color:var(--acc);font-size:12px}.hint2{color:var(--mut);font-size:12px;margin-top:3px}
+.prm{display:grid;grid-template-columns:104px 1fr 54px;gap:6px;align-items:center;margin:3px 0}
+.prm label{font-size:12px;color:#c4c6c9}.prm input[type=range]{width:100%;accent-color:var(--acc)}
+.prm output{font:12px ui-monospace,Consolas,monospace;text-align:right;color:#f0d9b0}
+.prm select{background:var(--panel2);color:var(--tx);border:1px solid var(--line);font:inherit;font-size:12px;grid-column:2/4}
+pre{margin:0;font:11px/1.45 ui-monospace,Consolas,monospace;color:#b9d4b0;background:#101214;border:1px solid var(--line);border-radius:4px;padding:6px 8px;white-space:pre-wrap;max-height:120px;overflow:auto}
+.memo{font-size:12px;color:#c3c5c8;border-bottom:0}
+.memo p{margin:0 0 6px}.memo b{color:#e9d7b8}.memo code{font:11px ui-monospace,Consolas,monospace;color:#b9d4b0}
+.memo ul{margin:0 0 6px;padding-left:16px}.memo li{margin:1px 0}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="ttl"><b>종이·도장·찢김</b><span>도장 쾅(히트스톱+잉크 번짐), 종이 찢기, 접힘, 서류 넘김</span></div>
+    <div class="hdr-r">
+      <span class="keys">1–4 변형 선택 · Space 발동 · R 초기화 · M 소리 · S 성능 모드</span>
+      <button id="solo" title="S">전체 재생</button>
+      <button id="snd" title="M">소리: 꺼짐 (클릭하면 켜짐)</button>
+      <span id="fps">-- fps</span>
+    </div>
+  </header>
+  <main id="grid"></main>
+  <aside id="side">
+    <section><h3 id="vname">-</h3><div id="vcon" class="con"></div><div id="vhint" class="hint2"></div></section>
+    <section><h4>파라미터</h4><div id="params"></div></section>
+    <section><h4>게임 이식용 값 <button id="copy">복사</button></h4><pre id="json"></pre></section>
+    <section class="memo"><h4>구현 메모</h4><div id="memo"></div></section>
+  </aside>
+</div>
+<script>
+'use strict';
+/* ===== 공용: 난수·노이즈·수학 ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+const TAU=Math.PI*2;
+function makeNoise(seed){
+  const r=mulberry32(seed),p=new Uint8Array(512),g=new Float32Array(256);
+  for(let i=0;i<256;i++){p[i]=i;g[i]=r()}
+  for(let i=255;i>0;i--){const j=(r()*(i+1))|0,k=p[i];p[i]=p[j];p[j]=k}
+  for(let i=0;i<256;i++)p[i+256]=p[i];
+  function n2(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,X=xi&255,Y=yi&255;
+    const a=g[p[p[X]+Y]],b=g[p[p[X+1]+Y]],c=g[p[p[X]+Y+1]],d=g[p[p[X+1]+Y+1]];
+    const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v}
+  n2.fbm=(x,y,o=4)=>{let s=0,a=.5,f=1,n=0;for(let i=0;i<o;i++){s+=a*n2(x*f+i*17.3,y*f-i*9.1);n+=a;f*=2.03;a*=.5}return s/n};
+  /* 컬 노이즈: 스칼라장 psi의 회전 → 발산 없는 흐름(연기가 뭉치지 않고 말려 올라감) */
+  n2.curl=(x,y,o=2)=>{const e=.35,a=n2.fbm(x,y+e,o),b=n2.fbm(x,y-e,o),c=n2.fbm(x+e,y,o),d=n2.fbm(x-e,y,o);return[(a-b)/(2*e),-(c-d)/(2*e)]};
+  return n2;
+}
+function mk(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return[c,c.getContext('2d')]}
+function hexRgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+/* 부드러운 연기 퍼프 스프라이트: 방사 감쇠 × fbm, 위쪽이 밝게 (위에서 오는 빛) */
+function puffSprite(size,seed,rgb,opt={}){
+  const [c,x]=mk(size,size),img=x.createImageData(size,size),n=makeNoise(seed),d=img.data;
+  const lit=opt.lit??.35, dens=opt.dens??1, freq=opt.freq??3.2, rim=opt.rim??0, lx=opt.lx??-.2, ly=opt.ly??-.9, sh0=opt.shadow;
+  for(let j=0;j<size;j++)for(let i=0;i<size;i++){
+    const dx=(i/size)*2-1,dy=(j/size)*2-1,r=Math.hypot(dx,dy);
+    const nn=n.fbm(i/size*freq,j/size*freq,5);
+    const edge=1-sstep(.35+.3*nn,1,r+.25*(nn-.5));
+    let a=clamp(edge*(.55+1.1*(nn-.35))*dens,0,1);
+    const sh=clamp(1+lit*(dy*ly+dx*lx)+(nn-.5)*.5+rim*sstep(.5,.95,r),.2,1.6);
+    const k=(j*size+i)*4;
+    if(sh0){const q=clamp(sh-.35,0,1.25);d[k]=clamp(sh0[0]+(rgb[0]-sh0[0])*q,0,255);d[k+1]=clamp(sh0[1]+(rgb[1]-sh0[1])*q,0,255);d[k+2]=clamp(sh0[2]+(rgb[2]-sh0[2])*q,0,255)}
+    else{d[k]=clamp(rgb[0]*sh,0,255);d[k+1]=clamp(rgb[1]*sh,0,255);d[k+2]=clamp(rgb[2]*sh,0,255)}
+    d[k+3]=a*255;
+  }
+  x.putImageData(img,0,0);return c;
+}
+/* 가산 광원 스프라이트 */
+function glowSprite(size,rgb,falloff=2){const[c,x]=mk(size,size),g=x.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  for(let i=0;i<=8;i++){const t=i/8,a=Math.pow(1-t,falloff);g.addColorStop(t,`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`)}
+  x.fillStyle=g;x.fillRect(0,0,size,size);return c}
+
+/* ===== 공용: 연기/불 입자계 ===== */
+/* ---------- 연기 입자계  ---------- */
+class Smoke{
+  constructor(max,seed){this.p=[];this.max=max;this.ri=0;this.n=makeNoise(seed)}
+  emit(o){o.age=0;o.rot=o.rot??0;o.vr=o.vr??0;if(this.p.length<this.max)this.p.push(o);else{this.p[this.ri]=o;this.ri=(this.ri+1)%this.max}}
+  /* wind(x,y)->[vx,vy] 목표 속도, turb: 컬 노이즈 세기(px/s), nscale: 노이즈 격자(px), follow: 속도 추종률(1/s) */
+  update(dt,t,wind,turb,nscale,follow=1.4){
+    const n=this.n,k=Math.min(1,dt*follow);
+    for(let i=this.p.length-1;i>=0;i--){const q=this.p[i];q.age+=dt;
+      if(q.age>=q.life){this.p[i]=this.p[this.p.length-1];this.p.pop();if(this.ri>=this.p.length)this.ri=0;continue}
+      const w=wind(q.x,q.y,q),c=n.curl(q.x/nscale,q.y/nscale-t*.08,2),up=(q.buoy||0)*Math.exp(-q.age*(q.cool||.4));
+      const tb=turb*(q.tm??1)*Math.min(1,q.age*.8+.15);
+      q.vx+=(w[0]+c[0]*tb-q.vx)*k;q.vy+=(w[1]-up+c[1]*tb-q.vy)*k;
+      q.x+=q.vx*dt;q.y+=q.vy*dt;q.rot+=q.vr*dt;}
+  }
+  draw(g,sortOld){
+    const L=this.p;
+    for(let i=0;i<L.length;i++){const q=L[i],u=q.age/q.life;
+      const a=q.a*sstep(0,q.fin||.08,u)*(1-sstep(q.fout||.45,1,u));if(a<.004)continue;
+      const e=1-(1-u)*(1-u),s=q.s0+(q.s1-q.s0)*(q.grow?Math.pow(u,q.grow):e),c=Math.cos(q.rot)*s,sn=Math.sin(q.rot)*s;
+      g.globalAlpha=a;g.setTransform(c*(q.sx||1),sn*(q.sx||1),-sn,c,q.x,q.y);g.drawImage(q.spr,-.5,-.5,1,1)}
+    g.setTransform(1,0,0,1,0,0);g.globalAlpha=1}
+}
+function ridge(g,w,h,base,amp,freq,seed,fill,oct=5){const n=makeNoise(seed);g.beginPath();g.moveTo(0,h);
+  for(let x=0;x<=w;x+=3){const y=base-amp*(n.fbm(x*freq,seed*.1,oct)-.3)*1.8;g.lineTo(x,y)}g.lineTo(w,h);g.closePath();g.fillStyle=fill;g.fill()}
+function ridgeY(n,x,base,amp,freq,seed,oct=5){return base-amp*(n.fbm(x*freq,seed*.1,oct)-.3)*1.8}
+
+
+/* ===== 공용: 사운드 (WebAudio 합성, 첫 입력 후에만) ===== */
+const AU={ctx:null,on:false,muted:false,r:mulberry32(4242),
+  init(){
+    if(this.ctx){if(this.ctx.state==='suspended')this.ctx.resume();return true}
+    const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;
+    const c=this.ctx=new C();
+    const comp=c.createDynamicsCompressor();comp.threshold.value=-14;comp.knee.value=10;comp.ratio.value=4;comp.attack.value=.004;comp.release.value=.25;
+    this.bus=c.createGain();this.bus.gain.value=.85;this.bus.connect(comp);comp.connect(c.destination);
+    this.nb={};for(const t of['white','pink','brown'])this.nb[t]=this.noise(t,4);
+    this.rev=this.verb(2.8,2.6,11,.82);   // 넓은 공간(산·밤하늘)
+    this.room=this.verb(.7,3.2,13,.55);   // 방·책상
+    this.on=true;this.setMuted(false);return true;
+  },
+  setMuted(m){this.muted=m;if(this.bus)this.bus.gain.setTargetAtTime(m?0:.85,this.ctx.currentTime,.03)},
+  noise(type,sec){const c=this.ctx,n=c.sampleRate*sec|0,b=c.createBuffer(2,n,c.sampleRate),r=mulberry32(type.length*977);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,br=0;
+      for(let i=0;i<n;i++){const w=r()*2-1;
+        if(type==='white')d[i]=w*.5;
+        else if(type==='pink'){b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926}
+        else{br=(br+.02*w)/1.02;d[i]=br*3.2}}}
+    return b},
+  /* 생성형 잔향: 필터링된 노이즈 × 지수 감쇠 (시드 고정) */
+  verb(sec,decay,seed,damp){const c=this.ctx,n=c.sampleRate*sec|0,b=c.createBuffer(2,n,c.sampleRate),r=mulberry32(seed);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let lp=0;for(let i=0;i<n;i++){const t=i/n;lp+=((r()*2-1)-lp)*(1-damp*t);
+      d[i]=lp*Math.pow(1-t,decay)*Math.min(1,i/(c.sampleRate*.006))}}
+    const cv=c.createConvolver();cv.buffer=b;const g=c.createGain();g.connect(cv);cv.connect(this.bus);return g},
+  /* src → filters → env → pan → bus (+ 잔향 send) */
+  route(src,o){const c=this.ctx;let node=src;
+    for(const f of(o.filters||[])){const bf=c.createBiquadFilter();bf.type=f.t;bf.frequency.value=f.f;if(f.q!=null)bf.Q.value=f.q;if(f.g!=null)bf.gain.value=f.g;
+      if(f.f2!=null)bf.frequency.exponentialRampToValueAtTime(Math.max(20,f.f2),o.t0+(f.ft??(o.a+o.d)));node.connect(bf);node=bf}
+    const env=c.createGain();env.gain.value=0;node.connect(env);
+    const p=c.createStereoPanner?c.createStereoPanner():null;let out=env;if(p){p.pan.value=clamp(o.pan||0,-1,1);env.connect(p);out=p}
+    out.connect(this.bus);if(o.rev){const s=c.createGain();s.gain.value=o.rev;out.connect(s);s.connect(o.bus==='room'?this.room:this.rev)}
+    return env},
+  env(g,t0,a,hold,d,peak){g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(peak,t0+a);if(hold)g.gain.setValueAtTime(peak,t0+a+hold);g.gain.exponentialRampToValueAtTime(.0001,t0+a+hold+d);g.gain.linearRampToValueAtTime(0,t0+a+hold+d+.02)},
+  /* 노이즈 한 방 */
+  burst(o){if(!this.on)return;const c=this.ctx,t0=c.currentTime+(o.t||0),a=o.a??.005,d=o.d??.2,h=o.hold||0;
+    const s=c.createBufferSource();s.buffer=this.nb[o.type||'white'];s.loop=true;s.playbackRate.value=o.rate||1;
+    const env=this.route(s,{...o,t0,a,d});this.env(env,t0,a,h,d,o.g??.4);
+    s.start(t0,(o.off??AU.r()*3));s.stop(t0+a+h+d+.05)},
+  /* 음정 한 방 (주파수 스윕 가능) */
+  tone(o){if(!this.on)return;const c=this.ctx,t0=c.currentTime+(o.t||0),a=o.a??.005,d=o.d??.3,h=o.hold||0;
+    const s=c.createOscillator();s.type=o.w||'sine';s.frequency.setValueAtTime(o.f,t0);if(o.f2)s.frequency.exponentialRampToValueAtTime(o.f2,t0+(o.ft??(a+d)));if(o.det)s.detune.value=o.det;
+    const env=this.route(s,{...o,t0,a,d});this.env(env,t0,a,h,d,o.g??.3);s.start(t0);s.stop(t0+a+h+d+.05)},
+  /* 지속음(바닥 소리): 노이즈 루프 + 필터, 이후 set으로 조절 */
+  bed(o){if(!this.on)return null;const c=this.ctx,s=c.createBufferSource();s.buffer=this.nb[o.type||'pink'];s.loop=true;
+    const f=c.createBiquadFilter();f.type=o.ft||'lowpass';f.frequency.value=o.f||800;f.Q.value=o.q??.7;s.connect(f);
+    const g=c.createGain();g.gain.value=0;f.connect(g);g.connect(this.bus);
+    if(o.rev){const sg=c.createGain();sg.gain.value=o.rev;g.connect(sg);sg.connect(o.bus==='room'?this.room:this.rev)}
+    s.start(0,AU.r()*3);g.gain.setTargetAtTime(o.g??.2,c.currentTime,o.fade??.3);
+    return{s,f,g,set(gain,freq,tc=.15){const t=c.currentTime;if(gain!=null)g.gain.setTargetAtTime(gain,t,tc);if(freq!=null)f.frequency.setTargetAtTime(freq,t,tc)},
+      stop(tc=.25){const t=c.currentTime;g.gain.setTargetAtTime(0,t,tc);s.stop(t+tc*8)}}},
+};
+
+/* ===== 공용: 변형 틀 ===== */
+const FX={vs:[],sel:0,solo:/[?&]solo/.test(location.search),ts:1,clock:0};
+function variant(v){v.P={};for(const p of v.params)v.P[p.k]=p.v;FX.vs.push(v);return v}
+function boot(){
+  const grid=document.getElementById('grid');
+  FX.vs.forEach((v,i)=>{
+    const cell=document.createElement('div');cell.className='cell';cell.innerHTML=`<canvas></canvas><div class="lbl"><b>${i+1}. ${v.name}</b><i>${v.concept}</i></div><div class="hint">${v.hint}</div><div class="stat" style="display:none"></div>`;
+    grid.appendChild(cell);v.cell=cell;v.cv=cell.querySelector('canvas');v.statEl=cell.querySelector('.stat');
+  });
+  requestAnimationFrame(()=>{
+    FX.vs.forEach((v,i)=>{const w=v.cell.clientWidth,h=v.cell.clientHeight;v.cv.width=v.w=w;v.cv.height=v.h=h;v.init(v.cv,w,h);bindPtr(v,i)});
+    select(0);requestAnimationFrame(loop);
+  });
+  const snd=document.getElementById('snd');
+  const upd=()=>{snd.textContent=!AU.on?'소리: 꺼짐 (클릭하면 켜짐)':AU.muted?'소리: 음소거':'소리: 켜짐';snd.classList.toggle('on',AU.on&&!AU.muted)};FX.updSnd=upd;
+  snd.onclick=()=>{if(!AU.on){if(AU.init())FX.vs[FX.sel].ambient?.(true)}else AU.setMuted(!AU.muted);upd()};
+  document.getElementById('solo').textContent=FX.solo?'선택만 재생':'전체 재생';document.getElementById('solo').onclick=()=>dispatchEvent(new KeyboardEvent('keydown',{key:'s'}));
+  document.getElementById('copy').onclick=()=>{navigator.clipboard?.writeText(document.getElementById('json').textContent)};
+  addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+    const n=parseInt(e.key);if(n>=1&&n<=FX.vs.length){select(n-1);return}
+    const v=FX.vs[FX.sel];
+    if(e.code==='Space'){e.preventDefault();wake();(v.trigger||defTrigger).call(v)}
+    else if(e.key==='r'||e.key==='R')v.reset?.();
+    else if(e.key==='m'||e.key==='M')snd.onclick();
+    else if(e.key==='s'||e.key==='S'){FX.solo=!FX.solo;document.getElementById('solo').textContent=FX.solo?'선택만 재생':'전체 재생'}
+    else v.key?.(e);
+  });
+  addEventListener('resize',()=>FX.vs.forEach(v=>{const w=v.cell.clientWidth,h=v.cell.clientHeight;if(w!==v.w||h!==v.h){v.cv.width=v.w=w;v.cv.height=v.h=h;v.resize?v.resize(w,h):v.init(v.cv,w,h)}}));
+}
+function defTrigger(){this.down(this.w*.5,this.h*.5,0);setTimeout(()=>this.up(this.w*.5,this.h*.5),120)}
+function wake(){if(!AU.on){if(AU.init()){FX.vs[FX.sel].ambient?.(true);FX.updSnd()}}}
+function bindPtr(v,i){
+  const cv=v.cv;let held=false;
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('pointerdown',e=>{if(FX.sel!==i)select(i);wake();held=true;cv.setPointerCapture(e.pointerId);v.down(e.offsetX,e.offsetY,e.button)});
+  cv.addEventListener('pointermove',e=>v.move?.(e.offsetX,e.offsetY,held));
+  cv.addEventListener('pointerup',e=>{if(!held)return;held=false;v.up?.(e.offsetX,e.offsetY)});
+  cv.addEventListener('pointerleave',()=>v.leave?.());
+}
+function select(i){
+  const prev=FX.vs[FX.sel];if(prev&&AU.on&&FX.sel!==i)prev.ambient?.(false);
+  FX.sel=i;const v=FX.vs[i];FX.vs.forEach((u,j)=>u.cell.classList.toggle('sel',j===i));
+  if(AU.on)v.ambient?.(true);
+  document.getElementById('vname').textContent=`${i+1}. ${v.name}`;
+  document.getElementById('vcon').textContent='컨셉: '+v.conceptFull;
+  document.getElementById('vhint').textContent='조작: '+v.hint;
+  const box=document.getElementById('params');box.innerHTML='';
+  for(const p of v.params){
+    const row=document.createElement('div');row.className='prm';
+    if(p.opts){row.innerHTML=`<label>${p.label}</label><select>${p.opts.map((o,k)=>`<option value="${k}" ${k==v.P[p.k]?'selected':''}>${o}</option>`).join('')}</select>`;
+      row.querySelector('select').onchange=e=>{v.P[p.k]=+e.target.value;v.onParam?.(p.k);showJson()}}
+    else{row.innerHTML=`<label>${p.label}</label><input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${v.P[p.k]}"><output>${fmt(v.P[p.k],p.step)}</output>`;
+      const inp=row.querySelector('input'),out=row.querySelector('output');
+      inp.oninput=()=>{v.P[p.k]=+inp.value;out.textContent=fmt(v.P[p.k],p.step);v.onParam?.(p.k);showJson()}}
+    box.appendChild(row);
+  }
+  document.getElementById('memo').innerHTML=v.memo+(window.MEMO_COMMON||'');
+  showJson();
+}
+function fmt(x,s){const d=s>=1?0:s>=.1?1:s>=.01?2:3;return(+x).toFixed(d)}
+function showJson(){const v=FX.vs[FX.sel],o={variant:v.id};for(const p of v.params)o[p.k]=p.opts?p.opts[v.P[p.k]]:+fmt(v.P[p.k],p.step);if(v.extraJson)Object.assign(o,v.extraJson());
+  document.getElementById('json').textContent=JSON.stringify(o,null,1).replace(/\n\s*/g,' ').replace('{ ','{\n ').replace(/, "/g,',\n "')}
+/* 검증용: 시간을 멈추고(FX.ts=0) 프레임을 직접 진행 */
+FX.step=(n,dt=1/60)=>{for(let i=0;i<n;i++){FX.clock+=dt;for(const v of FX.vs)if(!FX.solo||v===FX.vs[FX.sel])v.frame(dt,FX.clock)}};
+let _last=0,_fc=0,_ft=0,_sc=0;
+function loop(now){
+  const rdt=_last?Math.min(.05,(now-_last)/1000):.016;_last=now;_fc++;_ft+=rdt;const dt=rdt*FX.ts;FX.clock+=dt;
+  if(_ft>=.5){document.getElementById('fps').textContent=(_fc/_ft).toFixed(0)+' fps';_fc=0;_ft=0}
+  for(const v of FX.vs)if(!FX.solo||v===FX.vs[FX.sel])v.frame(dt,FX.clock);
+  if(++_sc%6===0)for(const v of FX.vs)if(v.stat){const s=v.stat();if(s!==v._st){v._st=s;v.statEl.style.display=s?'':'none';v.statEl.textContent=s}}
+  requestAnimationFrame(loop);
+}
+/* WebGL 도우미 (전체 화면 사각형 + 프래그먼트 셰이더) */
+function glQuad(cv,fs){
+  const gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:false,preserveDrawingBuffer:true});if(!gl)return null;
+  const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0,1);}'));
+  gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,'precision highp float;varying vec2 uv;'+fs));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const U={};const u=n=>U[n]??(U[n]=gl.getUniformLocation(pr,n));
+  return{gl,u,tex(unit,src,old){const t=old||gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t},
+    draw(){gl.viewport(0,0,cv.width,cv.height);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
+}
+/* GLSL 공용 노이즈 조각 */
+const GLSL_NOISE=`
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float s=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){s+=a*vn(p);p=m*p;a*=.5;}return s;}
+`;
+addEventListener('DOMContentLoaded',()=>{});
+
+</script>
+<script>
+/*META {"title":"종이·도장·찢김","desc":"도장 쾅(히트스톱+잉크 번짐), 종이 찢기, 접힘, 서류 넘김"} META*/
+
+/* 공용: 종이 결 텍스처 */
+function paperTex(w,h,seed,base=[236,226,204],opt={}){const[c,g]=mk(w,h),n=makeNoise(seed),img=g.createImageData(w,h),d=img.data;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const v=n.fbm(i*.035,j*.035,4),f=n(i*.9,j*.06)*.5+n(i*.06,j*.9)*.5,k=(j*w+i)*4,s=.9+.12*v+.05*f;
+    const e=Math.min(i,j,w-1-i,h-1-j),ed=e<10?.9+.1*e/10:1;d[k]=base[0]*s*ed;d[k+1]=base[1]*s*ed;d[k+2]=base[2]*s*ed;d[k+3]=255}
+  g.putImageData(img,0,0);return c}
+function deskTex(w,h,seed){const[c,g]=mk(w,h),n=makeNoise(seed),img=g.createImageData(w,h),d=img.data;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++){const v=n.fbm(i*.004,j*.06,4),gr=.5+.5*Math.sin(v*38+j*.02),k=(j*w+i)*4,s=.45+.3*gr*v+.15*v;d[k]=92*s;d[k+1]=58*s;d[k+2]=36*s;d[k+3]=255}
+  g.putImageData(img,0,0);const vg=g.createRadialGradient(w/2,h/2,h*.25,w/2,h/2,w*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');g.fillStyle=vg;g.fillRect(0,0,w,h);return c}
+/* 원고지 칸 + 글자 */
+function manuscript(g,x,y,w,h,seed,lines,red=true){const r=mulberry32(seed),cs=Math.floor(w/17);g.strokeStyle='rgba(170,70,60,.4)';g.lineWidth=1;
+  const cols=Math.floor((w-20)/cs),rows=Math.floor((h-40)/(cs*1.35));
+  for(let j=0;j<rows;j++){const yy=y+30+j*cs*1.35;for(let i=0;i<cols;i++)g.strokeRect(x+10+i*cs,yy,cs,cs)}
+  g.font=`${Math.round(cs*.62)}px "Noto Serif KR",serif`;g.textAlign='center';g.fillStyle='rgba(35,30,28,.88)';
+  for(let j=0;j<Math.min(rows,lines.length);j++){const L=lines[j],yy=y+30+j*cs*1.35;for(let i=0;i<Math.min(cols,L.length);i++)g.fillText(L[i],x+10+i*cs+cs/2,yy+cs*.74)}
+  if(red){g.strokeStyle='rgba(200,30,30,.85)';g.lineWidth=2;const j=1+(r()*3|0),yy=y+30+j*cs*1.35+cs/2;g.beginPath();g.moveTo(x+10+cs*2,yy);g.lineTo(x+10+cs*6,yy);g.stroke();
+    g.beginPath();g.ellipse(x+10+cs*9.5,y+30+(j+2)*cs*1.35+cs/2,cs*2.2,cs*.8,-.05,0,TAU);g.stroke();g.font=`${Math.round(cs*.7)}px "Nanum Pen Script","Noto Sans KR",cursive`;g.fillStyle='rgba(200,30,30,.9)';g.fillText('좋아요!',x+10+cs*13,y+30+(j+2)*cs*1.35+cs*.2)}
+  g.textAlign='left'}
+const MS_LINES=['가을이 오면, 나는 늘 이 거리를 걷는다.','지난 해의 나는 조금은 더 나은 사람이','되었을까. 어쩌면, 잘 살아낸다는 것은','놓치지 않는 일인지도 모른다.','사람들은 모두 저마다의 속도로 행복에','닿고, 때로는 넘어지며, 다시 일어난다.','오늘도 나는, 그 느린 걸음을 응원하고','싶다. 언젠가, 더 좋은 마음으로 다시','이곳에 오기를. 그때에도, 부디 안녕하기를.'];
+function paperSnd(o={}){/* 종이 바스락: 짧은 대역 노이즈 알갱이 여러 개 */const n=o.n||5;for(let i=0;i<n;i++)AU.burst({type:'white',t:(o.t||0)+i*(o.gap||.018)+AU.r()*.01,filters:[{t:'bandpass',f:(o.f||3000)*(.7+AU.r()*.7),q:1.4}],a:.001,d:.01+AU.r()*.03,g:(o.g||.12)*(.5+AU.r()*.6),bus:'room',rev:.1,pan:o.pan||0})}
+
+/* =====================================================================
+   1) 도장 쾅 — 25 분실물 창고 / 68 신의 비서
+   ===================================================================== */
+variant({id:'stamp_slam',name:'도장 쾅 — 히트스톱·잉크 번짐',concept:'25 분실물 창고 · 68 신의 비서',conceptFull:'25 분실물 창고(인수증 도장) · 68 신의 비서(기도 서류 심사)',
+  hint:'왼클릭: 승인 도장 · 오른클릭: 반송 도장 · 누르고 있으면 꾹 눌러 잉크가 더 번짐',
+  params:[{k:'hitstop',label:'히트스톱 ms',min:0,max:200,step:5,v:70},{k:'shake',label:'화면 흔들림 px',min:0,max:16,step:.5,v:6},
+    {k:'slam',label:'내려찍기 ms',min:30,max:250,step:5,v:65},{k:'antic',label:'예비 동작 ms',min:0,max:200,step:5,v:70},
+    {k:'bleed',label:'번짐 시간 ms',min:50,max:2000,step:10,v:520},{k:'press',label:'잉크 농도',min:.3,max:1,step:.01,v:.82}],
+  memo:`<p><b>기법</b> 타이밍이 전부다: <b>예비(들어올림 70ms) → 내려찍기(65ms, easeIn³) → 접촉 → 히트스톱(70ms 정지) → 흔들림(지수 감쇠 80ms) → 떼기</b>. 접촉 순간 소리·흔들림·종이 눌림 링·잉크 알갱이가 한 프레임에 모인다. 잉크는 도장면 마스크 × 노이즈(압력 불균일, 한쪽이 옅게) + 번짐 시간 동안 블러 복사본을 옅게 겹쳐 섬유를 따라 스며든 느낌. 누르고 있으면 번짐이 커진다.</p>
+  <p><b>Unity 이식</b> 순수 C#: <code>StampTimeline</code> — antic/slam/hitstop/shake를 ms 정수로, 상태 머신(Hover→Antic→Slam→Contact→Hold→Lift). 히트스톱은 Time.timeScale 대신 <b>해당 연출만</b> 멈춘다(UI 입력은 살아 있게). 잉크: 도장 RT에 마스크×노이즈를 한 번 굽고, 번짐은 셰이더에서 blur 반경을 0→1.5px 보간. 소리: 저역 쿵(110→48Hz)+고무 딱(2.5kHz)+책상 공명(190·410Hz).</p>
+  <p><b>함정</b> 히트스톱 중에 소리도 멈추면 안 된다 — 소리는 접촉 즉시. 흔들림을 사인으로 하면 멀미가 난다: 씨드 난수 방향 + 빠른 감쇠. 도장 자국을 매번 같은 텍스처로 찍으면 가짜 — 회전 ±4°, 압력 노이즈 오프셋을 씨드로 바꿔라.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.r=mulberry32(25);this.n=makeNoise(251);
+    this.desk=deskTex(w,h,252);this.doc=[w*.16,h*.1,w*.68,h*.8];const[dx,dy,dw,dh]=this.doc;
+    [this.pc,this.pg]=mk(w,h);this.pg.drawImage(paperTex(dw|0,dh|0,253),dx,dy);this.formText();
+    this.st={x:w*.62,y:h*.55,z:1,ph:'hover',t:0,kind:0};this.fx=[];this.shakeT=9;this.freeze=0;this.spk=[];this.imp=null;this.seed=2500},
+  formText(){const g=this.pg,[x,y,w,h]=this.doc;g.fillStyle='rgba(40,34,30,.9)';g.font='700 22px "Noto Serif KR",serif';g.fillText('분실물 인수증',x+28,y+44);
+    g.font='13px "Noto Sans KR",sans-serif';g.fillStyle='rgba(60,52,46,.85)';const rows=[['접수 번호','No. 0925-117'],['품목','갈색 가죽 장갑 (왼쪽 한 짝)'],['습득 장소','3번 승강장 벤치 아래'],['추정 주인','손목 안쪽에 이니셜 "S.H."'],['처리','']];
+    rows.forEach((rw,i)=>{const yy=y+90+i*42;g.fillText(rw[0],x+28,yy);g.fillText(rw[1],x+130,yy);g.strokeStyle='rgba(60,52,46,.35)';g.beginPath();g.moveTo(x+124,yy+8);g.lineTo(x+w-28,yy+8);g.stroke()});
+    g.strokeStyle='rgba(60,52,46,.4)';g.setLineDash([4,4]);g.strokeRect(x+w-190,y+h-170,160,150);g.setLineDash([]);g.fillText('확인 날인',x+w-184,y+h-178)},
+  makeImp(kind){const S=150,[c,g]=mk(S,S),seed=++this.seed,r=mulberry32(seed),n=makeNoise(seed),col=kind?[40,60,140]:[196,34,30];
+    g.translate(S/2,S/2);g.rotate((r()-.5)*.14);g.strokeStyle='#000';g.fillStyle='#000';g.lineWidth=7;g.beginPath();g.arc(0,0,60,0,TAU);g.stroke();g.lineWidth=2.5;g.beginPath();g.arc(0,0,50,0,TAU);g.stroke();
+    g.font='800 36px "Noto Sans KR",sans-serif';g.textAlign='center';g.fillText(kind?'반 송':'승 인',0,12);g.font='700 11px "Noto Sans KR",sans-serif';g.fillText(kind?'RETURN':'분실물 창고',0,-26);g.fillText('2026.09.29',0,36);
+    const img=g.getImageData(0,0,S,S),d=img.data,tx=(r()-.5)*1.4,ty=(r()-.5)*1.4;
+    for(let j=0;j<S;j++)for(let i=0;i<S;i++){const k=(j*S+i)*4;if(!d[k+3])continue;const nn=n.fbm(i*.06,j*.06,4),grain=n(i*.8,j*.8),tilt=.5+((i/S-.5)*tx+(j/S-.5)*ty);
+      const a=clamp((nn*.9+tilt*.5+grain*.3-.35)*2.2*this.P.press,0,1)*(d[k+3]/255);d[k]=col[0];d[k+1]=col[1];d[k+2]=col[2];d[k+3]=a*235}
+    g.setTransform(1,0,0,1,0,0);g.putImageData(img,0,0);return c},
+  down(x,y,b){const s=this.st;if(s.ph!=='hover')return;s.x=x;s.y=y;s.kind=b===2?1:0;s.ph='antic';s.t=0;s.held=true;
+    AU.burst({type:'white',filters:[{t:'bandpass',f:1200,q:1}],a:.01,d:.08,g:.04,bus:'room'})},
+  move(x,y){const s=this.st;if(s.ph==='hover'){s.x=x;s.y=y;if(s.ghost&&Math.hypot(x-s.gx,y-s.gy)>40)s.ghost=0}},
+  up(){this.st.held=false},
+  contact(){const s=this.st,P=this.P,r=this.r;this.freeze=P.hitstop/1000;this.shakeT=0;this.shakeDir=r()*TAU;
+    this.imp={c:this.makeImp(s.kind),x:s.x,y:s.y,t:0};this.dent={x:s.x,y:s.y,t:0};
+    for(let i=0;i<14;i++){const a=r()*TAU,v=60+r()*160;this.spk.push({x:s.x+Math.cos(a)*62,y:s.y+Math.sin(a)*62,vx:Math.cos(a)*v,vy:Math.sin(a)*v,age:0,life:.25+r()*.25,k:s.kind})}
+    const pan=(s.x/this.w)*2-1,k=s.kind?.85:1;
+    AU.tone({f:110*k,f2:48*k,a:.002,d:.18,g:.55,pan,bus:'room',rev:.15});AU.burst({type:'brown',filters:[{t:'lowpass',f:500}],a:.001,d:.12,g:.55,pan});
+    AU.burst({type:'white',filters:[{t:'bandpass',f:2500*k,q:1.2}],a:.0005,d:.03,g:.3,pan,bus:'room',rev:.2});
+    AU.tone({f:190,d:.3,g:.07,bus:'room',rev:.3});AU.tone({f:410,d:.18,g:.04,bus:'room'});paperSnd({t:.02,n:3,f:4000,g:.06})},
+  frame(dt,t){const g=this.g,P=this.P,s=this.st,w=this.w,h=this.h,r=this.r;
+    let ldt=dt;if(this.freeze>0){this.freeze-=dt;ldt=0}
+    s.t+=ldt*1000;
+    if(s.ph==='antic'){s.z=1+.3*sstep(0,1,s.t/Math.max(1,P.antic));if(s.t>=P.antic){s.ph='slam';s.t=0}}
+    else if(s.ph==='slam'){const u=clamp(s.t/P.slam,0,1);s.z=1.3*(1-u*u*u);if(u>=1){s.z=0;s.ph='hold';s.t=0;this.contact()}}
+    else if(s.ph==='hold'){s.z=0;if(!s.held&&s.t>120){s.ph='lift';s.t=0;AU.burst({type:'white',filters:[{t:'highpass',f:2500}],a:.001,d:.02,g:.1,bus:'room'})}}
+    else if(s.ph==='lift'){s.z=sstep(0,1,s.t/140);if(s.t>=160){s.ph='hover';s.z=1;s.ghost=1;s.gx=s.x;s.gy=s.y}}
+    if(this.imp){const I=this.imp;I.t+=ldt*1000*(s.ph==='hold'?1.6:1);
+      if(I.t>P.bleed&&s.ph!=='hold'){const pg=this.pg;pg.save();pg.globalAlpha=.35;pg.filter='blur(1.5px)';pg.drawImage(I.c,I.x-75,I.y-75);pg.restore();pg.drawImage(I.c,I.x-75,I.y-75);this.imp=null}}
+    this.shakeT+=ldt*1000;const sh=P.shake*Math.exp(-this.shakeT/80)*(this.freeze>0?1:1),sx=Math.cos(this.shakeDir+this.shakeT*.09)*sh*(r()-.3),sy=Math.sin(this.shakeDir+this.shakeT*.13)*sh*(r()-.3);
+    g.setTransform(1,0,0,1,sx,sy);g.drawImage(this.desk,-10,-10,w+20,h+20);
+    const[dx,dy,dw,dh]=this.doc;g.fillStyle='rgba(0,0,0,.35)';g.fillRect(dx+6,dy+8,dw,dh);g.drawImage(this.pc,0,0);
+    if(this.imp){const I=this.imp,u=clamp(I.t/P.bleed,0,1);if(s.ph!=='hold'||true){g.save();g.globalAlpha=.35*u;g.filter=`blur(${(1.5*u).toFixed(2)}px)`;g.drawImage(I.c,I.x-75,I.y-75);g.restore();if(s.z>.05||s.ph==='lift')g.drawImage(I.c,I.x-75,I.y-75)}}
+    if(this.dent){const D=this.dent;D.t+=ldt;const a=Math.max(0,1-D.t/.45);if(a<=0)this.dent=null;else{const rg=g.createRadialGradient(D.x,D.y,55,D.x,D.y,95);rg.addColorStop(0,`rgba(0,0,0,${.18*a})`);rg.addColorStop(.3,`rgba(0,0,0,${.06*a})`);rg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=rg;g.beginPath();g.arc(D.x,D.y,95,0,TAU);g.fill()}}
+    for(let i=this.spk.length-1;i>=0;i--){const p=this.spk[i];p.age+=ldt;if(p.age>p.life){this.spk.splice(i,1);continue}p.x+=p.vx*ldt;p.y+=p.vy*ldt;p.vx*=.9;p.vy*=.9;g.fillStyle=p.k?`rgba(40,60,140,${1-p.age/p.life})`:`rgba(196,34,30,${1-p.age/p.life})`;g.fillRect(p.x,p.y,2,2)}
+    /* 도장 (위에서 본 모습 + 높이에 따른 그림자) */
+    const z=s.z,sc=1+z*.12,ox=z*26,oy=z*34;s.ga=lerp(s.ga??1,s.ghost?.3:1,1-Math.exp(-dt*10));g.globalAlpha=s.ga;
+    g.save();g.globalAlpha=(.4-z*.15)*s.ga;g.filter=`blur(${(2+z*8).toFixed(1)}px)`;g.fillStyle='#000';g.beginPath();g.arc(s.x+ox,s.y+oy,66,0,TAU);g.fill();g.restore();
+    const hx=s.x-z*6,hy=s.y-z*10;let gr=g.createRadialGradient(hx-20*sc,hy-24*sc,6,hx,hy,70*sc);gr.addColorStop(0,'#b88a58');gr.addColorStop(.7,'#7a5230');gr.addColorStop(1,'#4a2e18');
+    g.fillStyle=gr;g.beginPath();g.arc(hx,hy,68*sc,0,TAU);g.fill();g.strokeStyle='rgba(40,22,10,.35)';for(let k=1;k<5;k++){g.beginPath();g.arc(hx+3,hy+2,k*12*sc,0,TAU);g.stroke()}
+    gr=g.createRadialGradient(hx-8,hy-10,2,hx,hy,30*sc);gr.addColorStop(0,'#d4a878');gr.addColorStop(1,'#5a3a20');g.fillStyle=gr;g.beginPath();g.arc(hx,hy,28*sc,0,TAU);g.fill();
+    g.fillStyle=s.kind?'rgba(40,60,140,.9)':'rgba(196,34,30,.9)';g.beginPath();g.arc(hx+50*sc,hy-44*sc,5,0,TAU);g.fill();
+    g.globalAlpha=1;g.setTransform(1,0,0,1,0,0)},
+  stat(){return {hover:'대기',antic:'예비 동작',slam:'내려찍기',hold:this.freeze>0?'히트스톱':'꾹 누름',lift:'떼기'}[this.st.ph]},
+  reset(){const[dx,dy,dw,dh]=this.doc;this.pg.clearRect(0,0,this.w,this.h);this.pg.drawImage(paperTex(dw|0,dh|0,253),dx,dy);this.formText()},
+  trigger(){this.down(this.w*.62+(this.r()-.5)*80,this.h*.6+(this.r()-.5)*60,0);setTimeout(()=>this.up(),80)},
+  extraJson(){return{timelineMs:{antic:this.P.antic,slam:this.P.slam,hitstop:this.P.hitstop,shakeTau:80,minHold:120,lift:140}}}
+});
+
+/* =====================================================================
+   2) 종이 찢기 — 48 붉은 펜으로 남긴 것
+   ===================================================================== */
+variant({id:'paper_tear',name:'종이 찢기',concept:'48 붉은 펜으로 남긴 것',conceptFull:'48 붉은 펜으로 남긴 것 — 원고를 삭제·교체, 버릴 장은 찢는다',
+  hint:'원고 위를 가로질러 드래그: 찢기 (속도만큼 소리가 거칠어짐) · R 또는 클릭: 새 원고',
+  params:[{k:'jag',label:'찢김 거칠기 px',min:0,max:14,step:.5,v:5},{k:'fiber',label:'섬유 테두리 px',min:0,max:8,step:.5,v:3},
+    {k:'grain',label:'소리 알갱이 간격 px',min:2,max:20,step:1,v:6},{k:'sep',label:'분리 속도',min:.2,max:3,step:.05,v:1},{k:'lag',label:'찢김 저항',min:0,max:.9,step:.01,v:.35}],
+  memo:`<p><b>기법</b> 드래그 경로를 3px 간격으로 재표본화하고 노이즈로 수직 지터(섬유). 찢김 끝점은 포인터를 <b>저항만큼 늦게 따라간다</b>(종이가 버틴다). 찢는 동안 <b>알갱이 간격 px마다 소리 알갱이 하나</b>(대역 1.5–4kHz, 속도↑ → 음량·밝기↑) — 손을 멈추면 소리도 멈춘다. 반대편 가장자리를 넘으면 사각형 둘레를 따라 두 다각형으로 쪼개 각각 회전·이동, 찢긴 가장자리에 흰 섬유 띠.</p>
+  <p><b>Unity 이식</b> 순수 C#: 경로 재표본화·다각형 분할(둘레 매개변수 s로 두 조각 구성) — 헤드리스 테스트 가능. 렌더: 조각마다 동적 Mesh(삼각분할) + 같은 종이 텍스처 UV, 가장자리는 LineRenderer(흰색, 알파 노이즈 텍스처). 소리: 거리 누적 → grain 이벤트 → AudioSource.PlayOneShot(피치 0.8–1.3 랜덤).</p>
+  <p><b>함정</b> 시간 기준으로 소리를 내면 멈춰 있어도 찢는 소리가 난다. 지터를 매 프레임 새로 뽑으면 찢긴 선이 꿈틀댄다 — 경로 거리 s에 대한 노이즈로 고정.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.n=makeNoise(48);this.desk=deskTex(w,h,481);this.newSheet()},
+  newSheet(){const w=this.w,h=this.h,pw=w*.62,ph=h*.8;this.rect=[w*.19,h*.1,pw,ph];const[c,g]=mk(pw|0,ph|0);g.drawImage(paperTex(pw|0,ph|0,482),0,0);manuscript(g,0,0,pw,ph,483,MS_LINES);this.tex=c;
+    this.path=[];this.tip=null;this.pieces=null;this.acc=0;this.tearing=false},
+  inside(x,y){const[a,b,c,d]=this.rect;return x>=a&&x<=a+c&&y>=b&&y<=b+d},
+  edgeProj(x,y){/* 가장 가까운 둘레 점과 둘레 매개변수 s */const[a,b,c,d]=this.rect;const cand=[[x,b,clamp(x-a,0,c)],[a+c,y,c+clamp(y-b,0,d)],[x,b+d,c+d+clamp(a+c-x,0,c)],[a,y,2*c+d+clamp(b+d-y,0,d)]];
+    const ds=[Math.abs(y-b),Math.abs(x-a-c),Math.abs(y-b-d),Math.abs(x-a)];let k=ds.indexOf(Math.min(...ds));const p=cand[k];return{x:clamp(p[0],a,a+c),y:clamp(p[1],b,b+d),s:p[2]}},
+  perim(s){const[a,b,c,d]=this.rect,L=2*(c+d);s=((s%L)+L)%L;if(s<c)return[a+s,b];if(s<c+d)return[a+c,b+s-c];if(s<2*c+d)return[a+c-(s-c-d),b+d];return[a,b+d-(s-2*c-d)]},
+  down(x,y){if(this.pieces){this.newSheet();paperSnd({n:4,f:2000,g:.1});return}this.tearing=true;const e=this.inside(x,y)?this.edgeProj(x,y):this.edgeProj(x,y);this.start=e;this.path=[[e.x,e.y]];this.tip={x:e.x,y:e.y};this.dist=0;this.gd=0},
+  move(x,y,held){if(!held||!this.tearing)return;this.target={x,y}},
+  up(){if(!this.tearing)return;this.tearing=false;this.target=null;if(this.dist>40&&!this.pieces){/* 손을 놓으면 가장 가까운 가장자리까지 쫙 */this.finish(true)}else this.path=[]},
+  addPt(x,y){const P=this.P,last=this.path[this.path.length-1],d=Math.hypot(x-last[0],y-last[1]);if(d<3)return 0;const n=Math.floor(d/3);
+    for(let i=1;i<=n;i++){const u=i/n,bx=lerp(last[0],x,u),by=lerp(last[1],y,u);this.dist+=d/n;const nx=-(y-last[1])/d,ny=(x-last[0])/d,j=(this.n(this.dist*.08,3.3)-.5)*2*P.jag+(this.n(this.dist*.5,7.1)-.5)*P.jag*.5;this.path.push([bx+nx*j,by+ny*j])}return d},
+  grainSnd(spd){const k=clamp(spd/900,.15,1.4),pan=(this.tip.x/this.w)*2-1;AU.burst({type:'white',filters:[{t:'bandpass',f:1500+2500*k*AU.r(),q:1.1}],a:.0008,d:.006+AU.r()*.02,g:.05+.2*k,pan,bus:'room',rev:.08});
+    if(AU.r()<.35)AU.burst({type:'pink',filters:[{t:'bandpass',f:500+300*k,q:2}],a:.002,d:.03,g:.06*k,pan})},
+  rayExit(px,py,dx,dy){const[a,b,c,d]=this.rect;let best=1e9;const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+    for(const[t]of[[(a-px)/dx],[(a+c-px)/dx],[(b-py)/dy],[(b+d-py)/dy]])if(t>0&&isFinite(t)){const x=px+dx*t,y=py+dy*t;if(x>=a-.5&&x<=a+c+.5&&y>=b-.5&&y<=b+d+.5)best=Math.min(best,t)}
+    return[px+dx*best,py+dy*best]},
+  finish(auto){const L=this.path,q=L[Math.max(0,L.length-6)],p=L[L.length-1];let e;
+    if(auto){const ex=this.rayExit(p[0],p[1],p[0]-q[0],p[1]-q[1]);e=this.edgeProj(ex[0],ex[1])}else e=this.edgeProj(p[0],p[1]);
+    if(auto){const last=this.path[this.path.length-1];const steps=Math.ceil(Math.hypot(e.x-last[0],e.y-last[1])/3);for(let i=0;i<steps;i++){this.addPt(lerp(last[0],e.x,(i+1)/steps),lerp(last[1],e.y,(i+1)/steps))}
+      paperSnd({n:14,gap:.012,f:2600,g:.2})}
+    this.path.push([e.x,e.y]);const s0=this.start.s,s1=e.s,[a,b,c,d]=this.rect,PL=2*(c+d);
+    const around=(from,to)=>{const pts=[],corners=[0,c,c+d,2*c+d];let s=from;const span=((to-from)%PL+PL)%PL;for(const cs of corners.map(q=>q).sort((p,q)=>((p-from)%PL+PL)%PL-((q-from)%PL+PL)%PL)){const off=((cs-from)%PL+PL)%PL;if(off>0&&off<span)pts.push(this.perim(cs))}return pts};
+    const A=[...this.path,...around(s1,s0)],B=[...this.path.slice().reverse(),...around(s0,s1)];
+    const cen=p=>{let x=0,y=0;for(const q of p){x+=q[0];y+=q[1]}return[x/p.length,y/p.length]};
+    const ca=cen(A),cb=cen(B),dx=ca[0]-cb[0],dy=ca[1]-cb[1],l=Math.hypot(dx,dy)||1;
+    this.pieces=[{poly:A,c:ca,vx:dx/l*26,vy:dy/l*26+6,rot:0,vr:(this.n(1,1)-.5)*.22,ox:0,oy:0},{poly:B,c:cb,vx:-dx/l*26,vy:-dy/l*26+6,rot:0,vr:-(this.n(2,2)-.5)*.22,ox:0,oy:0}];this.edge=this.path.slice();this.pt=0;
+    AU.burst({type:'pink',filters:[{t:'bandpass',f:800,f2:2500,q:.8}],a:.03,d:.35,g:.2,bus:'room',rev:.2})},
+  frame(dt,t){const g=this.g,P=this.P,w=this.w,h=this.h;
+    if(this.tearing&&this.target){const tp=this.tip,k=1-Math.pow(P.lag,dt*30),nx=lerp(tp.x,this.target.x,k),ny=lerp(tp.y,this.target.y,k);const spd=Math.hypot(nx-tp.x,ny-tp.y)/Math.max(dt,.001);
+      tp.x=nx;tp.y=ny;if(this.inside(nx,ny)){const d=this.addPt(nx,ny);this.gd+=d;while(this.gd>=P.grain){this.gd-=P.grain;this.grainSnd(spd)}}
+      else if(this.dist>80&&Math.hypot(nx-this.start.x,ny-this.start.y)>70){this.tearing=false;this.finish(false)}
+      else if(this.path.length<=1){/* 가장자리 밖에서 시작: 끝점을 가장자리에 붙여 둔다 */const e=this.edgeProj(nx,ny);this.start=e;this.path=[[e.x,e.y]]}}
+    g.drawImage(this.desk,0,0);const[a,b,c,d]=this.rect;
+    const drawPiece=(poly,tx,ty,rot,cx,cy,lift)=>{g.save();g.translate(cx+tx,cy+ty);g.rotate(rot);g.translate(-cx,-cy);
+      g.save();g.translate(lift*.6+4,lift+6);g.fillStyle='rgba(0,0,0,.35)';g.filter='blur(4px)';g.beginPath();poly.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fill();g.restore();
+      g.beginPath();poly.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.save();g.clip();g.drawImage(this.tex,a,b);g.restore();
+      if(this.edge){g.strokeStyle='rgba(250,247,238,.95)';g.lineWidth=P.fiber;g.lineJoin='round';g.beginPath();this.edge.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.save();g.beginPath();poly.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.clip();
+        g.beginPath();this.edge.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.lineWidth=P.fiber*2;g.stroke();
+        g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=.8;for(let i=2;i<this.edge.length;i+=3){const p=this.edge[i],q=this.edge[i-2],nx=-(p[1]-q[1]),ny=p[0]-q[0],l=Math.hypot(nx,ny)||1,f=(this.n(i*.7,5)-.3)*P.fiber*1.8;g.beginPath();g.moveTo(p[0],p[1]);g.lineTo(p[0]+nx/l*f,p[1]+ny/l*f);g.stroke()}g.restore()}
+      g.restore()};
+    if(!this.pieces){drawPiece([[a,b],[a+c,b],[a+c,b+d],[a,b+d]],0,0,0,0,0,0);
+      if(this.path.length>1){g.strokeStyle='rgba(40,30,25,.55)';g.lineWidth=1.4;g.beginPath();this.path.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();
+        g.strokeStyle='rgba(255,252,244,.95)';g.lineWidth=P.fiber;g.beginPath();this.path.forEach((p,i)=>i?g.lineTo(p[0]+1.5,p[1]+1.5):g.moveTo(p[0]+1.5,p[1]+1.5));g.stroke();
+        if(this.tip&&this.tearing){g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.arc(this.tip.x,this.tip.y,5,0,TAU);g.fill()}}}
+    else{this.pt+=dt;const e=Math.min(1,this.pt*P.sep*2.2);for(const p of this.pieces){const k=1-Math.pow(1-e,3);p.ox=p.vx*k*.9;p.oy=p.vy*k*.9;const rr=p.vr*k;drawPiece(p.poly,p.ox,p.oy,rr,p.c[0],p.c[1],4*(1-e))}}},
+  stat(){return this.pieces?'두 조각 — 클릭하면 새 원고':this.tearing?`찢는 중 ${this.path.length*3}px`:'대기'},
+  reset(){this.newSheet()},
+  trigger(){if(this.pieces){this.newSheet();return}const[a,b,c,d]=this.rect;this.down(a+2,b+d*.3);let i=0;const id=setInterval(()=>{i++;this.move(a+c*i/30,b+d*(.3+.4*i/30)+Math.sin(i*.6)*10,true);if(i>=32){clearInterval(id);this.up()}},30)},
+  extraJson(){return{resamplePx:3,grainEveryPx:this.P.grain,pointerLag:this.P.lag}}
+});
+
+/* =====================================================================
+   3) 접힘 — 68 신의 비서 (기도 편지 삼단 접기 → 봉투)
+   ===================================================================== */
+variant({id:'letter_fold',name:'편지 접기 → 봉투',concept:'68 신의 비서',conceptFull:'68 신의 비서 — 도착한 기도 편지를 심사하고 접어 돌려보낸다',
+  hint:'클릭: 삼단 접기 → 봉투에 넣기 → 봉하기 · 다시 클릭: 새 편지',
+  params:[{k:'foldMs',label:'접기 시간 ms',min:150,max:1200,step:10,v:420},{k:'over',label:'탄성(오버슈트)',min:0,max:.4,step:.01,v:.12},
+    {k:'persp',label:'원근 세기',min:0,max:.6,step:.01,v:.28},{k:'shade',label:'접힘 음영',min:0,max:1,step:.01,v:.55}],
+  memo:`<p><b>기법</b> 편지를 세 띠로 나누고, 접히는 띠를 접는 선 기준으로 rotateX θ만큼 돌린다. Canvas에는 원근이 없으니 띠를 <b>가로 24줄로 잘라 줄마다 가로 배율(원근)</b>을 다르게 그려 사다리꼴을 만든다. θ&gt;90°면 뒷면(무지 종이+비친 글자)을 그림. 음영 = 1−cos 비례, 접는 선에 하이라이트 한 줄. 타임라인: 접기1 → 누름(100ms) → 접기2 → 봉투로 미끄러짐 → 덮개 닫힘.</p>
+  <p><b>Unity 이식</b> 3D라면 띠 3개를 각자 피벗(접는 선)에 둔 Quad로 두고 localRotation.x만 보간 — 가장 싸고 정확. 2D라면 같은 슬라이스 기법을 셰이더 UV 변형으로. 타임라인 ms 값은 순수 C# 배열. 소리: 접기 스윕(대역 2→5kHz) + 끝에서 주름 딱딱 3알, 봉투=저역 마찰 노이즈.</p>
+  <p><b>함정</b> 오버슈트 없이 선형으로 접으면 "애니메이션"처럼 보인다 — 종이는 살짝 넘어갔다 돌아온다. 뒷면이 앞면 텍스처를 그대로 쓰면 글자가 거울상으로 또렷해진다: 옅게(12%)만.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.desk=deskTex(w,h,681);this.r=mulberry32(68);this.T=-1;this.make()},
+  make(){const w=this.w,h=this.h,lw=Math.round(w*.42),lh=Math.round(h*.72);this.lw=lw;this.lh=lh;const[c,g]=mk(lw,lh);g.drawImage(paperTex(lw,lh,682+(this.n2=(this.n2||0)+1)),0,0);
+    g.fillStyle='rgba(40,34,30,.85)';g.font='600 15px "Noto Serif KR",serif';g.fillText('신께 올립니다',22,38);g.font='13px "Noto Serif KR",serif';
+    const L=['어머니 수술이 내일입니다.','한 번만 들어주신다면','저는 무엇이든 내어놓겠습니다.','','매일 새벽 기도하던 그 길을','이제는 혼자 걷습니다.','부디, 한 번만.','','— 3번지 둘째 딸 올림'];L.forEach((s,i)=>g.fillText(s,22,74+i*26));
+    g.strokeStyle='rgba(150,120,90,.25)';for(let i=0;i<14;i++){g.beginPath();g.moveTo(18,82+i*26);g.lineTo(lw-18,82+i*26);g.stroke()}
+    const[bc,bg]=mk(lw,lh);bg.drawImage(paperTex(lw,lh,689),0,0);bg.globalAlpha=.1;bg.translate(0,lh);bg.scale(1,-1);bg.drawImage(c,0,0);this.front=c;this.back=bc;this.T=-1},
+  down(){if(this.T<0){this.T=0;this.snd=[0,0,0,0,0]}else if(this.T>3.4){this.make();paperSnd({n:4,f:2500,g:.1})}},
+  up(){},
+  /* 한 띠를 접는 선(pivotY) 기준 θ로 그림. dir=-1: 아래 띠를 위로, +1: 위 띠를 아래로 */
+  strip(g,src,sy,sh,x,pivotY,theta,dir,back){const P=this.P,S=24,lw=this.lw,c=Math.cos(theta),s=Math.sin(theta);
+    for(let i=0;i<S;i++){const u0=i/S,u1=(i+1)/S,dist0=u0*sh,dist1=u1*sh;/* 접는 선에서의 거리 */
+      const y0=pivotY-dir*dist0*c,y1=pivotY-dir*dist1*c,z0=dist0*s,z1=dist1*s,sc0=1+P.persp*z0/sh*.6,sc1=1+P.persp*z1/sh*.6;
+      const srcY=dir<0?sy+u0*sh:sy+sh-u1*sh,ww=lw*(sc0+sc1)/2,yy=Math.min(y0,y1),hh=Math.max(1,Math.abs(y1-y0))+.6;
+      g.drawImage(c<0?back:src,0,srcY,lw,sh/S,x+(lw-ww)/2,yy,ww,hh);
+      (this._sh||(this._sh=[])).push([x+(lw-ww)/2,Math.round(yy),ww,Math.max(1,Math.round(yy+Math.abs(y1-y0))-Math.round(yy))])}
+    /* 음영은 모든 조각을 그린 뒤 한 번에 (조각 겹침이 음영을 덮어 줄무늬가 생기는 것 방지) */
+    const shd=P.shade*(1-Math.abs(c))*.8+(c<0?.12:0);if(shd>.01){g.fillStyle=`rgba(40,28,15,${shd})`;for(const q of this._sh)g.fillRect(q[0],q[1],q[2],q[3])}this._sh.length=0},
+  frame(dt,t){const g=this.g,P=this.P,w=this.w,h=this.h,lw=this.lw,lh=this.lh,th=lh/3;g.drawImage(this.desk,0,0);
+    const x=(w-lw)/2,y0=h*.08;let T=this.T;if(T>=0)this.T+=dt;const F=P.foldMs/1000;
+    const ease=u=>{u=clamp(u,0,1);const o=P.over;return u<1?1-Math.pow(1-u,3)*(1+o*3*u)+o*Math.sin(u*Math.PI)*.0:1};
+    const back=u=>{u=clamp(u,0,1);const c1=1.70158*P.over*6,c3=c1+1;return 1+c3*Math.pow(u-1,3)+c1*Math.pow(u-1,2)};
+    const t1=T<0?0:back(T/F),t2=T<0?0:back((T-F-.1)/F);
+    const slide=T<0?0:sstep(0,1,(T-2*F-.35)/.5),flap=T<0?0:sstep(0,1,(T-2*F-.95)/.35);
+    /* 소리 트리거 */
+    const S=this.snd;if(T>=0){if(!S[0]){S[0]=1;AU.burst({type:'white',filters:[{t:'bandpass',f:2000,f2:5000,q:1.2,ft:F}],a:.05,d:F,g:.12,bus:'room'})}
+      if(!S[1]&&T>F*.95){S[1]=1;paperSnd({n:3,gap:.025,f:3500,g:.2})}if(!S[2]&&T>F+.1){S[2]=1;AU.burst({type:'white',filters:[{t:'bandpass',f:2200,f2:5200,q:1.2,ft:F}],a:.05,d:F,g:.12,bus:'room'})}
+      if(!S[3]&&T>2*F+.1){S[3]=1;paperSnd({n:3,gap:.025,f:3200,g:.2})}if(!S[4]&&T>2*F+.4){S[4]=1;AU.burst({type:'pink',filters:[{t:'lowpass',f:1500}],a:.1,d:.45,g:.18,bus:'room'})}
+      if(!S[5]&&T>2*F+1.25){S[5]=1;AU.tone({f:180,d:.1,g:.15,bus:'room'});paperSnd({n:2,f:2000,g:.12})}}
+    /* 봉투 뒤판 */
+    const ex=x-20,ew=lw+40,eh=th+30,ey=h*.52,fh=-eh*.62*Math.cos(flap*Math.PI);
+    const drawFlap=()=>{g.fillStyle=fh<0?'#c4a47a':'#d6ba92';g.beginPath();g.moveTo(ex,ey);g.lineTo(ex+ew/2,ey+fh);g.lineTo(ex+ew,ey);g.closePath();g.fill();g.strokeStyle='rgba(120,90,60,.35)';g.stroke()};
+    if(slide>0||T>2*F){g.fillStyle='rgba(0,0,0,.35)';g.fillRect(ex+6,ey+8,ew,eh);g.fillStyle='#c9ad84';g.fillRect(ex,ey,ew,eh);if(fh<0)drawFlap()}
+    g.save();if(slide>0){g.beginPath();g.rect(0,0,w,ey+eh);g.clip()}
+    const oy=lerp(0,ey+14-(y0+th),slide);g.translate(0,oy);
+    if(T<0){g.fillStyle='rgba(0,0,0,.35)';g.fillRect(x+6,y0+8,lw,lh);g.drawImage(this.front,x,y0)}
+    else{const mid=y0+th;
+      g.fillStyle='rgba(0,0,0,.3)';g.fillRect(x+5,mid+6,lw,th);g.drawImage(this.front,0,th,lw,th,x,mid,lw,th);
+      /* 아래 띠: 가운데 띠의 아래 선에서 위로 */
+      this.strip(g,this.front,2*th,th,x,mid+th,t1*Math.PI,-1,this.back);this.strip(g,this.front,0,th,x,mid,t2*Math.PI,1,this.back);
+      if(t1>.98){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(x,mid+th-1,lw,1)}if(t2>.98){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(x,mid,lw,1)}}
+    g.restore();
+    /* 봉투 앞판(주머니) + 덮개 */
+    if(slide>0||T>2*F){g.fillStyle='#dcc198';g.beginPath();g.moveTo(ex,ey+eh*.35);g.lineTo(ex+ew/2,ey+eh*.75);g.lineTo(ex+ew,ey+eh*.35);g.lineTo(ex+ew,ey+eh);g.lineTo(ex,ey+eh);g.fill();
+      g.strokeStyle='rgba(120,90,60,.4)';g.stroke();
+      if(fh>=0){g.save();g.shadowColor='rgba(0,0,0,.3)';g.shadowBlur=6;g.shadowOffsetY=2;drawFlap();g.restore()}
+      if(flap>.99){g.fillStyle='#8e1f1c';g.beginPath();g.arc(ex+ew/2,ey+eh*.55,14,0,TAU);g.fill();g.fillStyle='rgba(255,210,190,.35)';g.beginPath();g.arc(ex+ew/2-4,ey+eh*.55-4,5,0,TAU);g.fill()}}},
+  stat(){const T=this.T,F=this.P.foldMs/1000;return T<0?'펼친 편지':T<F?'접기 1':T<2*F+.1?'접기 2':T<2*F+.95?'봉투에 넣기':T<3.4?'봉하기':'완료 — 클릭: 새 편지'},
+  reset(){this.make()},
+  trigger(){this.down()},
+  extraJson(){const F=this.P.foldMs;return{timelineMs:{fold1:[0,F],press:100,fold2:[F+100,2*F+100],slide:[2*F+350,2*F+850],flap:[2*F+950,2*F+1300]},slicesPerStrip:24}}
+});
+
+/* =====================================================================
+   4) 서류 넘김 (페이지 컬) — 64 원고 되돌려 보내기 · 7 사진 속 범인
+   ===================================================================== */
+variant({id:'page_curl',name:'서류 넘김 (페이지 컬)',concept:'64 원고 되돌려 보내기 · 7',conceptFull:'64 원고 되돌려 보내기(원고 넘김) · 7 사진 속 범인(사건 파일 넘김)',
+  hint:'오른쪽 아래 모서리를 잡고 왼쪽으로 드래그 · 클릭만 하면 자동 넘김 · 반 넘게 끌고 놓으면 넘어감',
+  params:[{k:'snap',label:'자동 완료 시간 ms',min:100,max:900,step:10,v:320},{k:'shadow',label:'접힘 그림자',min:0,max:1,step:.01,v:.55},
+    {k:'thru',label:'뒷면 비침',min:0,max:.4,step:.01,v:.1},{k:'flutter',label:'펄럭임 소리',min:0,max:1,step:.01,v:.6}],
+  memo:`<p><b>기법</b> 고전 페이지 컬: 잡힌 모서리 C와 포인터 P의 <b>수직이등분선이 접는 선</b>. 페이지 사각형을 그 선으로 잘라(서덜랜드–호지먼) 책등 쪽은 앞면, 나머지는 선에 대해 <b>반사 변환</b>한 뒤 뒷면 텍스처로 그린다. P는 책등 아래 점 기준 반지름 W 원 안으로 제한(종이가 늘어나지 않게). 접는 선 근처에 그라디언트 그림자 두 줄(아래 장 위, 넘기는 장 위).</p>
+  <p><b>Unity 이식</b> 순수 C#: 접는 선·반사 행렬·다각형 클리핑(float 대신 px 정수로도 가능). 렌더: 앞/뒤 두 Mesh(클리핑 결과 다각형 삼각분할) + UV 그대로. 대안: 셰이더에서 접는 선 거리로 뒷면/앞면 선택(버텍스 수 적을 때). 소리: 드래그 속도 → 휙 노이즈 음량, 20–30Hz 진폭 변조로 펄럭임.</p>
+  <p><b>함정</b> 제약 없이 P를 따라가면 페이지가 찢어지듯 늘어난다. 놓았을 때 절반 기준 스냅 애니메이션은 반드시 같은 기하(모서리 경로)로 — 트윈으로 이미지를 돌리면 가짜.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.desk=deskTex(w,h,641);const pw=Math.round(w*.4),ph=Math.round(h*.8);this.pw=pw;this.ph=ph;this.sx=Math.round(w*.5);this.sy=Math.round(h*.1);
+    this.pages=[0,1,2,3,4].map(i=>{const[c,g]=mk(pw,ph);g.drawImage(paperTex(pw,ph,642+i),0,0);manuscript(g,4,10,pw-8,ph-40,650+i,MS_LINES.slice(i%3).concat(MS_LINES),i%2===0);g.fillStyle='rgba(60,50,40,.7)';g.font='12px "Noto Sans KR",sans-serif';g.fillText('— '+(i+1)+' —',pw/2-14,ph-14);return c});
+    this.backs=this.pages.map((p,i)=>{const[c,g]=mk(pw,ph);g.drawImage(paperTex(pw,ph,660+i,[230,220,198]),0,0);g.globalAlpha=this.P.thru;g.translate(pw,0);g.scale(-1,1);g.drawImage(p,0,0);return c});
+    this.cur=0;this.drag=null;this.anim=null},
+  corner(){return[this.sx+this.pw,this.sy+this.ph]},
+  constrain(px,py){const bx=this.sx,by=this.sy+this.ph,W=this.pw;let dx=px-bx,dy=py-by,d=Math.hypot(dx,dy);if(d>W){dx*=W/d;dy*=W/d}px=bx+dx;py=by+dy;
+    const tx=this.sx,ty=this.sy,D=Math.hypot(W,this.ph);dx=px-tx;dy=py-ty;d=Math.hypot(dx,dy);if(d>D){px=tx+dx*D/d;py=ty+dy*D/d}return[px,py]},
+  down(x,y){if(this.anim||this.cur>=this.pages.length)return;this.drag={x,y,t0:performance.now(),moved:false,lx:x,ly:y};const[cx,cy]=this.corner();this.P0=[cx-1,cy-1];
+    AU.burst({type:'white',filters:[{t:'bandpass',f:2500,q:1}],a:.005,d:.05,g:.08,bus:'room'});
+    this.fl=AU.bed({type:'pink',ft:'bandpass',f:1400,q:.7,g:0,fade:.03,bus:'room'})},
+  move(x,y,held){if(!held||!this.drag)return;const d=this.drag;if(Math.hypot(x-d.x,y-d.y)>4)d.moved=true;if(d.moved){this.P0=this.constrain(x,y);const sp=Math.hypot(x-d.lx,y-d.ly);d.lx=x;d.ly=y;
+      this.fl?.set(clamp(sp/30,0,1)*.2*this.P.flutter*(.6+.4*Math.sin(performance.now()*.15)),900+sp*40,.03)}},
+  up(x,y){const d=this.drag;if(!d)return;this.drag=null;this.fl?.stop(.08);this.fl=null;
+    const[cx,cy]=this.corner(),from=this.P0,go=!d.moved||from[0]<this.sx+this.pw*.5;
+    const to=go?[this.sx-this.pw,cy]:[cx-1,cy-1];this.anim={from:from.slice(),to,t:0,go,dur:this.P.snap/1000*(d.moved?1:1.6)};
+    if(go){AU.burst({type:'pink',filters:[{t:'bandpass',f:900,f2:2600,q:.8}],a:.04,d:this.anim.dur,g:.2*this.P.flutter+.05,bus:'room',rev:.15});AU.burst({type:'white',t:this.anim.dur*.95,filters:[{t:'lowpass',f:2500}],a:.003,d:.06,g:.15,bus:'room'})}},
+  clipPoly(poly,nx,ny,c){/* 반평면 nx*x+ny*y <= c 쪽만 */const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],da=nx*a[0]+ny*a[1]-c,db=nx*b[0]+ny*b[1]-c;
+      if(da<=0)out.push(a);if((da<0)!==(db<0)){const u=da/(da-db);out.push([a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u])}}return out},
+  frame(dt,t){const g=this.g,P=this.P,w=this.w,h=this.h,pw=this.pw,ph=this.ph,sx=this.sx,sy=this.sy;
+    if(this.anim){const A=this.anim;A.t+=dt;const u=clamp(A.t/A.dur,0,1),e=1-Math.pow(1-u,3);
+      /* 모서리 경로: 원호를 따라 (책등 아래 점 기준) */const bx=sx,by=sy+ph,a0=Math.atan2(A.from[1]-by,A.from[0]-bx),a1=Math.atan2(A.to[1]-by,A.to[0]-bx)+(A.go&&Math.atan2(A.to[1]-by,A.to[0]-bx)>0?-TAU:0),r0=Math.hypot(A.from[0]-bx,A.from[1]-by),r1=Math.hypot(A.to[0]-bx,A.to[1]-by);
+      const an=lerp(a0,a1,e),rr=lerp(r0,r1,e);this.P0=[bx+Math.cos(an)*rr,by+Math.sin(an)*rr-Math.sin(e*Math.PI)*ph*.12];
+      if(u>=1){if(A.go)this.cur++;this.anim=null;this.P0=null}}
+    g.drawImage(this.desk,0,0);
+    /* 왼쪽 더미(넘긴 장) · 오른쪽 더미 */
+    const stackR=this.pages.length-this.cur,stackL=this.cur;
+    for(let i=0;i<Math.min(3,stackR);i++){g.fillStyle=`rgb(${200-i*14},${190-i*14},${168-i*14})`;g.fillRect(sx+2+i*2,sy+2+i*2,pw,ph)}
+    for(let i=0;i<Math.min(3,stackL);i++){g.fillStyle=`rgb(${200-i*14},${190-i*14},${168-i*14})`;g.fillRect(sx-pw-2-i*2,sy+2+i*2,pw,ph)}
+    g.fillStyle='rgba(0,0,0,.35)';g.fillRect(sx+8,sy+10,pw,ph);if(stackL)g.fillRect(sx-pw+8,sy+10,pw,ph);
+    if(stackL)g.drawImage(this.backs[this.cur-1],sx-pw,sy);
+    const under=this.cur+1<this.pages.length?this.pages[this.cur+1]:null;
+    if(this.cur>=this.pages.length){g.fillStyle='rgba(230,220,200,.12)';g.font='14px "Noto Sans KR",sans-serif';g.fillText('모두 넘김 — R: 처음부터',sx+30,sy+ph/2);return}
+    const Pp=this.P0,page=this.pages[this.cur];
+    if(!Pp){g.drawImage(page,sx,sy);g.fillStyle='rgba(255,255,255,.06)';g.fillRect(sx+pw-40,sy+ph-40,40,40);return}
+    const[cx,cy]=this.corner(),mx=(cx+Pp[0])/2,my=(cy+Pp[1])/2;let nx=cx-Pp[0],ny=cy-Pp[1];const l=Math.hypot(nx,ny)||1;nx/=l;ny/=l;const c=nx*mx+ny*my;
+    const rect=[[sx,sy],[sx+pw,sy],[sx+pw,sy+ph],[sx,sy+ph]],front=this.clipPoly(rect,nx,ny,c),flap=this.clipPoly(rect,-nx,-ny,-c);
+    const path=p=>{g.beginPath();p.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath()};
+    /* 아래 장 */
+    g.save();path(rect);g.clip();if(under)g.drawImage(under,sx,sy);else{g.fillStyle='#5a3a24';g.fillRect(sx,sy,pw,ph)}
+    const sw=40,sg=g.createLinearGradient(mx,my,mx-nx*sw,my-ny*sw);sg.addColorStop(0,`rgba(0,0,0,${.45*P.shadow})`);sg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=sg;g.fillRect(0,0,w,h);g.restore();
+    /* 앞면 */
+    if(front.length>2){g.save();path(front);g.clip();g.drawImage(page,sx,sy);const fg=g.createLinearGradient(mx,my,mx-nx*60,my-ny*60);fg.addColorStop(0,`rgba(0,0,0,${.25*P.shadow})`);fg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=fg;g.fillRect(0,0,w,h);g.restore()}
+    /* 뒷면: 접는 선에 대한 반사 */
+    if(flap.length>2){const refl=flap.map(q=>{const d=nx*q[0]+ny*q[1]-c;return[q[0]-2*d*nx,q[1]-2*d*ny]});
+      g.save();g.shadowColor=`rgba(0,0,0,${.5*P.shadow})`;g.shadowBlur=18;g.shadowOffsetX=-nx*6;g.shadowOffsetY=-ny*6;path(refl);g.fillStyle='#ddd';g.fill();g.restore();
+      g.save();path(refl);g.clip();const a=1-2*nx*nx,b=-2*nx*ny,d2=1-2*ny*ny;g.transform(a,b,b,d2,2*c*nx,2*c*ny);g.drawImage(this.backs[this.cur],sx,sy);g.setTransform(1,0,0,1,0,0);
+      const bg2=g.createLinearGradient(mx,my,mx-nx*pw*.5,my-ny*pw*.5);bg2.addColorStop(0,`rgba(90,70,50,${.4*P.shadow})`);bg2.addColorStop(.3,'rgba(255,255,255,.08)');bg2.addColorStop(1,'rgba(0,0,0,.06)');g.fillStyle=bg2;g.fillRect(0,0,w,h);g.restore()}},
+  stat(){return `${Math.min(this.cur+1,this.pages.length)} / ${this.pages.length} 장`},
+  reset(){this.cur=0;this.anim=null;this.P0=null},
+  trigger(){const[cx,cy]=this.corner();this.down(cx-5,cy-5);this.up(cx-5,cy-5)},
+  extraJson(){return{cornerConstraint:'|P-spineBottom|<=W',snapMs:this.P.snap,halfwayRule:0.5}}
+});
+
+window.MEMO_COMMON=`<p style="margin-top:8px;color:#8b9098"><b>공통</b> 종이 소리는 전부 <b>짧은 대역 노이즈 알갱이</b>(1–30ms, 1.5–5kHz)의 개수·간격·밝기로 만든다: 바스락=알갱이 3–5개, 주름=고역 알갱이 3개 빠르게, 찢기=이동 거리당 1개, 넘김=휙(대역 스윕)+펄럭임(진폭 변조). 책상 공명은 190·410Hz 짧은 사인. 종이 결 텍스처는 fbm+섬유 방향 노이즈로 실행 시 생성.</p>`;
+boot();
+
+</script>
+</body>
+</html>

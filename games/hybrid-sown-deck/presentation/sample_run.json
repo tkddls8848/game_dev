@@ -1,0 +1,859 @@
+{
+  "_": "src/PresentationSample.cs 가 구운 것. 손으로 고치지 말 것.",
+  "seed": 20260927,
+  "years": 3,
+  "sowPlots": 4,
+  "world": "이은 세계",
+  "yearsOut": [
+    {
+      "year": 1,
+      "seedsAtStart": 14,
+      "plots": 5,
+      "sownAtStart": 0,
+      "deckSize": 15,
+      "cardsFromSown": 0,
+      "seedsFromSown": 0,
+      "plotTurnsToSown": 0,
+      "unplayedAfterNight": 3,
+      "sownForNextYear": 3,
+      "sowPlotBudget": 4,
+      "playerHpLeft": 8,
+      "held": true,
+      "plantings": [
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_02",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_03",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_04",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 1,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_02",
+          "cropId": "crop_bramble",
+          "cardId": "card_bramble",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_03",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        }
+      ],
+      "sprouts": [],
+      "visits": [
+        {
+          "enemyId": "enemy_hare",
+          "enemyHp": 27,
+          "playerHpLeft": 36,
+          "turns": 2,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_roe",
+          "enemyHp": 40,
+          "playerHpLeft": 32,
+          "turns": 5,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_boar",
+          "enemyHp": 62,
+          "playerHpLeft": 8,
+          "turns": 7,
+          "isBoss": true,
+          "held": true
+        }
+      ],
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 3,
+          "fromHarvest": 3,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 6,
+          "fromHarvest": 6,
+          "fromSown": 0,
+          "unplayed": 2,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 0,
+          "fromHarvest": 0,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 4,
+          "fromHarvest": 4,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "seedsAtStart": 19,
+      "plots": 6,
+      "sownAtStart": 3,
+      "deckSize": 28,
+      "cardsFromSown": 2,
+      "seedsFromSown": 3,
+      "plotTurnsToSown": 3,
+      "unplayedAfterNight": 6,
+      "sownForNextYear": 0,
+      "sowPlotBudget": 4,
+      "playerHpLeft": -1,
+      "held": false,
+      "plantings": [
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_04",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": true
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_05",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 1,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_06",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 1,
+          "harvestTurn": 3,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_02",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 1,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_03",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 1,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_01",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_02",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_03",
+          "cropId": "crop_bramble",
+          "cardId": "card_bramble",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_01",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_02",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 3,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_03",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_04",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 2,
+          "fertilized": false
+        }
+      ],
+      "sprouts": [
+        {
+          "plotId": "plot_01",
+          "seasonId": "season_spring",
+          "fromCardId": "card_broadleaf",
+          "sowType": "grow",
+          "lineageId": "S004",
+          "becameCardIds": [
+            "card_thicket"
+          ],
+          "seedsGained": 0,
+          "occupiedTurns": 1,
+          "generation": 1
+        },
+        {
+          "plotId": "plot_02",
+          "seasonId": "season_spring",
+          "fromCardId": "card_broadleaf",
+          "sowType": "grow",
+          "lineageId": "S014",
+          "becameCardIds": [
+            "card_thicket"
+          ],
+          "seedsGained": 0,
+          "occupiedTurns": 1,
+          "generation": 1
+        },
+        {
+          "plotId": "plot_03",
+          "seasonId": "season_spring",
+          "fromCardId": "card_ember",
+          "sowType": "seedfall",
+          "lineageId": "S007",
+          "becameCardIds": [],
+          "seedsGained": 3,
+          "occupiedTurns": 1,
+          "generation": 1
+        }
+      ],
+      "visits": [
+        {
+          "enemyId": "enemy_hare",
+          "enemyHp": 32,
+          "playerHpLeft": 36,
+          "turns": 4,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_roe",
+          "enemyHp": 48,
+          "playerHpLeft": 25,
+          "turns": 6,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_boar",
+          "enemyHp": 74,
+          "playerHpLeft": -1,
+          "turns": 8,
+          "isBoss": true,
+          "held": false
+        }
+      ],
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 8,
+          "fromHarvest": 8,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 11,
+          "fromHarvest": 11,
+          "fromSown": 0,
+          "unplayed": 6,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 2,
+          "fromHarvest": 0,
+          "fromSown": 2,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 5,
+          "fromHarvest": 5,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "seedsAtStart": 14,
+      "plots": 6,
+      "sownAtStart": 0,
+      "deckSize": 15,
+      "cardsFromSown": 0,
+      "seedsFromSown": 0,
+      "plotTurnsToSown": 0,
+      "unplayedAfterNight": 2,
+      "sownForNextYear": 0,
+      "sowPlotBudget": 4,
+      "playerHpLeft": -1,
+      "held": false,
+      "plantings": [
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_02",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_03",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_spring",
+          "plotId": "plot_04",
+          "cropId": "crop_seedwort",
+          "cardId": "card_sprout",
+          "plantTurn": 0,
+          "harvestTurn": 1,
+          "cardsYielded": 1,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_02",
+          "cropId": "crop_bramble",
+          "cardId": "card_bramble",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_summer",
+          "plotId": "plot_03",
+          "cropId": "crop_emberseed",
+          "cardId": "card_ember",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        },
+        {
+          "seasonId": "season_autumn",
+          "plotId": "plot_01",
+          "cropId": "crop_broadleaf",
+          "cardId": "card_broadleaf",
+          "plantTurn": 0,
+          "harvestTurn": 2,
+          "cardsYielded": 2,
+          "fertilized": false
+        }
+      ],
+      "sprouts": [],
+      "visits": [
+        {
+          "enemyId": "enemy_hare",
+          "enemyHp": 37,
+          "playerHpLeft": 36,
+          "turns": 5,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_roe",
+          "enemyHp": 56,
+          "playerHpLeft": 32,
+          "turns": 7,
+          "isBoss": false,
+          "held": true
+        },
+        {
+          "enemyId": "enemy_boar",
+          "enemyHp": 87,
+          "playerHpLeft": -1,
+          "turns": 6,
+          "isBoss": true,
+          "held": false
+        }
+      ],
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 3,
+          "fromHarvest": 3,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 6,
+          "fromHarvest": 6,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 0,
+          "fromHarvest": 0,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 4,
+          "fromHarvest": 4,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    }
+  ],
+  "lineages": [
+    {
+      "lineageId": "S004",
+      "generations": 2,
+      "sourceCropId": "crop_broadleaf",
+      "steps": [
+        {
+          "year": 1,
+          "cardId": "card_broadleaf",
+          "how": "harvest"
+        },
+        {
+          "year": 2,
+          "cardId": "card_thicket",
+          "how": "grow"
+        }
+      ]
+    },
+    {
+      "lineageId": "S014",
+      "generations": 2,
+      "sourceCropId": "crop_broadleaf",
+      "steps": [
+        {
+          "year": 1,
+          "cardId": "card_broadleaf",
+          "how": "harvest"
+        },
+        {
+          "year": 2,
+          "cardId": "card_thicket",
+          "how": "grow"
+        }
+      ]
+    },
+    {
+      "lineageId": "S001",
+      "generations": 1,
+      "sourceCropId": "crop_seedwort",
+      "steps": [
+        {
+          "year": 1,
+          "cardId": "card_sprout",
+          "how": "harvest"
+        }
+      ]
+    },
+    {
+      "lineageId": "S002",
+      "generations": 1,
+      "sourceCropId": "crop_seedwort",
+      "steps": [
+        {
+          "year": 1,
+          "cardId": "card_sprout",
+          "how": "harvest"
+        }
+      ]
+    }
+  ],
+  "cutWorld": "끊은 세계 — 같은 씨드, 같은 정책. 쓰지 않은 표본을 버린다",
+  "cut": [
+    {
+      "year": 1,
+      "deckSize": 15,
+      "held": true,
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 3,
+          "fromHarvest": 3,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 6,
+          "fromHarvest": 6,
+          "fromSown": 0,
+          "unplayed": 2,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 0,
+          "fromHarvest": 0,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 4,
+          "fromHarvest": 4,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "deckSize": 20,
+      "held": true,
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 5,
+          "fromHarvest": 5,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 8,
+          "fromHarvest": 8,
+          "fromSown": 0,
+          "unplayed": 2,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 1,
+          "fromHarvest": 1,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 4,
+          "fromHarvest": 4,
+          "fromSown": 0,
+          "unplayed": 1,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "deckSize": 20,
+      "held": true,
+      "deck": [
+        {
+          "cardId": "card_sprout",
+          "count": 5,
+          "fromHarvest": 5,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_seedwort"
+          ]
+        },
+        {
+          "cardId": "card_bramble",
+          "count": 2,
+          "fromHarvest": 2,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_bramble"
+          ]
+        },
+        {
+          "cardId": "card_broadleaf",
+          "count": 8,
+          "fromHarvest": 8,
+          "fromSown": 0,
+          "unplayed": 4,
+          "fromCrops": [
+            "crop_broadleaf"
+          ]
+        },
+        {
+          "cardId": "card_thicket",
+          "count": 1,
+          "fromHarvest": 1,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_thicket"
+          ]
+        },
+        {
+          "cardId": "card_ember",
+          "count": 4,
+          "fromHarvest": 4,
+          "fromSown": 0,
+          "unplayed": 0,
+          "fromCrops": [
+            "crop_emberseed"
+          ]
+        }
+      ]
+    }
+  ]
+}

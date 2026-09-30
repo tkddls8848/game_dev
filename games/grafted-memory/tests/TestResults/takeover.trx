@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0c1442d7-66d6-442c-aa2d-5be78f9ac139" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:50:15" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:50:15.0683819+09:00" queuing="2026-09-27T20:50:15.0683826+09:00" start="2026-09-27T20:50:13.1667433+09:00" finish="2026-09-27T20:50:38.1656666+09:00" />
+  <TestSettings name="default" id="e8a633a2-0b3e-4466-b5c9-c05b5845faed">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_50_15" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="8f8f89eb-ad17-4574-8d15-d1c32454131a" testId="c366b3ee-256d-f987-895d-cf2e6a2a2ad5" testName="스크린_기억으로_죽는_경우가_실제로_생긴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0038850" startTime="2026-09-27T20:50:30.7188206+09:00" endTime="2026-09-27T20:50:30.7227045+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f8f89eb-ad17-4574-8d15-d1c32454131a">
+      <Output>
+        <StdOut>DistortedButCheckable 81건 (TrustDistorted 정책)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="09d0235c-2025-4679-9ec7-a29ba1ae7b40" testId="d1d988c6-5384-9eea-6e8b-50dd7dc4c25d" testName="기억망이_스스로_모순되지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004370" startTime="2026-09-27T20:50:30.4278624+09:00" endTime="2026-09-27T20:50:30.4282991+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09d0235c-2025-4679-9ec7-a29ba1ae7b40" />
+    <UnitTestResult executionId="d3b01d59-1837-4ea2-93f7-80d4bd1dbb5d" testId="22e91162-f3d4-f5de-526e-3ef8205117f8" testName="정적_구멍" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009400" startTime="2026-09-27T20:50:30.4683564+09:00" endTime="2026-09-27T20:50:30.4692964+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d3b01d59-1837-4ea2-93f7-80d4bd1dbb5d">
+      <Output>
+        <StdOut>com-inheritance: 구멍 0&#xD;
+com-pier-promise: 구멍 0&#xD;
+com-hospital-vow: 구멍 0&#xD;
+com-house-farewell: 구멍 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="baf3f88a-b617-4057-b558-12d527a58d5b" testId="77a84ea4-a42d-d65a-d881-a8bc8ac43e17" testName="정확도를_수치로_남긴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003080" startTime="2026-09-27T20:50:38.1191285+09:00" endTime="2026-09-27T20:50:38.1194363+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="baf3f88a-b617-4057-b558-12d527a58d5b">
+      <Output>
+        <StdOut>떠는 자리 3 · 심어진 것 2 · 맞춘 것 2 → 재현율 100% · 정확도 66%&#xD;
+정확도는 통과 조건이 아니다. 「이 근처에 심어진 것이 있다」까지가 기계의 몫이다.</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c88919d3-6199-4a9a-b1d6-29b2d76b76c0" testId="9b2afb91-9562-9c34-0db9-c16c8d954d31" testName="켠_세계에서_따져_심는_것이_크게_낫다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002960" startTime="2026-09-27T20:50:30.4256627+09:00" endTime="2026-09-27T20:50:30.4259590+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c88919d3-6199-4a9a-b1d6-29b2d76b76c0">
+      <Output>
+        <StdOut>Careful 100% · Reckless 2% → 차이 98%p&#xD;
+    com-inheritance: 100% vs 5%&#xD;
+    com-pier-promise: 100% vs 0%&#xD;
+    com-hospital-vow: 100% vs 5%&#xD;
+    com-house-farewell: 100% vs 1%</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d759f56b-2889-4f19-8a44-e24e484f59b8" testId="c76cc49b-b002-0a52-8ea3-ece6902b4082" testName="전부_캐묻는_것이_최적이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003900" startTime="2026-09-27T20:50:30.6991404+09:00" endTime="2026-09-27T20:50:30.6995305+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d759f56b-2889-4f19-8a44-e24e484f59b8">
+      <Output>
+        <StdOut>Careful 100% (명료도 4080) · ProbeEverything 57% (명료도 7920)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="152417e3-e950-431b-bc60-ad0534818e45" testId="471c0a42-da43-b3db-6e3a-1dbc09efb262" testName="저울과_규칙표가_옳다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006540" startTime="2026-09-27T20:50:30.4356471+09:00" endTime="2026-09-27T20:50:30.4363026+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="152417e3-e950-431b-bc60-ad0534818e45" />
+    <UnitTestResult executionId="52a26f01-6191-4144-a9f5-fda786e46235" testId="5e5564ad-4ba3-9135-fd2b-6285abd4ab7d" testName="회차_전체를_두_번_돌리면_지문이_같다" computerName="DESKTOP-RU6F3DG" duration="00:00:02.9648100" startTime="2026-09-27T20:50:35.1518760+09:00" endTime="2026-09-27T20:50:38.1166856+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="52a26f01-6191-4144-a9f5-fda786e46235" />
+    <UnitTestResult executionId="17115a9f-bc25-4b7e-8b42-00ae8fb9b088" testId="1731131e-b402-60b9-825c-5cb187e4e5ff" testName="참값을_다_쥐면_예측이_절대_갈리지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:01.1516390" startTime="2026-09-27T20:50:30.7561093+09:00" endTime="2026-09-27T20:50:31.9077476+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17115a9f-bc25-4b7e-8b42-00ae8fb9b088" />
+    <UnitTestResult executionId="3996519d-99a7-44b4-972e-34addd892537" testId="5003b9e8-4211-b1d3-be88-a69be04a6203" testName="의뢰가_가리키는_것이_전부_있고_격자에_맞는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007970" startTime="2026-09-27T20:50:30.4346098+09:00" endTime="2026-09-27T20:50:30.4354067+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3996519d-99a7-44b4-972e-34addd892537" />
+    <UnitTestResult executionId="9b768cc6-2f68-46a4-a030-3055e13823df" testId="e647dd2c-3e3f-3e26-f7b5-f2bf004d99a8" testName="논리와_정서가_둘_다_거부를_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:16.1925860" startTime="2026-09-27T20:50:14.1269098+09:00" endTime="2026-09-27T20:50:30.3194949+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9b768cc6-2f68-46a4-a030-3055e13823df">
+      <Output>
+        <StdOut>IntensityClash: 205&#xD;
+    MoodClashAnchor: 348&#xD;
+    MoodClashEra: 443&#xD;
+    PersonAbsent: 7&#xD;
+    PersonElsewhere: 5&#xD;
+    PlaceWindow: 22&#xD;
+    TimePlaceConflict: 8&#xD;
+논리 42 · 정서 996</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="38743260-a634-47f5-8485-b585d127533f" testId="e4dc224c-be0d-ae29-f013-0147d9c0ca3a" testName="겹쳐_묻지_않는_것도_최적이_아니다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001920" startTime="2026-09-27T20:50:30.5802897+09:00" endTime="2026-09-27T20:50:30.5804812+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="38743260-a634-47f5-8485-b585d127533f">
+      <Output>
+        <StdOut>Careful 100% · LiarTrusting 66%</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="992181dc-c93f-4891-b416-fab27f262e72" testId="529eab22-c35d-cff4-cc47-05e7b3a86858" testName="대조군_연상을_끊으면_정적_보장이_잡는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0017980" startTime="2026-09-27T20:50:30.7170013+09:00" endTime="2026-09-27T20:50:30.7187987+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="992181dc-c93f-4891-b416-fab27f262e72">
+      <Output>
+        <StdOut>길을 끊자 정적 보장이 즉시 구멍을 보고했다 (전수라서 씨드 운에 기대지 않는다)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1d69af57-a376-4bbb-94b8-f3f7db4fd5a1" testId="4ff4566b-d7e0-123b-decb-4418508a1d7a" testName="심어진_기억을_하나도_놓치지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003510" startTime="2026-09-27T20:50:38.1181361+09:00" endTime="2026-09-27T20:50:38.1184869+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d69af57-a376-4bbb-94b8-f3f7db4fd5a1">
+      <Output>
+        <StdOut>s-alley-dog  잔여 2750 · 흔적 2750 · 둘째 0 · 간선 1&#xD;
+    s-brother-bicycle  잔여 3000 · 흔적 3000 · 둘째 0 · 간선 1&#xD;
+    s-mother-fever  잔여 4850 · 흔적 4350 · 둘째 750 · 간선 2&#xD;
+    s-fathers-blessing  잔여 5750 · 흔적 5000 · 둘째 2000 · 간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-exam-night  잔여 4950 · 흔적 3600 · 둘째 0 · 간선 1&#xD;
+    s-dorm-window  잔여 4250 · 흔적 3400 · 둘째 0 · 간선 1&#xD;
+    s-first-clinic  잔여 2700 · 흔적 2700 · 둘째 0 · 간선 1&#xD;
+    s-supervisor-praise  잔여 3825 · 흔적 3825 · 둘째 0 · 간선 1&#xD;
+    s-night-shift  잔여 17850 · 흔적 13600 · 둘째 5950 · 간선 2  &lt;의심&gt;&#xD;
+    s-seonhwa-face  잔여 8400 · 흔적 6400 · 둘째 2800 · 간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-hundredth  잔여 0 · 흔적 0 · 둘째 0 · 간선 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6ddd015b-6b6e-44d8-a3e1-439f153fdc65" testId="0a99668b-4cb8-5bf7-2081-29075f7e7ae2" testName="연상_간선이_옳다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007820" startTime="2026-09-27T20:50:30.4338156+09:00" endTime="2026-09-27T20:50:30.4345975+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ddd015b-6b6e-44d8-a3e1-439f153fdc65" />
+    <UnitTestResult executionId="8c4ff725-bc60-4ec3-bc82-4919ff908633" testId="fe6fe3da-314a-94ac-fe48-8e93d508941b" testName="겹쳐_물은_플레이어는_예측이_빗나가지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002080" startTime="2026-09-27T20:50:30.7000618+09:00" endTime="2026-09-27T20:50:30.7002700+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8c4ff725-bc60-4ec3-bc82-4919ff908633" />
+    <UnitTestResult executionId="a75b224b-fb80-4683-be86-4a27c2570547" testId="c905f409-41a2-8374-6d9f-3c1e8cbeb130" testName="굳힌_정책마다_무너지는_의뢰가_따로_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009780" startTime="2026-09-27T20:50:30.5804975+09:00" endTime="2026-09-27T20:50:30.5814755+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a75b224b-fb80-4683-be86-4a27c2570547">
+      <Output>
+        <StdOut>FixedFirstMood 가 무너지는 의뢰: com-inheritance(0%) com-hospital-vow(31%)&#xD;
+FixedMaxIntensity 가 무너지는 의뢰: com-pier-promise(33%)&#xD;
+FixedEarliestDay 가 무너지는 의뢰: com-pier-promise(66%)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0866a2aa-5a8d-4a4d-9128-062ed1ffeaff" testId="2bf64d56-9b73-4ecf-61b3-e329c56bfc96" testName="받아들여지는_자리가_있고_동시에_드물다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1050190" startTime="2026-09-27T20:50:30.3199992+09:00" endTime="2026-09-27T20:50:30.4250173+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0866a2aa-5a8d-4a4d-9128-062ed1ffeaff">
+      <Output>
+        <StdOut>com-inheritance: 360/7200 (5%) 가 자리를 잡는다&#xD;
+com-pier-promise: 196/7200 (2%) 가 자리를 잡는다&#xD;
+com-hospital-vow: 490/7200 (6%) 가 자리를 잡는다&#xD;
+com-house-farewell: 150/7200 (2%) 가 자리를 잡는다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="338eb026-4092-4731-be65-2b5d46f8110d" testId="27f9ca6f-87bf-3c37-8511-687674db8176" testName="대조군_명료도를_빼앗으면_물을_수_있던_것이_Unknowable_이_된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0021500" startTime="2026-09-27T20:50:30.7148283+09:00" endTime="2026-09-27T20:50:30.7169782+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="338eb026-4092-4731-be65-2b5d46f8110d">
+      <Output>
+        <StdOut>명료도 1: Unknowable 20건. 예산이 판정에 실제로 들어간다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="060f16bf-1c16-4e74-b8b3-0b833465eec7" testId="38019fa2-437c-6f1c-ff9d-ad5fd33d85f0" testName="대조군_겹쳐_물을_길을_없애면_DistortedUncheckable_이_된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0103790" startTime="2026-09-27T20:50:30.7002813+09:00" endTime="2026-09-27T20:50:30.7106596+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="060f16bf-1c16-4e74-b8b3-0b833465eec7" />
+    <UnitTestResult executionId="514b1c24-c2b8-409f-9dae-3a964a5b77eb" testId="17859608-faa0-887d-febe-0e795d054684" testName="두_세계_성공률" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002870" startTime="2026-09-27T20:50:30.4661574+09:00" endTime="2026-09-27T20:50:30.4664446+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="514b1c24-c2b8-409f-9dae-3a964a5b77eb">
+      <Output>
+        <StdOut>규칙 켠 세계 / 끈 세계&#xD;
+Careful         on 100%   off 100%&#xD;
+Reckless        on 2%   off 100%</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f2226d95-33e2-485c-a9ff-45618373e088" testId="385c83ec-c637-a90b-9a6a-f3e52c2a171f" testName="언어를_바꾸면_값이_따라온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003210" startTime="2026-09-27T20:50:30.5795225+09:00" endTime="2026-09-27T20:50:30.5798434+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2226d95-33e2-485c-a9ff-45618373e088" />
+    <UnitTestResult executionId="a175a40c-9b17-42e5-aa60-803ac8472308" testId="34bc59af-062b-f7b1-f26f-64ae34ede44b" testName="자리표시자를_쓴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001510" startTime="2026-09-27T20:50:30.5798691+09:00" endTime="2026-09-27T20:50:30.5800196+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a175a40c-9b17-42e5-aa60-803ac8472308" />
+    <UnitTestResult executionId="91f132dd-e408-4d2d-9ca3-3b977aba44b4" testId="c5f361d8-012e-e330-a014-818e7fb8d46a" testName="같은_씨드가_같은_시도를_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:03.2407940" startTime="2026-09-27T20:50:31.9089326+09:00" endTime="2026-09-27T20:50:35.1497264+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91f132dd-e408-4d2d-9ca3-3b977aba44b4" />
+    <UnitTestResult executionId="d8a73577-55b0-4615-9569-f41de2c9f313" testId="32adc784-2891-f742-2179-3460ee487015" testName="일어난_모든_떨림이_설명된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0284330" startTime="2026-09-27T20:50:30.7272373+09:00" endTime="2026-09-27T20:50:30.7556695+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8a73577-55b0-4615-9569-f41de2c9f313">
+      <Output>
+        <StdOut>떨림 1681개 감사 · 거부된 시도 657개</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="71f7b8f4-08af-44f8-b361-0b0a2ab3c248" testId="3e567324-cd6b-4030-7836-2836555f5f25" testName="정책별_성공률" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016620" startTime="2026-09-27T20:50:30.4693215+09:00" endTime="2026-09-27T20:50:30.4709834+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71f7b8f4-08af-44f8-b361-0b0a2ab3c248">
+      <Output>
+        <StdOut>씨드 60개 · 의뢰 4개&#xD;
+&#xD;
+정책                의뢰                 성공/전체  성공률  예측빗나감  명료도합&#xD;
+Careful             com-inheritance      60/60      100%    0           480&#xD;
+Careful             com-pier-promise     60/60      100%    0           1560&#xD;
+Careful             com-hospital-vow     60/60      100%    0           1440&#xD;
+Careful             com-house-farewell   60/60      100%    0           600&#xD;
+Careful             (전체)                            100%&#xD;
+&#xD;
+Reckless            com-inheritance      3/60       5%      4           0&#xD;
+Reckless            com-pier-promise     0/60       0%      0           0&#xD;
+Reckless            com-hospital-vow     3/60       5%      6           0&#xD;
+Reckless            com-house-farewell   1/60       1%      15          0&#xD;
+Reckless            (전체)                            2%&#xD;
+&#xD;
+ProbeEverything     com-inheritance      60/60      100%    0           1980&#xD;
+ProbeEverything     com-pier-promise     0/60       0%      60          1980&#xD;
+ProbeEverything     com-hospital-vow     19/60      31%     41          1980&#xD;
+ProbeEverything     com-house-farewell   60/60      100%    0           1980&#xD;
+ProbeEverything     (전체)                            57%&#xD;
+&#xD;
+LiarTrusting        com-inheritance      60/60      100%    0           480&#xD;
+LiarTrusting        com-pier-promise     20/60      33%     40          840&#xD;
+LiarTrusting        com-hospital-vow     19/60      31%     41          600&#xD;
+LiarTrusting        com-house-farewell   60/60      100%    0           600&#xD;
+LiarTrusting        (전체)                            66%&#xD;
+&#xD;
+TrustDistorted      com-inheritance      60/60      100%    0           480&#xD;
+TrustDistorted      com-pier-promise     20/60      33%     40          840&#xD;
+TrustDistorted      com-hospital-vow     19/60      31%     41          600&#xD;
+TrustDistorted      com-house-farewell   60/60      100%    0           600&#xD;
+TrustDistorted      (전체)                            66%&#xD;
+&#xD;
+FixedFirstMood      com-inheritance      0/60       0%      0           480&#xD;
+FixedFirstMood      com-pier-promise     60/60      100%    0           1560&#xD;
+FixedFirstMood      com-hospital-vow     19/60      31%     0           1440&#xD;
+FixedFirstMood      com-house-farewell   60/60      100%    0           600&#xD;
+FixedFirstMood      (전체)                            57%&#xD;
+&#xD;
+FixedMaxIntensity   com-inheritance      60/60      100%    0           480&#xD;
+FixedMaxIntensity   com-pier-promise     20/60      33%     0           1560&#xD;
+FixedMaxIntensity   com-hospital-vow     60/60      100%    0           1440&#xD;
+FixedMaxIntensity   com-house-farewell   60/60      100%    0           600&#xD;
+FixedMaxIntensity   (전체)                            83%&#xD;
+&#xD;
+FixedEarliestDay    com-inheritance      60/60      100%    0           480&#xD;
+FixedEarliestDay    com-pier-promise     40/60      66%     0           1560&#xD;
+FixedEarliestDay    com-hospital-vow     60/60      100%    0           1440&#xD;
+FixedEarliestDay    com-house-farewell   60/60      100%    0           600&#xD;
+FixedEarliestDay    (전체)                            91%</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7fd82ff4-2a5e-424d-9bb7-5c9c86fd8573" testId="50038a8b-1f27-347f-3048-fef4e3abf7a1" testName="거부_이유가_전부_번역된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014620" startTime="2026-09-27T20:50:30.5780293+09:00" endTime="2026-09-27T20:50:30.5794910+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fd82ff4-2a5e-424d-9bb7-5c9c86fd8573" />
+    <UnitTestResult executionId="9d845135-6905-4572-b002-dadc91eebb7b" testId="f632b013-5cdd-216d-5445-14825ea5e5cd" testName="기억이_가리키는_것이_전부_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0024270" startTime="2026-09-27T20:50:30.4283151+09:00" endTime="2026-09-27T20:50:30.4307417+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d845135-6905-4572-b002-dadc91eebb7b" />
+    <UnitTestResult executionId="195eae22-a2ba-4faf-b167-baa56de061f9" testId="1730c216-cd70-8d9f-fac9-5fa42dfee581" testName="두_세계의_차이가_유의하게_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004400" startTime="2026-09-27T20:50:30.3195486+09:00" endTime="2026-09-27T20:50:30.3199881+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="195eae22-a2ba-4faf-b167-baa56de061f9">
+      <Output>
+        <StdOut>정책 차이: 켠 세계 98%p · 끈 세계 0%p</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="eabc4af0-3e0f-4020-aabd-4762a6cb85cd" testId="0469f81a-e226-d068-41f1-029b73ce4556" testName="모든_기억에_닿을_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003270" startTime="2026-09-27T20:50:30.4307891+09:00" endTime="2026-09-27T20:50:30.4311162+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eabc4af0-3e0f-4020-aabd-4762a6cb85cd" />
+    <UnitTestResult executionId="1a914f4b-da92-435c-bbe5-ab6639b1ce2b" testId="793fa820-fc1e-83ef-8f2c-f7e7be5fa93a" testName="같은_씨드가_같은_스크린_기억을_뽑는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0009660" startTime="2026-09-27T20:50:31.9079527+09:00" endTime="2026-09-27T20:50:31.9089184+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a914f4b-da92-435c-bbe5-ab6639b1ce2b" />
+    <UnitTestResult executionId="7a4561df-d836-4526-b2f7-7a5e58d56a3d" testId="abd8543b-953b-138d-1d23-b64f0bbe982f" testName="떠는_자리가_심어진_것의_이웃_안에_머문다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004460" startTime="2026-09-27T20:50:38.1169159+09:00" endTime="2026-09-27T20:50:38.1173614+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a4561df-d836-4526-b2f7-7a5e58d56a3d" />
+    <UnitTestResult executionId="1f0a5d7e-17ce-4ca4-b921-8ee5b2a61911" testId="cfa439ba-e4c8-52b1-a27d-b276056549ea" testName="안_물어서_죽는_경우도_실제로_생긴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0044450" startTime="2026-09-27T20:50:30.7227443+09:00" endTime="2026-09-27T20:50:30.7271877+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f0a5d7e-17ce-4ca4-b921-8ee5b2a61911">
+      <Output>
+        <StdOut>Probeable 214건 (Reckless 정책)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="eed6350d-20fa-48ef-8190-e0f81615b5ab" testId="2426bbed-a0a4-50a4-d2da-ccfa09c19fdf" testName="대조군_닿지_않는_기억으로_죽으면_Unknowable_이_된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0018510" startTime="2026-09-27T20:50:30.7129554+09:00" endTime="2026-09-27T20:50:30.7148058+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eed6350d-20fa-48ef-8190-e0f81615b5ab" />
+    <UnitTestResult executionId="191f2a9e-33eb-45c6-97aa-d83a525e5c5f" testId="212b6842-e9bd-eb5b-c6aa-da980b423957" testName="끈_세계에서는_차이가_사라진다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.3542520" startTime="2026-09-27T20:50:13.7716211+09:00" endTime="2026-09-27T20:50:14.1258119+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="191f2a9e-33eb-45c6-97aa-d83a525e5c5f">
+      <Output>
+        <StdOut>규칙 끈 세계: Careful 100% · Reckless 100% → 차이 0%p</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="54d206da-d417-4827-a1bc-e1bc680442b5" testId="1fce584d-5528-aecc-961e-0407516a8afe" testName="다른_씨드는_실제로_다른_밤을_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0014700" startTime="2026-09-27T20:50:35.1497668+09:00" endTime="2026-09-27T20:50:35.1512361+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54d206da-d417-4827-a1bc-e1bc680442b5" />
+    <UnitTestResult executionId="62b7bbc3-bd27-4a98-b1c8-204233f4edc5" testId="8f24736a-f07b-0372-d256-0f597f55b6c4" testName="표가_없으면_한국어_원문이_나온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001299" startTime="2026-09-27T20:50:30.5800392+09:00" endTime="2026-09-27T20:50:30.5801685+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62b7bbc3-bd27-4a98-b1c8-204233f4edc5" />
+    <UnitTestResult executionId="0bbfcfc0-018f-4cba-a3c9-c132a2da149d" testId="b6aeae7a-d723-0295-0b18-5f8e73a53fa5" testName="의뢰마다_따로_봐도_차이가_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005880" startTime="2026-09-27T20:50:30.4250593+09:00" endTime="2026-09-27T20:50:30.4256468+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bbfcfc0-018f-4cba-a3c9-c132a2da149d" />
+    <UnitTestResult executionId="307cfcb3-e2c8-4899-ad9f-c6383638ec7b" testId="384718f7-fd37-20dd-fa4a-044dcacf8d49" testName="자기_기억을_재는_이유도_같은_규칙표에_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006150" startTime="2026-09-27T20:50:38.1185008+09:00" endTime="2026-09-27T20:50:38.1191155+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="307cfcb3-e2c8-4899-ad9f-c6383638ec7b">
+      <Output>
+        <StdOut>제 기억망에서 나온 떨림 42건 전부가 의뢰에 쓰는 규칙표 안에 있다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="88bb491c-b11e-4bdc-90e7-7fbaf9729c59" testId="cedba5b4-7142-ca84-905c-f038f60efe20" testName="스크린_후보에_참값이_적혀_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005520" startTime="2026-09-27T20:50:30.4311399+09:00" endTime="2026-09-27T20:50:30.4316915+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88bb491c-b11e-4bdc-90e7-7fbaf9729c59" />
+    <UnitTestResult executionId="1a877101-212e-40ca-a854-147dcdb8aaa8" testId="241da757-ade0-f138-747d-f385412b0581" testName="아이디가_겹치지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0020790" startTime="2026-09-27T20:50:30.4317136+09:00" endTime="2026-09-27T20:50:30.4337927+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a877101-212e-40ca-a854-147dcdb8aaa8" />
+    <UnitTestResult executionId="d99d5ec3-d84a-4af1-9812-12691b0cc298" testId="f6ab3d69-a158-6928-e65e-30f6bbe913ac" testName="자기_기억_잔여떨림" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0018730" startTime="2026-09-27T20:50:30.4664591+09:00" endTime="2026-09-27T20:50:30.4683317+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d99d5ec3-d84a-4af1-9812-12691b0cc298">
+      <Output>
+        <StdOut>── subj-operator (중앙값 0)&#xD;
+    s-alley-dog             2750    둘째 0          간선 1&#xD;
+    s-brother-bicycle       3000    둘째 0          간선 1&#xD;
+    s-mother-fever          4850    둘째 750        간선 2&#xD;
+    s-fathers-blessing      5750    둘째 2000       간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-exam-night            4950    둘째 0          간선 1&#xD;
+    s-dorm-window           4250    둘째 0          간선 1&#xD;
+    s-first-clinic          2700    둘째 0          간선 1&#xD;
+    s-supervisor-praise     3825    둘째 0          간선 1&#xD;
+    s-night-shift           17850   둘째 5950       간선 2  &lt;의심&gt;&#xD;
+    s-seonhwa-face          8400    둘째 2800       간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-hundredth             0       둘째 0          간선 0&#xD;
+&#xD;
+── subj-hanwoo (중앙값 0)&#xD;
+    m-rain-roof             0       둘째 0          간선 0&#xD;
+    m-fathers-shoes         1075    둘째 275        간선 2&#xD;
+    m-schoolyard            3725    둘째 350        간선 2&#xD;
+    m-hairpin               1400    둘째 0          간선 1&#xD;
+    m-pier-smell            3850    둘째 0          간선 1&#xD;
+    m-report-card           2400    둘째 0          간선 1&#xD;
+    m-seonhwa-first         2475    둘째 0          간선 1&#xD;
+    m-fathers-death         4400    둘째 0          간선 1&#xD;
+    m-seonhwa-letter        1600    둘째 0          간선 1&#xD;
+    m-hospital-hall         1400    둘째 0          간선 1&#xD;
+    m-first-wage            700     둘째 0          간선 0&#xD;
+    m-seonhwa-gone          0       둘째 0          간선 0&#xD;
+    m-mother-forgets        0       둘째 0          간선 0&#xD;
+    m-house-gone            5225    둘째 0          간선 1&#xD;
+    m-mothers-death         4400    둘째 0          간선 1&#xD;
+    m-desk-lamp             900     둘째 0          간선 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="97bcf8b4-3edc-48cf-945d-25ef0ac26da3" testId="738cf356-1133-c5c4-3742-29761751fdb8" testName="감사_분포" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0292840" startTime="2026-09-27T20:50:30.4368310+09:00" endTime="2026-09-27T20:50:30.4661139+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97bcf8b4-3edc-48cf-945d-25ef0ac26da3">
+      <Output>
+        <StdOut>시도 1920 · 거부 657&#xD;
+DistortedButCheckable     203&#xD;
+Held                      1204&#xD;
+Probeable                 274</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="045b261c-75e5-4540-8bf8-8afec84043dc" testId="84d91dda-7956-6a7f-6aeb-b0a82ce87c9b" testName="심어진_것이_없는_기억망에서는_하나도_걸리지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003060" startTime="2026-09-27T20:50:38.1178172+09:00" endTime="2026-09-27T20:50:38.1181235+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="045b261c-75e5-4540-8bf8-8afec84043dc">
+      <Output>
+        <StdOut>의뢰인 기억망 16자리 · 둘째 떨림 최대 350 · 문턱 1000</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="40c334f2-fd7f-4a07-a6e5-dbc48072ba5f" testId="0f95d9ec-559d-315a-7f35-b5ebb008ef2a" testName="한_축을_굳힌_정책은_전부_Careful_아래다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003579" startTime="2026-09-27T20:50:30.6995514+09:00" endTime="2026-09-27T20:50:30.6999091+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40c334f2-fd7f-4a07-a6e5-dbc48072ba5f">
+      <Output>
+        <StdOut>Careful 100%&#xD;
+    FixedFirstMood 57% (차이 43%p)&#xD;
+    FixedMaxIntensity 83% (차이 17%p)&#xD;
+    FixedEarliestDay 91% (차이 9%p)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2cd22c4b-68dc-4bdb-b512-c9785866a9ec" testId="e98f9bfb-cd92-ec36-7105-3a446891ac2e" testName="정적_보장_구멍이_없다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003900" startTime="2026-09-27T20:50:30.7557066+09:00" endTime="2026-09-27T20:50:30.7560966+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cd22c4b-68dc-4bdb-b512-c9785866a9ec" />
+    <UnitTestResult executionId="f78a114c-c3fa-4206-b310-8e865cd22b35" testId="a1b8472a-fc28-7a3e-ffe1-e7f39acb26e9" testName="문턱이_두_기억망_사이에_실제로_들어간다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004250" startTime="2026-09-27T20:50:38.1173766+09:00" endTime="2026-09-27T20:50:38.1178020+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f78a114c-c3fa-4206-b310-8e865cd22b35">
+      <Output>
+        <StdOut>의뢰인 최대 350 &lt; 문턱 1000 &lt;= 심어진 것 최소 2000</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c69dca4f-ec6e-4ebf-885f-aa126a0862e9" testId="f02be830-a037-fb62-6dce-0e99603d5c15" testName="한_의뢰의_선택지_분포" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1067420" startTime="2026-09-27T20:50:30.4710020+09:00" endTime="2026-09-27T20:50:30.5777434+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c69dca4f-ec6e-4ebf-885f-aa126a0862e9">
+      <Output>
+        <StdOut>com-inheritance       선택지 7200   받아들임 360    노골적 288    최소떨림 0 (허용 500)&#xD;
+com-pier-promise      선택지 7200   받아들임 196    노골적 0      최소떨림 0 (허용 400)&#xD;
+com-hospital-vow      선택지 7200   받아들임 490    노골적 144    최소떨림 0 (허용 400)&#xD;
+com-house-farewell    선택지 7200   받아들임 150    노골적 2880   최소떨림 1600 (허용 1650)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4ec3fbe2-d664-444d-8106-0b6a46008fc7" testId="17a698e8-80bd-8540-950b-3e5aec00efa5" testName="자기_기억망에_심어진_것이_적혀_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002160" startTime="2026-09-27T20:50:30.4354184+09:00" endTime="2026-09-27T20:50:30.4356342+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ec3fbe2-d664-444d-8106-0b6a46008fc7" />
+    <UnitTestResult executionId="3dd379ef-9d96-41de-a76e-38f491396e1e" testId="0ecb5cec-2800-7791-89d2-50c712993cf4" testName="자기_기억_훑기가_결정적이다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005960" startTime="2026-09-27T20:50:35.1512627+09:00" endTime="2026-09-27T20:50:35.1518583+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3dd379ef-9d96-41de-a76e-38f491396e1e" />
+    <UnitTestResult executionId="21a3e333-61d5-4e41-b046-fb779562bc67" testId="bb19e382-e569-9e98-9bb2-65f3c0577c0f" testName="대조군_규칙표에서_규칙을_빼면_RuleUnstated_가_된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0022300" startTime="2026-09-27T20:50:30.7106958+09:00" endTime="2026-09-27T20:50:30.7129251+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21a3e333-61d5-4e41-b046-fb779562bc67" />
+    <UnitTestResult executionId="f8e312af-7a4e-4ec4-8eeb-e08d06edc2a7" testId="c7f78611-5c07-4a84-425d-44b27387e487" testName="의뢰마다_가장_덜_떨리는_수가_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1176020" startTime="2026-09-27T20:50:30.5814955+09:00" endTime="2026-09-27T20:50:30.6990967+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8e312af-7a4e-4ec4-8eeb-e08d06edc2a7">
+      <Output>
+        <StdOut>com-inheritance 최적: m-pier-smell / pl-house / 13010일 / mood-shame / 55%  떨림 0&#xD;
+com-pier-promise 최적: m-hospital-hall / pl-pier / 4650일 / mood-dread / 70%  떨림 0&#xD;
+com-hospital-vow 최적: m-fathers-shoes / pl-hospital / 10020일 / mood-longing / 60%  떨림 0&#xD;
+com-house-farewell 최적: m-fathers-death / pl-house / 13570일 / mood-dread / 100%  떨림 1600&#xD;
+최적 이어 붙일 자리: m-pier-smell, m-hospital-hall, m-fathers-shoes, m-fathers-death&#xD;
+최적 정서: mood-shame, mood-dread, mood-longing&#xD;
+최적 날의 상대 위치: earliest,middle,latest&#xD;
+최적 세기의 상대 위치: min,max</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="64639fa2-6dba-4935-b200-e4662c01a196" testId="4d511a2a-8165-2247-dc41-1132709c63fd" testName="정서_거리_행렬이_옳다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003520" startTime="2026-09-27T20:50:30.4363213+09:00" endTime="2026-09-27T20:50:30.4366733+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64639fa2-6dba-4935-b200-e4662c01a196" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="감사_분포" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="738cf356-1133-c5c4-3742-29761751fdb8">
+      <Execution id="97bcf8b4-3edc-48cf-945d-25ef0ac26da3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="감사_분포" />
+    </UnitTest>
+    <UnitTest name="언어를_바꾸면_값이_따라온다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="385c83ec-c637-a90b-9a6a-f3e52c2a171f">
+      <Execution id="f2226d95-33e2-485c-a9ff-45618373e088" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.LocalizationTests" name="언어를_바꾸면_값이_따라온다" />
+    </UnitTest>
+    <UnitTest name="겹쳐_묻지_않는_것도_최적이_아니다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="e4dc224c-be0d-ae29-f013-0147d9c0ca3a">
+      <Execution id="38743260-a634-47f5-8485-b585d127533f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.NoDominantStrategyTests" name="겹쳐_묻지_않는_것도_최적이_아니다" />
+    </UnitTest>
+    <UnitTest name="대조군_겹쳐_물을_길을_없애면_DistortedUncheckable_이_된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="38019fa2-437c-6f1c-ff9d-ad5fd33d85f0">
+      <Execution id="060f16bf-1c16-4e74-b8b3-0b833465eec7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="대조군_겹쳐_물을_길을_없애면_DistortedUncheckable_이_된다" />
+    </UnitTest>
+    <UnitTest name="전부_캐묻는_것이_최적이_아니다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="c76cc49b-b002-0a52-8ea3-ece6902b4082">
+      <Execution id="d759f56b-2889-4f19-8a44-e24e484f59b8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.NoDominantStrategyTests" name="전부_캐묻는_것이_최적이_아니다" />
+    </UnitTest>
+    <UnitTest name="스크린_후보에_참값이_적혀_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="cedba5b4-7142-ca84-905c-f038f60efe20">
+      <Execution id="88bb491c-b11e-4bdc-90e7-7fbaf9729c59" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="스크린_후보에_참값이_적혀_있다" />
+    </UnitTest>
+    <UnitTest name="안_물어서_죽는_경우도_실제로_생긴다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="cfa439ba-e4c8-52b1-a27d-b276056549ea">
+      <Execution id="1f0a5d7e-17ce-4ca4-b921-8ee5b2a61911" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="안_물어서_죽는_경우도_실제로_생긴다" />
+    </UnitTest>
+    <UnitTest name="저울과_규칙표가_옳다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="471c0a42-da43-b3db-6e3a-1dbc09efb262">
+      <Execution id="152417e3-e950-431b-bc60-ad0534818e45" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="저울과_규칙표가_옳다" />
+    </UnitTest>
+    <UnitTest name="자기_기억_훑기가_결정적이다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="0ecb5cec-2800-7791-89d2-50c712993cf4">
+      <Execution id="3dd379ef-9d96-41de-a76e-38f491396e1e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SeedDeterminismTests" name="자기_기억_훑기가_결정적이다" />
+    </UnitTest>
+    <UnitTest name="한_의뢰의_선택지_분포" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="f02be830-a037-fb62-6dce-0e99603d5c15">
+      <Execution id="c69dca4f-ec6e-4ebf-885f-aa126a0862e9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="한_의뢰의_선택지_분포" />
+    </UnitTest>
+    <UnitTest name="대조군_명료도를_빼앗으면_물을_수_있던_것이_Unknowable_이_된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="27f9ca6f-87bf-3c37-8511-687674db8176">
+      <Execution id="338eb026-4092-4731-be65-2b5d46f8110d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="대조군_명료도를_빼앗으면_물을_수_있던_것이_Unknowable_이_된다" />
+    </UnitTest>
+    <UnitTest name="켠_세계에서_따져_심는_것이_크게_낫다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="9b2afb91-9562-9c34-0db9-c16c8d954d31">
+      <Execution id="c88919d3-6199-4a9a-b1d6-29b2d76b76c0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="켠_세계에서_따져_심는_것이_크게_낫다" />
+    </UnitTest>
+    <UnitTest name="기억이_가리키는_것이_전부_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="f632b013-5cdd-216d-5445-14825ea5e5cd">
+      <Execution id="9d845135-6905-4572-b002-dadc91eebb7b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="기억이_가리키는_것이_전부_있다" />
+    </UnitTest>
+    <UnitTest name="떠는_자리가_심어진_것의_이웃_안에_머문다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="abd8543b-953b-138d-1d23-b64f0bbe982f">
+      <Execution id="7a4561df-d836-4526-b2f7-7a5e58d56a3d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="떠는_자리가_심어진_것의_이웃_안에_머문다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드가_같은_시도를_만든다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="c5f361d8-012e-e330-a014-818e7fb8d46a">
+      <Execution id="91f132dd-e408-4d2d-9ca3-3b977aba44b4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SeedDeterminismTests" name="같은_씨드가_같은_시도를_만든다" />
+    </UnitTest>
+    <UnitTest name="다른_씨드는_실제로_다른_밤을_만든다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="1fce584d-5528-aecc-961e-0407516a8afe">
+      <Execution id="54d206da-d417-4827-a1bc-e1bc680442b5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SeedDeterminismTests" name="다른_씨드는_실제로_다른_밤을_만든다" />
+    </UnitTest>
+    <UnitTest name="대조군_연상을_끊으면_정적_보장이_잡는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="529eab22-c35d-cff4-cc47-05e7b3a86858">
+      <Execution id="992181dc-c93f-4891-b416-fab27f262e72" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="대조군_연상을_끊으면_정적_보장이_잡는다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓴다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="34bc59af-062b-f7b1-f26f-64ae34ede44b">
+      <Execution id="a175a40c-9b17-42e5-aa60-803ac8472308" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.LocalizationTests" name="자리표시자를_쓴다" />
+    </UnitTest>
+    <UnitTest name="논리와_정서가_둘_다_거부를_만든다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="e647dd2c-3e3f-3e26-f7b5-f2bf004d99a8">
+      <Execution id="9b768cc6-2f68-46a4-a030-3055e13823df" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="논리와_정서가_둘_다_거부를_만든다" />
+    </UnitTest>
+    <UnitTest name="회차_전체를_두_번_돌리면_지문이_같다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="5e5564ad-4ba3-9135-fd2b-6285abd4ab7d">
+      <Execution id="52a26f01-6191-4144-a9f5-fda786e46235" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SeedDeterminismTests" name="회차_전체를_두_번_돌리면_지문이_같다" />
+    </UnitTest>
+    <UnitTest name="정적_보장_구멍이_없다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="e98f9bfb-cd92-ec36-7105-3a446891ac2e">
+      <Execution id="2cd22c4b-68dc-4bdb-b512-c9785866a9ec" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="정적_보장_구멍이_없다" />
+    </UnitTest>
+    <UnitTest name="정책별_성공률" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="3e567324-cd6b-4030-7836-2836555f5f25">
+      <Execution id="71f7b8f4-08af-44f8-b361-0b0a2ab3c248" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="정책별_성공률" />
+    </UnitTest>
+    <UnitTest name="모든_기억에_닿을_수_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="0469f81a-e226-d068-41f1-029b73ce4556">
+      <Execution id="eabc4af0-3e0f-4020-aabd-4762a6cb85cd" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="모든_기억에_닿을_수_있다" />
+    </UnitTest>
+    <UnitTest name="대조군_규칙표에서_규칙을_빼면_RuleUnstated_가_된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="bb19e382-e569-9e98-9bb2-65f3c0577c0f">
+      <Execution id="21a3e333-61d5-4e41-b046-fb779562bc67" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="대조군_규칙표에서_규칙을_빼면_RuleUnstated_가_된다" />
+    </UnitTest>
+    <UnitTest name="문턱이_두_기억망_사이에_실제로_들어간다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="a1b8472a-fc28-7a3e-ffe1-e7f39acb26e9">
+      <Execution id="f78a114c-c3fa-4206-b310-8e865cd22b35" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="문턱이_두_기억망_사이에_실제로_들어간다" />
+    </UnitTest>
+    <UnitTest name="정서_거리_행렬이_옳다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="4d511a2a-8165-2247-dc41-1132709c63fd">
+      <Execution id="64639fa2-6dba-4935-b200-e4662c01a196" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="정서_거리_행렬이_옳다" />
+    </UnitTest>
+    <UnitTest name="스크린_기억으로_죽는_경우가_실제로_생긴다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="c366b3ee-256d-f987-895d-cf2e6a2a2ad5">
+      <Execution id="8f8f89eb-ad17-4574-8d15-d1c32454131a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="스크린_기억으로_죽는_경우가_실제로_생긴다" />
+    </UnitTest>
+    <UnitTest name="표가_없으면_한국어_원문이_나온다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="8f24736a-f07b-0372-d256-0f597f55b6c4">
+      <Execution id="62b7bbc3-bd27-4a98-b1c8-204233f4edc5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.LocalizationTests" name="표가_없으면_한국어_원문이_나온다" />
+    </UnitTest>
+    <UnitTest name="거부_이유가_전부_번역된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="50038a8b-1f27-347f-3048-fef4e3abf7a1">
+      <Execution id="7fd82ff4-2a5e-424d-9bb7-5c9c86fd8573" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.LocalizationTests" name="거부_이유가_전부_번역된다" />
+    </UnitTest>
+    <UnitTest name="받아들여지는_자리가_있고_동시에_드물다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="2bf64d56-9b73-4ecf-61b3-e329c56bfc96">
+      <Execution id="0866a2aa-5a8d-4a4d-9128-062ed1ffeaff" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="받아들여지는_자리가_있고_동시에_드물다" />
+    </UnitTest>
+    <UnitTest name="겹쳐_물은_플레이어는_예측이_빗나가지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="fe6fe3da-314a-94ac-fe48-8e93d508941b">
+      <Execution id="8c4ff725-bc60-4ec3-bc82-4919ff908633" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="겹쳐_물은_플레이어는_예측이_빗나가지_않는다" />
+    </UnitTest>
+    <UnitTest name="두_세계의_차이가_유의하게_다르다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="1730c216-cd70-8d9f-fac9-5fa42dfee581">
+      <Execution id="195eae22-a2ba-4faf-b167-baa56de061f9" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="두_세계의_차이가_유의하게_다르다" />
+    </UnitTest>
+    <UnitTest name="의뢰마다_따로_봐도_차이가_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="b6aeae7a-d723-0295-0b18-5f8e73a53fa5">
+      <Execution id="0bbfcfc0-018f-4cba-a3c9-c132a2da149d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="의뢰마다_따로_봐도_차이가_있다" />
+    </UnitTest>
+    <UnitTest name="두_세계_성공률" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="17859608-faa0-887d-febe-0e795d054684">
+      <Execution id="514b1c24-c2b8-409f-9dae-3a964a5b77eb" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="두_세계_성공률" />
+    </UnitTest>
+    <UnitTest name="심어진_기억을_하나도_놓치지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="4ff4566b-d7e0-123b-decb-4418508a1d7a">
+      <Execution id="1d69af57-a376-4bbb-94b8-f3f7db4fd5a1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="심어진_기억을_하나도_놓치지_않는다" />
+    </UnitTest>
+    <UnitTest name="자기_기억을_재는_이유도_같은_규칙표에_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="384718f7-fd37-20dd-fa4a-044dcacf8d49">
+      <Execution id="307cfcb3-e2c8-4899-ad9f-c6383638ec7b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="자기_기억을_재는_이유도_같은_규칙표에_있다" />
+    </UnitTest>
+    <UnitTest name="참값을_다_쥐면_예측이_절대_갈리지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="1731131e-b402-60b9-825c-5cb187e4e5ff">
+      <Execution id="17115a9f-bc25-4b7e-8b42-00ae8fb9b088" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="참값을_다_쥐면_예측이_절대_갈리지_않는다" />
+    </UnitTest>
+    <UnitTest name="자기_기억_잔여떨림" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="f6ab3d69-a158-6928-e65e-30f6bbe913ac">
+      <Execution id="d99d5ec3-d84a-4af1-9812-12691b0cc298" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="자기_기억_잔여떨림" />
+    </UnitTest>
+    <UnitTest name="의뢰마다_가장_덜_떨리는_수가_다르다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="c7f78611-5c07-4a84-425d-44b27387e487">
+      <Execution id="f8e312af-7a4e-4ec4-8eeb-e08d06edc2a7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.NoDominantStrategyTests" name="의뢰마다_가장_덜_떨리는_수가_다르다" />
+    </UnitTest>
+    <UnitTest name="심어진_것이_없는_기억망에서는_하나도_걸리지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="84d91dda-7956-6a7f-6aeb-b0a82ce87c9b">
+      <Execution id="045b261c-75e5-4540-8bf8-8afec84043dc" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="심어진_것이_없는_기억망에서는_하나도_걸리지_않는다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드가_같은_스크린_기억을_뽑는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="793fa820-fc1e-83ef-8f2c-f7e7be5fa93a">
+      <Execution id="1a914f4b-da92-435c-bbe5-ab6639b1ce2b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SeedDeterminismTests" name="같은_씨드가_같은_스크린_기억을_뽑는다" />
+    </UnitTest>
+    <UnitTest name="한_축을_굳힌_정책은_전부_Careful_아래다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="0f95d9ec-559d-315a-7f35-b5ebb008ef2a">
+      <Execution id="40c334f2-fd7f-4a07-a6e5-dbc48072ba5f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.NoDominantStrategyTests" name="한_축을_굳힌_정책은_전부_Careful_아래다" />
+    </UnitTest>
+    <UnitTest name="의뢰가_가리키는_것이_전부_있고_격자에_맞는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="5003b9e8-4211-b1d3-be88-a69be04a6203">
+      <Execution id="3996519d-99a7-44b4-972e-34addd892537" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="의뢰가_가리키는_것이_전부_있고_격자에_맞는다" />
+    </UnitTest>
+    <UnitTest name="굳힌_정책마다_무너지는_의뢰가_따로_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="c905f409-41a2-8374-6d9f-3c1e8cbeb130">
+      <Execution id="a75b224b-fb80-4683-be86-4a27c2570547" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.NoDominantStrategyTests" name="굳힌_정책마다_무너지는_의뢰가_따로_있다" />
+    </UnitTest>
+    <UnitTest name="정확도를_수치로_남긴다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="77a84ea4-a42d-d65a-d881-a8bc8ac43e17">
+      <Execution id="baf3f88a-b617-4057-b558-12d527a58d5b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.SelfSuspicionTests" name="정확도를_수치로_남긴다" />
+    </UnitTest>
+    <UnitTest name="자기_기억망에_심어진_것이_적혀_있다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="17a698e8-80bd-8540-950b-3e5aec00efa5">
+      <Execution id="4ec3fbe2-d664-444d-8106-0b6a46008fc7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="자기_기억망에_심어진_것이_적혀_있다" />
+    </UnitTest>
+    <UnitTest name="끈_세계에서는_차이가_사라진다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="212b6842-e9bd-eb5b-c6aa-da980b423957">
+      <Execution id="191f2a9e-33eb-45c6-97aa-d83a525e5c5f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.ConsistencyIsNotTrivialTests" name="끈_세계에서는_차이가_사라진다" />
+    </UnitTest>
+    <UnitTest name="정적_구멍" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="22e91162-f3d4-f5de-526e-3ef8205117f8">
+      <Execution id="d3b01d59-1837-4ea2-93f7-80d4bd1dbb5d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DiagnosticTests" name="정적_구멍" />
+    </UnitTest>
+    <UnitTest name="기억망이_스스로_모순되지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="d1d988c6-5384-9eea-6e8b-50dd7dc4c25d">
+      <Execution id="09d0235c-2025-4679-9ec7-a29ba1ae7b40" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="기억망이_스스로_모순되지_않는다" />
+    </UnitTest>
+    <UnitTest name="대조군_닿지_않는_기억으로_죽으면_Unknowable_이_된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="2426bbed-a0a4-50a4-d2da-ccfa09c19fdf">
+      <Execution id="eed6350d-20fa-48ef-8190-e0f81615b5ab" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="대조군_닿지_않는_기억으로_죽으면_Unknowable_이_된다" />
+    </UnitTest>
+    <UnitTest name="일어난_모든_떨림이_설명된다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="32adc784-2891-f742-2179-3460ee487015">
+      <Execution id="d8a73577-55b0-4615-9569-f41de2c9f313" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.RejectionIsPredictableTests" name="일어난_모든_떨림이_설명된다" />
+    </UnitTest>
+    <UnitTest name="연상_간선이_옳다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="0a99668b-4cb8-5bf7-2081-29075f7e7ae2">
+      <Execution id="6ddd015b-6b6e-44d8-a3e1-439f153fdc65" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="연상_간선이_옳다" />
+    </UnitTest>
+    <UnitTest name="아이디가_겹치지_않는다" storage="c:\users\psi\orca\game\games\grafted-memory\testbuild\debug\net8.0\grafted-memory.tests.dll" id="241da757-ade0-f138-747d-f385412b0581">
+      <Execution id="1a877101-212e-40ca-a854-147dcdb8aaa8" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Graft.Tests.DataIntegrityTests" name="아이디가_겹치지_않는다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c366b3ee-256d-f987-895d-cf2e6a2a2ad5" executionId="8f8f89eb-ad17-4574-8d15-d1c32454131a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1d988c6-5384-9eea-6e8b-50dd7dc4c25d" executionId="09d0235c-2025-4679-9ec7-a29ba1ae7b40" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="22e91162-f3d4-f5de-526e-3ef8205117f8" executionId="d3b01d59-1837-4ea2-93f7-80d4bd1dbb5d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="77a84ea4-a42d-d65a-d881-a8bc8ac43e17" executionId="baf3f88a-b617-4057-b558-12d527a58d5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b2afb91-9562-9c34-0db9-c16c8d954d31" executionId="c88919d3-6199-4a9a-b1d6-29b2d76b76c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c76cc49b-b002-0a52-8ea3-ece6902b4082" executionId="d759f56b-2889-4f19-8a44-e24e484f59b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="471c0a42-da43-b3db-6e3a-1dbc09efb262" executionId="152417e3-e950-431b-bc60-ad0534818e45" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e5564ad-4ba3-9135-fd2b-6285abd4ab7d" executionId="52a26f01-6191-4144-a9f5-fda786e46235" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1731131e-b402-60b9-825c-5cb187e4e5ff" executionId="17115a9f-bc25-4b7e-8b42-00ae8fb9b088" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5003b9e8-4211-b1d3-be88-a69be04a6203" executionId="3996519d-99a7-44b4-972e-34addd892537" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e647dd2c-3e3f-3e26-f7b5-f2bf004d99a8" executionId="9b768cc6-2f68-46a4-a030-3055e13823df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e4dc224c-be0d-ae29-f013-0147d9c0ca3a" executionId="38743260-a634-47f5-8485-b585d127533f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="529eab22-c35d-cff4-cc47-05e7b3a86858" executionId="992181dc-c93f-4891-b416-fab27f262e72" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ff4566b-d7e0-123b-decb-4418508a1d7a" executionId="1d69af57-a376-4bbb-94b8-f3f7db4fd5a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0a99668b-4cb8-5bf7-2081-29075f7e7ae2" executionId="6ddd015b-6b6e-44d8-a3e1-439f153fdc65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fe6fe3da-314a-94ac-fe48-8e93d508941b" executionId="8c4ff725-bc60-4ec3-bc82-4919ff908633" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c905f409-41a2-8374-6d9f-3c1e8cbeb130" executionId="a75b224b-fb80-4683-be86-4a27c2570547" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2bf64d56-9b73-4ecf-61b3-e329c56bfc96" executionId="0866a2aa-5a8d-4a4d-9128-062ed1ffeaff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="27f9ca6f-87bf-3c37-8511-687674db8176" executionId="338eb026-4092-4731-be65-2b5d46f8110d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38019fa2-437c-6f1c-ff9d-ad5fd33d85f0" executionId="060f16bf-1c16-4e74-b8b3-0b833465eec7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17859608-faa0-887d-febe-0e795d054684" executionId="514b1c24-c2b8-409f-9dae-3a964a5b77eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="385c83ec-c637-a90b-9a6a-f3e52c2a171f" executionId="f2226d95-33e2-485c-a9ff-45618373e088" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34bc59af-062b-f7b1-f26f-64ae34ede44b" executionId="a175a40c-9b17-42e5-aa60-803ac8472308" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c5f361d8-012e-e330-a014-818e7fb8d46a" executionId="91f132dd-e408-4d2d-9ca3-3b977aba44b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="32adc784-2891-f742-2179-3460ee487015" executionId="d8a73577-55b0-4615-9569-f41de2c9f313" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e567324-cd6b-4030-7836-2836555f5f25" executionId="71f7b8f4-08af-44f8-b361-0b0a2ab3c248" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="50038a8b-1f27-347f-3048-fef4e3abf7a1" executionId="7fd82ff4-2a5e-424d-9bb7-5c9c86fd8573" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f632b013-5cdd-216d-5445-14825ea5e5cd" executionId="9d845135-6905-4572-b002-dadc91eebb7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1730c216-cd70-8d9f-fac9-5fa42dfee581" executionId="195eae22-a2ba-4faf-b167-baa56de061f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0469f81a-e226-d068-41f1-029b73ce4556" executionId="eabc4af0-3e0f-4020-aabd-4762a6cb85cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="793fa820-fc1e-83ef-8f2c-f7e7be5fa93a" executionId="1a914f4b-da92-435c-bbe5-ab6639b1ce2b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="abd8543b-953b-138d-1d23-b64f0bbe982f" executionId="7a4561df-d836-4526-b2f7-7a5e58d56a3d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cfa439ba-e4c8-52b1-a27d-b276056549ea" executionId="1f0a5d7e-17ce-4ca4-b921-8ee5b2a61911" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2426bbed-a0a4-50a4-d2da-ccfa09c19fdf" executionId="eed6350d-20fa-48ef-8190-e0f81615b5ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="212b6842-e9bd-eb5b-c6aa-da980b423957" executionId="191f2a9e-33eb-45c6-97aa-d83a525e5c5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1fce584d-5528-aecc-961e-0407516a8afe" executionId="54d206da-d417-4827-a1bc-e1bc680442b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f24736a-f07b-0372-d256-0f597f55b6c4" executionId="62b7bbc3-bd27-4a98-b1c8-204233f4edc5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b6aeae7a-d723-0295-0b18-5f8e73a53fa5" executionId="0bbfcfc0-018f-4cba-a3c9-c132a2da149d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="384718f7-fd37-20dd-fa4a-044dcacf8d49" executionId="307cfcb3-e2c8-4899-ad9f-c6383638ec7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cedba5b4-7142-ca84-905c-f038f60efe20" executionId="88bb491c-b11e-4bdc-90e7-7fbaf9729c59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="241da757-ade0-f138-747d-f385412b0581" executionId="1a877101-212e-40ca-a854-147dcdb8aaa8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6ab3d69-a158-6928-e65e-30f6bbe913ac" executionId="d99d5ec3-d84a-4af1-9812-12691b0cc298" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="738cf356-1133-c5c4-3742-29761751fdb8" executionId="97bcf8b4-3edc-48cf-945d-25ef0ac26da3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="84d91dda-7956-6a7f-6aeb-b0a82ce87c9b" executionId="045b261c-75e5-4540-8bf8-8afec84043dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0f95d9ec-559d-315a-7f35-b5ebb008ef2a" executionId="40c334f2-fd7f-4a07-a6e5-dbc48072ba5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e98f9bfb-cd92-ec36-7105-3a446891ac2e" executionId="2cd22c4b-68dc-4bdb-b512-c9785866a9ec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a1b8472a-fc28-7a3e-ffe1-e7f39acb26e9" executionId="f78a114c-c3fa-4206-b310-8e865cd22b35" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f02be830-a037-fb62-6dce-0e99603d5c15" executionId="c69dca4f-ec6e-4ebf-885f-aa126a0862e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17a698e8-80bd-8540-950b-3e5aec00efa5" executionId="4ec3fbe2-d664-444d-8106-0b6a46008fc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ecb5cec-2800-7791-89d2-50c712993cf4" executionId="3dd379ef-9d96-41de-a76e-38f491396e1e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb19e382-e569-9e98-9bb2-65f3c0577c0f" executionId="21a3e333-61d5-4e41-b046-fb779562bc67" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c7f78611-5c07-4a84-425d-44b27387e487" executionId="f8e312af-7a4e-4ec4-8eeb-e08d06edc2a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d511a2a-8165-2247-dc41-1132709c63fd" executionId="64639fa2-6dba-4935-b200-e4662c01a196" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="53" executed="53" passed="53" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\grafted-memory\TestBuild\Debug\net8.0\grafted-memory.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 53 of 53 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+규칙 끈 세계: Careful 100% · Reckless 100% → 차이 0%p&#xD;
+&#xD;
+    IntensityClash: 205&#xD;
+    MoodClashAnchor: 348&#xD;
+    MoodClashEra: 443&#xD;
+    PersonAbsent: 7&#xD;
+    PersonElsewhere: 5&#xD;
+    PlaceWindow: 22&#xD;
+    TimePlaceConflict: 8&#xD;
+논리 42 · 정서 996&#xD;
+&#xD;
+정책 차이: 켠 세계 98%p · 끈 세계 0%p&#xD;
+&#xD;
+com-inheritance: 360/7200 (5%) 가 자리를 잡는다&#xD;
+com-pier-promise: 196/7200 (2%) 가 자리를 잡는다&#xD;
+com-hospital-vow: 490/7200 (6%) 가 자리를 잡는다&#xD;
+com-house-farewell: 150/7200 (2%) 가 자리를 잡는다&#xD;
+&#xD;
+Careful 100% · Reckless 2% → 차이 98%p&#xD;
+    com-inheritance: 100% vs 5%&#xD;
+    com-pier-promise: 100% vs 0%&#xD;
+    com-hospital-vow: 100% vs 5%&#xD;
+    com-house-farewell: 100% vs 1%&#xD;
+&#xD;
+시도 1920 · 거부 657&#xD;
+DistortedButCheckable     203&#xD;
+Held                      1204&#xD;
+Probeable                 274&#xD;
+&#xD;
+규칙 켠 세계 / 끈 세계&#xD;
+Careful         on 100%   off 100%&#xD;
+Reckless        on 2%   off 100%&#xD;
+&#xD;
+── subj-operator (중앙값 0)&#xD;
+    s-alley-dog             2750    둘째 0          간선 1&#xD;
+    s-brother-bicycle       3000    둘째 0          간선 1&#xD;
+    s-mother-fever          4850    둘째 750        간선 2&#xD;
+    s-fathers-blessing      5750    둘째 2000       간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-exam-night            4950    둘째 0          간선 1&#xD;
+    s-dorm-window           4250    둘째 0          간선 1&#xD;
+    s-first-clinic          2700    둘째 0          간선 1&#xD;
+    s-supervisor-praise     3825    둘째 0          간선 1&#xD;
+    s-night-shift           17850   둘째 5950       간선 2  &lt;의심&gt;&#xD;
+    s-seonhwa-face          8400    둘째 2800       간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-hundredth             0       둘째 0          간선 0&#xD;
+&#xD;
+── subj-hanwoo (중앙값 0)&#xD;
+    m-rain-roof             0       둘째 0          간선 0&#xD;
+    m-fathers-shoes         1075    둘째 275        간선 2&#xD;
+    m-schoolyard            3725    둘째 350        간선 2&#xD;
+    m-hairpin               1400    둘째 0          간선 1&#xD;
+    m-pier-smell            3850    둘째 0          간선 1&#xD;
+    m-report-card           2400    둘째 0          간선 1&#xD;
+    m-seonhwa-first         2475    둘째 0          간선 1&#xD;
+    m-fathers-death         4400    둘째 0          간선 1&#xD;
+    m-seonhwa-letter        1600    둘째 0          간선 1&#xD;
+    m-hospital-hall         1400    둘째 0          간선 1&#xD;
+    m-first-wage            700     둘째 0          간선 0&#xD;
+    m-seonhwa-gone          0       둘째 0          간선 0&#xD;
+    m-mother-forgets        0       둘째 0          간선 0&#xD;
+    m-house-gone            5225    둘째 0          간선 1&#xD;
+    m-mothers-death         4400    둘째 0          간선 1&#xD;
+    m-desk-lamp             900     둘째 0          간선 0&#xD;
+&#xD;
+&#xD;
+com-inheritance: 구멍 0&#xD;
+com-pier-promise: 구멍 0&#xD;
+com-hospital-vow: 구멍 0&#xD;
+com-house-farewell: 구멍 0&#xD;
+&#xD;
+씨드 60개 · 의뢰 4개&#xD;
+&#xD;
+정책                의뢰                 성공/전체  성공률  예측빗나감  명료도합&#xD;
+Careful             com-inheritance      60/60      100%    0           480&#xD;
+Careful             com-pier-promise     60/60      100%    0           1560&#xD;
+Careful             com-hospital-vow     60/60      100%    0           1440&#xD;
+Careful             com-house-farewell   60/60      100%    0           600&#xD;
+Careful             (전체)                            100%&#xD;
+&#xD;
+Reckless            com-inheritance      3/60       5%      4           0&#xD;
+Reckless            com-pier-promise     0/60       0%      0           0&#xD;
+Reckless            com-hospital-vow     3/60       5%      6           0&#xD;
+Reckless            com-house-farewell   1/60       1%      15          0&#xD;
+Reckless            (전체)                            2%&#xD;
+&#xD;
+ProbeEverything     com-inheritance      60/60      100%    0           1980&#xD;
+ProbeEverything     com-pier-promise     0/60       0%      60          1980&#xD;
+ProbeEverything     com-hospital-vow     19/60      31%     41          1980&#xD;
+ProbeEverything     com-house-farewell   60/60      100%    0           1980&#xD;
+ProbeEverything     (전체)                            57%&#xD;
+&#xD;
+LiarTrusting        com-inheritance      60/60      100%    0           480&#xD;
+LiarTrusting        com-pier-promise     20/60      33%     40          840&#xD;
+LiarTrusting        com-hospital-vow     19/60      31%     41          600&#xD;
+LiarTrusting        com-house-farewell   60/60      100%    0           600&#xD;
+LiarTrusting        (전체)                            66%&#xD;
+&#xD;
+TrustDistorted      com-inheritance      60/60      100%    0           480&#xD;
+TrustDistorted      com-pier-promise     20/60      33%     40          840&#xD;
+TrustDistorted      com-hospital-vow     19/60      31%     41          600&#xD;
+TrustDistorted      com-house-farewell   60/60      100%    0           600&#xD;
+TrustDistorted      (전체)                            66%&#xD;
+&#xD;
+FixedFirstMood      com-inheritance      0/60       0%      0           480&#xD;
+FixedFirstMood      com-pier-promise     60/60      100%    0           1560&#xD;
+FixedFirstMood      com-hospital-vow     19/60      31%     0           1440&#xD;
+FixedFirstMood      com-house-farewell   60/60      100%    0           600&#xD;
+FixedFirstMood      (전체)                            57%&#xD;
+&#xD;
+FixedMaxIntensity   com-inheritance      60/60      100%    0           480&#xD;
+FixedMaxIntensity   com-pier-promise     20/60      33%     0           1560&#xD;
+FixedMaxIntensity   com-hospital-vow     60/60      100%    0           1440&#xD;
+FixedMaxIntensity   com-house-farewell   60/60      100%    0           600&#xD;
+FixedMaxIntensity   (전체)                            83%&#xD;
+&#xD;
+FixedEarliestDay    com-inheritance      60/60      100%    0           480&#xD;
+FixedEarliestDay    com-pier-promise     40/60      66%     0           1560&#xD;
+FixedEarliestDay    com-hospital-vow     60/60      100%    0           1440&#xD;
+FixedEarliestDay    com-house-farewell   60/60      100%    0           600&#xD;
+FixedEarliestDay    (전체)                            91%&#xD;
+&#xD;
+&#xD;
+com-inheritance       선택지 7200   받아들임 360    노골적 288    최소떨림 0 (허용 500)&#xD;
+com-pier-promise      선택지 7200   받아들임 196    노골적 0      최소떨림 0 (허용 400)&#xD;
+com-hospital-vow      선택지 7200   받아들임 490    노골적 144    최소떨림 0 (허용 400)&#xD;
+com-house-farewell    선택지 7200   받아들임 150    노골적 2880   최소떨림 1600 (허용 1650)&#xD;
+&#xD;
+Careful 100% · LiarTrusting 66%&#xD;
+&#xD;
+FixedFirstMood 가 무너지는 의뢰: com-inheritance(0%) com-hospital-vow(31%)&#xD;
+FixedMaxIntensity 가 무너지는 의뢰: com-pier-promise(33%)&#xD;
+FixedEarliestDay 가 무너지는 의뢰: com-pier-promise(66%)&#xD;
+&#xD;
+com-inheritance 최적: m-pier-smell / pl-house / 13010일 / mood-shame / 55%  떨림 0&#xD;
+com-pier-promise 최적: m-hospital-hall / pl-pier / 4650일 / mood-dread / 70%  떨림 0&#xD;
+com-hospital-vow 최적: m-fathers-shoes / pl-hospital / 10020일 / mood-longing / 60%  떨림 0&#xD;
+com-house-farewell 최적: m-fathers-death / pl-house / 13570일 / mood-dread / 100%  떨림 1600&#xD;
+최적 이어 붙일 자리: m-pier-smell, m-hospital-hall, m-fathers-shoes, m-fathers-death&#xD;
+최적 정서: mood-shame, mood-dread, mood-longing&#xD;
+최적 날의 상대 위치: earliest,middle,latest&#xD;
+최적 세기의 상대 위치: min,max&#xD;
+&#xD;
+Careful 100% (명료도 4080) · ProbeEverything 57% (명료도 7920)&#xD;
+&#xD;
+Careful 100%&#xD;
+    FixedFirstMood 57% (차이 43%p)&#xD;
+    FixedMaxIntensity 83% (차이 17%p)&#xD;
+    FixedEarliestDay 91% (차이 9%p)&#xD;
+&#xD;
+명료도 1: Unknowable 20건. 예산이 판정에 실제로 들어간다&#xD;
+&#xD;
+길을 끊자 정적 보장이 즉시 구멍을 보고했다 (전수라서 씨드 운에 기대지 않는다)&#xD;
+&#xD;
+DistortedButCheckable 81건 (TrustDistorted 정책)&#xD;
+&#xD;
+Probeable 214건 (Reckless 정책)&#xD;
+&#xD;
+떨림 1681개 감사 · 거부된 시도 657개&#xD;
+&#xD;
+의뢰인 최대 350 &lt; 문턱 1000 &lt;= 심어진 것 최소 2000&#xD;
+&#xD;
+의뢰인 기억망 16자리 · 둘째 떨림 최대 350 · 문턱 1000&#xD;
+&#xD;
+    s-alley-dog  잔여 2750 · 흔적 2750 · 둘째 0 · 간선 1&#xD;
+    s-brother-bicycle  잔여 3000 · 흔적 3000 · 둘째 0 · 간선 1&#xD;
+    s-mother-fever  잔여 4850 · 흔적 4350 · 둘째 750 · 간선 2&#xD;
+    s-fathers-blessing  잔여 5750 · 흔적 5000 · 둘째 2000 · 간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-exam-night  잔여 4950 · 흔적 3600 · 둘째 0 · 간선 1&#xD;
+    s-dorm-window  잔여 4250 · 흔적 3400 · 둘째 0 · 간선 1&#xD;
+    s-first-clinic  잔여 2700 · 흔적 2700 · 둘째 0 · 간선 1&#xD;
+    s-supervisor-praise  잔여 3825 · 흔적 3825 · 둘째 0 · 간선 1&#xD;
+    s-night-shift  잔여 17850 · 흔적 13600 · 둘째 5950 · 간선 2  &lt;의심&gt;&#xD;
+    s-seonhwa-face  잔여 8400 · 흔적 6400 · 둘째 2800 · 간선 2  &lt;의심&gt;  [심어진 것]&#xD;
+    s-hundredth  잔여 0 · 흔적 0 · 둘째 0 · 간선 0&#xD;
+&#xD;
+제 기억망에서 나온 떨림 42건 전부가 의뢰에 쓰는 규칙표 안에 있다&#xD;
+&#xD;
+떠는 자리 3 · 심어진 것 2 · 맞춘 것 2 → 재현율 100% · 정확도 66%&#xD;
+정확도는 통과 조건이 아니다. 「이 근처에 심어진 것이 있다」까지가 기계의 몫이다.&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

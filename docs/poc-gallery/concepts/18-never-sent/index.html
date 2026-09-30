@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>보내지 못한 것</title>
+<style>
+:root{--mist:#dfe5ea;--blue:#8fa6b8;--slate:#4d5f6e;--graphite:#3a3f45;--peach:#f2cfb4;--paper:#fbf8f2}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#1b2229}
+body{font-family:"Nanum Myeongjo","Noto Serif KR","Batang",serif;color:var(--graphite)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:var(--mist)}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+svg.room{position:absolute;left:0;top:0}
+.rain{position:absolute;left:120px;top:90px;width:520px;height:560px;overflow:hidden;pointer-events:none;
+ background-image:linear-gradient(100deg,transparent 48%,rgba(255,255,255,.55) 49%,transparent 51%),linear-gradient(100deg,transparent 48%,rgba(255,255,255,.35) 49%,transparent 51%);
+ background-size:40px 90px,23px 60px;animation:rain .6s linear infinite;opacity:.6}
+@keyframes rain{to{background-position:-16px 90px,-10px 60px}}
+.sheet{position:absolute;left:860px;top:70px;width:640px;height:820px;background:var(--paper);box-shadow:0 30px 60px rgba(40,55,70,.35),0 2px 6px rgba(40,55,70,.2);transform:rotate(1.2deg);padding:70px 70px 60px}
+.sheet::before{content:"";position:absolute;inset:0;opacity:.45;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' seed='8'/><feColorMatrix values='0 0 0 0 .75  0 0 0 0 .72  0 0 0 0 .66  0 0 0 .35 0'/></filter><rect width='240' height='240' filter='url(%23f)'/></svg>")}
+.sheet .date{position:relative;font-size:16px;letter-spacing:.3em;color:#8a9098;margin-bottom:34px}
+.sheet .body{position:relative;font-size:25px;line-height:48px;color:#3a3f45;font-family:"Nanum Pen Script","Nanum Myeongjo",serif;text-shadow:0 0 .6px rgba(58,63,69,.6)}
+.sheet .body .erased{color:rgba(58,63,69,.28);text-decoration:line-through;text-decoration-color:rgba(58,63,69,.35)}
+.caret{display:inline-block;width:2px;height:26px;background:#3a3f45;vertical-align:-4px;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.pencil{position:absolute;pointer-events:none;transition:left .12s,top .12s;z-index:3}
+.day{position:absolute;left:120px;top:780px;z-index:5}
+.day small{display:block;font-size:14px;letter-spacing:.4em;color:var(--slate)}
+.day b{font-size:54px;font-weight:400;color:#2c3640}
+.day b span{font-size:22px;color:#8a9098}
+.tally{position:absolute;left:120px;bottom:26px;display:flex;gap:6px;z-index:5;align-items:flex-end}
+.tally i{width:4px;height:26px;background:#8a9098;border-radius:2px;opacity:.35}
+.tally i.d{opacity:1;background:#4d5f6e}
+.tally i.now{background:#c2703c;height:34px;opacity:1}
+.tally i:nth-child(5n){margin-right:10px}
+.acts{position:absolute;left:880px;bottom:30px;width:620px;display:flex;gap:14px;z-index:6;justify-content:flex-end}
+.btn{padding:14px 24px;border-radius:30px;font-size:18px;border:1px solid var(--slate);background:rgba(251,248,242,.85);color:#2c3640;cursor:pointer;transition:transform .1s,background .2s}
+.btn:hover{background:#fff}.btn:active{transform:scale(.97)}
+.btn.dead{color:#a8aeb4;border-color:#c4c9ce;border-style:dashed;cursor:not-allowed;position:relative}
+.btn.dead::after{content:"받는 사람 없음";position:absolute;left:50%;top:-34px;transform:translateX(-50%);white-space:nowrap;font-size:13px;color:#8a6a5a;background:#fbf8f2;padding:4px 10px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+.btn.main{background:#4d5f6e;color:#fbf8f2;border-color:#4d5f6e}
+.quote{position:absolute;left:120px;top:890px;width:680px;font-size:16px;line-height:1.8;color:#4d5f6e;z-index:5;font-style:italic}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .42  0 0 0 0 .45  0 0 0 .4 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 85% 80% at 50% 50%,transparent 60%,rgba(40,55,70,.35))}
+#tabs{position:absolute;right:14px;top:10px;z-index:50;display:flex;gap:4px}
+#tabs a{font:12px/1 serif;color:#4d5f6e;text-decoration:none;padding:6px 10px;border:1px solid #8a9098;background:#fbf8f2cc;border-radius:12px}
+#tabs a.on{background:#4d5f6e;color:#fbf8f2}
+/* B */
+#sb{background:linear-gradient(180deg,#f6e2cf,#e9e4de)}
+.sun{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 45% 50% at 22% 30%,rgba(255,214,170,.55),transparent 70%);mix-blend-mode:screen;animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.75}}
+.motes{position:absolute;left:120px;top:90px;width:700px;height:700px;pointer-events:none;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,240,210,.9),transparent),radial-gradient(1.5px 1.5px at 60% 50%,rgba(255,240,210,.8),transparent),radial-gradient(2px 2px at 40% 80%,rgba(255,240,210,.8),transparent);background-size:180px 200px;animation:mote 16s linear infinite}
+@keyframes mote{to{background-position:40px -200px,-30px -200px,20px -200px}}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <svg width="0" height="0" style="position:absolute">
+  <filter id="wc"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="11" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="10"/><feGaussianBlur stdDeviation=".8"/></filter>
+  <filter id="wc2"><feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="22"/><feGaussianBlur stdDeviation="2"/></filter>
+ </svg>
+ <section class="screen" id="sa">
+  <svg class="room" width="1600" height="1000" viewBox="0 0 1600 1000">
+   <defs>
+    <linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fb4c4"/><stop offset="1" stop-color="#c9d4dc"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d5dde3"/><stop offset="1" stop-color="#b9c5ce"/></linearGradient>
+   </defs>
+   <rect width="1600" height="1000" fill="url(#wall)"/>
+   <g filter="url(#wc2)" opacity=".5"><ellipse cx="300" cy="200" rx="260" ry="120" fill="#e8eef2"/><ellipse cx="560" cy="780" rx="400" ry="160" fill="#a9b6bf"/></g>
+   <!-- window -->
+   <g filter="url(#wc)">
+    <rect x="110" y="80" width="540" height="580" fill="#6f8292"/>
+    <rect x="124" y="94" width="512" height="552" fill="url(#win)"/>
+    <g fill="#7f93a3" opacity=".7"><path d="M124 520 C200 470 260 490 330 460 C400 440 470 470 540 440 C580 430 610 440 636 430 L636 646 L124 646Z"/></g>
+    <g fill="#5f7383" opacity=".7"><rect x="180" y="420" width="60" height="130"/><rect x="260" y="380" width="80" height="170"/><rect x="480" y="400" width="70" height="150"/><path d="M360 560 C380 500 420 480 440 560Z"/></g>
+    <rect x="374" y="94" width="12" height="552" fill="#6f8292"/><rect x="124" y="360" width="512" height="12" fill="#6f8292"/>
+   </g>
+   <g fill="#fff" opacity=".55"><circle cx="200" cy="200" r="4"/><circle cx="460" cy="160" r="3"/><circle cx="560" cy="280" r="5"/><circle cx="300" cy="300" r="3"/><circle cx="520" cy="500" r="4"/><path d="M200 204 v20 M560 285 v26" stroke="#fff" stroke-width="2"/></g>
+   <!-- desk -->
+   <g filter="url(#wc)">
+    <path d="M40 700 L820 700 L840 730 L20 730Z" fill="#8a7a6a"/>
+    <rect x="20" y="730" width="820" height="30" fill="#6a5a4a"/>
+    <rect x="60" y="760" width="26" height="240" fill="#5a4a3a"/><rect x="770" y="760" width="26" height="240" fill="#5a4a3a"/>
+    <rect x="480" y="760" width="290" height="120" fill="#7a6a5a"/><rect x="590" y="808" width="70" height="10" rx="5" fill="#4a3a2a"/>
+   </g>
+   <!-- desk items -->
+   <g filter="url(#wc)">
+    <path d="M620 700 L630 610 L690 610 L700 700Z" fill="#c9b8a4"/><ellipse cx="660" cy="610" rx="30" ry="6" fill="#8a7a6a"/><path d="M700 640 C730 640 730 680 700 680" stroke="#c9b8a4" stroke-width="8" fill="none"/>
+    <path d="M660 600 C650 570 672 560 662 530" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/>
+    <g transform="translate(120 650)"><rect x="0" y="0" width="200" height="50" fill="#f3efe6"/><rect x="10" y="-12" width="200" height="50" fill="#ece6da" transform="rotate(-3)"/><rect x="20" y="-24" width="200" height="50" fill="#f6f2ea" transform="rotate(2)"/><path d="M20 -24 L120 10 L220 -24" stroke="#c4bcae" stroke-width="2" fill="none" transform="rotate(2)"/></g>
+    
+    <!-- desk lamp -->
+    <path d="M420 700 L470 700 L460 690 L430 690Z" fill="#4d5f6e"/><path d="M445 690 L420 560 L520 500" stroke="#4d5f6e" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M500 470 L560 520 L520 540Z" fill="#4d5f6e"/>
+   </g>
+   <path d="M530 540 L420 700 L700 700Z" fill="#fff4dc" opacity=".35"/>
+   <!-- photo frame -->
+   <g filter="url(#wc)"><rect x="330" y="600" width="70" height="90" fill="#e6dccb" stroke="#8a7a6a" stroke-width="5"/><circle cx="365" cy="632" r="14" fill="#a9b6bf"/><path d="M340 690 C345 660 385 660 390 690Z" fill="#a9b6bf"/></g>
+  </svg>
+  <div class="rain"></div>
+  <div class="day"><small>보내지 못한 것</small><b>12일째 <span>/ 40</span></b></div>
+  <div class="quote">"비 오는 날엔 네 우산이 현관에 그대로 있는 게 이상해." <span style="font-style:normal;font-size:13px;letter-spacing:.15em;color:#8a9098">— 11일째</span></div>
+  <div class="sheet">
+   <div class="date">10월 3일 · 비 · 오후 네 시</div>
+   <div class="body" id="bodyA">지우에게.<br>오늘은 네가 좋아하던 빵집이 문을 닫았어.<br>주인 아주머니가 네 안부를 물었는데<br><span class="erased">잘 지낸다고 했어</span> 아무 말도 못 했어.<br>대신 크림빵을 두 개 샀어. 하나는<span id="typeA"></span><span class="caret"></span></div>
+   <svg class="pencil" id="pencilA" style="left:520px;top:300px" width="140" height="140" viewBox="0 0 140 140"><g transform="rotate(135 70 70)"><rect x="60" y="0" width="16" height="100" fill="#e8c56a" stroke="#8a6a2a"/><rect x="60" y="0" width="16" height="14" fill="#d08a8a"/><rect x="60" y="14" width="16" height="6" fill="#b0b0b0"/><path d="M60 100 L68 124 L76 100Z" fill="#f2dcb4"/><path d="M66 118 L68 124 L70 118Z" fill="#3a3f45"/></g></svg>
+  </div>
+  <div class="acts"><span class="btn dead">보내기</span><span class="btn">한 줄 지우기</span><span class="btn main" id="drawer">서랍에 넣는다</span></div>
+  <div class="tally" id="tallyA"></div>
+ </section>
+
+ <section class="screen" id="sb">
+  <svg class="room" width="1600" height="1000" viewBox="0 0 1600 1000">
+   <defs>
+    <linearGradient id="winB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe3c4"/><stop offset=".6" stop-color="#f6c9a4"/><stop offset="1" stop-color="#e8d6c6"/></linearGradient>
+    <linearGradient id="wallB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1e2d4"/><stop offset="1" stop-color="#d9cfc6"/></linearGradient>
+   </defs>
+   <rect width="1600" height="1000" fill="url(#wallB)"/>
+   <g filter="url(#wc)">
+    <rect x="110" y="80" width="540" height="580" fill="#b89a86"/>
+    <rect x="124" y="94" width="512" height="552" fill="url(#winB)"/>
+    <circle cx="470" cy="470" r="60" fill="#fff2dc" opacity=".9"/>
+    <g fill="#d9a88a" opacity=".6"><path d="M124 520 C200 470 260 490 330 460 C400 440 470 470 540 440 C580 430 610 440 636 430 L636 646 L124 646Z"/></g>
+    <!-- window opened: right sash swung -->
+    <path d="M380 94 L640 60 L640 690 L380 646Z" fill="#c9b3a4" opacity=".55"/>
+    <rect x="124" y="360" width="256" height="12" fill="#b89a86"/><rect x="368" y="94" width="12" height="552" fill="#b89a86"/>
+   </g>
+   <g stroke="#b89a86" stroke-width="2" fill="none" opacity=".6"><path d="M220 180 q10 -8 20 0 q10 -8 20 0"/><path d="M280 150 q7 -6 14 0 q7 -6 14 0"/></g>
+   <g filter="url(#wc)">
+    <path d="M40 700 L820 700 L840 730 L20 730Z" fill="#a8927e"/>
+    <rect x="20" y="730" width="820" height="30" fill="#8a7462"/>
+    <rect x="60" y="760" width="26" height="240" fill="#7a6452"/><rect x="770" y="760" width="26" height="240" fill="#7a6452"/>
+    <!-- drawer pulled out, full of letters -->
+    <path d="M460 770 L800 770 L840 900 L420 900Z" fill="#9a826e"/>
+    <path d="M470 780 L790 780 L825 890 L435 890Z" fill="#6a5442"/>
+   </g>
+   <g id="stack"></g>
+   <g filter="url(#wc)"><path d="M620 700 L630 610 L690 610 L700 700Z" fill="#e0cdb8"/><path d="M700 640 C730 640 730 680 700 680" stroke="#e0cdb8" stroke-width="8" fill="none"/></g>
+   <path d="M0 0 L420 0 L900 1000 L200 1000Z" fill="#fff0dc" opacity=".18"/>
+  </svg>
+  <div class="sun"></div><div class="motes"></div>
+  <div class="day" style="top:60px;left:680px;width:170px"><small>보내지 못한 것</small><b style="color:#6a4a3a;font-size:46px">40일째</b><div style="font-size:15px;line-height:1.7;color:#6a4a3a;margin-top:10px;font-style:italic">비가 그쳤다.<br>서랍에 서른아홉 통.<br>우표는 한 장도<br>붙이지 않았다.</div></div>
+  <div class="quote" style="color:#6a4a3a;top:862px;left:120px;width:360px;font-size:16px;line-height:1.6;display:none">비가 그쳤다. 서랍에 서른아홉 통.<br>어느 것도 우표를 붙이지 않았다.</div>
+  <div class="sheet" style="transform:rotate(-.8deg);background:#fffaf2">
+   <div class="date">11월 10일 · 맑음 · 새벽 여섯 시</div>
+   <div class="body">지우에게.<br>오늘은 쓸 말이 별로 없어.<br>그게 이상하게 괜찮아.<br><br>잘 지내.<br>나도 이제, 잘 지낼게.<span class="caret"></span></div>
+   <div style="position:absolute;left:70px;right:70px;bottom:70px;border-top:1px solid #d8cfc2;padding-top:18px;font-size:15px;color:#9a8a7a;letter-spacing:.1em;line-height:1.8">마흔 번째 편지 · 받는 사람 없음 · 보내는 사람 <b style="color:#6a4a3a">나</b></div>
+  </div>
+  <div class="acts"><span class="btn">창문을 연 채로 둔다</span><span class="btn main" id="close">서랍을 닫는다</span></div>
+  <div class="tally" id="tallyB"></div>
+ </section>
+ <div class="grain"></div><div class="vig"></div>
+ <nav id="tabs"><a href="#a" data-k="a">1 · 12일째</a><a href="#b" data-k="b">2 · 40일째</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ function tally(id,n){var t=document.getElementById(id);if(!t)return;for(var i=1;i<=40;i++){var e=document.createElement('i');if(i<n)e.className='d';else if(i===n)e.className='now';t.appendChild(e);}}
+ tally('tallyA',12);tally('tallyB',40);
+ var stack=document.getElementById('stack');
+ if(stack){var NS='http://www.w3.org/2000/svg';for(var k=0;k<39;k++){var r=document.createElementNS(NS,'rect');var x=455+(k%13)*27+Math.sin(k)*4,y=792+Math.floor(k/13)*30+Math.cos(k*1.7)*3;r.setAttribute('x',x.toFixed(1));r.setAttribute('y',y.toFixed(1));r.setAttribute('width','46');r.setAttribute('height','30');r.setAttribute('fill',k%3?'#f6f0e4':'#efe6d6');r.setAttribute('stroke','#c4b4a0');r.setAttribute('transform','rotate('+((Math.sin(k*2.3))*10).toFixed(1)+' '+(x+23).toFixed(1)+' '+(y+15).toFixed(1)+')');stack.appendChild(r);}
+  var tw=document.createElementNS(NS,'path');tw.setAttribute('d','M450 830 C600 820 700 850 830 836');tw.setAttribute('stroke','#b04a3a');tw.setAttribute('stroke-width','3');tw.setAttribute('fill','none');stack.appendChild(tw);}
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function scratch(){var c=ac();if(!c)return;var n=Math.floor(c.sampleRate*0.07),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++){d[i]=(Math.random()*2-1)*(1-i/n);}var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=3500+Math.random()*1500;f.Q.value=1.2;var g=c.createGain();g.gain.value=0.18;s.connect(f);f.connect(g);g.connect(c.destination);s.start();}
+ function drawerSnd(){var c=ac();if(!c)return;var n=Math.floor(c.sampleRate*0.5),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++){d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n)*0.5;}var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=600;var g=c.createGain();g.gain.value=0.5;s.connect(f);f.connect(g);g.connect(c.destination);s.start();}
+ var line=' 네 몫으로 식탁에 올려 두었어.',idx=0,ty=document.getElementById('typeA'),pen=document.getElementById('pencilA');
+ function typeOne(){if(!ty||idx>=line.length)return false;ty.textContent+=line.charAt(idx);idx++;return true;}
+ for(var p=0;p<8;p++){typeOne();}
+ function penLoop(){if(pen){var cr=document.querySelector('#sa .caret'),sh=document.querySelector('#sa .sheet');if(cr&&sh&&cr.offsetParent){var a=cr.getBoundingClientRect(),b=sh.getBoundingClientRect(),sc=st.getBoundingClientRect().width/1600;if(sc>0){pen.style.left=((a.left-b.left)/sc-31).toFixed(0)+'px';pen.style.top=((a.top-b.top)/sc-4).toFixed(0)+'px';}}}window.requestAnimationFrame(penLoop);}
+ window.requestAnimationFrame(penLoop);
+ var auto=setInterval(function(){if(!typeOne())clearInterval(auto);},260);
+ window.addEventListener('keydown',function(e){if(e.key==='1'){location.hash='a';return;}if(e.key==='2'){location.hash='b';return;}if(document.body.getAttribute('data-screen')==='a'){scratch();}});
+ var dr=document.getElementById('drawer');if(dr)dr.addEventListener('click',function(){drawerSnd();setTimeout(function(){location.hash='b';},400);});
+ var cl=document.getElementById('close');if(cl)cl.addEventListener('click',drawerSnd);
+})();
+</script>
+</body>
+</html>

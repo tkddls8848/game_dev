@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한지 족보와 제례 기록 — curse-ledger</title>
+<!--
+  연출 목업. **data/ 의 실제 JSON을 읽어 그린다.**
+  손으로 옮겨 적은 수치가 하나도 없다 — 규칙까지 여기서 다시 계산한다.
+  §02 의 "깨끗한 출구 없음"은 이 화면에서 **전수 훑기를 직접 돌려** 나온 수다.
+
+  난수는 .NET System.Random(seed) 의 레거시 Knuth 감산 생성기를 그대로 옮겼다.
+  그래서 흉년표와 부름 순서가 C# 테스트와 **글자 하나까지 같다**(확인했다).
+
+  fetch 는 file:// 에서 막힌다. 작은 서버가 필요하다:
+      cd games/curse-ledger && python -m http.server 8099
+      → http://localhost:8099/presentation/index.html
+-->
+<style>
+@font-face { font-family:"KirangHaerang"; src:url("assets/fonts/KirangHaerang-Regular.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"GowunBatang"; src:url("assets/fonts/GowunBatang-Regular.ttf") format("truetype"); font-weight:400; font-display:swap; }
+
+:root{
+  /* 전부 palette.json 에서 덮어쓴다. 여기 값은 표가 없을 때의 바닥이다. */
+  --hanji:#E5DAC0; --hanjiLit:#F0E8D4; --hanjiDim:#D5C7A7; --hanjiFold:#C2B190; --fiber:#B9A67F;
+  --ink:#241F19; --inkFaded:#4C4237; --inkAncient:#6E6151;
+  --verm:#A8281F; --vermSoft:#C0564A; --seal:#9E2118; --gold:#8C6A2B;
+  --sTitle:52px; --sHead:26px; --sBody:15px; --sHint:12px; --sNum:13px; --sName:21px; --sGen:14px;
+  --colW:132px; --ruleW:1px; --headBand:74px; --strikeW:3px; --strikeInset:4px;
+  --sealSize:46px; --priorOp:.62; --vig:.18;
+  --fiberPitch:3px; --fiberOp:.07; --foldEvery:264px; --foldOp:.10;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--hanji); color:var(--ink);
+  font-family:"GowunBatang",serif; font-size:var(--sBody); line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+/* 한지 섬유 · 접힘 — 이미지를 한 장도 받지 않는다 */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg, rgba(36,31,25,var(--fiberOp)) 0 1px, transparent 1px var(--fiberPitch)),
+    repeating-linear-gradient(0deg,  rgba(36,31,25,calc(var(--fiberOp)*.7)) 0 1px, transparent 1px calc(var(--fiberPitch) + 1px)),
+    repeating-linear-gradient(90deg, rgba(110,97,81,var(--foldOp)) 0 2px, transparent 2px var(--foldEvery));
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%, transparent 54%, rgba(36,31,25,var(--vig)) 100%);
+}
+main{position:relative; z-index:1; max-width:1240px; margin:0 auto; padding:38px 20px 100px;}
+
+.sheet{
+  position:relative; padding:22px 26px 28px; margin:0 0 30px;
+  background:linear-gradient(180deg,var(--hanjiLit),var(--hanji) 42%,var(--hanjiDim));
+  border:1px solid var(--fiber); border-radius:1px;
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 -1px 0 rgba(36,31,25,.09) inset, 0 2px 9px rgba(36,31,25,.10);
+}
+.sheet::after{content:""; position:absolute; inset:5px; pointer-events:none; border:var(--ruleW) solid rgba(185,166,127,.5);}
+
+h1{font-family:"KirangHaerang","GowunBatang",serif; font-size:var(--sTitle); margin:0 0 2px; line-height:1.08;}
+h1 .sub{display:block; font-family:"GowunBatang",serif; font-size:calc(var(--sHead)*.66); color:var(--inkFaded);}
+h2{font-family:"KirangHaerang","GowunBatang",serif; font-size:var(--sHead); margin:0 0 6px;}
+h2 .no{color:var(--verm); margin-right:10px;}
+h3{font-size:var(--sBody); margin:16px 0 4px; color:var(--inkFaded); font-weight:400;}
+p{margin:6px 0 12px; max-width:76ch;}
+.hint{font-size:var(--sHint); color:var(--inkFaded);}
+.lede{font-size:calc(var(--sBody) + 2px);}
+em{font-style:normal; border-bottom:2px solid var(--verm);}
+code{font-family:"GowunBatang",monospace; font-size:var(--sNum); color:var(--gold);}
+.verm{color:var(--verm);}
+
+table{border-collapse:collapse; width:100%; font-size:var(--sNum); margin:8px 0 6px;}
+th,td{text-align:left; padding:4px 8px; border-bottom:1px solid rgba(185,166,127,.45);}
+th{font-family:"KirangHaerang","GowunBatang",serif; font-size:calc(var(--sNum) + 4px); color:var(--inkFaded);}
+td.n,th.n{text-align:right; font-variant-numeric:tabular-nums;}
+tr.hi td{background:rgba(168,40,31,.08);}
+tr.dead td{color:var(--inkAncient);}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px 26px;}
+.tag{display:inline-block; font-size:var(--sHint); padding:0 7px; border:1px solid currentColor; border-radius:2px; margin-right:4px;}
+.tag.v{color:var(--verm);} .tag.g{color:var(--gold);} .tag.i{color:var(--inkFaded);}
+
+/* ── 족보 ──────────────────────────────────────────────────────────────── */
+.ledgerWrap{position:relative; overflow-x:auto; padding:6px 0 10px;}
+.ledger{display:flex; flex-direction:row-reverse; align-items:stretch; width:max-content; position:relative;}
+.gen{
+  position:relative; width:var(--colW); height:560px;
+  border-left:var(--ruleW) solid var(--fiber);
+  padding:10px 8px 58px;
+  writing-mode:vertical-rl; text-orientation:upright;
+  letter-spacing:2px;
+}
+.gen:first-child{border-right:var(--ruleW) solid var(--fiber);}
+.gen.prior{opacity:var(--priorOp);}
+.gen.now{background:rgba(240,232,212,.55);}
+.gen .band{
+  min-height:var(--headBand); border-bottom:var(--ruleW) solid var(--fiber);
+  padding-left:6px; margin-bottom:8px;
+}
+.gen .gno{font-size:var(--sGen); color:var(--inkFaded); letter-spacing:1px;}
+.gen .heir{font-family:"KirangHaerang","GowunBatang",serif; font-size:var(--sName); color:var(--ink); letter-spacing:3px;}
+.gen.prior .heir{color:var(--inkAncient);}
+.gen .rite{font-size:var(--sBody); color:var(--inkFaded); letter-spacing:1px; margin-bottom:6px;}
+.gen .nums{font-size:var(--sHint); color:var(--inkAncient); letter-spacing:0;}
+.gen .lean{color:var(--gold);}
+.names{margin-top:8px;}
+.nm{position:relative; display:inline-block; font-family:"KirangHaerang","GowunBatang",serif;
+    font-size:var(--sName); letter-spacing:3px; padding-right:8px; margin-left:4px;}
+/* 세로쓰기이므로 "이름 위에 그은 줄"은 화면에서 글자 오른쪽의 세로선이다 */
+.nm::after{
+  content:""; position:absolute; top:var(--strikeInset); bottom:var(--strikeInset); right:0;
+  width:var(--strikeW); background:var(--verm); border-radius:1px;
+}
+.nm .age{font-size:var(--sHint); color:var(--inkAncient); letter-spacing:0;}
+.seal{position:absolute; bottom:8px; left:50%; transform:translateX(-50%) rotate(-4deg);
+      width:var(--sealSize); height:var(--sealSize);}
+.bills{margin-top:10px;}
+.bills{margin-top:10px; display:flex; flex-wrap:wrap; gap:2px;}
+.bill{font-size:calc(var(--sHint) + 3px); color:var(--verm); letter-spacing:0; cursor:help;}
+.bill.sched{color:var(--gold);}
+.aborted{color:var(--verm); font-size:var(--sHint); letter-spacing:0;}
+.arcs{position:absolute; inset:0; pointer-events:none;}
+.pick{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px;}
+.pick button{
+  font-family:"GowunBatang",serif; font-size:var(--sNum); color:var(--ink);
+  background:rgba(240,232,212,.7); border:1px solid var(--fiber); border-radius:2px;
+  padding:5px 12px; cursor:pointer;
+}
+.pick button[aria-pressed="true"]{background:var(--verm); color:var(--hanjiLit); border-color:var(--seal);}
+
+/* ── 막대 ──────────────────────────────────────────────────────────────── */
+.bar{height:11px; background:rgba(185,166,127,.35); position:relative; border-radius:1px; overflow:hidden;}
+.bar > i{position:absolute; inset:0 auto 0 0; display:block;}
+.bar > i.now{background:var(--inkFaded);}
+.bar > i.later{background:var(--verm);}
+.split{display:flex; height:11px; border-radius:1px; overflow:hidden;}
+.split > i{display:block;}
+.split > i.now{background:var(--inkFaded);} .split > i.later{background:var(--verm);}
+.kv{display:grid; grid-template-columns:auto 1fr; gap:2px 12px; font-size:var(--sNum);}
+.kv b{font-weight:400; color:var(--inkFaded);}
+.err{color:var(--verm); font-family:"KirangHaerang","GowunBatang",serif; font-size:var(--sHead);}
+svg{display:block; max-width:100%; overflow:visible;}
+</style>
+</head>
+<body>
+<main id="app">
+  <p class="err" id="boot">장부를 펴는 중… (fetch 가 막혔다면 <code>python -m http.server 8099</code> 로 열어야 한다)</p>
+</main>
+<script>
+"use strict";
+
+/* ═══ 1. data/ 를 읽는다. 여기서 읽은 값만 화면에 쓴다 ═══════════════════ */
+const FILES = ["kin", "curse", "rites", "balance"];
+async function load() {
+  const out = {};
+  await Promise.all(FILES.map(async n => { out[n] = await (await fetch("../data/" + n + ".json")).json(); }));
+  out.palette = await (await fetch("palette.json")).json();
+  return out;
+}
+
+/* ═══ 2. palette.json 을 CSS 변수로. 색을 코드에 적지 않는다 ═════════════ */
+function applyPalette(p) {
+  const r = document.documentElement.style, c = p.color, t = p.type, l = p.ledger, pa = p.paper;
+  const set = (k, v) => r.setProperty(k, v);
+  set("--hanji", c.hanji); set("--hanjiLit", c.hanjiLit); set("--hanjiDim", c.hanjiDim);
+  set("--hanjiFold", c.hanjiFold); set("--fiber", c.fiber);
+  set("--ink", c.ink); set("--inkFaded", c.inkFaded); set("--inkAncient", c.inkAncient);
+  set("--verm", c.vermilion); set("--vermSoft", c.vermilionSoft); set("--seal", c.sealFill); set("--gold", c.gold);
+  set("--sTitle", t.sizeTitle + "px"); set("--sHead", t.sizeHeading + "px");
+  set("--sBody", t.sizeBody + "px"); set("--sHint", t.sizeHint + "px");
+  set("--sNum", t.sizeNumeral + "px"); set("--sName", t.sizeName + "px"); set("--sGen", t.sizeGeneration + "px");
+  set("--colW", l.columnWidthPx + "px"); set("--ruleW", l.ruleWidthPx + "px");
+  set("--headBand", l.headerBandPx + "px"); set("--strikeW", l.strikeWidthPx + "px");
+  set("--strikeInset", l.strikeInsetPx + "px"); set("--sealSize", l.sealSizePx + "px");
+  set("--priorOp", l.priorColumnOpacity / 100);
+  set("--fiberPitch", pa.fiberPitchPx + "px"); set("--fiberOp", pa.fiberOpacity / 100);
+  set("--foldEvery", pa.foldEveryPx + "px"); set("--foldOp", pa.foldOpacity / 100);
+  set("--vig", p.grade.vignette);
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]));
+
+/* ═══ 3. .NET System.Random(seed) — C# 과 같은 수를 뽑는다 ═══════════════
+   레거시 Knuth 감산 생성기. .NET 8 의 씨드 생성자도 이것을 쓴다.
+   이것을 옮기지 않으면 목업의 흉년·부름 순서가 테스트와 갈라지고, 그러면 화면이 거짓이 된다. */
+function DotNetRandom(seed) {
+  const MBIG = 2147483647, MSEED = 161803398;
+  const sa = new Int32Array(56);
+  let inext = 0, inextp = 21;
+  const sub = seed === -2147483648 ? 2147483647 : Math.abs(seed);
+  let mj = MSEED - sub, mk = 1;
+  sa[55] = mj;
+  for (let i = 1; i < 55; i++) {
+    const ii = (21 * i) % 55;
+    sa[ii] = mk; mk = mj - mk;
+    if (mk < 0) mk += MBIG;
+    mj = sa[ii];
+  }
+  for (let k = 1; k < 5; k++)
+    for (let i = 1; i < 56; i++) {
+      sa[i] -= sa[1 + ((i + 30) % 55)];
+      if (sa[i] < 0) sa[i] += MBIG;
+    }
+  function internalSample() {
+    let li = inext, lip = inextp;
+    if (++li >= 56) li = 1;
+    if (++lip >= 56) lip = 1;
+    let v = sa[li] - sa[lip];
+    if (v === MBIG) v--;
+    if (v < 0) v += MBIG;
+    sa[li] = v; inext = li; inextp = lip;
+    return v;
+  }
+  const sample = () => internalSample() * (1.0 / MBIG);
+  return { next(a, b) { if (b === undefined) { b = a; a = 0; } return Math.trunc(sample() * (b - a)) + a; } };
+}
+
+/* ═══ 4. 규칙. src/CurseSim.cs 를 그대로 옮긴다 ═════════════════════════ */
+const ENDING = {
+  running: "진행 중", villageRuin: "마을 몰락", houseExtinct: "가문 단절", uprising: "마을 봉기",
+  curseUnbound: "저주 창궐", curseLifted: "해제 완수", stalled: "장부가 멈췄다", passedOn: "대물림"
+};
+function scale(amount, percent, carry) {   // 나머지 누적. 부동소수 금지
+  const t = amount * percent + carry.v;
+  const res = Math.trunc(t / 100);
+  carry.v = t - res * 100;
+  return res;
+}
+const MAG = b => Math.abs(b.wrath || 0) + Math.abs(b.binding || 0) + Math.abs(b.prosperity || 0)
+  + Math.abs(b.houseVitality || 0) + Math.abs(b.resentment || 0) + Math.abs(b.demandBonus || 0)
+  + Math.abs(b.demandOnce || 0) + Math.abs(b.coffers || 0);
+
+class Sim {
+  constructor(D, seed, generations, deferralOn = true) {
+    this.D = D; this.seed = seed; this.G = generations; this.deferralOn = deferralOn;
+    this.rite = {}; for (const r of D.rites.rites) this.rite[r.id] = r;
+    this.heirOf = {}; for (const h of D.kin.heirs) this.heirOf[h.generationIndex] = h;
+    this.villager = {}; for (const v of D.kin.villagers) this.villager[v.id] = v;
+
+    const rng = DotNetRandom(seed), span = D.curse.demand.leanYearSpanPercent;
+    this.lean = new Array(generations + 2).fill(0);
+    for (let g = 1; g <= generations + 1; g++) this.lean[g] = rng.next(-span, span + 1);
+    const sh = src => { const a = src.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rng.next(i + 1); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+    this.elderOrder = sh(D.kin.villagers.filter(v => v.tier === "elder"));
+    this.youngOrder = sh(D.kin.villagers.filter(v => v.tier === "young"));
+  }
+  newState() {
+    const st = this.D.curse.start;
+    const s = {
+      generation: 0, prosperity: st.prosperity, binding: st.binding, wrath: st.wrath,
+      houseVitality: st.houseVitality, resentment: st.resentment,
+      releaseProgress: st.releaseProgress, coffers: st.coffers,
+      demandBonus: 0, demandOnce: 0, ending: "running",
+      pc: { v: 0 }, bc: { v: 0 }, dc: { v: 0 },
+      victims: [], bills: [], lines: [], taken: {}
+    };
+    for (const p of this.D.curse.inheritedPending)
+      s.bills.push(Object.assign({}, p, { at: this.deferralOn ? p.atGeneration : 1, from: -1, source: p.from }));
+    return s;
+  }
+  nextVictim(s, tier) {
+    const order = tier === "elder" ? this.elderOrder : this.youngOrder;
+    for (const v of order) if (!s.taken[v.id]) return v;
+    return null;
+  }
+  available(s, r) {
+    if (r.requiresCoffers > 0 && s.coffers < r.requiresCoffers) return false;
+    if (r.requiresVictimTier && !this.nextVictim(s, r.requiresVictimTier)) return false;
+    return true;
+  }
+  apply(s, b) {
+    s.wrath += b.wrath || 0; s.binding += b.binding || 0; s.prosperity += b.prosperity || 0;
+    s.houseVitality += b.houseVitality || 0; s.resentment += b.resentment || 0;
+    s.demandBonus += b.demandBonus || 0; s.demandOnce += b.demandOnce || 0; s.coffers += b.coffers || 0;
+  }
+  clamp(s) {
+    const l = this.D.balance.limits;
+    s.prosperity = Math.min(s.prosperity, l.prosperityMax);
+    s.binding = Math.min(s.binding, l.bindingMax);
+    s.wrath = Math.max(0, Math.min(s.wrath, l.wrathMax));
+    s.houseVitality = Math.min(s.houseVitality, l.houseVitalityMax);
+    s.resentment = Math.max(0, Math.min(s.resentment, l.resentmentMax));
+    s.coffers = Math.max(0, Math.min(s.coffers, l.coffersMax));
+    s.releaseProgress = Math.max(0, s.releaseProgress);
+  }
+  checkEnding(s) {
+    if (s.ending !== "running") return true;
+    const e = this.D.balance.ending;
+    if (s.releaseProgress >= e.releaseComplete) { s.prosperity -= e.releaseFamineDrop; s.ending = "curseLifted"; return true; }
+    if (s.prosperity <= 0) { s.ending = "villageRuin"; return true; }
+    if (s.houseVitality <= 0) { s.ending = "houseExtinct"; return true; }
+    if (s.resentment >= e.uprisingResentment) { s.ending = "uprising"; return true; }
+    if (s.binding <= 0) { s.ending = "curseUnbound"; return true; }
+    return false;
+  }
+  demandOf(s, g) {
+    const c = this.D.curse.demand;
+    let raw = c.base + (g - 1) * c.growthPerGeneration + s.demandBonus + s.demandOnce;
+    s.demandOnce = 0;
+    raw += scale(s.wrath, c.wrathPercent, s.dc);
+    raw += scale(raw, this.lean[g], s.dc);
+    return raw < 0 ? 0 : raw;
+  }
+  step(s, riteId) {
+    if (s.ending !== "running") return false;
+    const r = this.rite[riteId];
+    if (!this.available(s, r)) return false;
+    const g = ++s.generation;
+    const heir = this.heirOf[g];
+    const line = { generation: g, riteId: r.id, riteName: r.name, heirId: heir.id, heirName: heir.name,
+                   demandDue: 0, paid: 0, unpaid: 0, postponed: 0, lean: this.lean[g] > 0,
+                   aborted: false, victimIds: [], arrived: [], scheduled: [] };
+    // (1) 앞 세대의 청구서
+    for (let i = 0; i < s.bills.length; i++)
+      if (s.bills[i].at <= g) { const b = s.bills.splice(i--, 1)[0]; this.apply(s, b); line.arrived.push(b); }
+    this.clamp(s);
+    if (this.checkEnding(s)) { line.aborted = true; this.close(s, line); return true; }
+    // (2) 요구
+    const demand = this.demandOf(s, g);
+    line.demandDue = demand;
+    // (3) 제례
+    const paid = scale(demand, r.payPercent, s.dc);
+    line.paid = paid;
+    this.apply(s, Object.assign({}, r.immediate));
+    s.releaseProgress += (r.releaseProgress || 0);
+    if (r.requiresVictimTier) {
+      const v = this.nextVictim(s, r.requiresVictimTier);
+      s.taken[v.id] = true;
+      s.victims.push({ id: v.id, name: v.name, age: v.age, tier: v.tier, household: v.household,
+                       note: v.note, generation: g, heirId: heir.id, riteId: r.id, line: s.victims.length + 1 });
+      line.victimIds.push(v.id);
+    }
+    // (6) 나머지는 청구서로 미래에
+    for (const p of r.deferred) {
+      const at = this.deferralOn ? g + p.delayGenerations : g;
+      const b = Object.assign({}, p, { at, from: g, source: r.id });
+      if (this.deferralOn) { s.bills.push(b); line.scheduled.push(b); }
+      else { this.apply(s, b); line.arrived.push(b); }
+    }
+    // (4) 미납
+    const unpaid = demand - paid;
+    if (unpaid > 0) {
+      line.unpaid = unpaid;
+      if (r.deferUnpaidGenerations >= 0) {
+        const at = this.deferralOn ? g + r.deferUnpaidGenerations : g + 1;
+        const amount = scale(unpaid, this.D.balance.flow.postponeInterestPercent, s.dc);
+        const b = { at, from: g, source: r.id, demandOnce: amount, note: "미룬 공물이 불어서 이 대의 요구에 얹힌다" };
+        s.bills.push(b); line.scheduled.push(b); line.postponed = amount;
+      } else {
+        s.wrath += scale(unpaid, this.D.balance.flow.wrathPerUnpaidPercent, s.bc);
+        s.binding -= scale(unpaid, this.D.balance.flow.bindingLossPerUnpaidPercent, s.bc);
+      }
+    } else if (unpaid < 0) {
+      s.binding += scale(-unpaid, this.D.balance.flow.surplusBindingPercent, s.bc);
+    }
+    // (5) 풍요와 재앙
+    const f = this.D.balance.flow;
+    const gain = scale(s.binding, f.blessingPerBindingPercent, s.pc);
+    const blight = scale(s.wrath, f.blightPerWrathPercent, s.pc);
+    s.prosperity += gain - blight - f.prosperityDecayPerGeneration;
+    s.resentment -= f.resentmentEasePerGeneration;
+    this.clamp(s);
+    this.checkEnding(s);
+    if (s.ending === "running" && g >= this.G) {
+      for (const b of s.bills) { this.apply(s, b); line.arrived.push(b); }
+      s.bills = [];
+      // 미뤄 둔 공물은 사라지지 않는다 — 후손이 떠안고 구덩이가 그 대에 노한다.
+      if (s.demandOnce > 0) {
+        line.unpaid += s.demandOnce;
+        s.wrath += scale(s.demandOnce, this.D.balance.flow.wrathPerUnpaidPercent, s.bc);
+        s.binding -= scale(s.demandOnce, this.D.balance.flow.bindingLossPerUnpaidPercent, s.bc);
+        s.demandOnce = 0;
+      }
+      this.clamp(s);
+      if (!this.checkEnding(s)) s.ending = "passedOn";
+    }
+    this.close(s, line);
+    return true;
+  }
+  close(s, line) {
+    Object.assign(line, { prosperity: s.prosperity, binding: s.binding, wrath: s.wrath,
+      houseVitality: s.houseVitality, resentment: s.resentment,
+      releaseProgress: s.releaseProgress, coffers: s.coffers });
+    s.lines.push(line);
+  }
+  settle(s, policy) {
+    if (s.ending === "running") s.ending = s.generation >= this.G ? "passedOn" : "stalled";
+    const e = this.D.balance.ending;
+    const dead = ["villageRuin", "uprising", "curseUnbound", "houseExtinct", "stalled"];
+    const alive = s.prosperity >= e.villageAliveFloor && dead.indexOf(s.ending) < 0;
+    const w = this.D.balance.score;
+    const run = {
+      ending: s.ending, endingName: ENDING[s.ending], generations: s.generation, alive,
+      prosperity: s.prosperity, binding: s.binding, wrath: s.wrath, houseVitality: s.houseVitality,
+      resentment: s.resentment, releaseProgress: s.releaseProgress, coffers: s.coffers,
+      victims: s.victims, lines: s.lines, billsLeft: s.bills, policy, seed: this.seed
+    };
+    run.score = run.generations * w.perSurvivedGeneration + run.prosperity * w.perProsperity
+      + run.houseVitality * w.perHouseVitality + run.victims.length * w.perVictim
+      + run.resentment * w.perResentment + (alive ? w.villageAliveBonus : 0);
+    run.distinct = new Set(policy).size;
+    return run;
+  }
+  run(policy) {
+    const s = this.newState(), taken = [];
+    for (const id of policy) {
+      if (s.ending !== "running") break;
+      if (!this.step(s, id)) return null;
+      taken.push(id);
+    }
+    return this.settle(s, taken);
+  }
+  clone(s) {
+    return {
+      generation: s.generation, prosperity: s.prosperity, binding: s.binding, wrath: s.wrath,
+      houseVitality: s.houseVitality, resentment: s.resentment, releaseProgress: s.releaseProgress,
+      coffers: s.coffers, demandBonus: s.demandBonus, demandOnce: s.demandOnce, ending: s.ending,
+      pc: { v: s.pc.v }, bc: { v: s.bc.v }, dc: { v: s.dc.v },
+      victims: s.victims.slice(), bills: s.bills.slice(), lines: s.lines.slice(),
+      taken: Object.assign({}, s.taken)
+    };
+  }
+  /* 전수 훑기. src/PolicySweep.cs 와 같은 규칙 — 끝난 회차는 더 내려가지 않는다. */
+  sweep(allowed) {
+    const rites = this.D.rites.rites.filter(r => !allowed || allowed.indexOf(r.id) >= 0);
+    const res = { nodes: 0, settled: 0, clean: [], aliveWithVictims: [], endings: {},
+                  bestByVictims: {}, best: null, bloodlessBest: null, lifted: 0, deepest: 0,
+                  allowed: rites.map(r => r.id), riteUse: {} };
+    for (const r of rites) res.riteUse[r.id] = 0;
+    const path = [];
+    const note = (run) => {
+      res.settled++;
+      res.endings[run.ending] = (res.endings[run.ending] || 0) + 1;
+      res.deepest = Math.max(res.deepest, run.generations);
+      if (run.ending === "curseLifted") res.lifted++;
+      if (!res.best || run.score > res.best.score) res.best = run;
+      const vc = run.victims.length;
+      if (!res.bestByVictims[vc] || run.score > res.bestByVictims[vc].score) res.bestByVictims[vc] = run;
+      if (vc === 0) {
+        if (!res.bloodlessBest || run.score > res.bloodlessBest.score) res.bloodlessBest = run;
+        if (run.alive) res.clean.push(run);
+      } else if (run.alive) res.aliveWithVictims.push(run);
+      if (run.alive) for (const id of run.policy) res.riteUse[id]++;
+    };
+    const descend = (s, depth) => {
+      res.nodes++;
+      if (s.ending !== "running" || depth >= this.G) { note(this.settle(this.clone(s), path.slice(0, depth))); return; }
+      let any = false;
+      for (const r of rites) {
+        if (!this.available(s, r)) continue;
+        any = true;
+        const next = this.clone(s);
+        path[depth] = r.id;
+        this.step(next, r.id);
+        descend(next, depth + 1);
+      }
+      if (!any) note(this.settle(this.clone(s), path.slice(0, depth)));
+    };
+    descend(this.newState(), 0);
+    return res;
+  }
+}
+
+/* 두 극단 */
+function keepPolicy(sim) {
+  const s = sim.newState(), taken = [];
+  for (let g = 0; g < sim.G && s.ending === "running"; g++) {
+    const pick = sim.available(s, sim.rite.offer_young) ? "offer_young"
+      : sim.available(s, sim.rite.offer_elder) ? "offer_elder" : null;
+    if (!pick || !sim.step(s, pick)) break;
+    taken.push(pick);
+  }
+  return sim.settle(s, taken);
+}
+function releasePolicy(sim) {
+  const s = sim.newState(), taken = [];
+  for (let g = 0; g < sim.G && s.ending === "running"; g++) {
+    const pick = sim.available(s, sim.rite.rite_release) ? "rite_release" : "close_ledger";
+    if (!sim.step(s, pick)) break;
+    taken.push(pick);
+  }
+  return sim.settle(s, taken);
+}
+
+/* ═══ 5. 주묵 전각 인장. 이미지를 받지 않고 칸에 획을 찍어 만든다 ═══════ */
+function sealSvg(text, cells, size) {
+  // 글자를 새기지 않는다 — 전각은 획의 배치다. 같은 문자열이면 같은 인장이 나오게 해시로 찍는다.
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  const cell = (size - 6) / cells;
+  let marks = "";
+  for (let y = 0; y < cells; y++)
+    for (let x = 0; x < cells; x++) {
+      h = (h * 1103515245 + 12345) >>> 0;
+      const bit = (h >>> 16) & 3;
+      if (bit === 0) continue;
+      const px = 3 + x * cell, py = 3 + y * cell;
+      if (bit === 1) marks += `<rect x="${(px + cell * .18).toFixed(1)}" y="${(py + cell * .12).toFixed(1)}" width="${(cell * .2).toFixed(1)}" height="${(cell * .76).toFixed(1)}"/>`;
+      else if (bit === 2) marks += `<rect x="${(px + cell * .12).toFixed(1)}" y="${(py + cell * .18).toFixed(1)}" width="${(cell * .76).toFixed(1)}" height="${(cell * .2).toFixed(1)}"/>`;
+      else marks += `<rect x="${(px + cell * .2).toFixed(1)}" y="${(py + cell * .2).toFixed(1)}" width="${(cell * .6).toFixed(1)}" height="${(cell * .6).toFixed(1)}"/>`;
+    }
+  return `<svg class="seal" viewBox="0 0 ${size} ${size}" role="img" aria-label="주묵 인장">
+    <rect x="1.5" y="1.5" width="${size - 3}" height="${size - 3}" fill="none" stroke="var(--seal)" stroke-width="3"/>
+    <g fill="var(--seal)">${marks}</g></svg>`;
+}
+
+/* ═══ 6. 족보를 그린다 — 이 절이 이 PoC의 핵이다 ════════════════════════ */
+function ledgerHtml(D, sim, run) {
+  const prior = D.curse.priorLedger.filter(l => l.riteId);
+  const riteName = id => (sim.rite[id] || {}).name || id;
+  const cols = [];
+
+  // 앞선 네 대. **지우지 않는다** — 대대로 이어진 장부라 위쪽(세로쓰기라 오른쪽)에 그대로 남는다.
+  for (const l of prior) {
+    const h = D.kin.heirs.find(x => x.id === l.heirId) || { name: "?" };
+    const names = (l.victimNames || []).map(n => `<span class="nm">${esc(n)}</span>`).join("");
+    cols.push(`<div class="gen prior">
+      <div class="band"><span class="gno">${l.generation}대</span><br><span class="heir">${esc(h.name)}</span></div>
+      <div class="rite">${esc(riteName(l.riteId))}</div>
+      <div class="nums">이미 적혀 있다</div>
+      <div class="names">${names}</div>
+      ${sealSvg(l.heirId + l.riteId, 4, 46)}
+    </div>`);
+  }
+
+  // 이번 계보. 청구서가 어느 대에서 왔는지 선으로 이어야 하므로 좌표를 같이 계산한다.
+  const arcs = [];
+  const ledgerNotes = [];
+  const colW = D.palette ? 132 : 132;
+  run.lines.forEach((l, i) => {
+    const names = l.victimIds.map(id => {
+      const v = sim.villager[id];
+      return `<span class="nm">${esc(v.name)}<span class="age"> ${v.age}</span></span>`;
+    }).join("");
+    // 청구서는 칸 안에서 **점으로만** 찍는다. 세로쓰기 칸에 문장을 넣으면 칸이 한없이 길어지고
+    // 붉은 줄이 묻힌다 — 실제로 브라우저에서 그렇게 되어 문장을 아래 범례로 옮겼다.
+    const arrived = l.arrived.map(b => {
+      if (b.from >= 0) arcs.push({ from: b.from, to: l.generation });
+      const who = b.from < 0 ? (D.kin.heirs.find(h => h.id === b.source) || { name: "앞 세대" }).name + " 대"
+        : b.from + "대";
+      ledgerNotes.push({ at: l.generation, kind: "도착", who, note: b.note || "" });
+      return `<span class="bill" title="${esc(who)}의 값 — ${esc(b.note || "")}">◆</span>`;
+    }).join("");
+    const sched = l.scheduled.map(b => {
+      ledgerNotes.push({ at: l.generation, kind: "예약 → " + b.at + "대", who: "", note: b.note || "" });
+      return `<span class="bill sched" title="${b.at}대로 넘어간다 · ${esc(b.note || "")}">◇</span>`;
+    }).join("");
+    cols.push(`<div class="gen${i === run.lines.length - 1 ? " now" : ""}">
+      <div class="band"><span class="gno">${l.generation}대</span><br><span class="heir">${esc(l.heirName)}</span></div>
+      ${l.aborted
+        ? `<div class="aborted">청구서가 도착한 순간 끝났다 — 이 대는 제례를 올리지 못했다</div>`
+        : `<div class="rite">${esc(l.riteName)}</div>
+           <div class="nums">공물 ${l.paid}/${l.demandDue}${l.unpaid ? ` <span class="verm">미납 ${l.unpaid}</span>` : ""}${l.postponed ? ` <span class="lean">미룸 ${l.postponed}</span>` : ""}${l.lean ? ` <span class="lean">흉년</span>` : ""}</div>`}
+      <div class="names">${names}</div>
+      <div class="bills">${arrived}${sched}</div>
+      ${l.aborted ? "" : sealSvg(l.heirId + l.riteId + l.generation, 4, 46)}
+    </div>`);
+  });
+
+  // 청구서가 지나온 길. 앞 세대 칸에서 이번 칸으로 흐르는 선 — "결과가 늦게 온다"의 그림이다.
+  const n = cols.length, priorN = prior.length;
+  const x = gen => (n - 1 - (priorN + gen - 1)) * colW + colW / 2;   // row-reverse: 오른쪽이 앞 세대
+  const H = 560;
+  const arcSvg = arcs.map(a => {
+    const x1 = x(a.from), x2 = x(a.to), y = 26 + (a.to - a.from) * 13;
+    return `<path d="M${x1} ${H - 34} C ${x1} ${H - 34 - y}, ${x2} ${H - 34 - y}, ${x2} ${H - 34}"
+            fill="none" stroke="var(--verm)" stroke-width="1" opacity=".45"/>
+            <circle cx="${x2}" cy="${H - 34}" r="2.4" fill="var(--verm)"/>`;
+  }).join("");
+
+  const noteRows = ledgerNotes.map(x =>
+    `<tr><td class="n">${x.at}대</td><td>${esc(x.kind)}</td><td>${esc(x.who)}</td><td>${esc(x.note)}</td></tr>`
+  ).join("");
+
+  return `<div class="ledgerWrap"><div class="ledger" style="min-height:${H}px">
+      ${cols.join("")}
+      <svg class="arcs" viewBox="0 0 ${n * colW} ${H}" preserveAspectRatio="none">${arcSvg}</svg>
+    </div></div>
+    <h3>장부 뒤에 붙은 쪽지 — <span class="verm">◆</span> 도착한 청구서 ·
+        <span style="color:var(--gold)">◇</span> 미래로 넘긴 청구서</h3>
+    <table><thead><tr><th class="n">대</th><th>무엇</th><th>어디서</th><th>사연</th></tr></thead>
+      <tbody>${noteRows}</tbody></table>`;
+}
+
+/* ═══ 7. 화면 ═══════════════════════════════════════════════════════════ */
+function oneLine(r) {
+  return `${r.endingName} · ${r.generations}대 · 희생자 ${r.victims.length} · 번영 ${r.prosperity}`
+    + ` · 속박 ${r.binding} · 노여움 ${r.wrath} · 기력 ${r.houseVitality} · 원한 ${r.resentment}`
+    + ` · 해제 ${r.releaseProgress} · 마을 ${r.alive ? "살아있음" : "죽었음"}`;
+}
+
+function render(D) {
+  applyPalette(D.palette);
+  const G = D.curse.generations, seed = D.curse.seed;
+  const sim = new Sim(D, seed, G);
+  const t0 = performance.now();
+  const full = sim.sweep(null);
+  const bloodlessIds = D.rites.rites.filter(r => !r.requiresVictimTier).map(r => r.id);
+  const bloodless = sim.sweep(bloodlessIds);
+  const keep = keepPolicy(new Sim(D, seed, G));
+  const rel = releasePolicy(new Sim(D, seed, G));
+  const sweepMs = Math.round(performance.now() - t0);
+
+  // 가장 싼 값: 살아남는 정책 중 희생자가 가장 적은 것
+  let cheapest = null;
+  for (const r of full.aliveWithVictims)
+    if (!cheapest || r.victims.length < cheapest.victims.length
+      || (r.victims.length === cheapest.victims.length && r.score > cheapest.score)) cheapest = r;
+
+  const views = {
+    "가장 싼 값": cheapest, "전수 최선": full.best,
+    "계속 유지": keep, "즉시 해제": rel, "무혈 최선": bloodless.bloodlessBest
+  };
+
+  const p = D.palette;
+  const bloodlessDist = Object.keys(bloodless.endings).sort()
+    .map(k => `${ENDING[k]} ${bloodless.endings[k]}`).join(" · ");
+
+  const victimRows = D.kin.villagers.map(v => {
+    const hit = cheapest && cheapest.victims.find(x => x.id === v.id);
+    return `<tr class="${hit ? "hi" : ""}"><td>${hit ? `<span class="nm" style="font-size:var(--sNum)">${esc(v.name)}</span>` : esc(v.name)}</td>
+      <td class="n">${v.age}</td><td>${v.tier === "elder" ? "늙은 이" : "젊은 이"}</td>
+      <td>${esc(v.household)}</td><td>${esc(v.note)}</td>
+      <td>${hit ? `<span class="verm">${hit.generation}대에 붉은 줄</span>` : ""}</td></tr>`;
+  }).join("");
+
+  const riteRows = D.rites.rites.map(r => {
+    const now = MAG(r.immediate);
+    const later = r.deferred.reduce((a, b) => a + MAG(b), 0);
+    const pct = now + later ? Math.round(later * 100 / (now + later)) : 0;
+    const maxDelay = Math.max(0, ...r.deferred.map(d => d.delayGenerations));
+    return `<tr><td>${esc(r.name)}</td><td class="n">${r.payPercent}%</td>
+      <td class="n">${r.requiresVictimTier ? (r.requiresVictimTier === "elder" ? "늙은 이 1" : "젊은 이 1") : "—"}</td>
+      <td style="width:170px"><div class="split"><i class="now" style="width:${100 - pct}%"></i><i class="later" style="width:${pct}%"></i></div></td>
+      <td class="n">${pct}%</td><td class="n">${maxDelay}대</td><td>${esc(r.note)}</td></tr>`;
+  }).join("");
+
+  const vcRows = Object.keys(full.bestByVictims).map(Number).sort((a, b) => a - b).map(vc => {
+    const r = full.bestByVictims[vc];
+    return `<tr class="${r.alive ? "hi" : "dead"}"><td class="n">${vc}</td><td>${r.endingName}</td>
+      <td class="n">${r.generations}</td><td class="n">${r.prosperity}</td><td class="n">${r.houseVitality}</td>
+      <td class="n">${r.resentment}</td><td>${r.alive ? "<b class=\"verm\">마을이 살아 있다</b>" : "죽었다"}</td></tr>`;
+  }).join("");
+
+  document.getElementById("app").innerHTML = `
+  <section class="sheet">
+    <h1>${esc(D.kin.houseName)}<span class="sub">${esc(D.curse.name)} — ${esc(p.oneLine)}</span></h1>
+    <p class="lede">몇백 년 된 저주를 <em>운영하는</em> 가문의 후계자. 저주를 풀면 마을이 몰락하고,
+    유지하면 누군가 계속 희생된다. 재고와 비용과 희생자 명단이 있는 경영 게임인데
+    <em>도덕이 자원이다</em>.</p>
+    <p class="hint">이 화면의 수치는 전부 <code>data/${FILES.join(".json · data/")}.json</code> 을 읽어
+    <b>여기서 다시 계산한 것</b>이다. 난수는 C# 테스트와 같은 생성기를 옮겨 왔으므로 흉년표와 부름 순서가
+    글자 하나까지 같다. §02 의 전수 훑기는 이 화면에서 ${sweepMs}ms 만에 돌았다
+    (마디 ${full.nodes.toLocaleString()} · 결말 ${full.settled.toLocaleString()}).</p>
+    <p class="hint">연출: ${esc(p.reference)}</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">01</span>족보 — 앞 세대의 결정이 위쪽에 그대로 남아 있다</h2>
+    <p>오른쪽이 앞 세대다. 흐린 넉 칸은 <b>이미 적혀 있던 대</b>이고 지우지 않는다.
+    이름 위의 <span class="verm">붉은 줄</span>이 바친 사람이다.
+    칸 아래를 지나는 붉은 선은 <em>그 대의 결정이 몇 대 뒤에 청구서로 도착했는지</em>를 잇는다 —
+    <b>이 선이 이 게임의 전부다.</b> 결정의 값은 결정한 대에 오지 않는다.</p>
+    <div class="pick" id="pick"></div>
+    <div id="ledger"></div>
+    <p class="hint" id="ledgerNote"></p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">02</span>깨끗한 출구가 없다 — 이 화면에서 전수로 확인했다</h2>
+    <p>마을도 살고 <b>아무도 희생되지 않는</b> 결말에 닿는 정책이 하나라도 있으면 이것은 딜레마가 아니라
+    그냥 풀 수 있는 문제다. 없음의 주장이라 표본으로는 못 보인다 — 그래서 대마다 고를 수 있는 제례 전부로
+    갈라지며 내려간다.</p>
+    <div class="grid2">
+      <div>
+        <h3>제례 여섯 전부 (${full.allowed.length}가지 수)</h3>
+        <div class="kv">
+          <b>내려간 마디</b><span>${full.nodes.toLocaleString()}</span>
+          <b>정산한 결말</b><span>${full.settled.toLocaleString()}</span>
+          <b>깨끗한 출구</b><span class="verm"><b>${full.clean.length}</b>개</span>
+          <b>마을이 살아남은 정책</b><span>${full.aliveWithVictims.length}개 (모두 희생자가 있다)</span>
+          <b>가장 싼 값</b><span class="verm"><b>이름 ${cheapest ? cheapest.victims.length : "?"}개</b></span>
+        </div>
+      </div>
+      <div>
+        <h3>사람을 바치는 수를 아예 뺀 세계 (${bloodless.allowed.length}가지 수)</h3>
+        <div class="kv">
+          <b>내려간 마디</b><span>${bloodless.nodes.toLocaleString()}</span>
+          <b>정산한 결말</b><span>${bloodless.settled.toLocaleString()}</span>
+          <b>결말 분포</b><span>${esc(bloodlessDist)}</span>
+          <b>살아남은 회차</b><span class="verm"><b>0</b>개</span>
+          <b>가장 오래 버틴 정책</b><span>${bloodless.bloodlessBest.generations}대 · ${bloodless.bloodlessBest.endingName} · 번영 ${bloodless.bloodlessBest.prosperity}</span>
+        </div>
+      </div>
+    </div>
+    <h3>희생자 수를 한 명씩 올려 가며 — 어디서부터 마을이 살아남는가</h3>
+    <table><thead><tr><th class="n">희생자</th><th>가장 좋은 결말</th><th class="n">대</th>
+      <th class="n">번영</th><th class="n">기력</th><th class="n">원한</th><th>판정</th></tr></thead>
+      <tbody>${vcRows}</tbody></table>
+    <p class="hint">번영이 <code>${D.balance.ending.villageAliveFloor}</code> 이상이고 몰락·봉기·창궐·단절·멈춤이
+    아닐 때만 "마을이 살아 있다"고 센다. 해제 완수는 배제하지 않는다 —
+    기근 낙차 ${D.balance.ending.releaseFamineDrop} 을 번영이 견디면 통과한다. 견딘 회차는 하나도 없었다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">03</span>두 극단이 각각 다른 방식으로 나쁘게 끝난다</h2>
+    <div class="grid2">
+      <div>
+        <h3>계속 유지 — 언제나 사람을 바친다</h3>
+        <p class="hint">${oneLine(keep)}</p>
+        <p>마을은 <b>부유한 채로</b> 등을 돌린다. 원한 ${keep.resentment} 에서 제단이 부서진다.
+        값을 치른 것은 이름 ${keep.victims.length}개다.</p>
+        <table><tbody>${keep.victims.map(v => `<tr><td><span class="nm" style="font-size:var(--sNum)">${esc(v.name)}</span></td><td class="n">${v.age}</td><td>${esc(v.note)}</td></tr>`).join("")}</tbody></table>
+      </div>
+      <div>
+        <h3>즉시 해제 — 언제나 해제 의식을 잇는다</h3>
+        <p class="hint">${oneLine(rel)}</p>
+        <p>약조는 <b>정말로 풀린다</b>(해제 ${rel.releaseProgress}). 아무도 바치지 않았다 —
+        희생자 ${rel.victims.length}명. 그리고 약조가 주던 풍요가 같이 사라져
+        번영이 ${rel.prosperity} 이 된다. 마을은 이것이 해제 때문인 줄 모른다.</p>
+      </div>
+    </div>
+    <p>한쪽은 <em>이름</em>을 태우고 한쪽은 <em>굶주림</em>을 태운다. 한쪽이 그냥 나으면 고민이 사라진다.</p>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">04</span>희생자는 숫자가 아니다</h2>
+    <p>명단 ${D.kin.villagers.length}명 전부가 이름·나이·집안·사정을 가진다. 붉은 줄이 그어진 줄은
+    「가장 싼 값」 정책이 지운 이름이다.</p>
+    <table><thead><tr><th>이름</th><th class="n">나이</th><th>계층</th><th>집안</th><th>사정</th><th></th></tr></thead>
+      <tbody>${victimRows}</tbody></table>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">05</span>제례 여섯 — 값의 몇 %가 미래에 있는가</h2>
+    <p>어두운 칸이 <b>결정한 대에 보이는 값</b>이고 붉은 칸이 <b>손자 대에 오는 값</b>이다.
+    「장부를 덮는다」는 미납을 노여움으로 바꾸지 않고 <em>다음 대의 요구에 ${D.balance.flow.postponeInterestPercent}% 로 불려 얹는다</em> —
+    검사기가 그 수를 죽은 선택지로 잡아내서 생긴 규칙이다.</p>
+    <table><thead><tr><th>제례</th><th class="n">갚음</th><th class="n">사람</th><th>지금 / 나중</th>
+      <th class="n">나중</th><th class="n">가장 먼 값</th><th>주석</th></tr></thead>
+      <tbody>${riteRows}</tbody></table>
+  </section>
+
+  <section class="sheet">
+    <h2><span class="no">06</span>데이터 시트</h2>
+    <div class="grid2">
+      <div><h3>시작 상태</h3><table><tbody>
+        ${Object.keys(D.curse.start).map(k => `<tr><td>${k}</td><td class="n">${D.curse.start[k]}</td></tr>`).join("")}
+      </tbody></table></div>
+      <div><h3>흐름 · 한계</h3><table><tbody>
+        ${Object.keys(D.balance.flow).filter(k => k[0] !== "_").map(k => `<tr><td>${k}</td><td class="n">${D.balance.flow[k]}</td></tr>`).join("")}
+        <tr><td>씨드</td><td class="n">${seed}</td></tr>
+        <tr><td>흉년표 (대 1~${G})</td><td class="n">${sim.lean.slice(1, G + 1).join(", ")}</td></tr>
+      </tbody></table></div>
+    </div>
+    <p class="hint">글꼴 ${esc(p.type.family)} · ${esc(p.type.familyBody)} (둘 다 SIL OFL 1.1, 출처와 SHA-256은 <code>CREDITS.md</code>).
+    한지 섬유·계선·주묵 인장은 이미지를 한 장도 받지 않고 <code>palette.json</code> 의 값에서 CSS/SVG로 계산한다.</p>
+  </section>`;
+
+  // 족보 전환
+  const pick = document.getElementById("pick");
+  const keys = Object.keys(views).filter(k => views[k]);
+  pick.innerHTML = keys.map((k, i) =>
+    `<button data-k="${esc(k)}" aria-pressed="${i === 0}">${esc(k)}</button>`).join("");
+  const draw = k => {
+    const r = views[k];
+    document.getElementById("ledger").innerHTML = ledgerHtml(D, sim, r);
+    document.getElementById("ledgerNote").textContent =
+      `${k}: ${oneLine(r)} — 정책 ${r.policy.map(id => sim.rite[id].name).join(" > ")}`;
+    for (const b of pick.querySelectorAll("button")) b.setAttribute("aria-pressed", b.dataset.k === k);
+  };
+  pick.addEventListener("click", e => { if (e.target.dataset.k) draw(e.target.dataset.k); });
+  draw(keys[0]);
+}
+
+load().then(render).catch(err => {
+  document.getElementById("boot").textContent =
+    "장부를 펼 수 없다: " + err + " — python -m http.server 8099 로 열어야 한다 (fetch 가 file:// 에서 막힌다)";
+});
+</script>
+</body>
+</html>

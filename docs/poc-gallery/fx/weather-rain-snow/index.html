@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>비·눈·날씨 — 이펙트 샘플</title>
+<style>
+:root{--bg:#0d0e10;--panel:#15171a;--panel2:#1b1e22;--line:#2a2e34;--tx:#d9d9d6;--mut:#8b9098;--acc:#e3a857}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:13px/1.5 "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;overflow:hidden}
+#app{display:grid;grid-template-columns:1fr 372px;grid-template-rows:46px 1fr;width:100vw;height:100vh}
+header{grid-column:1/3;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.ttl b{font-size:16px;margin-right:12px;letter-spacing:.02em}.ttl span{color:var(--mut)}
+.hdr-r{display:flex;gap:12px;align-items:center;color:var(--mut)}
+.keys{font-size:12px}
+button{background:var(--panel2);color:var(--tx);border:1px solid var(--line);border-radius:4px;padding:3px 9px;font:inherit;font-size:12px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+#snd.on{color:var(--acc);border-color:#6b5230}
+#fps{font:12px ui-monospace,Consolas,monospace;min-width:56px;text-align:right}
+#grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;padding:8px;min-height:0;min-width:0}
+.cell{position:relative;background:#000;border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:0;min-width:0;cursor:crosshair}
+.cell.sel{border-color:var(--acc);box-shadow:0 0 0 1px #6b5230 inset}
+.cell canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.cell .lbl{position:absolute;left:8px;top:7px;pointer-events:none;background:rgba(10,11,13,.62);padding:3px 8px;border-radius:4px;backdrop-filter:blur(2px)}
+.cell .lbl b{font-weight:600}.cell .lbl i{font-style:normal;color:var(--acc);margin-left:6px;font-size:12px}
+.cell .hint{position:absolute;left:8px;bottom:7px;pointer-events:none;color:#c9c9c4;font-size:12px;background:rgba(10,11,13,.55);padding:2px 7px;border-radius:4px}
+.cell .stat{position:absolute;right:8px;top:7px;pointer-events:none;font:12px ui-monospace,Consolas,monospace;color:#e8dcc4;background:rgba(10,11,13,.55);padding:2px 7px;border-radius:4px;white-space:pre}
+.cell .num{position:absolute;right:8px;bottom:7px;pointer-events:none;color:var(--mut);font-size:11px}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow-y:auto;padding:4px 14px 14px}
+aside section{border-bottom:1px solid var(--line);padding:9px 0}
+aside h3{margin:0;font-size:15px}aside h4{margin:0 0 6px;font-size:12px;color:var(--mut);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.con{color:var(--acc);font-size:12px}.hint2{color:var(--mut);font-size:12px;margin-top:3px}
+.prm{display:grid;grid-template-columns:104px 1fr 54px;gap:6px;align-items:center;margin:3px 0}
+.prm label{font-size:12px;color:#c4c6c9}.prm input[type=range]{width:100%;accent-color:var(--acc)}
+.prm output{font:12px ui-monospace,Consolas,monospace;text-align:right;color:#f0d9b0}
+.prm select{background:var(--panel2);color:var(--tx);border:1px solid var(--line);font:inherit;font-size:12px;grid-column:2/4}
+pre{margin:0;font:11px/1.45 ui-monospace,Consolas,monospace;color:#b9d4b0;background:#101214;border:1px solid var(--line);border-radius:4px;padding:6px 8px;white-space:pre-wrap;max-height:120px;overflow:auto}
+.memo{font-size:12px;color:#c3c5c8;border-bottom:0}
+.memo p{margin:0 0 6px}.memo b{color:#e9d7b8}.memo code{font:11px ui-monospace,Consolas,monospace;color:#b9d4b0}
+.memo ul{margin:0 0 6px;padding-left:16px}.memo li{margin:1px 0}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="ttl"><b>비·눈·날씨</b><span>유리창 빗방울 흐름, 쌓이는 눈, 번개 섬광, 우산 위 빗소리</span></div>
+    <div class="hdr-r">
+      <span class="keys">1–4 변형 선택 · Space 발동 · R 초기화 · M 소리 · S 성능 모드</span>
+      <button id="solo" title="S">전체 재생</button>
+      <button id="snd" title="M">소리: 꺼짐 (클릭하면 켜짐)</button>
+      <span id="fps">-- fps</span>
+    </div>
+  </header>
+  <main id="grid"></main>
+  <aside id="side">
+    <section><h3 id="vname">-</h3><div id="vcon" class="con"></div><div id="vhint" class="hint2"></div></section>
+    <section><h4>파라미터</h4><div id="params"></div></section>
+    <section><h4>게임 이식용 값 <button id="copy">복사</button></h4><pre id="json"></pre></section>
+    <section class="memo"><h4>구현 메모</h4><div id="memo"></div></section>
+  </aside>
+</div>
+<script>
+'use strict';
+/* ===== 공용: 난수·노이즈·수학 ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+const TAU=Math.PI*2;
+function makeNoise(seed){
+  const r=mulberry32(seed),p=new Uint8Array(512),g=new Float32Array(256);
+  for(let i=0;i<256;i++){p[i]=i;g[i]=r()}
+  for(let i=255;i>0;i--){const j=(r()*(i+1))|0,k=p[i];p[i]=p[j];p[j]=k}
+  for(let i=0;i<256;i++)p[i+256]=p[i];
+  function n2(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,X=xi&255,Y=yi&255;
+    const a=g[p[p[X]+Y]],b=g[p[p[X+1]+Y]],c=g[p[p[X]+Y+1]],d=g[p[p[X+1]+Y+1]];
+    const u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v}
+  n2.fbm=(x,y,o=4)=>{let s=0,a=.5,f=1,n=0;for(let i=0;i<o;i++){s+=a*n2(x*f+i*17.3,y*f-i*9.1);n+=a;f*=2.03;a*=.5}return s/n};
+  /* 컬 노이즈: 스칼라장 psi의 회전 → 발산 없는 흐름(연기가 뭉치지 않고 말려 올라감) */
+  n2.curl=(x,y,o=2)=>{const e=.35,a=n2.fbm(x,y+e,o),b=n2.fbm(x,y-e,o),c=n2.fbm(x+e,y,o),d=n2.fbm(x-e,y,o);return[(a-b)/(2*e),-(c-d)/(2*e)]};
+  return n2;
+}
+function mk(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return[c,c.getContext('2d')]}
+function hexRgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+/* 부드러운 연기 퍼프 스프라이트: 방사 감쇠 × fbm, 위쪽이 밝게 (위에서 오는 빛) */
+function puffSprite(size,seed,rgb,opt={}){
+  const [c,x]=mk(size,size),img=x.createImageData(size,size),n=makeNoise(seed),d=img.data;
+  const lit=opt.lit??.35, dens=opt.dens??1, freq=opt.freq??3.2, rim=opt.rim??0, lx=opt.lx??-.2, ly=opt.ly??-.9, sh0=opt.shadow;
+  for(let j=0;j<size;j++)for(let i=0;i<size;i++){
+    const dx=(i/size)*2-1,dy=(j/size)*2-1,r=Math.hypot(dx,dy);
+    const nn=n.fbm(i/size*freq,j/size*freq,5);
+    const edge=1-sstep(.35+.3*nn,1,r+.25*(nn-.5));
+    let a=clamp(edge*(.55+1.1*(nn-.35))*dens,0,1);
+    const sh=clamp(1+lit*(dy*ly+dx*lx)+(nn-.5)*.5+rim*sstep(.5,.95,r),.2,1.6);
+    const k=(j*size+i)*4;
+    if(sh0){const q=clamp(sh-.35,0,1.25);d[k]=clamp(sh0[0]+(rgb[0]-sh0[0])*q,0,255);d[k+1]=clamp(sh0[1]+(rgb[1]-sh0[1])*q,0,255);d[k+2]=clamp(sh0[2]+(rgb[2]-sh0[2])*q,0,255)}
+    else{d[k]=clamp(rgb[0]*sh,0,255);d[k+1]=clamp(rgb[1]*sh,0,255);d[k+2]=clamp(rgb[2]*sh,0,255)}
+    d[k+3]=a*255;
+  }
+  x.putImageData(img,0,0);return c;
+}
+/* 가산 광원 스프라이트 */
+function glowSprite(size,rgb,falloff=2){const[c,x]=mk(size,size),g=x.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  for(let i=0;i<=8;i++){const t=i/8,a=Math.pow(1-t,falloff);g.addColorStop(t,`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`)}
+  x.fillStyle=g;x.fillRect(0,0,size,size);return c}
+
+/* ===== 공용: 연기/불 입자계 ===== */
+/* ---------- 연기 입자계  ---------- */
+class Smoke{
+  constructor(max,seed){this.p=[];this.max=max;this.ri=0;this.n=makeNoise(seed)}
+  emit(o){o.age=0;o.rot=o.rot??0;o.vr=o.vr??0;if(this.p.length<this.max)this.p.push(o);else{this.p[this.ri]=o;this.ri=(this.ri+1)%this.max}}
+  /* wind(x,y)->[vx,vy] 목표 속도, turb: 컬 노이즈 세기(px/s), nscale: 노이즈 격자(px), follow: 속도 추종률(1/s) */
+  update(dt,t,wind,turb,nscale,follow=1.4){
+    const n=this.n,k=Math.min(1,dt*follow);
+    for(let i=this.p.length-1;i>=0;i--){const q=this.p[i];q.age+=dt;
+      if(q.age>=q.life){this.p[i]=this.p[this.p.length-1];this.p.pop();if(this.ri>=this.p.length)this.ri=0;continue}
+      const w=wind(q.x,q.y,q),c=n.curl(q.x/nscale,q.y/nscale-t*.08,2),up=(q.buoy||0)*Math.exp(-q.age*(q.cool||.4));
+      const tb=turb*(q.tm??1)*Math.min(1,q.age*.8+.15);
+      q.vx+=(w[0]+c[0]*tb-q.vx)*k;q.vy+=(w[1]-up+c[1]*tb-q.vy)*k;
+      q.x+=q.vx*dt;q.y+=q.vy*dt;q.rot+=q.vr*dt;}
+  }
+  draw(g,sortOld){
+    const L=this.p;
+    for(let i=0;i<L.length;i++){const q=L[i],u=q.age/q.life;
+      const a=q.a*sstep(0,q.fin||.08,u)*(1-sstep(q.fout||.45,1,u));if(a<.004)continue;
+      const e=1-(1-u)*(1-u),s=q.s0+(q.s1-q.s0)*(q.grow?Math.pow(u,q.grow):e),c=Math.cos(q.rot)*s,sn=Math.sin(q.rot)*s;
+      g.globalAlpha=a;g.setTransform(c*(q.sx||1),sn*(q.sx||1),-sn,c,q.x,q.y);g.drawImage(q.spr,-.5,-.5,1,1)}
+    g.setTransform(1,0,0,1,0,0);g.globalAlpha=1}
+}
+function ridge(g,w,h,base,amp,freq,seed,fill,oct=5){const n=makeNoise(seed);g.beginPath();g.moveTo(0,h);
+  for(let x=0;x<=w;x+=3){const y=base-amp*(n.fbm(x*freq,seed*.1,oct)-.3)*1.8;g.lineTo(x,y)}g.lineTo(w,h);g.closePath();g.fillStyle=fill;g.fill()}
+function ridgeY(n,x,base,amp,freq,seed,oct=5){return base-amp*(n.fbm(x*freq,seed*.1,oct)-.3)*1.8}
+
+
+/* ===== 공용: 사운드 (WebAudio 합성, 첫 입력 후에만) ===== */
+const AU={ctx:null,on:false,muted:false,r:mulberry32(4242),
+  init(){
+    if(this.ctx){if(this.ctx.state==='suspended')this.ctx.resume();return true}
+    const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;
+    const c=this.ctx=new C();
+    const comp=c.createDynamicsCompressor();comp.threshold.value=-14;comp.knee.value=10;comp.ratio.value=4;comp.attack.value=.004;comp.release.value=.25;
+    this.bus=c.createGain();this.bus.gain.value=.85;this.bus.connect(comp);comp.connect(c.destination);
+    this.nb={};for(const t of['white','pink','brown'])this.nb[t]=this.noise(t,4);
+    this.rev=this.verb(2.8,2.6,11,.82);   // 넓은 공간(산·밤하늘)
+    this.room=this.verb(.7,3.2,13,.55);   // 방·책상
+    this.on=true;this.setMuted(false);return true;
+  },
+  setMuted(m){this.muted=m;if(this.bus)this.bus.gain.setTargetAtTime(m?0:.85,this.ctx.currentTime,.03)},
+  noise(type,sec){const c=this.ctx,n=c.sampleRate*sec|0,b=c.createBuffer(2,n,c.sampleRate),r=mulberry32(type.length*977);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,br=0;
+      for(let i=0;i<n;i++){const w=r()*2-1;
+        if(type==='white')d[i]=w*.5;
+        else if(type==='pink'){b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926}
+        else{br=(br+.02*w)/1.02;d[i]=br*3.2}}}
+    return b},
+  /* 생성형 잔향: 필터링된 노이즈 × 지수 감쇠 (시드 고정) */
+  verb(sec,decay,seed,damp){const c=this.ctx,n=c.sampleRate*sec|0,b=c.createBuffer(2,n,c.sampleRate),r=mulberry32(seed);
+    for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let lp=0;for(let i=0;i<n;i++){const t=i/n;lp+=((r()*2-1)-lp)*(1-damp*t);
+      d[i]=lp*Math.pow(1-t,decay)*Math.min(1,i/(c.sampleRate*.006))}}
+    const cv=c.createConvolver();cv.buffer=b;const g=c.createGain();g.connect(cv);cv.connect(this.bus);return g},
+  /* src → filters → env → pan → bus (+ 잔향 send) */
+  route(src,o){const c=this.ctx;let node=src;
+    for(const f of(o.filters||[])){const bf=c.createBiquadFilter();bf.type=f.t;bf.frequency.value=f.f;if(f.q!=null)bf.Q.value=f.q;if(f.g!=null)bf.gain.value=f.g;
+      if(f.f2!=null)bf.frequency.exponentialRampToValueAtTime(Math.max(20,f.f2),o.t0+(f.ft??(o.a+o.d)));node.connect(bf);node=bf}
+    const env=c.createGain();env.gain.value=0;node.connect(env);
+    const p=c.createStereoPanner?c.createStereoPanner():null;let out=env;if(p){p.pan.value=clamp(o.pan||0,-1,1);env.connect(p);out=p}
+    out.connect(this.bus);if(o.rev){const s=c.createGain();s.gain.value=o.rev;out.connect(s);s.connect(o.bus==='room'?this.room:this.rev)}
+    return env},
+  env(g,t0,a,hold,d,peak){g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(peak,t0+a);if(hold)g.gain.setValueAtTime(peak,t0+a+hold);g.gain.exponentialRampToValueAtTime(.0001,t0+a+hold+d);g.gain.linearRampToValueAtTime(0,t0+a+hold+d+.02)},
+  /* 노이즈 한 방 */
+  burst(o){if(!this.on)return;const c=this.ctx,t0=c.currentTime+(o.t||0),a=o.a??.005,d=o.d??.2,h=o.hold||0;
+    const s=c.createBufferSource();s.buffer=this.nb[o.type||'white'];s.loop=true;s.playbackRate.value=o.rate||1;
+    const env=this.route(s,{...o,t0,a,d});this.env(env,t0,a,h,d,o.g??.4);
+    s.start(t0,(o.off??AU.r()*3));s.stop(t0+a+h+d+.05)},
+  /* 음정 한 방 (주파수 스윕 가능) */
+  tone(o){if(!this.on)return;const c=this.ctx,t0=c.currentTime+(o.t||0),a=o.a??.005,d=o.d??.3,h=o.hold||0;
+    const s=c.createOscillator();s.type=o.w||'sine';s.frequency.setValueAtTime(o.f,t0);if(o.f2)s.frequency.exponentialRampToValueAtTime(o.f2,t0+(o.ft??(a+d)));if(o.det)s.detune.value=o.det;
+    const env=this.route(s,{...o,t0,a,d});this.env(env,t0,a,h,d,o.g??.3);s.start(t0);s.stop(t0+a+h+d+.05)},
+  /* 지속음(바닥 소리): 노이즈 루프 + 필터, 이후 set으로 조절 */
+  bed(o){if(!this.on)return null;const c=this.ctx,s=c.createBufferSource();s.buffer=this.nb[o.type||'pink'];s.loop=true;
+    const f=c.createBiquadFilter();f.type=o.ft||'lowpass';f.frequency.value=o.f||800;f.Q.value=o.q??.7;s.connect(f);
+    const g=c.createGain();g.gain.value=0;f.connect(g);g.connect(this.bus);
+    if(o.rev){const sg=c.createGain();sg.gain.value=o.rev;g.connect(sg);sg.connect(o.bus==='room'?this.room:this.rev)}
+    s.start(0,AU.r()*3);g.gain.setTargetAtTime(o.g??.2,c.currentTime,o.fade??.3);
+    return{s,f,g,set(gain,freq,tc=.15){const t=c.currentTime;if(gain!=null)g.gain.setTargetAtTime(gain,t,tc);if(freq!=null)f.frequency.setTargetAtTime(freq,t,tc)},
+      stop(tc=.25){const t=c.currentTime;g.gain.setTargetAtTime(0,t,tc);s.stop(t+tc*8)}}},
+};
+
+/* ===== 공용: 변형 틀 ===== */
+const FX={vs:[],sel:0,solo:/[?&]solo/.test(location.search),ts:1,clock:0};
+function variant(v){v.P={};for(const p of v.params)v.P[p.k]=p.v;FX.vs.push(v);return v}
+function boot(){
+  const grid=document.getElementById('grid');
+  FX.vs.forEach((v,i)=>{
+    const cell=document.createElement('div');cell.className='cell';cell.innerHTML=`<canvas></canvas><div class="lbl"><b>${i+1}. ${v.name}</b><i>${v.concept}</i></div><div class="hint">${v.hint}</div><div class="stat" style="display:none"></div>`;
+    grid.appendChild(cell);v.cell=cell;v.cv=cell.querySelector('canvas');v.statEl=cell.querySelector('.stat');
+  });
+  requestAnimationFrame(()=>{
+    FX.vs.forEach((v,i)=>{const w=v.cell.clientWidth,h=v.cell.clientHeight;v.cv.width=v.w=w;v.cv.height=v.h=h;v.init(v.cv,w,h);bindPtr(v,i)});
+    select(0);requestAnimationFrame(loop);
+  });
+  const snd=document.getElementById('snd');
+  const upd=()=>{snd.textContent=!AU.on?'소리: 꺼짐 (클릭하면 켜짐)':AU.muted?'소리: 음소거':'소리: 켜짐';snd.classList.toggle('on',AU.on&&!AU.muted)};FX.updSnd=upd;
+  snd.onclick=()=>{if(!AU.on){if(AU.init())FX.vs[FX.sel].ambient?.(true)}else AU.setMuted(!AU.muted);upd()};
+  document.getElementById('solo').textContent=FX.solo?'선택만 재생':'전체 재생';document.getElementById('solo').onclick=()=>dispatchEvent(new KeyboardEvent('keydown',{key:'s'}));
+  document.getElementById('copy').onclick=()=>{navigator.clipboard?.writeText(document.getElementById('json').textContent)};
+  addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+    const n=parseInt(e.key);if(n>=1&&n<=FX.vs.length){select(n-1);return}
+    const v=FX.vs[FX.sel];
+    if(e.code==='Space'){e.preventDefault();wake();(v.trigger||defTrigger).call(v)}
+    else if(e.key==='r'||e.key==='R')v.reset?.();
+    else if(e.key==='m'||e.key==='M')snd.onclick();
+    else if(e.key==='s'||e.key==='S'){FX.solo=!FX.solo;document.getElementById('solo').textContent=FX.solo?'선택만 재생':'전체 재생'}
+    else v.key?.(e);
+  });
+  addEventListener('resize',()=>FX.vs.forEach(v=>{const w=v.cell.clientWidth,h=v.cell.clientHeight;if(w!==v.w||h!==v.h){v.cv.width=v.w=w;v.cv.height=v.h=h;v.resize?v.resize(w,h):v.init(v.cv,w,h)}}));
+}
+function defTrigger(){this.down(this.w*.5,this.h*.5,0);setTimeout(()=>this.up(this.w*.5,this.h*.5),120)}
+function wake(){if(!AU.on){if(AU.init()){FX.vs[FX.sel].ambient?.(true);FX.updSnd()}}}
+function bindPtr(v,i){
+  const cv=v.cv;let held=false;
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('pointerdown',e=>{if(FX.sel!==i)select(i);wake();held=true;cv.setPointerCapture(e.pointerId);v.down(e.offsetX,e.offsetY,e.button)});
+  cv.addEventListener('pointermove',e=>v.move?.(e.offsetX,e.offsetY,held));
+  cv.addEventListener('pointerup',e=>{if(!held)return;held=false;v.up?.(e.offsetX,e.offsetY)});
+  cv.addEventListener('pointerleave',()=>v.leave?.());
+}
+function select(i){
+  const prev=FX.vs[FX.sel];if(prev&&AU.on&&FX.sel!==i)prev.ambient?.(false);
+  FX.sel=i;const v=FX.vs[i];FX.vs.forEach((u,j)=>u.cell.classList.toggle('sel',j===i));
+  if(AU.on)v.ambient?.(true);
+  document.getElementById('vname').textContent=`${i+1}. ${v.name}`;
+  document.getElementById('vcon').textContent='컨셉: '+v.conceptFull;
+  document.getElementById('vhint').textContent='조작: '+v.hint;
+  const box=document.getElementById('params');box.innerHTML='';
+  for(const p of v.params){
+    const row=document.createElement('div');row.className='prm';
+    if(p.opts){row.innerHTML=`<label>${p.label}</label><select>${p.opts.map((o,k)=>`<option value="${k}" ${k==v.P[p.k]?'selected':''}>${o}</option>`).join('')}</select>`;
+      row.querySelector('select').onchange=e=>{v.P[p.k]=+e.target.value;v.onParam?.(p.k);showJson()}}
+    else{row.innerHTML=`<label>${p.label}</label><input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${v.P[p.k]}"><output>${fmt(v.P[p.k],p.step)}</output>`;
+      const inp=row.querySelector('input'),out=row.querySelector('output');
+      inp.oninput=()=>{v.P[p.k]=+inp.value;out.textContent=fmt(v.P[p.k],p.step);v.onParam?.(p.k);showJson()}}
+    box.appendChild(row);
+  }
+  document.getElementById('memo').innerHTML=v.memo+(window.MEMO_COMMON||'');
+  showJson();
+}
+function fmt(x,s){const d=s>=1?0:s>=.1?1:s>=.01?2:3;return(+x).toFixed(d)}
+function showJson(){const v=FX.vs[FX.sel],o={variant:v.id};for(const p of v.params)o[p.k]=p.opts?p.opts[v.P[p.k]]:+fmt(v.P[p.k],p.step);if(v.extraJson)Object.assign(o,v.extraJson());
+  document.getElementById('json').textContent=JSON.stringify(o,null,1).replace(/\n\s*/g,' ').replace('{ ','{\n ').replace(/, "/g,',\n "')}
+/* 검증용: 시간을 멈추고(FX.ts=0) 프레임을 직접 진행 */
+FX.step=(n,dt=1/60)=>{for(let i=0;i<n;i++){FX.clock+=dt;for(const v of FX.vs)if(!FX.solo||v===FX.vs[FX.sel])v.frame(dt,FX.clock)}};
+let _last=0,_fc=0,_ft=0,_sc=0;
+function loop(now){
+  const rdt=_last?Math.min(.05,(now-_last)/1000):.016;_last=now;_fc++;_ft+=rdt;const dt=rdt*FX.ts;FX.clock+=dt;
+  if(_ft>=.5){document.getElementById('fps').textContent=(_fc/_ft).toFixed(0)+' fps';_fc=0;_ft=0}
+  for(const v of FX.vs)if(!FX.solo||v===FX.vs[FX.sel])v.frame(dt,FX.clock);
+  if(++_sc%6===0)for(const v of FX.vs)if(v.stat){const s=v.stat();if(s!==v._st){v._st=s;v.statEl.style.display=s?'':'none';v.statEl.textContent=s}}
+  requestAnimationFrame(loop);
+}
+/* WebGL 도우미 (전체 화면 사각형 + 프래그먼트 셰이더) */
+function glQuad(cv,fs){
+  const gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:false,preserveDrawingBuffer:true});if(!gl)return null;
+  const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0,1);}'));
+  gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,'precision highp float;varying vec2 uv;'+fs));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const U={};const u=n=>U[n]??(U[n]=gl.getUniformLocation(pr,n));
+  return{gl,u,tex(unit,src,old){const t=old||gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t},
+    draw(){gl.viewport(0,0,cv.width,cv.height);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
+}
+/* GLSL 공용 노이즈 조각 */
+const GLSL_NOISE=`
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float s=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){s+=a*vn(p);p=m*p;a*=.5;}return s;}
+`;
+addEventListener('DOMContentLoaded',()=>{});
+
+</script>
+<script>
+/*META {"title":"비·눈·날씨","desc":"유리창 빗방울 흐름, 쌓이는 눈, 번개 섬광, 우산 위 빗소리"} META*/
+
+/* 도시 야경 보케 (유리창 너머 / 번개 골목 공용) */
+function paintBokehCity(w,h,seed,opt={}){const[c,g]=mk(w,h),r=mulberry32(seed);
+  let gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#0b1220');gr.addColorStop(.55,'#162234');gr.addColorStop(1,'#1d1a22');g.fillStyle=gr;g.fillRect(0,0,w,h);
+  for(let i=0;i<16;i++){const bx=r()*w,bw=40+r()*110,bh=h*(.25+r()*.45);g.fillStyle=`rgb(${14+r()*10|0},${18+r()*12|0},${28+r()*14|0})`;g.fillRect(bx,h*.72-bh,bw,bh+h*.3);
+    for(let k=0;k<bw*bh/500;k++)if(r()<.45){g.fillStyle=r()<.7?`rgba(255,${190+r()*50|0},${110+r()*60|0},${.5+r()*.5})`:`rgba(170,210,255,${.5+r()*.4})`;g.fillRect(bx+4+r()*(bw-10),h*.72-bh+6+r()*(bh-10),4,6)}}
+  gr=g.createLinearGradient(0,h*.7,0,h);gr.addColorStop(0,'#1a1820');gr.addColorStop(1,'#0c0b10');g.fillStyle=gr;g.fillRect(0,h*.72,w,h*.28);
+  const cols=opt.cols||[[255,170,80],[255,90,70],[90,200,255],[255,220,140],[120,255,190]];
+  g.globalCompositeOperation='lighter';
+  for(let i=0;i<opt.n||i<70;i++){const x=r()*w,y=h*(.35+r()*.55),s=6+r()*(opt.big||26),col=cols[(r()*cols.length)|0];const gg=g.createRadialGradient(x,y,0,x,y,s);
+    gg.addColorStop(0,`rgba(${col},.55)`);gg.addColorStop(.7,`rgba(${col},.35)`);gg.addColorStop(1,`rgba(${col},0)`);g.fillStyle=gg;g.beginPath();g.arc(x,y,s,0,TAU);g.fill();
+    if(y>h*.72){g.fillStyle=`rgba(${col},.12)`;g.fillRect(x-s*.3,y,s*.6,(h-y)*.8)}}
+  g.globalCompositeOperation='source-over';return c}
+
+/* =====================================================================
+   1) 유리창 빗방울 — 18 보내지 못한 것 (WebGL 굴절)
+   ===================================================================== */
+variant({id:'glass_rain',name:'유리창 빗방울 · 김서림',concept:'18 보내지 못한 것',conceptFull:'18 보내지 못한 것 — 부치지 못할 답장을 쓰는 비 오는 창가',
+  hint:'드래그: 김 서린 유리에 손가락으로 쓰기 · 클릭: 유리 톡 (물방울이 흘러내림)',
+  params:[{k:'rate',label:'큰 방울 /s',min:0,max:20,step:.5,v:5},{k:'mist',label:'잔방울 /s',min:0,max:400,step:5,v:140},
+    {k:'refr',label:'굴절 세기',min:0,max:.3,step:.005,v:.12},{k:'slide',label:'흐름 임계 반경',min:4,max:16,step:.5,v:8},
+    {k:'refog',label:'김 다시 서림 s',min:1,max:40,step:.5,v:16},{k:'fog',label:'김 농도',min:0,max:1,step:.01,v:.55}],
+  memo:`<p><b>기법</b> CPU가 물방울을 <b>법선맵</b>(R,G=법선 x,y · A=마스크)으로 오프스크린에 그리고, 셰이더가 그 법선으로 선명한 배경을 <b>뒤집어</b> 샘플(렌즈는 상을 뒤집는다) + 가장자리 어둡게 + 반사광. 방울 밖은 흐린 배경 + 김. 큰 방울이 임계 반경을 넘으면 <b>불규칙하게 멈칫거리며</b> 미끄러지고, 지나간 길의 잔방울·김을 지우며 뒤에 작은 방울을 남긴다.</p>
+  <p><b>Unity 이식</b> 법선맵 RT(RenderTexture, ARGB32)에 방울 스프라이트를 CommandBuffer로 그림 → 배경 카메라 RT를 _Sharp, 블러 버전을 _Blur로 전달. 김 마스크도 RT(R8), 매 프레임 0으로 α=dt/refog 감쇠. 방울 시뮬레이션은 순수 C# (정수 px·ms, 씨드 난수).</p>
+  <p><b>함정</b> 방울 스프라이트는 반드시 <b>선형 보간 가능한 법선 인코딩</b>(0.5 중심). 텍스처 Y 뒤집힘(FLIP_Y) 때문에 법선 y 부호가 바뀐다 — 반사광 방향으로 확인. 매 프레임 텍스처 업로드 2장(≈2MB)은 모바일에서 부담 → 방울 RT를 GPU에서 직접 그려라.</p>`,
+  init(cv,w,h){this.r=mulberry32(18);
+    this.q=glQuad(cv,`
+uniform sampler2D uSharp,uBlur,uDrops,uClear;uniform float uRefr,uFog;uniform vec2 uRes;
+void main(){vec4 D=texture2D(uDrops,uv);float a=smoothstep(.15,.55,D.a);vec2 n=(D.rg-.5)*2.;
+ float cm=texture2D(uClear,uv).r;vec3 sh=texture2D(uSharp,uv).rgb,bl=texture2D(uBlur,uv).rgb;
+ vec3 bg=mix(bl,sh*.9+bl*.1,cm*.9);bg=mix(bg,bl*.55+vec3(.25,.27,.30),uFog*(1.-cm));
+ vec2 ruv=clamp(uv-n*uRefr*vec2(1.,-1.)*(.6+D.b),0.,1.);vec3 rf=texture2D(uSharp,ruv).rgb*1.2+.03;
+ float e=smoothstep(.5,1.,length(n));rf*=1.-.6*e;
+ float sp=pow(max(0.,dot(normalize(vec3(n.x,-n.y,.55)),normalize(vec3(-.45,.55,.7)))),28.);
+ vec3 col=mix(bg,rf+sp*.8,a);gl_FragColor=vec4(col,1.);}`);
+    if(!this.q){this.fail=true;return}
+    const city=paintBokehCity(w,h,181);this.q.tex(0,city);const[bc,bg]=mk(w,h);bg.filter='blur(10px)';bg.drawImage(city,-20,-20,w+40,h+40);bg.filter='none';this.q.tex(1,bc);
+    [this.dc,this.dg]=mk(w,h);[this.lc,this.lg]=mk(w,h);[this.cc,this.cg]=mk(w,h);this.cg.fillStyle='#000';this.cg.fillRect(0,0,w,h);
+    /* 법선 방울 스프라이트 */
+    const S=64;[this.spr]=mk(S,S);const sg=this.spr.getContext('2d'),img=sg.createImageData(S,S);
+    for(let j=0;j<S;j++)for(let i=0;i<S;i++){const dx=(i+.5)/(S/2)-1,dy=(j+.5)/(S/2)-1,d=Math.hypot(dx,dy),k=(j*S+i)*4;if(d>=1)continue;
+      img.data[k]=(dx*.5+.5)*255;img.data[k+1]=(dy*.5+.5)*255;img.data[k+2]=(1-d)*255;img.data[k+3]=sstep(1,.86,d)*255}sg.putImageData(img,0,0);
+    this.brush=glowSprite(64,[255,255,255],1.2);
+    this.drops=[];for(let i=0;i<500;i++)this.mistDrop();for(let i=0;i<24;i++)this.spawn();
+    /* 시작: 손가락으로 쓴 글자 한 줄 (결정적) */
+    this.cg.globalAlpha=.9;const pts=[];for(let i=0;i<=60;i++){const u=i/60;pts.push([w*(.18+.22*u),h*(.3+.05*Math.sin(u*12))])}
+    for(const p of pts)this.cg.drawImage(this.brush,p[0]-11,p[1]-11,22,22);this.cg.globalAlpha=1;this.acc=0;this.fx=null},
+  mistDrop(){const r=this.r,x=r()*this.w,y=r()*this.h,s=1.2+Math.pow(r(),3)*4;this.lg.drawImage(this.spr,x-s,y-s,s*2,s*2)},
+  spawn(x,y,rr){const r=this.r,P=this.P;this.drops.push({x:x??r()*this.w,y:y??r()*this.h*.85,r:rr??(3+Math.pow(r(),2)*(P.slide+3)),v:0,sh:r()*TAU,tr:0})},
+  down(x,y){if(this.fail)return;this.fx={x,y,lx:x,ly:y,moved:false,spd:0}},
+  move(x,y,held){if(!held||!this.fx)return;const f=this.fx,d=Math.hypot(x-f.lx,y-f.ly);if(d<2)return;
+    if(!f.moved&&Math.hypot(x-f.x,y-f.y)>5){f.moved=true;this.sq=AU.bed({type:'white',ft:'bandpass',f:1700,q:7,g:0,fade:.03})}
+    if(f.moved){const n=Math.ceil(d/3);for(let i=0;i<n;i++){const px=lerp(f.lx,x,i/n),py=lerp(f.ly,y,i/n);this.cg.globalAlpha=.9;this.cg.drawImage(this.brush,px-12,py-12,24,24);
+        this.lg.globalCompositeOperation='destination-out';this.lg.beginPath();this.lg.arc(px,py,10,0,TAU);this.lg.fill();this.lg.globalCompositeOperation='source-over'}
+      this.cg.globalAlpha=1;f.spd=lerp(f.spd,d,.3);this.sq?.set(clamp(f.spd/40,0,1)*.16*(.6+.4*this.r()),1500+f.spd*12,.02)}
+    f.lx=x;f.ly=y},
+  up(x,y){const f=this.fx;this.fx=null;if(!f)return;if(this.sq){this.sq.stop(.05);this.sq=null}
+    if(!f.moved){/* 유리 톡: 노크 + 방울 흔들림 */
+      AU.tone({f:420,d:.14,g:.22,bus:'room',rev:.3});AU.tone({f:1310,d:.07,g:.08,bus:'room',rev:.3});AU.tone({f:2710,d:.04,g:.04,bus:'room'});
+      AU.burst({type:'white',filters:[{t:'bandpass',f:2600,q:1.5}],a:.001,d:.02,g:.3,bus:'room'});
+      for(const d of this.drops){const k=Math.exp(-Math.hypot(d.x-x,d.y-y)/220);if(d.r>3)d.v+=90*k*(d.r/this.P.slide)}
+      this.shake=.25}},
+  frame(dt,t){if(this.fail)return;const P=this.P,r=this.r,w=this.w,h=this.h,q=this.q,gl=q.gl;
+    this.acc+=dt*P.rate;while(this.acc>=1){this.acc--;this.spawn()}
+    let k=P.mist*dt;while(k>0){if(r()<k)this.mistDrop();k--}
+    const me=FX.vs[FX.sel]===this&&AU.on;
+    /* 큰 방울: 멈칫멈칫 흐름 */
+    const L=this.drops,lg=this.lg,cg=this.cg;
+    for(let i=L.length-1;i>=0;i--){const d=L[i];
+      if(d.r>P.slide&&r()<dt*(d.r-P.slide+1)*1.4)d.v+=40+r()*120*(d.r/P.slide);
+      d.v*=Math.exp(-dt*(d.r>P.slide?2.2:6));if(d.v<2)d.v=0;
+      if(d.v>0){const dy=d.v*dt;d.y+=dy;d.x+=Math.sin(d.y*.05+d.sh)*dy*.25;d.tr+=dy;
+        lg.globalCompositeOperation='destination-out';lg.beginPath();lg.ellipse(d.x,d.y-d.r*.3,d.r*.85,d.r*1.2,0,0,TAU);lg.fill();lg.globalCompositeOperation='source-over';
+        cg.globalAlpha=.25;cg.drawImage(this.brush,d.x-d.r*1.3,d.y-d.r*1.3,d.r*2.6,d.r*2.6);cg.globalAlpha=1;
+        if(d.tr>d.r*1.1){d.tr=0;const s=d.r*(.22+r()*.14);lg.drawImage(this.spr,d.x-s+(r()-.5)*2,d.y-d.r*1.6-s,s*2,s*2);d.r*=.988}}
+      if(d.y-d.r>h||d.r<1.5){L.splice(i,1);continue}}
+    for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const a=L[i],b=L[j];if(Math.abs(a.x-b.x)>a.r+b.r)continue;
+      if(Math.hypot(a.x-b.x,a.y-b.y)<(a.r+b.r)*.7){const big=a.r>=b.r?a:b,sm=big===a?b:a;big.r=Math.min(24,Math.sqrt(a.r*a.r+b.r*b.r));big.v+=sm.v*.5+20;sm.r=0;
+        if(me&&r()<.5)AU.tone({f:2500+r()*2500,f2:1800,d:.03,g:.02,bus:'room',pan:(big.x/w)*2-1})}}
+    for(let i=L.length-1;i>=0;i--)if(L[i].r===0)L.splice(i,1);
+    if(me&&r()<dt*(6+P.rate*2))AU.tone({f:3000+r()*4000,a:.001,d:.01+r()*.03,g:.012+r()*.03,bus:'room',rev:.2,pan:r()*2-1});
+    /* 김 다시 서림 */
+    cg.fillStyle=`rgba(0,0,0,${Math.min(1,dt/P.refog*2.5)})`;cg.fillRect(0,0,w,h);
+    const dg=this.dg;dg.clearRect(0,0,w,h);dg.drawImage(this.lc,0,0);for(const d of L){const sy=1+Math.min(.5,d.v/300);dg.drawImage(this.spr,d.x-d.r,d.y-d.r*sy,d.r*2,d.r*2*sy)}
+    this.shake=Math.max(0,(this.shake||0)-dt);
+    this.td=q.tex(2,this.dc,this.td);this.tc=q.tex(3,this.cc,this.tc);
+    gl.uniform1i(q.u('uSharp'),0);gl.uniform1i(q.u('uBlur'),1);gl.uniform1i(q.u('uDrops'),2);gl.uniform1i(q.u('uClear'),3);gl.uniform1f(q.u('uRefr'),P.refr);gl.uniform1f(q.u('uFog'),P.fog);gl.uniform2f(q.u('uRes'),w,h);q.draw()},
+  stat(){return this.fail?'WebGL 없음':`큰 방울 ${this.drops.length}`},
+  ambient(on){if(on){this.bed=AU.bed({type:'pink',ft:'highpass',f:900,g:.05,rev:.2,bus:'room'});this.bed2=AU.bed({type:'brown',f:200,g:.04})}else{this.bed?.stop();this.bed2?.stop();this.bed=this.bed2=null}},
+  reset(){this.drops.length=0;this.lg.clearRect(0,0,this.w,this.h)},
+  trigger(){this.down(this.w/2,this.h/2);this.up(this.w/2,this.h/2)},
+  extraJson(){return{mistSprite:'normal RG + mask A',slideImpulsePxPerSec:[40,160]}}
+});
+
+/* =====================================================================
+   2) 우산 위 빗소리 — 92 우산 대여점
+   ===================================================================== */
+const UMB=[['빨강','#c8322c','#8e1f1c'],['노랑','#e5b52a','#a67d14'],['파랑','#2d6fc4','#1d4a86'],['투명','rgba(220,235,255,.35)','rgba(160,180,210,.35)']];
+variant({id:'umbrella_rain',name:'우산 위 빗소리',concept:'92 우산 대여점',conceptFull:'92 우산 대여점 — 갑작스런 소나기, 우산 아래로 모여드는 사람들',
+  hint:'누르고 있기: 우산 펴고 걷기 (소리가 우산 안으로 바뀐다) · 놓기: 접기',
+  params:[{k:'rain',label:'빗줄기 /s',min:50,max:1500,step:10,v:620},{k:'wind',label:'바람 기울기',min:-.6,max:.6,step:.01,v:.12},
+    {k:'patter',label:'우산 타닥 최대 /s',min:5,max:80,step:1,v:38},{k:'muffle',label:'우산 속 차음 Hz',min:400,max:4000,step:50,v:1300},
+    {k:'col',label:'우산 색',opts:UMB.map(u=>u[0]),v:0}],
+  memo:`<p><b>기법</b> 빗줄기마다 <b>착지 지점</b>을 미리 정한다. 착지점이 우산 그림자(마른 땅) 안이면 캔버스 위 우산 표면에서 멈추고 튀김+타닥 소리, 밖이면 땅에서 물결 고리. 우산 가장자리 살 끝에서는 낙수가 떨어져 <b>마른 땅 둘레에 물결 고리가 원을 그린다</b>. 우산을 펴면 바깥 빗소리 전체에 저역통과(차음)가 걸리고, 머리 위 타닥 소리가 앞으로 나온다 — "우산 속"이 소리로 느껴져야 한다.</p>
+  <p><b>Unity 이식</b> 빗줄기: Shuriken Stretched Billboard + Collision(Planes) → Sub Emitter(Death: 물결 Flipbook). 우산은 Collider로 두면 Collision 이벤트로 오디오 트리거(OnParticleCollision, 초당 상한). 차음: AudioMixer 스냅샷 전환 (Lowpass Cutoff 22kHz→muffle, 250ms).</p>
+  <p><b>함정</b> 충돌마다 AudioSource를 재생하면 폭주 — 초당 상한과 음량 랜덤(±6dB)·음높이 랜덤이 필수. 우산이 없을 때도 땅 물결이 소리와 같은 밀도여야 비가 "보인다".</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.r=mulberry32(92);this.streaks=[];this.rip=[];this.spl=[];this.drip=[];this.u={x:w*.5,y:h*.72,k:0,open:false};this.acc=0;this.pat=0;
+    this.bg=this.paint(w,h)},
+  paint(w,h){const[c,g]=mk(w,h),r=mulberry32(921);
+    /* 젖은 아스팔트 */
+    const img=g.createImageData(w,h),d=img.data,n=makeNoise(922);for(let j=0;j<h;j++)for(let i=0;i<w;i++){const v=n.fbm(i*.03,j*.08,3),k=(j*w+i)*4,s=16+v*14;d[k]=s;d[k+1]=s+1;d[k+2]=s+5;d[k+3]=255}g.putImageData(img,0,0);
+    /* 인도 + 가게 차양 */
+    g.fillStyle='#2a2826';g.fillRect(0,0,w,h*.24);for(let x=0;x<w;x+=26){g.fillStyle='rgba(0,0,0,.25)';g.fillRect(x,0,1,h*.24)}for(let y=0;y<h*.24;y+=18){g.fillStyle='rgba(0,0,0,.25)';g.fillRect(0,y,w,1)}
+    g.fillStyle='#3a3836';g.fillRect(0,h*.24,w,6);
+    const shops=[[.12,'255,90,120'],[.37,'90,210,255'],[.62,'255,185,80'],[.87,'140,255,170']];this.shops=shops;
+    for(const[fx,col]of shops){const x=w*fx;g.fillStyle=`rgba(${col},.9)`;g.beginPath();g.moveTo(x-62,0);g.lineTo(x+62,0);g.lineTo(x+54,h*.07);g.lineTo(x-54,h*.07);g.fill();
+      for(let k=0;k<6;k++){g.fillStyle='rgba(255,255,255,.18)';g.fillRect(x-54+k*20,0,10,h*.07)}
+      const lg=g.createRadialGradient(x,h*.1,4,x,h*.12,110);lg.addColorStop(0,`rgba(${col},.35)`);lg.addColorStop(1,`rgba(${col},0)`);g.fillStyle=lg;g.fillRect(x-120,0,240,h*.3);
+      /* 젖은 노면 반사: 세로로 늘어진 번짐 */
+      g.save();g.filter='blur(4px)';for(let i=0;i<46;i++){const y=h*.26+i*h*.016,a=.22*Math.pow(1-i/46,1.3),ww=26+r()*50;g.fillStyle=`rgba(${col},${a})`;g.fillRect(x-ww/2+(r()-.5)*12,y,ww,h*.011)}g.restore()}
+    /* 가로등 빛 웅덩이 */
+    for(const fx of[.25,.75]){const x=w*fx,y=h*.62,lg=g.createRadialGradient(x,y,4,x,y,150);lg.addColorStop(0,'rgba(255,210,150,.22)');lg.addColorStop(1,'rgba(255,210,150,0)');g.fillStyle=lg;g.beginPath();g.ellipse(x,y,170,70,0,0,TAU);g.fill()}
+    /* 횡단보도 */
+    for(let i=0;i<8;i++){const x=w*.08+i*w*.11;g.fillStyle='rgba(225,228,232,.13)';g.fillRect(x,h*.8,w*.065,h*.15);g.fillStyle='rgba(255,255,255,.05)';g.fillRect(x+3,h*.81,w*.02,h*.13)}
+    /* 물웅덩이 (하늘·간판 반사) */
+    for(let i=0;i<6;i++){const x=r()*w,y=h*(.34+r()*.4),rx=40+r()*60,ry=10+r()*14,sc=shops[(r()*4)|0][1];g.save();g.translate(x,y);g.scale(1,ry/rx);
+      const pg=g.createRadialGradient(0,0,rx*.2,0,0,rx);pg.addColorStop(0,`rgba(${sc},.16)`);pg.addColorStop(.8,'rgba(40,46,60,.25)');pg.addColorStop(1,'rgba(40,46,60,0)');g.fillStyle=pg;g.beginPath();g.arc(0,0,rx,0,TAU);g.fill();g.restore()}
+    return c},
+  npcs(t){const w=this.w,h=this.h;return[[0,.36,34,1],[1,.5,-26,2],[2,.44,40,3],[3,.62,-32,0],[4,.3,22,2]].map(([i,fy,sp,ci])=>{const x=((i*173+t*sp)%(w+200)+w+200)%(w+200)-100;return{x,y:h*fy+Math.sin(t*3+i)*1.5,ci,k:.8}})},
+  drawUmb(g,x,y,k,col,t){const R=78*k,cx=x,cy=y-48*k,rx=R,ry=R*.5;const n=8;
+    for(let i=0;i<n;i++){const a0=i/n*TAU,a1=(i+1)/n*TAU;g.fillStyle=i%2?col[1]:col[2];g.beginPath();g.moveTo(cx,cy-ry*.35);
+      for(let q=0;q<=6;q++){const a=lerp(a0,a1,q/6),sc=1-.06*Math.sin((q/6)*Math.PI);g.lineTo(cx+Math.cos(a)*rx*sc,cy+Math.sin(a)*ry*sc)}g.closePath();g.fill()}
+    const hl=g.createRadialGradient(cx-rx*.3,cy-ry*.6,2,cx,cy,rx);hl.addColorStop(0,'rgba(255,255,255,.28)');hl.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=hl;g.beginPath();g.ellipse(cx,cy,rx,ry,0,0,TAU);g.fill();
+    g.fillStyle='#ddd';g.beginPath();g.arc(cx,cy-ry*.35,2.5,0,TAU);g.fill()},
+  down(x,y){this.u.open=true;this.u.x=x;this.u.y=y;this.u.t0=performance.now();
+    AU.burst({type:'pink',filters:[{t:'bandpass',f:350,f2:1400,q:1.2,ft:.25}],a:.1,d:.18,g:.35,bus:'room',rev:.15});
+    AU.tone({f:2200,t:.24,d:.03,g:.12,bus:'room'});AU.burst({type:'white',t:.24,filters:[{t:'highpass',f:3000}],a:.001,d:.02,g:.2,bus:'room'});
+    this.muffle(true)},
+  move(x,y,held){if(held&&this.u.open){this.u.x=x;this.u.y=y}},
+  up(){if(!this.u.open)return;this.u.open=false;AU.burst({type:'pink',filters:[{t:'bandpass',f:1400,f2:400,q:1.2,ft:.2}],a:.05,d:.16,g:.25,bus:'room'});AU.tone({f:1800,t:.17,d:.03,g:.1,bus:'room'});this.muffle(false)},
+  muffle(on){if(!this.lp)return;const t=AU.ctx.currentTime;this.lp.frequency.setTargetAtTime(on?this.P.muffle:18000,t,.08);this.rainG.gain.setTargetAtTime(on?.75:1,t,.1)},
+  canopy(){const u=this.u,R=78*u.k;return{cx:u.x,cy:u.y-48,rx:R,ry:R*.5,gx:u.x,gy:u.y+4,grx:R*.95,gry:R*.36}},
+  frame(dt,t){const g=this.g,P=this.P,r=this.r,w=this.w,h=this.h,u=this.u;
+    const tk=u.open?1:0;if(u.open){const e=Math.min(1,(performance.now()-u.t0)/260);u.k=e<1?1+2.4*Math.pow(e-1,3)+1.4*Math.pow(e-1,2):1}else u.k=Math.max(0,u.k-dt*6);
+    const C=this.canopy(),me=FX.vs[FX.sel]===this&&AU.on,NP=this.npcs(t);
+    this.acc+=dt*P.rain;while(this.acc>=1){this.acc--;const gx=r()*(w+200)-100,gy=h*(.22+r()*.8),len=gy-(-20);this.streaks.push({x0:gx-P.wind*len,y:-20-r()*80,gx,gy,v:900+r()*400})}
+    this.pat=Math.max(0,this.pat-dt*P.patter);
+    for(let i=this.streaks.length-1;i>=0;i--){const s=this.streaks[i];s.y+=s.v*dt;
+      let inDry=u.k>.3&&Math.pow((s.gx-C.gx)/C.grx,2)+Math.pow((s.gy-C.gy)/C.gry,2)<1,npc=false;
+      if(!inDry)for(const N of NP){if(Math.pow((s.gx-N.x)/(62*.95),2)+Math.pow((s.gy-N.y-4)/(62*.36),2)<1){npc=N;break}}
+      const stopY=inDry?C.cy-C.ry*Math.sqrt(Math.max(0,1-Math.pow((s.gx-C.cx)/C.rx,2)))*.3+ (s.gy-C.gy)*.5:s.gy;
+      if(npc&&s.y>=npc.y-38+(s.gy-npc.y)*.5){this.streaks.splice(i,1);for(let k=0;k<2;k++)this.spl.push({x:s.gx,y:npc.y-38+(s.gy-npc.y)*.5,vx:(r()-.5)*80,vy:-40-r()*50,age:0,life:.18,});continue}
+      if(npc)continue;
+      if(s.y>=stopY){this.streaks.splice(i,1);
+        if(inDry){for(let k=0;k<3;k++)this.spl.push({x:s.gx,y:stopY,vx:(r()-.5)*90,vy:-40-r()*70,age:0,life:.18+r()*.15});
+          if(me&&this.pat<1&&r()<.7){this.pat+=1;AU.burst({type:'white',filters:[{t:'bandpass',f:700+r()*900,q:2.2}],a:.0008,d:.012+r()*.035,g:.05+r()*.16,bus:'room',rev:.08,pan:(s.gx-u.x)/120})}
+          if(r()<.08){const a=r()*TAU;this.drip.push({x:C.cx+Math.cos(a)*C.rx,y:C.cy+Math.sin(a)*C.ry*.6+C.ry*.3,ty:C.gy+Math.sin(a)*C.gry*1.1,v:0})}}
+        else{this.rip.push({x:s.gx,y:s.gy,age:0,life:.45+r()*.3,m:.7+r()*.6});if(r()<.3)for(let k=0;k<2;k++)this.spl.push({x:s.gx,y:s.gy,vx:(r()-.5)*50,vy:-30-r()*40,age:0,life:.15+r()*.1})}}}
+    for(let i=this.drip.length-1;i>=0;i--){const d=this.drip[i];d.v+=900*dt;d.y+=d.v*dt;if(d.y>=d.ty){this.drip.splice(i,1);this.rip.push({x:d.x,y:d.ty,age:0,life:.7,m:1.4});if(me&&r()<.3)AU.tone({f:900+r()*600,f2:500,d:.04,g:.03,bus:'room',pan:(d.x/w)*2-1})}}
+    g.drawImage(this.bg,0,0);
+    /* 마른 땅 */
+    if(u.k>.05){g.fillStyle=`rgba(40,40,44,${.55*Math.min(1,u.k)})`;g.beginPath();g.ellipse(C.gx,C.gy,C.grx,C.gry,0,0,TAU);g.fill()}
+    g.lineWidth=1;for(let i=this.rip.length-1;i>=0;i--){const q=this.rip[i];q.age+=dt;const e=q.age/q.life;if(e>=1){this.rip.splice(i,1);continue}
+      const rr=2+e*14*q.m;g.strokeStyle=`rgba(190,205,225,${(1-e)*.5})`;g.beginPath();g.ellipse(q.x,q.y,rr,rr*.35,0,0,TAU);g.stroke();
+      if(e<.5){g.strokeStyle=`rgba(190,205,225,${(.5-e)*.4})`;g.beginPath();g.ellipse(q.x,q.y,rr*.5,rr*.17,0,0,TAU);g.stroke()}}
+    for(const N of NP){g.fillStyle='rgba(30,30,34,.5)';g.beginPath();g.ellipse(N.x,N.y+4,58,22,0,0,TAU);g.fill();this.drawUmb(g,N.x,N.y,.8,UMB[N.ci],t)}
+    /* 우산 */
+    if(u.k>.02){const col=UMB[P.col];g.fillStyle='rgba(0,0,0,.25)';g.fillRect(u.x-1.5,C.cy,3,u.y-C.cy);
+      g.strokeStyle='#2b2b2e';g.lineWidth=3;g.beginPath();g.moveTo(u.x,C.cy);g.lineTo(u.x,u.y-12);g.arc(u.x+6,u.y-12,6,Math.PI,0,true);g.stroke();
+      const n=8;for(let i=0;i<n;i++){const a0=i/n*TAU+t*.0,a1=(i+1)/n*TAU;g.fillStyle=i%2?col[1]:col[2];g.beginPath();g.moveTo(C.cx,C.cy-C.ry*.35);
+        for(let k=0;k<=6;k++){const a=lerp(a0,a1,k/6),sc=1-.06*Math.sin((k/6)*Math.PI);g.lineTo(C.cx+Math.cos(a)*C.rx*sc,C.cy+Math.sin(a)*C.ry*sc)}g.closePath();g.fill()}
+      const hl=g.createRadialGradient(C.cx-C.rx*.3,C.cy-C.ry*.6,2,C.cx,C.cy,C.rx);hl.addColorStop(0,'rgba(255,255,255,.28)');hl.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=hl;g.beginPath();g.ellipse(C.cx,C.cy,C.rx,C.ry,0,0,TAU);g.fill();
+      g.fillStyle='#ddd';g.beginPath();g.arc(C.cx,C.cy-C.ry*.35,2.5,0,TAU);g.fill()}
+    /* 빗줄기 */
+    g.strokeStyle='rgba(200,215,235,.32)';g.lineWidth=1;g.beginPath();
+    for(const s of this.streaks){const len=s.gy+20,u2=(s.y+20)/len,x=lerp(s.x0,s.gx,u2);g.moveTo(x,s.y);g.lineTo(x-P.wind*26,s.y-26)}g.stroke();
+    g.fillStyle='rgba(220,230,245,.8)';for(let i=this.spl.length-1;i>=0;i--){const p=this.spl[i];p.age+=dt;if(p.age>p.life){this.spl.splice(i,1);continue}p.vy+=500*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;g.fillRect(p.x,p.y,1.4,1.4)}
+    for(const d of this.drip){g.fillRect(d.x,d.y-4,1.5,5)}
+    if(me&&this.rainG)this.rainG.gain.setTargetAtTime((u.open?.75:1)*clamp(P.rain/620,.2,2),AU.ctx.currentTime,.2)},
+  stat(){return this.u.open?`우산 속 · 차음 ${this.P.muffle}Hz`:'비 맞는 중'},
+  ambient(on){if(on){const c=AU.ctx;this.lp=c.createBiquadFilter();this.lp.type='lowpass';this.lp.frequency.value=18000;this.rainG=c.createGain();this.rainG.gain.value=1;this.lp.connect(this.rainG);this.rainG.connect(AU.bus);
+      this.b1=AU.bed({type:'pink',ft:'bandpass',f:2400,q:.35,g:.12});this.b2=AU.bed({type:'brown',f:500,g:.1});for(const b of[this.b1,this.b2]){b.g.disconnect();b.g.connect(this.lp)}}
+    else{this.b1?.stop();this.b2?.stop();this.b1=this.b2=null;this.lp=null}},
+  trigger(){this.down(this.w*.5,this.h*.7);setTimeout(()=>this.up(),1500)},
+  extraJson(){return{canopyRadiusPx:78,openMs:260,closeMs:170,dripChance:.08}}
+});
+
+/* =====================================================================
+   3) 쌓이는 눈 — 93 눈사람의 겨울
+   ===================================================================== */
+variant({id:'snow_accum',name:'쌓이는 눈 · 녹는 몸',concept:'93 눈사람의 겨울',conceptFull:'93 눈사람의 겨울 — 움직일 수 없는 눈사람, 햇빛이 몸을 깎는다',
+  hint:'나뭇가지 클릭: 흔들어 눈 떨구기 · 눈사람 클릭: 몸 떨기 · 빈 곳: 바람',
+  params:[{k:'fall',label:'눈송이 수',min:0,max:900,step:10,v:420},{k:'acc',label:'쌓임 배율',min:0,max:4,step:.05,v:2.4},
+    {k:'repose',label:'안식각(경사 한계)',min:.3,max:3,step:.05,v:1.1},{k:'sun',label:'햇빛(녹음)',min:0,max:1,step:.01,v:0},{k:'sway',label:'흔들림',min:0,max:60,step:1,v:22}],
+  memo:`<p><b>기법</b> 표면마다 <b>1px 열 높이 배열</b>(지면·울타리·가지·눈사람 모자·어깨). 눈송이가 표면을 통과하는 순간 그 열에 가우시안으로 높이를 더하고, 매 프레임 이웃 차이가 안식각을 넘으면 흘려보낸다(모래더미 규칙). 가지를 흔들면 쌓인 높이를 덩어리 입자로 바꿔 떨어뜨리고, 떨어진 곳에 다시 쌓인다 — 눈이 <b>보존</b>되니 행동의 결과가 남는다.</p>
+  <p><b>Unity 이식</b> 높이 배열은 순수 C# <code>int[]</code>(1/100px 단위)로 — 저장·되감기·헤드리스 검증 가능. 렌더는 표면별 동적 Mesh(상단 정점 = 높이) 또는 높이 텍스처를 읽는 셰이더. 햇빛: 녹는 속도(px/s)를 정수로, 눈사람 반지름도 같은 규칙.</p>
+  <p><b>함정</b> 입자 충돌을 물리엔진으로 하면 비싸고 비결정적 — 열 배열 한 번 조회로 충분. 가우시안 없이 1열에만 쌓으면 바늘 기둥이 선다.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.r=mulberry32(93);this.n=makeNoise(931);
+    this.flakeS=glowSprite(32,[255,255,255],1.3);this.fl=[];for(let i=0;i<900;i++)this.fl.push(this.newFlake(true));
+    const gy=x=>h*.86+Math.sin(x*.012)*4;
+    this.sm={x:w*.64,y:h*.86,r1:62,r2:44,r3:32,wob:0,melt:0};
+    this.br={x0:-10,y0:h*.26,x1:w*.46,y1:h*.33,ph:0,amp:0};
+    this.surf=[{id:'ground',x0:0,x1:w,y:gy},
+      {id:'fence',x0:0,x1:w*.42,y:x=>h*.66},
+      {id:'branch',x0:0,x1:w*.46,y:x=>this.brY(x),dyn:true},
+      {id:'hat',x0:0,x1:0,y:null,sm:'hat'},{id:'head',x0:0,x1:0,y:null,sm:'head'},{id:'body',x0:0,x1:0,y:null,sm:'body'}];
+    this.surf.forEach(s=>s.a=new Float32Array(w+2));
+    for(let i=0;i<w;i++){this.surf[0].a[i]=10+this.n(i*.02,1)*6;if(i<w*.42)this.surf[1].a[i]=4+this.n(i*.05,2)*3;if(i<w*.46)this.surf[2].a[i]=6*sstep(0,40,i)*sstep(w*.46,w*.36,i)}
+    for(let i=0;i<w;i++){for(const s of this.surf.slice(3)){if(this.surfY(s,i)!=null)s.a[i]=s.sm==='hat'?7:s.sm==='head'?5:4}}
+    for(let i=0;i<w*.46;i++)this.surf[2].a[i]+=4*sstep(0,40,i);
+    this.clumps=[];this.puffs=[];this.gust=0;this.bg=this.paint(w,h)},
+  brY(x){const B=this.br,u=clamp((x-B.x0)/(B.x1-B.x0),0,1);return lerp(B.y0,B.y1,u)+Math.sin(u*3)*6+Math.sin(B.ph)*B.amp*u*u},
+  smY(kind,x){const S=this.sm,sc=1-S.melt*.35,wob=Math.sin(S.wob*30)*S.wob*6;const c=[[S.x+wob,S.y-S.r1*sc,S.r1*sc],[S.x+wob*1.5,S.y-2*S.r1*sc-S.r2*sc+8,S.r2*sc],[S.x+wob*2,S.y-2*S.r1*sc-2*S.r2*sc-S.r3*sc+14,S.r3*sc]];
+    if(kind==='hat'){const hc=c[2];if(Math.abs(x-hc[0])>hc[2]*.7)return null;return hc[1]-hc[2]-22}
+    const k=kind==='head'?c[2]:kind==='body'?c[1]:c[0];const dx=x-k[0];if(Math.abs(dx)>k[2]*.85)return null;if(kind==='head'){const hc=c[2];if(Math.abs(x-hc[0])<hc[2]*.7)return null}
+    if(kind==='body'&&Math.abs(dx)<c[2][2]*.9)return null;return k[1]-Math.sqrt(k[2]*k[2]-dx*dx)},
+  surfY(s,x){if(s.sm)return this.smY(s.sm,x);if(x<s.x0||x>s.x1)return null;return s.y(x)},
+  newFlake(init){const r=this.r;return{x:r()*this.w,y:init?r()*this.h:-10-r()*40,z:.25+r()*.75,ph:r()*TAU,on:true}},
+  paint(w,h){const[c,g]=mk(w,h),r=mulberry32(932);let gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#7b8aa3');gr.addColorStop(.6,'#b9c1cd');gr.addColorStop(1,'#d8d6d2');g.fillStyle=gr;g.fillRect(0,0,w,h);
+    ridge(g,w,h,h*.62,h*.06,.006,93,'#9aa3b3');
+    /* 집 벽 + 창 */
+    g.fillStyle='#8a7a6e';g.fillRect(w*.72,h*.28,w*.3,h*.6);g.fillStyle='#ffd99a';g.fillRect(w*.8,h*.4,w*.1,h*.14);g.strokeStyle='#5a4a40';g.lineWidth=3;g.strokeRect(w*.8,h*.4,w*.1,h*.14);g.beginPath();g.moveTo(w*.85,h*.4);g.lineTo(w*.85,h*.54);g.stroke();
+    /* 나무 줄기 */
+    g.fillStyle='#3b2e2a';g.beginPath();g.moveTo(0,h);g.lineTo(0,0);g.lineTo(26,0);g.quadraticCurveTo(18,h*.5,34,h*.88);g.lineTo(0,h);g.fill();
+    /* 울타리 */
+    for(let x=6;x<w*.42;x+=24){g.fillStyle='#6b5446';g.fillRect(x,h*.62,9,h*.26)}g.fillStyle='#5a4538';g.fillRect(0,h*.66,w*.42,7);g.fillRect(0,h*.76,w*.42,6);
+    return c},
+  down(x,y){const B=this.br,S=this.sm;
+    if(x<B.x1+20&&Math.abs(y-this.brY(clamp(x,0,B.x1)))<40){B.amp=this.P.sway;this.shed(this.surf[2],.85);
+      AU.tone({w:'sawtooth',f:95,f2:70,a:.02,d:.35,g:.06,filters:[{t:'bandpass',f:420,q:3}],bus:'room'});for(let i=0;i<6;i++)AU.burst({type:'white',t:i*.03,filters:[{t:'bandpass',f:2500+i*300,q:3}],a:.001,d:.015,g:.08,pan:-.4});return}
+    if(Math.abs(x-S.x)<S.r1&&y<S.y&&y>S.y-2*S.r1-2*S.r2-2*S.r3-30){S.wob=.6;this.shed(this.surf[3],.9);this.shed(this.surf[4],.7);this.shed(this.surf[5],.5);
+      for(let i=0;i<10;i++)AU.burst({type:'white',t:i*.025+this.r()*.02,filters:[{t:'bandpass',f:900+this.r()*800,q:2}],a:.002,d:.03,g:.12,bus:'room'});return}
+    this.gust=1;AU.burst({type:'pink',filters:[{t:'bandpass',f:300,f2:800,q:.8}],a:.2,d:1.2,g:.3,rev:.3})},
+  shed(s,frac){const r=this.r;let n=0;for(let x=0;x<s.a.length;x+=5){const hgt=s.a[x];if(hgt<2)continue;const y=this.surfY(s,x);if(y==null)continue;
+      const take=hgt*frac;for(let k=-2;k<=2;k++)if(s.a[x+k]!=null)s.a[x+k]*=1-frac;
+      this.clumps.push({x,y:y-hgt*.5,vx:(r()-.5)*30,vy:-20+r()*20,m:take*5,s:3+Math.sqrt(take)*2.4,rot:r()*TAU,dy:0});n++}
+    this.pendingThud=n},
+  up(){},
+  deposit(s,x,amt){const R=4;for(let k=-R;k<=R;k++){const i=(x|0)+k;if(i<0||i>=s.a.length)continue;if(this.surfY(s,i)==null)continue;s.a[i]+=amt*Math.exp(-k*k/8)*.35}},
+  hit(x,y0,y1){/* 가장 먼저 닿는 표면 */let best=null,by=1e9;for(const s of this.surf){const sy=this.surfY(s,x);if(sy==null)continue;const top=sy-s.a[x|0];if(top>=y0-1&&top<=y1+1&&top<by){by=top;best=s}}return best},
+  frame(dt,t){const g=this.g,P=this.P,r=this.r,w=this.w,h=this.h,B=this.br,S=this.sm;
+    B.ph+=dt*14;B.amp*=Math.exp(-dt*2.5);S.wob=Math.max(0,S.wob-dt);this.gust=Math.max(0,this.gust-dt*.6);
+    S.melt=clamp(S.melt+dt*P.sun*.02-dt*.002,0,1);
+    const nf=P.fall|0,wind=Math.sin(t*.3)*10+this.gust*160;
+    for(let i=0;i<nf;i++){const f=this.fl[i],vy=(22+38*f.z)*(1+this.gust*.3),vx=wind*f.z+Math.sin(t*1.1+f.ph)*10*f.z;const y0=f.y;f.x+=vx*dt;f.y+=vy*dt;
+      if(f.x<0)f.x+=w;if(f.x>=w)f.x-=w;
+      if(f.z>.45){const s=this.hit(f.x,y0,f.y);if(s){this.deposit(s,f.x,P.acc*(.5+f.z));Object.assign(f,this.newFlake(false));continue}}
+      if(f.y>h+5)Object.assign(f,this.newFlake(false))}
+    /* 안식각: 이웃과의 차이 제한 */
+    for(const s of this.surf){const a=s.a,lim=P.repose;for(let pass=0;pass<2;pass++)for(let i=1;i<w;i++){const d=a[i]-a[i-1];if(d>lim){const m=(d-lim)*.5;a[i]-=m;a[i-1]+=m}else if(d<-lim){const m=(-d-lim)*.5;a[i]+=m;a[i-1]-=m}}
+      for(let i=1;i<w-1;i++)a[i]+=(a[i-1]+a[i+1]-2*a[i])*.08;
+      if(P.sun>0)for(let i=0;i<w;i++)a[i]=Math.max(0,a[i]-dt*P.sun*1.2);for(let i=0;i<w;i++)if(a[i]>80)a[i]=80}
+    for(const s of this.surf)if(s.sm){for(let i=0;i<w;i++)if(this.surfY(s,i)==null)s.a[i]=0}
+    /* 덩어리 */
+    let thud=0;for(let i=this.clumps.length-1;i>=0;i--){const c=this.clumps[i];const y0=c.y;c.vy+=520*dt;c.x+=c.vx*dt;c.y+=c.vy*dt;c.rot+=dt*2;
+      const s=this.hit(c.x,y0,c.y);if(s&&s!==this.surf[2]&&c.vy>0){this.deposit(s,c.x,c.m*.4);for(let k=0;k<4;k++)this.puffs.push({x:c.x+(r()-.5)*10,y:c.y,vx:(r()-.5)*40,vy:-10-r()*30,age:0,life:.6+r()*.4,s:c.s*2});this.clumps.splice(i,1);thud++}}
+    if(thud&&AU.on){AU.burst({type:'brown',filters:[{t:'lowpass',f:260}],a:.005,d:.25,g:Math.min(.5,.12*thud),bus:'room'});AU.burst({type:'white',filters:[{t:'bandpass',f:3500,q:.7}],a:.01,d:.35,g:.04*Math.min(3,thud),bus:'room'})}
+    g.drawImage(this.bg,0,0);
+    if(P.sun>0){g.fillStyle=`rgba(255,210,140,${P.sun*.25})`;g.fillRect(0,0,w,h)}
+    /* 먼 눈송이 */
+    g.fillStyle='#fff';for(let i=0;i<nf;i++){const f=this.fl[i];if(f.z>.45)continue;g.globalAlpha=.35+f.z;g.fillRect(f.x,f.y,1+f.z*1.6,1+f.z*1.6)}g.globalAlpha=1;
+    /* 가지 */
+    g.strokeStyle='#3b2e2a';g.lineCap='round';g.lineWidth=10;g.beginPath();for(let x=0;x<=B.x1;x+=8){const y=this.brY(x);x?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();
+    g.lineWidth=4;for(const fx of[.35,.6,.82]){const x=B.x1*fx,y=this.brY(x);g.beginPath();g.moveTo(x,y);g.lineTo(x+22,y-24+Math.sin(B.ph)*B.amp*.3);g.stroke()}
+    /* 눈사람 */
+    const sc=1-S.melt*.35,wob=Math.sin(S.wob*30)*S.wob*6;
+    const cs=[[S.x+wob,S.y-S.r1*sc,S.r1*sc],[S.x+wob*1.5,S.y-2*S.r1*sc-S.r2*sc+8,S.r2*sc],[S.x+wob*2,S.y-2*S.r1*sc-2*S.r2*sc-S.r3*sc+14,S.r3*sc]];
+    for(const[x,y,rr]of cs){const gg=g.createRadialGradient(x-rr*.35,y-rr*.4,rr*.1,x,y,rr);gg.addColorStop(0,'#ffffff');gg.addColorStop(.7,'#e4e9f2');gg.addColorStop(1,'#a9b4c8');g.fillStyle=gg;g.beginPath();g.arc(x,y,rr,0,TAU);g.fill()}
+    const hd=cs[2];g.fillStyle='#1e1e24';g.fillRect(hd[0]-hd[2]*.7,hd[1]-hd[2]-6,hd[2]*1.4,6);g.fillRect(hd[0]-hd[2]*.45,hd[1]-hd[2]-22,hd[2]*.9,17);
+    g.fillStyle='#111';g.beginPath();g.arc(hd[0]-9,hd[1]-4,2.6,0,TAU);g.arc(hd[0]+9,hd[1]-4,2.6,0,TAU);g.fill();g.fillStyle='#e8702a';g.beginPath();g.moveTo(hd[0],hd[1]+2);g.lineTo(hd[0]+18,hd[1]+6);g.lineTo(hd[0],hd[1]+8);g.fill();
+    g.strokeStyle='#4a3428';g.lineWidth=3;g.lineCap='round';const bd=cs[1];g.beginPath();g.moveTo(bd[0]-bd[2]*.85,bd[1]);g.lineTo(bd[0]-bd[2]*1.9,bd[1]-bd[2]*.7+wob);g.moveTo(bd[0]-bd[2]*1.6,bd[1]-bd[2]*.5);g.lineTo(bd[0]-bd[2]*1.8,bd[1]-bd[2]*.95);
+    g.moveTo(bd[0]+bd[2]*.85,bd[1]);g.lineTo(bd[0]+bd[2]*1.85,bd[1]-bd[2]*.35-wob);g.stroke();g.fillStyle='#1c1c20';for(let k=0;k<3;k++){g.beginPath();g.arc(bd[0]+wob*.3,bd[1]-bd[2]*.2+k*bd[2]*.38,3,0,TAU);g.fill()}
+    g.fillStyle='#b8322c';g.fillRect(cs[1][0]-cs[1][2]*.8,cs[1][1]-cs[1][2]*.75,cs[1][2]*1.6,9);g.fillRect(cs[1][0]+cs[1][2]*.3,cs[1][1]-cs[1][2]*.7,9,26);
+    if(S.melt>.05){g.fillStyle=`rgba(170,190,215,${S.melt*.6})`;g.beginPath();g.ellipse(S.x,S.y+4,S.r1*(1+S.melt*.8),10,0,0,TAU);g.fill()}
+    /* 쌓인 눈 */
+    for(const s of this.surf){const a=s.a;let open=false;g.beginPath();const pts=[];
+      for(let x=0;x<w;x+=2){const y=this.surfY(s,x);if(y==null||a[x]<.6){if(open){for(let k=pts.length-1;k>=0;k--)g.lineTo(pts[k][0],pts[k][1]);g.closePath();pts.length=0;open=false}continue}
+        if(!open){g.moveTo(x,y-a[x]);open=true}else g.lineTo(x,y-a[x]);pts.push([x,y+1.5])}
+      if(open){for(let k=pts.length-1;k>=0;k--)g.lineTo(pts[k][0],pts[k][1]);g.closePath()}
+      g.fillStyle='#f6f8fc';g.fill();g.strokeStyle='rgba(150,165,190,.55)';g.lineWidth=1;g.stroke()}
+    /* 덩어리·가루 */
+    for(const c of this.clumps){g.fillStyle='#f4f7fb';g.beginPath();g.ellipse(c.x,c.y,c.s,c.s*.75,c.rot,0,TAU);g.fill()}
+    for(let i=this.puffs.length-1;i>=0;i--){const p=this.puffs[i];p.age+=dt;if(p.age>p.life){this.puffs.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;g.globalAlpha=(1-p.age/p.life)*.7;g.drawImage(this.flakeS,p.x-p.s,p.y-p.s,p.s*2,p.s*2)}
+    /* 가까운 눈송이 (보케) */
+    for(let i=0;i<nf;i++){const f=this.fl[i];if(f.z<=.45)continue;const s=1.5+f.z*4.5;g.globalAlpha=.55+f.z*.4;g.drawImage(this.flakeS,f.x-s,f.y-s,s*2,s*2)}
+    g.globalAlpha=1},
+  stat(){const a=this.surf[0].a;let m=0;for(let i=0;i<this.w;i+=4)m+=a[i];return `지면 적설 ${(m/(this.w/4)/4).toFixed(1)}cm · 몸 ${(100-this.sm.melt*100|0)}%`},
+  ambient(on){if(on){this.b=AU.bed({type:'pink',f:380,g:.035,rev:.4});this.b2=AU.bed({type:'white',ft:'bandpass',f:6500,q:.7,g:.004})}else{this.b?.stop();this.b2?.stop();this.b=this.b2=null}},
+  reset(){this.surf.forEach(s=>s.a.fill(0));this.sm.melt=0},
+  trigger(){this.down(this.w*.3,this.brY(this.w*.3))},
+  extraJson(){return{reposeMaxDiffPx:this.P.repose,depositGaussSigmaPx:2,meltPxPerSec:+(this.P.sun*1.2).toFixed(2)}}
+});
+
+/* =====================================================================
+   4) 번개 섬광 — 88 자판기의 마음 / 20 비 오는 골목
+   ===================================================================== */
+variant({id:'lightning',name:'번개 섬광 · 천둥 지연',concept:'88 자판기의 마음',conceptFull:'88 자판기의 마음 — 비 오는 밤 골목, 번개가 치면 보이지 않던 것이 드러난다',
+  hint:'클릭: 그 지점으로 번개 (거리 슬라이더만큼 천둥이 늦게 온다)',
+  params:[{k:'dist',label:'거리 m',min:50,max:3000,step:10,v:700},{k:'bright',label:'섬광 세기',min:.2,max:1.5,step:.05,v:1},
+    {k:'branch',label:'가지 확률',min:0,max:.6,step:.01,v:.28},{k:'rain',label:'빗줄기 수',min:0,max:800,step:10,v:380}],
+  memo:`<p><b>기법</b> 번개 = 씨드 고정 중점 변위(8단계) + 확률 가지치기, 가산 3겹(넓은 청색 번짐·중간·흰 심). 섬광은 <b>깜빡임 패턴</b>(0→1, 60ms→0.15, 110ms→0.85, 190ms→0.1, 260ms→0.5, 이후 지수 감쇠)으로 배경의 <b>"번쩍 버전"</b>을 겹친다 — 평소엔 안 보이던 골목 끝 인물이 번개 때만 드러난다. 천둥은 거리/343 초 뒤: 가까우면 찢는 소리 + 쿵, 멀면 낮은 우르릉만. 천둥 때 자판기 불빛이 전압 강하로 잠깐 꺼진다.</p>
+  <p><b>Unity 이식</b> 섬광 패턴·지연은 순수 C# <code>int[] FlashKeysMs</code>, <code>ThunderDelayMs = dist*1000/343</code>. 번개 LineRenderer 3개(폭 9/4/1.6, HDR) + Bloom. 번쩍 버전은 같은 씬을 강한 Directional Light로 한 번 더 굽거나, 라이트 강도 곡선으로.</p>
+  <p><b>함정</b> 섬광과 천둥을 동시에 내면 번개가 가짜로 느껴진다 — 지연이 곧 거리감. 흰색 전체 덮기는 눈이 아프다: 청백색 + 원래 장면의 윤곽이 남게.</p>`,
+  init(cv,w,h){this.g=cv.getContext('2d');this.r=mulberry32(88);this.bolts=[];this.flashT=-9;this.vend=1;this.rain=[];for(let i=0;i<800;i++)this.rain.push({x:this.r()*w,y:this.r()*h,v:700+this.r()*500,l:10+this.r()*18});
+    [this.dark,this.lit]=[this.paint(w,h,false),this.paint(w,h,true)];this.pend=[];this.seed=880},
+  paint(w,h,lit){const[c,g]=mk(w,h),r=mulberry32(8801);
+    let gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,lit?'#8f9cc4':'#0c0f18');gr.addColorStop(1,lit?'#4a5070':'#07080c');g.fillStyle=gr;g.fillRect(0,0,w,h);
+    if(lit){for(let i=0;i<6;i++){g.fillStyle='rgba(200,210,240,.35)';g.beginPath();g.ellipse(r()*w,h*r()*.3,120+r()*100,30+r()*20,0,0,TAU);g.fill()}}
+    /* 좌우 건물 (원근 골목) */
+    const vx=w*.52,vy=h*.52;
+    g.fillStyle=lit?'#3a4058':'#101219';g.beginPath();g.moveTo(0,0);g.lineTo(vx-50,vy-120);g.lineTo(vx-50,vy+40);g.lineTo(0,h);g.fill();
+    g.fillStyle=lit?'#444a66':'#0d0f15';g.beginPath();g.moveTo(w,0);g.lineTo(vx+50,vy-110);g.lineTo(vx+50,vy+40);g.lineTo(w,h);g.fill();
+    g.fillStyle=lit?'#2a2e40':'#08090d';g.fillRect(vx-50,vy-120,100,160);
+    /* 바닥 */
+    gr=g.createLinearGradient(0,vy+40,0,h);gr.addColorStop(0,lit?'#5a6078':'#0c0d12');gr.addColorStop(1,lit?'#30344a':'#121218');g.fillStyle=gr;g.beginPath();g.moveTo(vx-50,vy+40);g.lineTo(vx+50,vy+40);g.lineTo(w,h);g.lineTo(0,h);g.fill();
+    /* 전선·배관 */
+    g.strokeStyle=lit?'rgba(20,22,30,.9)':'rgba(30,32,40,.8)';g.lineWidth=1.5;for(let i=0;i<4;i++){g.beginPath();g.moveTo(0,h*.08+i*14);g.quadraticCurveTo(vx,h*.2+i*16,w,h*.05+i*12);g.stroke()}
+    for(let i=0;i<5;i++){const y=h*.15+i*h*.12;g.fillStyle=lit?'#2a2e40':'#0a0b10';g.fillRect(w*.04+i*8,y,40-i*5,24-i*2)}
+    /* 골목 끝 인물 (번개 때만) */
+    if(lit){g.fillStyle='#111320';g.beginPath();g.ellipse(vx+6,vy+2,5,6,0,0,TAU);g.fill();g.fillRect(vx+1,vy+7,10,26);g.fillRect(vx+2,vy+32,3,10);g.fillRect(vx+7,vy+32,3,10);
+      g.strokeStyle='#111320';g.lineWidth=2;g.beginPath();g.moveTo(vx+11,vy+14);g.lineTo(vx+20,vy-4);g.stroke();g.beginPath();g.ellipse(vx+20,vy-6,14,5,0,Math.PI,TAU);g.fill()}
+    /* 자판기 */
+    const mx=w*.12,my=h*.4,mw=w*.16,mh=h*.44;this.vm=[mx,my,mw,mh];g.fillStyle=lit?'#a8342c':'#4a1410';g.fillRect(mx,my,mw,mh);g.fillStyle=lit?'#c9d6e8':'#1d2a36';g.fillRect(mx+8,my+10,mw-16,mh*.55);
+    for(let j=0;j<3;j++)for(let i=0;i<4;i++){const cc=['#3ba34a','#d23b30','#3a64c4','#e2b640','#9a50b8'][(i+j*2)%5];g.fillStyle=cc;g.fillRect(mx+14+i*(mw-28)/4,my+18+j*mh*.17,(mw-28)/4-6,mh*.12)}
+    g.fillStyle=lit?'#222':'#0a0a0a';g.fillRect(mx+10,my+mh*.78,mw-20,mh*.12);
+    return c},
+  bolt(x0,y0,x1,y1,seed){const r=mulberry32(seed),P=this.P;const segs=[];
+    const mk2=(ax,ay,bx,by,depth,wd)=>{let pts=[[ax,ay],[bx,by]];let off=Math.hypot(bx-ax,by-ay)*.18;
+      for(let k=0;k<7;k++){const np=[pts[0]];for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,dx=b[1]-a[1],dy=-(b[0]-a[0]),l=Math.hypot(dx,dy)||1,o=(r()-.5)*2*off;np.push([mx+dx/l*o,my+dy/l*o],b)}pts=np;off*=.55}
+      segs.push({pts,wd});if(depth<2)for(let i=4;i<pts.length-4;i+=3)if(r()<P.branch*(depth?.5:1)){const a=pts[i],ang=Math.atan2(by-ay,bx-ax)+(r()-.5)*1.4,len=Math.hypot(bx-ax,by-ay)*(.15+r()*.25);
+        mk2(a[0],a[1],a[0]+Math.cos(ang)*len,a[1]+Math.sin(ang)*len,depth+1,wd*.5)}};
+    mk2(x0,y0,x1,y1,0,1);return segs},
+  flashAt(a){if(a<0)return 0;const K=[[0,1],[.06,.15],[.11,.85],[.19,.1],[.26,.5],[.34,.25]];if(a>=.34)return .25*Math.exp(-(a-.34)*5);
+    for(let i=1;i<K.length;i++)if(a<K[i][0]){const u=(a-K[i-1][0])/(K[i][0]-K[i-1][0]);return lerp(K[i-1][1],K[i][1],u)}return 0},
+  down(x,y){const t=this.t||0,r=this.r;this.seed++;this.bolts=[{segs:this.bolt(x+(r()-.5)*120,-10,x,y,this.seed),t0:t}];this.flashT=t;
+    const P=this.P,delay=P.dist/343,pan=(x/this.w)*2-1,near=clamp(1-P.dist/1500,0,1),far=clamp(700/P.dist,.25,1.2);
+    if(P.dist<250)AU.burst({type:'white',filters:[{t:'highpass',f:2500}],a:.001,d:.3,g:.18,pan});
+    if(near>0){AU.burst({type:'white',t:delay,filters:[{t:'highpass',f:600},{t:'lowpass',f:9000,f2:1500,ft:.4}],a:.002,d:.45,g:.6*near,pan,rev:.3});AU.burst({type:'brown',t:delay,filters:[{t:'lowpass',f:120}],a:.01,d:1.4,g:.9*near,pan})}
+    for(let i=0;i<7;i++)AU.burst({type:'brown',t:delay+.08+i*(.25+r()*.35)+(1-near)*.3,filters:[{t:'lowpass',f:90+r()*160}],a:.15+r()*.3,d:.8+r()*1.2,g:(.35+r()*.4)*far,pan:pan*.5+(r()-.5)*.8,rev:.4});
+    this.pend.push(t+delay)},
+  up(){},
+  frame(dt,t){this.t=t;const g=this.g,P=this.P,w=this.w,h=this.h,r=this.r;
+    const a=t-this.flashT,f=clamp(this.flashAt(a)*P.bright,0,1.4);
+    this.pend=this.pend.filter(tt=>{if(t>=tt){this.vend=0;this.buzz();return false}return true});this.vend=Math.min(1,this.vend+dt*(this.vend<.2?.8:3));
+    g.drawImage(this.dark,0,0);if(f>0){g.globalAlpha=clamp(f,0,1);g.drawImage(this.lit,0,0);g.globalAlpha=1}
+    /* 자판기 불빛 */
+    const[mx,my,mw,mh]=this.vm,vl=this.vend*(this.vend<1?(r()<.5?.3:1):1)*(1-f*.5);
+    g.globalCompositeOperation='lighter';const vg=g.createRadialGradient(mx+mw/2,my+mh*.3,10,mx+mw/2,my+mh*.5,mw*2.2);vg.addColorStop(0,`rgba(180,220,255,${.55*vl})`);vg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=vg;g.fillRect(0,0,w,h);
+    g.fillStyle=`rgba(200,230,255,${.35*vl})`;g.fillRect(mx+8,my+10,mw-16,mh*.55);
+    g.fillStyle=`rgba(150,200,255,${.12*vl})`;g.beginPath();g.moveTo(mx,my+mh);g.lineTo(mx+mw,my+mh);g.lineTo(mx+mw*2.2,h);g.lineTo(mx-mw*.6,h);g.fill();
+    /* 번개 */
+    for(const B of this.bolts){const ba=t-B.t0;const al=ba<.34?Math.max(.15,this.flashAt(ba)):Math.max(0,.3-(ba-.34)*1.2);if(al<=0)continue;
+      for(const[lw,col,aa]of[[10,'120,150,255',.18],[4,'180,200,255',.5],[1.6,'255,255,255',1]])for(const s of B.segs){g.strokeStyle=`rgba(${col},${aa*al})`;g.lineWidth=lw*s.wd;g.beginPath();s.pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke()}}
+    g.globalCompositeOperation='source-over';
+    /* 비 */
+    g.strokeStyle=`rgba(${f>.1?'230,235,255':'150,170,200'},${.25+f*.4})`;g.lineWidth=1;g.beginPath();
+    for(let i=0;i<P.rain;i++){const d=this.rain[i];d.y+=d.v*dt;d.x+=d.v*dt*.08;if(d.y>h){d.y=-d.l;d.x=r()*w}if(d.x>w)d.x-=w;g.moveTo(d.x,d.y);g.lineTo(d.x-d.l*.08,d.y-d.l)}g.stroke();
+    if(f>.02){g.fillStyle=`rgba(210,220,255,${f*.12})`;g.fillRect(0,0,w,h)}
+    this._f=f},
+  buzz(){if(!AU.on)return;AU.tone({w:'sawtooth',f:100,d:.5,g:.05,filters:[{t:'bandpass',f:800,q:2}],bus:'room'});AU.tone({w:'square',f:50,t:.5,a:.05,d:.3,g:.02,filters:[{t:'lowpass',f:300}]})},
+  stat(){const d=this.P.dist;return `섬광→천둥 ${(d/343).toFixed(2)}s · ${d}m`},
+  ambient(on){if(on){this.b1=AU.bed({type:'pink',ft:'highpass',f:700,g:.07,rev:.2});this.b2=AU.bed({type:'brown',f:250,g:.06});this.hm=AU.bed({type:'white',ft:'bandpass',f:120,q:8,g:.01})}else{[this.b1,this.b2,this.hm].forEach(b=>b?.stop());this.b1=this.b2=this.hm=null}},
+  trigger(){this.down(this.w*.5,this.h*.35)},
+  extraJson(){return{flashKeysMs:[[0,100],[60,15],[110,85],[190,10],[260,50],[340,25]],thunderDelayMs:Math.round(this.P.dist*1000/343)}}
+});
+
+window.MEMO_COMMON=`<p style="margin-top:8px;color:#8b9098"><b>공통</b> 날씨는 "보이는 밀도 = 들리는 밀도"가 원칙: 빗줄기 수와 빗소리 음량, 우산 충돌 수와 타닥 수, 눈 덩어리 착지 수와 쿵 소리를 같은 변수에서 뽑는다. 소리: 빗소리=핑크노이즈 고역통과 + 브라운 저역, 유리 톡=420/1310/2710Hz 비조화, 손가락 끽=Q7 대역 노이즈 음량을 속도로, 천둥=브라운 저역 7겹 무작위 시각.</p>`;
+boot();
+
+</script>
+</body>
+</html>

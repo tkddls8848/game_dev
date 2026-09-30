@@ -1,0 +1,17 @@
+{
+  "num": 84,
+  "slug": "drone-control",
+  "title": "하늘길 관제소",
+  "images": [
+    {
+      "id": "a",
+      "screen": "A · 저녁 러시 (층 전환 결정)",
+      "prompt": "Actual gameplay view, not poster, no device frame. Real-time air-traffic puzzle game seen from a high oblique perspective camera over a dense city at dusk. Three translucent holographic altitude planes float stacked above the streets, each outlined in its own neon color: cyan for the lowest layer, amber for the middle, magenta for the top. Dozens of small quadcopter delivery drones glide along dashed lane lines, each leaving a fading colored trail and a thin dashed drop line to its shadow on the rooftops. One cyan drone labeled 'D-24' is selected with a pulsing bracket reticle; an amber dashed arc previews its climb to the middle layer, while a red pulsing ring marks a predicted collision point ahead. A dark glass info card beside it offers three choices. Right side: a circular teal radar with a rotating sweep and a list of drones with battery bars. Top HUD: '하늘길 관제소', '혼잡 지수 64', '18:42'. Stylized semi-realistic city of purple towers with thousands of warm lit windows, orange-pink sunset haze, fine film grain, soft vignette, crisp UI typography. Setting constraints: a fictional city with no recognizable real landmarks (no Lotte World Tower, no N Seoul Tower); no real place names — the destination reads \"7번 구역 물류센터\"; building signs are illegible."
+    },
+    {
+      "id": "b",
+      "screen": "B · 폭우와 헬기 (연쇄 충돌 경보)",
+      "prompt": "Actual gameplay view, not poster, no device frame. The same oblique city view at night during a heavy rainstorm: slanted rain streaks across the frame, dark navy and slate buildings with scattered warm windows, a faint lightning glow in the clouds. A black medical helicopter with a blinking red light crosses the top magenta altitude plane, surrounded by a red translucent exclusion ellipse, and the whole top plane is hatched with red diagonal stripes as closed. Five drones on the middle amber layer are linked by a red dotted chain, each with a pulsing red ring and numbered badges 1 to 5 — a cascading collision about to happen. Cyan dashed arrows propose dropping two of them to the lower cyan layer, where a pale flock of birds swirls. A red alert banner at the top reads '연쇄 충돌 경보' with a countdown '00:04', and command buttons below it; the radar on the right glows red with a 'HELI' marker. Top HUD: '하늘길 관제소', '혼잡 지수 93', '19:17'. Cinematic stormy lighting, red and cyan accents on deep blue, film grain, heavy vignette, tense mood. Continuity constraints: no calendar date or year, only the clock \"19:17\"; altitude layers are labelled exactly as screen A: \"1층 100m\", \"2층 200m\", \"3층 300m\"; the helicopter is at \"300m\" and the chained drones at \"200m\"."
+    }
+  ]
+}

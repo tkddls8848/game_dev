@@ -1,0 +1,48 @@
+{
+  "slug": "rhythm-your-tempo",
+  "kind": "baton",
+  "title": "당신의 박자",
+  "english": "A BREATH BETWEEN FOUR",
+  "tagline": "들리지 않아도, 함께 시작할 수 있다.",
+  "instructions": "밝은 구간에 박자가 들어올 때 큐를 보내세요. 무음 시각 리듬입니다. 연습 모드에서는 박자를 직접 한 칸씩 이동할 수 있습니다.",
+  "question": "소리 없이 준비 동작과 박자만으로 합주의 성취를 느낄 수 있는가?",
+  "values": [
+    2400,
+    8,
+    2,
+    3
+  ],
+  "items": [
+    {
+      "id": "violin1",
+      "title": "제1 바이올린",
+      "text": "활을 들고 당신의 시선을 기다립니다.",
+      "detail": "들숨 뒤 진입"
+    },
+    {
+      "id": "violin2",
+      "title": "제2 바이올린",
+      "text": "긴장한 손끝이 조금 빠르게 움직입니다.",
+      "detail": "기다렸다 진입"
+    },
+    {
+      "id": "viola",
+      "title": "비올라",
+      "text": "다른 단원의 활을 보며 호흡합니다.",
+      "detail": "시선으로 진입"
+    },
+    {
+      "id": "cello",
+      "title": "첼로",
+      "text": "마지막 저음을 준비합니다.",
+      "detail": "긴 호흡으로 진입"
+    }
+  ],
+  "palette": {
+    "background": "#151719",
+    "surface": "#22272b",
+    "paper": "#f1eee4",
+    "accent": "#dfbd75",
+    "muted": "#aeb9bc"
+  }
+}

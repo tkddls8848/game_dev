@@ -1,0 +1,58 @@
+{
+  "_": "검사기가 쓰는 한계값. 여기를 고쳐서 밸런스를 푼다 — 카드 상점을 넣지 않는다.",
+  "seed": 20260927,
+  "battle": {
+    "energyPerTurn": 3,
+    "drawPerTurn": 5,
+    "maxTurnsPerBattle": 60,
+    "maxPlaysPerTurn": 40,
+    "maxBurnStacks": 6,
+    "burnTurnsAssumed": 3
+  },
+  "night": {
+    "_": "적 체력은 해마다 백분율 정수로 커진다. 나머지는 누적한다 — 부동소수 금지.",
+    "hpGrowthPctPerYear": 25,
+    "hpScaleMaxPct": 300
+  },
+  "economy": {
+    "seedStipendPerYear": 14,
+    "seedCarryCap": 6,
+    "seedWinBonus": 6,
+    "fertilizerCarryCap": 3,
+    "fertilizerWinBonus": 1,
+    "fertilizerYieldBonus": 1,
+    "seedCeiling": 40,
+    "fertilizerCeiling": 8,
+    "economyYears": 200
+  },
+  "seasonFeasibility": {
+    "trials": 60,
+    "minWinPct": 60
+  },
+  "runSolvability": {
+    "trials": 60,
+    "minWinPct": 60
+  },
+  "fieldDeckMapping": {
+    "_": "작물을 하나 빼면 얼마나 손해인지는 여러 해로 재야 분해능이 생긴다.",
+    "trials": 40,
+    "years": 8,
+    "minCardPlayPct": 5,
+    "maxExclusionGainPct": 15
+  },
+  "winRateBand": {
+    "_": "한 해가 아니라 여러 해를 잇는 캠페인으로 잰다. 넘긴 해 / 치른 해.",
+    "trials": 120,
+    "years": 8,
+    "randomMinPct": 0,
+    "randomMaxPct": 25,
+    "skilledMinPct": 40,
+    "skilledMaxPct": 85
+  },
+  "dominance": {
+    "_": "한 작물만 심는 밭도 여러 해로 잰다 — 첫 해만 보면 결정적 정책의 승률이 0/100 으로 붙는다.",
+    "trials": 60,
+    "years": 8,
+    "monoCropMaxWinPct": 55
+  }
+}

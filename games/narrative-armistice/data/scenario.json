@@ -1,0 +1,57 @@
+{
+  "slug": "narrative-armistice",
+  "kind": "diplomacy",
+  "title": "휴전의 문장",
+  "english": "WORDS OF ARMISTICE",
+  "tagline": "같은 서명 아래, 다른 전쟁이 끝난다.",
+  "instructions": "원문의 약속 강도를 살피고 통역 문장을 선택하세요. 양국의 회담 기록이 어디서 달라지는지 확인합니다.",
+  "question": "정확한 통역 때문에 긴장이 높아져도 의미를 지키고 싶은가?",
+  "values": [
+    3
+  ],
+  "items": [
+    {
+      "id": "withdraw",
+      "title": "철수 시점",
+      "text": "남국 대표: 의회의 승인이 나면 국경에서 철수하겠습니다.",
+      "detail": "승인을 조건으로 철수하겠다고 전한다"
+    },
+    {
+      "id": "blame",
+      "title": "사건의 책임",
+      "text": "남국 대표: 민간 피해에 유감을 표합니다. 책임 소재는 조사 중입니다.",
+      "detail": "유감과 책임 인정은 구분해 전한다"
+    },
+    {
+      "id": "inspection",
+      "title": "감시단 입국",
+      "text": "남국 대표: 감시단의 규모를 합의한 뒤 입국을 허용할 수 있습니다.",
+      "detail": "규모 합의 이후 입국 가능이라고 전한다"
+    },
+    {
+      "id": "force1",
+      "title": "즉시 철수를 확약했다고 전한다",
+      "text": "",
+      "detail": ""
+    },
+    {
+      "id": "force2",
+      "title": "민간 피해의 책임을 인정했다고 전한다",
+      "text": "",
+      "detail": ""
+    },
+    {
+      "id": "force3",
+      "title": "감시단의 입국을 허용했다고 전한다",
+      "text": "",
+      "detail": ""
+    }
+  ],
+  "palette": {
+    "background": "#1b202b",
+    "surface": "#272e3d",
+    "paper": "#eee7d8",
+    "accent": "#d6b876",
+    "muted": "#b2b4c3"
+  }
+}

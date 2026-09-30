@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>지도는 거짓말을 한다</title>
+<style>
+:root{
+  --photoBlack:#16150F; --photoDark:#2A2A22; --photoMid:#5E5D52; --photoLight:#8E8D80; --photoHaze:#B4B3A6;
+  --vellum:#E6E0CE; --vellumLit:#F1ECDD; --vellumEdge:#C4BCA4;
+  --graphite:#34332E; --graphiteSoft:#6B6A61; --graphiteFaint:#9A9890;
+  --eraser:#D9D3BE; --stamp:#4A463C; --red:#B4352A; --redGlow:#E06A58; --warn:#8A6A22;
+  --serif:"Nanum Myeongjo","Gowun Batang","Noto Serif CJK KR","Noto Serif KR","Batang",serif;
+  --hand:"Nanum Pen Script","Gamja Flower","Nanum Brush Script","Noto Serif CJK KR",cursive;
+  --sans:"Pretendard","Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0b0a07;color:var(--graphite);font-family:var(--serif)}
+#view{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 38% 45%, rgba(90,88,70,.22), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 40px),
+    linear-gradient(160deg,#23221b,#15140f 60%,#0f0e0a);
+}
+/* desk lamp light */
+#lamp{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 58% 62% at 34% 44%, rgba(255,240,205,.10), transparent 62%),
+             radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,.62));
+  mix-blend-mode:normal;z-index:40}
+#grain{position:absolute;inset:0;pointer-events:none;z-index:41;opacity:.16;mix-blend-mode:overlay}
+.screenB #lamp{background:radial-gradient(ellipse 30% 30% at 29% 36%, rgba(224,106,88,.13), transparent 70%),
+             radial-gradient(ellipse 58% 62% at 34% 44%, rgba(255,230,200,.06), transparent 62%),
+             radial-gradient(ellipse 110% 85% at 50% 50%, transparent 45%, rgba(0,0,0,.78))}
+
+/* ---------- top bar ---------- */
+#top{position:absolute;left:0;top:0;width:1600px;height:86px;display:flex;align-items:flex-end;padding:0 44px 14px;gap:36px;z-index:20;
+  border-bottom:1px solid rgba(230,224,206,.12);background:linear-gradient(#0f0e0a,rgba(15,14,10,.55))}
+#logo{font-family:var(--serif);color:var(--vellumLit);font-size:30px;letter-spacing:.02em;font-weight:800;line-height:1}
+#logo small{display:block;font-size:12px;letter-spacing:.34em;color:var(--graphiteFaint);font-weight:400;margin-bottom:7px}
+.chap{color:var(--vellum);font-size:17px;line-height:1.2}
+.chap b{display:block;font-size:11px;letter-spacing:.3em;color:var(--graphiteFaint);font-weight:400;margin-bottom:5px;font-family:var(--sans)}
+.hud{margin-left:auto;display:flex;gap:30px;align-items:flex-end}
+.stat{color:var(--vellumLit);font-family:var(--sans);text-align:right}
+.stat i{display:block;font-style:normal;font-size:11px;letter-spacing:.24em;color:var(--graphiteFaint);margin-bottom:4px}
+.stat span{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1}
+.stat em{font-style:normal;font-size:15px;color:var(--graphiteFaint);margin-left:3px}
+.stat.warn span{color:var(--redGlow)}
+.budget{width:120px;height:4px;background:rgba(230,224,206,.12);margin-top:7px;position:relative}
+.budget div{position:absolute;left:0;top:0;bottom:0;background:var(--vellum);transition:width .4s}
+
+/* ---------- map area ---------- */
+#sheets{position:absolute;left:34px;top:108px;width:960px;height:728px;z-index:3}
+.sheet{position:absolute;inset:0;background:rgba(230,224,206,.07);border:1px solid rgba(230,224,206,.16);box-shadow:0 1px 0 rgba(0,0,0,.4)}
+#mapwrap{position:absolute;left:48px;top:118px;width:928px;height:696px;z-index:5;box-shadow:0 18px 50px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.6)}
+#map{display:block;width:928px;height:696px;cursor:crosshair}
+.ruler{position:absolute;font-family:var(--sans);font-size:10px;color:var(--graphiteFaint);letter-spacing:.1em;z-index:6}
+#pin1,#pin2,#pin3,#pin4{position:absolute;width:13px;height:13px;border-radius:50%;z-index:9;
+  background:radial-gradient(circle at 35% 30%,#d8d2bf,#7a7564 60%,#3b382e);box-shadow:1px 3px 4px rgba(0,0,0,.6)}
+#pin1{left:40px;top:110px}#pin2{left:969px;top:110px}#pin3{left:40px;top:807px}#pin4{left:969px;top:807px}
+#tape{position:absolute;left:420px;top:104px;width:160px;height:26px;z-index:9;transform:rotate(-2deg);
+  background:linear-gradient(rgba(236,228,200,.55),rgba(220,210,180,.45));box-shadow:0 1px 2px rgba(0,0,0,.3)}
+
+/* dot breathing */
+@keyframes breathe{0%,100%{r:7}50%{r:8.4}}
+@keyframes halo{0%{r:8;opacity:.75}100%{r:26;opacity:0}}
+@keyframes buriedHalo{0%{r:8;opacity:.9}100%{r:34;opacity:0}}
+.dot{animation:breathe 2.6s ease-in-out infinite}
+.halo{animation:halo 2.6s ease-out infinite}
+.buried .halo{animation:buriedHalo 1.1s ease-out infinite}
+@keyframes dust{0%{opacity:.85;transform:scale(.4)}100%{opacity:0;transform:scale(1.8)}}
+.dust{transform-box:fill-box;transform-origin:center;animation:dust .9s ease-out forwards}
+@keyframes crane{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
+.crane{transform-box:view-box;animation:crane 5s ease-in-out infinite}
+@keyframes scratch{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
+.fresh{stroke-dasharray:120;animation:scratch .5s ease-out}
+
+/* ---------- tools & timeline ---------- */
+#tools{position:absolute;left:48px;top:846px;display:flex;gap:10px;z-index:10}
+.tool{width:118px;height:66px;border:1px solid rgba(230,224,206,.2);background:linear-gradient(#26251e,#1a1914);color:var(--vellum);
+  font-family:var(--serif);font-size:16px;cursor:pointer;display:flex;align-items:center;gap:10px;padding:0 12px;position:relative;transition:transform .08s,border-color .15s,background .15s}
+.tool:hover{border-color:rgba(230,224,206,.5)}
+.tool:active{transform:translateY(2px)}
+.tool.on{background:linear-gradient(var(--vellumLit),var(--vellum));color:var(--graphite);border-color:var(--vellumLit);box-shadow:0 0 0 3px rgba(241,236,221,.12)}
+.tool kbd{position:absolute;right:7px;top:5px;font-family:var(--sans);font-size:10px;opacity:.55}
+.tool small{display:block;font-family:var(--sans);font-size:10.5px;opacity:.6;margin-top:3px}
+.sw{width:26px;height:26px;flex:none;border:1.5px solid currentColor}
+.sw.B{background:repeating-linear-gradient(45deg,currentColor 0 1.4px,transparent 1.4px 5px)}
+.sw.S{border-style:double;border-width:4px}
+.sw.P{background:radial-gradient(currentColor 1.1px,transparent 1.4px) 0 0/6px 6px}
+.sw.E{border-radius:4px;border-style:dashed;background:rgba(217,211,190,.3)}
+#advance{position:absolute;left:560px;top:846px;width:416px;height:66px;z-index:10;cursor:pointer;
+  border:1px solid rgba(241,236,221,.45);background:linear-gradient(#34332b,#22211b);color:var(--vellumLit);
+  font-family:var(--serif);font-size:21px;font-weight:700;display:flex;align-items:center;justify-content:space-between;padding:0 22px;transition:transform .08s,background .2s}
+#advance:hover{background:linear-gradient(#3f3d33,#2a2921)}
+#advance:active{transform:translateY(2px)}
+#advance small{font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--graphiteFaint);display:block;margin-top:4px;letter-spacing:.04em}
+#advance kbd{font-family:var(--sans);font-size:11px;border:1px solid rgba(241,236,221,.3);padding:3px 7px;color:var(--graphiteFaint)}
+#timeline{position:absolute;left:48px;top:930px;width:928px;height:46px;z-index:10}
+
+/* ---------- right: council board ---------- */
+#board{position:absolute;left:1020px;top:108px;width:548px;height:870px;z-index:10}
+.vel{position:relative;background:
+   linear-gradient(rgba(241,236,221,.94),rgba(230,224,206,.92));
+   color:var(--graphite);box-shadow:0 10px 30px rgba(0,0,0,.55),inset 0 0 40px rgba(196,188,164,.5)}
+.vel:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:repeating-linear-gradient(0deg,transparent 0 23px,rgba(107,106,97,.12) 23px 24px)}
+#note{padding:22px 26px 20px;transform:rotate(-.6deg)}
+#note .clip{position:absolute;top:-12px;left:36px;width:64px;height:26px;border-radius:4px 4px 2px 2px;
+  background:linear-gradient(#bdb8a6,#6c685a);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.lbl{font-family:var(--sans);font-size:11px;letter-spacing:.3em;color:var(--graphiteSoft)}
+#note h2{font-size:24px;margin:8px 0 10px;font-weight:800;letter-spacing:.01em}
+#note p{font-size:15.5px;line-height:1.62;color:#43423a}
+.hand{font-family:var(--hand);color:#3c3b34;font-size:21px;line-height:1.1}
+#goals{margin-top:16px;padding:18px 26px 16px;transform:rotate(.35deg)}
+.goal{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(107,106,97,.35);font-size:15.5px}
+.goal:last-child{border:0}
+.box{width:20px;height:20px;border:1.6px solid var(--graphite);flex:none;position:relative}
+.goal.ok .box:after{content:"";position:absolute;left:4px;top:-4px;width:8px;height:15px;border:solid var(--graphite);border-width:0 3px 3px 0;transform:rotate(40deg)}
+.goal.bad .box{border-color:var(--red)}
+.goal.bad .box:after{content:"×";position:absolute;inset:-7px 0 0 2px;color:var(--red);font-size:24px;font-family:var(--sans);font-weight:700}
+.goal .v{margin-left:auto;font-family:var(--sans);font-size:13.5px;color:var(--graphiteSoft);white-space:nowrap}
+.goal.bad .v{color:var(--red);font-weight:700}
+#people{margin-top:16px;padding:16px 26px 14px;transform:rotate(-.25deg)}
+.person{display:grid;grid-template-columns:22px 58px 1fr auto;align-items:center;gap:8px;padding:3px 0;font-size:14.5px}
+.person .pd{width:12px;height:12px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(180,53,42,.18)}
+.person.trapped .pd{box-shadow:0 0 0 3px rgba(180,53,42,.45),0 0 12px var(--redGlow)}
+.person .nm{font-weight:800}
+.person .st{font-family:var(--sans);font-size:12.5px;color:var(--graphiteSoft)}
+.person .hm{font-family:var(--sans);font-size:12.5px;color:var(--graphiteSoft);text-align:right;min-width:62px}
+.person.trapped .st,.person.trapped .hm{color:var(--red);font-weight:700}
+#legend{position:absolute;left:0;right:0;bottom:0;color:var(--graphiteFaint);font-family:var(--sans);font-size:12px;line-height:1.7;display:flex;gap:18px;flex-wrap:wrap}
+#legend span{display:flex;align-items:center;gap:6px}
+#legend svg{flex:none}
+
+/* ---------- screen B overlays ---------- */
+#verdict{position:absolute;left:84px;top:694px;z-index:30;pointer-events:none;display:none;transform:rotate(-2.5deg)}
+#verdict .big{font-family:var(--hand);font-size:84px;color:rgba(241,236,221,.95);text-shadow:0 3px 0 rgba(0,0,0,.45),0 0 40px rgba(0,0,0,.6);line-height:1}
+#verdict .sub{display:inline-block;background:rgba(14,12,9,.82);padding:5px 14px;font-family:var(--serif);color:var(--redGlow);font-size:19px;margin-top:8px;margin-left:10px;letter-spacing:.06em;text-shadow:0 2px 6px #000}
+.screenB #verdict{display:block}
+#report{display:none}
+.screenB #report{display:block}
+.screenB #goals,.screenB #people,.screenB #log{display:none}
+#log{margin-top:16px;padding:12px 26px 10px;transform:rotate(.3deg)}
+#log .ln{display:flex;gap:12px;font-size:13.5px;padding:3px 0;color:#43423a}
+#log .ln b{font-family:var(--sans);font-size:11.5px;color:var(--graphiteSoft);min-width:44px;font-weight:700;padding-top:1px}
+#log .ln:first-child{color:var(--graphite);font-weight:700}
+#report .row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px dashed rgba(107,106,97,.35);font-size:15px}
+#report .row b{font-family:var(--sans);font-size:14px}
+#report .score{display:flex;gap:14px;margin-top:14px}
+#report .score div{flex:1;border:1.5px solid var(--graphite);padding:10px 12px;text-align:center}
+#report .score div.neg{border-color:var(--red);color:var(--red)}
+#report .score i{display:block;font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.14em;color:var(--graphiteSoft)}
+#report .score span{font-size:34px;font-weight:800;line-height:1.2}
+.stampbox{position:absolute;right:24px;top:18px;border:3px solid var(--red);color:var(--red);font-family:var(--serif);font-weight:900;
+  font-size:22px;padding:4px 12px;transform:rotate(8deg);opacity:.82;letter-spacing:.14em;mix-blend-mode:multiply}
+
+/* tabs */
+#tabs{position:fixed;right:10px;bottom:10px;z-index:100;display:flex;gap:4px;font-family:var(--sans)}
+#tabs button{background:rgba(20,19,15,.85);color:#bfb9a6;border:1px solid rgba(230,224,206,.3);padding:5px 10px;font-size:12px;cursor:pointer}
+#tabs button.on{background:#e6e0ce;color:#222}
+#toast{position:absolute;left:512px;top:470px;transform:translate(-50%,-50%);z-index:35;pointer-events:none;
+  font-family:var(--hand);font-size:44px;color:var(--vellumLit);text-shadow:0 2px 12px #000;opacity:0;transition:opacity .25s}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="view"><div id="stage">
+  <div id="top">
+    <div id="logo"><small>THE MAP LIES</small>지도는 거짓말을 한다</div>
+    <div class="chap" id="chap"><b>제 2장</b>안마당을 광장으로 연다</div>
+    <div class="hud">
+      <div class="stat"><i>날</i><span id="hDay">12</span><em>/ 60</em></div>
+      <div class="stat"><i>허가비</i><span id="hPermit">178</span><em>원</em><div class="budget"><div id="hBudget"></div></div></div>
+      <div class="stat"><i>겹친 트레이싱지</i><span id="hSheets">11</span><em>장</em></div>
+      <div class="stat" id="hTrapWrap"><i>갇힌 사람</i><span id="hTrap">0</span><em>명</em></div>
+    </div>
+  </div>
+
+  <div id="sheets"></div>
+  <div id="tape"></div>
+  <div id="pin1"></div><div id="pin2"></div><div id="pin3"></div><div id="pin4"></div>
+  <div id="mapwrap"><svg id="map" viewBox="0 0 928 696" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div class="ruler" style="left:48px;top:98px">항공측량 1:2,400 · 북↑</div>
+  <div class="ruler" style="left:828px;top:98px" id="rulerR">측량일 제 12일 오전</div>
+
+  <div id="verdict"><div class="big">지도는 완벽했다.</div><div class="sub">도시는 그대로 지었다 — 남씨와 오씨가 벽 안에 있다</div></div>
+  <div id="toast"></div>
+
+  <div id="tools">
+    <button class="tool" data-k="B"><span class="sw B"></span><span>건물<small>8원</small></span><kbd>Q</kbd></button>
+    <button class="tool" data-k="S"><span class="sw S"></span><span>길<small>6원</small></span><kbd>W</kbd></button>
+    <button class="tool on" data-k="P"><span class="sw P"></span><span>광장<small>5원</small></span><kbd>E</kbd></button>
+    <button class="tool" data-k="E"><span class="sw E"></span><span>지우개<small>무른 칸</small></span><kbd>R</kbd></button>
+  </div>
+  <button id="advance"><span>하루 보내기<small id="advSub">도시가 지도를 따라 짓는다 · 압력 +5/일</small></span><kbd>SPACE</kbd></button>
+  <svg id="timeline" viewBox="0 0 928 46"></svg>
+
+  <div id="board">
+    <div class="vel" id="note">
+      <div class="clip"></div>
+      <div class="lbl" id="noteLbl">시의회 결의 · 제 2장</div>
+      <h2 id="noteH">안마당을 광장으로 연다</h2>
+      <p id="noteP">한 필지 안에 골목이 있다. 시의회는 그것을 광장으로 만들라고 한다 — 그리고 사람은 그대로 살아야 한다.</p>
+      <div class="hand" id="noteHand" style="margin-top:10px">→ 목(7,4)은 절대 막지 말 것. 남씨는 못 걷는다.</div>
+    </div>
+    <div class="vel" id="goals">
+      <div class="lbl" style="margin-bottom:6px">목표 · 넷이 겹쳐 있다</div>
+      <div id="goalList"></div>
+    </div>
+    <div class="vel" id="people">
+      <div class="lbl" style="margin-bottom:6px">붉은 점 · 이 도시에 사는 사람</div>
+      <div id="peopleList"></div>
+    </div>
+    <div class="vel" id="log"><div class="lbl" style="margin-bottom:4px">측량 일지</div><div id="logList"></div></div>
+    <div class="vel" id="report" style="margin-top:16px;padding:18px 26px 18px">
+      <div class="stampbox">사고</div>
+      <div class="lbl">사고 보고 · 제 38일</div>
+      <h2 style="font-size:23px;margin:8px 0 10px;font-weight:800">안마당을 통째로 건물로 그었다</h2>
+      <div id="reportRows"></div>
+      <div class="hand" style="margin:14px 0 4px">되돌릴 길은 있다. 목(7,4)을 다시 길로 — 설 자리 한 칸도.</div>
+      <div class="score">
+        <div><i>처음부터 잘 그었다면</i><span>394</span></div>
+        <div class="neg"><i>그었다가 되돌리면</i><span>260</span></div>
+      </div>
+      <div style="font-family:var(--sans);font-size:12px;color:var(--graphiteSoft);margin-top:10px;line-height:1.55">
+        갇혀 있던 동안 쌓인 해는 되돌려도 돌아오지 않는다. 같은 칸을 다시 그으면 허가비에 7원이 붙는다.</div>
+      <div style="margin-top:12px;padding:10px 14px;background:#2a2924;color:#E6E0CE;font-size:14px;line-height:1.5">
+        <b style="color:#E06A58">지금 할 수 있는 것</b> — 길(W)로 (7,4)를 다시 긋고 하루를 보낸다. 도시는 이틀 걸려 따라온다. 그 이틀에도 해는 쌓인다.</div>
+    </div>
+    <div id="legend">
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="7" fill="none" stroke="#9A9890" stroke-width="2" stroke-dasharray="22 44"/></svg>도시가 따라오는 압력</span>
+      <span><svg width="22" height="14"><path d="M2 12V2M7 12V2M12 12V2" stroke="#9A9890" stroke-width="1.6"/></svg>필지를 다시 지은 횟수 (3번이 한도)</span>
+      <span><svg width="16" height="16"><path d="M3 3l10 10M13 3L3 13" stroke="#8A6A22" stroke-width="2.2"/></svg>닳은 필지 — 지도가 거짓이 된다</span>
+      <span style="color:#6B6A61">1 · 2 화면 전환 · 칸을 눌러 긋는다</span>
+    </div>
+  </div>
+
+  <div id="lamp"></div>
+  <svg id="grain" width="1600" height="1000"><filter id="gn"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="1600" height="1000" filter="url(#gn)"/></svg>
+</div></div>
+<div id="tabs"><button data-s="a" class="on">A · 긋는다</button><button data-s="b">B · 사고</button></div>
+
+<script>
+(function(){
+"use strict";
+var W=16,H=12,C=58;
+var ACTUAL0=["SSSSSSSSSSSSSSSS","SBBBBSBBBBSBBBBS","SBBBBSBBBBSBBBBS","SSSSSSSSSSSSSSSS","SBBBBSBSBBSSBBBS","SBBBBSBSSBSSSBBS","SBBBBSBBBBSBBBBS","SSSSSSSSSSSSSSSS","SBBBBSPPPPPPBBBS","SBBBBSPPPPPPBBBS","SSSSSSSSSSSSSSSS","SBBBBSBBBBSBBBBS"];
+var EXITS=[[0,3],[15,7]];
+var LOCKED={"5,3":1,"10,3":1,"5,7":1,"10,7":1,"5,10":1,"10,10":1};
+var BAL={press:5,infer:3,cost:{B:15,S:10,P:8},edit:{B:8,S:6,P:5},sur:7,maxFlip:3,buriedExtra:5};
+var CIT=[
+ {id:"nam",name:"남씨",x:7,y:5,hpd:3,note:"안마당 안쪽 · 다리를 못 쓴다"},
+ {id:"oh",name:"오씨",x:8,y:5,hpd:3,note:"안마당 안쪽"},
+ {id:"bae",name:"배씨",x:7,y:4,hpd:4,note:"안마당 목 · 큰길까지 나간다"},
+ {id:"koo",name:"구씨",x:8,y:8,hpd:2,note:"광장"},
+ {id:"lim",name:"림씨",x:3,y:3,hpd:2,note:"서쪽 큰길"},
+ {id:"jo",name:"조씨",x:12,y:5,hpd:3,note:"무른 구역 가게"}
+];
+function rng(s){return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+function grid(rows){var g=[];for(var y=0;y<H;y++){g.push(rows[y].split(""));}return g;}
+function copy(g){return g.map(function(r){return r.slice();});}
+function zeros(v){var g=[];for(var y=0;y<H;y++){var r=[];for(var x=0;x<W;x++)r.push(v);g.push(r);}return g;}
+
+function makeA(){
+  var s={id:"a",day:12,permit:178,budget:200,sheets:11,actual:grid(ACTUAL0),plan:grid(ACTUAL0),press:zeros(0),flips:zeros(0),
+    edited:{},cit:CIT.map(function(c){return {id:c.id,name:c.name,x:c.x,y:c.y,hpd:c.hpd,note:c.note,harm:0,buried:false};}),
+    editDays:[1,2,4,5,9,11],fresh:{},log:[[9,"무른 구역 필지 셋이 닳았다 — 도시가 더는 고치지 않는다"],[11,"안마당 네 칸을 광장으로 그었다 · 허가비 22원"],[12,"도시가 안마당에 가림막을 쳤다 · 압력 5"]]};
+  // soft zone already settled by chapter 1 (flips spent)
+  [[11,4],[12,4],[13,4],[11,5],[12,5],[13,5],[11,6],[12,6],[13,6]].forEach(function(p){s.flips[p[1]][p[0]]=p[0]===12&&p[1]===4?3:2;});
+  // player drew the courtyard as plaza yesterday
+  [[7,4],[7,5],[8,5],[8,4]].forEach(function(p){s.plan[p[1]][p[0]]="P";s.edited[p[0]+","+p[1]]=1;});
+  s.press[4][7]=5;s.press[5][7]=5;s.press[5][8]=5;s.press[4][8]=5;
+  s.flips[4][8]=1; s.flips[6][9]=3; s.plan[6][9]="S"; // a worn parcel: map says street, city refuses
+  s.edited["9,6"]=1;
+  return s;
+}
+function makeB(){
+  var s={id:"b",day:38,permit:64,budget:160,sheets:23,actual:grid(ACTUAL0),plan:grid(ACTUAL0),press:zeros(0),flips:zeros(0),
+    edited:{},cit:CIT.map(function(c){return {id:c.id,name:c.name,x:c.x,y:c.y,hpd:c.hpd,note:c.note,harm:0,buried:false};}),
+    editDays:[1,3,4,7,12,15,19,22,26,33,36],fresh:{},log:[]};
+  [[11,4],[12,4],[13,4],[11,5],[12,5],[13,5],[11,6],[12,6],[13,6]].forEach(function(p){s.flips[p[1]][p[0]]=3;});
+  [[7,4],[7,5],[8,5]].forEach(function(p){s.plan[p[1]][p[0]]="B";s.actual[p[1]][p[0]]="B";s.flips[p[1]][p[0]]=1;s.edited[p[0]+","+p[1]]=1;});
+  s.flips[6][9]=3; s.plan[6][9]="S"; s.edited["9,6"]=1;
+  s.cit.forEach(function(c){
+    if(c.id==="nam"){c.buried=true;c.harm=16;}
+    if(c.id==="oh"){c.buried=true;c.harm=16;}
+    if(c.id==="bae"){c.x=7;c.y=3;}
+  });
+  return s;
+}
+var S={a:makeA(),b:makeB()}, cur="a", tool="P", hover=null;
+
+function walk(k){return k==="S"||k==="P";}
+function reach(g){
+  var seen=zeros(false),q=[];
+  EXITS.forEach(function(e){if(walk(g[e[1]][e[0]])){seen[e[1]][e[0]]=true;q.push(e);}});
+  while(q.length){var p=q.shift();[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var x=p[0]+d[0],y=p[1]+d[1];
+    if(x<0||y<0||x>=W||y>=H||seen[y][x]||!walk(g[y][x]))return;seen[y][x]=true;q.push([x,y]);});}
+  return seen;
+}
+function status(s){var r=reach(s.actual);s.cit.forEach(function(c){c.trapped=c.buried||!r[c.y][c.x];});return r;}
+function infer(g,x,y){var st=0,pl=0;[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var a=x+d[0],b=y+d[1];if(a<0||b<0||a>=W||b>=H)return;
+  if(g[b][a]==="S")st++;if(g[b][a]==="P")pl++;});
+  if(st>=3)return "B";if(st>=2)return "S";if(pl>=2)return "P";return "B";}
+function step(s){
+  var y0=copy(s.actual),flipped=[];
+  for(var y=0;y<H;y++)for(var x=0;x<W;x++){
+    var p=s.plan[y][x],tgt=p==="."?infer(y0,x,y):p;
+    if(y0[y][x]===tgt){s.press[y][x]=0;continue;}
+    if(s.flips[y][x]>=BAL.maxFlip)continue;
+    s.press[y][x]+=p==="."?BAL.infer:BAL.press;
+    if(s.press[y][x]>=BAL.cost[tgt]){s.actual[y][x]=tgt;s.press[y][x]=0;s.flips[y][x]++;flipped.push([x,y]);}
+  }
+  s.cit.forEach(function(c){
+    if(!c.buried&&s.actual[c.y][c.x]==="B"){
+      var opts=[[1,0],[-1,0],[0,1],[0,-1]].map(function(d){return [c.x+d[0],c.y+d[1]];}).filter(function(p){return p[0]>=0&&p[1]>=0&&p[0]<W&&p[1]<H&&walk(s.actual[p[1]][p[0]]);});
+      if(opts.length){c.x=opts[0][0];c.y=opts[0][1];}else c.buried=true;
+    } else if(c.buried&&walk(s.actual[c.y][c.x]))c.buried=false;
+  });
+  status(s);
+  s.cit.forEach(function(c){if(c.trapped)c.harm+=c.hpd+(c.buried?BAL.buriedExtra:0);});
+  s.day++; s.fresh={}; flipped.forEach(function(p){s.fresh[p[0]+","+p[1]]=1;});
+  return flipped;
+}
+
+/* ---------- audio (interaction only) ---------- */
+var AC=null;
+function ac(){try{if(!AC){var K=window.AudioContext||window.webkitAudioContext;if(K)AC=new K();}if(AC&&AC.state==="suspended")AC.resume();}catch(e){AC=null;}return AC;}
+function noise(dur,freq,q,gain,t0){var a=ac();if(!a)return;try{var n=Math.floor(a.sampleRate*dur),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);
+  for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);var src=a.createBufferSource();src.buffer=b;var f=a.createBiquadFilter();f.type="bandpass";f.frequency.value=freq;f.Q.value=q;
+  var g=a.createGain();g.gain.value=gain;src.connect(f);f.connect(g);g.connect(a.destination);src.start(a.currentTime+(t0||0));}catch(e){}}
+function tone(fr,dur,gain,type,t0){var a=ac();if(!a)return;try{var o=a.createOscillator(),g=a.createGain(),t=a.currentTime+(t0||0);o.type=type||"sine";o.frequency.value=fr;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.05);}catch(e){}}
+function sPencil(){noise(.07,3200,1.2,.35);noise(.09,2400,1.6,.28,.06);noise(.06,3600,1.1,.22,.13);}
+function sErase(){noise(.28,900,.8,.3);}
+function sPaper(){noise(.22,380,.7,.5);noise(.12,1400,.8,.15,.05);}
+function sBuild(n){for(var i=0;i<Math.min(n,6);i++){noise(.05,180,4,.9,.18+i*.11);tone(92,.12,.08,"triangle",.18+i*.11);}}
+function sDread(){tone(73.4,1.6,.12,"sine");tone(77.8,1.6,.09,"sine");tone(146.8,1.2,.03,"triangle",.1);}
+function sRefuse(){tone(220,.18,.06,"square");tone(207,.25,.05,"square",.12);}
+
+/* ---------- rendering ---------- */
+var NS="http://www.w3.org/2000/svg",svg=document.getElementById("map");
+function el(tag,at,par){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e;}
+function defs(){
+  var d=el("defs",{},svg);
+  d.innerHTML=
+   '<filter id="photo" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="4" result="n"/>'+
+   '<feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .45  0 0 0 .55 0" result="nn"/>'+
+   '<feComposite in="nn" in2="SourceGraphic" operator="in" result="g"/><feBlend in="SourceGraphic" in2="g" mode="overlay" result="b"/><feGaussianBlur in="b" stdDeviation=".35"/></filter>'+
+   '<filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="1" seed="9" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.2"/></filter>'+
+   '<filter id="smudge"><feGaussianBlur stdDeviation="3"/></filter>'+
+   '<filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
+   '<pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#34332E" stroke-width="1" opacity=".38"/></pattern>'+
+   '<pattern id="hatchD" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#1f1e1a" stroke-width="1.4" opacity=".75"/></pattern>'+
+   '<pattern id="stip" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".9" fill="#34332E" opacity=".45"/><circle cx="6" cy="6" r=".8" fill="#34332E" opacity=".35"/></pattern>'+
+   '<pattern id="pave" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#a9a89b"/><path d="M0 7h14M7 0v7M3 7v7M10 7v7" stroke="#8f8e82" stroke-width=".8"/></pattern>'+
+   '<radialGradient id="rg"><stop offset="0" stop-color="#E06A58" stop-opacity=".55"/><stop offset="1" stop-color="#E06A58" stop-opacity="0"/></radialGradient>'+
+   '<linearGradient id="vel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1ECDD" stop-opacity=".20"/><stop offset=".6" stop-color="#E6E0CE" stop-opacity=".12"/><stop offset="1" stop-color="#C4BCA4" stop-opacity=".22"/></linearGradient>';
+}
+var ROOF=["#9a998c","#85847a","#a8a79a","#76756a","#8e8d80","#b3b2a5"];
+function drawPhoto(s,g){
+  var r=rng(7331);
+  el("rect",{x:0,y:0,width:W*C,height:H*C,fill:"#4f4e45"},g);
+  for(var y=0;y<H;y++)for(var x=0;x<W;x++){
+    var k=s.actual[y][x],px=x*C,py=y*C,v=r();
+    if(k==="S"){
+      el("rect",{x:px,y:py,width:C,height:C,fill:v<.5?"#3e3d36":"#43423a"},g);
+    } else if(k==="P"){
+      el("rect",{x:px,y:py,width:C,height:C,fill:"url(#pave)"},g);
+      if(v<.45){var tx=px+12+r()*30,ty=py+12+r()*30,tr=8+r()*6;
+        el("circle",{cx:tx+5,cy:ty+6,r:tr,fill:"#1d1c17",opacity:.55},g);
+        el("circle",{cx:tx,cy:ty,r:tr,fill:"#4a4a3f"},g);el("circle",{cx:tx-2,cy:ty-3,r:tr*.55,fill:"#606054"},g);}
+    }
+  }
+  // road markings: center dashes
+  for(var yy=0;yy<H;yy++){var row=s.actual[yy].join("");if(row==="SSSSSSSSSSSSSSSS")el("line",{x1:6,y1:yy*C+C/2,x2:W*C-6,y2:yy*C+C/2,stroke:"#a9a79a","stroke-width":1.4,"stroke-dasharray":"10 12",opacity:.55},g);}
+  [0,5,10,15].forEach(function(cx){el("line",{x1:cx*C+C/2,y1:4,x2:cx*C+C/2,y2:H*C-4,stroke:"#a9a79a","stroke-width":1.4,"stroke-dasharray":"10 12",opacity:.4},g);});
+  // cars
+  for(var i=0;i<26;i++){var cx=Math.floor(r()*W),cy=Math.floor(r()*H);if(s.actual[cy][cx]!=="S")continue;
+    var horiz=s.actual[cy].join("")==="SSSSSSSSSSSSSSSS";var ox=cx*C+8+r()*34,oy=cy*C+(r()<.5?14:34);
+    if(!horiz){ox=cx*C+(r()<.5?16:34);oy=cy*C+6+r()*30;}
+    el("rect",{x:ox+2,y:oy+2,width:horiz?15:8,height:horiz?8:15,fill:"#111",opacity:.5,rx:2},g);
+    el("rect",{x:ox,y:oy,width:horiz?15:8,height:horiz?8:15,fill:["#c8c6b8","#3a3a33","#8a887c","#dedbd0"][i%4],rx:2},g);}
+  // buildings: shadow then roof
+  for(y=0;y<H;y++)for(x=0;x<W;x++){if(s.actual[y][x]!=="B")continue;var px2=x*C,py2=y*C;
+    var L=x>0&&s.actual[y][x-1]==="B",R=x<W-1&&s.actual[y][x+1]==="B",T=y>0&&s.actual[y-1][x]==="B",Bo=y<H-1&&s.actual[y+1][x]==="B";
+    var ix=L?0:4,iy=T?0:4,iw=C-ix-(R?0:4),ih=C-iy-(Bo?0:4);
+    el("rect",{x:px2+ix+5,y:py2+iy+7,width:iw,height:ih,fill:"#0a0907",opacity:.85},g);}
+  for(y=0;y<H;y++)for(x=0;x<W;x++){if(s.actual[y][x]!=="B")continue;var px3=x*C,py3=y*C,rv=r();
+    var L2=x>0&&s.actual[y][x-1]==="B",R2=x<W-1&&s.actual[y][x+1]==="B",T2=y>0&&s.actual[y-1][x]==="B",B2=y<H-1&&s.actual[y+1][x]==="B";
+    var jx=L2?0:4,jy=T2?0:4,jw=C-jx-(R2?0:4),jh=C-jy-(B2?0:4);
+    el("rect",{x:px3+jx,y:py3+jy,width:jw,height:jh,fill:ROOF[Math.floor(rv*ROOF.length)]},g);
+    el("rect",{x:px3+jx,y:py3+jy,width:jw,height:2,fill:"#fff",opacity:.12},g);
+    if(rv<.55)el("line",{x1:px3+jx+2,y1:py3+C/2,x2:px3+jx+jw-2,y2:py3+C/2,stroke:"#55544a","stroke-width":1.2,opacity:.8},g);
+    if(r()<.6){var ax=px3+10+r()*28,ay=py3+10+r()*28;el("rect",{x:ax+2,y:ay+2,width:9,height:7,fill:"#0e0d0a",opacity:.5},g);el("rect",{x:ax,y:ay,width:9,height:7,fill:"#c9c7ba"},g);}
+    if(r()<.25)el("circle",{cx:px3+14+r()*30,cy:py3+14+r()*30,r:4,fill:"#3d3c34",stroke:"#aaa99c","stroke-width":1},g);
+    if(!R2&&!B2)el("rect",{x:px3+jx,y:py3+jy+jh-2,width:jw,height:2,fill:"#000",opacity:.25},g);
+  }
+  // construction sites: cells with pressure toward target
+  for(y=0;y<H;y++)for(x=0;x<W;x++){if(!s.press[y][x])continue;var qx=x*C,qy=y*C;
+    el("rect",{x:qx+3,y:qy+3,width:C-6,height:C-6,fill:"#6e6a58",opacity:.55},g);
+    el("rect",{x:qx+3,y:qy+3,width:C-6,height:C-6,fill:"none",stroke:"#D9D3BE","stroke-width":1.2,"stroke-dasharray":"3 3"},g);
+    for(var m=0;m<3;m++)el("rect",{x:qx+10+m*13,y:qy+12+(m%2)*14,width:9,height:6,fill:"#bdb6a0",opacity:.8},g);
+    var cr=el("g",{"class":"crane",style:"transform-origin:"+(qx+C-12)+"px "+(qy+14)+"px"},g);
+    el("line",{x1:qx+C-12,y1:qy+14,x2:qx+8,y2:qy+10,stroke:"#e7dcb8","stroke-width":2},cr);
+    el("circle",{cx:qx+C-12,cy:qy+14,r:3,fill:"#e7dcb8"},cr);}
+}
+function drawVellum(s,g){
+  el("rect",{x:0,y:0,width:W*C,height:H*C,fill:"url(#vel)"},g);
+  var pen=el("g",{filter:"url(#pencil)"},g);
+  for(var y=0;y<H;y++)for(var x=0;x<W;x++){
+    var p=s.plan[y][x],px=x*C,py=y*C,ed=s.edited[x+","+y];
+    if(p==="B")el("rect",{x:px,y:py,width:C,height:C,fill:ed&&s.id==="b"?"url(#hatchD)":"url(#hatch)",opacity:ed?1:.55},pen);
+    if(p==="P")el("rect",{x:px,y:py,width:C,height:C,fill:"url(#stip)"},pen);
+    // boundaries where plan kind changes
+    if(x<W-1&&s.plan[y][x+1]!==p)el("line",{x1:px+C,y1:py,x2:px+C,y2:py+C,stroke:"#2a2924","stroke-width":ed||s.edited[(x+1)+","+y]?2.4:1.3,opacity:.8},pen);
+    if(y<H-1&&s.plan[y+1][x]!==p)el("line",{x1:px,y1:py+C,x2:px+C,y2:py+C,stroke:"#2a2924","stroke-width":ed||s.edited[x+","+(y+1)]?2.4:1.3,opacity:.8},pen);
+  }
+  // edited cells: heavy outline + eraser smudge ghost
+  Object.keys(s.edited).forEach(function(k){var a=k.split(","),x=+a[0],y=+a[1],px=x*C,py=y*C;
+    el("ellipse",{cx:px+C/2+6,cy:py+C/2-4,rx:C*.45,ry:C*.28,fill:"#D9D3BE",opacity:.28,filter:"url(#smudge)"},g);
+    var r=el("rect",{x:px+2,y:py+2,width:C-4,height:C-4,fill:"none",stroke:"#1e1d19","stroke-width":2.2,opacity:.9,filter:"url(#pencil)"},g);
+    if(s.fresh["e"+k])r.setAttribute("class","fresh");
+  });
+  // flips tally & worn parcels & pressure
+  for(var yy=0;yy<H;yy++)for(var xx=0;xx<W;xx++){var f=s.flips[yy][xx],qx=xx*C,qy=yy*C;
+    if(f>0&&(s.plan[yy][xx]!==s.actual[yy][xx]||f>=1)&&(s.edited[xx+","+yy]||f>=2||s.press[yy][xx])){
+      for(var t=0;t<f;t++)el("line",{x1:qx+C-16+t*4,y1:qy+C-13,x2:qx+C-17+t*4,y2:qy+C-5,stroke:f>=3?"#8A6A22":"#34332E","stroke-width":1.5},g);}
+    if(f>=BAL.maxFlip&&s.plan[yy][xx]!==s.actual[yy][xx]){
+      el("rect",{x:qx+4,y:qy+4,width:C-8,height:C-8,fill:"#8A6A22",opacity:.16},g);
+      el("path",{d:"M"+(qx+12)+" "+(qy+12)+"L"+(qx+C-12)+" "+(qy+C-12)+"M"+(qx+C-12)+" "+(qy+12)+"L"+(qx+12)+" "+(qy+C-12),stroke:"#8A6A22","stroke-width":3,opacity:.85,"stroke-linecap":"round"},g);
+      var tg=el("text",{x:qx+C/2,y:qy+C+15,"text-anchor":"middle","font-size":13,fill:"#F1ECDD","font-family":"var(--sans)",style:"paint-order:stroke;stroke:#16150F;stroke-width:3px"},g);tg.textContent="필지 닳음 · 거부";}
+    var pr=s.press[yy][xx];
+    if(pr){var tgt=s.plan[yy][xx]==="."?"B":s.plan[yy][xx],cost=BAL.cost[tgt]||10,frac=Math.min(1,pr/cost),cx=qx+15,cy=qy+15,R=11,circ=2*Math.PI*R;
+      el("circle",{cx:cx,cy:cy,r:R,fill:"rgba(241,236,221,.55)",stroke:"#9A9890","stroke-width":1},g);
+      el("circle",{cx:cx,cy:cy,r:R,fill:"none",stroke:"#1e1d19","stroke-width":3.2,"stroke-dasharray":(circ*frac)+" "+circ,transform:"rotate(-90 "+cx+" "+cy+")"},g);
+      var pt=el("text",{x:cx,y:cy+4,"text-anchor":"middle","font-size":10,"font-weight":700,fill:"#1e1d19","font-family":"var(--sans)"},g);pt.textContent=pr;}
+  }
+  // exits
+  EXITS.forEach(function(e,i){var ex=e[0]*C,ey=e[1]*C+C/2,left=e[0]===0;
+    el("path",{d:left?"M"+(ex+22)+" "+(ey-9)+"L"+(ex+6)+" "+ey+"L"+(ex+22)+" "+(ey+9):"M"+(ex+C-22)+" "+(ey-9)+"L"+(ex+C-6)+" "+ey+"L"+(ex+C-22)+" "+(ey+9),fill:"none",stroke:"#F1ECDD","stroke-width":3,"stroke-linecap":"round","stroke-linejoin":"round"},g);
+    var t=el("text",{x:left?ex+26:ex+C-26,y:ey-12,"text-anchor":left?"start":"end","font-size":13,fill:"#F1ECDD","font-family":"var(--sans)",style:"paint-order:stroke;stroke:#16150F;stroke-width:3px"},g);t.textContent=i?"동문":"서문";});
+  // district annotations (hand)
+  if(s.id==="a"){var a1=el("text",{x:6.1*C,y:3.62*C,"font-size":22,fill:"#1e1d19","font-family":"var(--hand)",transform:"rotate(-3 "+(6*C)+" "+(3.6*C)+")"},g);a1.textContent="안마당 → 광장으로";}
+  var a2=el("text",{x:11.1*C,y:3.62*C,"font-size":22,fill:"#1e1d19","font-family":"var(--hand)",opacity:.8},g);a2.textContent="무른 구역";
+  el("rect",{x:11*C+3,y:4*C+3,width:3*C-6,height:3*C-6,fill:"none",stroke:"#1e1d19","stroke-width":1.3,"stroke-dasharray":"2 5",opacity:.6},g);
+  if(s.id==="b"){
+    el("path",{d:"M"+(7.2*C)+" "+(5.85*C)+"q-30 70 -150 78",fill:"none",stroke:"#1e1d19","stroke-width":1.8,filter:"url(#pencil)"},g);
+    var a3=el("text",{x:1.3*C,y:7.0*C+20,"font-size":20,fill:"#1e1d19","font-family":"var(--hand)"},g);a3.textContent="안마당 — 제36일, 목까지 그었다";
+  }
+}
+function drawPeople(s,g,r){
+  s.cit.forEach(function(c){var cx=c.x*C+C/2,cy=c.y*C+C/2,gg=el("g",{"class":c.buried?"buried":""},g);
+    if(c.trapped){el("circle",{cx:cx,cy:cy,r:28,fill:"url(#rg)"},gg);}
+    el("circle",{"class":"halo",cx:cx,cy:cy,r:8,fill:"none",stroke:"#E06A58","stroke-width":c.trapped?2.2:1.2},gg);
+    if(c.buried){el("rect",{x:c.x*C+2,y:c.y*C+2,width:C-4,height:C-4,fill:"none",stroke:"#E06A58","stroke-width":2,"stroke-dasharray":"4 4",opacity:.9},gg);}
+    el("circle",{"class":"dot",cx:cx,cy:cy,r:7,fill:"#B4352A",stroke:c.buried?"#1a0c09":"#F1ECDD","stroke-width":c.buried?2:1.6,filter:c.trapped?"url(#glow)":"",opacity:c.buried?.9:1},gg);
+    var left=c.id==="nam",lx=left?cx-11:cx+11,ly=c.id==="oh"?cy+26:cy-11;
+    var t=el("text",{x:lx,y:ly,"text-anchor":left?"end":"start","font-size":17,fill:c.trapped?"#fff0e8":"#1e1d19","font-family":"var(--hand)",style:c.trapped?"paint-order:stroke;stroke:#5a1510;stroke-width:4px":"paint-order:stroke;stroke:rgba(241,236,221,.85);stroke-width:4px"},gg);
+    t.textContent=c.name+(c.buried?" · 묻힘":c.trapped?" · 갇힘":"");
+  });
+}
+function drawHover(s,g){
+  if(!hover)return;var x=hover[0],y=hover[1],px=x*C,py=y*C;
+  if(LOCKED[x+","+y]){el("rect",{x:px+2,y:py+2,width:C-4,height:C-4,fill:"none",stroke:"#B4352A","stroke-width":2,"stroke-dasharray":"3 3"},g);
+    var t=el("text",{x:px+C/2,y:py-6,"text-anchor":"middle","font-size":12,fill:"#F1ECDD","font-family":"var(--sans)",style:"paint-order:stroke;stroke:#16150F;stroke-width:3px"},g);t.textContent="잠긴 교차로";return;}
+  var k=tool==="E"?".":tool,fill=k==="B"?"url(#hatchD)":k==="P"?"url(#stip)":k==="S"?"rgba(241,236,221,.35)":"rgba(217,211,190,.55)";
+  el("rect",{x:px,y:py,width:C,height:C,fill:fill,opacity:.9},g);
+  el("rect",{x:px+1,y:py+1,width:C-2,height:C-2,fill:"none",stroke:"#F1ECDD","stroke-width":2},g);
+  var cost=editCost(s,x,y,k);
+  var tx=el("text",{x:px+C/2,y:py+C+16,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#F1ECDD","font-family":"var(--sans)",style:"paint-order:stroke;stroke:#16150F;stroke-width:3px"},g);
+  tx.textContent=cost===null?"같은 선":(cost+"원"+(s.edited[x+","+y]?" (다시 그음 +7)":""));
+}
+function editCost(s,x,y,k){if(s.plan[y][x]===k)return null;if(k===".")return 0;var c=BAL.edit[k];if(s.edited[x+","+y])c+=BAL.sur;return c;}
+
+function render(){
+  var s=S[cur];status(s);
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  defs();
+  var photo=el("g",{filter:"url(#photo)"},svg);drawPhoto(s,photo);
+  // photo toning
+  el("rect",{x:0,y:0,width:W*C,height:H*C,fill:cur==="b"?"#2a1a14":"#2a291f",opacity:cur==="b"?.28:.12,style:"mix-blend-mode:multiply"},svg);
+  drawVellum(s,el("g",{},svg));
+  drawPeople(s,el("g",{},svg));
+  // dust puffs on fresh flips
+  Object.keys(s.fresh).forEach(function(k){if(k.charAt(0)==="e")return;var a=k.split(",");el("circle",{"class":"dust",cx:+a[0]*C+C/2,cy:+a[1]*C+C/2,r:26,fill:"#D9D3BE",opacity:.8,filter:"url(#smudge)"},svg);});
+  drawHover(s,el("g",{},svg));
+  // edge of vellum sheet (slightly offset)
+  el("rect",{x:.5,y:.5,width:W*C-1,height:H*C-1,fill:"none",stroke:"#F1ECDD","stroke-width":1,opacity:.35},svg);
+  hud(s);sheets(s);timeline(s);panel(s);
+}
+function hud(s){
+  document.getElementById("hDay").textContent=s.day;
+  document.getElementById("hPermit").textContent=s.permit;
+  document.getElementById("hBudget").style.width=Math.max(0,Math.min(100,s.permit/s.budget*100))+"%";
+  document.getElementById("hSheets").textContent=s.sheets;
+  var n=s.cit.filter(function(c){return c.trapped;}).length;
+  document.getElementById("hTrap").textContent=n;
+  document.getElementById("hTrapWrap").className="stat"+(n?" warn":"");
+  document.getElementById("rulerR").textContent="측량일 제 "+s.day+"일 오전";
+}
+function sheets(s){var box=document.getElementById("sheets"),h="",n=Math.min(s.sheets,26);
+  for(var i=0;i<n;i++){var dx=-i*.9+(i%3)*.6,dy=i*.85,rot=((i*37)%9-4)*.09;
+    h+='<div class="sheet" style="transform:translate('+dx+'px,'+dy+'px) rotate('+rot+'deg);opacity:'+(0.35+0.65*(i/n))+'"></div>';}
+  box.innerHTML=h;}
+function timeline(s){var t=document.getElementById("timeline"),h="",wpx=928/60;
+  h+='<line x1="0" y1="30" x2="928" y2="30" stroke="#6B6A61" stroke-width="1"/>';
+  for(var d=1;d<=60;d++){var x=(d-.5)*wpx,big=d%10===0;h+='<line x1="'+x+'" y1="'+(big?20:25)+'" x2="'+x+'" y2="30" stroke="#6B6A61" stroke-width="1"/>';
+    if(big)h+='<text x="'+x+'" y="44" text-anchor="middle" font-size="10" fill="#9A9890" font-family="sans-serif">'+d+'일</text>';}
+  s.editDays.forEach(function(d){var x=(d-.5)*wpx;h+='<rect x="'+(x-4)+'" y="8" width="8" height="11" fill="#E6E0CE" opacity=".8" transform="rotate(-8 '+x+' 13)"/>';});
+  var x=(Math.min(60,s.day)-.5)*wpx;h+='<rect x="0" y="28" width="'+x+'" height="4" fill="'+(cur==="b"?"#B4352A":"#E6E0CE")+'" opacity=".7"/>';
+  h+='<path d="M'+x+' 34l-6 10h12z" fill="#F1ECDD"/><text x="'+(x+10)+'" y="16" font-size="12" fill="#F1ECDD" font-family="sans-serif">오늘</text>';
+  h+='<text x="928" y="13" text-anchor="end" font-size="11" fill="#9A9890" font-family="sans-serif">■ 트레이싱지 한 장 = 지도를 고친 날</text>';
+  t.innerHTML=h;}
+function plazaSize(s,sx,sy){if(s.actual[sy][sx]!=="P")return 0;var seen={},q=[[sx,sy]],n=0;seen[sx+","+sy]=1;
+  while(q.length){var p=q.shift();n++;[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var x=p[0]+d[0],y=p[1]+d[1],k=x+","+y;if(x<0||y<0||x>=W||y>=H||seen[k]||s.actual[y][x]!=="P")return;seen[k]=1;q.push([x,y]);});}return n;}
+function dwell(s){var n=0;for(var y=0;y<H;y++)for(var x=0;x<W;x++){if(s.actual[y][x]!=="B")continue;
+  if([[1,0],[-1,0],[0,1],[0,-1]].some(function(d){var a=x+d[0],b=y+d[1];return a>=0&&b>=0&&a<W&&b<H&&s.actual[b][a]==="S";}))n++;}return n;}
+function panel(s){
+  var r=reach(s.actual),trapped=s.cit.filter(function(c){return c.trapped;}).length,pl=plazaSize(s,7,5),dw=dwell(s);
+  var goals=[
+    {t:"안마당 (7,5)까지 문에서 닿는다",ok:!!r[5][7]&&s.actual[5][7]!=="B",v:r[5][7]?"닿는다":"막혔다"},
+    {t:"길에 붙은 집 54채 이상",ok:dw>=54,v:dw+"채"},
+    {t:"이어진 광장 4칸",ok:pl>=4,v:pl+" / 4칸",pending:pl<4&&trapped===0},
+    {t:"아무도 갇히지 않는다",ok:trapped===0,v:trapped?trapped+"명 갇힘":"0명"}
+  ];
+  document.getElementById("goalList").innerHTML=goals.map(function(g){return '<div class="goal '+(g.ok?"ok":(g.pending?"":"bad"))+'"><div class="box"></div><span>'+g.t+'</span><span class="v">'+g.v+'</span></div>';}).join("");
+  document.getElementById("peopleList").innerHTML=s.cit.map(function(c){
+    var st=c.buried?"묻힘":c.trapped?"갇힘 — 문에 닿지 못한다":c.note;
+    return '<div class="person'+(c.trapped?" trapped":"")+'"><span class="pd"></span><span class="nm">'+c.name+'</span><span class="st">'+st+'</span><span class="hm">해 '+c.harm+'</span></div>';}).join("");
+  var totalHarm=s.cit.reduce(function(a,c){return a+c.harm;},0);
+  document.getElementById("reportRows").innerHTML=
+    s.cit.filter(function(c){return c.trapped;}).map(function(c){return '<div class="row"><span>'+c.name+' · '+(c.buried?"벽 안에 묻힘":"갇힘")+'</span><b style="color:#B4352A">해 '+c.harm+' · +'+(c.hpd+(c.buried?5:0))+'/일</b></div>';}).join("")+
+    '<div class="row"><span>쌓인 해 (돌아오지 않는다)</span><b>'+totalHarm+'</b></div>'+
+    '<div class="row"><span>되돌리는 데 드는 날</span><b>최소 2일</b></div>'+
+    '<div class="row"><span>남은 허가비</span><b>'+s.permit+'원</b></div>';
+  if(s.log){document.getElementById("logList").innerHTML=s.log.slice(-3).reverse().map(function(l){return '<div class="ln"><b>제'+l[0]+'일</b><span>'+l[1]+'</span></div>';}).join("");}
+  document.getElementById("advSub").textContent=trapped?"하루가 지날 때마다 해가 쌓인다 · +"+s.cit.reduce(function(a,c){return a+(c.trapped?c.hpd+(c.buried?5:0):0);},0)+"/일":"도시가 지도를 따라 짓는다 · 압력 +5/일";
+}
+
+/* ---------- screen switching ---------- */
+var CH={a:{b:"제 2장",t:"안마당을 광장으로 연다",lbl:"시의회 결의 · 제 2장",h:"안마당을 광장으로 연다",p:"한 필지 안에 골목이 있다. 시의회는 그것을 광장으로 만들라고 한다 — 그리고 사람은 그대로 살아야 한다.",hand:"→ 목(7,4)은 절대 막지 말 것. 남씨는 못 걷는다."},
+        b:{b:"사고 · 제 1장 이후",t:"목과 안쪽을 같이 그었다",lbl:"시의회 결의 · 제 1장",h:"무른 구역에 선을 확정한다",p:"지도가 그리지 않은 아홉 칸을 도시가 제 짐작으로 메우고 있다. 조씨가 그 안에 산다.",hand:"안마당은 결의에 없었다. 그런데 왜 그었나."}};
+function show(id){if(id!=="a"&&id!=="b")id="a";cur=id;var c=CH[id];
+  document.getElementById("stage").className=id==="b"?"screenB":"";
+  document.getElementById("chap").innerHTML="<b>"+c.b+"</b>"+c.t;
+  document.getElementById("noteLbl").textContent=c.lbl;document.getElementById("noteH").textContent=c.h;
+  document.getElementById("noteP").textContent=c.p;document.getElementById("noteHand").textContent=c.hand;
+  Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.className=b.getAttribute("data-s")===id?"on":"";});
+  try{if(location.hash!=="#"+id)history.replaceState(null,"","#"+id);}catch(e){}
+  render();}
+function setTool(k){tool=k;Array.prototype.forEach.call(document.querySelectorAll(".tool"),function(b){b.classList.toggle("on",b.getAttribute("data-k")===k);});}
+var toastT=0;function toast(m){var t=document.getElementById("toast");t.textContent=m;t.className="show";clearTimeout(toastT);toastT=setTimeout(function(){t.className="";},1300);}
+
+function cellFromEvent(e){var r=svg.getBoundingClientRect();var x=Math.floor((e.clientX-r.left)/r.width*W),y=Math.floor((e.clientY-r.top)/r.height*H);
+  if(x<0||y<0||x>=W||y>=H)return null;return [x,y];}
+svg.addEventListener("mousemove",function(e){var c=cellFromEvent(e);if(!c||!hover||c[0]!==hover[0]||c[1]!==hover[1]){hover=c;render();}});
+svg.addEventListener("mouseleave",function(){hover=null;render();});
+svg.addEventListener("click",function(e){var c=cellFromEvent(e);if(!c)return;var s=S[cur],x=c[0],y=c[1],k=tool==="E"?".":tool;
+  if(LOCKED[x+","+y]||x===0||y===0||x===W-1||y===H-1){sRefuse();toast("테두리와 교차로는 잠겨 있다");return;}
+  var cost=editCost(s,x,y,k);if(cost===null)return;
+  if(cost>s.permit){sRefuse();toast("허가비가 모자란다");return;}
+  s.permit-=cost;s.plan[y][x]=k;s.press[y][x]=0;
+  var key=x+","+y;s.edited[key]=1;s.fresh={};s.fresh["e"+key]=1;
+  if(s.editDays.indexOf(s.day)<0){s.editDays.push(s.day);s.sheets++;sPaper();}
+  if(k===".")sErase();else sPencil();
+  if(s.log)s.log.push([s.day,"("+x+","+y+")을 "+({B:"건물",S:"길",P:"광장",".":"미지정"})[k]+"(으)로 그었다 · "+cost+"원"]);
+  render();});
+document.getElementById("advance").addEventListener("click",advance);
+function advance(){var s=S[cur];if(s.day>=60){toast("기한이 끝났다");return;}
+  var before=s.cit.filter(function(c){return c.trapped;}).length;var f=step(s);sPaper();if(f.length)sBuild(f.length);
+  var after=s.cit.filter(function(c){return c.trapped;}).length;if(after>before){sDread();toast("누군가 문에 닿지 못한다");}else if(f.length)toast("도시가 "+f.length+"칸을 고쳐 지었다");else toast("도시는 오늘 조용했다");
+  if(s.log)s.log.push([s.day-1,after>before?"누군가 문에 닿지 못하게 되었다":f.length?"도시가 지도에 맞춰 "+f.length+"칸을 고쳐 지었다":"도시는 조용했다 · 압력만 쌓였다"]);
+  render();}
+Array.prototype.forEach.call(document.querySelectorAll(".tool"),function(b){b.addEventListener("click",function(){setTool(b.getAttribute("data-k"));sPencil();});});
+Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.addEventListener("click",function(){show(b.getAttribute("data-s"));});});
+document.addEventListener("keydown",function(e){var k=e.key;
+  if(k==="1")show("a");else if(k==="2")show("b");
+  else if(k===" "){e.preventDefault();advance();}
+  else if(k==="q"||k==="Q")setTool("B");else if(k==="w"||k==="W")setTool("S");else if(k==="e"||k==="E")setTool("P");else if(k==="r"||k==="R")setTool("E");});
+window.addEventListener("hashchange",function(){show((location.hash||"#a").slice(1));});
+
+function fit(){var st=document.getElementById("stage"),sc=Math.min(window.innerWidth/1600,window.innerHeight/1000);
+  st.style.transform="scale("+sc+")";st.style.left=((window.innerWidth-1600*sc)/2)+"px";st.style.top=((window.innerHeight-1000*sc)/2)+"px";}
+window.addEventListener("resize",fit);fit();
+show((location.hash||"#a").slice(1)==="b"?"b":"a");
+})();
+</script>
+</body>
+</html>

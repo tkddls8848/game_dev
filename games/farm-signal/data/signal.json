@@ -1,0 +1,46 @@
+{
+  "_": "이 PoC의 핵. '남이 내 밭을 보고 무엇을 하는가'의 계수를 전부 여기 모은다.",
+  "_왜_한_파일": "검사기 SignalMatters 가 이 파일의 세 갈래(copycat · theft · renown)를 0으로 눌러 '신호 끈 세계'를 만든다. 흩어져 있으면 그 세계를 만들 수 없다.",
+
+  "copycat": {
+    "_": "값나가는 작물을 심는 것이 남에게 보이면, 남들도 심는다 → 다음 계절 시세가 내려간다.",
+    "dropPerPointPer1000": 190,
+    "recoverPerSeason": 8,
+    "_recover": "재고가 밀려나가며 100%로 돌아오는 힘. 100%를 넘지는 못한다 — 넘게 두었다가 밭을 쉼히는 것만으로 전부 천장에 붙어 신호가 상금이 된다.",
+    "scarcityThresholdIndex": 20,
+    "scarcityRisePerSeason": 8,
+    "_scarcity": "내가 생각하기도 않았다고 남이 봤으면(관재치 20 이하) 그리 하는 것이 관지다 — 귀해진다. 100%를 넘어 ceil 까지 가는 유일한 통로이고, 윈작의 보상이 이것이다.",
+    "floorPercent": 25,
+    "ceilPercent": 140,
+    "_ceil": "심지 않으면 오른다. 한 해 묶어 두면 140%까지 간다 — 윤작이 이기는 진짜 이유가 이 천장이다.",
+    "warnPercent": 80,
+    "collapsePercent": 50
+  },
+
+  "theft": {
+    "_": "값나가는 것을 남이 보면 도둑이 온다. 계절 끝에 씨드 고정 난수로 한 번 굴린다.",
+    "riskDivisor": 34,
+    "riskCapPer1000": 900,
+    "watchPer100Renown": 100,
+    "_watch": "평판이 높으면 지나는 사람이 많아 도둑이 줄어든다. 라벤더가 사프란을 지키는 통로가 이것이다.",
+    "severityStepPer1000": 200,
+    "maxPlotsHit": 4,
+    "minRiskToRollPer1000": 30
+  },
+
+  "renown": {
+    "_": "보이는 것이 나쁜 일만 하는 것은 아니다. 라벤더는 보이는 만큼 평판이 된다.",
+    "gainDivisor": 150,
+    "decayPerSeason": 6,
+    "cap": 300,
+    "perVisitor": 20,
+    "premiumPerVisitor": 2,
+    "premiumCapPercent": 24,
+    "_premium": "방문자가 밭에서 직접 사 간다 → 모든 작물 판매가에 백분율로 얹는다. 상한 24%."
+  },
+
+  "observation": {
+    "_": "하루 관측치 = visibility x 유효노출 x 날씨노출% x 길통행% / 1000000. 나머지는 작물별로 누적한다.",
+    "denominator": 1000000
+  }
+}

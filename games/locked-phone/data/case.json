@@ -1,0 +1,272 @@
+{
+  "_": "사실과 정답. **이 파일이 이 게임의 논리 전부다.**",
+  "_증거_딱지": "e_xxx@card = 알림이 왔다는 것(미리보기를 꺼도 남는다) · e_xxx@preview = 미리보기 본문 · e_xxx@exif = 사진의 촬영 시각·장소 · battery@rate = 잔량을 충분히 벌려 두 번 읽어야 나온다",
+  "_논리곱": "사실은 needs 를 **전부** 쥐어야 서고, 선택지는 refutedBy 를 **전부** 쥐어야 지워진다. 그래서 하나라도 빠지면 정답이 무너진다 — NoSingleNotificationGivesItAway 가 그것을 하나씩 빼 보며 확인한다.",
+  "ko": "한지운(34) · 3월 14일 · 자택 계단 아래에서 발견. 휴대폰은 잠겨 있고 비밀번호는 아무도 모른다.",
+  "facts": [
+    {
+      "id": "f_at_shop",
+      "ko": "17:55에 형의 가게(한섭목공) 앞에 있었다",
+      "needs": [
+        "e_photo_bro@exif"
+      ],
+      "altNeedsUnlocked": [
+        "x_gallery"
+      ]
+    },
+    {
+      "id": "f_paid_shop",
+      "ko": "18:20에 한섭목공에서 12,000원을 결제했다",
+      "needs": [
+        "e_card_bro@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_bankapp"
+      ]
+    },
+    {
+      "id": "f_left_shop_1830",
+      "ko": "여섯 시 반에 형의 가게에서 나왔다 (형이 말했다)",
+      "needs": [
+        "e_msg_bro4@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies"
+      ]
+    },
+    {
+      "id": "f_not_at_workshop",
+      "ko": "그날 목공방에는 한 번도 가지 않았다",
+      "needs": [
+        "e_msg_shopmate@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies"
+      ]
+    },
+    {
+      "id": "f_met_bro",
+      "ko": "형을 직접 만나 봉투를 받았다",
+      "needs": [
+        "e_msg_bro2@preview",
+        "e_msg_bro4@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_notes",
+        "x_msgbodies"
+      ]
+    },
+    {
+      "id": "f_no_contact_deliv",
+      "ko": "택배는 대면하지 않고 문 앞에 두고 갔다",
+      "needs": [
+        "e_deliv2@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies"
+      ]
+    },
+    {
+      "id": "f_land_only_text",
+      "ko": "집주인과는 문자로만 닿았다",
+      "needs": [
+        "e_msg_land@preview",
+        "e_msg_land2@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies",
+        "x_calllog"
+      ]
+    },
+    {
+      "id": "f_alive_1910",
+      "ko": "19:10까지 걷고 있었다",
+      "needs": [
+        "e_step@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_health"
+      ]
+    },
+    {
+      "id": "f_stair_2006",
+      "ko": "20:06에 자택 계단참에서 사진을 찍었다",
+      "needs": [
+        "e_photo_bak@exif"
+      ],
+      "altNeedsUnlocked": [
+        "x_gallery"
+      ]
+    },
+    {
+      "id": "f_noise_2000",
+      "ko": "여덟 시쯤 계단에서 무언가 떨어지는 소리가 났다",
+      "needs": [
+        "e_msg_land2@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies"
+      ]
+    },
+    {
+      "id": "f_untouched_since_2012",
+      "ko": "20:12 이후 화면이 한 번도 켜지지 않았다 (잔량이 정확히 대기 감소분만큼만 줄었다)",
+      "needs": [
+        "e_lowpower@preview",
+        "battery@rate"
+      ],
+      "altNeedsUnlocked": [
+        "x_health"
+      ]
+    },
+    {
+      "id": "f_missed_calls",
+      "ko": "20:52·21:03 두 통을 받지 못했다",
+      "needs": [
+        "e_call1@card",
+        "e_call2@card"
+      ],
+      "altNeedsUnlocked": [
+        "x_calllog"
+      ]
+    },
+    {
+      "id": "f_sensor_2006",
+      "ko": "계단 센서가 20:06에 꺼졌다 (경찰이 확인했다고 형이 전했다)",
+      "needs": [
+        "e_msg_bro5@preview"
+      ],
+      "altNeedsUnlocked": [
+        "x_msgbodies"
+      ]
+    }
+  ],
+  "verdicts": [
+    {
+      "id": "v_where",
+      "questionKo": "18:00~19:00 사이 한지운은 어디에 있었는가?",
+      "correct": "o_shop",
+      "supports": [
+        "f_at_shop",
+        "f_paid_shop",
+        "f_left_shop_1830"
+      ],
+      "options": [
+        {
+          "id": "o_shop",
+          "ko": "형의 가게 (한섭목공)",
+          "refutedBy": []
+        },
+        {
+          "id": "o_home",
+          "ko": "자택",
+          "refutedBy": [
+            "f_at_shop",
+            "f_paid_shop"
+          ]
+        },
+        {
+          "id": "o_workshop",
+          "ko": "목공방",
+          "refutedBy": [
+            "f_not_at_workshop",
+            "f_paid_shop"
+          ]
+        },
+        {
+          "id": "o_pharm",
+          "ko": "능내 약국",
+          "refutedBy": [
+            "f_at_shop",
+            "f_paid_shop"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v_who",
+      "questionKo": "그날 마지막으로 **직접 만난** 사람은 누구인가?",
+      "correct": "o_bro",
+      "supports": [
+        "f_met_bro",
+        "f_paid_shop",
+        "f_left_shop_1830"
+      ],
+      "options": [
+        {
+          "id": "o_bro",
+          "ko": "형 한지섭",
+          "refutedBy": []
+        },
+        {
+          "id": "o_courier",
+          "ko": "택배기사",
+          "refutedBy": [
+            "f_no_contact_deliv"
+          ]
+        },
+        {
+          "id": "o_landlord",
+          "ko": "집주인",
+          "refutedBy": [
+            "f_land_only_text"
+          ]
+        },
+        {
+          "id": "o_none",
+          "ko": "아무도 만나지 않았다",
+          "refutedBy": [
+            "f_met_bro",
+            "f_paid_shop"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v_when",
+      "questionKo": "계단에서 떨어진 것은 몇 시인가?",
+      "correct": "o_20",
+      "supports": [
+        "f_stair_2006",
+        "f_noise_2000",
+        "f_untouched_since_2012",
+        "f_sensor_2006"
+      ],
+      "options": [
+        {
+          "id": "o_20",
+          "ko": "20시대",
+          "refutedBy": []
+        },
+        {
+          "id": "o_19",
+          "ko": "19시대",
+          "refutedBy": [
+            "f_alive_1910",
+            "f_stair_2006"
+          ]
+        },
+        {
+          "id": "o_21",
+          "ko": "21시대",
+          "refutedBy": [
+            "f_noise_2000",
+            "f_untouched_since_2012",
+            "f_missed_calls",
+            "f_sensor_2006"
+          ]
+        },
+        {
+          "id": "o_unknown",
+          "ko": "알 수 없다",
+          "refutedBy": [
+            "f_stair_2006",
+            "f_noise_2000",
+            "f_untouched_since_2012",
+            "f_sensor_2006"
+          ]
+        }
+      ]
+    }
+  ]
+}

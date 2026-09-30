@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>간병</title>
+<style>
+:root{
+  --paper:#e9dcc3; --ink:#2b2420; --umber:#5a4636; --ochre:#d49a4f; --lamp:#ffd79a; --teal:#3f6f74; --night:#1d2a33;
+  --serif:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang",serif;
+  --sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0b0907;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1600px;height:1000px;transform-origin:0 0;overflow:hidden;background:#15110e;font-family:var(--serif);color:#efe2c8}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+svg.scene{position:absolute;inset:0}
+.paper{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.55;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.035 .6' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .47  0 0 0 0 .38  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>")}
+.fleck{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:screen;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .7 0 0 0 9 -7.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 62% 58% at 44% 46%,transparent 30%,rgba(10,6,3,.82) 100%)}
+
+.clock{position:absolute;left:64px;top:52px}
+.clock .t{font-size:58px;letter-spacing:2px;color:#f3e3c3;font-weight:300;text-shadow:0 0 22px rgba(255,200,120,.25)}
+.clock .d{font-size:15px;color:#b7a488;margin-top:2px;letter-spacing:1px}
+.title{position:absolute;right:64px;top:56px;text-align:right}
+.title .k{font-size:34px;color:#f0dfc0;letter-spacing:14px}
+.title .e{font-family:var(--sans);font-size:11px;letter-spacing:6px;color:#8d7c66;margin-top:6px}
+
+.breathline{position:absolute;left:64px;right:64px;bottom:150px;height:120px}
+.breathline svg{width:100%;height:100%}
+.bl-cap{position:absolute;left:64px;bottom:280px;font-size:18px;color:#e9d7b5;letter-spacing:1px}
+.bl-cap span{color:#a8967c;font-size:14px;margin-left:10px}
+
+.verbs{position:absolute;left:64px;bottom:52px;display:flex;gap:12px}
+.verb{font-family:var(--serif);font-size:18px;color:#efe0c3;background:rgba(30,22,16,.55);border:1px solid rgba(239,224,195,.25);padding:12px 20px;border-radius:2px;cursor:pointer;transition:all .25s;letter-spacing:1px}
+.verb:hover{background:rgba(212,154,79,.18);border-color:rgba(255,215,154,.7);transform:translateY(-2px)}
+.verb:active{transform:translateY(1px)}
+.verb.hot{border-color:#ffd79a;box-shadow:0 0 0 1px #ffd79a,0 0 26px rgba(255,200,120,.35);animation:beckon 2.2s ease-in-out infinite}
+@keyframes beckon{50%{box-shadow:0 0 0 1px #ffd79a,0 0 40px rgba(255,200,120,.6)}}
+.verb small{font-family:var(--sans);font-size:11px;color:#a8967c;margin-left:8px}
+.dist{position:absolute;right:44px;bottom:42px;width:400px;font-family:var(--sans);padding:14px 20px;background:rgba(18,13,9,.72);border:1px solid rgba(239,224,195,.15)}
+.dist .row{display:flex;justify-content:space-between;font-size:12px;color:#9c8a70;letter-spacing:2px}
+.dist .track{position:relative;height:2px;background:rgba(239,224,195,.25);margin:14px 0}
+.dist .dot{position:absolute;top:-6px;width:14px;height:14px;border-radius:50%;background:#ffd79a;box-shadow:0 0 14px #ffc36a;transition:left 1.2s cubic-bezier(.3,.7,.2,1)}
+.whisper{position:absolute;left:50%;top:150px;transform:translateX(-50%);font-size:24px;color:#f6e7c9;letter-spacing:2px;opacity:0;transition:opacity 1.2s;text-shadow:0 2px 14px rgba(0,0,0,.6);white-space:nowrap}
+.whisper.show{opacity:1}
+.memo{position:absolute;font-size:15px;color:#3a2e25;background:#efe2c4;padding:12px 14px;transform:rotate(-3deg);box-shadow:0 6px 16px rgba(0,0,0,.45);line-height:1.6;font-family:var(--serif)}
+.memo b{display:block;font-size:12px;color:#8a6a48;font-family:var(--sans);letter-spacing:2px}
+.tabs{position:absolute;right:16px;top:16px;display:flex;gap:6px;z-index:40}
+.tabs button{font-family:var(--sans);font-size:11px;background:rgba(20,15,10,.6);color:#a8967c;border:1px solid rgba(239,224,195,.2);padding:4px 9px;cursor:pointer}
+.tabs button.on{color:#ffe0b0;border-color:#d49a4f}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="wob" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="2" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <filter id="wash" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="3" seed="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="14" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="1.2"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="soft4"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+</svg>
+
+<!-- ============ SCREEN A : 02:47, steady breath ============ -->
+<section class="screen" id="sa">
+<svg class="scene" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <radialGradient id="lampA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 330) scale(760 620)"><stop offset="0" stop-color="#ffd593" stop-opacity=".85"/><stop offset=".35" stop-color="#d9923f" stop-opacity=".35"/><stop offset="1" stop-color="#2a1a10" stop-opacity="0"/></radialGradient>
+    <linearGradient id="winA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2a3b"/><stop offset="1" stop-color="#2d3b4a"/></linearGradient>
+    <linearGradient id="quilt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98f63"/><stop offset="1" stop-color="#8a5a3c"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="#2a1f18"/>
+  <!-- wall paint strokes -->
+  <g filter="url(#wash)" opacity=".9">
+    <rect x="-20" y="-20" width="1640" height="700" fill="#3b2d23"/>
+    <rect x="-20" y="660" width="1640" height="380" fill="#2a1e16"/>
+    <path d="M-20 660 L1640 640" stroke="#4d3a2c" stroke-width="10"/>
+  </g>
+  <!-- window: night city -->
+  <g transform="translate(160,110)" filter="url(#wob)">
+    <rect width="360" height="380" fill="url(#winA)"/>
+    <g fill="#f3c678" opacity=".7"><rect x="30" y="250" width="8" height="10"/><rect x="60" y="230" width="6" height="8"/><rect x="120" y="270" width="8" height="10"/><rect x="200" y="240" width="7" height="9"/><rect x="250" y="280" width="8" height="10"/><rect x="310" y="250" width="6" height="8"/><rect x="90" y="300" width="6" height="8"/><rect x="170" y="310" width="7" height="9"/></g>
+    <path d="M0 290 L40 240 L80 262 L130 210 L180 250 L240 200 L300 244 L360 220 L360 380 L0 380Z" fill="#141c26" opacity=".85"/>
+    <circle cx="280" cy="80" r="22" fill="#e8dcc0" opacity=".85"/>
+    <rect x="176" y="0" width="8" height="380" fill="#4d3a2c"/><rect y="186" width="360" height="8" fill="#4d3a2c"/>
+    <rect x="-14" y="-14" width="388" height="408" fill="none" stroke="#5a4636" stroke-width="16"/>
+    <!-- curtain -->
+    <path d="M-30 -30 C10 100 -20 260 20 430 L-60 430 L-60 -30Z" fill="#7a5a44"/>
+  </g>
+  <!-- lamp glow over everything -->
+  <rect width="1600" height="1000" fill="url(#lampA)" style="mix-blend-mode:screen"/>
+  <!-- wall calendar & pill box -->
+  <g transform="translate(640,140)" filter="url(#wob)"><rect width="150" height="190" fill="#e6d6b8"/><rect width="150" height="36" fill="#b0503c"/><g fill="#8a7a64"><rect x="14" y="54" width="18" height="14"/><rect x="42" y="54" width="18" height="14"/><rect x="70" y="54" width="18" height="14"/><rect x="98" y="54" width="18" height="14"/><rect x="14" y="80" width="18" height="14"/><rect x="42" y="80" width="18" height="14"/><rect x="70" y="80" width="18" height="14"/></g><circle cx="107" cy="87" r="13" fill="none" stroke="#b0503c" stroke-width="3"/></g>
+
+  <g transform="translate(860,170) rotate(2)" filter="url(#wob)"><rect width="120" height="150" fill="#6a4a32"/><rect x="10" y="10" width="100" height="130" fill="#b8a07e"/><circle cx="42" cy="58" r="14" fill="#6a5040"/><circle cx="76" cy="62" r="12" fill="#6a5040"/><path d="M22 140 C24 90 60 84 62 140Z M58 140 C60 96 92 92 96 140Z" fill="#7a5a44"/><rect x="10" y="10" width="100" height="130" fill="#ffe0a0" opacity=".15"/></g>
+  <!-- BED (side view) -->
+  <g filter="url(#wob)">
+    <rect x="300" y="560" width="760" height="40" fill="#5a3c28"/>
+    <rect x="290" y="440" width="34" height="260" fill="#6a4a32"/>
+    <rect x="1040" y="500" width="30" height="200" fill="#6a4a32"/>
+    <rect x="310" y="520" width="740" height="60" rx="14" fill="#e8dcc4"/>
+    <!-- pillow -->
+    <ellipse cx="410" cy="505" rx="96" ry="36" fill="#f1e6d0"/>
+  </g>
+  <!-- parent: profile on pillow -->
+  <g filter="url(#wob)">
+    <path d="M378 478 C372 450 400 432 430 436 C456 440 470 460 466 482 C462 500 440 510 420 506Z" fill="#d8a888"/>
+    <path d="M376 480 C360 440 400 410 440 424 C420 430 398 450 392 478Z" fill="#cfc8c0"/>
+    <path d="M458 470 l8 8 l-8 2" fill="#c89878"/>
+    <path d="M440 470 q6 2 10 0" stroke="#6a4838" stroke-width="2" fill="none"/>
+  </g>
+  <!-- quilt, breathing -->
+  <g id="quiltA" style="transform-origin:700px 560px" filter="url(#wob)">
+    <path d="M460 500 C560 470 700 480 820 492 C920 500 1000 506 1050 520 L1050 580 L440 580 Z" fill="url(#quilt)"/>
+    <path d="M480 520 C560 500 640 504 700 512 M720 506 C820 500 940 512 1040 536" stroke="#6e4630" stroke-width="3" fill="none" opacity=".6"/>
+    <g fill="#e8c9a0" opacity=".35"><circle cx="560" cy="530" r="6"/><circle cx="640" cy="524" r="6"/><circle cx="720" cy="532" r="6"/><circle cx="800" cy="528" r="6"/><circle cx="880" cy="538" r="6"/><circle cx="960" cy="544" r="6"/></g>
+    <!-- a thin hand over the quilt -->
+    <path d="M600 500 q30 -6 56 4 q8 6 -2 10 q-30 -2 -54 -2z" fill="#d8a888"/>
+  </g>
+
+  <!-- nightside table w/ lamp, water, towel -->
+  <g transform="translate(1090,380)" filter="url(#wob)">
+    <rect x="0" y="170" width="170" height="160" fill="#5a3c28"/><rect x="0" y="160" width="170" height="16" fill="#7a5436"/>
+    <path d="M40 40 L130 40 L150 120 L20 120Z" fill="#f7dca8"/><rect x="80" y="120" width="10" height="42" fill="#6a4a32"/>
+    <rect x="120" y="128" width="26" height="34" fill="#cfe0dc" opacity=".7"/>
+    <rect x="12" y="140" width="60" height="22" rx="6" fill="#dfe6e0"/>
+    <g fill="#e2a54d"><rect x="16" y="144" width="7" height="14"/><rect x="26" y="144" width="7" height="14"/><rect x="36" y="144" width="7" height="14"/></g>
+  </g>
+  <circle cx="1175" cy="440" r="140" fill="#ffd79a" opacity=".22" filter="url(#soft)" id="lampHalo"/>
+
+  <!-- the watcher: in armchair, right, back three-quarter -->
+  <g transform="translate(1250,470) scale(.8)" filter="url(#wob)">
+    <path d="M40 120 C40 30 120 -10 200 0 C270 10 300 60 300 130 L300 420 L40 420Z" fill="#46605c"/>
+    <path d="M10 250 L330 250 L330 440 L10 440Z" fill="#3a504c"/>
+    <!-- person -->
+    <path d="M110 250 C100 150 140 110 190 108 C240 110 262 160 256 250Z" fill="#2b2622"/>
+    <ellipse cx="186" cy="82" rx="44" ry="50" fill="#221c18"/>
+    <path d="M150 64 C160 40 214 36 226 70" stroke="#ffcf8a" stroke-width="3" fill="none" opacity=".6"/>
+    <path d="M110 200 C60 210 30 240 20 256" stroke="#2b2622" stroke-width="30" stroke-linecap="round" fill="none"/>
+    <!-- blanket over lap -->
+    <path d="M90 250 C150 230 260 240 300 262 L300 330 L80 330Z" fill="#b87a52"/>
+  </g>
+
+  <!-- floor: slippers, basin -->
+  <g filter="url(#wob)"><ellipse cx="560" cy="742" rx="48" ry="12" fill="#8a4a3a"/><ellipse cx="620" cy="748" rx="48" ry="12" fill="#8a4a3a"/><ellipse cx="870" cy="740" rx="70" ry="18" fill="#9fb4b0"/><ellipse cx="870" cy="734" rx="60" ry="10" fill="#c5d6d0"/></g>
+</svg>
+<div class="paper"></div><div class="fleck"></div><div class="vig"></div>
+
+<div class="clock"><div class="t" id="clockA">02:47</div><div class="d">열하루째 밤 · 엄마의 방</div></div>
+<div class="title"><div class="k">간병</div><div class="e">THE NIGHT WATCH</div></div>
+<div class="memo" style="left:540px;top:356px">
+  <b>간호사 메모</b>숨이 고르지 않으면<br>옆으로 눕혀 드리세요.
+</div>
+<div class="whisper" id="whA">숨이 고르다. 아직은 기다려도 된다.</div>
+
+<div class="bl-cap">엄마의 숨 <span>들숨 1.8초 · 날숨 2.6초 · 고름</span></div>
+<div class="breathline"><svg viewBox="0 0 1472 120" preserveAspectRatio="none">
+  <path id="lineA" d="" fill="none" stroke="#f0dcb4" stroke-width="2.4" stroke-linecap="round" filter="url(#wob)"/>
+  <circle id="headA" r="6" fill="#ffd79a"/>
+</svg></div>
+
+<div class="verbs">
+  <div class="verb" data-v="0">귀 기울이기<small>숨소리 듣기</small></div>
+  <div class="verb" data-v="1">다가가기</div>
+  <div class="verb" data-v="2">물수건 적시기</div>
+  <div class="verb" data-v="3">창밖 보기</div>
+</div>
+<div class="dist"><div class="row"><span>의자</span><span>침대 곁</span></div><div class="track"><div class="dot" id="dotA" style="left:92%"></div></div><div class="row"><span style="letter-spacing:0">졸음 ▮▮▮▯▯</span><span style="letter-spacing:0">다가간 횟수 4</span></div></div>
+</section>
+
+<!-- ============ SCREEN B : 05:12, the rhythm changes ============ -->
+<section class="screen" id="sb">
+<svg class="scene" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d8ea0"/><stop offset=".6" stop-color="#c7b8a4"/><stop offset="1" stop-color="#e7c08e"/></linearGradient>
+    <radialGradient id="coolB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(360 300) scale(900 800)"><stop offset="0" stop-color="#a9c4cc" stop-opacity=".55"/><stop offset="1" stop-color="#1d2a33" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="#1f262b"/>
+  <g filter="url(#wash)"><rect x="-20" y="-20" width="1640" height="720" fill="#34403f"/><rect x="-20" y="690" width="1640" height="340" fill="#232a2c"/></g>
+  <!-- window at dawn, bigger in frame: camera moved closer to the bed -->
+  <g transform="translate(60,40)" filter="url(#wob)">
+    <rect width="440" height="470" fill="url(#dawn)"/>
+    <path d="M0 360 L60 300 L120 330 L190 270 L260 320 L330 262 L440 300 L440 470 L0 470Z" fill="#4c5a62" opacity=".8"/>
+    <rect x="214" y="0" width="10" height="470" fill="#6a5a4c"/><rect y="228" width="440" height="10" fill="#6a5a4c"/>
+    <rect x="-16" y="-16" width="472" height="502" fill="none" stroke="#6a5a4c" stroke-width="18"/>
+  </g>
+  <rect width="1600" height="1000" fill="url(#coolB)" style="mix-blend-mode:screen"/>
+  <!-- close bed, parent larger -->
+  <g filter="url(#wob)">
+    <rect x="200" y="640" width="1100" height="60" fill="#4a3a2c"/>
+    <rect x="220" y="590" width="1080" height="80" rx="16" fill="#d9d4c8"/>
+    <ellipse cx="400" cy="570" rx="150" ry="52" fill="#e6e2d8"/>
+  </g>
+  <g filter="url(#wob)">
+    <path d="M330 530 C322 486 364 458 408 464 C446 470 468 498 462 532 C456 560 424 574 394 568Z" fill="#cfa088"/>
+    <path d="M326 534 C300 470 360 424 420 444 C390 454 360 482 352 530Z" fill="#d6d0c8"/>
+    <path d="M452 518 l12 12 l-12 3" fill="#bf9078"/>
+    <!-- mouth slightly open: shallow breathing -->
+    <ellipse id="mouthB" cx="452" cy="548" rx="6" ry="3" fill="#6a3a30"/>
+    <path d="M420 514 q8 3 14 0" stroke="#5a3a2e" stroke-width="2.4" fill="none"/>
+  </g>
+  <g id="quiltB" style="transform-origin:800px 640px" filter="url(#wob)">
+    <path d="M470 560 C640 520 860 530 1040 548 C1160 560 1250 572 1300 590 L1300 660 L450 660Z" fill="#9a7a62"/>
+    <path d="M500 586 C640 560 780 562 880 572" stroke="#6e5240" stroke-width="3" fill="none" opacity=".6"/>
+  </g>
+  <!-- two hands meeting on the quilt : the beat -->
+  <g filter="url(#wob)">
+    <path d="M640 560 q40 -10 84 2 q10 8 -2 14 q-44 -2 -80 -4z" fill="#cfa088"/>
+    <!-- kneeling caregiver at the bedside, leaning in -->
+    <path d="M930 700 C900 560 940 440 1030 420 C1110 410 1160 470 1170 560 L1180 700Z" fill="#3c4a48"/>
+    <path d="M930 700 C900 560 940 440 1030 420" stroke="#d9e6e6" stroke-width="3" fill="none" opacity=".55"/>
+    <ellipse cx="1010" cy="380" rx="48" ry="54" fill="#2a2522" transform="rotate(-14 1010 380)"/>
+    <path d="M964 366 C966 340 990 326 1012 328" stroke="#d9e6e6" stroke-width="3" fill="none" opacity=".6"/>
+    <path d="M990 470 C920 500 850 530 780 548" stroke="#3c4a48" stroke-width="46" stroke-linecap="round" fill="none"/>
+    <path d="M980 454 C914 482 850 510 786 528" stroke="#d9e6e6" stroke-width="2" fill="none" opacity=".45"/>
+    <path d="M700 548 q40 -30 90 -14 q16 10 4 26 q-40 22 -96 8z" fill="#c9987a"/>
+    <path d="M708 546 q30 -20 70 -10" stroke="#fff3dc" stroke-width="2" fill="none" opacity=".6"/>
+  </g>
+  <circle cx="740" cy="556" r="90" fill="#ffe7b8" opacity=".22" filter="url(#soft)" id="touchGlow"/>
+  <!-- the empty chair, pushed back -->
+  <g transform="translate(1400,560) scale(.8)" filter="url(#wob)" opacity=".7"><path d="M40 100 C40 20 110 -10 180 0 C240 10 260 50 260 110 L260 360 L40 360Z" fill="#3e5451"/><path d="M60 180 C120 160 220 170 262 190 L262 250 L50 250Z" fill="#a8704c"/></g>
+  <!-- lamp now off; cup knocked sideways -->
+  <g transform="translate(1230,380)" filter="url(#wob)"><rect x="0" y="170" width="150" height="160" fill="#3e3026"/><path d="M34 60 L116 60 L134 130 L16 130Z" fill="#a89c88"/><rect x="70" y="130" width="10" height="40" fill="#4a3a2c"/></g>
+</svg>
+<div class="paper"></div><div class="fleck"></div><div class="vig" style="background:radial-gradient(ellipse 60% 55% at 46% 55%,transparent 30%,rgba(8,12,14,.8) 100%)"></div>
+
+<div class="clock"><div class="t" id="clockB" style="color:#e4ecea">05:12</div><div class="d" style="color:#a6b4b2">열하루째 밤 · 창이 밝아 온다</div></div>
+<div class="title"><div class="k">간병</div><div class="e">THE NIGHT WATCH</div></div>
+<div class="whisper show" style="top:130px;color:#fff1d8">숨이 바뀌었다. 당신은 곁으로 갔다.</div>
+
+<div class="bl-cap" style="color:#f0e2c6">엄마의 숨 <span style="color:#d9b58a">얕아졌다가 · 멈추고 · 다시 깊게</span></div>
+<div class="breathline"><svg viewBox="0 0 1472 120" preserveAspectRatio="none">
+  <path id="lineB" d="" fill="none" stroke="#fff0d2" stroke-width="2.4" stroke-linecap="round" filter="url(#wob)"/>
+  <circle id="headB" r="6" fill="#ffe7b8"/>
+</svg></div>
+<div class="verbs">
+  <div class="verb hot" data-v="4">손을 잡는다</div>
+  <div class="verb" data-v="5">이름을 부른다</div>
+  <div class="verb" data-v="6">옆으로 눕힌다</div>
+  <div class="verb" data-v="7">간호사에게 전화</div>
+</div>
+<div class="dist"><div class="row"><span>의자</span><span>침대 곁</span></div><div class="track"><div class="dot" style="left:97%;background:#fff0d2"></div></div><div class="row"><span style="letter-spacing:0">졸음 ▯▯▯▯▯</span><span style="letter-spacing:0">당신이 곁에 있다</span></div></div>
+<div class="whisper" id="whB" style="top:190px;font-size:19px;color:#e6d4b0"></div>
+</section>
+
+<div class="tabs"><button data-t="a">1 · 02:47</button><button data-t="b">2 · 05:12</button></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(innerWidth/1600,innerHeight/1000);stage.style.transform='translate('+((innerWidth-1600*s)/2)+'px,'+((innerHeight-1000*s)/2)+'px) scale('+s+')';}
+  addEventListener('resize',fit);fit();
+  var cur='a';
+  function show(k){cur=(k==='b')?'b':'a';document.getElementById('sa').className='screen'+(cur==='a'?' on':'');document.getElementById('sb').className='screen'+(cur==='b'?' on':'');
+    var bs=document.querySelectorAll('.tabs button');for(var i=0;i<bs.length;i++)bs[i].className=bs[i].getAttribute('data-t')===cur?'on':'';}
+  function fromHash(){show((location.hash||'#a').replace('#',''));}
+  addEventListener('hashchange',fromHash);fromHash();
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-t');});
+
+  var ac=null,listen=false,lastCycle=-1;
+  function audio(){if(ac)return ac;try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ac=null;}return ac;}
+  function breathSound(dur,peak,cut){var a=audio();if(!a)return;try{var n=Math.floor(a.sampleRate*dur),b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0),last=0;for(var i=0;i<n;i++){last=last*.97+(Math.random()*2-1)*.03;d[i]=last*8;}
+    var s=a.createBufferSource();s.buffer=b;var f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=cut||700;var g=a.createGain();var t=a.currentTime;g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(peak,t+dur*.45);g.gain.linearRampToValueAtTime(0.0001,t+dur);s.connect(f);f.connect(g);g.connect(a.destination);s.start();}catch(e){}}
+  function chord(fs,dur,g0){var a=audio();if(!a)return;try{for(var i=0;i<fs.length;i++){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=fs[i];var t=a.currentTime+i*.09;g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(g0,t+.4);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+.1);}}catch(e){}}
+
+  // steady: period 4400ms ; changed: Cheyne-Stokes-like crescendo, pause
+  function steady(ms){var p=(ms%4400)/4400;return Math.sin(p*Math.PI*2-Math.PI/2)*.8;}
+  function changed(ms){var P=14000,p=(ms%P)/P;if(p>.72)return Math.sin(ms/900)*.02;var env=Math.sin(p/.72*Math.PI);return Math.sin(ms/1500*Math.PI*2)*env*.95;}
+  function draw(id,hid,fn,ms){var d='',W=1472,y=0;for(var x=0;x<=W;x+=8){var tt=ms-(W-x)*10;y=60-fn(tt)*48;d+=(x?'L':'M')+x+' '+y.toFixed(1);}var e=document.getElementById(id);if(e)e.setAttribute('d',d);var h=document.getElementById(hid);if(h){h.setAttribute('cx',W);h.setAttribute('cy',y.toFixed(1));}return y;}
+  var t0=performance.now();
+  function loop(now){var ms=now-t0;
+    if(cur==='a'){draw('lineA','headA',steady,ms);var q=document.getElementById('quiltA');if(q)q.style.transform='scaleY('+(1+steady(ms)*.012)+')';
+      var cyc=Math.floor(ms/4400);if(listen&&cyc!==lastCycle){lastCycle=cyc;breathSound(1.9,.12,650);}
+      var h=document.getElementById('lampHalo');if(h)h.setAttribute('opacity',(.2+Math.sin(ms/700)*.015+Math.random()*.01).toFixed(3));}
+    else{draw('lineB','headB',changed,ms);var qb=document.getElementById('quiltB');if(qb)qb.style.transform='scaleY('+(1+changed(ms)*.016)+')';
+      var cb=Math.floor(ms/1500);if(listen&&cb!==lastCycle&&((ms%14000)/14000)<.72){lastCycle=cb;breathSound(1.2,.08+Math.abs(changed(ms))*.1,500);}
+      var tg=document.getElementById('touchGlow');if(tg)tg.setAttribute('opacity',(.18+Math.sin(ms/900)*.06).toFixed(3));}
+    requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+
+  var lines=['숨소리가 방을 채운다. 들숨, 날숨.','의자를 끌지 않고 한 걸음 다가간다.','미지근한 물에 수건을 적신다.','건너편 아파트에 불 하나가 아직 켜져 있다.',
+             '손이 차다. 손가락이 아주 조금 움직였다.','"엄마." 대답 대신 숨이 한 번 깊어졌다.','천천히, 베개를 받쳐 옆으로 눕힌다.','"숨이 멈췄다 다시 쉬면, 곁에 계시면 돼요."'];
+  function say(id,t){var w=document.getElementById(id);if(!w)return;w.textContent=t;w.className='whisper show';clearTimeout(w._t);w._t=setTimeout(function(){if(id==='whA')w.className='whisper';},3200);}
+  var vs=document.querySelectorAll('.verb');for(var j=0;j<vs.length;j++)vs[j].addEventListener('click',function(e){audio();var v=+e.currentTarget.getAttribute('data-v');
+    if(v===0){listen=!listen;lastCycle=-1;e.currentTarget.style.borderColor=listen?'#ffd79a':'';}
+    if(v===1){var d=document.getElementById('dotA');if(d)d.style.left=(d.style.left==='22%'?'78%':'22%');}
+    chord(v>=4?[392,494,587]:[330,415,494],2.2,.05);say(v>=4?'whB':'whA',lines[v]);});
+  addEventListener('keydown',function(e){audio();if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';});
+  // start with the dot mid-way in A (you drift back to the chair between checks)
+  var da=document.getElementById('dotA');if(da)da.style.left='22%';
+})();
+</script>
+</body>
+</html>

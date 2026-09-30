@@ -1,0 +1,45 @@
+{
+  "_": "검사기 한계값과 규칙 상수. 수치는 전부 정수 (PLAN_TACTICS §6).",
+  "_틱": "tickMs 1000. 판정은 틱에서만 내려간다 — 화면이 부드러운 것은 연출이다 (§8 '실시간의 유혹').",
+  "_은폐바닥": "concealFloorPercent 100. 은폐 합계가 100 이상이면 보이지 않는다. 경계를 100으로 둔 덕에 '엄폐 55 + 은밀 45 = 딱 보이지 않는다' 같은 수치를 손으로 읽을 수 있다.",
+
+  "tickMs": 1000,
+
+  "noise": {
+    "hopAttenuation": 40,
+    "hearingThresholdPercent": 20,
+    "blockedExtraAttenuation": 40
+  },
+
+  "vision": {
+    "concealFloorPercent": 100,
+    "sameZonePenaltyPercent": 60
+  },
+
+  "alarm": {
+    "perSighting": 10,
+    "perNoiseHeard": 15
+  },
+
+  "engagement": {
+    "engageDelayMs": 3000
+  },
+
+  "search": {
+    "_": "계획 탐색. 후보 시각은 순찰 구간 경계에서 뽑고 gridMs 격자를 얹는다.",
+    "gridMs": 30000,
+    "beamWidth": 14,
+    "maxActions": 4,
+    "seed": 90210
+  },
+
+  "checkers": {
+    "minWinningPlansPerMission": 2,
+    "minDistinctSignaturesPerMission": 1,
+    "failureSampleTarget": 120,
+    "economyMissions": 40,
+    "supplyDriftTolerance": 20,
+    "maxCeilingClampRounds": 14,
+    "maxFloorClampRounds": 8
+  }
+}

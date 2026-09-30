@@ -1,0 +1,148 @@
+/*
+  오선지 위에 붙은 신문 조각.
+  **색·크기·각도는 한 줄도 여기서 고르지 않는다** — app.js 가 palette.json 을 읽어
+  CSS 변수로 부어 넣고, 여기 적힌 값은 표가 없을 때의 바닥이다.
+*/
+:root{
+  --paper:#EFE9D8; --paperLit:#F7F3E6; --paperDim:#E2DAC5;
+  --staff:#9A947F; --staffFaint:#BDB69F; --barline:#6E6853;
+  --ink:#1E1D1A; --inkSoft:#4A4740; --inkGhost:#8A8677;
+  --clip:#C9C6BE; --clipLit:#D8D5CD; --clipInk:#2A2926; --clipDot:#7E7C76;
+  --pass:#3C5C46; --fail:#8B3A2E; --baton:#B0842F;
+  --lineGap:11px; --lineW:1px; --systemGap:34px; --barW:1px; --cursorW:2px; --cursorOp:.34;
+  --dotPx:3px; --dotPitch:5px; --dotOp:.22; --clipRot:-2deg; --foldOff:44px;
+  --shadowBlur:9px; --shadowOp:.24; --tapeW:54px; --tapeOp:.30; --revealMs:520ms; --clipMax:62ch;
+  --sTitle:46px; --sMast:30px; --sHead:22px; --sBody:15px; --sHint:12px; --sNum:13px; --sLabel:11px;
+  --trkMast:3px; --vig:.14; --ease:cubic-bezier(.22,.7,.2,1); --beatMs:170ms; --glyphMs:220ms;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"NotoSerifKR",Georgia,serif; font-size:var(--sBody); line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+/* 종이 결 · 비네트 — 이미지를 한 장도 받지 않는다 */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, rgba(30,29,26,.028) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(30,29,26,.02) 0 1px, transparent 1px 4px);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 38%, transparent 56%, rgba(30,29,26,var(--vig)) 100%);
+}
+main,header,footer{position:relative; z-index:1;}
+header,footer{max-width:1120px; margin:0 auto; padding:14px 20px; font-size:var(--sHint); color:var(--inkSoft);}
+header{display:flex; align-items:center; gap:16px; border-bottom:var(--lineW) solid var(--staffFaint);}
+header span{flex:1; font-family:"BodoniModa","NotoSerifKR",Georgia,serif; letter-spacing:var(--trkMast); text-transform:uppercase;}
+header a{color:var(--inkSoft); text-decoration:none; border-bottom:1px dotted var(--staff);}
+footer{border-top:var(--lineW) solid var(--staffFaint); margin-top:34px;}
+main{max-width:1120px; margin:0 auto; padding:18px 20px 40px;}
+
+h1{font-family:"BodoniModa","NotoSerifKR",Georgia,serif; font-size:var(--sTitle); margin:0 0 4px; line-height:1.04; font-weight:400;}
+h1 em{font-style:italic;}
+h2{font-family:"BodoniModa","NotoSerifKR",Georgia,serif; font-size:var(--sHead); margin:0 0 4px; font-weight:400;}
+h3{font-size:var(--sBody); margin:0; font-weight:400;}
+small{display:block; font-size:var(--sHint); color:var(--inkSoft); letter-spacing:1px;}
+p{margin:6px 0 10px;}
+.hint{font-size:var(--sHint); color:var(--inkSoft);}
+
+.intro{display:flex; gap:28px; align-items:flex-end; flex-wrap:wrap;
+       padding:10px 0 16px; border-bottom:var(--lineW) solid var(--staffFaint);}
+.intro p{max-width:46ch; color:var(--inkSoft);}
+
+/* ── 오선지 ───────────────────────────────────────────────────────────── */
+.sheet{
+  position:relative; margin:18px 0 0; padding:20px 18px 14px;
+  background:
+    linear-gradient(180deg,var(--paperLit),var(--paper) 40%,var(--paperDim));
+  border:var(--lineW) solid var(--staffFaint);
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset, 0 2px 8px rgba(30,29,26,.08);
+}
+.sheet > .label{position:absolute; top:6px; left:10px; font-size:var(--sHint); color:var(--inkGhost);}
+#staff{display:block; width:100%; height:auto; overflow:visible;}
+
+.desk{display:flex; gap:20px; align-items:flex-end; flex-wrap:wrap; margin-top:14px;}
+.desk label{font-size:var(--sHint); color:var(--inkSoft); display:block;}
+select,button{font-family:inherit; font-size:var(--sNum); color:var(--ink);}
+select{background:var(--paperLit); border:var(--lineW) solid var(--staff); padding:5px 8px;}
+.desk .now{font-variant-numeric:tabular-nums; color:var(--inkSoft);}
+
+#beats{display:flex; gap:3px; margin-top:6px;}
+#beats i{width:8px; height:8px; border:1px solid var(--staff); display:block;}
+#beats i.on{background:var(--ink); border-color:var(--ink);}
+#beats i.bar{margin-left:7px;}
+
+/* ── 단원 고르기 ──────────────────────────────────────────────────────── */
+#stage{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-top:16px;}
+.player{
+  text-align:left; background:var(--paperLit); border:var(--lineW) solid var(--staffFaint);
+  padding:9px 11px 8px; cursor:pointer; transition:border-color var(--glyphMs) var(--ease);
+}
+.player:disabled{opacity:.42; cursor:default;}
+.player.selected{border-color:var(--baton); box-shadow:0 0 0 1px var(--baton) inset;}
+.player svg{display:block; width:100%; height:auto; margin:4px 0 2px;}
+.signals{display:flex; gap:10px; font-size:var(--sLabel); color:var(--inkSoft); font-variant-numeric:tabular-nums;}
+.signals b{font-weight:400; color:var(--ink);}
+
+/* ── 지휘 동작 ────────────────────────────────────────────────────────── */
+.controls{display:flex; gap:22px; flex-wrap:wrap; align-items:flex-start; margin-top:18px;
+          padding-top:14px; border-top:var(--lineW) solid var(--staffFaint);}
+.controls > div:first-child{min-width:260px; flex:1;}
+#cues{display:flex; flex-wrap:wrap; gap:7px; flex:2;}
+#cues button{
+  background:var(--paperLit); border:var(--lineW) solid var(--staff); padding:6px 11px; cursor:pointer;
+}
+#cues button:hover:not(:disabled){border-color:var(--ink);}
+#cues button:disabled{opacity:.4; cursor:default;}
+#cues button.dyn{border-style:dashed;}
+
+/* ── 다음 날 신문 조각 ────────────────────────────────────────────────── */
+#review{
+  position:relative; margin:22px 0 0; padding:20px 22px 18px;
+  max-width:var(--clipMax); /* 신문에서 잘라 낸 한 단. 화면을 채우면 조각이 아니다 */
+  background:linear-gradient(180deg,var(--clipLit),var(--clip));
+  color:var(--clipInk);
+  transform:rotate(var(--clipRot));
+  box-shadow:0 var(--shadowBlur) calc(var(--shadowBlur) * 2) rgba(30,29,26,var(--shadowOp));
+  animation:paste var(--revealMs) var(--ease);
+}
+@keyframes paste{from{opacity:0; transform:rotate(calc(var(--clipRot) * 3)) translateY(-14px);}}
+/* 인쇄 망점 — 육안으로 보이는 크기여야 신문이 된다 */
+#review::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(var(--clipDot) var(--dotPx), transparent var(--dotPx));
+  background-size:var(--dotPitch) var(--dotPitch);
+  opacity:var(--dotOp);
+}
+/* 접힌 자국 */
+#review::after{
+  content:""; position:absolute; left:0; right:0; top:var(--foldOff); height:2px; pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(30,29,26,.16));
+}
+#review > *{position:relative;}
+#review small{color:#5A5854; border-bottom:1px solid rgba(42,41,38,.35); padding-bottom:4px; margin-bottom:8px;}
+#review h2{font-size:calc(var(--sHead) + 4px); line-height:1.2;}
+#review .verdict{font-variant-numeric:tabular-nums; font-size:var(--sNum);}
+#review .verdict b{font-weight:400;}
+#review .pass{color:var(--pass);} #review .fail{color:var(--fail);}
+#notes p{margin:3px 0; padding-left:12px; border-left:2px solid rgba(42,41,38,.4);}
+/* 붙인 자리의 테이프 */
+#review .tape{
+  position:absolute; top:-9px; width:var(--tapeW); height:18px;
+  background:var(--paperLit); opacity:var(--tapeOp); box-shadow:0 1px 2px rgba(30,29,26,.2);
+}
+#review .tape.l{left:12%; transform:rotate(-5deg);} #review .tape.r{right:14%; transform:rotate(4deg);}
+#again{margin-top:12px; background:transparent; border:1px solid rgba(42,41,38,.5);
+       padding:6px 12px; cursor:pointer; color:var(--clipInk);}
+
+#previous{margin-top:12px; font-size:var(--sHint); color:var(--inkSoft);
+          border-left:2px solid var(--staff); padding-left:10px;}
+
+.stamp{
+  margin-left:auto; align-self:center; font-family:"BodoniModa","NotoSerifKR",Georgia,serif;
+  font-size:var(--sHint); letter-spacing:2px; text-align:center; color:var(--fail);
+  border:1px solid var(--fail); padding:5px 9px; transform:rotate(-3deg); opacity:.72;
+}

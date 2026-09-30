@@ -1,0 +1,123 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(사건 파일 · 청사진 모눈 · 목판화 타로 · 납 활자 인쇄소 · 바랜 측량도 · 필사본 연감 · 전보 시세판 · 창고 장부 · 겨울 요새 · 식물 표본집 · 구성주의 포스터 · 자수 지도 · 철거 고지서)과 겹치지 않는다. 여기만 **바탕이 종이가 아니라 대리석**이고, 글자가 잉크로 얹힌 것이 아니라 **파여 있으며**, 화면의 대부분이 **빈 여백**이다. 납 활자 인쇄소와 가장 가까워 보이지만 그쪽은 잉크가 눌린 자국이 주인공이고 여기는 **음각과 여백**이 주인공이다. 철거 고지서(같은 작업자가 만든 앞의 PoC)와도 다르다 — 거기는 갱지에 검은 활자와 붉은 관인이고 표가 꽉 차 있다.",
+
+  "name": "천상의 서류",
+  "oneLine": "흰 대리석에 파 넣은 서식. 장식이 없고 여백이 넓고, 색이라고는 봉랍 셋뿐이다",
+  "reference": "대리석 비문과 관청 서식이 겹친 것 — 결이 옅게 흐르는 흰 돌, 파 넣은 글자, 가느다란 괘선, 그리고 그 위에 눌린 밀랍 도장 셋. 편지만 사람의 손글씨이고 나머지는 전부 활자다",
+
+  "color": {
+    "marble": "#F2F0EB",
+    "marbleLit": "#FBFAF7",
+    "marbleDim": "#E6E3DC",
+    "vein": "#DBD6CD",
+    "veinDeep": "#C7C1B6",
+    "hair": "#B3ADA2",
+    "engrave": "#3A372F",
+    "engraveSoft": "#6C685E",
+    "engraveFaint": "#98938A",
+    "letterInk": "#33415B",
+    "waxGrant": "#2F5D57",
+    "waxDeny": "#6E2A28",
+    "waxDefer": "#6A6A6A",
+    "_색이_넷뿐이다": "음각(engrave) · 편지 잉크(letterInk) · 봉랍 셋. marble 계열은 돌의 농도이고 색이 아니다",
+    "_무엇이_어느_색인가": "**사람의 말은 푸른 잉크(손글씨), 신의 서식은 음각(활자), 결정은 밀랍.** 색이 그 말을 누가 했는지 말한다. 신은 한 번도 등장하지 않으므로 신의 색이 따로 없다 — 그것이 이 팔레트의 요점이다"
+  },
+
+  "wax": {
+    "_": "봉랍 도장 셋. 이미지를 받지 않고 SVG 로 그린다. 눌린 밀랍이라 테두리가 고르지 않다",
+    "radiusPx": 34,
+    "lobes": 11,
+    "lobeJitterPercent": 9,
+    "_lobeJitter": "원을 11 조각으로 나눠 반지름을 9% 안에서 흔든다. **난수를 쓰지 않고 사인 두 겹으로 계산한다** — 씨드 고정이 이 저장소의 규칙이고, 화면이 매번 달라지면 눈으로 대조할 수 없다",
+    "riseHighlight": 24,
+    "riseShadow": 18,
+    "_입체": "위쪽에 밝은 테, 아래쪽에 그늘. 이 둘이 없으면 밀랍이 아니라 스티커가 된다",
+    "glyphGrant": "許",
+    "glyphDeny": "却",
+    "glyphDefer": "留",
+    "_글자": "도장 한가운데의 한 글자. 한자 한 글자가 서식의 격을 만든다 — 문장으로 적으면 도장이 아니라 꼬리표가 된다",
+    "rotateGrantDeg": -4,
+    "rotateDenyDeg": 5,
+    "rotateDeferDeg": -2
+  },
+
+  "engrave": {
+    "_": "★ 이 연출의 핵. 글자가 얹혀 있지 않고 파여 있다",
+    "highlightOffsetPx": 1,
+    "shadowOffsetPx": 1,
+    "highlightAlpha": 72,
+    "shadowAlpha": 26,
+    "_방법": "text-shadow 를 위아래로 하나씩 — 위는 흰 테, 아래는 옅은 그늘. 두 줄이 전부다. 값이 커지면 돌이 아니라 엠보싱 스티커가 된다",
+    "ruleWidthPx": 1,
+    "ruleHeavyWidthPx": 2
+  },
+
+  "marble": {
+    "_": "대리석 결. 질감 이미지를 한 장도 받지 않고 값으로 만든다",
+    "veinAngleDeg": 104,
+    "veinPitchPx": 137,
+    "veinWidthPx": 2,
+    "veinOpacity": 5,
+    "veinSecondAngleDeg": 61,
+    "veinSecondPitchPx": 89,
+    "veinSecondOpacity": 3,
+    "grainPitchPx": 2,
+    "grainOpacity": 3,
+    "_결을_두_겹만": "각도가 다른 가느다란 줄 두 겹이면 대리석으로 읽힌다. 세 겹째부터는 화강암이 된다",
+    "vignette": 0.1
+  },
+
+  "type": {
+    "family": "Hahmlet",
+    "familyLetter": "NanumPenScript",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일 · URL · SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "서식은 획이 각진 세리프(Hahmlet)여야 돌에 판 글자로 읽힌다 — 명조가 아니라 슬래브라서 `mystery-blackwood` 의 명조 연출과 겹치지 않는다. 편지는 사람이 급히 쓴 손글씨(Nanum Pen Script)이고, **그 대비가 이 화면의 그림 전부다**",
+    "sizeTitle": 40,
+    "sizeHeading": 22,
+    "sizeBody": 16,
+    "sizeLetter": 21,
+    "sizeHint": 13,
+    "sizeNumeral": 14,
+    "trackingTitle": 14,
+    "trackingHeading": 4,
+    "trackingBody": 0,
+    "outlinePx": 0,
+    "_자간": "표제의 자간을 14px 까지 벌린다. 비문은 글자를 띄워 판다 — 이 값이 「서식」을 「간판」과 가른다",
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "layout": {
+    "_": "★ **여백이 이 연출의 절반이다.** 칸을 채우려 들면 천상의 서류가 아니라 사무실 양식이 된다",
+    "maxWidthPx": 1080,
+    "gutterPx": 24,
+    "sheetPadPx": 56,
+    "sectionGapPx": 56,
+    "ledgerGapPx": 48,
+    "_ledgerGap": "장부의 좌우(들어온 기도 / 빠진 자리) 사이의 빈 띠. 이 띠가 좁으면 두 쪽이 한 표로 읽혀서 「어디서 빠졌는가」가 사라진다",
+    "letterMaxWidthCh": 34,
+    "_편지폭": "손글씨는 한 줄이 길면 읽히지 않는다. 34자에서 끊는다"
+  },
+
+  "grade": {
+    "saturation": 0.4,
+    "contrast": 1.04,
+    "blackLift": 0.0,
+    "grainStatic": true,
+    "_채도": "0.4. 화면에 색이 봉랍 셋뿐이라 채도를 올리면 도장만 튀어 나와 서식이 사라진다",
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 결이어야 돌이 된다"
+  },
+
+  "motion": {
+    "_": "천상의 서류는 움직이지 않는다. 움직이는 것은 도장이 눌리는 순간과 장부에 줄이 그어지는 순간뿐이다",
+    "stampPressMs": 180,
+    "ledgerLineMs": 220,
+    "easing": "cubic-bezier(.2,.8,.2,1)",
+    "_도장": "찍을 때 아주 잠깐 커졌다 제자리로 온다. 밀랍이 눌리는 느낌은 그 한 번뿐이어야 한다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 밀랍이 눌리는 소리와 돌에 새기는 소리에 맞는 CC0 음원을 원 페이지에서 확인하지 못했고, **없는 것을 있는 척 적지 않는다.** CREDITS.md 의 「버린 것」에 같은 사실을 적었다"
+  }
+}

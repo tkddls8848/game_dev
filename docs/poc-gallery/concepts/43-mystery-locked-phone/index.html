@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>잠금 해제 불가</title>
+<style>
+:root{
+  --blue:#8ab9ff; --ink:#0a0d14; --paper:#f2f4fa; --muted:#98a3b8; --red:#ff5a4f; --green:#47d18c; --tag:#e9e2cf;
+  --sans:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"SF Mono","D2Coding","Consolas",monospace;
+  --hand:"Nanum Pen Script","Gaegu","Noto Sans KR",cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;transform:translate(-50%,-50%);overflow:hidden;font-family:var(--sans);color:var(--paper);
+  background:
+    radial-gradient(ellipse 45% 60% at 50% 42%,rgba(200,225,255,.22),transparent 70%),
+    linear-gradient(100deg,transparent 30%,rgba(220,235,255,.07) 46%,transparent 52%),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#39424f 0%,#232a35 50%,#151a22 100%)}
+.bolt{position:absolute;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9d2de,#4a5360);box-shadow:0 1px 2px #000}
+.drain{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.5),transparent)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;z-index:49;background:radial-gradient(ellipse 70% 70% at 50% 45%,transparent 45%,rgba(0,0,0,.8))}
+.flicker{position:absolute;inset:0;pointer-events:none;z-index:48;background:rgba(210,230,255,.05);animation:fl 7s infinite}
+@keyframes fl{0%,100%{opacity:1}91%{opacity:1}92%{opacity:.2}93%{opacity:1}95%{opacity:.4}96%{opacity:1}}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.tabs{position:absolute;right:18px;top:14px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px var(--mono);color:var(--muted);background:rgba(10,13,20,.85);border:1px solid #3a4456;padding:5px 10px;cursor:pointer;border-radius:3px}
+.tabs button.on{color:#0a0d14;background:var(--blue);border-color:var(--blue)}
+/* title */
+.title{position:absolute;left:46px;top:36px}
+.title h1{font:800 40px/1 var(--sans);letter-spacing:.04em;color:#e8eef8}
+.title .en{font:600 11px var(--mono);letter-spacing:.5em;color:var(--blue);margin-top:10px}
+.title .tl{font:14px var(--sans);color:var(--muted);margin-top:14px}
+/* phone */
+.phoneShadow{position:absolute;left:600px;top:92px;width:410px;height:860px;border-radius:64px;background:rgba(0,0,0,.7);filter:blur(28px);transform:rotate(-3deg) translate(18px,26px)}
+.phone{position:absolute;left:596px;top:70px;width:410px;height:860px;border-radius:62px;transform:rotate(-3deg);
+  background:linear-gradient(135deg,#6b7280,#1c2028 30%,#0c0e12 60%,#3a404c);padding:14px;box-shadow:inset 0 0 0 2px #8a93a3,inset 0 0 0 4px #151820}
+.phone.buzz{animation:buzz .09s linear infinite}
+@keyframes buzz{0%{transform:rotate(-3deg) translate(0,0)}25%{transform:rotate(-2.6deg) translate(2px,-1px)}50%{transform:rotate(-3.3deg) translate(-2px,1px)}75%{transform:rotate(-2.8deg) translate(1px,1px)}100%{transform:rotate(-3deg) translate(0,0)}}
+.scr{position:relative;width:100%;height:100%;border-radius:50px;overflow:hidden;background:#05070b}
+.wall{position:absolute;inset:0;background:
+  radial-gradient(circle at 30% 70%,rgba(255,170,90,.55),transparent 30%),
+  radial-gradient(circle at 75% 60%,rgba(120,170,255,.5),transparent 32%),
+  radial-gradient(circle at 55% 85%,rgba(255,110,120,.35),transparent 30%),
+  linear-gradient(180deg,#0d1424 0%,#1b2440 55%,#2b1e2e 100%);filter:blur(1px)}
+.wall::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.55))}
+.island{position:absolute;left:50%;top:14px;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:#000;z-index:5}
+.status{position:absolute;left:30px;right:26px;top:20px;display:flex;justify-content:space-between;font:600 14px var(--sans);z-index:6}
+.bat{display:flex;align-items:center;gap:6px;color:var(--red)}
+.bat .cell{width:30px;height:14px;border:1.5px solid currentColor;border-radius:4px;position:relative;padding:1.5px}
+.bat .cell::after{content:"";position:absolute;right:-5px;top:4px;width:3px;height:5px;border-radius:0 2px 2px 0;background:currentColor}
+.bat .cell i{display:block;height:100%;background:currentColor;border-radius:2px;animation:low 1.2s ease-in-out infinite}
+@keyframes low{50%{opacity:.35}}
+.lock{position:absolute;left:0;right:0;top:66px;text-align:center;z-index:4}
+.lock .pad{font-size:18px;opacity:.85}
+.lock .date{font:500 17px var(--sans);opacity:.85;margin-top:4px}
+.lock .time{font:200 96px/1 var(--sans);letter-spacing:-.02em;margin-top:2px;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+/* call */
+.callBlur{position:absolute;inset:0;backdrop-filter:blur(22px) brightness(.55);background:rgba(8,12,20,.35);z-index:7}
+.call{position:absolute;left:0;right:0;top:80px;text-align:center;z-index:8}
+.call .who{font:600 38px var(--sans);margin-top:14px}
+.call .sub{font:15px var(--sans);color:#c8d2e4;margin-top:6px}
+.avatar{width:96px;height:96px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#8ab9ff,#5a6ad0);display:flex;align-items:center;justify-content:center;font:600 40px var(--sans);position:relative}
+.avatar::before,.avatar::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(138,185,255,.6);animation:ring 1.6s ease-out infinite}
+.avatar::after{animation-delay:.8s}
+@keyframes ring{from{transform:scale(1);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.callBtns{position:absolute;left:40px;right:40px;top:650px;display:flex;justify-content:space-between;z-index:8}
+.cb{text-align:center;cursor:pointer;font:14px var(--sans);color:#dfe6f2}
+.cb .c{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 8px 20px rgba(0,0,0,.5);transition:transform .1s}
+.cb:hover .c{transform:scale(1.07)}
+.cb:active .c{transform:scale(.94)}
+.hint{position:absolute;left:0;right:0;bottom:22px;text-align:center;font:12px var(--sans);color:#aab4c6;z-index:8}
+.notifs{position:absolute;left:14px;right:14px;top:300px;z-index:8;transition:opacity .3s}
+.nf{background:rgba(40,46,60,.62);backdrop-filter:blur(18px);border-radius:20px;padding:12px 14px;margin-bottom:8px;cursor:pointer;border:1px solid rgba(255,255,255,.08);transition:transform .15s}
+.nf:active{transform:scale(.98)}
+.nf .h{display:flex;justify-content:space-between;font:600 12px var(--sans);color:#c4cde0}
+.nf .h .app{display:flex;align-items:center;gap:6px}
+.nf .h .app i{width:16px;height:16px;border-radius:4px;display:inline-block}
+.nf .b{font:14.5px/1.45 var(--sans);margin-top:4px;color:#f2f4fa}
+.nf .more{max-height:0;overflow:hidden;transition:max-height .5s ease;font:13.5px/1.5 var(--sans);color:#ffd9a6}
+.nf.open .more{max-height:80px;margin-top:6px}
+/* table props */
+.bag{position:absolute;left:1080px;top:120px;width:440px;height:330px;transform:rotate(7deg);border-radius:6px;
+  background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04) 40%,rgba(255,255,255,.1) 70%,rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.2);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.bag .strip{position:absolute;left:0;right:0;top:0;height:46px;background:repeating-linear-gradient(90deg,#c9332a 0 60px,#e9e2cf 60px 64px);opacity:.85;display:flex;align-items:center;padding-left:14px;font:800 16px var(--sans);letter-spacing:.3em;color:#fff}
+.bag .form{position:absolute;left:18px;top:62px;right:18px;font:13px/2 var(--mono);color:rgba(240,240,240,.75)}
+.bag .form b{font-family:var(--hand);font-size:22px;color:#1d2a66;font-weight:400;background:rgba(233,226,207,.85);padding:0 8px}
+.ruler{position:absolute;left:90px;top:780px;width:420px;height:44px;transform:rotate(-8deg);background:linear-gradient(180deg,#e8e4d6,#cbc5b2);box-shadow:0 8px 16px rgba(0,0,0,.5);
+  background-image:repeating-linear-gradient(90deg,#222 0 1px,transparent 1px 10px),linear-gradient(180deg,#e8e4d6,#cbc5b2);background-size:100% 12px,100% 100%;background-repeat:no-repeat}
+.ruler span{position:absolute;left:12px;bottom:6px;font:700 11px var(--mono);color:#222}
+.hud{position:absolute;background:rgba(10,14,22,.78);border:1px solid rgba(138,185,255,.2);border-radius:10px;backdrop-filter:blur(8px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.hud h3{font:700 11px var(--mono);letter-spacing:.24em;color:var(--blue);padding:14px 18px 10px;border-bottom:1px solid rgba(138,185,255,.12)}
+.hud .bd{padding:14px 18px}
+.caseH{left:46px;top:170px;width:470px}
+.caseH p{font:15px/1.7 var(--sans);color:#d5dcea}
+.caseH .q{margin-top:12px;font:600 18px/1.5 var(--sans);color:#fff}
+.clueH{left:46px;top:450px;width:470px}
+.clue{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.08);font-size:14px}
+.clue .s{margin-left:auto;font:600 12px var(--mono);padding:3px 8px;border-radius:3px}
+.clue .ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.actH{left:1086px;top:560px;width:470px}
+.act{display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:13px 14px;margin-top:10px;cursor:pointer;font:600 16px var(--sans);transition:background .2s,border-color .2s}
+.act:hover{background:rgba(138,185,255,.08);border-color:var(--blue)}
+.act kbd{font:600 11px var(--mono);border:1px solid #5a667a;border-radius:4px;padding:2px 6px;color:var(--muted)}
+.act small{display:block;font:12px var(--sans);color:var(--muted);font-weight:400;margin-top:2px}
+.act.hot{border-color:var(--red);background:rgba(255,90,79,.08)}
+/* B */
+.dim .wall{filter:blur(1px) brightness(.35)}
+.sos{position:absolute;inset:0;z-index:7;background:radial-gradient(circle at 50% 40%,rgba(120,20,20,.55),rgba(10,4,6,.92) 70%)}
+.sosC{position:absolute;left:0;right:0;top:90px;text-align:center;z-index:8}
+.sosC .k{font:700 13px var(--mono);letter-spacing:.3em;color:#ffb0a8}
+.sosC .num{font:200 76px/1 var(--sans);margin-top:18px;letter-spacing:.06em}
+.sosC .st{font:15px var(--sans);color:#ffd0ca;margin-top:8px}
+.sosC .st i{display:inline-block;animation:dots 1.4s steps(4) infinite;width:1.2em;overflow:hidden;vertical-align:bottom;white-space:nowrap}
+@keyframes dots{from{width:0}to{width:1.2em}}
+.pulse{width:150px;height:150px;margin:28px auto 0;border-radius:50%;background:radial-gradient(circle,#ff5a4f 0 34%,transparent 35%);position:relative}
+.pulse::before,.pulse::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #ff5a4f;animation:ring 1.4s ease-out infinite}
+.pulse::after{animation-delay:.7s}
+.pulse span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:800 22px var(--sans)}
+.locCard{position:absolute;left:24px;right:24px;top:470px;z-index:8;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:14px 16px;backdrop-filter:blur(10px)}
+.locCard .k{font:700 11px var(--mono);letter-spacing:.2em;color:#ffb0a8}
+.locCard .v{font:700 24px var(--sans);margin-top:6px}
+.locCard .d{font:13px/1.5 var(--sans);color:#e9d8d6;margin-top:6px}
+.lastN{position:absolute;left:14px;right:14px;top:640px;z-index:8}
+.pins{position:absolute;inset:0;pointer-events:none}
+.tagC{position:absolute;width:250px;background:linear-gradient(170deg,#efe8d4,#d8cfb4);color:#1c1c22;padding:14px 16px 12px;box-shadow:0 12px 24px rgba(0,0,0,.55);font:14px/1.5 var(--sans)}
+.tagC::before{content:"";position:absolute;left:50%;top:-8px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a80,#a01e16);box-shadow:0 2px 3px rgba(0,0,0,.6)}
+.tagC b{display:block;font:700 11px var(--mono);letter-spacing:.14em;color:#8a2a22;margin-bottom:4px}
+.tagC .hw{font-family:var(--hand);font-size:22px;color:#1d2a66;line-height:1.2;margin-top:6px}
+.ending{position:absolute;left:1086px;top:640px;width:470px}
+.ending h2{font:800 34px var(--sans);letter-spacing:.02em}
+.ending p{font:15px/1.7 var(--sans);color:#c9d1df;margin-top:10px}
+.ending .sel{margin-top:16px;display:flex;gap:10px}
+.ending .opt{flex:1;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:12px;font:600 14px var(--sans);color:#aab4c6;cursor:pointer}
+.ending .opt.on{border-color:var(--red);color:#fff;background:rgba(255,90,79,.12);box-shadow:0 0 30px rgba(255,90,79,.2)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bolt" style="left:24px;top:24px"></div><div class="bolt" style="right:24px;bottom:24px"></div><div class="bolt" style="left:24px;bottom:24px"></div>
+  <div class="drain" style="top:330px"></div><div class="drain" style="top:660px"></div>
+  <div class="tabs"><button data-h="a">1 · 수신</button><button data-h="b">2 · 긴급</button></div>
+
+  <!-- ============ A ============ -->
+  <section class="screen" id="sa">
+    <div class="title"><h1>잠금 해제 불가</h1><div class="en">STILL LOCKED</div><div class="tl">그가 죽었다는 것을, 이 전화는 아직 모른다.</div></div>
+
+    <div class="hud caseH"><h3>증거물 14 · 유류품</h3><div class="bd">
+      <p>휴대폰 주인 <b>도현</b>은 사망했습니다. 잠금은 풀 수 없습니다. 앱을 열 수 없고, 잠금 화면에 도착하는 것에만 반응할 수 있습니다.</p>
+      <div class="q">윤서는 아직 그 사실을 모릅니다.<br>전화에 어떻게 반응할까요?</div>
+    </div></div>
+
+    <div class="hud clueH"><h3>잠금 화면에서 얻은 것</h3><div class="bd">
+      <div class="clue"><span class="ic" style="background:#2c3a55">☎</span>부재중 전화 · 윤서 · 어제 17:03<span class="s" style="background:rgba(138,185,255,.15);color:var(--blue)">확보</span></div>
+      <div class="clue"><span class="ic" style="background:#4a2c2c">▦</span>일정 · 원본 인계 · 어제 17:00<span class="s" style="background:rgba(255,200,120,.12);color:#ffcf8a">펼치기 필요</span></div>
+      <div class="clue"><span class="ic" style="background:#253a33">⌖</span>위치 확인<span class="s" style="background:rgba(255,255,255,.06);color:var(--muted)">미확인</span></div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;font:12px var(--mono);color:var(--muted)"><span>잠금 해제 시도</span><span style="color:var(--red)">불가 · 생체 인증 없음</span></div>
+    </div></div>
+
+    <div class="bag"><div class="strip">증거물</div><div class="form">
+      사건번호 &nbsp; <b>2026-서부-0927</b><br>품목 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>휴대전화 1대 (잠김)</b><br>소유자 &nbsp;&nbsp; <b>故 김도현</b><br>수거 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>09.27 &nbsp;18:20</b></div></div>
+
+    <div class="hud actH"><h3>반응</h3><div class="bd">
+      <div class="act hot" id="aReject"><span>✕</span><div>전화 거절<small>윤서의 다음 메시지가 달라집니다</small></div><kbd style="margin-left:auto">R</kbd></div>
+      <div class="act" id="aAccept"><span>✆</span><div>전화 받기<small>말할 수 없는 통화 · 침묵이 전해집니다</small></div><kbd style="margin-left:auto">A</kbd></div>
+      <div style="font:12px var(--mono);color:var(--muted);margin-top:14px">알림을 길게 눌러 펼치세요 · 배터리가 줄어듭니다</div>
+    </div></div>
+
+    <div class="ruler"><span>0 &nbsp;&nbsp; 5 &nbsp;&nbsp; 10 &nbsp;&nbsp; 15 cm &nbsp;· 감식 척도</span></div>
+
+    <div class="phoneShadow"></div>
+    <div class="phone buzz" id="phoneA"><div class="scr">
+      <div class="wall"></div><div class="island"></div>
+      <div class="status"><span>19:42</span><span class="bat"><span id="batTxt">12%</span><span class="cell"><i style="width:12%"></i></span></span></div>
+      <div class="lock"><div class="pad">🔒</div><div class="date">9월 28일 일요일</div><div class="time">19:42</div></div>
+      <div class="callBlur" id="callLayer"></div>
+      <div class="call" id="callUI"><div class="avatar">윤</div><div class="who">윤서</div><div class="sub">휴대전화 · 수신 전화</div></div>
+      <div class="notifs" id="notifs">
+        <div class="nf" id="nfMsg" style="display:none"><div class="h"><span class="app"><i style="background:#47d18c"></i>메시지</span><span>지금</span></div><div class="b" id="msgTxt"></div></div>
+        <div class="nf"><div class="h"><span class="app"><i style="background:#47d18c"></i>전화</span><span>어제</span></div><div class="b">부재중 전화 · 윤서 · 어제 17:03</div></div>
+        <div class="nf" id="nfCal"><div class="h"><span class="app"><i style="background:#ff5a4f"></i>캘린더</span><span>어제</span></div><div class="b">원본 인계 · 어제 17:00 · 구청</div>
+          <div class="more">알림 뒷부분: 구청 지하 B2 / 환풍기가 멈췄어. 17시 기록 반출 건 때문에 온 거 맞지?</div></div>
+      </div>
+      <div class="callBtns" id="callBtns">
+        <div class="cb" id="pReject"><div class="c" style="background:#ff453a"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M3 14c5-5 13-5 18 0l-2.5 2.5-3-1.5v-2.5c-2.3-.8-4.7-.8-7 0V15l-3 1.5Z" fill="#fff"/></svg></div>거절</div>
+        <div class="cb" id="pAccept"><div class="c" style="background:#30d158"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1Z" fill="#fff"/></svg></div>받기</div>
+      </div>
+      <div class="hint">잠금 해제 불가 · Face ID를 인식할 수 없음</div>
+    </div></div>
+  </section>
+
+  <!-- ============ B ============ -->
+  <section class="screen" id="sb">
+    <div class="title"><h1>잠금 해제 불가</h1><div class="en">STILL LOCKED</div><div class="tl">잠금 화면의 긴급 통화로 위치를 전달할 수 있습니다.</div></div>
+
+    <div class="pins">
+      <svg width="1600" height="1000" viewBox="0 0 1600 1000" style="position:absolute;inset:0">
+        <g stroke="#c9332a" stroke-width="2.2" fill="none" opacity=".85">
+          <path d="M195 250 Q 420 330 640 560"/><path d="M185 520 Q 420 560 640 590"/><path d="M200 790 Q 430 700 640 620"/>
+        </g>
+      </svg>
+      <div class="tagC" style="left:70px;top:190px;transform:rotate(-4deg)"><b>단서 01 · 전화</b>부재중 전화 · 윤서<br>어제 17:03<div class="hw">약속 시간 3분 뒤</div></div>
+      <div class="tagC" style="left:60px;top:460px;transform:rotate(3deg)"><b>단서 02 · 일정</b>원본 인계 · 어제 17:00<br>구청 지하 B2<div class="hw">기록 반출 건?</div></div>
+      <div class="tagC" style="left:76px;top:720px;transform:rotate(-2deg)"><b>단서 03 · 메시지</b>“환풍기가 멈췄어.”<br>“철문이 잠겼어.”<div class="hw">갇혀 있다 — 지금도</div></div>
+    </div>
+
+    <div class="phoneShadow"></div>
+    <div class="phone dim"><div class="scr">
+      <div class="wall"></div><div class="island"></div>
+      <div class="sos"></div>
+      <div class="status"><span>04:51</span><span class="bat"><span>6%</span><span class="cell"><i style="width:6%"></i></span></span></div>
+      <div class="sosC"><div class="k">긴급 통화 · SOS</div><div class="num">112</div><div class="st">위치 정보 전송 중<i>...</i></div>
+        <div class="pulse" id="pulse"><span>SOS</span></div></div>
+      <div class="locCard"><div class="k">전달할 위치</div><div class="v">구청 B2 기록실</div><div class="d">지하 2층 · 철문 안쪽 · 환풍기 정지<br>갇힌 사람 1명 — 윤서</div></div>
+      <div class="lastN"><div class="nf open" style="background:rgba(60,30,34,.7)"><div class="h"><span class="app"><i style="background:#47d18c"></i>윤서 · 마지막 알림</span><span>03:58</span></div>
+        <div class="b">안쪽 문까지 잠겼어. 여긴 통화가 잘 안 돼. 누가 밖에서 연락해 줘야 해.</div></div></div>
+      <div class="hint" style="color:#ffb0a8">배터리 부족 · 곧 전원이 꺼집니다</div>
+    </div></div>
+
+    <div class="hud" style="left:1086px;top:170px;width:470px"><h3>상황</h3><div class="bd">
+      <div class="clue"><span class="ic" style="background:#4a2c2c">⌖</span>위치<span class="s" style="background:rgba(255,90,79,.14);color:#ffb0a8">구청 B2 기록실</span></div>
+      <div class="clue"><span class="ic" style="background:#3a2020">▮</span>배터리<span class="s" style="background:rgba(255,90,79,.14);color:var(--red)">6% · 통화 1회 분량</span></div>
+      <div class="clue"><span class="ic" style="background:#2c3a55">☎</span>윤서의 마지막 신호<span class="s" style="background:rgba(138,185,255,.12);color:var(--blue)">53분 전</span></div>
+      <div style="margin-top:16px;height:54px;position:relative">
+        <svg width="434" height="54" viewBox="0 0 434 54"><path id="ekg" d="M0 30 L120 30 L130 30 L138 10 L146 48 L154 30 L260 30 L268 18 L276 40 L284 30 L434 30" fill="none" stroke="#ff5a4f" stroke-width="2" stroke-dasharray="600" stroke-dashoffset="600"><animate attributeName="stroke-dashoffset" from="600" to="0" dur="2.2s" repeatCount="indefinite"/></path></svg>
+        <div style="position:absolute;right:0;top:0;font:11px var(--mono);color:var(--muted)">통화 신호 · 연결 대기</div>
+      </div>
+    </div></div>
+
+    <div class="ending">
+      <div style="font:700 11px var(--mono);letter-spacing:.24em;color:var(--red)">결정</div>
+      <h2>마지막 수신인</h2>
+      <p>잠금은 한 번도 풀리지 않았다. 주인이 남긴 관계가 마지막 하루를 설명했다.</p>
+      <div class="sel"><div class="opt on" data-o="0">긴급 통화 · 구조 요청</div><div class="opt" data-o="1">휴대폰을 증거로 보관</div></div>
+    </div>
+  </section>
+
+  <div class="flicker"></div><div class="vig"></div><div class="grain"></div>
+</div>
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(){var h=(location.hash||'#a').replace('#','');if(h!=='b')h='a';
+    var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++)ss[i].classList.toggle('on',ss[i].id==='s'+h);
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-h')===h);}
+  window.addEventListener('hashchange',show);show();
+  var tb=document.querySelectorAll('.tabs button');for(var k=0;k<tb.length;k++)tb[k].addEventListener('click',function(e){location.hash=e.currentTarget.getAttribute('data-h');});
+
+  var ac=null;
+  function ctx(){try{if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(C)ac=new C();}if(ac&&ac.state==='suspended')ac.resume();}catch(e){ac=null;}return ac;}
+  function tone(f,d,type,g,at){var a=ctx();if(!a)return;try{var o=a.createOscillator(),v=a.createGain(),t=a.currentTime+(at||0);o.type=type||'sine';o.frequency.value=f;v.gain.setValueAtTime(0.0001,t);v.gain.exponentialRampToValueAtTime(g||0.06,t+0.01);v.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(v);v.connect(a.destination);o.start(t);o.stop(t+d+0.05);}catch(e){}}
+  function buzz(){for(var i=0;i<3;i++){tone(150,.18,'square',.03,i*.25);}}
+
+  var batt=12,done=false;
+  function setBat(n){batt=n;var t=document.getElementById('batTxt');if(t)t.textContent=n+'%';}
+  function respond(kind){
+    if(done)return;done=true;
+    var p=document.getElementById('phoneA');p.classList.remove('buzz');
+    document.getElementById('callLayer').style.display='none';document.getElementById('callUI').style.display='none';document.getElementById('callBtns').style.display='none';
+    var m=document.getElementById('nfMsg');m.style.display='block';
+    document.getElementById('msgTxt').textContent=kind==='reject'?'윤서: 왜 끊어? 어제 말한 구청 지하 기록실 앞이야. 철문이 잠겼어.':'윤서: 말이 없네… 살아 있는 거지? 약속한 곳에서 기다릴게.';
+    setBat(kind==='reject'?10:8);
+    if(kind==='reject'){tone(480,.12,'sine',.06);tone(360,.2,'sine',.05,.12);}else{tone(660,.1,'sine',.05);tone(880,.15,'sine',.05,.1);}
+    tone(1318,.25,'sine',.04,.6);tone(1760,.35,'sine',.03,.72);
+  }
+  document.getElementById('pReject').addEventListener('click',function(){respond('reject');});
+  document.getElementById('pAccept').addEventListener('click',function(){respond('accept');});
+  document.getElementById('aReject').addEventListener('click',function(){respond('reject');});
+  document.getElementById('aAccept').addEventListener('click',function(){respond('accept');});
+  document.getElementById('nfCal').addEventListener('click',function(e){var el=e.currentTarget;el.classList.toggle('open');tone(900,.06,'triangle',.04);if(el.classList.contains('open'))setBat(Math.max(1,batt-2));});
+  document.getElementById('phoneA').addEventListener('pointerdown',function(){if(!done)buzz();});
+  var opts=document.querySelectorAll('.opt');for(var o=0;o<opts.length;o++)opts[o].addEventListener('click',function(e){
+    for(var q=0;q<opts.length;q++)opts[q].classList.remove('on');e.currentTarget.classList.add('on');
+    if(e.currentTarget.getAttribute('data-o')==='0'){tone(941,.15,'sine',.05);tone(1336,.15,'sine',.05);tone(941,.15,'sine',.05,.25);tone(1209,.15,'sine',.05,.25);}
+    else{tone(220,.5,'triangle',.04);}
+  });
+  document.getElementById('pulse').addEventListener('click',function(){tone(853,.4,'sine',.05);tone(960,.4,'sine',.05,.45);});
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1'){location.hash='a';}
+    else if(e.key==='2'){location.hash='b';tone(853,.3,'sine',.04);}
+    else if(e.key==='r'||e.key==='R')respond('reject');
+    else if(e.key==='a'||e.key==='A')respond('accept');
+  });
+})();
+</script>
+</body>
+</html>

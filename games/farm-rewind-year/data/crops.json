@@ -1,0 +1,13 @@
+{
+  "_": "작물 하나는 농학만 갖는다. 돈(씨앗값·판매단가)은 economy.json이 갖는다 - DataValidator가 두 표의 참조 무결성을 본다.",
+  "_토질": "minSoil 이 흔적의 통로다. 되감을수록 토질이 깎이고, 값비싼 작물이 차례로 심을 수 없게 된다.",
+  "crops": [
+    { "id": "buckwheat", "nameKo": "메밀",   "nameEn": "Buckwheat", "seasons": ["spring", "summer", "autumn"], "growDays":  9, "waterPerDay": 2, "yieldUnits": 4, "soilDrain": 2, "minSoil":  0 },
+    { "id": "turnip",    "nameKo": "순무",   "nameEn": "Turnip",    "seasons": ["spring", "autumn", "winter"], "growDays":  8, "waterPerDay": 2, "yieldUnits": 4, "soilDrain": 3, "minSoil": 12 },
+    { "id": "kale",      "nameKo": "케일",   "nameEn": "Kale",      "seasons": ["winter", "spring"],           "growDays": 10, "waterPerDay": 2, "yieldUnits": 4, "soilDrain": 3, "minSoil": 12 },
+    { "id": "barley",    "nameKo": "보리",   "nameEn": "Barley",    "seasons": ["spring", "autumn"],           "growDays": 14, "waterPerDay": 2, "yieldUnits": 6, "soilDrain": 4, "minSoil": 24 },
+    { "id": "maize",     "nameKo": "옥수수", "nameEn": "Maize",     "seasons": ["summer", "autumn"],           "growDays": 13, "waterPerDay": 4, "yieldUnits": 6, "soilDrain": 8, "minSoil": 38 },
+    { "id": "pumpkin",   "nameKo": "호박",   "nameEn": "Pumpkin",   "seasons": ["summer", "autumn"],           "growDays": 18, "waterPerDay": 3, "yieldUnits": 5, "soilDrain": 9, "minSoil": 46 },
+    { "id": "grape",     "nameKo": "포도",   "nameEn": "Grape",     "seasons": ["summer", "autumn"],           "growDays": 24, "waterPerDay": 3, "yieldUnits": 7, "soilDrain": 11, "minSoil": 58 }
+  ]
+}

@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시력을 잃는 하루</title>
+<style>
+:root{
+  --paper:#f3e6cf; --ink:#3a2a22; --warm:#f6c98a; --rose:#e79a86; --dusk:#6d5a86;
+  --night:#07070b; --chalk:#e9e4d6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif;color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:#1a1410}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .6s ease}
+.screen.on{opacity:1;pointer-events:auto}
+
+/* ---------- SCREEN A : morning ---------- */
+#A{background:#2a1d14}
+#A .world{position:absolute;inset:0;transition:filter .35s ease}
+#A svg.room{position:absolute;inset:0;width:100%;height:100%}
+.lid{position:absolute;left:-10%;width:120%;height:62%;background:
+  radial-gradient(120% 90% at 50% 100%, rgba(40,10,8,.0) 0%, rgba(40,12,10,.55) 55%, #120505 80%);
+  transition:transform .28s cubic-bezier(.6,.05,.3,1);z-index:5;pointer-events:none}
+.lid.top{top:0;border-radius:0 0 50% 50%/0 0 100% 100%;background:radial-gradient(120% 110% at 50% 100%, rgba(80,20,14,.35) 0%, #1b0605 62%, #0a0202 100%)}
+.lid.bot{bottom:0;border-radius:50% 50% 0 0/100% 100% 0 0;background:radial-gradient(120% 110% at 50% 0%, rgba(80,20,14,.35) 0%, #1b0605 62%, #0a0202 100%)}
+#A.closed .lid.top{transform:translateY(0)}
+#A.closed .lid.bot{transform:translateY(0)}
+#A.open .lid.top{transform:translateY(-78%)}
+#A.open .lid.bot{transform:translateY(78%)}
+#A.closed .world{filter:blur(14px) brightness(.35) saturate(.6)}
+#A.open .world{filter:blur(0) brightness(1) saturate(1)}
+.veins{position:absolute;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;opacity:.0;transition:opacity .3s;
+  background:radial-gradient(60% 45% at 50% 50%, rgba(255,120,80,.25), transparent 70%)}
+#A.closed .veins{opacity:1;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:20;opacity:.16;mix-blend-mode:overlay}
+.vign{position:absolute;inset:0;pointer-events:none;z-index:19;background:radial-gradient(75% 70% at 50% 48%, transparent 55%, rgba(20,8,4,.75) 100%)}
+
+/* HUD A */
+.hudA{position:absolute;z-index:30;color:#fbeedb;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.clock{left:64px;top:52px}
+.clock .t{font-size:58px;letter-spacing:2px;font-weight:300}
+.clock .d{font-size:20px;opacity:.85;margin-top:4px;letter-spacing:4px}
+.sight{left:50%;top:48px;transform:translateX(-50%);text-align:center}
+.sight .lab{font-size:17px;letter-spacing:8px;opacity:.85}
+.sight .sec{font-size:92px;line-height:1;font-weight:300;font-variant-numeric:tabular-nums;margin-top:6px}
+.sight{padding:6px 40px 10px;border-radius:40px;background:radial-gradient(ellipse at 50% 55%,rgba(70,40,22,.55),rgba(70,40,22,.25) 55%,transparent 75%)}.sight .sec{text-shadow:0 2px 16px rgba(60,30,15,.85),0 0 3px rgba(60,30,15,.7)}
+.sight .sec small{font-size:30px;margin-left:6px;opacity:.8}
+.sight .bar{width:420px;height:4px;background:rgba(255,255,255,.18);margin:14px auto 0;border-radius:2px;overflow:hidden}
+.sight .bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ffd9a0,#ff9c7a);box-shadow:0 0 12px #ffb68a}
+.dayline{right:64px;top:58px;width:360px}
+.dayline .row{display:flex;justify-content:space-between;align-items:flex-end;height:74px;gap:10px}
+.dayline .col{flex:1;text-align:center;font-size:14px;opacity:.9}
+.dayline .col b{display:block;margin:0 auto 6px;width:16px;border-radius:8px 8px 2px 2px;background:linear-gradient(#ffe2b0,#ff9f7c)}
+.dayline .col.past b{background:rgba(255,255,255,.3)}
+.dayline .col.now{font-weight:700}
+.dayline .col.now b{box-shadow:0 0 14px #ffc58f}
+.dayline .col.zero b{height:2px!important;background:#fff;opacity:.6}
+.dayline .cap{font-size:13px;letter-spacing:3px;opacity:.7;margin-top:8px;text-align:right}
+.memo{left:64px;bottom:58px;width:430px;padding:26px 30px 24px;background:
+  linear-gradient(180deg,rgba(255,250,238,.96),rgba(242,229,205,.96));color:#3a2a22;
+  border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.45);transform:rotate(-1.6deg)}
+.memo h4{font-size:16px;letter-spacing:4px;color:#9a5a45;margin-bottom:12px}
+.memo li{list-style:none;font-size:21px;line-height:1.75;font-family:"Nanum Pen Script","Gaegu","Noto Serif KR",cursive;padding-left:30px;position:relative}
+.memo li:before{content:"";position:absolute;left:2px;top:12px;width:16px;height:16px;border:2px solid #9a5a45;border-radius:3px}
+.memo li.done:before{background:#9a5a45;box-shadow:inset 0 0 0 3px #fff6e6}
+.memo li.done{color:#8a7a6c;text-decoration:line-through;text-decoration-color:rgba(154,90,69,.6)}
+.memo .pin{position:absolute;top:-10px;left:50%;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff9f88,#a13b2a);box-shadow:0 3px 6px rgba(0,0,0,.4)}
+.ears{right:64px;bottom:58px;width:330px;height:220px;padding:18px 22px;border-radius:14px;
+  background:rgba(20,10,8,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,220,190,.2)}
+.ears .lab{font-size:14px;letter-spacing:5px;opacity:.8}
+.ears svg{width:100%;height:170px}
+.hint{left:50%;bottom:54px;transform:translateX(-50%);text-align:center;font-size:19px;letter-spacing:3px}
+.hint kbd{display:inline-block;padding:6px 16px;margin:0 6px;border:1px solid rgba(255,235,210,.6);border-radius:6px;font-family:inherit;background:rgba(255,255,255,.08);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.hint .sub{font-size:14px;opacity:.7;margin-top:10px;letter-spacing:2px}
+#A.open .hint kbd{background:rgba(255,210,160,.3);transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.target{position:absolute;z-index:4;width:120px;height:120px;border-radius:50%;border:2px dashed rgba(255,240,210,.0);transition:border-color .3s}
+#A.open .target.found{border-color:rgba(255,240,210,.9);animation:ring 1.4s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,220,170,.6)}100%{box-shadow:0 0 0 30px rgba(255,220,170,0)}}
+.toast{position:absolute;z-index:31;left:50%;top:250px;transform:translateX(-50%);font-size:24px;color:#fff3e0;letter-spacing:2px;opacity:0;transition:opacity .4s;text-shadow:0 2px 12px #000}
+.toast.show{opacity:1}
+
+/* ---------- SCREEN B : 0 seconds ---------- */
+#B{background:var(--night);color:var(--chalk)}
+#B canvas{position:absolute;inset:0}
+#B svg.mem{position:absolute;inset:0;width:100%;height:100%}
+.memline{fill:none;stroke:rgba(233,228,214,.22);stroke-width:2;stroke-dasharray:6 10;animation:drift 9s linear infinite}
+@keyframes drift{to{stroke-dashoffset:-160}}
+.hudB{position:absolute;z-index:10}
+.zero{left:50%;top:60px;transform:translateX(-50%);text-align:center}
+.zero .lab{font-size:16px;letter-spacing:10px;opacity:.55}
+.zero .sec{font-size:120px;font-weight:200;line-height:1;margin-top:6px;letter-spacing:4px;text-shadow:0 0 30px rgba(255,255,255,.15)}
+.zero .sec small{font-size:36px;opacity:.6}
+.zero .bar{width:420px;height:2px;margin:16px auto 0;background:rgba(255,255,255,.12)}
+.srcLabel{position:absolute;z-index:11;font-size:17px;letter-spacing:2px;color:#f4efe2;text-align:center;transform:translate(-50%,0);white-space:nowrap}
+.srcLabel small{display:block;font-size:12px;letter-spacing:4px;opacity:.5;margin-top:4px}
+.voice{left:50%;bottom:170px;transform:translateX(-50%);text-align:center;width:900px}
+.voice p{font-size:32px;line-height:1.6;letter-spacing:1px;color:#fff8ea;text-shadow:0 0 18px rgba(255,220,180,.35)}
+.voice .who{font-size:14px;letter-spacing:6px;opacity:.55;margin-bottom:10px}
+.dayB{left:64px;top:64px;font-size:15px;letter-spacing:4px;opacity:.7;line-height:1.9}
+.dayB b{font-size:34px;font-weight:300;letter-spacing:2px;display:block;opacity:1}
+.stepsB{right:64px;top:64px;text-align:right;font-size:14px;letter-spacing:3px;opacity:.75;line-height:2}
+.stepsB i{font-style:normal;display:inline-block;width:60px;text-align:right;font-variant-numeric:tabular-nums}
+.stepsB .strike{text-decoration:line-through;opacity:.45}
+.stepsB .last{color:#ffd9b0;opacity:1}
+.hintB{left:50%;bottom:60px;transform:translateX(-50%);font-size:16px;letter-spacing:4px;opacity:.6}
+.head{position:absolute;z-index:9;left:800px;top:560px;transform:translate(-50%,-50%)}
+
+/* tabs */
+.tabs{position:absolute;right:18px;bottom:16px;z-index:100;display:flex;gap:6px}
+.tabs button{font:13px/1 "Noto Serif KR",serif;letter-spacing:2px;padding:8px 12px;border-radius:20px;border:1px solid rgba(255,240,220,.35);background:rgba(0,0,0,.35);color:#f6ead8;cursor:pointer}
+.tabs button.act{background:#f6ead8;color:#2a1a12}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ================= A ================= -->
+  <section id="A" class="screen open">
+    <div class="world">
+      <svg class="room" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7dcb4"/><stop offset="1" stop-color="#e7bf93"/></linearGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4da"/><stop offset=".6" stop-color="#ffe3b1"/><stop offset="1" stop-color="#ffd09a"/></linearGradient>
+          <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9825a"/><stop offset="1" stop-color="#6e4630"/></linearGradient>
+          <linearGradient id="table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9c7a0"/><stop offset="1" stop-color="#c3946b"/></linearGradient>
+          <linearGradient id="ray" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6de" stop-opacity=".75"/><stop offset="1" stop-color="#fff6de" stop-opacity="0"/></linearGradient>
+          <radialGradient id="sunpool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff2d0" stop-opacity=".8"/><stop offset="1" stop-color="#fff2d0" stop-opacity="0"/></radialGradient>
+          <filter id="wc" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="3" seed="4" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+          </filter>
+          <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+          <filter id="paperT"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .38  0 0 0 0 .25  0 0 0 .22 0"/></filter>
+        </defs>
+        <g filter="url(#wc)">
+          <rect width="1600" height="1000" fill="url(#wall)"/>
+          <!-- window -->
+          <rect x="560" y="120" width="520" height="420" rx="6" fill="#d9ab7c"/>
+          <rect x="580" y="140" width="480" height="380" fill="url(#sky)"/>
+          <circle cx="930" cy="250" r="70" fill="#fffaf0" opacity=".9"/>
+          <path d="M580 440 Q680 400 780 430 T980 420 T1060 410 L1060 520 L580 520Z" fill="#c9d6a8" opacity=".75"/>
+          <path d="M580 470 Q720 450 860 470 T1060 460 L1060 520 L580 520Z" fill="#9fb487" opacity=".8"/>
+          <rect x="816" y="140" width="8" height="380" fill="#d9ab7c"/>
+          <rect x="580" y="326" width="480" height="8" fill="#d9ab7c"/>
+          <!-- curtains -->
+          <path d="M540 100 C560 260 520 420 560 580 L620 580 C600 420 640 260 610 100Z" fill="#f4e3d0" opacity=".92"/>
+          <path d="M1100 100 C1080 260 1120 420 1080 580 L1020 580 C1040 420 1000 260 1030 100Z" fill="#f4e3d0" opacity=".92"/>
+          <rect x="520" y="196" width="600" height="12" rx="6" fill="#8a5b3d"/>
+          <!-- wall clock -->
+          <circle cx="330" cy="250" r="72" fill="#fff5e6" stroke="#8a5b3d" stroke-width="8"/>
+          <g stroke="#3a2a22" stroke-linecap="round"><line x1="330" y1="250" x2="330" y2="200" stroke-width="6"/><line x1="330" y1="250" x2="296" y2="262" stroke-width="7"/></g>
+          <circle cx="330" cy="250" r="6" fill="#a13b2a"/>
+          <!-- calendar -->
+          <rect x="1250" y="170" width="170" height="210" fill="#fffaf0" stroke="#c8a585" stroke-width="3"/>
+          <rect x="1250" y="170" width="170" height="44" fill="#d9725a"/>
+          <text x="1335" y="201" font-size="24" fill="#fff" text-anchor="middle" font-family="serif">10월</text>
+          <text x="1335" y="310" font-size="86" fill="#3a2a22" text-anchor="middle" font-family="serif">17</text>
+          <circle cx="1335" cy="283" r="58" fill="none" stroke="#d9725a" stroke-width="4" opacity=".8"/>
+          <text x="1335" y="360" font-size="18" fill="#9a5a45" text-anchor="middle" font-family="serif">수술 전날</text>
+          <!-- shelf + plant -->
+          <rect x="120" y="470" width="300" height="14" fill="#8a5b3d"/>
+          <path d="M220 470 L240 400 L290 400 L310 470Z" fill="#c76f52"/>
+          <path d="M265 400 C230 330 200 320 180 300 M265 400 C270 330 300 300 330 290 M265 400 C250 340 260 300 262 270" stroke="#5d7a48" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <ellipse cx="185" cy="298" rx="30" ry="14" fill="#6f9152" transform="rotate(-30 185 298)"/>
+          <ellipse cx="330" cy="290" rx="32" ry="14" fill="#6f9152" transform="rotate(20 330 290)"/>
+          <ellipse cx="262" cy="268" rx="14" ry="28" fill="#7ea35f"/>
+          <!-- floor -->
+          <rect y="700" width="1600" height="300" fill="url(#floor)"/>
+          <path d="M0 700 L1600 700" stroke="#6e4630" stroke-width="6"/>
+          <!-- sun rays -->
+          <path d="M600 150 L1060 150 L1300 1000 L260 1000Z" fill="url(#ray)" opacity=".55"/>
+          <ellipse cx="800" cy="860" rx="420" ry="70" fill="url(#sunpool)"/>
+          <!-- table -->
+          <ellipse cx="800" cy="720" rx="470" ry="92" fill="#6e4630" opacity=".35" filter="url(#soft)"/>
+          <path d="M360 640 L1240 640 L1290 700 L310 700Z" fill="url(#table)"/>
+          <rect x="310" y="700" width="980" height="22" fill="#a97a55"/>
+          <rect x="360" y="722" width="26" height="240" fill="#8a5b3d"/><rect x="1214" y="722" width="26" height="240" fill="#8a5b3d"/>
+          <!-- mug + steam -->
+          <path d="M560 590 L640 590 L632 660 L568 660Z" fill="#f2efe8" stroke="#c5b8a6" stroke-width="3"/>
+          <path d="M640 605 C668 605 668 645 636 645" fill="none" stroke="#f2efe8" stroke-width="9"/>
+          <g class="steam" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6">
+            <path d="M585 575 C570 545 600 530 585 500"><animate attributeName="d" dur="3s" repeatCount="indefinite" values="M585 575 C570 545 600 530 585 500;M585 575 C600 545 570 530 590 495;M585 575 C570 545 600 530 585 500"/></path>
+            <path d="M612 575 C627 545 597 530 612 505"><animate attributeName="d" dur="3.6s" repeatCount="indefinite" values="M612 575 C627 545 597 530 612 505;M612 575 C597 545 627 530 608 498;M612 575 C627 545 597 530 612 505"/></path>
+          </g>
+          <!-- medicine bottle -->
+          <rect x="930" y="578" width="54" height="84" rx="8" fill="#d98a3a" opacity=".9"/>
+          <rect x="926" y="562" width="62" height="22" rx="4" fill="#fbf7ef"/>
+          <rect x="936" y="605" width="42" height="34" fill="#fffaf0"/>
+          <text x="957" y="628" font-size="14" fill="#a13b2a" text-anchor="middle" font-family="serif">안약</text>
+          <!-- glasses -->
+          <g fill="none" stroke="#3a2a22" stroke-width="4"><circle cx="760" cy="660" r="24"/><circle cx="824" cy="660" r="24"/><path d="M784 658 Q792 650 800 658"/><path d="M736 656 L700 646"/></g>
+          <!-- sleeping cat on chair -->
+          <path d="M1290 780 L1460 780 L1460 800 L1290 800Z" fill="#8a5b3d"/>
+          <path d="M1300 780 C1300 710 1360 690 1400 700 C1440 690 1470 720 1452 780Z" fill="#4a3a33"/>
+          <circle cx="1440" cy="712" r="30" fill="#4a3a33"/>
+          <path d="M1420 690 L1428 666 L1440 686Z M1450 686 L1462 664 L1466 692Z" fill="#4a3a33"/>
+          <path d="M1428 716 q6 4 12 0 M1448 716 q6 4 12 0" stroke="#e9c7a0" stroke-width="2" fill="none"/>
+          <path d="M1302 776 C1260 780 1250 820 1290 830" stroke="#4a3a33" stroke-width="12" fill="none" stroke-linecap="round"/>
+        </g>
+        <rect width="1600" height="1000" filter="url(#paperT)" opacity=".8"/>
+      </svg>
+      <div class="target found" style="left:897px;top:560px"></div>
+    </div>
+    <div class="lid top"></div><div class="lid bot"></div>
+    <div class="veins"></div>
+    <div class="vign"></div>
+
+    <div class="hudA clock"><div class="t">07:40</div><div class="d">아침 · 1 / 7</div></div>
+    <div class="hudA sight">
+      <div class="lab">오늘 뜰 수 있는 시간</div>
+      <div class="sec"><span id="secA">12.0</span><small>초</small></div>
+      <div class="bar"><i id="barA"></i></div>
+    </div>
+    <div class="hudA dayline">
+      <div class="row">
+        <div class="col now"><b style="height:64px"></b>아침</div>
+        <div class="col"><b style="height:43px"></b>오전</div>
+        <div class="col"><b style="height:27px"></b>점심</div>
+        <div class="col"><b style="height:16px"></b>오후</div>
+        <div class="col"><b style="height:8px"></b>해질녘</div>
+        <div class="col"><b style="height:4px"></b>저녁</div>
+        <div class="col zero"><b></b>밤</div>
+      </div>
+      <div class="cap">12 · 8 · 5 · 3 · 1.5 · 0.5 · 0 초</div>
+    </div>
+    <div class="hudA memo"><span class="pin"></span>
+      <h4>오늘 눈으로 봐 둘 것</h4>
+      <ul>
+        <li class="done">엄마 얼굴 — 웃을 때 왼쪽 보조개</li>
+        <li id="m2" class="done">식탁 위 안약 자리 — 컵 오른쪽</li>
+        <li>나비(고양이)가 자는 의자</li>
+        <li>창밖 감나무가 몇 개 남았는지</li>
+      </ul>
+    </div>
+    <div class="hudA ears"><div class="lab">들리는 것 · 양쪽 귀</div>
+      <svg viewBox="0 0 290 170">
+        <circle cx="145" cy="95" r="70" fill="none" stroke="rgba(255,230,200,.18)"/>
+        <circle cx="145" cy="95" r="40" fill="none" stroke="rgba(255,230,200,.12)"/>
+        <ellipse cx="145" cy="95" rx="16" ry="20" fill="#fbeedb" opacity=".9"/>
+        <path d="M129 95 q-6 0 -6 6 M161 95 q6 0 6 6" stroke="#fbeedb" stroke-width="3" fill="none"/>
+        <g id="srcKettle"><circle cx="232" cy="60" r="7" fill="#ffb07c"/><circle cx="232" cy="60" r="7" fill="none" stroke="#ffb07c"><animate attributeName="r" values="7;26" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="1.4s" repeatCount="indefinite"/></circle></g>
+        <text x="232" y="36" fill="#fbeedb" font-size="13" text-anchor="middle">주전자 · 오른쪽 앞</text>
+        <g><circle cx="262" cy="140" r="5" fill="#e0c0ff"/><circle cx="262" cy="140" r="5" fill="none" stroke="#e0c0ff"><animate attributeName="r" values="5;18" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0" dur="2.6s" repeatCount="indefinite"/></circle></g>
+        <text x="228" y="166" fill="#fbeedb" font-size="13" text-anchor="middle">가르랑 · 오른쪽 뒤</text>
+        <g><circle cx="40" cy="70" r="6" fill="#ffe7a8"/><circle cx="40" cy="70" r="6" fill="none" stroke="#ffe7a8"><animate attributeName="r" values="6;22" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="1s" repeatCount="indefinite"/></circle></g>
+        <text x="46" y="44" fill="#fbeedb" font-size="13" text-anchor="middle">시계 · 왼쪽</text>
+      </svg>
+    </div>
+    <div class="toast" id="toastA">안약 — 컵 오른쪽, 손 한 뼘</div>
+    <div class="hudA hint"><kbd>스페이스</kbd> 누르는 동안 눈을 뜬다
+      <div class="sub">떼면 감는다 · 쓴 시간은 돌아오지 않는다</div></div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section id="B" class="screen">
+    <canvas id="cv" width="1600" height="1000"></canvas>
+    <svg class="mem" viewBox="0 0 1600 1000">
+      <!-- remembered room, drawn as fading dashed memory -->
+      <path class="memline" d="M560 120 L1080 120 L1080 540 L560 540Z"/>
+      <path class="memline" d="M360 640 L1240 640 L1290 700 L310 700Z" style="animation-duration:12s"/>
+      <circle class="memline" cx="330" cy="250" r="72"/>
+      <path class="memline" d="M1300 780 C1300 710 1360 690 1400 700 C1440 690 1470 720 1452 780Z"/>
+      <rect class="memline" x="930" y="578" width="54" height="84" rx="8" style="stroke:rgba(255,210,170,.55)"/>
+      <text x="957" y="690" fill="rgba(255,210,170,.6)" font-size="14" text-anchor="middle" font-family="serif">기억: 안약</text>
+      <text x="1070" y="528" fill="rgba(233,228,214,.4)" font-size="14" text-anchor="end" font-family="serif">기억: 창 · 감 세 개</text>
+    </svg>
+    <div class="head"><svg width="80" height="90" viewBox="0 0 80 90"><ellipse cx="40" cy="45" rx="26" ry="32" fill="none" stroke="#f4efe2" stroke-width="2" opacity=".7"/><path d="M14 45 q-8 0 -8 8 M66 45 q8 0 8 8" stroke="#f4efe2" stroke-width="2" fill="none" opacity=".7"/><path d="M28 40 q6 4 12 0 M40 40 q6 4 12 0" stroke="#f4efe2" stroke-width="2" fill="none" opacity=".5"/></svg></div>
+    <div class="srcLabel" style="left:330px;top:340px">째깍 째깍<small>벽시계 · 왼쪽 위</small></div>
+    <div class="srcLabel" style="left:1180px;top:430px">엄마 목소리<small>오른쪽 · 두 걸음</small></div>
+    <div class="srcLabel" style="left:1400px;top:840px">가르랑<small>나비 · 오른쪽 아래</small></div>
+    <div class="srcLabel" style="left:820px;top:436px">빗소리<small>창 · 정면 멀리</small></div>
+
+    <div class="hudB dayB">밤 · 7 / 7<b>21:30</b>수술 전날</div>
+    <div class="hudB zero">
+      <div class="lab">남은 시간</div>
+      <div class="sec">0.0<small>초</small></div>
+      <div class="bar"></div>
+    </div>
+    <div class="hudB stepsB">
+      <div class="strike">아침 <i>12.0</i></div>
+      <div class="strike">오전 <i>8.0</i></div>
+      <div class="strike">점심 <i>5.0</i></div>
+      <div class="strike">오후 <i>3.0</i></div>
+      <div class="strike">해질녘 <i>1.5</i></div>
+      <div class="strike">저녁 <i>0.5</i></div>
+      <div class="last">밤 <i>0.0</i></div>
+    </div>
+    <div class="hudB voice">
+      <div class="who">엄마 · 오른쪽에서</div>
+      <p id="lineB">“괜찮아. 거기 그대로 있어. 엄마가 네 손 쪽으로 갈게.”</p>
+    </div>
+    <div class="hudB hintB">화면을 누르면 손끝으로 두드린다 — 소리가 방의 모양을 그린다</div>
+  </section>
+
+  <div class="tabs"><button data-s="A">1 · 아침</button><button data-s="B">2 · 0초</button></div>
+  <svg class="grain" width="1600" height="1000"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+
+  var cur='A';
+  function show(id){
+    cur=id;
+    ['A','B'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});
+    var bs=document.querySelectorAll('.tabs button');
+    for(var i=0;i<bs.length;i++){bs[i].classList.toggle('act',bs[i].getAttribute('data-s')===id);}
+    var h='#'+id.toLowerCase(); if(location.hash!==h){try{history.replaceState(null,'',h);}catch(e){location.hash=h;}}
+  }
+  function fromHash(){show((location.hash||'').toLowerCase()==='#b'?'B':'A');}
+  window.addEventListener('hashchange',fromHash);
+  var bs=document.querySelectorAll('.tabs button');
+  for(var i=0;i<bs.length;i++){bs[i].addEventListener('click',function(e){e.stopPropagation();show(this.getAttribute('data-s'));});}
+
+  /* ---- audio (interaction only) ---- */
+  var ac=null;
+  function audio(){ if(!ac){var C=window.AudioContext||window.webkitAudioContext; if(!C)return null; try{ac=new C();}catch(e){return null;}} if(ac.state==='suspended')ac.resume(); return ac;}
+  function breath(open){
+    var a=audio(); if(!a)return;
+    var len=a.sampleRate*.6, b=a.createBuffer(1,len,a.sampleRate), d=b.getChannelData(0);
+    for(var i=0;i<len;i++){d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/len);}
+    var s=a.createBufferSource(); s.buffer=b;
+    var f=a.createBiquadFilter(); f.type='bandpass'; f.frequency.value=open?1400:500; f.Q.value=.8;
+    var g=a.createGain(); g.gain.value=.08;
+    s.connect(f);f.connect(g);g.connect(a.destination); s.start();
+  }
+  function tap(x,y){
+    var a=audio(); if(!a)return;
+    var o=a.createOscillator(), g=a.createGain(), p=a.createStereoPanner?a.createStereoPanner():null;
+    o.type='sine'; o.frequency.value=320+(1000-y)*.5;
+    g.gain.setValueAtTime(.0001,a.currentTime); g.gain.exponentialRampToValueAtTime(.18,a.currentTime+.01); g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+1.4);
+    o.connect(g); if(p){p.pan.value=Math.max(-1,Math.min(1,(x-800)/700)); g.connect(p); p.connect(a.destination);} else g.connect(a.destination);
+    o.start(); o.stop(a.currentTime+1.5);
+  }
+
+  /* ---- screen A: hold to open ---- */
+  var A=document.getElementById('A'), secEl=document.getElementById('secA'), bar=document.getElementById('barA'), toast=document.getElementById('toastA');
+  var budget=12.0, left=7.4, opened=true, demo=true, last=0, seen=1.3;
+  function setOpen(v){
+    if(v&&left<=0)v=false;
+    if(v===opened)return; opened=v;
+    A.classList.toggle('open',v); A.classList.toggle('closed',!v);
+    breath(v);
+  }
+  function tick(t){
+    var dt=last?(t-last)/1000:0; last=t;
+    if(opened&&cur==='A'&&!demo){
+      left=Math.max(0,left-dt); seen+=dt;
+      if(seen>1.2){toast.classList.add('show'); var m=document.getElementById('m2'); if(m)m.classList.add('done');}
+      if(left<=0){setOpen(false);}
+    } else if(!opened){ toast.classList.remove('show'); } else if(demo){toast.classList.add('show');}
+    secEl.textContent=left.toFixed(1);
+    bar.style.width=(left/budget*100)+'%';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1')show('A'); else if(e.key==='2')show('B');
+    else if((e.code==='Space'||e.key===' ')&&cur==='A'){e.preventDefault(); if(demo){demo=false;opened=false;} if(left<=0)left=budget; setOpen(true);}
+  });
+  window.addEventListener('keyup',function(e){if((e.code==='Space'||e.key===' ')&&!demo)setOpen(false);});
+  A.addEventListener('mousedown',function(){if(demo){demo=false;opened=false;} if(left<=0)left=budget;setOpen(true);});
+  window.addEventListener('mouseup',function(){if(!demo)setOpen(false);});
+
+  /* ---- screen B: sound-sight canvas ---- */
+  var cv=document.getElementById('cv'), cx=cv.getContext('2d');
+  var srcs=[{x:330,y:250,c:'255,240,200',p:1000,ph:0},{x:1180,y:520,c:'255,200,170',p:2600,ph:400},{x:1400,y:750,c:'220,200,255',p:3100,ph:900},{x:820,y:330,c:'180,210,255',p:700,ph:200}];
+  var rip=[];
+  var B=document.getElementById('B');
+  B.addEventListener('mousedown',function(e){
+    var r=stage.getBoundingClientRect(), s=r.width/1600;
+    var x=(e.clientX-r.left)/s, y=(e.clientY-r.top)/s;
+    rip.push({x:x,y:y,t:performance.now(),c:'255,255,255',big:1}); tap(x,y);
+  });
+  var t0=performance.now();
+  function draw(t){
+    cx.fillStyle='rgba(7,7,11,.28)'; cx.fillRect(0,0,1600,1000);
+    for(var i=0;i<srcs.length;i++){
+      var s=srcs[i], k=((t-t0+s.ph)%s.p)/s.p;
+      for(var j=0;j<3;j++){
+        var kk=(k+j/3)%1, r=20+kk*260;
+        cx.beginPath(); cx.arc(s.x,s.y,r,0,Math.PI*2);
+        cx.strokeStyle='rgba('+s.c+','+((1-kk)*.35).toFixed(3)+')'; cx.lineWidth=2; cx.stroke();
+      }
+      cx.beginPath(); cx.arc(s.x,s.y,5,0,Math.PI*2); cx.fillStyle='rgba('+s.c+',.9)'; cx.fill();
+    }
+    for(var m=rip.length-1;m>=0;m--){
+      var q=rip[m], age=(t-q.t)/1800; if(age>1){rip.splice(m,1);continue;}
+      cx.beginPath(); cx.arc(q.x,q.y,10+age*700,0,Math.PI*2);
+      cx.strokeStyle='rgba(255,255,255,'+((1-age)*.7).toFixed(3)+')'; cx.lineWidth=3; cx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  fromHash();
+})();
+</script>
+</body>
+</html>

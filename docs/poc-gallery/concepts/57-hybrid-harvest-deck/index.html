@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수확이 곧 덱 — 겨울 하룻밤</title>
+<style>
+:root{
+  --cream:#fbf1dc; --cream2:#f1dfbb; --bark:#4a2e1a; --bark2:#6e4526; --ochre:#e0a040; --rust:#b85a2a; --sage:#7c9a5a; --leaf:#5d7d3c;
+  --water:#4ea3d8; --night:#0f1e36; --night2:#1d3557; --moon:#dfe9ff; --lantern:#ffb74a;
+  --round:"Jua","Gaegu","Nanum Pen Script","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:var(--sans)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden}
+.screen{position:absolute;inset:0;opacity:0;visibility:hidden}
+.screen.on{opacity:1;visibility:visible}
+.scene{position:absolute;inset:0}
+.paper{position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:multiply}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 60%,rgba(60,30,10,.45) 100%)}
+/* ---- A HUD ---- */
+.seasons{position:absolute;left:50%;top:18px;transform:translateX(-50%);display:flex;align-items:center;gap:0;
+  background:var(--cream);border-radius:40px;padding:6px 8px;box-shadow:0 6px 0 rgba(74,46,26,.25),0 12px 24px rgba(74,46,26,.25);font-family:var(--round)}
+.seasons .s{padding:8px 22px;border-radius:30px;font-size:20px;color:#a58a66;display:flex;align-items:center;gap:8px}
+.seasons .s.done{color:#b9a283;text-decoration:line-through}
+.seasons .s.cur{background:linear-gradient(#f0a64a,#d97f2a);color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15);font-size:22px}
+.seasons .s.night{color:#fff;background:linear-gradient(#27466f,#142845)}
+.seasons .dots{display:flex;gap:4px;margin-left:4px}
+.seasons .dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.45)}
+.seasons .dots i.on{background:#fff}
+.res{position:absolute;left:28px;top:20px;display:flex;flex-direction:column;gap:10px}
+.chip{display:flex;align-items:center;gap:10px;background:var(--cream);border-radius:14px;padding:8px 14px;box-shadow:0 5px 0 rgba(74,46,26,.2);font-family:var(--round);color:var(--bark);font-size:18px;min-width:230px}
+.chip .v{font-size:30px;margin-left:auto}
+.chip .v small{font-size:17px;color:#a58a66}
+.drops{display:flex;gap:3px}
+.drops i{width:12px;height:16px;background:var(--water);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;transform:rotate(45deg);border-top-left-radius:0}
+.drops i.off{background:#d9cdb5}
+.seed{width:16px;height:12px;border-radius:50%;background:#8a5a2a;display:inline-block}
+/* seed tray */
+.tray{position:absolute;left:24px;top:190px;width:300px;background:var(--cream);border-radius:22px;padding:16px 14px;box-shadow:0 8px 0 rgba(74,46,26,.2),0 16px 30px rgba(74,46,26,.25)}
+.tray h4{font-family:var(--round);font-weight:400;font-size:22px;color:var(--bark);margin:0 4px 10px;display:flex;justify-content:space-between;align-items:baseline}
+.tray h4 small{font-size:14px;color:#a58a66}
+.crop{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center;padding:8px;border-radius:14px;cursor:pointer;margin-bottom:6px;transition:transform .12s,background .12s;border:2px solid transparent}
+.crop:hover{background:#f6e6c6;transform:translateX(4px)}
+.crop.sel{background:#fde7bf;border-color:var(--ochre);box-shadow:0 0 0 4px rgba(224,160,64,.25)}
+.crop.na{opacity:.4;pointer-events:none}
+.crop .ico{width:58px;height:58px;border-radius:14px;background:radial-gradient(circle at 50% 40%,#fff8e8,#f0dcb4);display:flex;align-items:center;justify-content:center}
+.crop .t{font-family:var(--round);font-size:19px;color:var(--bark);display:flex;justify-content:space-between;align-items:center}
+.crop .t .to{font-size:14px;background:var(--bark);color:var(--cream);padding:2px 9px;border-radius:10px}
+.crop .m{font-size:12.5px;color:#8a6c48;margin-top:3px;letter-spacing:.3px}
+/* deck column */
+.deckcol{position:absolute;right:24px;top:110px;width:300px;background:linear-gradient(#233b5e,#142845);border-radius:22px;padding:16px;color:#e6eefc;box-shadow:0 8px 0 rgba(20,40,69,.35),0 16px 30px rgba(20,40,69,.35)}
+.deckcol h4{font-family:var(--round);font-weight:400;font-size:22px;display:flex;justify-content:space-between;align-items:baseline}
+.deckcol h4 small{font-size:14px;color:#9fb4d6}
+.deckcol .sub{font-size:13px;color:#9fb4d6;margin:4px 0 12px}
+.dl{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border-radius:12px;padding:7px 10px;margin-bottom:6px;font-family:var(--round);font-size:18px;transition:background .3s}
+.dl .mini{width:30px;height:40px;border-radius:5px;background:var(--cream);display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 rgba(0,0,0,.25),4px 4px 0 rgba(255,255,255,.12)}
+.dl .n{margin-left:auto;font-size:24px}
+.dl .src{font-size:12px;color:#9fb4d6;font-family:var(--sans)}
+.dl.pend{border:1.5px dashed rgba(255,200,120,.6);background:rgba(255,183,74,.08)}
+.dl.pend .n{color:var(--lantern)}
+.dl.flash{background:rgba(255,183,74,.35)}
+.night{margin-top:12px;border-top:1px solid rgba(255,255,255,.15);padding-top:12px;font-size:14px;color:#c9d6ee;line-height:1.7}
+.night b{font-family:var(--round);font-weight:400;font-size:18px;color:#fff}
+.help{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);background:rgba(74,46,26,.85);color:var(--cream);font-family:var(--round);font-size:18px;padding:10px 22px;border-radius:24px;white-space:nowrap}
+.help b{color:#ffd28a;font-weight:400}
+.plot{cursor:pointer}
+.plot:hover .bed{filter:brightness(1.08)}
+.plot .hl{opacity:0;transition:opacity .2s}
+.plot.can .hl{opacity:1;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.ripe{animation:bob 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.leaf{position:absolute;width:16px;height:10px;border-radius:50% 0;background:var(--rust);animation:leaffall linear infinite;opacity:.85}
+@keyframes leaffall{0%{transform:translate(0,-40px) rotate(0)}100%{transform:translate(-160px,1040px) rotate(720deg)}}
+.fly{position:absolute;width:44px;height:60px;border-radius:6px;background:var(--cream);box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:30;transition:all .7s cubic-bezier(.5,-0.3,.4,1.2);display:flex;align-items:center;justify-content:center;pointer-events:none}
+/* ---- B ---- */
+#b .scene{background:#0f1e36}
+.snow{position:absolute;border-radius:50%;background:#fff;animation:snow linear infinite;opacity:.85}
+@keyframes snow{0%{transform:translate(0,-20px)}100%{transform:translate(60px,1040px)}}
+.bhud{position:absolute;left:28px;top:22px;display:flex;gap:14px;align-items:center;font-family:var(--round);color:#dfe9ff;font-size:20px}
+.bhud .tag{background:rgba(15,30,54,.7);border:1.5px solid rgba(223,233,255,.35);padding:6px 16px;border-radius:20px}
+.bhud .tag b{font-weight:400;color:var(--lantern)}
+.foe{position:absolute;left:760px;top:170px;width:520px;text-align:center}
+.foe .name{font-family:var(--round);font-size:34px;color:#fff;text-shadow:0 2px 12px #000}
+.foe .bar{margin:10px auto 0;width:300px;height:16px;border-radius:10px;background:rgba(0,0,0,.45);border:2px solid rgba(223,233,255,.5);overflow:hidden}
+.foe .bar i{display:block;height:100%;background:linear-gradient(#ff8c6b,#c23b22);transition:width .4s}
+.foe .hpn{font-family:var(--round);color:#dfe9ff;font-size:18px;margin-top:4px}
+.intent{position:absolute;left:1240px;top:300px;background:#fff4e0;color:#8a2a14;font-family:var(--round);font-size:26px;padding:8px 18px;border-radius:18px 18px 18px 4px;box-shadow:0 6px 18px rgba(0,0,0,.5);animation:bob 2s ease-in-out infinite}
+.intent small{display:block;font-size:13px;color:#a0735a}
+.me{position:absolute;left:36px;bottom:36px;width:270px;background:rgba(10,20,40,.72);border:1.5px solid rgba(223,233,255,.3);border-radius:18px;padding:12px 18px;font-family:var(--round);color:#fff}
+.me .hp{font-size:46px;text-shadow:0 2px 10px #000}
+.me .hp small{font-size:22px;color:#b9c8e6}
+.me .bar{height:14px;border-radius:8px;background:rgba(0,0,0,.45);border:2px solid rgba(223,233,255,.5);overflow:hidden;margin-top:4px}
+.me .bar i{display:block;height:100%;background:linear-gradient(#8fe07a,#3f9a3a)}
+.me .blk{margin-top:10px;font-size:20px;color:#cfe2ff}
+.me .blk b{font-weight:400;font-size:30px;color:#fff}
+.lanterns{position:absolute;right:50px;bottom:70px;display:flex;gap:14px;align-items:flex-end}
+.ln{width:46px;height:64px;border-radius:10px 10px 14px 14px;background:radial-gradient(circle at 50% 55%,#fff1c2,#ffb74a 45%,#b8601a 90%);box-shadow:0 0 30px 8px rgba(255,183,74,.45);position:relative;transition:all .3s}
+.ln::before{content:"";position:absolute;left:14px;top:-10px;width:18px;height:10px;border:3px solid #3a2a1a;border-bottom:none;border-radius:10px 10px 0 0}
+.ln.off{background:#3a3f4a;box-shadow:none}
+.lanterns .lb{position:absolute;bottom:-26px;right:0;font-family:var(--round);color:#b9c8e6;font-size:16px;white-space:nowrap}
+.hand{position:absolute;left:0;right:0;bottom:22px;height:290px;display:flex;justify-content:center;gap:14px;align-items:flex-end}
+.hc{width:178px;height:262px;border-radius:18px;background:var(--cream);position:relative;cursor:pointer;
+  box-shadow:0 0 0 4px #fff8ea,0 0 0 6px rgba(74,46,26,.35),0 18px 30px rgba(0,0,0,.5);transition:transform .18s cubic-bezier(.3,1.7,.5,1)}
+.hc:hover{transform:translateY(-26px) rotate(0) scale(1.05)!important;z-index:5}
+.hc .cost{position:absolute;left:-8px;top:-10px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff1c2,#ffb74a 55%,#c06a1a);font-family:var(--round);font-size:22px;color:#4a2e1a;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.hc .pic{position:absolute;left:10px;right:10px;top:10px;height:118px;border-radius:12px;overflow:hidden}
+.hc .nm{position:absolute;left:0;right:0;top:134px;text-align:center;font-family:var(--round);font-size:24px;color:var(--bark)}
+.hc .fx{position:absolute;left:12px;right:12px;top:166px;text-align:center;font-size:14px;color:#6e4526;line-height:1.45}
+.hc .src{position:absolute;left:10px;right:10px;bottom:10px;text-align:center;font-size:11.5px;color:#a0826a;border-top:1px dashed #d9c49a;padding-top:6px;font-family:var(--round)}
+.hc.used{opacity:.2;pointer-events:none}
+.hc.big .nm{color:#b85a2a}
+.planted{position:absolute;left:50%;top:626px;transform:translateX(-50%);font-family:var(--round);font-size:22px;color:#ffe2b0;text-shadow:0 0 14px rgba(255,183,74,.7),0 2px 6px #000;white-space:nowrap}
+.piles{position:absolute;right:40px;top:22px;font-family:var(--round);color:#b9c8e6;font-size:17px;text-align:right;line-height:1.6}
+.piles b{font-weight:400;color:#fff;font-size:22px}
+.hit{position:absolute;font-family:var(--round);font-size:54px;color:#fff;text-shadow:0 0 16px #ff6a3a,0 3px 0 #8a2a14;pointer-events:none;animation:hit 1s ease-out forwards}
+@keyframes hit{0%{transform:translateY(10px) scale(.6);opacity:0}20%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-70px)}}
+.shake{animation:shk .3s}
+@keyframes shk{25%{transform:translateX(6px)}50%{transform:translateX(-6px)}75%{transform:translateX(3px)}}
+.tabs{position:absolute;right:340px;top:24px;display:flex;gap:6px;z-index:60}
+#b ~ .tabs{right:24px}
+.tabs button{font-family:var(--round);background:rgba(251,241,220,.9);color:#4a2e1a;border:none;border-radius:14px;padding:5px 12px;font-size:14px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.tabs button.on{background:#4a2e1a;color:#fbf1dc}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="paperN"><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="4" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .25 0 0 0 1.4 -.3"/></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="brush"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="4" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="10"/></filter>
+</defs></svg>
+
+<!-- ================= A : 가을 밭 ================= -->
+<section class="screen" id="a">
+<svg class="scene" id="farm" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7c98a"/><stop offset=".55" stop-color="#fbe1b0"/><stop offset="1" stop-color="#f6e7c4"/></linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8a24e"/><stop offset=".4" stop-color="#a08a3e"/><stop offset="1" stop-color="#7b6a2e"/></linearGradient>
+    <linearGradient id="soil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a26"/><stop offset="1" stop-color="#5a331a"/></linearGradient>
+    <linearGradient id="soilW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5e3a22"/><stop offset="1" stop-color="#40240f"/></linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".5"><stop offset="0" stop-color="#fff6d8"/><stop offset=".4" stop-color="#ffd98a" stop-opacity=".7"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <circle cx="1180" cy="150" r="220" fill="url(#sun)"/>
+  <!-- far hills -->
+  <path d="M0 330 Q200 250 420 300 T860 280 T1300 270 T1600 290 V1000 H0Z" fill="#d6a86a" opacity=".6" filter="url(#brush)"/>
+  <path d="M0 380 Q260 320 520 360 T1040 340 T1600 350 V1000 H0Z" fill="#c08b4c" opacity=".7" filter="url(#brush)"/>
+  <!-- autumn trees -->
+  <g filter="url(#brush)">
+    <circle cx="140" cy="330" r="80" fill="#d9772e"/><circle cx="210" cy="300" r="64" fill="#e89a3c"/><rect x="164" y="360" width="14" height="60" fill="#5a3a1a"/>
+    <circle cx="1450" cy="320" r="90" fill="#c9602a"/><circle cx="1370" cy="350" r="60" fill="#e2903a"/><rect x="1430" y="380" width="16" height="60" fill="#5a3a1a"/>
+    <circle cx="1530" cy="360" r="60" fill="#b8502a"/>
+  </g>
+  <!-- barn -->
+  <g transform="translate(1010 200)">
+    <path d="M0 150 L0 70 L90 10 L180 70 L180 150Z" fill="#b8452a" stroke="#4a2e1a" stroke-width="4"/>
+    <path d="M-12 76 L90 2 L192 76" fill="none" stroke="#f1dfbb" stroke-width="10" stroke-linecap="round"/>
+    <rect x="62" y="80" width="56" height="70" fill="#6e2a18" stroke="#4a2e1a" stroke-width="4"/><path d="M62 80 L118 150 M118 80 L62 150" stroke="#f1dfbb" stroke-width="5"/>
+    <rect x="80" y="36" width="20" height="18" fill="#ffe7a8" stroke="#4a2e1a" stroke-width="3"/>
+  </g>
+  <!-- ground -->
+  <path d="M0 400 Q400 370 800 385 T1600 395 V1000 H0Z" fill="url(#grass)"/>
+  <path d="M0 400 Q400 370 800 385 T1600 395 V1000 H0Z" fill="url(#grass)" filter="url(#brush)" opacity=".6"/>
+  <!-- well -->
+  <g transform="translate(1180 470)">
+    <ellipse cx="40" cy="70" rx="46" ry="14" fill="#3a2a1a" opacity=".3"/>
+    <rect x="0" y="30" width="80" height="40" rx="6" fill="#9a8a78" stroke="#4a2e1a" stroke-width="4"/><path d="M0 44 H80 M26 30 V70 M54 30 V70" stroke="#6e5e4a" stroke-width="3"/>
+    <path d="M6 30 V-10 M74 30 V-10 M-6 -8 L40 -34 L86 -8" stroke="#5a3a1a" stroke-width="6" fill="none" stroke-linejoin="round"/>
+    <ellipse cx="40" cy="30" rx="40" ry="9" fill="#2f6f9a"/>
+  </g>
+  <!-- fence -->
+  <g stroke="#6e4526" stroke-width="7" stroke-linecap="round"><path d="M360 470 L360 410 M430 466 L430 406 M500 462 L500 402"/><path d="M340 425 L520 417 M340 450 L520 442" stroke-width="5"/></g>
+  <!-- plots container -->
+  <g id="plots" transform="translate(-70 -18) scale(1.12)"></g>
+  <!-- scarecrow -->
+  <g transform="translate(1210 640)">
+    <path d="M0 0 V150" stroke="#6e4526" stroke-width="8"/><path d="M-50 40 H50" stroke="#6e4526" stroke-width="8"/>
+    <path d="M-34 36 L34 36 L26 100 L-26 100Z" fill="#6f8fb0" stroke="#4a2e1a" stroke-width="4"/>
+    <circle cx="0" cy="12" r="22" fill="#f1dfbb" stroke="#4a2e1a" stroke-width="4"/><path d="M-34 0 L34 0 L16 -26 L-16 -26Z" fill="#c9a24a" stroke="#4a2e1a" stroke-width="4"/>
+    <circle cx="-8" cy="12" r="3" fill="#4a2e1a"/><circle cx="8" cy="12" r="3" fill="#4a2e1a"/>
+  </g>
+</svg>
+<div id="leaves"></div>
+<svg class="paper" width="1600" height="1000"><rect width="1600" height="1000" filter="url(#paperN)"/></svg>
+<div class="vig"></div>
+
+<div class="res">
+  <div class="chip">물 <div class="drops" id="drops"></div><div class="v" id="waterV">6<small> / 10</small></div></div>
+  <div class="chip">씨앗 <span class="seed"></span><span class="seed"></span><span class="seed"></span><div class="v" id="seedV">3<small> / 6</small></div></div>
+  <div class="chip" style="font-size:15px">올해 씨앗 예산 <div class="v" style="font-size:22px">11<small> 남음</small></div></div>
+</div>
+
+<div class="seasons">
+  <div class="s done">봄</div><div class="s done">여름</div>
+  <div class="s cur">가을 <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+  <div class="s night">겨울 밤</div>
+</div>
+
+<div class="tray" id="tray">
+  <h4>씨앗 주머니 <small>심은 것만 카드가 된다</small></h4>
+</div>
+
+<div class="deckcol">
+  <h4>겨울 덱 <small id="deckN">10장 + 6 예정</small></h4>
+  <div class="sub">카드 상점은 없다. 밭에서 나온 것이 전부다.</div>
+  <div id="decklist"></div>
+  <div class="night">겨울 하룻밤 · 창고를 노리는 것들<br><b>들쥐 떼 · 여우 · 굶주린 이리</b><br>이리의 네 번째 수 — 공격 12 (+3 쌓임)</div>
+</div>
+
+<div class="help" id="helpA">씨앗을 고르고 빈 밭을 누른다 · <b>익은 고추</b>를 누르면 거둔다 → 카드 <b>불씨 ×2</b></div>
+</section>
+
+<!-- ================= B : 겨울 밤 ================= -->
+<section class="screen" id="b">
+<svg class="scene" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="nsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1428"/><stop offset=".6" stop-color="#1d3557"/><stop offset="1" stop-color="#2d4a70"/></linearGradient>
+    <radialGradient id="moonG"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#e8f0ff" stop-opacity=".9"/><stop offset="1" stop-color="#9fb8e8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="doorG" cx=".5" cy="1"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".85"/><stop offset=".6" stop-color="#ff9a3a" stop-opacity=".25"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/></radialGradient>
+    <linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d8f0"/><stop offset="1" stop-color="#8ea6cc"/></linearGradient>
+    <radialGradient id="eye"><stop offset="0" stop-color="#fff6c0"/><stop offset=".4" stop-color="#ffcf3a"/><stop offset="1" stop-color="#ff9a00" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#nsky)"/>
+  <circle cx="1320" cy="120" r="160" fill="url(#moonG)"/><circle cx="1320" cy="120" r="44" fill="#f4f8ff"/>
+  <g fill="#fff" opacity=".8"><circle cx="200" cy="80" r="1.6"/><circle cx="420" cy="140" r="1.2"/><circle cx="640" cy="60" r="1.8"/><circle cx="900" cy="110" r="1.2"/><circle cx="1050" cy="50" r="1.5"/><circle cx="330" cy="200" r="1"/><circle cx="1500" cy="260" r="1.3"/></g>
+  <!-- pine silhouettes -->
+  <g fill="#0c1a30"><path d="M60 520 L130 280 L200 520Z"/><path d="M160 540 L250 240 L340 540Z"/><path d="M1400 520 L1470 300 L1540 520Z"/><path d="M1300 540 L1370 330 L1440 540Z"/><path d="M880 500 L930 350 L980 500Z"/></g>
+  <!-- snowy field with fence -->
+  <path d="M0 500 Q500 470 900 490 T1600 480 V1000 H0Z" fill="url(#snowG)"/>
+  <g stroke="#35507a" stroke-width="6" stroke-linecap="round"><path d="M720 520 V470 M800 516 V466 M880 514 V464 M960 516 V466"/><path d="M700 486 L980 480" stroke-width="5"/></g>
+  <g fill="#e8f0ff"><path d="M714 470 q6 -8 12 0Z M794 466 q6 -8 12 0Z M874 464 q6 -8 12 0Z M954 466 q6 -8 12 0Z"/></g>
+  <!-- barn door: player side (left) -->
+  <g transform="translate(-40 150) scale(.92)">
+    <path d="M40 520 V140 L230 30 L420 140 V520Z" fill="#5a2418" stroke="#1a0c08" stroke-width="6"/>
+    <path d="M26 148 L230 22 L434 148" fill="none" stroke="#e8f0ff" stroke-width="16" stroke-linecap="round"/>
+    <rect x="130" y="250" width="200" height="270" fill="#ffcf7a"/>
+    <rect x="130" y="250" width="200" height="270" fill="url(#doorG)"/>
+    <path d="M130 250 L60 270 V540 L130 520Z" fill="#3a1810" stroke="#1a0c08" stroke-width="4"/><path d="M68 290 L124 276 M68 330 L124 318 M68 370 L124 360" stroke="#6e3020" stroke-width="3"/>
+    <g fill="#c9a24a" opacity=".85"><rect x="220" y="420" width="90" height="100" rx="6"/><rect x="250" y="390" width="60" height="40" rx="6" fill="#e2903a"/></g>
+    <!-- crates of harvest -->
+    <g><ellipse cx="260" cy="440" rx="22" ry="16" fill="#e8762a"/><ellipse cx="300" cy="450" rx="18" ry="14" fill="#f08a3a"/><rect x="170" y="470" width="50" height="50" fill="#a07030"/><path d="M180 468 q10 -30 20 0" stroke="#e8c050" stroke-width="4" fill="none"/></g>
+  </g>
+  <ellipse cx="280" cy="760" rx="340" ry="80" fill="url(#doorG)" opacity=".7"/>
+  <!-- wolf -->
+  <g id="wolf" transform="translate(860 330) scale(1.15)">
+    <ellipse cx="190" cy="204" rx="200" ry="18" fill="#0a1428" opacity=".5"/>
+    <path d="M0 112 L30 100 L50 88 L58 60 L70 82 L80 58 L92 88 Q140 70 200 72 Q260 68 300 88 Q334 100 352 132 Q364 162 376 192 L362 194 Q348 162 332 144 Q328 172 320 200 L304 200 L306 162 Q290 152 270 152 L264 200 L248 200 L250 152 Q200 158 150 152 L142 200 L126 200 L124 150 Q108 142 100 134 L94 200 L78 200 L80 130 Q60 128 40 128 L18 124 Z" fill="#0b1426" stroke="#3a5a8c" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M110 84 l8 -14 l6 12 l8 -16 l6 14 l8 -16 l6 14 l8 -14 l6 14 l10 -12 l4 14" fill="#0b1426" stroke="#3a5a8c" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M100 96 Q200 84 300 100" stroke="#c9d8f0" stroke-width="3" fill="none" opacity=".35"/>
+    <ellipse cx="54" cy="96" rx="9" ry="5" fill="url(#eye)"><animate attributeName="ry" values="5;5;.6;5" dur="4s" repeatCount="indefinite"/></ellipse>
+    <circle cx="54" cy="96" r="18" fill="#ffcf3a" opacity=".15"/>
+    <path d="M10 118 L16 126 L22 118 L28 126 L34 120" fill="none" stroke="#dfe9ff" stroke-width="2.5"/>
+    <ellipse cx="-20" cy="118" rx="26" ry="10" fill="#dfe9ff" filter="url(#soft)" opacity=".5"><animate attributeName="rx" values="14;40;14" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="2.6s" repeatCount="indefinite"/></ellipse>
+  </g>
+</svg>
+<div id="snowL"></div>
+<svg class="paper" width="1600" height="1000" style="opacity:.12"><rect width="1600" height="1000" filter="url(#paperN)"/></svg>
+<div class="vig" style="background:radial-gradient(ellipse 80% 75% at 50% 50%,transparent 55%,rgba(5,10,25,.7) 100%)"></div>
+
+<div class="bhud"><span class="tag">겨울 밤 · 1년차</span><span class="tag">셋째 침입 <b>굶주린 이리</b></span><span class="tag">넷째 차례</span></div>
+<div class="piles">덱 <b>14</b> · 전부 올해 밭에서<br>뽑을 더미 <b>5</b> · 소멸 <b>1</b></div>
+<div class="foe" id="foe"><div class="name">굶주린 이리</div><div class="bar"><i id="wbar" style="width:62%"></i></div><div class="hpn" id="whp">21 / 34</div></div>
+<div class="intent">공격 12<small>쌓인 힘 +3 → 15</small></div>
+<div class="me"><div class="hp">18 <small>/ 40</small></div><div class="bar"><i style="width:45%"></i></div><div class="blk">방어 <b id="bblk">0</b></div></div>
+<div class="lanterns" id="lnB"><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="lb">기력</div></div>
+<div class="planted">“이건 내가 가을에 우물 밭에 심은 밀이다.”</div>
+<div class="hand" id="handB"></div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 가을 밭</button><button data-s="b">2 · 겨울 밤</button></div>
+</div>
+
+<script>
+(function(){
+var stage=document.getElementById('stage');
+function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);fit();
+var NS='http://www.w3.org/2000/svg';
+
+/* ---- audio ---- */
+var AC=null;function ac(){try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C();}}catch(e){}return AC;}
+function pluck(f,v){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(v||.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.55);}
+function dirt(){var c=ac();if(!c)return;var t=c.currentTime,n=c.sampleRate*.2,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);var s=c.createBufferSource();s.buffer=b;var f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=900;var g=c.createGain();g.gain.value=.4;s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);}
+function howl(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain(),l=c.createOscillator(),lg=c.createGain();o.type='sawtooth';o.frequency.setValueAtTime(300,t);o.frequency.linearRampToValueAtTime(520,t+.6);o.frequency.linearRampToValueAtTime(380,t+1.6);l.frequency.value=6;lg.gain.value=8;l.connect(lg);lg.connect(o.frequency);var f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=700;f.Q.value=2;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.3);g.gain.exponentialRampToValueAtTime(.001,t+1.8);o.connect(f);f.connect(g);g.connect(c.destination);o.start(t);l.start(t);o.stop(t+1.9);l.stop(t+1.9);}
+
+/* ---- crop art (svg strings) ---- */
+function cropSvg(id,stage,sz){
+  sz=sz||1;var g='';
+  if(stage==='sprout'){return '<g transform="scale('+sz+')"><path d="M0 0 Q-2 -14 -10 -18 Q-2 -20 0 -8 Q2 -22 12 -20 Q4 -14 0 0" fill="#7cba4a" stroke="#3d6b22" stroke-width="1.5"/></g>';}
+  if(id==='turnip')g='<path d="M0 -6 Q-16 -10 -14 8 Q-10 24 0 30 Q10 24 14 8 Q16 -10 0 -6Z" fill="#f4e6f0" stroke="#4a2e1a" stroke-width="2"/><path d="M-12 0 Q0 -8 12 0 Q10 -10 0 -8 Q-10 -10 -12 0Z" fill="#b04a8a"/><path d="M0 -6 Q-8 -30 -18 -34 M0 -6 Q2 -34 6 -40 M0 -6 Q10 -26 20 -30" stroke="#5d9a3a" stroke-width="5" fill="none" stroke-linecap="round"/>';
+  if(id==='pumpkin')g='<ellipse cx="0" cy="6" rx="26" ry="20" fill="#e8762a" stroke="#4a2e1a" stroke-width="2"/><path d="M-10 -12 Q-16 6 -10 24 M10 -12 Q16 6 10 24 M0 -14 V26" stroke="#b8501a" stroke-width="2" fill="none"/><path d="M0 -14 q2 -10 8 -12" stroke="#5a3a1a" stroke-width="4" fill="none"/><path d="M8 -20 q16 -10 22 4 q-12 2 -22 -4" fill="#5d9a3a"/>';
+  if(id==='chili')g='<path d="M-14 -20 Q-6 -24 -2 -18 Q8 0 -2 26 Q-18 30 -16 6Z" fill="#d8321e" stroke="#4a2e1a" stroke-width="2"/><path d="M6 -16 Q14 -20 18 -14 Q24 4 16 24 Q4 28 6 6Z" fill="#e8442a" stroke="#4a2e1a" stroke-width="2"/><path d="M-8 -22 Q0 -34 12 -18" stroke="#3d7a22" stroke-width="4" fill="none"/><path d="M-10 -16 q2 6 0 12" stroke="#ff9a7a" stroke-width="2"/>';
+  if(id==='herb')g='<path d="M0 24 V-20" stroke="#3d6b22" stroke-width="3"/><g fill="#6fb04a" stroke="#3d6b22" stroke-width="1.5"><ellipse cx="-9" cy="-14" rx="9" ry="5" transform="rotate(-30 -9 -14)"/><ellipse cx="9" cy="-6" rx="9" ry="5" transform="rotate(30 9 -6)"/><ellipse cx="-9" cy="4" rx="9" ry="5" transform="rotate(-30 -9 4)"/><ellipse cx="9" cy="12" rx="9" ry="5" transform="rotate(30 9 12)"/><ellipse cx="0" cy="-24" rx="6" ry="4"/></g><circle cx="0" cy="-28" r="3" fill="#c8a8f0"/>';
+  if(id==='wheat')g='<g stroke="#b8862a" stroke-width="2.5" fill="none"><path d="M-8 30 Q-6 0 -12 -26"/><path d="M0 30 V-32"/><path d="M8 30 Q6 0 12 -26"/></g><g fill="#f0c050" stroke="#a0721a" stroke-width="1"><ellipse cx="-12" cy="-22" rx="4" ry="8"/><ellipse cx="0" cy="-28" rx="4" ry="9"/><ellipse cx="12" cy="-22" rx="4" ry="8"/><ellipse cx="-4" cy="-14" rx="3.5" ry="7"/><ellipse cx="6" cy="-14" rx="3.5" ry="7"/></g>';
+  return '<g transform="scale('+sz+')">'+g+'</g>';
+}
+function icon(id,s){return '<svg width="'+(s||52)+'" height="'+(s||52)+'" viewBox="-30 -40 60 72">'+cropSvg(id,'ripe',1)+'</svg>';}
+
+/* ---- tray ---- */
+var CROPS=[
+ {id:'turnip',n:'순무',to:'베기',m:'1턴 · 물 1 · 씨앗 1 — 덱을 묽게 한다',seeds:1,water:1},
+ {id:'pumpkin',n:'호박',to:'방벽',m:'3턴 · 물 1 · 씨앗 2 — 밭을 오래 묶는다',seeds:2,water:1},
+ {id:'chili',n:'고추',to:'불씨',m:'2턴 · 물 2 · 씨앗 2 — 방어 무시 화상',seeds:2,water:2},
+ {id:'herb',n:'약초',to:'정리',m:'2턴 · 물 1 · 씨앗 2 — 덱을 얇게',seeds:2,water:1},
+ {id:'wheat',n:'밀',to:'수확',m:'가을만 · 2턴 · 씨앗 3 — 남은 카드당 피해',seeds:3,water:1}
+];
+var water=6,seeds=3,sel='herb';
+var tray=document.getElementById('tray');
+function drawTray(){
+  var old=tray.querySelectorAll('.crop');for(var i=0;i<old.length;i++)tray.removeChild(old[i]);
+  CROPS.forEach(function(c){var d=document.createElement('div');d.className='crop'+(sel===c.id?' sel':'')+(c.seeds>seeds?' na':'');
+    d.innerHTML='<div class="ico">'+icon(c.id,50)+'</div><div><div class="t">'+c.n+'<span class="to">→ '+c.to+'</span></div><div class="m">'+c.m+'</div></div>';
+    d.addEventListener('click',function(){sel=c.id;pluck(660,.12);drawTray();drawPlots();});tray.appendChild(d);});
+}
+function drawRes(){var dr=document.getElementById('drops');dr.innerHTML='';for(var i=0;i<10;i++){var e=document.createElement('i');if(i>=water)e.className='off';dr.appendChild(e);}
+  document.getElementById('waterV').innerHTML=water+'<small> / 10</small>';document.getElementById('seedV').innerHTML=seeds+'<small> / 6</small>';}
+
+/* ---- deck list ---- */
+var DECK=[
+ {id:'turnip',n:'베기',k:4,src:'봄 · 문간 밭, 돌담 밭'},
+ {id:'pumpkin',n:'방벽',k:2,src:'여름 · 그늘 밭'},
+ {id:'chili',n:'불씨',k:2,src:'여름 · 우물 밭'},
+ {id:'herb',n:'정리',k:2,src:'봄 · 우물 밭'},
+ {id:'chili',n:'불씨',k:2,src:'우물 밭 — 지금 익음',pend:1,key:'chiliNow'},
+ {id:'pumpkin',n:'방벽',k:2,src:'돌담 밭 — 1턴 뒤',pend:1},
+ {id:'wheat',n:'수확',k:2,src:'문간 밭 — 1턴 뒤',pend:1}
+];
+function drawDeck(flashIdx){
+  var el=document.getElementById('decklist');el.innerHTML='';var have=0,pend=0;
+  DECK.forEach(function(d,i){if(d.pend)pend+=d.k;else have+=d.k;
+    var r=document.createElement('div');r.className='dl'+(d.pend?' pend':'')+(i===flashIdx?' flash':'');r.dataset.i=i;
+    r.innerHTML='<div class="mini">'+icon(d.id,28)+'</div><div>'+d.n+'<div class="src">'+d.src+'</div></div><div class="n">×'+d.k+'</div>';el.appendChild(r);});
+  document.getElementById('deckN').textContent=have+'장 + '+pend+' 예정';
+}
+
+/* ---- plots ---- */
+var PLOTS=[
+ {n:'문간 밭',f:100,crop:'wheat',g:1,of:2},
+ {n:'우물 밭',f:120,crop:'chili',g:2,of:2},
+ {n:'돌담 밭',f:100,crop:'pumpkin',g:2,of:3},
+ {n:'그늘 밭',f:80,crop:null},
+ {n:'비탈 밭',lock:1},
+ {n:'숲가 밭',lock:1}
+];
+var POS=[[430,470],[650,470],[870,470],[400,650],[640,650],[880,650]];
+var plotsG=document.getElementById('plots');
+function drawPlots(){
+  plotsG.innerHTML='';
+  PLOTS.forEach(function(p,i){
+    var x=POS[i][0],y=POS[i][1],w=200,h=140,sk=i<3?16:20;
+    var g=document.createElementNS(NS,'g');g.setAttribute('class','plot'+(!p.lock&&!p.crop?' can':''));g.setAttribute('transform','translate('+x+' '+y+')');
+    var s='';
+    s+='<ellipse cx="'+(w/2)+'" cy="'+(h+8)+'" rx="'+(w/2+6)+'" ry="14" fill="#3a2a10" opacity=".25"/>';
+    s+='<path class="hl" d="M'+(sk-8)+' -8 H'+(w+8)+' L'+(w-sk+8)+' '+(h+8)+' H-8Z" fill="none" stroke="#fff3c0" stroke-width="5" stroke-dasharray="12 8" stroke-linejoin="round"/>';
+    if(p.lock){s+='<path class="bed" d="M'+sk+' 0 H'+w+' L'+(w-sk)+' '+h+' H0Z" fill="#9a8a50" stroke="#6e5e2a" stroke-width="3" stroke-dasharray="10 8" opacity=".7"/>';
+      s+='<text x="'+(w/2)+'" y="'+(h/2-4)+'" text-anchor="middle" font-size="20" fill="#4a2e1a" font-family="Jua,sans-serif">'+p.n+'</text><text x="'+(w/2)+'" y="'+(h/2+22)+'" text-anchor="middle" font-size="14" fill="#5a3e1a" font-family="sans-serif">이긴 해에만 한 칸 열린다</text>';}
+    else{
+      var wet=p.crop?'url(#soilW)':'url(#soil)';
+      s+='<path class="bed" d="M'+sk+' 0 H'+w+' L'+(w-sk)+' '+h+' H0Z" fill="'+wet+'" stroke="#3a2210" stroke-width="3" stroke-linejoin="round"/>';
+      for(var r=1;r<4;r++){var yy=r*h/4,xo=sk*(1-yy/h);s+='<path d="M'+(xo+6)+' '+yy+' H'+(w-sk*(yy/h)-6)+'" stroke="#2e1a0c" stroke-width="3" opacity=".45"/>';}
+      if(p.crop){for(var r2=0;r2<3;r2++)for(var c2=0;c2<4;c2++){var cy=24+r2*44,cx=26+c2*46+sk*(1-cy/h)*.6;
+          var ripe=p.g>=p.of;var sc=ripe?1:(p.g/p.of<.6?0:.7);
+          s+='<g transform="translate('+cx+' '+cy+')"><g'+(ripe?' class="ripe" style="animation-delay:-'+((r2*4+c2)*0.13)+'s"':'')+'>'+(sc===0?cropSvg(p.crop,'sprout',1.1):cropSvg(p.crop,'ripe',sc*.9))+'</g></g>';}
+        if(p.g>=p.of)s+='<g transform="translate('+(w-10)+' -18)"><circle r="20" fill="#fff4d0" stroke="#e0a040" stroke-width="3"/><text y="7" text-anchor="middle" font-size="20" fill="#b85a2a" font-family="Jua,sans-serif">!</text></g>';
+      } else if(sel){s+='<g opacity=".45" transform="translate('+(w/2)+' '+(h/2+6)+')">'+cropSvg(sel,'ripe',1.2)+'</g>';}
+      s+='<g transform="translate(6 '+(h+2)+')"><rect x="0" y="0" width="'+(p.crop?200:150)+'" height="26" rx="13" fill="#fbf1dc" stroke="#4a2e1a" stroke-width="2"/><text x="12" y="18" font-size="14" fill="#4a2e1a" font-family="Jua,sans-serif">'+p.n+' · 비옥 '+p.f+'%'+(p.crop?' · '+p.g+'/'+p.of+'턴':'')+'</text></g>';
+    }
+    g.innerHTML=s;
+    g.addEventListener('click',function(ev){clickPlot(i,ev);});
+    plotsG.appendChild(g);
+  });
+}
+function flyTo(fromX,fromY,crop){
+  var el=document.createElement('div');el.className='fly';el.innerHTML=icon(crop,36);el.style.left=fromX+'px';el.style.top=fromY+'px';document.getElementById('a').appendChild(el);
+  setTimeout(function(){el.style.left='1330px';el.style.top='220px';el.style.transform='rotate(12deg) scale(.7)';el.style.opacity='.2';},30);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},800);
+}
+function clickPlot(i){
+  var p=PLOTS[i];if(p.lock){pluck(180,.1);return;}
+  if(p.crop&&p.g>=p.of){ // harvest
+    dirt();setTimeout(function(){pluck(784,.18);},120);
+    var cx=POS[i][0]+100,cy=POS[i][1]+60;flyTo(cx,cy,p.crop);flyTo(cx+30,cy+10,p.crop);
+    DECK.forEach(function(d){if(d.key==='chiliNow'){d.pend=0;d.src='가을 · 우물 밭 (비옥 120% → 2장)';}});
+    p.crop=null;drawPlots();setTimeout(function(){drawDeck(4);},650);
+    document.getElementById('helpA').innerHTML='거뒀다 — <b>불씨 ×2</b>가 겨울 덱에 들어갔다 · 이제 빈 밭에 무엇을 심을까';return;}
+  if(!p.crop){var c=CROPS.filter(function(x){return x.id===sel;})[0];if(!c)return;
+    if(c.seeds>seeds||c.water>water){pluck(160,.15);document.getElementById('helpA').innerHTML='씨앗이나 물이 모자란다 — <b>봄에 다 쓰면 가을에 밀을 못 심는다</b>';return;}
+    seeds-=c.seeds;water-=c.water;p.crop=c.id;p.g=0;p.of=c.id==='pumpkin'?3:(c.id==='turnip'?1:2);dirt();
+    DECK.push({id:c.id,n:c.to,k:2,src:p.n+' — '+p.of+'턴 뒤',pend:1});
+    drawRes();drawTray();drawPlots();drawDeck(DECK.length-1);
+    document.getElementById('helpA').innerHTML=p.n+'에 '+c.n+'을(를) 심었다 → 겨울 덱에 <b>'+c.to+' ×2 예정</b>';}
+}
+drawRes();drawTray();drawPlots();drawDeck();
+
+/* leaves */
+var lv=document.getElementById('leaves');
+for(var i=0;i<14;i++){var l=document.createElement('div');l.className='leaf';l.style.left=(200+Math.random()*1400)+'px';l.style.top='0';l.style.animationDuration=(9+Math.random()*8)+'s';l.style.animationDelay=(-Math.random()*14)+'s';l.style.background=['#b85a2a','#e0a040','#c9602a','#d98a3a'][i%4];lv.appendChild(l);}
+
+/* ---- B ---- */
+var sn=document.getElementById('snowL');
+for(var j=0;j<110;j++){var f=document.createElement('div');f.className='snow';var z=1+Math.random()*4;f.style.width=z+'px';f.style.height=z+'px';f.style.left=(Math.random()*1600-60)+'px';f.style.top='0';f.style.animationDuration=(6+Math.random()*9)/(z*.4+.6)+'s';f.style.animationDelay=(-Math.random()*15)+'s';f.style.opacity=.4+z*.12;sn.appendChild(f);}
+var HAND=[
+ {id:'wheat',n:'수확',c:2,fx:'남은 카드 1장당 피해 1<br><b>지금 9장 → 피해 9</b>',src:'가을 · 문간 밭 · 밀',big:1,dmg:9},
+ {id:'chili',n:'불씨',c:1,fx:'화상 3<br>방어를 무시한다',src:'가을 · 우물 밭 · 고추',dmg:3},
+ {id:'pumpkin',n:'방벽',c:2,fx:'방어 8',src:'여름 · 그늘 밭 · 호박',blk:8},
+ {id:'turnip',n:'베기',c:1,fx:'피해 3',src:'봄 · 문간 밭 · 순무',dmg:3},
+ {id:'herb',n:'정리',c:1,fx:'1장 소멸 + 2장 뽑기',src:'봄 · 우물 밭 · 약초'}
+];
+var BG={wheat:'linear-gradient(#f6d27a,#e0a040)',chili:'linear-gradient(#f7a57a,#c8432a)',pumpkin:'linear-gradient(#f7c07a,#d9772e)',turnip:'linear-gradient(#e8d7f0,#b88ac8)',herb:'linear-gradient(#c8e6a8,#7cba4a)'};
+var energy=3,whp=21,blk=0;
+var hb=document.getElementById('handB');
+HAND.forEach(function(h,i){
+  var d=document.createElement('div');d.className='hc'+(h.big?' big':'');var off=i-2;d.style.transform='translateY('+(Math.abs(off)*8)+'px) rotate('+(off*2.5)+'deg)';
+  d.innerHTML='<div class="cost">'+h.c+'</div><div class="pic" style="background:'+BG[h.id]+'"><svg width="158" height="118" viewBox="-60 -50 120 90"><ellipse cx="0" cy="34" rx="40" ry="6" fill="rgba(0,0,0,.18)"/>'+cropSvg(h.id,'ripe',1.6)+'</svg></div><div class="nm">'+h.n+'</div><div class="fx">'+h.fx+'</div><div class="src">'+h.src+'</div>';
+  d.addEventListener('click',function(){
+    if(energy<h.c){pluck(160,.15);return;}energy-=h.c;var ls=document.querySelectorAll('#lnB .ln');for(var k=0;k<ls.length;k++)ls[k].classList.toggle('off',k>=energy);
+    d.classList.add('used');
+    if(h.dmg){whp=Math.max(0,whp-h.dmg);document.getElementById('wbar').style.width=(whp/34*100)+'%';document.getElementById('whp').textContent=whp+' / 34';
+      var w=document.getElementById('wolf');w.classList.remove('shake');void w.getBoundingClientRect();w.classList.add('shake');
+      var t=document.createElement('div');t.className='hit';t.textContent='-'+h.dmg;t.style.left='1000px';t.style.top='330px';document.getElementById('b').appendChild(t);setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},1000);
+      pluck(220,.3);if(whp<=12)setTimeout(howl,200);}
+    else if(h.blk){blk+=h.blk;document.getElementById('bblk').textContent=blk;pluck(330,.2);}
+    else{pluck(880,.12);}
+  });
+  hb.appendChild(d);
+});
+
+/* ---- switching ---- */
+var btns=document.querySelectorAll('.tabs button');
+function show(id){['a','b'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===id);});for(var i=0;i<btns.length;i++)btns[i].classList.toggle('on',btns[i].dataset.s===id);
+  document.querySelector('.tabs').style.right=(id==='a'?'340px':'24px');document.querySelector('.tabs').style.top=(id==='a'?'24px':'150px');}
+for(var i=0;i<btns.length;i++)btns[i].addEventListener('click',function(){show(this.dataset.s);try{history.replaceState(null,'','#'+this.dataset.s);}catch(e){}});
+window.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+window.addEventListener('hashchange',function(){show(location.hash==='#b'?'b':'a');});
+show(location.hash==='#b'?'b':'a');
+})();
+</script>
+</body>
+</html>

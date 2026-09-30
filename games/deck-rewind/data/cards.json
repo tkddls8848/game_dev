@@ -1,0 +1,162 @@
+{
+  "_": "효과는 {type, amount, target} 세 필드의 평평한 배열이다 (PLAN_DECKBUILDER §6). 다형성을 쓰지 않는다.",
+  "_수치": "전부 정수. 값 없는 int 는 -1 을 명시한다.",
+  "_카드수": "10종. PLAN §7 Phase 1~2 규모다. 40종까지 늘리는 것은 이 PoC의 범위가 아니다.",
+  "cards": [
+    {
+      "id": "card_probe",
+      "nameKo": "관측침",
+      "textKo": "피해 6. 가장 값싼 측정 수단이다.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 6,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_shield",
+      "nameKo": "차폐막",
+      "textKo": "방어 6. 다음 한 번을 흡수한다.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "block",
+          "amount": 6,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_calibrate",
+      "nameKo": "교정",
+      "textKo": "힘 +2. 이번 전투의 모든 공격에 더해진다.",
+      "cost": 1,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "strength",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_reindex",
+      "nameKo": "재색인",
+      "textKo": "기력 0. 카드 2장을 뽑는다.",
+      "cost": 0,
+      "rarity": "common",
+      "effects": [
+        {
+          "type": "draw",
+          "amount": 2,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_dampen",
+      "nameKo": "감쇠",
+      "textKo": "적에게 약화 2. 방어 4.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "enemy"
+        },
+        {
+          "type": "block",
+          "amount": 4,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_purge",
+      "nameKo": "소각",
+      "textKo": "피해 7. 연소 4 — 적의 턴마다 타고 한 칸 줄어든다.",
+      "cost": 2,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 7,
+          "target": "enemy"
+        },
+        {
+          "type": "burn",
+          "amount": 4,
+          "target": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "card_suture",
+      "nameKo": "봉합",
+      "textKo": "체력 6 회복.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "heal",
+          "amount": 6,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_surge",
+      "nameKo": "과전류",
+      "textKo": "기력 +2. 카드 1장을 뽑는다. 낸 값보다 한 칸 남는다.",
+      "cost": 1,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "energy",
+          "amount": 2,
+          "target": "self"
+        },
+        {
+          "type": "draw",
+          "amount": 1,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_regress",
+      "nameKo": "역행",
+      "textKo": "기력 0. 되감기 충전 +1. 적의 기억은 줄지 않는다.",
+      "cost": 0,
+      "rarity": "rare",
+      "effects": [
+        {
+          "type": "rewind_charge",
+          "amount": 1,
+          "target": "self"
+        }
+      ]
+    },
+    {
+      "id": "card_thesis",
+      "nameKo": "논증",
+      "textKo": "피해 14. 손 한 칸으로 끝나지만 기력 둘을 한 번에 쓴다.",
+      "cost": 2,
+      "rarity": "uncommon",
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 14,
+          "target": "enemy"
+        }
+      ]
+    }
+  ]
+}

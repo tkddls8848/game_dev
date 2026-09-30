@@ -1,0 +1,56 @@
+{
+  "_": "수치는 전부 정수. 값 없는 int 는 -1 을 명시한다(설계 원칙 3·4).",
+  "_난수": "씨드는 여기 적는다. 작가의 그날과 걸작 판정은 **씨드와 회차로만** 굴린다 — 편집자가 무엇을 했든 같은 값이 나오도록(src/ManuscriptSim.cs).",
+
+  "seed": 20260927,
+  "extraSeeds": [11, 404, 1848, 20261, 777, 5150],
+  "rounds": 5,
+  "_회차": "원고가 다섯 번 오간다. 그 다섯 번이 쌓인 붉은 자국이 이 관계의 역사다",
+
+  "masterpieceConfidence": 66,
+  "masterpieceTrust": 62,
+  "masterpieceVoice": 58,
+  "masterpieceQuality": 58,
+  "masterpieceChancePercent": 55,
+  "masterpieceSentenceQuality": 92,
+  "masterpieceSentenceVoice": 96,
+  "masterpieceSentencePride": 95,
+  "_걸작": "★ 청하지 않은 문장. 작가가 자신 있고 · 나를 믿고 · 목소리가 남아 있고 · 원고가 이미 어느 선을 넘었을 때만 온다. 네 문턱을 다 넘겨야 하므로 혹독한 펜으로는 절대 닿지 못하고, 관대하기만 한 펜은 원고 문턱에서 걸린다",
+
+  "publishQuality": 58,
+  "publishVoice": 50,
+  "publishMinSentences": 7,
+
+  "objectives": [
+    {
+      "id": "o_quality", "name": "원고가 나아졌는가", "whose": "편집장",
+      "qualityWeight": 100, "voiceWeight": 0, "confidenceWeight": 0, "trustWeight": 0,
+      "stubbornPenalty": 0, "masterpieceBonus": 0, "publishBonus": 0,
+      "lostSentencePenalty": 8, "withdrawnPenalty": 0
+    },
+    {
+      "id": "o_voice", "name": "작가의 목소리가 남았는가", "whose": "이 책을 읽을 사람",
+      "qualityWeight": 0, "voiceWeight": 100, "confidenceWeight": 0, "trustWeight": 0,
+      "stubbornPenalty": 0, "masterpieceBonus": 0, "publishBonus": 0,
+      "lostSentencePenalty": 6, "withdrawnPenalty": 0
+    },
+    {
+      "id": "o_author", "name": "작가가 성하게 남았는가", "whose": "다음 원고",
+      "qualityWeight": 0, "voiceWeight": 0, "confidenceWeight": 60, "trustWeight": 60,
+      "stubbornPenalty": 40, "masterpieceBonus": 0, "publishBonus": 0,
+      "lostSentencePenalty": 0, "withdrawnPenalty": 60
+    },
+    {
+      "id": "o_masterpiece", "name": "청하지 않은 문장에 닿았는가", "whose": "십 년 뒤의 이 작가",
+      "qualityWeight": 20, "voiceWeight": 20, "confidenceWeight": 0, "trustWeight": 0,
+      "stubbornPenalty": 0, "masterpieceBonus": 60, "publishBonus": 0,
+      "lostSentencePenalty": 0, "withdrawnPenalty": 0
+    },
+    {
+      "id": "o_house", "name": "출판사의 셈", "whose": "이 책을 내기로 결정할 사람",
+      "qualityWeight": 55, "voiceWeight": 45, "confidenceWeight": 15, "trustWeight": 15,
+      "stubbornPenalty": 10, "masterpieceBonus": 40, "publishBonus": 35,
+      "lostSentencePenalty": 5, "withdrawnPenalty": 70
+    }
+  ]
+}

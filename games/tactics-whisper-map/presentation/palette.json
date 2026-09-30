@@ -1,0 +1,118 @@
+{
+  "_": "연출을 값으로 적는다. 눈대중으로 색을 고르면 스무 곳에 흩어지고 고칠 수 없게 된다.",
+  "_출처": "mystery-blackwood의 Assets/Scripts/Art/Palette.cs 가 같은 역할을 한다.",
+  "_겹침_확인": "이 저장소의 다른 PoC 연출(청사진 · 목판화 · 세피아 측량도 · 필사본 연감 · 크라프트 장부 · 겨울 등불 · 구성주의 포스터 · 사건 파일)과 겹치지 않는다. 여기만 **종이가 아니라 천**이고, 선이 잉크가 아니라 **실**이며, 확실성이 색이 아니라 **바늘땀 밀도**로 보인다.",
+
+  "name": "자수 지도",
+  "oneLine": "마을 여인들이 천에 수놓아 전한 지도. 확실한 것은 촘촘히, 소문은 느슨하게 박혀 있다",
+  "reference": "아마천에 기워 넣은 지도 — 결이 보이는 리넨, 실 색 셋(쪽빛·흙빛·바랜 붉은실), 바늘땀 자국, 뒷면 매듭이 비쳐 보이는 두께, 틀린 자리를 다른 색 실로 덮어 기운 헝겊",
+
+  "color": {
+    "linen": "#D9CCAE",
+    "linenLit": "#E6DCC3",
+    "linenDim": "#C3B492",
+    "linenShade": "#A99A78",
+    "threadIndigo": "#31486B",
+    "threadEarth": "#7A5B38",
+    "threadRedFaded": "#A0473C",
+    "knotBack": "#B7A582",
+    "ink": "#2B2318",
+    "inkSoft": "#5A4B37",
+    "_실은_셋뿐": "쪽빛(threadIndigo) · 흙빛(threadEarth) · 바랜 붉은실(threadRedFaded) 셋이 전부다. linen 계열 넷은 천의 농도이고 실이 아니다",
+    "_무엇이_어느_실인가": "쪽빛=지형(인접·시야, 공짜로 아는 것) · 흙빛=사람에게서 온 것(마을·신뢰) · 바랜 붉은실=순찰(사야 아는 것). 색이 정보의 출처를 말한다"
+  },
+
+  "stitch": {
+    "_": "★ **이 연출의 핵.** 바늘땀 밀도가 확실성이다. 값은 SVG stroke-dasharray 의 (땀, 틈) 이고 픽셀이다",
+    "widthPx": 2,
+    "confirmed": [5, 2],
+    "confirmedLabel": "겹쳐 물어 확인된 것 — 촘촘하다",
+    "single": [4, 7],
+    "singleLabel": "한 사람에게만 들은 것 — 느슨하다",
+    "rumor": [2, 11],
+    "rumorLabel": "소문 — 실이 겨우 이어져 있다",
+    "unknown": [1, 14],
+    "unknownLabel": "묻지 않은 것 — 땀이 거의 없다",
+    "terrain": [6, 0],
+    "terrainLabel": "지형 — 끊기지 않는 한 줄. 눈으로 보이는 것이라 확실성이 없다",
+    "knotRadiusPx": 5,
+    "knotBackOffsetPx": 2,
+    "_뒷면": "knotBackOffsetPx 만큼 밀어 흐리게 깐다. 천이 얇아 뒷면 매듭이 비쳐 보이는 두께를 만든다"
+  },
+
+  "patch": {
+    "_": "틀린 정보가 남는 자리. 지우지 않고 **다른 색 실로 기워 덮는다** — 무엇을 잘못 알았는지가 천에 남는다",
+    "threadColor": "#A0473C",
+    "hatchAngleDeg": 34,
+    "hatchPitchPx": 5,
+    "hatchWidthPx": 2,
+    "borderDash": [3, 3],
+    "insetPx": 3
+  },
+
+  "weave": {
+    "_": "아마천 결. 가로실·세로실을 같은 굵기로 겹쳐 짠다. 이미지를 받지 않고 SVG 패턴으로 만든다",
+    "pitchPx": 4,
+    "threadWidthPx": 2,
+    "warpOpacity": 14,
+    "weftOpacity": 10,
+    "slubEveryPx": 37,
+    "slubOpacity": 9,
+    "_슬럽": "아마실은 굵기가 고르지 않다. slubEveryPx 마다 굵은 실 한 올을 넣으면 면이 죽지 않는다",
+    "edgeFrayPx": 7,
+    "selvageWidthPx": 3
+  },
+
+  "type": {
+    "family": "Gaegu",
+    "familyBody": "Gowun Dodum",
+    "_전부_OFL": "두 글꼴 모두 SIL Open Font License 1.1. CREDITS.md 에 파일·URL·SHA-256(실린 파일의 것)을 적었다",
+    "_왜_이_둘인가": "표제는 손으로 쓴 글씨(Gaegu)여야 바늘로 놓은 글자처럼 읽힌다. 본문은 획이 부드러운 고딕(Gowun Dodum)이라 천 위에서 눌리지 않는다",
+    "sizeTitle": 58,
+    "sizeHeading": 27,
+    "sizeBody": 16,
+    "sizeHint": 13,
+    "sizeNumeral": 14,
+    "trackingTitle": 1,
+    "trackingBody": 0,
+    "outlinePx": 0,
+    "_외곽선": "0을 기본으로 둔다. 글자에 외곽선이 붙으면 그것만으로 스티커처럼 보인다"
+  },
+
+  "layout": {
+    "_": "지도는 data/map.json 에 좌표가 없다(설계 원칙 3 · PLAN_TACTICS §6). 배치는 **연출이 정한다** — 그래서 여기 있다. 0~100 의 천 위 비율이고 픽셀이 아니다",
+    "zones": {
+      "z_flax":       [12, 78],
+      "z_orchard":    [30, 52],
+      "z_belfry":     [26, 18],
+      "z_lane":       [56, 46],
+      "z_checkpoint": [84, 22],
+      "z_granary":    [80, 74]
+    },
+    "knotJitterPx": 0,
+    "_흔들지_않는다": "매듭 자리를 난수로 흔들면 화면이 매번 달라지고 눈으로 대조할 수 없다. 손맛은 바늘땀 모양으로 낸다"
+  },
+
+  "grade": {
+    "saturation": 0.62,
+    "contrast": 1.08,
+    "blackLift": 0.04,
+    "vignette": 0.22,
+    "grainStatic": true,
+    "_입자": "매 프레임 흔들면 TV 노이즈가 된다. 정지한 결이어야 천이 된다",
+    "_채도": "0.62. 실이 셋뿐이라 채도를 올리면 붉은실만 튀어 나와 '틀린 정보'가 주인공이 된다"
+  },
+
+  "motion": {
+    "_": "연출은 부드럽고 **판정은 틱(1000ms)에서만** 내려간다 (PLAN_TACTICS §8). 이 값들은 눈속임이다",
+    "tickMs": 1000,
+    "stitchDrawMs": 420,
+    "panelRevealMs": 180,
+    "easing": "cubic-bezier(.22,.7,.2,1)",
+    "_바늘땀_그리기": "선을 한 번에 켜지 않고 stroke-dashoffset 으로 왼쪽에서 오른쪽으로 놓는다 — 실이 꿰이는 것처럼 보인다"
+  },
+
+  "sfx": {
+    "_없는_것": "소리를 넣지 않았다. 천·바늘·실에 맞는 CC0 소리를 찾지 못했고, 없는 것을 있는 척 적지 않는다. CREDITS.md 의 '버린 것'에 같은 사실을 적었다"
+  }
+}

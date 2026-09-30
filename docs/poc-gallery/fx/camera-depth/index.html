@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>카메라·심도 · FX 샘플</title>
+<style>
+:root{--bg:#0d0e10;--panel:#15171a;--panel2:#1b1e22;--line:#2a2e34;--text:#d9dce1;--mute:#868c96;--acc:#7fc8ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#08090a;overflow:hidden;color:var(--text)}
+body{font:13px/1.5 "Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+#app{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform:translate(-50%,-50%);transform-origin:50% 50%;background:var(--bg);overflow:hidden}
+header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line)}
+header .ttl{display:flex;align-items:baseline;gap:12px;min-width:0}
+header .tag{font-size:11px;letter-spacing:.08em;color:#0d0e10;background:var(--acc);padding:2px 7px;border-radius:3px;font-weight:700}
+header h1{font-size:20px;font-weight:700;letter-spacing:-.01em}
+header .desc{color:var(--mute);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .stat{display:flex;gap:10px;font:12px/1 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:var(--mute)}
+header .stat span{padding:5px 8px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+#aud.on{color:var(--acc);border-color:var(--acc)}
+main{display:flex;gap:16px;padding:14px 16px 0}
+.left{width:1122px;flex:none}
+#stageWrap{position:relative;width:1122px;height:702px;border:1px solid var(--line);background:#000;border-radius:4px;overflow:hidden}
+#view{display:block;width:1120px;height:700px;cursor:crosshair;touch-action:none}
+#hud{position:absolute;right:10px;top:10px;font:11.5px/1.5 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:#dfe6ee;background:rgba(0,0,0,.55);padding:5px 9px;border-radius:3px;white-space:pre;pointer-events:none;display:none}
+#flash{position:absolute;left:12px;top:10px;font:12px/1.4 "Noto Sans KR","Noto Sans CJK KR",sans-serif;color:#fff;background:rgba(0,0,0,.45);padding:5px 9px;border-radius:3px;pointer-events:none;opacity:0;transition:opacity .4s}
+#vars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+#vars button{all:unset;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:9px 12px;height:84px;display:flex;flex-direction:column;gap:3px;transition:border-color .15s,background .15s}
+#vars button:hover{border-color:#3d434b}
+#vars button.on{border-color:var(--acc);background:var(--panel2);box-shadow:inset 3px 0 0 var(--acc)}
+#vars b{font-size:14px;font-weight:700}
+#vars b i{font-style:normal;color:var(--mute);font-weight:500;margin-right:6px;font-family:ui-monospace,"DejaVu Sans Mono",monospace}
+#vars .cpt{font-size:11.5px;color:var(--acc)}
+#vars .sub{font-size:11.5px;color:var(--mute);line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#hint{margin-top:10px;padding:9px 12px;background:var(--panel);border:1px solid var(--line);border-radius:4px;color:#c8ccd2;font-size:13px;display:flex;gap:10px;align-items:center}
+#hint kbd{font:11px/1 ui-monospace,monospace;border:1px solid #454b54;border-bottom-width:2px;border-radius:3px;padding:2px 5px;color:#e6e8ec;background:#1f2226}
+#hint .k{color:var(--acc);font-weight:700;flex:none}
+aside{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;height:926px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+.panel h2{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+.panel h2 small{font-weight:500;color:var(--mute);font-size:11.5px}
+.prm{display:grid;grid-template-columns:118px 1fr 64px;align-items:center;gap:8px;margin:5px 0}
+.prm label{font-size:12px;color:#c3c7cd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prm output{font:12px/1 ui-monospace,"DejaVu Sans Mono",monospace;text-align:right;color:var(--acc)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#30343a;border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--acc);border:2px solid #111;cursor:pointer}
+.row{display:flex;gap:6px;margin-top:8px}
+.row button{all:unset;cursor:pointer;font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:3px;background:var(--panel2);color:#cfd3d8}
+.row button:hover{border-color:var(--acc)}
+#readout{margin-top:8px;font:11.5px/1.45 ui-monospace,"DejaVu Sans Mono",Consolas,monospace;color:#aeb4bc;background:#0f1113;border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:pre;overflow:hidden;user-select:all}
+.memo{flex:1;min-height:0;overflow:auto}
+.memo::-webkit-scrollbar{width:8px}.memo::-webkit-scrollbar-thumb{background:#2c3036;border-radius:4px}
+#memo{font-size:12.5px;line-height:1.6;color:#c4c8ce}
+#memo h3{font-size:12px;color:var(--acc);margin:10px 0 3px;font-weight:700}
+#memo h3:first-child{margin-top:0}
+#memo ul{padding-left:16px}
+#memo li{margin:2px 0}
+#memo code{font:11.5px ui-monospace,"DejaVu Sans Mono",monospace;color:#e2c98f;background:#0f1113;padding:0 3px;border-radius:2px}
+#memo .vnote{background:var(--panel2);border-left:3px solid var(--acc);padding:7px 10px;margin-bottom:8px;border-radius:0 3px 3px 0}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <div class="ttl"><span class="tag">FX 샘플</span><h1>카메라·심도</h1><p class="desc">틸트시프트 미니어처 · 심도 흐림 · 카메라 흔들림 · 줌 펀치</p></div>
+ <div class="stat"><span id="fps">-- fps</span><span id="aud">소리: 첫 입력 후 켜짐</span></div>
+</header>
+<main>
+ <section class="left">
+  <div id="stageWrap"><canvas id="view" width="1120" height="700"></canvas><div id="flash"></div><div id="hud"></div></div>
+  <nav id="vars"></nav>
+  <div id="hint"></div>
+ </section>
+ <aside>
+  <div class="panel"><h2>파라미터 <small id="pvName"></small></h2><div id="params"></div>
+   <div class="row"><button id="reset">기본값</button><button id="copy">값 복사</button><button id="mute">소리 끄기</button></div>
+   <pre id="readout"></pre></div>
+  <div class="panel memo"><h2>구현 메모</h2><div id="memo"></div></div>
+ </aside>
+</main>
+</div>
+<script>
+'use strict';
+/* ===== 공통: 난수 · 노이즈 ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function hash1(i,s){let t=(Math.imul(i|0,374761393)+Math.imul(s|0,668265263))|0;t=Math.imul(t^(t>>>13),1274126177);return((t^(t>>>16))>>>0)/4294967296}
+function vnoise(x,s){const i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return hash1(i,s)*(1-u)+hash1(i+1,s)*u}
+function snoise(x,s){return vnoise(x,s)*2-1}
+const clamp=(x,a,b)=>x<a?a:x>b?b:x, lerp=(a,b,t)=>a+(b-a)*t, sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+const easeOut=t=>1-Math.pow(1-clamp(t,0,1),3), easeInOut=t=>{t=clamp(t,0,1);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+function mkCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+const FONT_SANS='"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+const FONT_SERIF='"Noto Serif KR","Noto Serif CJK KR","Batang","AppleMyungjo",serif';
+const FONT_MONO='"D2Coding","DejaVu Sans Mono",Consolas,"Noto Sans Mono CJK KR",monospace';
+
+/* ===== 공통: WebAudio ===== */
+const AU={C:null,muted:false};
+function makeIR(C,sec,pow,seed,pre){const r=mulberry32(seed),n=Math.floor(sec*C.sampleRate),b=C.createBuffer(2,n,C.sampleRate),p=Math.floor((pre||0.012)*C.sampleRate);
+ for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch);let lp=0;for(let i=p;i<n;i++){const k=(i-p)/(n-p);lp=lp*0.35+(r()*2-1)*0.65;d[i]=lp*Math.pow(1-k,pow)}}return b}
+function audioInit(){
+ if(AU.C){if(AU.C.state!=='running')AU.C.resume();return}
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ const C=new AC();AU.C=C;
+ const comp=C.createDynamicsCompressor();comp.threshold.value=-16;comp.knee.value=8;comp.ratio.value=4;comp.attack.value=.003;comp.release.value=.25;
+ const master=C.createGain();master.gain.value=.85;master.connect(comp);comp.connect(C.destination);
+ const conv=C.createConvolver();conv.buffer=makeIR(C,2.6,2.4,9001);const wet=C.createGain();wet.gain.value=.8;conv.connect(wet);wet.connect(master);
+ AU.master=master;AU.rev=conv;
+ const r=mulberry32(4242),nb=C.createBuffer(1,C.sampleRate*3,C.sampleRate),d=nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=r()*2-1;AU.nb=nb;
+ const pb=C.createBuffer(1,C.sampleRate*3,C.sampleRate),pd=pb.getChannelData(0);let b0=0,b1=0,b2=0;for(let i=0;i<pd.length;i++){const w=r()*2-1;b0=.99765*b0+w*.099046;b1=.963*b1+w*.2965164;b2=.57*b2+w*1.0526913;pd[i]=(b0+b1+b2+w*.1848)*.2}AU.pb=pb;
+ AU.rng=mulberry32(77);
+ const el=document.getElementById('aud');el.textContent='소리: 켜짐';el.classList.add('on');
+ if(FXCUR&&FXCUR.audioStart)FXCUR.audioStart(S);
+}
+function auOut(node,rev,pan){const C=AU.C;let n=node;if(pan){const p=C.createStereoPanner();p.pan.value=clamp(pan,-1,1);n.connect(p);n=p}n.connect(AU.master);if(rev){const s=C.createGain();s.gain.value=rev;n.connect(s);s.connect(AU.rev)}return n}
+function env(param,t,a,d,peak,hold){param.cancelScheduledValues(t);param.setValueAtTime(.0001,t);param.linearRampToValueAtTime(peak,t+a);if(hold)param.setValueAtTime(peak,t+a+hold);param.exponentialRampToValueAtTime(.0001,t+a+(hold||0)+d)}
+/* 잡음 한 방: {at,dur,type,f,f2,q,g,a,rev,pan,pink,rate} */
+function sNoise(o){const C=AU.C;if(!C||AU.muted)return;const t=C.currentTime+(o.at||0),dur=o.dur||.2;
+ const s=C.createBufferSource();s.buffer=o.pink?AU.pb:AU.nb;s.loop=true;s.playbackRate.value=o.rate||1;
+ const f=C.createBiquadFilter();f.type=o.type||'bandpass';f.frequency.setValueAtTime(o.f||1000,t);if(o.f2)f.frequency.exponentialRampToValueAtTime(o.f2,t+(o.a||.005)+dur);f.Q.value=o.q||1;
+ const g=C.createGain();env(g.gain,t,o.a||.004,dur,o.g||.3,o.hold);s.connect(f);f.connect(g);auOut(g,o.rev,o.pan);
+ s.start(t,AU.rng()*2);s.stop(t+(o.a||.004)+(o.hold||0)+dur+.1);return g}
+/* 음 한 방: {at,dur,type,f,f2,g,a,rev,pan,lp,detune} */
+function sTone(o){const C=AU.C;if(!C||AU.muted)return;const t=C.currentTime+(o.at||0),dur=o.dur||.3;
+ const s=C.createOscillator();s.type=o.type||'sine';s.frequency.setValueAtTime(o.f||440,t);if(o.f2)s.frequency.exponentialRampToValueAtTime(o.f2,t+(o.glide||dur));if(o.detune)s.detune.value=o.detune;
+ const g=C.createGain();env(g.gain,t,o.a||.004,dur,o.g||.2,o.hold);let n=s;
+ if(o.lp){const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=o.lp;f.Q.value=o.q||.7;s.connect(f);n=f}
+ n.connect(g);auOut(g,o.rev,o.pan);s.start(t);s.stop(t+(o.a||.004)+(o.hold||0)+dur+.1);return g}
+/* 지속음 루프: 변형이 떠나면 정리된다 */
+function loopNoise(o){const C=AU.C;const s=C.createBufferSource();s.buffer=o.pink?AU.pb:AU.nb;s.loop=true;s.playbackRate.value=o.rate||1;
+ const f=C.createBiquadFilter();f.type=o.type||'lowpass';f.frequency.value=o.f||800;f.Q.value=o.q||.7;const g=C.createGain();g.gain.value=0;s.connect(f);f.connect(g);auOut(g,o.rev,o.pan);s.start(0,AU.rng()*2);
+ return{g,f,src:s,stop(){try{g.gain.setTargetAtTime(0,C.currentTime,.05);s.stop(C.currentTime+.4)}catch(e){}}}}
+function loopOsc(o){const C=AU.C;const s=C.createOscillator();s.type=o.type||'sine';s.frequency.value=o.f||60;let n=s;let f=null;
+ if(o.lp){f=C.createBiquadFilter();f.type=o.ftype||'lowpass';f.frequency.value=o.lp;f.Q.value=o.q||.7;s.connect(f);n=f}
+ const g=C.createGain();g.gain.value=0;n.connect(g);auOut(g,o.rev,o.pan);s.start();
+ return{g,f,osc:s,stop(){try{g.gain.setTargetAtTime(0,C.currentTime,.05);s.stop(C.currentTime+.4)}catch(e){}}}}
+function setG(loop,v,tc){if(!loop||!AU.C)return;loop.g.gain.setTargetAtTime(AU.muted?0:v,AU.C.currentTime,tc||.03)}
+
+/* ===== 공통: WebGL 후처리 ===== */
+function GLX(cv){
+ const gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:true,alpha:false});
+ if(!gl)throw new Error('WebGL을 쓸 수 없다');
+ const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+ const VS='attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+ function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o}
+ const X={gl};
+ X.prog=fs=>{const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,VS));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'precision highp float;varying vec2 uv;\n'+fs));gl.bindAttribLocation(p,0,'p');gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));p.u={};const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);
+  for(let i=0;i<n;i++){const a=gl.getActiveUniform(p,i);p.u[a.name]={loc:gl.getUniformLocation(p,a.name),type:a.type}}return p};
+ X.tex=(w,h)=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  if(w)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);t.w=w;t.h=h;return t};
+ X.upload=(t,src)=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);t.w=src.width;t.h=src.height};
+ X.fbo=(w,h)=>{const t=X.tex(w,h);const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return{f,t,w,h}};
+ X.run=(p,U,target)=>{gl.bindFramebuffer(gl.FRAMEBUFFER,target?target.f:null);gl.viewport(0,0,target?target.w:cv.width,target?target.h:cv.height);gl.useProgram(p);let unit=0;
+  for(const k in U){const u=p.u[k];if(!u)continue;const v=U[k];
+   if(u.type===gl.SAMPLER_2D){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,v.t||v);gl.uniform1i(u.loc,unit);unit++}
+   else if(typeof v==='number')gl.uniform1f(u.loc,v);else if(v.length===2)gl.uniform2fv(u.loc,v);else if(v.length===3)gl.uniform3fv(u.loc,v);else gl.uniform4fv(u.loc,v)}
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,3)};
+ return X;
+}
+
+/* ===== 공통: 틀 ===== */
+const S={W:1120,H:700,t:0,dt:0,mx:560,my:350,down:false,keys:{}};
+let FXCUR=null;
+function boot(FX){
+ FXCUR=FX;
+ const view=document.getElementById('view');S.view=view;S.X=GLX(view);
+ const app=document.getElementById('app');
+ function fit(){const s=Math.min(innerWidth/1600,innerHeight/1000);app.style.transform='translate(-50%,-50%) scale('+s+')'}
+ addEventListener('resize',fit);fit();
+ FX.setup(S);
+ const nav=document.getElementById('vars');
+ FX.variants.forEach((v,i)=>{v.P={};v.params.forEach(p=>v.P[p.k]=p.v);
+  const b=document.createElement('button');b.innerHTML='<b><i>'+(i+1)+'</i>'+v.name+'</b><span class="cpt">'+v.concept+'</span><span class="sub">'+v.sub+'</span>';
+  b.onclick=()=>select(i);v.btn=b;nav.appendChild(b)});
+ let cur=null;
+ function select(i){
+  if(cur&&cur.leave)cur.leave(S);
+  if(cur&&cur.loops){cur.loops.forEach(l=>l.stop());}
+  cur=FX.variants[i];cur.loops=[];S.v=cur;S.P=cur.P;S.rng=mulberry32(1234+i);
+  FX.variants.forEach(v=>v.btn.classList.toggle('on',v===cur));
+  document.getElementById('hint').innerHTML='<span class="k">조작</span><span>'+cur.hint+'</span>';
+  document.getElementById('memo').innerHTML='<div class="vnote"><b>이 변형 — '+cur.name+'</b><br>'+cur.note+'</div>'+FX.memo;
+  buildParams();cur.enter(S);if(AU.C&&cur.audio)cur.audio(S);
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+ }
+ S.select=select;
+ S.loop=l=>{if(l)cur.loops.push(l);return l};
+ function buildParams(){const box=document.getElementById('params');box.innerHTML='';document.getElementById('pvName').textContent=cur.concept;
+  cur.params.forEach(p=>{const d=document.createElement('div');d.className='prm';
+   const dec=(String(p.step).split('.')[1]||'').length;
+   d.innerHTML='<label title="'+p.k+'">'+p.l+'</label><input type="range" min="'+p.min+'" max="'+p.max+'" step="'+p.step+'" value="'+cur.P[p.k]+'"><output></output>';
+   const inp=d.querySelector('input'),out=d.querySelector('output');
+   const show=()=>{out.textContent=Number(cur.P[p.k]).toFixed(dec)+(p.u||'')};show();
+   inp.oninput=()=>{cur.P[p.k]=parseFloat(inp.value);show();readout();if(cur.onParam)cur.onParam(S,p.k)};
+   box.appendChild(d)});readout()}
+ function readout(){const o={variant:cur.id};cur.params.forEach(p=>o[p.k]=cur.P[p.k]);
+  document.getElementById('readout').textContent=JSON.stringify(o,null,1).replace(/\n /g,'\n  ')}
+ document.getElementById('reset').onclick=()=>{cur.params.forEach(p=>cur.P[p.k]=p.v);buildParams();if(cur.onParam)cur.onParam(S,'*')};
+ document.getElementById('copy').onclick=()=>{const t=document.getElementById('readout').textContent;
+  try{navigator.clipboard.writeText(t);flash('값을 복사했다')}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById('readout'));const s=getSelection();s.removeAllRanges();s.addRange(r);flash('선택됨 — Ctrl+C')}};
+ document.getElementById('mute').onclick=e=>{AU.muted=!AU.muted;e.target.textContent=AU.muted?'소리 켜기':'소리 끄기';if(AU.master)AU.master.gain.setTargetAtTime(AU.muted?0:.85,AU.C.currentTime,.05)};
+ function pos(e){const r=view.getBoundingClientRect();return[(e.clientX-r.left)*S.W/r.width,(e.clientY-r.top)*S.H/r.height]}
+ addEventListener('pointerdown',()=>{const had=!!AU.C;audioInit();if(!had&&AU.C&&cur.audio)cur.audio(S)},true);
+ addEventListener('keydown',()=>{const had=!!AU.C;audioInit();if(!had&&AU.C&&cur.audio)cur.audio(S)},true);
+ view.addEventListener('pointerdown',e=>{view.setPointerCapture(e.pointerId);const[x,y]=pos(e);S.mx=x;S.my=y;S.down=true;S.button=e.button;if(cur.down)cur.down(S,x,y,e)});
+ view.addEventListener('pointermove',e=>{const[x,y]=pos(e);S.mx=x;S.my=y;if(cur.move)cur.move(S,x,y,e)});
+ view.addEventListener('pointerup',e=>{const[x,y]=pos(e);S.down=false;if(cur.up)cur.up(S,x,y,e)});
+ view.addEventListener('contextmenu',e=>e.preventDefault());
+ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type!=='range')return;
+  if(!cur.captureKeys&&/^[1-9]$/.test(e.key)&&+e.key<=FX.variants.length){select(+e.key-1);return}
+  if(e.key===' '||e.key==='Backspace')e.preventDefault();if(e.repeat&&!cur.keyRepeat)return;S.keys[e.key]=true;if(cur.key)cur.key(S,e,true)});
+ addEventListener('keyup',e=>{S.keys[e.key]=false;if(cur.key)cur.key(S,e,false)});
+ const h=parseInt((location.hash||'').slice(1));select(h>=1&&h<=FX.variants.length?h-1:0);
+ let last=performance.now(),fa=0,fn=0;const fel=document.getElementById('fps');
+ function tick(now){let dt=(now-last)/1000;last=now;fa+=dt;fn++;if(fa>.5){fel.textContent=(fn/fa).toFixed(0)+' fps';fa=0;fn=0}
+  if(!S.manual){dt=Math.min(dt,.05);S.dt=dt;S.t+=dt;cur.frame(S,dt);FX.present(S,cur)}hudT+=dt;if(hudT>.1){hudT=0;hud()}requestAnimationFrame(tick)}
+ let hudT=0;const hel=document.getElementById('hud');function hud(){if(cur.hud){let txt='';try{txt=cur.hud(S)}catch(e){}hel.style.display=txt?'block':'none';hel.textContent=txt}else hel.style.display='none'}
+ /* 검증용: ?test 로 열면 시간이 멈추고 FXSTEP(초)로만 흐른다(느린 소프트웨어 GL에서도 같은 결과) */
+ S.manual=/test/.test(location.search);
+ window.FXSTEP=(sec,draw)=>{const n=Math.max(1,Math.round(sec*30));for(let i=0;i<n;i++){S.dt=1/30;S.t+=1/30;cur.frame(S,1/30)}if(draw!==false){FX.present(S,cur);hud()}};
+ requestAnimationFrame(tick);
+}
+function flash(msg){const f=document.getElementById('flash');f.textContent=msg;f.style.opacity=1;clearTimeout(flash.h);flash.h=setTimeout(()=>f.style.opacity=0,1400)}
+</script>
+<script>
+/* ===== 카메라·심도 =====
+   장면은 색(Canvas2D) + 깊이(같은 도형을 회색 0=가까움 … 1=멂 으로 한 번 더) 두 장.
+   WebGL: ① CoC 패스(깊이 또는 틸트시프트 띠 → 부호 있는 흐림 반경을 알파에) ② 절반 해상도 황금각 48탭 모음 흐림
+   ③ 합성: 카메라 흔들림(이동·회전·줌) + 줌 속도 방사 흐림 + 채도/대비/비네트. */
+const W=1120,H=700;
+let cc,cg,dc,dg,X,PR={},tC,tD,FC,FB;
+const gr=z=>{const v=Math.round(clamp(z,0,1)*255);return'rgb('+v+','+v+','+v+')'};
+const SH_COC=`uniform sampler2D T;uniform sampler2D D;uniform float mode;uniform float focus;uniform float aper;uniform float band;uniform float soft;uniform float ang;uniform vec2 fpt;
+void main(){vec3 c=texture2D(T,uv).rgb;float s;
+ if(mode<.5){float d=texture2D(D,uv).r;s=clamp((d-focus)*aper,-1.,1.);}
+ else{vec2 q=(uv-fpt)*vec2(1.6,1.);vec2 n=vec2(-sin(ang),cos(ang));float dd=dot(q,n);s=sign(dd)*smoothstep(band,band+soft,abs(dd));}
+ gl_FragColor=vec4(c,s*.5+.5);}`;
+const SH_BLUR=`uniform sampler2D C;uniform vec2 px;uniform float maxr;
+float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){vec4 c0=texture2D(C,uv);float s0=c0.a*2.-1.;float r0=abs(s0)*maxr;
+ vec3 acc=c0.rgb*.3;float ws=.3;float fg=0.;float rot=h(gl_FragCoord.xy)*6.2832;
+ for(int i=0;i<48;i++){float fi=float(i)+.5;float r=sqrt(fi/48.)*maxr;float a=fi*2.39996+rot;vec2 o=vec2(cos(a),sin(a))*r*px;
+  vec4 s=texture2D(C,uv+o);float ss=s.a*2.-1.;float rs=abs(ss)*maxr;if(ss>s0)rs=min(rs,r0+1.);
+  float w=clamp((rs-r+1.5)/2.,0.,1.);acc+=s.rgb*w;ws+=w;if(ss<-.08&&ss<s0-.05)fg+=w;}
+ gl_FragColor=vec4(acc/ws,clamp(fg/12.,0.,1.));}`;
+const SH_COMP=`uniform sampler2D C;uniform sampler2D B;uniform vec2 off;uniform float rot;uniform float zoom;uniform float zvel;uniform float sat;uniform float con;uniform float vig;uniform float expo;uniform float flash;uniform float t;
+vec3 px(vec2 u){vec4 c=texture2D(C,u);vec4 b=texture2D(B,u);float coc=abs(c.a*2.-1.);float f=max(smoothstep(.03,.16,coc),b.a);return mix(c.rgb,b.rgb,f);}
+float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){vec2 p=uv-.5;p.x*=1.6;float cs=cos(rot),sn=sin(rot);p=mat2(cs,-sn,sn,cs)*p;p/=zoom;p.x/=1.6;vec2 u=p+.5-off;
+ vec3 col=vec3(0.);float nn=0.;for(int i=0;i<6;i++){if(i>0&&abs(zvel)<.02)break;float k=float(i)/5.;vec2 uu=.5+(u-.5)*(1.-zvel*k*.05);col+=px(clamp(uu,.001,.999));nn+=1.;}col/=nn;
+ col*=expo;float l=dot(col,vec3(.299,.587,.114));col=mix(vec3(l),col,sat);col=(col-.5)*con+.5;
+ col*=1.-vig*smoothstep(.35,.95,length((uv-.5)*vec2(1.3,1.)));col+=flash;
+ col+=(h(uv*vec2(1123.,701.)+t)-.5)*(3./255.);gl_FragColor=vec4(col,1.);}`;
+
+/* 카메라: 트라우마(흔들림) + 스프링(줌 펀치·수직 낙차) — 순수 함수, C#로 그대로 */
+function Cam(seed){return{tr:0,z:0,zv:0,y:0,yv:0,r:0,rv:0,seed,
+ step(dt,t,P){this.tr=Math.max(0,this.tr-P.decay*dt);const sh=this.tr*this.tr;
+  this.zv+=(-P.springK*this.z-P.springD*this.zv)*dt;this.z+=this.zv*dt;
+  this.yv+=(-(P.ySpringK||P.springK)*this.y-(P.ySpringD||P.springD)*this.yv)*dt;this.y+=this.yv*dt;
+  this.rv+=(-(P.rSpringK||20)*this.r-(P.rSpringD||4)*this.rv)*dt;this.r+=this.rv*dt;
+  const f=P.freq;return{ox:P.maxOff*sh*snoise(t*f,this.seed)/W,oy:(P.maxOff*sh*snoise(t*f,this.seed+1)+this.y)/H,rot:(P.maxRoll*sh*snoise(t*f*.7,this.seed+2)+this.r)*Math.PI/180,zoom:1+this.z,zvel:this.zv}}}}
+
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function poly(g,pts){g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath()}
+function focusWhirr(dur){sTone({type:'sawtooth',f:95,f2:120,dur,g:.03,lp:1400,a:.02,hold:0});sNoise({type:'bandpass',f:3200,q:6,dur,g:.02,a:.02});sNoise({type:'highpass',f:3000,dur:.01,g:.06,at:dur})}
+
+/* ---------- 1. 인형의 집: 틸트시프트 ---------- */
+const V89={id:'89-tiltshift-dollhouse',name:'틸트시프트 미니어처',concept:'89 인형의 집 탐정',mode:1,
+ sub:'초점 띠 밖을 흐리고 채도를 올려 "손바닥 위의 집"으로 만든다. 방을 누르면 초점 띠가 그 방으로 미끄러진다',
+ hint:'<b>방</b> 클릭 = 초점 띠 이동 + 그 방 전구 조사 · <b>세로 드래그</b> = 띠 직접 조절 · 기울기 슬라이더 = 띠 회전',
+ note:'틸트시프트의 "작아 보임"은 흐림만으로 안 생긴다: ①띠가 좁고 ②흐림이 급격하며 ③채도·대비가 높고 ④위에서 내려다보는 구도여야 한다. 띠 이동은 450ms ease-in-out + 1% 초점 호흡(줌) + 모터음 — 손으로 렌즈를 돌리는 감각.',
+ params:[{k:'band',l:'초점 띠 반폭',min:.01,max:.3,step:.005,v:.07},{k:'soft',l:'흐림 전이',min:.02,max:.5,step:.01,v:.16},{k:'maxBlur',l:'최대 흐림',min:0,max:40,step:1,v:22,u:'px'},{k:'tilt',l:'띠 기울기',min:-30,max:30,step:1,v:-6,u:'°'},{k:'sat',l:'채도',min:.6,max:1.8,step:.02,v:1.32},{k:'con',l:'대비',min:.8,max:1.4,step:.01,v:1.1},{k:'focusMs',l:'초점 이동 시간',min:100,max:1500,step:10,v:450,u:'ms'}],
+ demo:[{t:'wait',ms:200},{t:'shot',ms:0},{t:'click',x:600,y:470},{t:'wait',ms:120}],shots:[.9],
+ enter(S){this.fy=.44;this.from=.44;this.to=.44;this.ft0=-9;this.cam=Cam(89);this.lit=[1,1,1,1,1,1,1];this.pulse=[0,0,0,0,0,0,0];this.drawStatic()},
+ audio(S){this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:220}));setG(this.room,.04);this.clock=0},
+ rooms:[[222,190,236,190],[462,190,236,190],[702,190,196,190],[222,392,236,196],[462,392,236,196],[702,392,196,196],[470,92,180,90]],
+ drawStatic(){const g=this.sc||(this.sc=mkCanvas(W,H)),x=g.getContext('2d');this.sg=x;
+  // 실제 방(배경)
+  const bgG=x.createLinearGradient(0,0,0,H);bgG.addColorStop(0,'#3a2a20');bgG.addColorStop(1,'#1c130d');x.fillStyle=bgG;x.fillRect(0,0,W,H);
+  x.fillStyle='#233049';x.fillRect(40,30,150,220);x.fillStyle='#46618a';x.fillRect(52,42,58,90);x.fillRect(120,42,58,90);x.fillRect(52,140,58,98);x.fillRect(120,140,58,98);
+  x.fillStyle='#2c1e15';x.fillRect(960,60,140,560);for(let i=0;i<5;i++){x.fillStyle='#4a3324';x.fillRect(960,100+i*105,140,8);for(let b=0;b<8;b++){x.fillStyle=['#7a3b2a','#2d4a5a','#8a7040','#4a5a3a'][(b+i)%4];x.fillRect(968+b*16,40+i*105+hash1(b,i)*20,12,58-hash1(b,i)*20)}}
+  // 탁자
+  const tg=x.createLinearGradient(0,590,0,H);tg.addColorStop(0,'#6b4428');tg.addColorStop(1,'#3a2414');x.fillStyle=tg;x.fillRect(0,590,W,110);
+  x.strokeStyle='rgba(30,15,5,.3)';for(let i=0;i<14;i++){x.beginPath();x.moveTo(0,600+i*8);x.bezierCurveTo(300,600+i*8+6,700,600+i*8-6,W,600+i*8+2);x.stroke()}
+  // 집 외곽
+  x.fillStyle='rgba(0,0,0,.45)';x.fillRect(214,600,700,14);
+  x.fillStyle='#e8dcc2';x.fillRect(200,180,720,420);poly(x,[[180,186],[560,26],[940,186]]);x.fillStyle='#8a3b2e';x.fill();
+  x.strokeStyle='#6a2a20';x.lineWidth=3;for(let i=1;i<9;i++){const y=186-i*17;const hw=380*(1-i/9.4);x.beginPath();x.moveTo(560-hw,y);x.lineTo(560+hw,y);x.stroke()}
+  const WP=[['#c9a6a0','str'],['#a9b88f','dot'],['#9fb0c6','str'],['#d8c090','dot'],['#b89aa8','flo'],['#9fc0b0','str'],['#7a5a48','none']];
+  this.rooms.forEach(([rx,ry,rw,rh],i)=>{const[wc,pat]=WP[i];const d=26;
+   x.fillStyle='#2a1a12';x.fillRect(rx,ry,rw,rh);
+   // 뒷벽
+   x.fillStyle=wc;x.fillRect(rx+d,ry+d*.6,rw-2*d,rh-d*1.6);
+   if(pat==='str'){x.fillStyle='rgba(255,255,255,.14)';for(let s=rx+d;s<rx+rw-d;s+=12)x.fillRect(s,ry+d*.6,5,rh-d*1.6)}
+   if(pat==='dot'){x.fillStyle='rgba(255,255,255,.2)';for(let s=0;s<60;s++)x.fillRect(rx+d+hash1(s,i)*(rw-2*d),ry+d*.6+hash1(s,i+9)*(rh-d*2),3,3)}
+   if(pat==='flo'){x.fillStyle='rgba(120,40,60,.25)';for(let s=0;s<24;s++){x.beginPath();x.arc(rx+d+hash1(s,i)*(rw-2*d),ry+d+hash1(s,i+3)*(rh-d*2.2),4,0,7);x.fill()}}
+   // 옆벽 · 바닥 (원근)
+   x.fillStyle='rgba(0,0,0,.28)';poly(x,[[rx,ry],[rx+d,ry+d*.6],[rx+d,ry+rh-d],[rx,ry+rh]]);x.fill();poly(x,[[rx+rw,ry],[rx+rw-d,ry+d*.6],[rx+rw-d,ry+rh-d],[rx+rw,ry+rh]]);x.fill();
+   x.fillStyle=i<3?'#8a5a3a':i<6?'#6e4a30':'#5a3a28';poly(x,[[rx+d,ry+rh-d],[rx+rw-d,ry+rh-d],[rx+rw,ry+rh],[rx,ry+rh]]);x.fill();
+   x.strokeStyle='rgba(0,0,0,.18)';x.lineWidth=1;for(let s=1;s<6;s++){const k=s/6;x.beginPath();x.moveTo(lerp(rx+d,rx+rw-d,k),ry+rh-d);x.lineTo(lerp(rx,rx+rw,k),ry+rh);x.stroke()}
+  });
+  // 가구와 인형
+  const doll=(px,py,c,s)=>{s=s||1;x.fillStyle=c;rr(x,px-8*s,py-26*s,16*s,26*s,5*s);x.fill();x.fillStyle='#f0d2b8';x.beginPath();x.arc(px,py-32*s,7*s,0,7);x.fill();x.fillStyle='#4a2a1a';x.beginPath();x.arc(px,py-34*s,7*s,Math.PI,0);x.fill()};
+  // 1층 거실
+  x.fillStyle='#6a2e3a';rr(x,250,528,110,34,8);x.fill();x.fillStyle='#8a4050';rr(x,250,512,110,22,8);x.fill();doll(300,540,'#3a5a8a');doll(340,540,'#8a6a2a',.8);
+  x.fillStyle='#3a2a1a';x.fillRect(380,520,40,42);x.fillStyle='#d8c090';x.fillRect(384,500,32,20);
+  // 1층 부엌
+  x.fillStyle='#d8d8d0';x.fillRect(490,500,70,62);x.fillStyle='#222';x.fillRect(496,506,58,8);x.fillStyle='#7a4a2a';x.fillRect(590,530,80,10);x.fillRect(596,540,6,24);x.fillRect(656,540,6,24);x.fillStyle='#e8e0d0';x.beginPath();x.arc(630,526,8,0,7);x.fill();doll(610,562,'#6a3a6a');
+  // 1층 현관
+  x.fillStyle='#5a3a2a';x.fillRect(760,470,60,92);x.fillStyle='#c9a060';x.beginPath();x.arc(810,520,3,0,7);x.fill();x.fillStyle='#2a3a2a';x.fillRect(840,520,24,42);x.fillStyle='#3a7a3a';x.beginPath();x.arc(852,512,16,0,7);x.fill();
+  // 2층 침실
+  x.fillStyle='#f0e8e0';x.fillRect(250,318,130,34);x.fillStyle='#b05a6a';x.fillRect(290,318,90,34);x.fillStyle='#fff';rr(x,254,310,30,16,5);x.fill();x.fillStyle='#5a3a2a';x.fillRect(246,300,8,56);doll(420,352,'#a04040');
+  // 2층 서재
+  x.fillStyle='#4a2e1e';x.fillRect(490,258,60,94);for(let i=0;i<4;i++)for(let b=0;b<5;b++){x.fillStyle=['#8a3a2a','#2a4a6a','#9a8040'][(i+b)%3];x.fillRect(494+b*11,262+i*23,8,18)}x.fillStyle='#6a4a2a';x.fillRect(580,320,90,10);x.fillRect(588,330,6,22);x.fillRect(656,330,6,22);
+  x.fillStyle='#f4f0e0';x.fillRect(600,312,20,8);doll(640,352,'#2a2a3a',.9);
+  // 2층 욕실
+  x.fillStyle='#f4f4f4';rr(x,730,310,110,40,16);x.fill();x.fillStyle='#9fc0d0';rr(x,738,312,94,14,6);x.fill();x.fillStyle='#c0a060';x.fillRect(850,280,8,50);
+  // 다락
+  x.fillStyle='#8a6a4a';x.fillRect(500,146,50,30);x.fillStyle='#6a4a3a';x.fillRect(570,152,40,24);x.fillStyle='#d0c0a0';x.beginPath();x.arc(530,140,6,0,7);x.fill();
+  // 층 구분 목재
+  x.fillStyle='#5a3a24';x.fillRect(200,380,720,14);x.fillRect(200,178,720,12);x.fillRect(200,588,720,14);x.fillRect(452,180,12,420);x.fillRect(692,180,12,420);x.fillRect(200,180,22,420);x.fillRect(898,180,22,420);
+  // 핀셋(전경) — 탁자 위
+  x.fillStyle='#b9bfc6';poly(x,[[980,690],[1000,690],[800,560],[792,566]]);x.fill();poly(x,[[1010,690],[1030,690],[812,556],[806,560]]);x.fill();
+  // 돋보기 손잡이(전경 왼쪽 아래)
+  x.fillStyle='#3a2414';poly(x,[[0,640],[40,610],[150,690],[100,700]]);x.fill();x.strokeStyle='#c8a050';x.lineWidth=10;x.beginPath();x.arc(170,690,70,Math.PI*1.05,Math.PI*1.7);x.stroke()},
+ down(S,x,y){this.goFocus(S,y/H);const r=this.rooms.findIndex(([rx,ry,rw,rh])=>x>rx&&x<rx+rw&&y>ry&&y<ry+rh);if(r>=0){this.pulse[r]=1;sNoise({type:'highpass',f:5000,dur:.01,g:.08,at:this.P.focusMs/1000})}this.dragY=y;this.dragging=false},
+ move(S,x,y){if(!S.down)return;if(Math.abs(y-this.dragY)>6){this.dragging=true;this.fy=clamp(y/H,0,1);this.ft0=-9;this.from=this.to=this.fy}},
+ goFocus(S,to){this.from=this.fy;this.to=clamp(to,0,1);this.ft0=S.t;if(Math.abs(this.to-this.from)>.02)focusWhirr(this.P.focusMs/1000*.9)},
+ frame(S,dt){const P=this.P,t=S.t;const a=(t-this.ft0)/(P.focusMs/1000);if(a>=0&&a<=1.2){this.fy=lerp(this.from,this.to,easeInOut(a))}
+  this.breath=a>=0&&a<1?Math.sin(Math.PI*a)*.012*Math.sign(this.to-this.from):0;
+  cg.drawImage(this.sc,0,0);
+  // 전구: 따뜻한 빛이 방마다 숨쉰다
+  this.rooms.forEach(([rx,ry,rw,rh],i)=>{this.pulse[i]*=Math.exp(-dt/1.2);const I=.55+.08*Math.sin(t*1.7+i*2)+.6*this.pulse[i]+(vnoise(t*12,i)>.93&&i===4?-.3:0);
+   const bx=rx+rw/2,by=ry+14;const g=cg.createRadialGradient(bx,by,0,bx,by,rw*.8);g.addColorStop(0,'rgba(255,200,120,'+.45*I+')');g.addColorStop(1,'rgba(255,160,80,0)');cg.globalCompositeOperation='lighter';cg.fillStyle=g;cg.fillRect(rx,ry,rw,rh);
+   cg.fillStyle='rgba(255,236,200,'+Math.min(1,.7+I*.3)+')';cg.beginPath();cg.arc(bx,by,4.5,0,7);cg.fill();const g2=cg.createRadialGradient(bx,by,0,bx,by,26);g2.addColorStop(0,'rgba(255,220,160,'+.6*I+')');g2.addColorStop(1,'rgba(255,200,120,0)');cg.fillStyle=g2;cg.fillRect(bx-26,by-26,52,52);cg.globalCompositeOperation='source-over';
+   cg.strokeStyle='rgba(40,30,20,.8)';cg.lineWidth=1;cg.beginPath();cg.moveTo(bx,ry);cg.lineTo(bx,by-4);cg.stroke()});
+  this.U={mode:1,fpt:[.5,1-this.fy],band:P.band,soft:P.soft,ang:P.tilt*Math.PI/180,maxr:P.maxBlur,off:[0,0],rot:0,zoom:1+this.breath,zvel:0,sat:P.sat,con:P.con,vig:.45,expo:1,flash:0};
+  // 띠 표시(가장자리 눈금)
+  cg.fillStyle='rgba(255,220,150,.8)';cg.fillRect(0,this.fy*H-1,10,2);cg.fillRect(W-10,this.fy*H-1,10,2)}
+,hud(S){return'초점 띠 y '+this.fy.toFixed(3)+'  호흡 줌 '+(1+this.breath).toFixed(3)}
+};
+
+/* ---------- 2. 내일의 지도: 깊이 초점 이동 ---------- */
+const V45={id:'45-rackfocus-diorama',name:'초점 당기기(깊이)',concept:'45 내일의 지도',mode:0,
+ sub:'책상 위 도시 모형. 누른 지점의 깊이로 초점이 옮겨 가며 앞의 연필·머그와 먼 벽이 번갈아 흐려진다',
+ hint:'<b>아무 곳</b> 클릭 = 그 깊이로 초점 이동(랙 포커스) · 전경 연필/머그, 중경 도시, 원경 벽을 눌러 비교',
+ note:'초점 거리는 클릭한 픽셀의 깊이 버퍼 값을 그대로 쓴다(깊이 캔버스 1px 읽기). 흐림은 앞(음수 CoC)과 뒤(양수)를 구별해 모은다 — 흐린 전경이 선명한 중경 위로 번져 나오고, 흐린 배경은 선명한 물체 뒤로 스며들지 않는다. 이게 없으면 "종이 오려 붙인" 가짜 심도가 된다.',
+ params:[{k:'aper',l:'조리개(흐림 강도)',min:0,max:8,step:.1,v:3.6},{k:'maxBlur',l:'최대 흐림',min:0,max:40,step:1,v:24,u:'px'},{k:'focusMs',l:'초점 이동 시간',min:100,max:2000,step:10,v:600,u:'ms'},{k:'breath',l:'초점 호흡(줌)',min:0,max:4,step:.1,v:1.2,u:'%'},{k:'sat',l:'채도',min:.6,max:1.6,step:.02,v:1.08}],
+ demo:[{t:'click',x:180,y:640},{t:'wait',ms:800},{t:'shot',ms:0},{t:'click',x:560,y:300},{t:'wait',ms:200}],shots:[1.0],
+ enter(S){this.f=.5;this.from=.5;this.to=.5;this.ft0=-9;this.ring=null;this.drawStatic()},
+ audio(S){this.room=S.loop(loopNoise({pink:true,type:'lowpass',f:260}));setG(this.room,.035)},
+ drawStatic(){const c=this.sc||(this.sc=mkCanvas(W,H)),d=this.sd||(this.sd=mkCanvas(W,H));const x=c.getContext('2d'),y=d.getContext('2d',{willReadFrequently:true});this.sdg=y;
+  const both=(fn,col,z)=>{fn(x);x.fillStyle=col;x.fill();fn(y);y.fillStyle=gr(z);y.fill()};
+  // 벽(원경) + 책상
+  const wg=x.createLinearGradient(0,0,0,300);wg.addColorStop(0,'#1c2430');wg.addColorStop(1,'#2e3440');x.fillStyle=wg;x.fillRect(0,0,W,H);y.fillStyle=gr(1);y.fillRect(0,0,W,H);
+  x.fillStyle='#e8c070';x.fillRect(820,40,120,80);x.fillStyle='rgba(255,220,150,.25)';x.fillRect(800,20,160,120);
+  const dz=yy=>lerp(.92,.12,clamp((yy-80)/620,0,1));
+  for(let yy=90;yy<H;yy+=6){x.fillStyle='rgb('+(70+yy*.08|0)+','+(48+yy*.05|0)+','+(34+yy*.03|0)+')';x.fillRect(0,yy,W,6);y.fillStyle=gr(dz(yy));y.fillRect(0,yy,W,6)}
+  // 도면 종이
+  both(g=>poly(g,[[560,100],[1000,330],[560,600],[120,330]]),'#d9d3c0',0);y.save();
+  for(let yy=100;yy<600;yy+=4){y.fillStyle=gr(dz(yy));y.save();poly(y,[[560,100],[1000,330],[560,600],[120,330]]);y.clip();y.fillRect(0,yy,W,4);y.restore()}
+  // 아이소 격자 도시
+  const cx=560,cy=130,tw=36,th=18,N=13;const P=(i,j)=>[cx+(i-j)*tw,cy+(i+j)*th];
+  const r=mulberry32(45);const cells=[];
+  for(let s=0;s<2*N-1;s++)for(let i=0;i<N;i++){const j=s-i;if(j<0||j>=N)continue;cells.push([i,j])}
+  for(const[i,j]of cells){const[a,b]=P(i,j);const road=i%4===2||j%5===1;const z=dz(b+th);
+   const tile=g=>poly(g,[[a,b],[a+tw,b+th],[a,b+2*th],[a-tw,b+th]]);
+   both(tile,road?'#8a8a88':((i+j)%2?'#9bb27a':'#91a973'),z);x.strokeStyle='rgba(0,0,0,.08)';tile(x);x.stroke();
+   if(road&&i%4===2&&j%5===1){x.fillStyle='rgba(255,255,255,.4)';x.fillRect(a-2,b+th-1,4,2)}
+   if(!road){const q=r();if(q<.42){const hgt=18+r()*r()*80,col=['#d8cbb0','#c9b8a0','#e0d8c8','#b8c4c8'][Math.floor(r()*4)],roof=['#a24a3a','#5a6a7a','#8a5a3a','#4a7a5a'][Math.floor(r()*4)];
+     both(g=>poly(g,[[a-tw*.7,b+th],[a,b+th*1.7],[a,b+th*1.7-hgt],[a-tw*.7,b+th-hgt]]),shade(col,.72),z);
+     both(g=>poly(g,[[a,b+th*1.7],[a+tw*.7,b+th],[a+tw*.7,b+th-hgt],[a,b+th*1.7-hgt]]),shade(col,.9),z);
+     both(g=>poly(g,[[a-tw*.7,b+th-hgt],[a,b+th*.3-hgt],[a+tw*.7,b+th-hgt],[a,b+th*1.7-hgt]]),roof,z);
+     for(let k=0;k<hgt/14-1;k++){x.fillStyle=r()<.5?'rgba(255,210,120,.9)':'rgba(40,50,60,.6)';x.fillRect(a+6,b+th*1.3-12-k*14,5,6);x.fillRect(a-12,b+th*1.3-12-k*14,5,6)}}
+    else if(q<.62){both(g=>{g.beginPath();g.arc(a,b+th-10,9,0,7)},'#4f7a3a',z);x.fillStyle='rgba(255,255,255,.12)';x.beginPath();x.arc(a-3,b+th-13,4,0,7);x.fill()}}}
+  // 변경 영역(점선) — 내일의 지도
+  x.setLineDash([6,5]);x.strokeStyle='#18a0c8';x.lineWidth=2.5;const[p0]=[P(6,6)];poly(x,[P(5,5),P(8,5),P(8,8),P(5,8)].map(([a,b])=>[a,b+th]));x.stroke();x.setLineDash([]);
+  // 전경: 연필(왼쪽 아래)과 머그(오른쪽 아래)
+  const pen=g=>poly(g,[[0,610],[330,560],[338,574],[0,640]]);both(pen,'#e0a830',.04);x.fillStyle='#2a2a2a';poly(x,[[330,560],[362,564],[338,574]]);x.fill();x.fillStyle='#f0c0a0';poly(x,[[300,565],[330,560],[338,574],[306,580]]);x.fill();
+  x.fillStyle='rgba(255,255,255,.25)';poly(x,[[0,614],[320,564],[322,567],[0,620]]);x.fill();
+  const mug=g=>{g.beginPath();g.ellipse(1020,640,150,70,0,0,7)};both(mug,'#e8e4dc',.03);
+  x.fillStyle='#3a2014';x.beginPath();x.ellipse(1020,640,126,54,0,0,7);x.fill();x.fillStyle='rgba(255,255,255,.18)';x.beginPath();x.ellipse(990,620,60,14,-.1,0,7);x.fill();
+  const tri=g=>poly(g,[[20,0],[260,0],[180,70],[0,90]]);both(tri,'#2a2622',.05)},
+ down(S,x,y){const px=this.sdg.getImageData(clamp(x|0,0,W-1),clamp(y|0,0,H-1),1,1).data;const z=px[0]/255;this.from=this.f;this.to=z;this.ft0=S.t;this.ring={x,y,t:S.t};
+  if(Math.abs(this.to-this.from)>.02)focusWhirr(this.P.focusMs/1000*.9)},
+ frame(S,dt){const P=this.P,t=S.t;const a=(t-this.ft0)/(P.focusMs/1000);if(a>=0&&a<=1.1)this.f=lerp(this.from,this.to,easeInOut(a));
+  cg.drawImage(this.sc,0,0);dg.drawImage(this.sd,0,0);
+  if(this.ring){const k=(t-this.ring.t)/.8;if(k<1){cg.strokeStyle='rgba(120,220,255,'+(1-k)*.9+')';cg.lineWidth=2;cg.beginPath();cg.arc(this.ring.x,this.ring.y,10+k*26,0,7);cg.stroke()}}
+  this.U={mode:0,focus:this.f,aper:P.aper,maxr:P.maxBlur,off:[0,0],rot:0,zoom:1.01+(this.f-.5)*P.breath/100,zvel:0,sat:P.sat,con:1.05,vig:.5,expo:1,flash:0};
+  }
+,hud(S){return'초점 깊이 '+this.f.toFixed(3)+'  (0=가까움 1=멂)\n호흡 줌 '+this.U.zoom.toFixed(4)}
+};
+function shade(hx,k){const c=[parseInt(hx.slice(1,3),16),parseInt(hx.slice(3,5),16),parseInt(hx.slice(5,7),16)];return'rgb('+(c[0]*k|0)+','+(c[1]*k|0)+','+(c[2]*k|0)+')'}
+
+/* ---------- 3. 층 선택 생존: 흔들림 + 줌 펀치 ---------- */
+const V11={id:'11-elevator-shake',name:'충격 흔들림 · 줌 펀치',concept:'11 층 선택 생존',mode:0,
+ sub:'문 너머에서 무언가 친다. 트라우마 흔들림 + 안쪽으로 줌 펀치 + 먼지·조명 깜빡. Space는 급강하 낙차',
+ hint:'<b>문</b> 클릭 = 쾅(연타할수록 트라우마 누적) · <kbd>Space</kbd> = 케이블 급강하(수직 낙차 스프링) · 흔들림 수치는 오른쪽에서',
+ note:'흔들림 = trauma² × 부드러운 노이즈(난수 아님). trauma는 가산·선형 감쇠라 연타가 자연스럽게 누적된다. 줌 펀치는 감쇠 스프링에 속도 충격을 준다 — 튕겨 돌아오는 오버슈트가 "맞았다"를 말한다. 줌 속도만큼 방사 흐림을 넣어 1프레임짜리 충격도 눈에 남게 한다.',
+ params:[{k:'traumaAdd',l:'충격당 트라우마',min:.05,max:1,step:.05,v:.55},{k:'maxOff',l:'최대 이동',min:0,max:60,step:1,v:26,u:'px'},{k:'maxRoll',l:'최대 회전',min:0,max:8,step:.1,v:2.2,u:'°'},{k:'freq',l:'흔들림 주파수',min:2,max:40,step:.5,v:18,u:'Hz'},{k:'decay',l:'트라우마 감쇠',min:.2,max:4,step:.05,v:1.4,u:'/s'},{k:'punch',l:'줌 펀치',min:0,max:1.5,step:.02,v:.6},{k:'springK',l:'스프링 강성',min:20,max:600,step:5,v:260},{k:'springD',l:'스프링 감쇠',min:2,max:40,step:.5,v:13}],
+ demo:[{t:'click',x:520,y:360},{t:'wait',ms:60},{t:'shot',ms:0},{t:'click',x:600,y:420},{t:'wait',ms:100},{t:'shot',ms:0},{t:'key',k:' '},{t:'wait',ms:180}],shots:[.02],
+ enter(S){this.cam=Cam(11);this.dents=[];this.dust=[];this.floor=47;this.fl=-9;this.flash=0;this.drawStatic()},
+ audio(S){this.hum=S.loop(loopOsc({f:60}));setG(this.hum,.02);this.fan=S.loop(loopNoise({pink:true,type:'lowpass',f:300}));setG(this.fan,.04)},
+ drawStatic(){const c=this.sc||(this.sc=mkCanvas(W,H)),d=this.sd||(this.sd=mkCanvas(W,H));const x=c.getContext('2d'),y=d.getContext('2d');
+  const both=(fn,col,z)=>{fn(x);x.fillStyle=col;x.fill();fn(y);y.fillStyle=gr(z);y.fill()};
+  // 뒤판 금속 벽
+  both(g=>g.rect(0,0,W,H),'#1a1c1f',.5);
+  const sideL=g=>poly(g,[[0,0],[200,90],[200,600],[0,H]]),sideR=g=>poly(g,[[W,0],[920,90],[920,600],[W,H]]);
+  both(sideL,'#24272b',.15);both(sideR,'#202326',.15);
+  for(let i=0;i<30;i++){x.strokeStyle='rgba(255,255,255,'+(.02+hash1(i,1)*.04)+')';const u=i/30;x.beginPath();x.moveTo(u*200,u*90);x.lineTo(u*200,H-u*100);x.stroke();x.beginPath();x.moveTo(W-u*200,u*90);x.lineTo(W-u*200,H-u*100);x.stroke()}
+  both(g=>poly(g,[[0,0],[W,0],[920,90],[200,90]]),'#121315',.2);both(g=>poly(g,[[0,H],[W,H],[920,600],[200,600]]),'#16171a',.2);
+  // 천장 조명판
+  x.fillStyle='#d8e0e8';x.fillRect(420,20,280,26);
+  // 문틀과 문
+  both(g=>g.rect(260,120,600,480),'#2c2f33',.5);
+  const doorL=g=>g.rect(290,150,268,450),doorR=g=>g.rect(562,150,268,450);
+  both(doorL,'#5a6068',.52);both(doorR,'#565c64',.52);
+  for(let i=0;i<120;i++){const xx=292+hash1(i,4)*536;x.strokeStyle='rgba(255,255,255,'+hash1(i,5)*.07+')';x.beginPath();x.moveTo(xx,150);x.lineTo(xx+hash1(i,6)*3,600);x.stroke()}
+  const lg=x.createLinearGradient(290,0,830,0);lg.addColorStop(0,'rgba(0,0,0,.25)');lg.addColorStop(.5,'rgba(255,255,255,.08)');lg.addColorStop(1,'rgba(0,0,0,.3)');x.fillStyle=lg;x.fillRect(290,150,540,450);
+  x.fillStyle='#0a0a0b';x.fillRect(558,150,4,450);
+  x.fillStyle='rgba(120,20,15,.5)';for(let i=0;i<5;i++){x.beginPath();x.ellipse(480+i*14,300+hash1(i,7)*40,5,26,.2,0,7);x.fill()}
+  // 층 표시창
+  both(g=>g.rect(470,60,180,50),'#0b0b0c',.5);
+  // 버튼 판넬(오른쪽 벽)
+  both(g=>poly(g,[[960,250],[1010,230],[1010,420],[960,430]]),'#3a3e44',.13);
+  for(let i=0;i<6;i++){x.fillStyle=i===2?'#ffb040':'#15171a';x.beginPath();x.arc(985,262+i*27,7,0,7);x.fill()}
+  // 손잡이(전경)
+  both(g=>poly(g,[[0,470],[200,420],[200,432],[0,488]]),'#9aa2aa',.08);both(g=>poly(g,[[W,470],[920,420],[920,432],[W,488]]),'#9aa2aa',.08);
+  // 경고 줄무늬 바닥
+  for(let i=0;i<14;i++){x.fillStyle=i%2?'#1a1a1a':'#8a7020';poly(x,[[260+i*43,600],[303+i*43,600],[290+i*43,618],[247+i*43,618]]);x.fill()}},
+ hit(S,x,y){const P=this.P;const c=this.cam;c.tr=Math.min(1,c.tr+P.traumaAdd);c.zv+=P.punch*3;this.flash=.14;this.fl=S.t;
+  if(x>290&&x<830&&y>150&&y<600)this.dents.push({x,y,r:14+S.rng()*12,a:S.rng()*6});
+  for(let i=0;i<40;i++)this.dust.push({x:260+S.rng()*600,y:100+S.rng()*40,vx:(S.rng()-.5)*30,vy:20+S.rng()*60,s:1+S.rng()*2.2,life:1.5+S.rng()*1.5,age:0});
+  const pan=(x-560)/600;sNoise({type:'lowpass',f:260,dur:.5,g:.8,pan});[97,143,211,289,388].forEach((f,i)=>sTone({f,dur:1.2-i*.15,g:.12/(1+i*.5),rev:.5,pan,a:.002}));
+  sNoise({type:'bandpass',f:2400,q:3,dur:.35,g:.12,at:.03,rev:.4});for(let k=0;k<6;k++)sNoise({type:'bandpass',f:1800+k*300,q:10,dur:.04,g:.05,at:.08+k*.05})},
+ drop(S){const c=this.cam;c.yv+=900*this.P.punch;c.tr=Math.min(1,c.tr+.3);this.floorT=S.t;this.fl=S.t;
+  sTone({f:1900,f2:1300,dur:.9,g:.05,rev:.3});sNoise({type:'lowpass',f:120,dur:1.4,g:.6,a:.05});sNoise({type:'bandpass',f:600,q:2,dur:.25,g:.2,at:.05})},
+ down(S,x,y){this.hit(S,x,y)},key(S,e,d){if(d&&e.key===' ')this.drop(S)},
+ frame(S,dt){const P=this.P,t=S.t;const cam=this.cam.step(dt,t,P);
+  if(this.floorT&&t-this.floorT<.9){if(Math.floor((t-this.floorT)*10)!==this.fj){this.fj=Math.floor((t-this.floorT)*10);this.floor=Math.max(1,this.floor-1)}}
+  cg.drawImage(this.sc,0,0);dg.drawImage(this.sd,0,0);
+  // 움푹 팬 자국
+  for(const d of this.dents){const g=cg.createRadialGradient(d.x-3,d.y-3,1,d.x,d.y,d.r);g.addColorStop(0,'rgba(0,0,0,.55)');g.addColorStop(.7,'rgba(0,0,0,.15)');g.addColorStop(1,'rgba(255,255,255,.08)');cg.fillStyle=g;cg.beginPath();cg.arc(d.x,d.y,d.r,0,7);cg.fill()}
+  // 층 표시
+  const fa=t-(this.floorT||-9);cg.fillStyle=fa<.9&&Math.floor(fa*16)%2?'#551008':'#ff3a1a';cg.font='700 34px '+FONT_MONO;cg.textAlign='center';cg.fillText((fa<.9?'▼ ':'↓ ')+this.floor,560,98);cg.textAlign='left';
+  // 조명 깜빡임
+  const la=t-this.fl;let L=1;if(la<.5)L=vnoise(la*40,3)>.45?1:.35;
+  cg.fillStyle='rgba(240,248,255,'+(.55+.45*L)+')';cg.fillRect(420,20,280,26);
+  const lg=cg.createRadialGradient(560,40,10,560,40,560);lg.addColorStop(0,'rgba(220,235,255,'+.22*L+')');lg.addColorStop(1,'rgba(220,235,255,0)');cg.globalCompositeOperation='lighter';cg.fillStyle=lg;cg.fillRect(0,0,W,H);cg.globalCompositeOperation='source-over';
+  // 먼지
+  for(const p of this.dust){p.age+=dt;p.vy+=(40-p.vy)*dt*.8;p.vx*=Math.exp(-dt);p.x+=p.vx*dt+Math.sin(t*3+p.s*9)*.3;p.y+=p.vy*dt;const a=Math.min(1,p.age*4)*(1-p.age/p.life);cg.fillStyle='rgba(230,225,210,'+a*.8+')';cg.fillRect(p.x,p.y,p.s,p.s)}
+  this.dust=this.dust.filter(p=>p.age<p.life);
+  this.flash*=Math.exp(-dt/.05);
+  this.U={mode:0,focus:.5,aper:1.4,maxr:10,off:[cam.ox,-cam.oy],rot:cam.rot,zoom:1.04+cam.zoom-1,zvel:cam.zvel,sat:.9,con:1.08,vig:.6,expo:.8+.2*L,flash:this.flash};
+  this.readout=cam}
+,hud(S){const c=this.readout,m=this.cam;if(!c)return'';return'trauma '+m.tr.toFixed(2)+'  흔들림² '+(m.tr*m.tr).toFixed(2)+'\n이동 '+(c.ox*W).toFixed(1)+', '+(c.oy*H).toFixed(1)+' px\n회전 '+(c.rot*180/Math.PI).toFixed(2)+'°  줌 '+c.zoom.toFixed(3)}
+};
+
+/* ---------- 4. 거인의 등 위 마을: 무거운 걸음 ---------- */
+const V97={id:'97-giant-step',name:'거인의 걸음 · 층별 시차',concept:'97 거인의 등 위 마을',mode:0,
+ sub:'들어 올림(기울며 떠오름) → 착지(급강하 + 굴림 + 흙먼지 + 초저역). 앞 구름은 흐리게, 층마다 시차가 다르다',
+ hint:'<b>클릭</b> = 한 걸음 · <b>자동 걸음</b> 슬라이더 1 = 일정 간격 · 앞 구름·마을·먼 산이 서로 다른 속도로 흔들린다',
+ note:'거대함은 "느린 예비 동작 + 빠른 착지 + 긴 여진"에서 나온다. 들어 올림 0.7s 동안 화면이 살짝 떠오르며 기울고(예고 — 플레이어가 대비할 수 있게), 착지는 1프레임 충격 + 저주파(2Hz) 스프링 바운스 + 굴림 오버슈트. 층별 시차(먼 산 0.15 · 마을 1 · 앞 구름 1.9)가 공간의 깊이를 판독하게 한다.',
+ params:[{k:'cadence',l:'걸음 간격',min:1.5,max:8,step:.1,v:3.4,u:'s'},{k:'auto',l:'자동 걸음 (0/1)',min:0,max:1,step:1,v:1},{k:'power',l:'착지 세기',min:0,max:2,step:.05,v:1},{k:'sway',l:'굴림(기울기)',min:0,max:6,step:.1,v:2.4,u:'°'},{k:'ySpringK',l:'바운스 강성',min:10,max:300,step:5,v:120},{k:'ySpringD',l:'바운스 감쇠',min:1,max:30,step:.5,v:5.5},{k:'aper',l:'앞 구름 흐림',min:0,max:6,step:.1,v:3}],
+ demo:[{t:'click',x:560,y:350},{t:'wait',ms:500},{t:'shot',ms:0},{t:'wait',ms:260},{t:'shot',ms:0}],shots:[.8],
+ enter(S){this.cam=Cam(97);this.ph=-1;this.next=S.t+1.2;this.dust=[];this.drift=0;this.build()},
+ audio(S){this.wind=S.loop(loopNoise({pink:true,type:'bandpass',f:500,q:.5}));setG(this.wind,.05)},
+ build(){const L=(n)=>{const c=mkCanvas(W+160,H+160),d=mkCanvas(W+160,H+160);return{c,d,x:c.getContext('2d'),y:d.getContext('2d')}};
+  const far=this.far=L(),mid=this.mid=L(),near=this.near=L();const O=80;
+  // 원경: 하늘, 먼 산, 구름바다, 멀리 걷는 다른 거인
+  let x=far.x;const sk=x.createLinearGradient(0,0,0,H+160);sk.addColorStop(0,'#7fb2e0');sk.addColorStop(.55,'#cfe3f0');sk.addColorStop(1,'#eef3f2');x.fillStyle=sk;x.fillRect(0,0,W+160,H+160);far.y.fillStyle=gr(1);far.y.fillRect(0,0,W+160,H+160);
+  x.fillStyle='rgba(255,250,230,.6)';x.beginPath();x.arc(900+O,140+O,70,0,7);x.fill();
+  x.fillStyle='#a9bccb';x.beginPath();x.moveTo(0,420+O);for(let i=0;i<=24;i++){x.lineTo(i*55,380+O-60*Math.abs(Math.sin(i*1.3))-30*hash1(i,2))}x.lineTo(W+160,520+O);x.lineTo(0,520+O);x.fill();
+  x.fillStyle='rgba(120,140,160,.5)';x.beginPath();x.ellipse(170+O,300+O,26,60,0,0,7);x.fill();x.beginPath();x.arc(170+O,232+O,18,0,7);x.fill();x.fillRect(150+O,340+O,14,80);x.fillRect(178+O,340+O,14,70);
+  for(let i=0;i<40;i++){x.fillStyle='rgba(255,255,255,'+(.6+hash1(i,3)*.4)+')';x.beginPath();x.ellipse(hash1(i,4)*(W+160),470+O+hash1(i,5)*120,80+hash1(i,6)*120,26+hash1(i,7)*20,0,0,7);x.fill()}
+  // 중경: 거인의 등 — 윗면(계단식 밭) + 절벽(거인 피부) + 머리·팔
+  x=mid.x;const y=mid.y;const o=(pts)=>pts.map(([a,b])=>[a+O,b+O]);
+  const whole=new Path2D(),top=new Path2D(),rim=[[120,470],[330,545],[560,572],[800,548],[1010,462]];
+  const T=o([[120,470],[190,380],[330,300],[560,262],[800,285],[940,350],[1010,462]]);
+  const C=o([[1010,462],[1000,560],[930,650],[760,720],[560,735],[360,715],[210,640],[120,470]]);
+  const addCurve=(p,pts,first)=>{if(first)p.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++){const m=[(pts[i-1][0]+pts[i][0])/2,(pts[i-1][1]+pts[i][1])/2];p.quadraticCurveTo(pts[i-1][0],pts[i-1][1],m[0],m[1])}p.lineTo(pts[pts.length-1][0],pts[pts.length-1][1])};
+  addCurve(whole,T,true);addCurve(whole,C,false);whole.closePath();
+  addCurve(top,T,true);addCurve(top,o(rim).reverse(),false);top.closePath();
+  // 머리(오른쪽)와 늘어진 팔(왼쪽)
+  const head=new Path2D();head.ellipse(1060+O,380+O,78,92,.25,0,7);const arm=new Path2D();arm.moveTo(150+O,520+O);arm.bezierCurveTo(110+O,600+O,90+O,690+O,70+O,780+O);arm.lineTo(150+O,780+O);arm.bezierCurveTo(170+O,690+O,200+O,610+O,230+O,560+O);arm.closePath();
+  for(const[pth,col,z]of[[arm,'#62655c',.5]]){x.fillStyle=col;x.fill(pth);y.fillStyle=gr(z);y.fill(pth)}
+  // 절벽
+  const cg2=x.createLinearGradient(0,440+O,0,740+O);cg2.addColorStop(0,'#7b7466');cg2.addColorStop(1,'#4a4740');x.fillStyle=cg2;x.fill(whole);
+  y.save();y.clip(whole);for(let yy=200;yy<760+O;yy+=5){y.fillStyle=gr(lerp(.6,.44,clamp((yy-250-O)/480,0,1)));y.fillRect(0,yy,W+160,5)}y.restore();
+  x.save();x.clip(whole);x.strokeStyle='rgba(30,28,24,.28)';for(let i=0;i<70;i++){const sx=140+O+hash1(i,8)*860;x.lineWidth=1+hash1(i,9)*3;x.beginPath();x.moveTo(sx,480+O);x.lineTo(sx+(hash1(i,10)-.5)*30,740+O);x.stroke()}
+  x.fillStyle='rgba(60,90,40,.6)';for(let i=0;i<30;i++){const vx=150+O+hash1(i,11)*840;x.fillRect(vx,520+O+hash1(i,12)*30,3,30+hash1(i,13)*70)}x.restore();
+  // 윗면: 계단식 밭
+  x.save();x.clip(top);const tg2=x.createLinearGradient(0,260+O,0,570+O);tg2.addColorStop(0,'#86a656');tg2.addColorStop(1,'#56733a');x.fillStyle=tg2;x.fillRect(0,0,W+160,H+160);
+  for(let k=0;k<11;k++){const yy=270+O+k*28;x.strokeStyle=k%3===0?'rgba(220,196,96,.6)':k%3===1?'rgba(160,196,90,.55)':'rgba(110,150,60,.5)';x.lineWidth=16;x.beginPath();x.moveTo(90+O,yy+80-k*4);x.bezierCurveTo(330+O,yy-20,790+O,yy-20,1040+O,yy+80-k*4);x.stroke();
+   x.strokeStyle='rgba(50,60,30,.5)';x.lineWidth=2.5;x.beginPath();x.moveTo(90+O,yy+89-k*4);x.bezierCurveTo(330+O,yy-11,790+O,yy-11,1040+O,yy+89-k*4);x.stroke()}
+  x.restore();x.strokeStyle='rgba(40,40,30,.5)';x.lineWidth=3;x.beginPath();o(rim).forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.stroke();
+  const r=mulberry32(97);this.houses=[];let tries=0;
+  while(this.houses.length<18&&tries++<500){const hx=250+O+r()*650,hy=300+O+r()*240;if(!x.isPointInPath(top,hx,hy+14))continue;this.houses.push([hx,hy]);const s=1.3;
+   x.fillStyle='rgba(0,0,0,.25)';x.fillRect(hx-12*s,hy+3,26*s,4);x.fillStyle='#efe6d4';x.fillRect(hx-10*s,hy-12*s,20*s,14*s);x.fillStyle=['#b04a34','#8a4a2a','#6a5a8a'][this.houses.length%3];poly(x,[[hx-13*s,hy-12*s],[hx,hy-23*s],[hx+13*s,hy-12*s]]);x.fill();x.fillStyle='#4a3a2a';x.fillRect(hx-2,hy-6,5,8)}
+  for(let i=0;i<70;i++){const tx=180+O+r()*800,ty=280+O+r()*280;if(!x.isPointInPath(top,tx,ty))continue;x.fillStyle=r()<.5?'#3f6a2e':'#4f7a36';x.beginPath();x.arc(tx,ty,4+r()*6,0,7);x.fill()}
+  // 폭포
+  const wf=x.createLinearGradient(0,540+O,0,760+O);wf.addColorStop(0,'rgba(235,245,255,.95)');wf.addColorStop(1,'rgba(235,245,255,0)');x.fillStyle=wf;x.fillRect(868+O,545+O,12,220);x.fillStyle='rgba(255,255,255,.35)';x.fillRect(862+O,550+O,24,200);
+  // 전경: 가까운 구름
+  x=near.x;const cl=(cx,cy,s)=>{for(let i=0;i<9;i++){const a=i/9*6.28;x.beginPath();x.arc(cx+Math.cos(a)*s*.9,cy+Math.sin(a)*s*.35,s*.55,0,7);x.fill();near.y.beginPath();near.y.arc(cx+Math.cos(a)*s*.9,cy+Math.sin(a)*s*.35,s*.55,0,7);near.y.fill()}};
+  x.fillStyle='rgba(255,255,255,.92)';near.y.fillStyle=gr(.03);cl(60+O,640+O,150);cl(1060+O,600+O,130);cl(560+O,760+O,120);
+  x.fillStyle='rgba(40,40,50,.8)';near.y.fillStyle=gr(.1);[[320,120],[352,108]].forEach(([bx,by])=>{x.beginPath();x.moveTo(bx+O,by+O);x.quadraticCurveTo(bx+10+O,by-8+O,bx+20+O,by+O);x.quadraticCurveTo(bx+10+O,by-3+O,bx+O,by+O);x.fill();near.y.beginPath();near.y.arc(bx+10+O,by+O,6,0,7);near.y.fill()})},
+ step(S){if(this.ph>=0)return;this.ph=0;this.t0=S.t;sTone({type:'sawtooth',f:70,f2:52,dur:.7,g:.05,lp:300,a:.3});sNoise({type:'bandpass',f:300,f2:180,q:3,dur:.6,g:.08,a:.3})},
+ land(S){const P=this.P,c=this.cam;c.yv+=520*P.power;c.tr=Math.min(1,c.tr+.45*P.power);c.rv+=-P.sway*3.2;
+  for(const[hx,hy]of this.houses)for(let k=0;k<3;k++)this.dust.push({x:hx-80+(S.rng()-.5)*40,y:hy-80+(S.rng()-.5)*10,vx:(S.rng()-.5)*20,vy:-10-S.rng()*25,s:6+S.rng()*10,age:0,life:1.6+S.rng()});
+  sTone({f:44,f2:28,dur:1.6,g:.7*P.power,a:.005});sNoise({type:'lowpass',f:160,dur:1.8,g:.5*P.power,a:.01,rev:.4});sNoise({type:'bandpass',f:900,q:1,dur:.25,g:.12,at:.02,rev:.6});
+  for(let k=0;k<8;k++)sNoise({type:'bandpass',f:2500+S.rng()*2000,q:5,dur:.03,g:.03,at:.2+S.rng()*.8})},
+ down(S){this.step(S)},
+ frame(S,dt){const P=this.P,t=S.t;
+  if(P.auto>.5&&t>=this.next){this.step(S);this.next=t+P.cadence}
+  let lift=0;if(this.ph===0){const a=(t-this.t0)/.7;lift=Math.sin(Math.min(1,a)*Math.PI*.5);if(a>=1){this.ph=-1;this.land(S);this.next=Math.max(this.next,t+1)}}
+  this.lift=(this.lift||0)+(lift-(this.lift||0))*(1-Math.exp(-dt/.12));
+  const cam=this.cam.step(dt,t,{...P,decay:1.2,freq:9,maxOff:10,maxRoll:.5,springK:200,springD:14,rSpringK:10,rSpringD:2.2});
+  const cy=this.cam.y-this.lift*26;this.drift+=dt*14;
+  const O=80;cg.clearRect(0,0,W,H);dg.clearRect(0,0,W,H);
+  const lay=(L,k,dx)=>{cg.drawImage(L.c,-O+dx,-O+cy*k);dg.drawImage(L.d,-O+dx,-O+cy*k)};
+  lay(this.far,.15,0);lay(this.mid,1,0);
+  for(const p of this.dust){p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy*=Math.exp(-dt*.8);const a=Math.min(1,p.age*5)*(1-p.age/p.life);const g=cg.createRadialGradient(p.x+O,p.y+O+cy,0,p.x+O,p.y+O+cy,p.s*(1+p.age));g.addColorStop(0,'rgba(180,160,120,'+a*.45+')');g.addColorStop(1,'rgba(180,160,120,0)');cg.fillStyle=g;cg.fillRect(p.x+O-40,p.y+O+cy-40,80,80)}
+  this.dust=this.dust.filter(p=>p.age<p.life);
+  const dx=(this.drift%240)-120;lay(this.near,1.9,dx);
+  // 기울기 계기
+  const tilt=(cam.rot*180/Math.PI+this.lift*P.sway*.5);cg.fillStyle='rgba(20,30,40,.55)';cg.fillRect(16,16,190,54);cg.fillStyle='#e8f0f4';cg.font='600 13px '+FONT_SANS;cg.fillText('등 기울기',28,38);cg.font='700 18px '+FONT_MONO;cg.fillText((tilt>=0?'+':'')+tilt.toFixed(1)+'°',28,60);
+  cg.strokeStyle='#e8f0f4';cg.lineWidth=2;cg.save();cg.translate(160,44);cg.rotate(tilt*Math.PI/180*4);cg.beginPath();cg.moveTo(-26,0);cg.lineTo(26,0);cg.stroke();cg.beginPath();cg.arc(0,0,3,0,7);cg.fill();cg.restore();
+  this.U={mode:0,focus:.5,aper:P.aper,maxr:26,off:[cam.ox,0],rot:cam.rot+this.lift*P.sway*.5*Math.PI/180,zoom:1.05+cam.zoom-1,zvel:0,sat:1.05,con:1.03,vig:.35,expo:1,flash:0};
+  if(AU.C)setG(this.wind,.04+.05*this.lift);this.hy=cy}
+,hud(S){return'카메라 y '+(this.hy||0).toFixed(1)+' px  (예비 들림 '+(this.lift||0).toFixed(2)+')\n굴림 '+(this.cam.r).toFixed(2)+'°  트라우마 '+this.cam.tr.toFixed(2)+'\n다음 걸음 '+(this.P.auto>.5?Math.max(0,this.next-S.t).toFixed(1)+'s':'수동')}
+};
+
+const FX={variants:[V89,V45,V11,V97],
+ memo:`<h3>기법</h3><ul>
+<li>색 + 깊이 두 장을 같은 도형으로 그린다(깊이는 회색). CoC 패스가 알파에 <b>부호 있는</b> 흐림 반경을 넣는다: 음수=앞, 양수=뒤.</li>
+<li>흐림 = 절반 해상도 황금각 48탭 모음(gather). 표본이 중심보다 뒤에 있으면 반경을 중심 반경으로 제한 → 흐린 배경이 선명한 물체를 먹지 않는다. 앞 표본의 가중 합을 알파로 내보내 합성 때 전경 번짐을 선명한 영역 위로 덮는다.</li>
+<li>틸트시프트 = 깊이 대신 화면 띠 거리. 채도·대비 상승을 같이 해야 미니어처로 읽힌다.</li>
+<li>카메라 = 트라우마(흔들림) + 감쇠 스프링 3개(줌·수직·굴림). 합성 셰이더가 UV를 회전·확대·이동하고 줌 속도만큼 방사 흐림.</li></ul>
+<h3>Unity로 옮길 것</h3><ul>
+<li>URP Depth of Field <b>Bokeh</b>: Focus Distance = 깊이 값을 월드 거리로, Aperture ↔ <code>aper</code>, 최대 반경 ↔ <code>maxBlur</code>. 틸트시프트는 Gaussian 모드로 안 되니 커스텀 Renderer Feature(띠 CoC 셰이더) 필요.</li>
+<li>Cinemachine Impulse 대신 순수 C# <code>CameraShake</code>: trauma(0~1000 정수), 감쇠 /s, 노이즈 = 씨드 값노이즈. 출력(오프셋·롤·줌)만 카메라에 적용 → 헤드리스 테스트 가능.</li>
+<li>스프링: <code>v += (-k·x - c·v)·dt; x += v·dt</code>. 값은 오른쪽 패널 그대로(k, c). 고정 dt(ms 정수)로 적분하면 재현된다.</li>
+<li>소리: 충격(저역 잡음 + 비조화 부분음 97/143/211/289Hz), 거인 착지(44→28Hz 사인 + 저역 잡음 1.8s), 초점 모터(톱니 95Hz 저역통과).</li></ul>
+<h3>함정</h3><ul>
+<li>흔들림에 <code>Random</code>을 쓰면 떨림이 "지직"거린다 — 부드러운 노이즈를 주파수로 훑을 것. 재현성도 깨진다.</li>
+<li>흔들 때 화면 가장자리가 비지 않게 기본 줌 1.03~1.05 여유를 둔다.</li>
+<li>깊이 경계에서 깊이값이 안티앨리어싱으로 섞이면 테두리 후광이 생긴다 — Unity에선 깊이 버퍼라 괜찮지만 2D 합성에선 깊이 캔버스 경계를 조심.</li>
+<li>흔들림은 UI에 걸지 말 것(여기서도 오른쪽 패널은 고정). 멀미 옵션: 세기 배율 슬라이더를 설정에 둔다.</li></ul>`,
+ setup(S){cc=mkCanvas(W,H);cg=cc.getContext('2d');dc=mkCanvas(W,H);dg=dc.getContext('2d');X=S.X;tC=X.tex();tD=X.tex();PR.coc=X.prog(SH_COC);PR.blur=X.prog(SH_BLUR);PR.comp=X.prog(SH_COMP);FC=X.fbo(W,H);FB=X.fbo(W>>1,H>>1)},
+ present(S,v){const U=v.U;if(!U)return;X.upload(tC,cc);if(U.mode===0)X.upload(tD,dc);
+  X.run(PR.coc,{T:tC,D:tD,mode:U.mode,focus:U.focus||0,aper:U.aper||0,band:U.band||0,soft:U.soft||.1,ang:U.ang||0,fpt:U.fpt||[.5,.5]},FC);
+  X.run(PR.blur,{C:FC,px:[1/W,1/H],maxr:U.maxr},FB);
+  X.run(PR.comp,{C:FC,B:FB,off:U.off,rot:U.rot,zoom:U.zoom,zvel:U.zvel,sat:U.sat,con:U.con,vig:U.vig,expo:U.expo,flash:U.flash,t:S.t%7},null)}
+};
+boot(FX);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "_": "임무 3개 · 씨드 · 승리 조건 · 경보 임계값. 지도는 하나다 (수직 슬라이스가 범위다).",
+  "_경보": "alarmLimit 을 **넘는 순간** 회차가 실패로 끝난다. 0 이면 한 번 들키는 것도 끝이다.",
+  "_탈출": "requireExtraction 이 참이면 쓴 분대원 전부가 lengthMs 안에 아마밭으로 돌아와야 한다. 기다리는 것이 값을 갖는 이유다.",
+  "_씨드": "seed 가 정하는 것은 둘뿐이다 — 오늘 밤의 위상, 그리고 **어느 사람이 무엇에 대해 거짓을 말하는가**. 회차 전개에는 난수가 한 줄도 없다.",
+
+  "missions": [
+    {
+      "id": "m_dusk_checkpoint",
+      "name": "해질 무렵 검문소",
+      "mapId": "map_village_edge",
+      "lengthMs": 330000,
+      "seed": 60517,
+      "alarmLimit": 0,
+      "guardIds": ["g_bellguard", "g_laneguard"],
+      "shiftChangeIds": ["sc_dusk_relief"],
+      "requireExtraction": true,
+      "downAllGuards": true,
+      "destroyTargetId": "",
+      "stealDocumentId": "",
+      "noGuardsDowned": false,
+      "note": "초소를 지운다. 함정이 하나뿐이라 공병 혼자로는 안 된다 — 저격수가 필요하다"
+    },
+    {
+      "id": "m_granary_charge",
+      "name": "곳간의 징발 곡물",
+      "mapId": "map_village_edge",
+      "lengthMs": 330000,
+      "seed": 84221,
+      "alarmLimit": 30,
+      "guardIds": ["g_bellguard", "g_laneguard"],
+      "shiftChangeIds": ["sc_dusk_relief"],
+      "requireExtraction": true,
+      "downAllGuards": false,
+      "destroyTargetId": "t_granary_grain",
+      "stealDocumentId": "",
+      "noGuardsDowned": false,
+      "note": "폭음 100은 두 순찰 모두에게 닿는다(15 x 2 = 30). 그래서 임계가 30이고, 그 위에 들키기까지 하면 끝난다"
+    },
+    {
+      "id": "m_ledger_theft",
+      "name": "징발 장부",
+      "mapId": "map_village_edge",
+      "lengthMs": 330000,
+      "seed": 11947,
+      "alarmLimit": 0,
+      "guardIds": ["g_bellguard", "g_laneguard"],
+      "shiftChangeIds": ["sc_dusk_relief"],
+      "requireExtraction": true,
+      "downAllGuards": false,
+      "destroyTargetId": "",
+      "stealDocumentId": "doc_requisition",
+      "noGuardsDowned": true,
+      "note": "아무도 쓰러뜨리지 않는다. 곡물 자루 뒤에 몸을 묻으면 위상과 무관하게 보이지 않는다 — 대신 일찍 떠나야 한다"
+    }
+  ],
+
+  "targets": [
+    { "id": "t_granary_grain", "mapId": "map_village_edge", "zone": "z_granary", "name": "징발 곡물 더미" }
+  ],
+
+  "documents": [
+    { "id": "doc_requisition", "mapId": "map_village_edge", "zone": "z_granary", "name": "징발 장부" }
+  ]
+}

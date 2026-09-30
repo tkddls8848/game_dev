@@ -1,0 +1,858 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1f4aaca5-e808-4ff8-816e-c380eca521c4" name="PSI@DESKTOP-RU6F3DG 2026-09-27 20:51:21" runUser="DESKTOP-RU6F3DG\PSI" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-27T20:51:21.2104437+09:00" queuing="2026-09-27T20:51:21.2104442+09:00" start="2026-09-27T20:50:39.4276079+09:00" finish="2026-09-27T20:52:28.5661927+09:00" />
+  <TestSettings name="default" id="58be8b17-5d0a-488b-9779-3a17e8eb0f54">
+    <Deployment runDeploymentRoot="PSI_DESKTOP-RU6F3DG_2026-09-27_20_51_21" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="00048710-8f8d-405c-8b1c-bc0ef7b32e51" testId="d9d52b7c-bd1b-c786-2904-4adfa6741235" testName="대조군_필지_상한을_없애면_진동한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0424880" startTime="2026-09-27T20:51:35.0438610+09:00" endTime="2026-09-27T20:51:35.0863485+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00048710-8f8d-405c-8b1c-bc0ef7b32e51">
+      <Output>
+        <StdOut>상한 없음: 닿았나 False · 주기 27 · 90일 돌렸다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1e96f96d-1693-4854-ba54-9452ce0bbcd4" testId="efb64aa2-1316-380f-4092-54f23013e33b" testName="장이_가리키는_것이_전부_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003920" startTime="2026-09-27T20:51:35.1350613+09:00" endTime="2026-09-27T20:51:35.1354537+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e96f96d-1693-4854-ba54-9452ce0bbcd4" />
+    <UnitTestResult executionId="e6b331c8-cd93-4c94-a8f1-971e1a7be0ee" testId="19ea9267-645f-932a-343f-85c0c0109da9" testName="한_종류로_덮는_것은_어느_장도_통과하지_못한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004160" startTime="2026-09-27T20:52:09.7642570+09:00" endTime="2026-09-27T20:52:09.7646731+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6b331c8-cd93-4c94-a8f1-971e1a7be0ee" />
+    <UnitTestResult executionId="f8e11e2a-2583-4fc2-84ec-033876c89009" testId="965cfd4d-0800-a766-ba49-6f3bcba2d556" testName="대조군_아무_획도_못_그으면_못_꺼낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0827130" startTime="2026-09-27T20:52:09.4665675+09:00" endTime="2026-09-27T20:52:09.5492794+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8e11e2a-2583-4fc2-84ec-033876c89009" />
+    <UnitTestResult executionId="8186e5ce-f728-4e74-a4f7-c6bc23934ca3" testId="ca8bc666-23f4-1aa4-d3d5-67e42f1a744f" testName="처음_도시" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005620" startTime="2026-09-27T20:51:35.1607659+09:00" endTime="2026-09-27T20:51:35.1613273+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8186e5ce-f728-4e74-a4f7-c6bc23934ca3">
+      <Output>
+        <StdOut>길에 붙은 건물(집) 78 · 건물 80 · 길 100 · 광장 12&#xD;
+    cz-nam (7,5) 길 문에 닿는다&#xD;
+    cz-oh (8,5) 길 문에 닿는다&#xD;
+    cz-bae (7,4) 길 문에 닿는다&#xD;
+    cz-koo (8,8) 광장 문에 닿는다&#xD;
+    cz-lim (3,3) 길 문에 닿는다&#xD;
+    cz-jo (12,5) 길 문에 닿는다&#xD;
+고칠 수 있는 칸 134 / 192</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7e6a3f84-ce46-419c-92be-27ec6ec0a3f2" testId="929329e6-4555-ce1e-a9db-29a1b52b78cc" testName="다른_씨드는_사고_때_실제로_다른_결과를_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:02.2466660" startTime="2026-09-27T20:52:10.9294247+09:00" endTime="2026-09-27T20:52:13.1760898+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7e6a3f84-ce46-419c-92be-27ec6ec0a3f2">
+      <Output>
+        <StdOut>잘 푼 회차: 장 3 x 씨드 20 → 서로 다른 결과 3가지 (씨드가 결과에 안 남는다)&#xD;
+사고 회차: 사고 3 x 씨드 6 → 서로 다른 결과 5가지</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5cc9d46c-29a2-4c44-af8f-b27a0ee4317d" testId="ec9c6e7e-96b3-4d00-5cc9-f67c0c0678d1" testName="사람이_실제로_걷고_반경을_넘지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0430840" startTime="2026-09-27T20:52:28.4620227+09:00" endTime="2026-09-27T20:52:28.5051066+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5cc9d46c-29a2-4c44-af8f-b27a0ee4317d">
+      <Output>
+        <StdOut>cz-nam 반경 0 → 다녀 본 칸 1&#xD;
+    cz-oh 반경 1 → 다녀 본 칸 2&#xD;
+    cz-bae 반경 2 → 다녀 본 칸 6&#xD;
+    cz-koo 반경 3 → 다녀 본 칸 8&#xD;
+    cz-lim 반경 4 → 다녀 본 칸 7&#xD;
+    cz-jo 반경 0 → 다녀 본 칸 1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5c9af0f9-cebe-42a6-a7e7-467319c6be65" testId="6128a4f2-d00e-b0d5-720a-0f8687660026" testName="덮기마다_무너지는_이유가_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0010230" startTime="2026-09-27T20:52:09.6755393+09:00" endTime="2026-09-27T20:52:09.6765622+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c9af0f9-cebe-42a6-a7e7-467319c6be65">
+      <Output>
+        <StdOut>PaveEverything: 닿지 않는다 · 집이 준다 · 광장이 없다&#xD;
+BlockEverything: 닿지 않는다 · 사람이 갇힌다 · 광장이 없다&#xD;
+PlazaEverything: 닿지 않는다 · 집이 준다 · 광장이 없다&#xD;
+NoEdit: 닿지 않는다 · 광장이 없다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8d49ecfa-68d9-4480-a9ab-c166fd72c032" testId="6d67b379-b8c0-d47e-e890-60caf55236c7" testName="대조군_덧값을_없애면_지우개가_공짜가_된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0015969" startTime="2026-09-27T20:51:27.3504100+09:00" endTime="2026-09-27T20:51:27.3520066+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d49ecfa-68d9-4480-a9ab-c166fd72c032" />
+    <UnitTestResult executionId="a8d9aab5-5bb8-439c-bc44-f53c4aa22dcf" testId="7189515e-727a-a29c-f9a7-35fbdd35b36a" testName="되돌리는_데_날이_든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003500" startTime="2026-09-27T20:51:27.5218268+09:00" endTime="2026-09-27T20:51:27.5221767+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8d9aab5-5bb8-439c-bc44-f53c4aa22dcf" />
+    <UnitTestResult executionId="ac27e85d-2d59-4109-8feb-1977c3adcf3e" testId="44370bc7-9a45-eea5-9b28-6d9d94a5a7a4" testName="되돌려도_처음부터_잘_그은_것보다_손해다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1697600" startTime="2026-09-27T20:51:27.3520271+09:00" endTime="2026-09-27T20:51:27.5217858+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac27e85d-2d59-4109-8feb-1977c3adcf3e">
+      <Output>
+        <StdOut>mk-seal-neck → ch-soft: 처음부터 잘 그음 394 · 잘못 그었다가 되돌림 341 (해 20 · 허가 19 · 날 50)&#xD;
+mk-brick-in → ch-soft: 처음부터 잘 그음 394 · 잘못 그었다가 되돌림 260 (해 50 · 허가 40 · 날 50)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="89edee27-a7d8-4c1a-b371-7c33dc3f510a" testId="1bfe4f04-7688-f400-6fdd-d7e0f7884a55" testName="정책별_결과" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006220" startTime="2026-09-27T20:51:35.1601313+09:00" endTime="2026-09-27T20:51:35.1607536+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89edee27-a7d8-4c1a-b371-7c33dc3f510a">
+      <Output>
+        <StdOut>정책               장                점수    목표달성/씨드  집   광장  해    허가  날   거부  수렴&#xD;
+Targeted           ch-soft           394     20/20          75   -1    0     6     33   0     True&#xD;
+Targeted           ch-plaza          474     20/20          74   4     0     26    33   0     True&#xD;
+Targeted           ch-both           584     20/20          74   14    0     16    33   0     True&#xD;
+Targeted           (전체 평균)           484&#xD;
+&#xD;
+PaveEverything     ch-soft           -120    0/20           59   -1    0     120   46   0     True&#xD;
+PaveEverything     ch-plaza          -198    0/20           46   0     0     198   33   0     True&#xD;
+PaveEverything     ch-both           -156    0/20           54   12    0     156   46   0     True&#xD;
+PaveEverything     (전체 평균)           -158&#xD;
+&#xD;
+BlockEverything    ch-soft           -1718   0/20           75   -1    846   120   49   0     True&#xD;
+BlockEverything    ch-plaza          -1233   0/20           72   0     459   200   19   0     True&#xD;
+BlockEverything    ch-both           -714    0/20           75   12    289   160   19   0     True&#xD;
+BlockEverything    (전체 평균)           -1221&#xD;
+&#xD;
+PlazaEverything    ch-soft           -120    0/20           59   -1    0     120   46   0     True&#xD;
+PlazaEverything    ch-plaza          -294    0/20           49   0     47    200   49   0     True&#xD;
+PlazaEverything    ch-both           -160    0/20           53   12    0     160   46   0     True&#xD;
+PlazaEverything    (전체 평균)           -191&#xD;
+&#xD;
+NoEdit             ch-soft           0       0/20           79   -1    0     0     46   0     True&#xD;
+NoEdit             ch-plaza          0       0/20           79   0     0     0     46   0     True&#xD;
+NoEdit             ch-both           0       0/20           79   12    0     0     46   0     True&#xD;
+NoEdit             (전체 평균)           0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="45dd7a59-7294-4721-a7b2-20a38403d59e" testId="b755c0e4-31d9-5666-1deb-2da2d23d77bf" testName="안마당이_목_하나로만_붙어_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003340" startTime="2026-09-27T20:51:35.1337832+09:00" endTime="2026-09-27T20:51:35.1341166+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45dd7a59-7294-4721-a7b2-20a38403d59e" />
+    <UnitTestResult executionId="ab679d0f-826d-46d7-a743-c4a86c1d3280" testId="586f1bf2-68f1-2ce8-3d86-95aabd6b53d9" testName="사고가_가리키는_것이_전부_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016290" startTime="2026-09-27T20:51:35.1314083+09:00" endTime="2026-09-27T20:51:35.1330370+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab679d0f-826d-46d7-a743-c4a86c1d3280" />
+    <UnitTestResult executionId="fa02836e-ec12-45fe-93e4-db6d77770c2a" testId="6faf2507-2dd2-dc71-2516-2c1e9208609e" testName="대조군_같은_지도라도_상한이_있으면_멈춘다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0223320" startTime="2026-09-27T20:51:35.0214958+09:00" endTime="2026-09-27T20:51:35.0438274+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa02836e-ec12-45fe-93e4-db6d77770c2a">
+      <Output>
+        <StdOut>상한 3: 40일에 멈췄다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8706b504-bd75-4aa8-99f1-abbcb07b973c" testId="a9380d2b-0eba-4aae-42e4-de2d43ac1869" testName="모든_사고를_되돌릴_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004970" startTime="2026-09-27T20:52:09.6347150+09:00" endTime="2026-09-27T20:52:09.6352121+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8706b504-bd75-4aa8-99f1-abbcb07b973c">
+      <Output>
+        <StdOut>mk-seal-neck/씨드0: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드1: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드2: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드3: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드4: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드5: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-brick-in/씨드0: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드1: 1획 · 2일 · 5원 · 남은 해 32&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드2: 2획 · 2일 · 10원 · 남은 해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드3: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드4: 2획 · 2일 · 10원 · 남은 해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드5: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-wall-soft/씨드0: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드1: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드2: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드3: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드4: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드5: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e3d67d46-7e35-4165-8d27-7e69a2566478" testId="1d419db9-7352-b333-810f-dbfd924bf646" testName="문이_밖으로_이어져_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002370" startTime="2026-09-27T20:51:35.1311582+09:00" endTime="2026-09-27T20:51:35.1313952+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3d67d46-7e35-4165-8d27-7e69a2566478" />
+    <UnitTestResult executionId="d4f10d9f-6b67-4180-8a3f-0406b7c8319b" testId="19d3753d-3963-d4ce-da2f-7436f1cec5b4" testName="아무_지도로도_반드시_닿는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0004220" startTime="2026-09-27T20:51:35.0863871+09:00" endTime="2026-09-27T20:51:35.0868098+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4f10d9f-6b67-4180-8a3f-0406b7c8319b" />
+    <UnitTestResult executionId="ac7f0abf-c25e-4c2e-b607-f16fe4546425" testId="c8c57800-13f0-8729-af64-782044a2ce35" testName="되돌리기_탐색이_두_번_같은_답을_낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:14.9835720" startTime="2026-09-27T20:52:13.4784206+09:00" endTime="2026-09-27T20:52:28.4619925+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac7f0abf-c25e-4c2e-b607-f16fe4546425" />
+    <UnitTestResult executionId="312c5357-250a-4c79-be68-02822239036c" testId="e5dd5c45-4455-5287-dc76-de6d3318df52" testName="골라_그리는_쪽이_모든_장에서_낫다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003300" startTime="2026-09-27T20:52:09.6751930+09:00" endTime="2026-09-27T20:52:09.6755232+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="312c5357-250a-4c79-be68-02822239036c">
+      <Output>
+        <StdOut>ch-soft — Targeted 394&#xD;
+    PaveEverything -120&#xD;
+    BlockEverything -1718&#xD;
+    PlazaEverything -120&#xD;
+    NoEdit 0&#xD;
+ch-plaza — Targeted 474&#xD;
+    PaveEverything -198&#xD;
+    BlockEverything -1233&#xD;
+    PlazaEverything -294&#xD;
+    NoEdit 0&#xD;
+ch-both — Targeted 584&#xD;
+    PaveEverything -156&#xD;
+    BlockEverything -714&#xD;
+    PlazaEverything -160&#xD;
+    NoEdit 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4c1ca795-eb55-414b-a717-3bdb7a05c60e" testId="318b9e5a-692e-b534-baa0-96ff21529f92" testName="구역이_가리키는_칸이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002370" startTime="2026-09-27T20:51:35.1309062+09:00" endTime="2026-09-27T20:51:35.1311429+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4c1ca795-eb55-414b-a717-3bdb7a05c60e" />
+    <UnitTestResult executionId="52c57097-8182-411a-932c-3daaed1eee2a" testId="97d0032e-45e9-698e-cf73-680abd9686b0" testName="아무것도_그리지_않는_것이_안전하지_않다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0225990" startTime="2026-09-27T20:52:09.6765812+09:00" endTime="2026-09-27T20:52:09.6991796+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="52c57097-8182-411a-932c-3daaed1eee2a">
+      <Output>
+        <StdOut>지도를 그대로 뒀는데 도시가 5칸을 스스로 바꿨다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2a282a51-7bd9-4d9b-b9cd-8251f27d824c" testId="08bfadad-1172-0ae1-1367-a4255758d11a" testName="같은_씨드가_같은_연대기를_만든다" computerName="DESKTOP-RU6F3DG" duration="00:00:01.1313009" startTime="2026-09-27T20:52:09.7980902+09:00" endTime="2026-09-27T20:52:10.9293903+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a282a51-7bd9-4d9b-b9cd-8251f27d824c" />
+    <UnitTestResult executionId="a58e577f-7d05-42da-9bec-49dbb9bc8b5b" testId="d3dafa78-426e-d997-5618-ed914af36291" testName="잠긴_칸이_격자_안에_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007290" startTime="2026-09-27T20:51:35.1343151+09:00" endTime="2026-09-27T20:51:35.1350444+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a58e577f-7d05-42da-9bec-49dbb9bc8b5b" />
+    <UnitTestResult executionId="3c152549-9cb7-425c-9c0f-534b0b021766" testId="0652b666-f9f4-c147-84d6-468ca9dc0d48" testName="갈라_낸_세계가_같은_길을_간다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0332570" startTime="2026-09-27T20:52:09.7648016+09:00" endTime="2026-09-27T20:52:09.7980597+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c152549-9cb7-425c-9c0f-534b0b021766" />
+    <UnitTestResult executionId="12fedd8c-fa1a-4595-9777-596dcf9de1cf" testId="c8c961e9-67dd-3805-a1a3-b75d10b6ea7d" testName="갇힐_것이라_적어_둔_사람이_실제로_갇힌다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006070" startTime="2026-09-27T20:51:35.2321367+09:00" endTime="2026-09-27T20:51:35.2327431+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12fedd8c-fa1a-4595-9777-596dcf9de1cf" />
+    <UnitTestResult executionId="11361d4d-9b80-49e8-9088-77139a019c9a" testId="46b6bd68-3e98-77e2-7dd1-e4ef969ab4b9" testName="되돌리는_데_허가비가_든다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001630" startTime="2026-09-27T20:51:27.5221903+09:00" endTime="2026-09-27T20:51:27.5223535+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11361d4d-9b80-49e8-9088-77139a019c9a" />
+    <UnitTestResult executionId="0193b9bd-933b-4fd2-bc7f-6271c9df2e5f" testId="071743f0-e170-6b5b-8f1c-2c9c39e19767" testName="대조군_날을_빼앗으면_못_꺼낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:19.1062450" startTime="2026-09-27T20:51:35.2327663+09:00" endTime="2026-09-27T20:51:54.3390108+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0193b9bd-933b-4fd2-bc7f-6271c9df2e5f">
+      <Output>
+        <StdOut>되돌릴 날을 하루만 주면 3/3 가 실패한다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="24ce5637-86a7-4c39-854c-00717f31a6ab" testId="aa9705af-3499-7db5-560e-e8d5a16c7712" testName="아무것도_그리지_않으면" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0230320" startTime="2026-09-27T20:51:35.1366737+09:00" endTime="2026-09-27T20:51:35.1597047+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="24ce5637-86a7-4c39-854c-00717f31a6ab">
+      <Output>
+        <StdOut>닿았나 True (40일) · 주기 0&#xD;
+거부된 칸 0 · 어긋남 0&#xD;
+집 79 · 갇힌 사람  · 해 0&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBBBBSBBBBS&#xD;
+    SBBBBSBBBBSBBBBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBSBBSBBBBS&#xD;
+    SBBBBSBSSBSBBBBS&#xD;
+    SBBBBSBBBBSBSSBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSPPPPPPBBBS&#xD;
+    SBBBBSPPPPPPBBBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBBBBSBBBBS</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="88b8cbf1-4658-43b7-86bd-28bfdc487dfd" testId="d6646776-42bf-d9d9-26f2-aeacdb852e05" testName="닿은_날이_한도_안이다" computerName="DESKTOP-RU6F3DG" duration="00:00:04.9455380" startTime="2026-09-27T20:51:29.9365799+09:00" endTime="2026-09-27T20:51:34.8821175+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88b8cbf1-4658-43b7-86bd-28bfdc487dfd">
+      <Output>
+        <StdOut>가장 오래 걸린 회차 49일 (ch-soft/BlockEverything) · 한도 90</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4bedebfe-d2b3-4a7d-9de4-92526bef661d" testId="e3bd6736-c989-b7ad-d239-3dfc16bc7a08" testName="자리표시자를_쓴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001510" startTime="2026-09-27T20:51:35.2316997+09:00" endTime="2026-09-27T20:51:35.2318501+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bedebfe-d2b3-4a7d-9de4-92526bef661d" />
+    <UnitTestResult executionId="341ff751-398c-4221-8b78-2ac1185e2c7e" testId="cf775d70-a5b5-715b-796e-66eedbf3fd19" testName="장마다_그어야_하는_획이_다르다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0650120" startTime="2026-09-27T20:52:09.6992123+09:00" endTime="2026-09-27T20:52:09.7642245+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="341ff751-398c-4221-8b78-2ac1185e2c7e">
+      <Output>
+        <StdOut>ch-soft (1획 · 6원): 12,5S&#xD;
+ch-plaza (5획 · 26원): 12,5S 7,2P 7,3P 7,4P 7,5P&#xD;
+ch-both (3획 · 16원): 12,5S 6,6P 6,7P</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="55da9e36-3f13-4084-bb6d-e81bb779a2b3" testId="fcf44651-a623-6132-374d-6f16d08024f2" testName="묻힌_사람의_해가_더_빠르게_쌓인다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0860050" startTime="2026-09-27T20:51:27.5223647+09:00" endTime="2026-09-27T20:51:27.6083685+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55da9e36-3f13-4084-bb6d-e81bb779a2b3">
+      <Output>
+        <StdOut>남씨 4일: 길 위에 갇혔을 때 12 · 묻혔을 때 32 (하루치 3 + 묻힘 5)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0cd5a17f-2bd0-41ab-a7c3-7b5ca2459dcd" testId="6a4f8d9d-559d-af43-4a8b-2e64bde878fb" testName="되돌린_뒤에는_아무도_갇혀_있지_않다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0853700" startTime="2026-09-27T20:52:09.5493132+09:00" endTime="2026-09-27T20:52:09.6346831+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0cd5a17f-2bd0-41ab-a7c3-7b5ca2459dcd" />
+    <UnitTestResult executionId="3def82fa-e20e-45aa-ae75-c281389f11aa" testId="7160be1b-c5c9-f399-3b1f-acd1a64602f6" testName="사고가_실제로_사람을_가둔다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003310" startTime="2026-09-27T20:52:09.6744708+09:00" endTime="2026-09-27T20:52:09.6748019+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3def82fa-e20e-45aa-ae75-c281389f11aa" />
+    <UnitTestResult executionId="1ea55ce8-570c-42e1-8e6e-1794d1a9b36e" testId="10bf709c-1c1a-be20-6dba-9ca5831807c9" testName="같은_칸을_다시_그으면_더_비싸다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0052530" startTime="2026-09-27T20:51:21.1759604+09:00" endTime="2026-09-27T20:51:21.1812134+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ea55ce8-570c-42e1-8e6e-1794d1a9b36e">
+      <Output>
+        <StdOut>처음 그을 때 8원 · 같은 칸을 다시 그을 때 13원 (덧값 7)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0ef96770-aac6-422a-9bc5-744ee0f1d1c1" testId="f7c28a9a-8227-e4f4-1955-a2867a1288e4" testName="격자의_모양이_옳다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0006510" startTime="2026-09-27T20:51:35.1302352+09:00" endTime="2026-09-27T20:51:35.1308859+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ef96770-aac6-422a-9bc5-744ee0f1d1c1" />
+    <UnitTestResult executionId="49490d6f-1484-4965-9d1e-7114862617d7" testId="06ab3ef0-1427-dbc5-3eb9-96ba767f059b" testName="도시가_움직이는_것은_씨드와_무관하다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.3022670" startTime="2026-09-27T20:52:13.1761247+09:00" endTime="2026-09-27T20:52:13.4783918+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49490d6f-1484-4965-9d1e-7114862617d7" />
+    <UnitTestResult executionId="84d8d71f-495a-4cd5-bf1f-dc6c4a18e917" testId="f229f83d-250e-1fa2-0ce5-71149d0ceada" testName="지도가_아직_안_그린_칸이_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001490" startTime="2026-09-27T20:51:35.1358307+09:00" endTime="2026-09-27T20:51:35.1359796+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="84d8d71f-495a-4cd5-bf1f-dc6c4a18e917" />
+    <UnitTestResult executionId="8186450c-2ca7-4eb4-8daf-943ccf53a91f" testId="384187bb-571f-8b97-5328-a20a56bfc66f" testName="대조군_딴_길을_막고_필지도_닳으면_못_꺼낸다" computerName="DESKTOP-RU6F3DG" duration="00:00:15.1274930" startTime="2026-09-27T20:51:54.3390413+09:00" endTime="2026-09-27T20:52:09.4665343+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8186450c-2ca7-4eb4-8daf-943ccf53a91f">
+      <Output>
+        <StdOut>딴 길을 막고 필지도 닳게 하면: 갇힘 2 · **못 꺼냈다**</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1252366a-0caa-48ac-8be8-1565476a4067" testId="1c2f3713-f8ca-4df4-0989-169e03a997b6" testName="왜_실패했나" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003720" startTime="2026-09-27T20:51:35.1597441+09:00" endTime="2026-09-27T20:51:35.1601155+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1252366a-0caa-48ac-8be8-1565476a4067">
+      <Output>
+        <StdOut>PaveEverything     ch-soft           닿지 않는다&#xD;
+PaveEverything     ch-plaza          집이 46 (필요 54) · 광장이 0 (필요 4)&#xD;
+PaveEverything     ch-both           닿지 않는다 · 광장이 12 (필요 14)&#xD;
+BlockEverything    ch-soft           닿지 않는다 · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+BlockEverything    ch-plaza          닿지 않는다 · 광장이 0 (필요 4) · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+BlockEverything    ch-both           닿지 않는다 · 광장이 12 (필요 14) · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+PlazaEverything    ch-soft           닿지 않는다&#xD;
+PlazaEverything    ch-plaza          집이 49 (필요 54) · 광장이 0 (필요 4)&#xD;
+PlazaEverything    ch-both           닿지 않는다 · 집이 53 (필요 54) · 광장이 12 (필요 14)&#xD;
+NoEdit             ch-soft           닿지 않는다&#xD;
+NoEdit             ch-plaza          광장이 0 (필요 4)&#xD;
+NoEdit             ch-both           닿지 않는다 · 광장이 12 (필요 14)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ee5084ca-df48-41c6-ac30-cebca0ea61e5" testId="8d5e1e5f-528b-2001-08d4-550e9a76c1da" testName="사람이_걸을_수_있는_칸에_있고_처음엔_아무도_갇히지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0007150" startTime="2026-09-27T20:51:35.1330533+09:00" endTime="2026-09-27T20:51:35.1337681+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee5084ca-df48-41c6-ac30-cebca0ea61e5" />
+    <UnitTestResult executionId="c75464e2-c2a7-42ae-ac31-805273fb05ca" testId="3c25fe10-55f9-a07e-e73c-a093f1b899a1" testName="골라_그리면_거부가_생기지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:02.3068340" startTime="2026-09-27T20:51:27.6297061+09:00" endTime="2026-09-27T20:51:29.9365392+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c75464e2-c2a7-42ae-ac31-805273fb05ca" />
+    <UnitTestResult executionId="fa2a5248-c2ad-4c2f-8415-4ee3562d85b0" testId="4d34c887-3c6d-d72d-2a4a-16208725fe78" testName="진동이_무른_구역에서_온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0431630" startTime="2026-09-27T20:51:35.0868245+09:00" endTime="2026-09-27T20:51:35.1299865+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa2a5248-c2ad-4c2f-8415-4ee3562d85b0">
+      <Output>
+        <StdOut>무른 구역 밖에서 바뀐 칸: 없다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="924d2118-f36d-4eda-ab26-71e83bcef090" testId="032d022f-b948-9b2a-9c1c-672368ed3cd5" testName="저울이_옳다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0003460" startTime="2026-09-27T20:51:35.1354677+09:00" endTime="2026-09-27T20:51:35.1358138+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="924d2118-f36d-4eda-ab26-71e83bcef090" />
+    <UnitTestResult executionId="00f292b9-2007-478e-bbcb-5051ed16d620" testId="75c7091e-95c4-735e-70c6-8ae4552749b9" testName="자리를_뜨지_않는_사람과_돌아다니는_사람이_둘_다_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0001710" startTime="2026-09-27T20:51:35.1341311+09:00" endTime="2026-09-27T20:51:35.1343020+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00f292b9-2007-478e-bbcb-5051ed16d620" />
+    <UnitTestResult executionId="02da3409-19b0-4420-bd23-ea34ba0befc1" testId="93483e9b-e3cc-1f8f-d064-67de5dc0edce" testName="대조군_공짜_세계에서는_값이_사라진다" computerName="DESKTOP-RU6F3DG" duration="00:00:06.1691340" startTime="2026-09-27T20:51:21.1812368+09:00" endTime="2026-09-27T20:51:27.3503694+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02da3409-19b0-4420-bd23-ea34ba0befc1">
+      <Output>
+        <StdOut>mk-seal-neck (공짜 세계): 갇힘 3 · 1일 · 해 0&#xD;
+mk-brick-in (공짜 세계): 갇힘 2 · 1일 · 해 0&#xD;
+mk-wall-soft (공짜 세계): 갇힘 1 · 1일 · 해 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b7286619-b625-498f-aaeb-514b807bdf70" testId="e5197437-da08-a5f5-6cec-86bc5f4582e1" testName="이_게임의_말이_전부_번역된다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016120" startTime="2026-09-27T20:51:35.2300706+09:00" endTime="2026-09-27T20:51:35.2316826+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7286619-b625-498f-aaeb-514b807bdf70" />
+    <UnitTestResult executionId="0ac16bb3-a9a5-4059-b603-4176806dddfe" testId="bb1be211-29e7-cfc5-2a75-d4a7838b333a" testName="사고와_되돌리기" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0005630" startTime="2026-09-27T20:51:35.1360966+09:00" endTime="2026-09-27T20:51:35.1366596+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ac16bb3-a9a5-4059-b603-4176806dddfe">
+      <Output>
+        <StdOut>mk-seal-neck    씨드0 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드1 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드2 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드3 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드4 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드5 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-brick-in     씨드0 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드1 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 1획 · 2일 · 5원 · 남은해 32&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드2 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드3 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드4 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드5 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-wall-soft    씨드0 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드1 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드2 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드3 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드4 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드5 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5be08c9e-13e2-457d-a3f6-bd8a982a69af" testId="495d80a9-7f9c-df70-4683-1a71c29a4458" testName="표가_없으면_한국어_원문이_나온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000740" startTime="2026-09-27T20:51:35.2319611+09:00" endTime="2026-09-27T20:51:35.2320350+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5be08c9e-13e2-457d-a3f6-bd8a982a69af" />
+    <UnitTestResult executionId="7dc83fd2-69fe-49ef-9c7d-17588f018e3c" testId="196fda9f-acf9-9621-4849-a49b15279c82" testName="필지_상한을_없애면" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0667960" startTime="2026-09-27T20:51:35.1613446+09:00" endTime="2026-09-27T20:51:35.2281404+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7dc83fd2-69fe-49ef-9c7d-17588f018e3c">
+      <Output>
+        <StdOut>상한 없음: 닿았나 False · 주기 0 · 90일 돌렸다&#xD;
+상한 3: 닿았나 True (40일) · 주기 0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ef2949ec-bbe7-42ea-9348-508f467b202d" testId="50a6924c-4613-70b2-ab19-7ae1fa92137e" testName="묻힌_사람도_꺼낼_수_있다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0392080" startTime="2026-09-27T20:52:09.6352307+09:00" endTime="2026-09-27T20:52:09.6744381+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ef2949ec-bbe7-42ea-9348-508f467b202d" />
+    <UnitTestResult executionId="dd7b7f79-115c-4992-a425-9838f0476d90" testId="7fa930bb-dbc6-0044-164c-57be9455408d" testName="거부하는_칸이_실제로_생긴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0191650" startTime="2026-09-27T20:51:27.6105059+09:00" endTime="2026-09-27T20:51:27.6296706+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dd7b7f79-115c-4992-a425-9838f0476d90">
+      <Output>
+        <StdOut>필지를 한 번만 쓰게 한 세계에서 거부된 칸 1&#xD;
+    (7,4) 지도는 길, 도시는 건물 — 지도가 거짓말이 됐다</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="08d172d4-a0cb-4f71-8173-102a527b5f63" testId="f90cdf7e-68ae-a945-7dd4-1fd4c90c36ba" testName="골라_그리는_쪽은_모든_장을_모든_씨드에서_통과한다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0002260" startTime="2026-09-27T20:52:09.6749514+09:00" endTime="2026-09-27T20:52:09.6751770+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08d172d4-a0cb-4f71-8173-102a527b5f63" />
+    <UnitTestResult executionId="8170758b-d16d-4e71-a240-7b7c3630ece4" testId="5ee9dbb8-2daa-51b9-a28b-a47759bf84ab" testName="갇혀_있던_동안의_해가_남는다" computerName="DESKTOP-RU6F3DG" duration="00:00:41.1432580" startTime="2026-09-27T20:50:40.0314463+09:00" endTime="2026-09-27T20:51:21.1746465+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8170758b-d16d-4e71-a240-7b7c3630ece4" />
+    <UnitTestResult executionId="7b3e0e4c-f48e-486d-93aa-633b56b51f12" testId="f9efc6f1-46da-3b1e-bcc7-1b381f76d912" testName="언어를_바꾸면_값이_따라온다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0016790" startTime="2026-09-27T20:51:35.2283726+09:00" endTime="2026-09-27T20:51:35.2300518+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b3e0e4c-f48e-486d-93aa-633b56b51f12" />
+    <UnitTestResult executionId="b6e4e86f-1512-4de7-865e-c76419891ae6" testId="249fe12d-7b73-a45f-552a-0a08ea137ead" testName="칸_이름은_한국어_원문이_바로_보인다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0000960" startTime="2026-09-27T20:51:35.2318584+09:00" endTime="2026-09-27T20:51:35.2319538+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b6e4e86f-1512-4de7-865e-c76419891ae6" />
+    <UnitTestResult executionId="ac4d9dff-20f3-4a57-b72f-83fb85c057b4" testId="6b0b235e-cbfc-2de3-c3fd-3a7fe1c01c48" testName="닿은_뒤에는_한_칸도_움직이지_않는다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.1393120" startTime="2026-09-27T20:51:34.8821520+09:00" endTime="2026-09-27T20:51:35.0214631+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac4d9dff-20f3-4a57-b72f-83fb85c057b4" />
+    <UnitTestResult executionId="09ae8e6a-f742-4b70-bad0-6b0bd31d8bd7" testId="512e3e10-06c7-d948-1051-83d717a2fd73" testName="정수만_쓴다" computerName="DESKTOP-RU6F3DG" duration="00:00:00.0142550" startTime="2026-09-27T20:52:28.5051374+09:00" endTime="2026-09-27T20:52:28.5193912+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09ae8e6a-f742-4b70-bad0-6b0bd31d8bd7" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="아무것도_그리지_않으면" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="aa9705af-3499-7db5-560e-e8d5a16c7712">
+      <Execution id="24ce5637-86a7-4c39-854c-00717f31a6ab" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="아무것도_그리지_않으면" />
+    </UnitTest>
+    <UnitTest name="문이_밖으로_이어져_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="1d419db9-7352-b333-810f-dbfd924bf646">
+      <Execution id="e3d67d46-7e35-4165-8d27-7e69a2566478" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="문이_밖으로_이어져_있다" />
+    </UnitTest>
+    <UnitTest name="장이_가리키는_것이_전부_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="efb64aa2-1316-380f-4092-54f23013e33b">
+      <Execution id="1e96f96d-1693-4854-ba54-9452ce0bbcd4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="장이_가리키는_것이_전부_있다" />
+    </UnitTest>
+    <UnitTest name="이_게임의_말이_전부_번역된다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="e5197437-da08-a5f5-6cec-86bc5f4582e1">
+      <Execution id="b7286619-b625-498f-aaeb-514b807bdf70" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.LocalizationTests" name="이_게임의_말이_전부_번역된다" />
+    </UnitTest>
+    <UnitTest name="자리표시자를_쓴다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="e3bd6736-c989-b7ad-d239-3dfc16bc7a08">
+      <Execution id="4bedebfe-d2b3-4a7d-9de4-92526bef661d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.LocalizationTests" name="자리표시자를_쓴다" />
+    </UnitTest>
+    <UnitTest name="묻힌_사람도_꺼낼_수_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="50a6924c-4613-70b2-ab19-7ae1fa92137e">
+      <Execution id="ef2949ec-bbe7-42ea-9348-508f467b202d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="묻힌_사람도_꺼낼_수_있다" />
+    </UnitTest>
+    <UnitTest name="대조군_공짜_세계에서는_값이_사라진다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="93483e9b-e3cc-1f8f-d064-67de5dc0edce">
+      <Execution id="02da3409-19b0-4420-bd23-ea34ba0befc1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="대조군_공짜_세계에서는_값이_사라진다" />
+    </UnitTest>
+    <UnitTest name="대조군_아무_획도_못_그으면_못_꺼낸다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="965cfd4d-0800-a766-ba49-6f3bcba2d556">
+      <Execution id="f8e11e2a-2583-4fc2-84ec-033876c89009" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="대조군_아무_획도_못_그으면_못_꺼낸다" />
+    </UnitTest>
+    <UnitTest name="골라_그리는_쪽이_모든_장에서_낫다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="e5dd5c45-4455-5287-dc76-de6d3318df52">
+      <Execution id="312c5357-250a-4c79-be68-02822239036c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="골라_그리는_쪽이_모든_장에서_낫다" />
+    </UnitTest>
+    <UnitTest name="대조군_같은_지도라도_상한이_있으면_멈춘다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="6faf2507-2dd2-dc71-2516-2c1e9208609e">
+      <Execution id="fa02836e-ec12-45fe-93e4-db6d77770c2a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="대조군_같은_지도라도_상한이_있으면_멈춘다" />
+    </UnitTest>
+    <UnitTest name="골라_그리는_쪽은_모든_장을_모든_씨드에서_통과한다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="f90cdf7e-68ae-a945-7dd4-1fd4c90c36ba">
+      <Execution id="08d172d4-a0cb-4f71-8173-102a527b5f63" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="골라_그리는_쪽은_모든_장을_모든_씨드에서_통과한다" />
+    </UnitTest>
+    <UnitTest name="다른_씨드는_사고_때_실제로_다른_결과를_만든다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="929329e6-4555-ce1e-a9db-29a1b52b78cc">
+      <Execution id="7e6a3f84-ce46-419c-92be-27ec6ec0a3f2" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="다른_씨드는_사고_때_실제로_다른_결과를_만든다" />
+    </UnitTest>
+    <UnitTest name="사람이_걸을_수_있는_칸에_있고_처음엔_아무도_갇히지_않는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="8d5e1e5f-528b-2001-08d4-550e9a76c1da">
+      <Execution id="ee5084ca-df48-41c6-ac30-cebca0ea61e5" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="사람이_걸을_수_있는_칸에_있고_처음엔_아무도_갇히지_않는다" />
+    </UnitTest>
+    <UnitTest name="닿은_날이_한도_안이다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="d6646776-42bf-d9d9-26f2-aeacdb852e05">
+      <Execution id="88b8cbf1-4658-43b7-86bd-28bfdc487dfd" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="닿은_날이_한도_안이다" />
+    </UnitTest>
+    <UnitTest name="저울이_옳다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="032d022f-b948-9b2a-9c1c-672368ed3cd5">
+      <Execution id="924d2118-f36d-4eda-ab26-71e83bcef090" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="저울이_옳다" />
+    </UnitTest>
+    <UnitTest name="언어를_바꾸면_값이_따라온다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="f9efc6f1-46da-3b1e-bcc7-1b381f76d912">
+      <Execution id="7b3e0e4c-f48e-486d-93aa-633b56b51f12" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.LocalizationTests" name="언어를_바꾸면_값이_따라온다" />
+    </UnitTest>
+    <UnitTest name="묻힌_사람의_해가_더_빠르게_쌓인다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="fcf44651-a623-6132-374d-6f16d08024f2">
+      <Execution id="55da9e36-3f13-4084-bb6d-e81bb779a2b3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="묻힌_사람의_해가_더_빠르게_쌓인다" />
+    </UnitTest>
+    <UnitTest name="갈라_낸_세계가_같은_길을_간다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="0652b666-f9f4-c147-84d6-468ca9dc0d48">
+      <Execution id="3c152549-9cb7-425c-9c0f-534b0b021766" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="갈라_낸_세계가_같은_길을_간다" />
+    </UnitTest>
+    <UnitTest name="되돌리기_탐색이_두_번_같은_답을_낸다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="c8c57800-13f0-8729-af64-782044a2ce35">
+      <Execution id="ac7f0abf-c25e-4c2e-b607-f16fe4546425" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="되돌리기_탐색이_두_번_같은_답을_낸다" />
+    </UnitTest>
+    <UnitTest name="잠긴_칸이_격자_안에_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="d3dafa78-426e-d997-5618-ed914af36291">
+      <Execution id="a58e577f-7d05-42da-9bec-49dbb9bc8b5b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="잠긴_칸이_격자_안에_있다" />
+    </UnitTest>
+    <UnitTest name="사고가_가리키는_것이_전부_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="586f1bf2-68f1-2ce8-3d86-95aabd6b53d9">
+      <Execution id="ab679d0f-826d-46d7-a743-c4a86c1d3280" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="사고가_가리키는_것이_전부_있다" />
+    </UnitTest>
+    <UnitTest name="칸_이름은_한국어_원문이_바로_보인다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="249fe12d-7b73-a45f-552a-0a08ea137ead">
+      <Execution id="b6e4e86f-1512-4de7-865e-c76419891ae6" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.LocalizationTests" name="칸_이름은_한국어_원문이_바로_보인다" />
+    </UnitTest>
+    <UnitTest name="장마다_그어야_하는_획이_다르다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="cf775d70-a5b5-715b-796e-66eedbf3fd19">
+      <Execution id="341ff751-398c-4221-8b78-2ac1185e2c7e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="장마다_그어야_하는_획이_다르다" />
+    </UnitTest>
+    <UnitTest name="같은_칸을_다시_그으면_더_비싸다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="10bf709c-1c1a-be20-6dba-9ca5831807c9">
+      <Execution id="1ea55ce8-570c-42e1-8e6e-1794d1a9b36e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="같은_칸을_다시_그으면_더_비싸다" />
+    </UnitTest>
+    <UnitTest name="도시가_움직이는_것은_씨드와_무관하다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="06ab3ef0-1427-dbc5-3eb9-96ba767f059b">
+      <Execution id="49490d6f-1484-4965-9d1e-7114862617d7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="도시가_움직이는_것은_씨드와_무관하다" />
+    </UnitTest>
+    <UnitTest name="같은_씨드가_같은_연대기를_만든다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="08bfadad-1172-0ae1-1367-a4255758d11a">
+      <Execution id="2a282a51-7bd9-4d9b-b9cd-8251f27d824c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="같은_씨드가_같은_연대기를_만든다" />
+    </UnitTest>
+    <UnitTest name="정수만_쓴다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="512e3e10-06c7-d948-1051-83d717a2fd73">
+      <Execution id="09ae8e6a-f742-4b70-bad0-6b0bd31d8bd7" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="정수만_쓴다" />
+    </UnitTest>
+    <UnitTest name="갇힐_것이라_적어_둔_사람이_실제로_갇힌다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="c8c961e9-67dd-3805-a1a3-b75d10b6ea7d">
+      <Execution id="12fedd8c-fa1a-4595-9777-596dcf9de1cf" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="갇힐_것이라_적어_둔_사람이_실제로_갇힌다" />
+    </UnitTest>
+    <UnitTest name="대조군_딴_길을_막고_필지도_닳으면_못_꺼낸다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="384187bb-571f-8b97-5328-a20a56bfc66f">
+      <Execution id="8186450c-2ca7-4eb4-8daf-943ccf53a91f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="대조군_딴_길을_막고_필지도_닳으면_못_꺼낸다" />
+    </UnitTest>
+    <UnitTest name="되돌려도_처음부터_잘_그은_것보다_손해다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="44370bc7-9a45-eea5-9b28-6d9d94a5a7a4">
+      <Execution id="ac27e85d-2d59-4109-8feb-1977c3adcf3e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="되돌려도_처음부터_잘_그은_것보다_손해다" />
+    </UnitTest>
+    <UnitTest name="왜_실패했나" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="1c2f3713-f8ca-4df4-0989-169e03a997b6">
+      <Execution id="1252366a-0caa-48ac-8be8-1565476a4067" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="왜_실패했나" />
+    </UnitTest>
+    <UnitTest name="대조군_필지_상한을_없애면_진동한다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="d9d52b7c-bd1b-c786-2904-4adfa6741235">
+      <Execution id="00048710-8f8d-405c-8b1c-bc0ef7b32e51" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="대조군_필지_상한을_없애면_진동한다" />
+    </UnitTest>
+    <UnitTest name="필지_상한을_없애면" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="196fda9f-acf9-9621-4849-a49b15279c82">
+      <Execution id="7dc83fd2-69fe-49ef-9c7d-17588f018e3c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="필지_상한을_없애면" />
+    </UnitTest>
+    <UnitTest name="되돌린_뒤에는_아무도_갇혀_있지_않다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="6a4f8d9d-559d-af43-4a8b-2e64bde878fb">
+      <Execution id="0cd5a17f-2bd0-41ab-a7c3-7b5ca2459dcd" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="되돌린_뒤에는_아무도_갇혀_있지_않다" />
+    </UnitTest>
+    <UnitTest name="자리를_뜨지_않는_사람과_돌아다니는_사람이_둘_다_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="75c7091e-95c4-735e-70c6-8ae4552749b9">
+      <Execution id="00f292b9-2007-478e-bbcb-5051ed16d620" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="자리를_뜨지_않는_사람과_돌아다니는_사람이_둘_다_있다" />
+    </UnitTest>
+    <UnitTest name="안마당이_목_하나로만_붙어_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="b755c0e4-31d9-5666-1deb-2da2d23d77bf">
+      <Execution id="45dd7a59-7294-4721-a7b2-20a38403d59e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="안마당이_목_하나로만_붙어_있다" />
+    </UnitTest>
+    <UnitTest name="덮기마다_무너지는_이유가_다르다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="6128a4f2-d00e-b0d5-720a-0f8687660026">
+      <Execution id="5c9af0f9-cebe-42a6-a7e7-467319c6be65" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="덮기마다_무너지는_이유가_다르다" />
+    </UnitTest>
+    <UnitTest name="되돌리는_데_허가비가_든다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="46b6bd68-3e98-77e2-7dd1-e4ef969ab4b9">
+      <Execution id="11361d4d-9b80-49e8-9088-77139a019c9a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="되돌리는_데_허가비가_든다" />
+    </UnitTest>
+    <UnitTest name="표가_없으면_한국어_원문이_나온다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="495d80a9-7f9c-df70-4683-1a71c29a4458">
+      <Execution id="5be08c9e-13e2-457d-a3f6-bd8a982a69af" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.LocalizationTests" name="표가_없으면_한국어_원문이_나온다" />
+    </UnitTest>
+    <UnitTest name="진동이_무른_구역에서_온다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="4d34c887-3c6d-d72d-2a4a-16208725fe78">
+      <Execution id="fa2a5248-c2ad-4c2f-8415-4ee3562d85b0" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="진동이_무른_구역에서_온다" />
+    </UnitTest>
+    <UnitTest name="되돌리는_데_날이_든다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="7189515e-727a-a29c-f9a7-35fbdd35b36a">
+      <Execution id="a8d9aab5-5bb8-439c-bc44-f53c4aa22dcf" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="되돌리는_데_날이_든다" />
+    </UnitTest>
+    <UnitTest name="닿은_뒤에는_한_칸도_움직이지_않는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="6b0b235e-cbfc-2de3-c3fd-3a7fe1c01c48">
+      <Execution id="ac4d9dff-20f3-4a57-b72f-83fb85c057b4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="닿은_뒤에는_한_칸도_움직이지_않는다" />
+    </UnitTest>
+    <UnitTest name="대조군_날을_빼앗으면_못_꺼낸다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="071743f0-e170-6b5b-8f1c-2c9c39e19767">
+      <Execution id="0193b9bd-933b-4fd2-bc7f-6271c9df2e5f" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="대조군_날을_빼앗으면_못_꺼낸다" />
+    </UnitTest>
+    <UnitTest name="사람이_실제로_걷고_반경을_넘지_않는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="ec9c6e7e-96b3-4d00-5cc9-f67c0c0678d1">
+      <Execution id="5cc9d46c-29a2-4c44-af8f-b27a0ee4317d" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.SeedDeterminismTests" name="사람이_실제로_걷고_반경을_넘지_않는다" />
+    </UnitTest>
+    <UnitTest name="사고와_되돌리기" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="bb1be211-29e7-cfc5-2a75-d4a7838b333a">
+      <Execution id="0ac16bb3-a9a5-4059-b603-4176806dddfe" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="사고와_되돌리기" />
+    </UnitTest>
+    <UnitTest name="한_종류로_덮는_것은_어느_장도_통과하지_못한다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="19ea9267-645f-932a-343f-85c0c0109da9">
+      <Execution id="e6b331c8-cd93-4c94-a8f1-971e1a7be0ee" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="한_종류로_덮는_것은_어느_장도_통과하지_못한다" />
+    </UnitTest>
+    <UnitTest name="정책별_결과" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="1bfe4f04-7688-f400-6fdd-d7e0f7884a55">
+      <Execution id="89edee27-a7d8-4c1a-b371-7c33dc3f510a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="정책별_결과" />
+    </UnitTest>
+    <UnitTest name="아무_지도로도_반드시_닿는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="19d3753d-3963-d4ce-da2f-7436f1cec5b4">
+      <Execution id="d4f10d9f-6b67-4180-8a3f-0406b7c8319b" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="아무_지도로도_반드시_닿는다" />
+    </UnitTest>
+    <UnitTest name="지도가_아직_안_그린_칸이_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="f229f83d-250e-1fa2-0ce5-71149d0ceada">
+      <Execution id="84d8d71f-495a-4cd5-bf1f-dc6c4a18e917" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="지도가_아직_안_그린_칸이_있다" />
+    </UnitTest>
+    <UnitTest name="격자의_모양이_옳다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="f7c28a9a-8227-e4f4-1955-a2867a1288e4">
+      <Execution id="0ef96770-aac6-422a-9bc5-744ee0f1d1c1" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="격자의_모양이_옳다" />
+    </UnitTest>
+    <UnitTest name="골라_그리면_거부가_생기지_않는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="3c25fe10-55f9-a07e-e73c-a093f1b899a1">
+      <Execution id="c75464e2-c2a7-42ae-ac31-805273fb05ca" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="골라_그리면_거부가_생기지_않는다" />
+    </UnitTest>
+    <UnitTest name="갇혀_있던_동안의_해가_남는다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="5ee9dbb8-2daa-51b9-a28b-a47759bf84ab">
+      <Execution id="8170758b-d16d-4e71-a240-7b7c3630ece4" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="갇혀_있던_동안의_해가_남는다" />
+    </UnitTest>
+    <UnitTest name="거부하는_칸이_실제로_생긴다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="7fa930bb-dbc6-0044-164c-57be9455408d">
+      <Execution id="dd7b7f79-115c-4992-a425-9838f0476d90" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.CityConvergesTests" name="거부하는_칸이_실제로_생긴다" />
+    </UnitTest>
+    <UnitTest name="모든_사고를_되돌릴_수_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="a9380d2b-0eba-4aae-42e4-de2d43ac1869">
+      <Execution id="8706b504-bd75-4aa8-99f1-abbcb07b973c" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="모든_사고를_되돌릴_수_있다" />
+    </UnitTest>
+    <UnitTest name="사고가_실제로_사람을_가둔다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="7160be1b-c5c9-f399-3b1f-acd1a64602f6">
+      <Execution id="3def82fa-e20e-45aa-ae75-c281389f11aa" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.MistakesAreSurvivableTests" name="사고가_실제로_사람을_가둔다" />
+    </UnitTest>
+    <UnitTest name="구역이_가리키는_칸이_있다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="318b9e5a-692e-b534-baa0-96ff21529f92">
+      <Execution id="4c1ca795-eb55-414b-a717-3bdb7a05c60e" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DataIntegrityTests" name="구역이_가리키는_칸이_있다" />
+    </UnitTest>
+    <UnitTest name="처음_도시" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="ca8bc666-23f4-1aa4-d3d5-67e42f1a744f">
+      <Execution id="8186e5ce-f728-4e74-a4f7-c6bc23934ca3" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.DiagnosticTests" name="처음_도시" />
+    </UnitTest>
+    <UnitTest name="대조군_덧값을_없애면_지우개가_공짜가_된다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="6d67b379-b8c0-d47e-e890-60caf55236c7">
+      <Execution id="8d49ecfa-68d9-4480-a9ab-c166fd72c032" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.ButNotFreeTests" name="대조군_덧값을_없애면_지우개가_공짜가_된다" />
+    </UnitTest>
+    <UnitTest name="아무것도_그리지_않는_것이_안전하지_않다" storage="c:\users\psi\orca\game\games\the-map-lies\testbuild\debug\net8.0\the-map-lies.tests.dll" id="97d0032e-45e9-698e-cf73-680abd9686b0">
+      <Execution id="52c57097-8182-411a-932c-3daaed1eee2a" />
+      <TestMethod codeBase="C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="MapLies.Tests.NoDominantStrategyTests" name="아무것도_그리지_않는_것이_안전하지_않다" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d9d52b7c-bd1b-c786-2904-4adfa6741235" executionId="00048710-8f8d-405c-8b1c-bc0ef7b32e51" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="efb64aa2-1316-380f-4092-54f23013e33b" executionId="1e96f96d-1693-4854-ba54-9452ce0bbcd4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19ea9267-645f-932a-343f-85c0c0109da9" executionId="e6b331c8-cd93-4c94-a8f1-971e1a7be0ee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="965cfd4d-0800-a766-ba49-6f3bcba2d556" executionId="f8e11e2a-2583-4fc2-84ec-033876c89009" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ca8bc666-23f4-1aa4-d3d5-67e42f1a744f" executionId="8186e5ce-f728-4e74-a4f7-c6bc23934ca3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="929329e6-4555-ce1e-a9db-29a1b52b78cc" executionId="7e6a3f84-ce46-419c-92be-27ec6ec0a3f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec9c6e7e-96b3-4d00-5cc9-f67c0c0678d1" executionId="5cc9d46c-29a2-4c44-af8f-b27a0ee4317d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6128a4f2-d00e-b0d5-720a-0f8687660026" executionId="5c9af0f9-cebe-42a6-a7e7-467319c6be65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6d67b379-b8c0-d47e-e890-60caf55236c7" executionId="8d49ecfa-68d9-4480-a9ab-c166fd72c032" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7189515e-727a-a29c-f9a7-35fbdd35b36a" executionId="a8d9aab5-5bb8-439c-bc44-f53c4aa22dcf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="44370bc7-9a45-eea5-9b28-6d9d94a5a7a4" executionId="ac27e85d-2d59-4109-8feb-1977c3adcf3e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1bfe4f04-7688-f400-6fdd-d7e0f7884a55" executionId="89edee27-a7d8-4c1a-b371-7c33dc3f510a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b755c0e4-31d9-5666-1deb-2da2d23d77bf" executionId="45dd7a59-7294-4721-a7b2-20a38403d59e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="586f1bf2-68f1-2ce8-3d86-95aabd6b53d9" executionId="ab679d0f-826d-46d7-a743-c4a86c1d3280" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6faf2507-2dd2-dc71-2516-2c1e9208609e" executionId="fa02836e-ec12-45fe-93e4-db6d77770c2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a9380d2b-0eba-4aae-42e4-de2d43ac1869" executionId="8706b504-bd75-4aa8-99f1-abbcb07b973c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d419db9-7352-b333-810f-dbfd924bf646" executionId="e3d67d46-7e35-4165-8d27-7e69a2566478" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19d3753d-3963-d4ce-da2f-7436f1cec5b4" executionId="d4f10d9f-6b67-4180-8a3f-0406b7c8319b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8c57800-13f0-8729-af64-782044a2ce35" executionId="ac7f0abf-c25e-4c2e-b607-f16fe4546425" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e5dd5c45-4455-5287-dc76-de6d3318df52" executionId="312c5357-250a-4c79-be68-02822239036c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="318b9e5a-692e-b534-baa0-96ff21529f92" executionId="4c1ca795-eb55-414b-a717-3bdb7a05c60e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="97d0032e-45e9-698e-cf73-680abd9686b0" executionId="52c57097-8182-411a-932c-3daaed1eee2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="08bfadad-1172-0ae1-1367-a4255758d11a" executionId="2a282a51-7bd9-4d9b-b9cd-8251f27d824c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d3dafa78-426e-d997-5618-ed914af36291" executionId="a58e577f-7d05-42da-9bec-49dbb9bc8b5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0652b666-f9f4-c147-84d6-468ca9dc0d48" executionId="3c152549-9cb7-425c-9c0f-534b0b021766" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8c961e9-67dd-3805-a1a3-b75d10b6ea7d" executionId="12fedd8c-fa1a-4595-9777-596dcf9de1cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46b6bd68-3e98-77e2-7dd1-e4ef969ab4b9" executionId="11361d4d-9b80-49e8-9088-77139a019c9a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="071743f0-e170-6b5b-8f1c-2c9c39e19767" executionId="0193b9bd-933b-4fd2-bc7f-6271c9df2e5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa9705af-3499-7db5-560e-e8d5a16c7712" executionId="24ce5637-86a7-4c39-854c-00717f31a6ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d6646776-42bf-d9d9-26f2-aeacdb852e05" executionId="88b8cbf1-4658-43b7-86bd-28bfdc487dfd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e3bd6736-c989-b7ad-d239-3dfc16bc7a08" executionId="4bedebfe-d2b3-4a7d-9de4-92526bef661d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf775d70-a5b5-715b-796e-66eedbf3fd19" executionId="341ff751-398c-4221-8b78-2ac1185e2c7e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcf44651-a623-6132-374d-6f16d08024f2" executionId="55da9e36-3f13-4084-bb6d-e81bb779a2b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6a4f8d9d-559d-af43-4a8b-2e64bde878fb" executionId="0cd5a17f-2bd0-41ab-a7c3-7b5ca2459dcd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7160be1b-c5c9-f399-3b1f-acd1a64602f6" executionId="3def82fa-e20e-45aa-ae75-c281389f11aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10bf709c-1c1a-be20-6dba-9ca5831807c9" executionId="1ea55ce8-570c-42e1-8e6e-1794d1a9b36e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7c28a9a-8227-e4f4-1955-a2867a1288e4" executionId="0ef96770-aac6-422a-9bc5-744ee0f1d1c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06ab3ef0-1427-dbc5-3eb9-96ba767f059b" executionId="49490d6f-1484-4965-9d1e-7114862617d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f229f83d-250e-1fa2-0ce5-71149d0ceada" executionId="84d8d71f-495a-4cd5-bf1f-dc6c4a18e917" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="384187bb-571f-8b97-5328-a20a56bfc66f" executionId="8186450c-2ca7-4eb4-8daf-943ccf53a91f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1c2f3713-f8ca-4df4-0989-169e03a997b6" executionId="1252366a-0caa-48ac-8be8-1565476a4067" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8d5e1e5f-528b-2001-08d4-550e9a76c1da" executionId="ee5084ca-df48-41c6-ac30-cebca0ea61e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c25fe10-55f9-a07e-e73c-a093f1b899a1" executionId="c75464e2-c2a7-42ae-ac31-805273fb05ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d34c887-3c6d-d72d-2a4a-16208725fe78" executionId="fa2a5248-c2ad-4c2f-8415-4ee3562d85b0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="032d022f-b948-9b2a-9c1c-672368ed3cd5" executionId="924d2118-f36d-4eda-ab26-71e83bcef090" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="75c7091e-95c4-735e-70c6-8ae4552749b9" executionId="00f292b9-2007-478e-bbcb-5051ed16d620" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93483e9b-e3cc-1f8f-d064-67de5dc0edce" executionId="02da3409-19b0-4420-bd23-ea34ba0befc1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e5197437-da08-a5f5-6cec-86bc5f4582e1" executionId="b7286619-b625-498f-aaeb-514b807bdf70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb1be211-29e7-cfc5-2a75-d4a7838b333a" executionId="0ac16bb3-a9a5-4059-b603-4176806dddfe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="495d80a9-7f9c-df70-4683-1a71c29a4458" executionId="5be08c9e-13e2-457d-a3f6-bd8a982a69af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="196fda9f-acf9-9621-4849-a49b15279c82" executionId="7dc83fd2-69fe-49ef-9c7d-17588f018e3c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="50a6924c-4613-70b2-ab19-7ae1fa92137e" executionId="ef2949ec-bbe7-42ea-9348-508f467b202d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7fa930bb-dbc6-0044-164c-57be9455408d" executionId="dd7b7f79-115c-4992-a425-9838f0476d90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f90cdf7e-68ae-a945-7dd4-1fd4c90c36ba" executionId="08d172d4-a0cb-4f71-8173-102a527b5f63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ee9dbb8-2daa-51b9-a28b-a47759bf84ab" executionId="8170758b-d16d-4e71-a240-7b7c3630ece4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9efc6f1-46da-3b1e-bcc7-1b381f76d912" executionId="7b3e0e4c-f48e-486d-93aa-633b56b51f12" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="249fe12d-7b73-a45f-552a-0a08ea137ead" executionId="b6e4e86f-1512-4de7-865e-c76419891ae6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b0b235e-cbfc-2de3-c3fd-3a7fe1c01c48" executionId="ac4d9dff-20f3-4a57-b72f-83fb85c057b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="512e3e10-06c7-d948-1051-83d717a2fd73" executionId="09ae8e6a-f742-4b70-bad0-6b0bd31d8bd7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="59" executed="59" passed="59" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in C:\Users\PSI\orca\game\games\the-map-lies\TestBuild\Debug\net8.0\the-map-lies.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 59 of 59 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+처음 그을 때 8원 · 같은 칸을 다시 그을 때 13원 (덧값 7)&#xD;
+&#xD;
+mk-seal-neck (공짜 세계): 갇힘 3 · 1일 · 해 0&#xD;
+mk-brick-in (공짜 세계): 갇힘 2 · 1일 · 해 0&#xD;
+mk-wall-soft (공짜 세계): 갇힘 1 · 1일 · 해 0&#xD;
+&#xD;
+mk-seal-neck → ch-soft: 처음부터 잘 그음 394 · 잘못 그었다가 되돌림 341 (해 20 · 허가 19 · 날 50)&#xD;
+mk-brick-in → ch-soft: 처음부터 잘 그음 394 · 잘못 그었다가 되돌림 260 (해 50 · 허가 40 · 날 50)&#xD;
+&#xD;
+남씨 4일: 길 위에 갇혔을 때 12 · 묻혔을 때 32 (하루치 3 + 묻힘 5)&#xD;
+&#xD;
+필지를 한 번만 쓰게 한 세계에서 거부된 칸 1&#xD;
+    (7,4) 지도는 길, 도시는 건물 — 지도가 거짓말이 됐다&#xD;
+&#xD;
+가장 오래 걸린 회차 49일 (ch-soft/BlockEverything) · 한도 90&#xD;
+&#xD;
+상한 3: 40일에 멈췄다&#xD;
+&#xD;
+상한 없음: 닿았나 False · 주기 27 · 90일 돌렸다&#xD;
+&#xD;
+무른 구역 밖에서 바뀐 칸: 없다&#xD;
+&#xD;
+mk-seal-neck    씨드0 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드1 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드2 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드3 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드4 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck    씨드5 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 8 → 되돌림 1획 · 2일 · 5원 · 남은해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-brick-in     씨드0 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드1 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 1획 · 2일 · 5원 · 남은해 32&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드2 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드3 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드4 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in     씨드5 사고전갇힘 [] 사고후갇힘 [cz-nam,cz-oh,cz-bae] 36일 사고값 24 → 되돌림 2획 · 2일 · 10원 · 남은해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-wall-soft    씨드0 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드1 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드2 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드3 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드4 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft    씨드5 사고전갇힘 [] 사고후갇힘 [cz-jo] 3일 사고값 32 → 되돌림 1획 · 2일 · 12원 · 남은해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+&#xD;
+닿았나 True (40일) · 주기 0&#xD;
+거부된 칸 0 · 어긋남 0&#xD;
+집 79 · 갇힌 사람  · 해 0&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBBBBSBBBBS&#xD;
+    SBBBBSBBBBSBBBBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBSBBSBBBBS&#xD;
+    SBBBBSBSSBSBBBBS&#xD;
+    SBBBBSBBBBSBSSBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSPPPPPPBBBS&#xD;
+    SBBBBSPPPPPPBBBS&#xD;
+    SSSSSSSSSSSSSSSS&#xD;
+    SBBBBSBBBBSBBBBS&#xD;
+&#xD;
+PaveEverything     ch-soft           닿지 않는다&#xD;
+PaveEverything     ch-plaza          집이 46 (필요 54) · 광장이 0 (필요 4)&#xD;
+PaveEverything     ch-both           닿지 않는다 · 광장이 12 (필요 14)&#xD;
+BlockEverything    ch-soft           닿지 않는다 · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+BlockEverything    ch-plaza          닿지 않는다 · 광장이 0 (필요 4) · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+BlockEverything    ch-both           닿지 않는다 · 광장이 12 (필요 14) · 갇힌 사람 cz-nam,cz-oh,cz-bae,cz-lim&#xD;
+PlazaEverything    ch-soft           닿지 않는다&#xD;
+PlazaEverything    ch-plaza          집이 49 (필요 54) · 광장이 0 (필요 4)&#xD;
+PlazaEverything    ch-both           닿지 않는다 · 집이 53 (필요 54) · 광장이 12 (필요 14)&#xD;
+NoEdit             ch-soft           닿지 않는다&#xD;
+NoEdit             ch-plaza          광장이 0 (필요 4)&#xD;
+NoEdit             ch-both           닿지 않는다 · 광장이 12 (필요 14)&#xD;
+&#xD;
+정책               장                점수    목표달성/씨드  집   광장  해    허가  날   거부  수렴&#xD;
+Targeted           ch-soft           394     20/20          75   -1    0     6     33   0     True&#xD;
+Targeted           ch-plaza          474     20/20          74   4     0     26    33   0     True&#xD;
+Targeted           ch-both           584     20/20          74   14    0     16    33   0     True&#xD;
+Targeted           (전체 평균)           484&#xD;
+&#xD;
+PaveEverything     ch-soft           -120    0/20           59   -1    0     120   46   0     True&#xD;
+PaveEverything     ch-plaza          -198    0/20           46   0     0     198   33   0     True&#xD;
+PaveEverything     ch-both           -156    0/20           54   12    0     156   46   0     True&#xD;
+PaveEverything     (전체 평균)           -158&#xD;
+&#xD;
+BlockEverything    ch-soft           -1718   0/20           75   -1    846   120   49   0     True&#xD;
+BlockEverything    ch-plaza          -1233   0/20           72   0     459   200   19   0     True&#xD;
+BlockEverything    ch-both           -714    0/20           75   12    289   160   19   0     True&#xD;
+BlockEverything    (전체 평균)           -1221&#xD;
+&#xD;
+PlazaEverything    ch-soft           -120    0/20           59   -1    0     120   46   0     True&#xD;
+PlazaEverything    ch-plaza          -294    0/20           49   0     47    200   49   0     True&#xD;
+PlazaEverything    ch-both           -160    0/20           53   12    0     160   46   0     True&#xD;
+PlazaEverything    (전체 평균)           -191&#xD;
+&#xD;
+NoEdit             ch-soft           0       0/20           79   -1    0     0     46   0     True&#xD;
+NoEdit             ch-plaza          0       0/20           79   0     0     0     46   0     True&#xD;
+NoEdit             ch-both           0       0/20           79   12    0     0     46   0     True&#xD;
+NoEdit             (전체 평균)           0&#xD;
+&#xD;
+&#xD;
+길에 붙은 건물(집) 78 · 건물 80 · 길 100 · 광장 12&#xD;
+    cz-nam (7,5) 길 문에 닿는다&#xD;
+    cz-oh (8,5) 길 문에 닿는다&#xD;
+    cz-bae (7,4) 길 문에 닿는다&#xD;
+    cz-koo (8,8) 광장 문에 닿는다&#xD;
+    cz-lim (3,3) 길 문에 닿는다&#xD;
+    cz-jo (12,5) 길 문에 닿는다&#xD;
+고칠 수 있는 칸 134 / 192&#xD;
+&#xD;
+상한 없음: 닿았나 False · 주기 0 · 90일 돌렸다&#xD;
+상한 3: 닿았나 True (40일) · 주기 0&#xD;
+&#xD;
+되돌릴 날을 하루만 주면 3/3 가 실패한다&#xD;
+&#xD;
+딴 길을 막고 필지도 닳게 하면: 갇힘 2 · **못 꺼냈다**&#xD;
+&#xD;
+mk-seal-neck/씨드0: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드1: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드2: 1획 · 2일 · 5원 · 남은 해 20&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드3: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드4: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-seal-neck/씨드5: 1획 · 2일 · 5원 · 남은 해 12&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+mk-brick-in/씨드0: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드1: 1획 · 2일 · 5원 · 남은 해 32&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드2: 2획 · 2일 · 10원 · 남은 해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드3: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드4: 2획 · 2일 · 10원 · 남은 해 32&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-brick-in/씨드5: 2획 · 2일 · 10원 · 남은 해 50&#xD;
+        36일 (8,4) 건물→광장 5원&#xD;
+        36일 (6,5) 건물→광장 5원&#xD;
+mk-wall-soft/씨드0: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드1: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드2: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드3: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드4: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+mk-wall-soft/씨드5: 1획 · 2일 · 12원 · 남은 해 6&#xD;
+        3일 (12,4) 건물→광장 12원 (다시 그음)&#xD;
+&#xD;
+ch-soft — Targeted 394&#xD;
+    PaveEverything -120&#xD;
+    BlockEverything -1718&#xD;
+    PlazaEverything -120&#xD;
+    NoEdit 0&#xD;
+ch-plaza — Targeted 474&#xD;
+    PaveEverything -198&#xD;
+    BlockEverything -1233&#xD;
+    PlazaEverything -294&#xD;
+    NoEdit 0&#xD;
+ch-both — Targeted 584&#xD;
+    PaveEverything -156&#xD;
+    BlockEverything -714&#xD;
+    PlazaEverything -160&#xD;
+    NoEdit 0&#xD;
+&#xD;
+PaveEverything: 닿지 않는다 · 집이 준다 · 광장이 없다&#xD;
+BlockEverything: 닿지 않는다 · 사람이 갇힌다 · 광장이 없다&#xD;
+PlazaEverything: 닿지 않는다 · 집이 준다 · 광장이 없다&#xD;
+NoEdit: 닿지 않는다 · 광장이 없다&#xD;
+&#xD;
+지도를 그대로 뒀는데 도시가 5칸을 스스로 바꿨다&#xD;
+&#xD;
+ch-soft (1획 · 6원): 12,5S&#xD;
+ch-plaza (5획 · 26원): 12,5S 7,2P 7,3P 7,4P 7,5P&#xD;
+ch-both (3획 · 16원): 12,5S 6,6P 6,7P&#xD;
+&#xD;
+잘 푼 회차: 장 3 x 씨드 20 → 서로 다른 결과 3가지 (씨드가 결과에 안 남는다)&#xD;
+사고 회차: 사고 3 x 씨드 6 → 서로 다른 결과 5가지&#xD;
+&#xD;
+    cz-nam 반경 0 → 다녀 본 칸 1&#xD;
+    cz-oh 반경 1 → 다녀 본 칸 2&#xD;
+    cz-bae 반경 2 → 다녀 본 칸 6&#xD;
+    cz-koo 반경 3 → 다녀 본 칸 8&#xD;
+    cz-lim 반경 4 → 다녀 본 칸 7&#xD;
+    cz-jo 반경 0 → 다녀 본 칸 1&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

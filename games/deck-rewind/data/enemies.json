@@ -1,0 +1,105 @@
+{
+  "_": "행동 패턴은 순환한다. 플레이어에게는 보이지 않는다 — 맞고 나서 안다.",
+  "_기억": "memoryDamagePctPerStack 이 되감기의 대가다. 되감을 때마다 적 피해가 이 백분율만큼 더해지고, 패턴이 한 칸 밀려 같은 수를 다시 두지 않는다.",
+  "enemies": [
+    {
+      "id": "enemy_sentry",
+      "nameKo": "감시기",
+      "maxHp": 46,
+      "memoryDamagePctPerStack": 18,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 10,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 7,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 13,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        }
+      ]
+    },
+    {
+      "id": "enemy_annealer",
+      "nameKo": "소둔기",
+      "maxHp": 60,
+      "memoryDamagePctPerStack": 20,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 3,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 10,
+          "target": "player"
+        },
+        {
+          "type": "heal",
+          "amount": 6,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 15,
+          "target": "player"
+        }
+      ]
+    },
+    {
+      "id": "enemy_archivist",
+      "nameKo": "기록관",
+      "maxHp": 112,
+      "memoryDamagePctPerStack": 22,
+      "pattern": [
+        {
+          "type": "attack",
+          "amount": 15,
+          "target": "player"
+        },
+        {
+          "type": "block",
+          "amount": 13,
+          "target": "self"
+        },
+        {
+          "type": "attack",
+          "amount": 12,
+          "target": "player"
+        },
+        {
+          "type": "weak",
+          "amount": 2,
+          "target": "player"
+        },
+        {
+          "type": "attack",
+          "amount": 20,
+          "target": "player"
+        },
+        {
+          "type": "strengthen",
+          "amount": 3,
+          "target": "self"
+        }
+      ]
+    }
+  ]
+}

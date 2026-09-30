@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<!--
+  연출 목업 — 식물 표본집 (herbarium).
+
+  손으로 그린 그림이 아니다. 아래 파일들을 **실제로 읽어** 그린다:
+    ../data/crops.json ../data/cards.json ../data/seasons.json
+    ../data/plots.json ../data/enemies.json ../data/runs/year_01.json
+    ./palette.json   ./sample_run.json (검사기가 구운 '실제로 돌린 세 해')
+
+  표본 그림도 그림 파일이 아니다. palette.json 의 specimen/form 수치와
+  sample_run.json 의 세대(generation)로 SVG 를 그 자리에서 그린다 —
+  세대가 오르면 줄기가 길어지고 잎이 늘어난다. '카드가 자란다'가 데이터에서 나온다.
+
+  띄우는 법 — file:// 은 fetch 가 막힌다. PoC 뿌리에서:
+    python -m http.server 8000
+    http://localhost:8000/presentation/index.html
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>식물 표본집 — 덱을 심는다</title>
+<style>
+  @font-face { font-family:"PenLabel"; src:url("assets/fonts/NanumPenScript-Regular.ttf") format("truetype"); font-display:swap; }
+  @font-face { font-family:"SongBody"; src:url("assets/fonts/SongMyung-Regular.ttf") format("truetype"); font-display:swap; }
+
+  :root{
+    --mount:#E8E0CE; --mount-deep:#D9CEB6; --mount-edge:#C9BC9E;
+    --ink:#2E5A56; --ink-faded:#6E8F86; --pencil:#5A5347;
+    --sepia:#7A6A45; --stem:#6B7A4A; --bloom:#9A5F6A;
+    --thread:#B08A5A; --rule:#C3B79B; --seal:#9C4030; --void:#221E18;
+    --s-title:40px; --s-heading:19px; --s-body:14px; --s-hint:11px; --s-label:18px; --s-qty:22px;
+    --tex-op:.30; --foxing-op:.12; --vignette:.18;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0; background:var(--void); color:var(--pencil);
+    font-family:"SongBody", serif; font-size:var(--s-body); line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .label{font-family:"PenLabel", cursive; font-size:var(--s-label); color:var(--ink); line-height:1.35}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ── 대지(mount): 크림색 종이 한 장 ─────────────────────────── */
+  .sheet{
+    position:relative; max-width:1120px; margin:0 auto; min-height:100vh;
+    background:var(--mount); padding:38px 34px 72px; overflow:hidden;
+    box-shadow:0 0 0 1px var(--mount-edge), 0 18px 60px rgba(0,0,0,.55);
+  }
+  .sheet::before{               /* 내려받은 CC0 종이 질감 */
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:url("assets/img/mount-paper.jpg"); background-size:300px;
+    opacity:var(--tex-op); mix-blend-mode:multiply;
+  }
+  .sheet::after{                /* foxing — 종이의 갈색 얼룩. 정지해 있다 */
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(240px 180px at 8% 12%,  rgba(122,106,69,.18), transparent 70%),
+      radial-gradient(300px 200px at 92% 34%, rgba(122,106,69,.14), transparent 72%),
+      radial-gradient(200px 160px at 24% 88%, rgba(122,106,69,.12), transparent 70%),
+      radial-gradient(120% 90% at 50% 50%, transparent 58%, rgba(34,30,24,.20) 100%);
+    opacity:1;
+  }
+  .wrap{position:relative; z-index:1}
+
+  header{text-align:center; border-bottom:1px solid var(--rule); padding-bottom:18px; margin-bottom:26px}
+  .collection{font-size:var(--s-hint); letter-spacing:.34em; color:var(--ink-faded); text-transform:uppercase}
+  h1{font-family:"SongBody",serif; font-weight:400; font-size:var(--s-title); margin:8px 0 2px; color:var(--ink); letter-spacing:.04em}
+  header .sub{font-size:var(--s-hint); color:var(--sepia); letter-spacing:.16em}
+  .stamp{
+    display:inline-block; margin-top:12px; padding:5px 15px; font-size:var(--s-hint);
+    letter-spacing:.22em; color:var(--seal); border:1.5px solid var(--seal);
+    transform:rotate(-2.2deg); opacity:.85;
+  }
+  .stamp.fell{opacity:.95}
+
+  h2{font-family:"SongBody",serif; font-weight:400; font-size:var(--s-heading); color:var(--ink);
+     margin:0 0 4px; letter-spacing:.1em}
+  .cap{font-size:var(--s-hint); color:var(--sepia); margin:0 0 16px; line-height:1.9}
+  section{margin-bottom:38px}
+  .band{border-top:1px solid var(--rule); padding-top:20px}
+
+  /* ── 표본의 내력: 한 표본의 여러 해 모습을 옆으로 ───────────── */
+  .lineage{display:flex; align-items:flex-start; gap:0; margin-bottom:10px; flex-wrap:wrap}
+  .lineage .no{
+    font-family:"PenLabel",cursive; font-size:15px; color:var(--ink-faded);
+    min-width:52px; padding-top:62px; letter-spacing:.04em;
+  }
+  .card-sheet{
+    position:relative; width:var(--sw); background:rgba(255,255,255,.22);
+    border:1px solid var(--mount-edge); padding:8px 8px 6px; text-align:center;
+  }
+  .card-sheet .pin{position:absolute; inset:0; pointer-events:none}
+  .card-sheet .nm{font-family:"PenLabel",cursive; font-size:var(--s-label); color:var(--ink); line-height:1.2}
+  .card-sheet .meta{font-size:10px; color:var(--sepia); letter-spacing:.04em}
+  .card-sheet .gen{
+    position:absolute; top:5px; right:7px; font-family:"PenLabel",cursive;
+    font-size:14px; color:var(--thread);
+  }
+  .arrow{
+    align-self:center; padding:0 9px; text-align:center; min-width:62px; margin-top:22px;
+  }
+  .arrow .how{font-family:"PenLabel",cursive; font-size:15px; color:var(--ink); display:block; line-height:1.1}
+  .arrow .line{display:block; color:var(--ink-faded); font-size:17px; letter-spacing:-1px}
+
+  /* ── 밭 ── */
+  .seasons{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px}
+  .season{border:1px solid var(--rule); padding:11px 12px; background:rgba(255,255,255,.16)}
+  .season .hd{display:flex; align-items:baseline; gap:8px; border-bottom:1px solid var(--rule); padding-bottom:5px}
+  .season .hd .ch{font-size:19px; color:var(--ink)}
+  .season .hd .nm{font-family:"PenLabel",cursive; font-size:var(--s-label); color:var(--ink)}
+  .season .hd .bud{margin-left:auto; font-size:10px; color:var(--sepia)}
+  .rows{margin-top:7px}
+  .row{display:grid; grid-template-columns:70px 1fr auto; gap:7px; align-items:baseline;
+       font-size:12px; padding:2px 0; border-bottom:1px dotted var(--rule)}
+  .row:last-child{border-bottom:none}
+  .row .plot{font-size:10px; color:var(--ink-faded); letter-spacing:.04em}
+  .row .what{color:var(--pencil)}
+  .row .yield{font-size:13px; color:var(--ink); text-align:right}
+  .row.sown{background:rgba(176,138,90,.13)}
+  .row.sown .what{color:var(--thread)}
+  .row.lost .yield{color:var(--seal); font-size:11px}
+
+  /* ── 그 해의 표본집 ── */
+  .deck{display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr)); gap:12px}
+  .entry{border:1px solid var(--rule); padding:9px 11px; background:rgba(255,255,255,.16);
+         display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start}
+  .entry.none{opacity:.4; border-style:dashed}
+  .entry .txt{min-width:0}
+  .entry .nm{font-family:"PenLabel",cursive; font-size:var(--s-label); color:var(--ink)}
+  .entry .cost{display:inline-block; min-width:16px; text-align:center; border:1px solid var(--ink-faded);
+               border-radius:50%; font-family:"SongBody",serif; font-size:10px; line-height:14px;
+               color:var(--ink-faded); margin-right:5px}
+  .entry .qty{font-size:var(--s-qty); color:var(--ink); line-height:1.1}
+  .entry .qty small{font-size:10px; color:var(--sepia)}
+  .entry .note{font-size:10px; color:var(--sepia); line-height:1.7}
+  .entry .note b{color:var(--thread); font-weight:400}
+  .entry .src{font-size:10px; color:var(--ink-faded)}
+
+  /* ── 겨울 하룻밤 ── */
+  .nights{display:grid; grid-template-columns:repeat(auto-fit,minmax(178px,1fr)); gap:12px}
+  .visit{border:1px solid var(--rule); padding:10px 12px; background:rgba(255,255,255,.16); position:relative}
+  .visit.boss{border-color:var(--ink)}
+  .visit.fell{border-color:var(--seal)}
+  .visit .who{font-family:"PenLabel",cursive; font-size:var(--s-label); color:var(--ink)}
+  .visit .st{font-size:11px; color:var(--sepia)}
+  .visit .mark{position:absolute; top:9px; right:11px; font-size:10px; letter-spacing:.14em; color:var(--ink-faded)}
+  .visit.fell .mark{color:var(--seal)}
+
+  /* ── 두 세계 ── */
+  table.two{width:100%; border-collapse:collapse; font-size:12px}
+  table.two th, table.two td{border-bottom:1px solid var(--rule); padding:6px 8px; text-align:right}
+  table.two th:first-child, table.two td:first-child{text-align:left}
+  table.two thead th{font-family:"PenLabel",cursive; font-size:15px; color:var(--ink); border-bottom:1px solid var(--ink-faded)}
+  table.two td.cut{color:var(--sepia)}
+  table.two td.gain{color:var(--ink)}
+
+  .note{margin-top:26px; border-left:2px solid var(--thread); padding:2px 0 2px 14px;
+        font-size:var(--s-hint); color:var(--sepia); max-width:820px; line-height:2}
+  code{background:rgba(46,90,86,.09); padding:1px 5px; color:var(--ink); font-size:11px}
+  .err{max-width:720px; margin:70px auto; line-height:2; color:var(--pencil)}
+
+  @media (max-width:760px){
+    .sheet{padding:24px 16px 56px}
+    .lineage .no{padding-top:0; min-width:100%}
+  }
+</style>
+</head>
+<body>
+<div id="root" class="sheet"><div class="wrap"><div class="err">표본집을 펼치는 중…</div></div></div>
+
+<script>
+const F = (p) => fetch(p).then(r => { if(!r.ok) throw new Error(p+" → "+r.status); return r.json(); });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Promise.all([
+  F("palette.json"), F("sample_run.json"),
+  F("../data/crops.json"), F("../data/cards.json"), F("../data/seasons.json"),
+  F("../data/plots.json"), F("../data/enemies.json"), F("../data/runs/year_01.json")
+]).then(draw).catch(err => {
+  document.querySelector("#root .wrap").innerHTML =
+    '<div class="err"><b>데이터를 읽지 못했다.</b><br>' + esc(err.message) +
+    '<br><br>이 목업은 <code>data/</code> 의 실제 JSON 을 읽어 그린다. ' +
+    '<code>file://</code> 로는 fetch 가 막히므로 PoC 뿌리에서 서버를 띄운다:' +
+    '<br><br><code>python -m http.server 8000</code><br>' +
+    '<code>http://localhost:8000/presentation/index.html</code></div>';
+});
+
+function draw([pal, sample, cropsF, cardsF, seasonsF, plotsF, enemiesF, yearF]){
+  // ── palette.json 을 CSS 변수로 ────────────────────────────────
+  const R = document.documentElement.style, c = pal.color, t = pal.type, g = pal.grade;
+  const set = (k,v) => R.setProperty(k,v);
+  set("--mount",c.mount); set("--mount-deep",c.mountDeep); set("--mount-edge",c.mountEdge);
+  set("--ink",c.ink); set("--ink-faded",c.inkFaded); set("--pencil",c.pencil);
+  set("--sepia",c.sepia); set("--stem",c.stem); set("--bloom",c.bloom);
+  set("--thread",c.thread); set("--rule",c.rule); set("--seal",c.seal); set("--void",c.void);
+  set("--s-title",t.sizeTitle+"px"); set("--s-heading",t.sizeHeading+"px");
+  set("--s-body",t.sizeBody+"px"); set("--s-hint",t.sizeHint+"px");
+  set("--s-label",t.sizeLabel+"px"); set("--s-qty",t.sizeQuantity+"px");
+  set("--tex-op",g.paperTextureOpacity); set("--foxing-op",g.foxingOpacity);
+  set("--sw", pal.specimen.sheetWidthPx+"px");
+
+  const crops   = Object.fromEntries(cropsF.crops.map(x=>[x.id,x]));
+  const cards   = Object.fromEntries(cardsF.cards.map(x=>[x.id,x]));
+  const plots   = Object.fromEntries(plotsF.plots.map(x=>[x.id,x]));
+  const seasons = Object.fromEntries(seasonsF.seasons.map(x=>[x.id,x]));
+  const enemies = Object.fromEntries(enemiesF.enemies.map(x=>[x.id,x]));
+  const planting = seasonsF.seasons.filter(s=>s.plantable).sort((a,b)=>a.order-b.order);
+  // 펼쳐 보일 해를 고르는 규칙은 하나다: **심어 둔 표본이 돋은 마지막 해.**
+  // 그 해가 없으면 마지막 해를 펼친다. 고르는 규칙을 화면에 적어 둔다 — 골라 보여 준 것이 아니라
+  // 규칙으로 뽑은 것임을 읽는 사람이 알아야 한다.
+  let last = sample.yearsOut[sample.yearsOut.length-1];
+  for (let i = sample.yearsOut.length-1; i >= 0; i--)
+    if (sample.yearsOut[i].sownAtStart > 0) { last = sample.yearsOut[i]; break; }
+
+  // ── 표본 한 장을 SVG 로 그린다 ────────────────────────────────
+  // 그림 파일이 아니다. palette 의 수치 + 세대(generation)만으로 형태가 정해진다.
+  function specimen(cardId, generation){
+    const S = pal.specimen, f = (pal.form[cardId] || pal.form[Object.keys(pal.form)[1]]);
+    const W = S.sheetWidthPx - 18, H = S.sheetHeightPx - 46;
+    const col = c[f.color] || c.stem;
+    const gen = Math.max(1, generation || 1);
+    const stem = Math.min(H - 14, S.stemBasePx + (gen-1) * S.stemPerGenerationPx);
+    const leaves = Math.min(S.leafMax, (f.leaves || S.leafBase) + (gen-1) * S.leafPerGeneration);
+    const cx = W/2, base = H - 6, sw = S.strokePx;
+    let p = "";
+
+    if (f.kind === "leaf"){
+      // 넓은 잎 — lobes 만큼 갈래가 난다. 세대가 오르면 잎이 커진다
+      const lobes = f.lobes || 1, h = stem, w = 13 + gen*3.4;
+      p += `<path d="M${cx} ${base} L${cx} ${base-h}" stroke="${col}" stroke-width="${sw}" fill="none"/>`;
+      for (let i=0;i<lobes;i++){
+        const off = (i - (lobes-1)/2) * (w*0.92);
+        const ty = base - h + 6 + Math.abs(off)*0.5;
+        p += `<path d="M${cx+off} ${ty} C${cx+off-w} ${ty+h*0.30} ${cx+off-w*0.5} ${base-8} ${cx+off} ${base-4}
+                       C${cx+off+w*0.5} ${base-8} ${cx+off+w} ${ty+h*0.30} ${cx+off} ${ty} Z"
+                 fill="${col}" fill-opacity=".22" stroke="${col}" stroke-width="${sw}"/>`;
+        p += `<path d="M${cx+off} ${ty+3} L${cx+off} ${base-6}" stroke="${col}" stroke-width="${sw*0.7}" opacity=".7"/>`;
+      }
+    } else if (f.kind === "pod"){
+      // 마른 꼬투리 — 씨앗이 보인다
+      const seeds = (f.seeds || 4) + (gen-1);
+      p += `<path d="M${cx} ${base} L${cx} ${base-stem}" stroke="${c.stem}" stroke-width="${sw}" fill="none"/>`;
+      const ph = Math.min(stem-8, 34 + gen*5), pw = 11 + gen*1.6;
+      const top = base - stem;
+      p += `<path d="M${cx} ${top} C${cx-pw} ${top+ph*0.34} ${cx-pw} ${top+ph*0.8} ${cx} ${top+ph}
+                     C${cx+pw} ${top+ph*0.8} ${cx+pw} ${top+ph*0.34} ${cx} ${top} Z"
+               fill="${col}" fill-opacity=".20" stroke="${col}" stroke-width="${sw}"/>`;
+      for (let i=0;i<seeds;i++){
+        const y = top + ph*(0.20 + 0.62*(i/(Math.max(1,seeds-1))));
+        p += `<circle cx="${cx}" cy="${y.toFixed(1)}" r="${pal.specimen.bloomRadiusPx*0.62}" fill="${col}" fill-opacity=".75"/>`;
+      }
+    } else {
+      // 가지 — 잎이 좌우로 번갈아 난다. 가시가 있으면 짧은 침이 붙는다
+      p += `<path d="M${cx} ${base} C${cx-4} ${base-stem*0.4} ${cx+4} ${base-stem*0.7} ${cx} ${base-stem}"
+               stroke="${col}" stroke-width="${sw*1.2}" fill="none"/>`;
+      for (let i=0;i<leaves;i++){
+        const fr = 0.18 + 0.74*(i/Math.max(1,leaves-1));
+        const y = base - stem*fr, side = (i%2===0) ? -1 : 1;
+        const len = 9 + gen*1.9;
+        p += `<path d="M${cx} ${y.toFixed(1)} q${side*len*0.7} ${-len*0.42} ${side*len} ${-len*0.1}
+                       q${-side*len*0.36} ${len*0.52} ${-side*len} ${len*0.1} Z"
+                 fill="${col}" fill-opacity=".30" stroke="${col}" stroke-width="${sw*0.85}"/>`;
+        if (f.thorns) p += `<path d="M${cx} ${(y-4).toFixed(1)} l${side*4} ${-3}" stroke="${col}" stroke-width="${sw*0.8}"/>`;
+      }
+      p += `<circle cx="${cx}" cy="${base-stem}" r="${pal.specimen.bloomRadiusPx}" fill="${c.bloom}" fill-opacity=".55" stroke="${c.bloom}" stroke-width="${sw*0.8}"/>`;
+    }
+
+    // 실로 꿰어 고정한 자리 — 표본집의 매듭
+    const st = pal.specimen;
+    for (let i=0;i<st.stitchCount;i++){
+      const y = base - stem*(0.24 + 0.30*i);
+      const dx = st.stitchLengthPx/2, dy = Math.tan(st.stitchTiltDeg*Math.PI/180)*dx;
+      p += `<path d="M${cx-dx} ${(y+dy).toFixed(1)} L${cx+dx} ${(y-dy).toFixed(1)}"
+               stroke="${c.thread}" stroke-width="${st.strokePx*1.3}" opacity=".85"/>`;
+    }
+    return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${p}</svg>`;
+  }
+
+  function cardSheet(cardId, generation, how, sub){
+    const cd = cards[cardId];
+    return `<div class="card-sheet">
+      <span class="gen">${generation}해</span>
+      ${specimen(cardId, generation)}
+      <div class="nm">${esc(cd.nameKo)}</div>
+      <div class="meta">${esc(cd.labelKo)}${sub ? " · " + esc(sub) : ""}</div>
+    </div>`;
+  }
+
+  // ── 1. 표본의 내력 — 한 표본의 여러 해 모습을 옆으로 ──────────
+  const lineageHtml = sample.lineages.map(L => {
+    let out = `<div class="lineage"><div class="no">제${esc(L.lineageId.replace(/^S/,""))}호</div>`;
+    L.steps.forEach((st, i) => {
+      if (i > 0){
+        const how = pal.sowLabel[st.how] || st.how;
+        out += `<div class="arrow"><span class="how">${esc(how)}</span><span class="line">───▸</span></div>`;
+      }
+      out += cardSheet(st.cardId, i+1, st.how, st.year + "년");
+    });
+    if (L.steps.length === 1)
+      out += `<div class="arrow"><span class="how">그 밤에 씀</span><span class="line">──╳</span></div>`;
+    out += `</div>`;
+    return out;
+  }).join("");
+
+  // ── 1-2. 규칙 계보표 — cards.json 의 sown 을 세 해까지 펼친다 ──
+  // 한 판에서 세 해를 건넌 표본이 나오지 않아도, 규칙 자체는 여기서 눈에 보인다.
+  function ruleChain(startId){
+    let out = "", id = startId, gen = 1;
+    for (let step = 0; step < 3; step++){
+      out += cardSheet(id, gen, "rule", "");
+      const rule = cards[id].sown;
+      if (step === 2) break;
+      const how = pal.sowLabel[rule.type] || rule.type;
+      if (rule.type === "seedfall"){
+        out += `<div class="arrow"><span class="how">${esc(how)}</span><span class="line">───▸</span></div>`;
+        out += `<div class="card-sheet" style="display:flex;flex-direction:column;justify-content:center">
+                  <div class="nm">씨앗 ${rule.seeds}알</div>
+                  <div class="meta">표본은 남지 않는다<br>밭으로 되돌아간다</div></div>`;
+        break;
+      }
+      const tag = rule.amount > 1 ? `${esc(how)} ×${rule.amount}` : esc(how);
+      out += `<div class="arrow"><span class="how">${tag}</span><span class="line">───▸</span></div>`;
+      id = rule.becomes; gen += 1;
+    }
+    return out;
+  }
+
+  const ruleHtml = cardsF.cards.map(cd =>
+    `<div class="lineage"><div class="no">${esc(cd.nameKo)}</div>${ruleChain(cd.id)}</div>`).join("");
+
+  // ── 2. 밭 ────────────────────────────────────────────────────
+  const y = last;
+  const seasonHtml = planting.map(s => {
+    const rows = y.plantings.filter(p => p.seasonId === s.id);
+    const sprouts = y.sprouts.filter(p => p.seasonId === s.id);
+    const water = rows.reduce((a,p)=>a + crops[p.cropId].waterPerTurn*crops[p.cropId].growTurns, 0);
+    const seed  = rows.reduce((a,p)=>a + crops[p.cropId].seedCost, 0);
+    let body = sprouts.map(sp => {
+      const became = sp.becameCardIds.length
+        ? sp.becameCardIds.map(id=>cards[id].nameKo).join(" + ")
+        : "씨앗 " + sp.seedsGained;
+      return `<div class="row sown">
+        <span class="plot">${esc(plots[sp.plotId] ? plots[sp.plotId].nameKo : sp.plotId)}</span>
+        <span class="what">심어 둔 ${esc(cards[sp.fromCardId].nameKo)} → <b>${esc(became)}</b></span>
+        <span class="yield num">${sp.occupiedTurns}턴</span></div>`;
+    }).join("");
+    body += rows.map(p => {
+      const cr = crops[p.cropId], lost = p.harvestTurn < 0;
+      return `<div class="row${lost?" lost":""}">
+        <span class="plot">${esc(plots[p.plotId] ? plots[p.plotId].nameKo : p.plotId)}</span>
+        <span class="what">${esc(cr.nameKo)} <span style="color:var(--ink-faded)">→ ${esc(cards[p.cardId].nameKo)}</span></span>
+        <span class="yield num">${lost ? "익지 못함" : p.cardsYielded + "장"}</span></div>`;
+    }).join("");
+    if (!body) body = `<div class="row"><span class="plot">—</span><span class="what">비어 있다</span><span class="yield"></span></div>`;
+    return `<div class="season">
+      <div class="hd"><span class="ch">${esc(pal.seasonLabel[s.id]||"")}</span>
+        <span class="nm">${esc(s.nameKo)}</span>
+        <span class="bud">물 <span class="num">${water}</span>/${s.waterBudget} · 씨앗 <span class="num">${seed}</span>/${s.seedBudget}</span></div>
+      <div class="rows">${body}</div></div>`;
+  }).join("");
+
+  // ── 3. 그 해의 표본집 ────────────────────────────────────────
+  const deckHtml = y.deck.map(d => {
+    const cd = cards[d.cardId], rule = cd.sown;
+    const becomes = rule.type === "seedfall"
+      ? `씨앗 ${rule.seeds}알`
+      : `${cards[rule.becomes].nameKo}${rule.amount>1 ? " ×"+rule.amount : ""}`;
+    const src = d.fromCrops.map(id=>crops[id].nameKo).join(" · ");
+    return `<div class="entry${d.count===0?" none":""}">
+      <div>${specimen(d.cardId, 1)}</div>
+      <div class="txt">
+        <div class="nm"><span class="cost num">${cd.cost}</span>${esc(cd.nameKo)}
+          <span class="qty num"> ${d.count===0?"—":d.count}<small>${d.count===0?"":"장"}</small></span></div>
+        <div class="src">${esc(src)} 에서 길렀다${d.fromSown>0?` · <b style="color:var(--thread);font-weight:400">${d.fromSown}장은 심어서 돋았다</b>`:""}</div>
+        <div class="note">밤에 안 쓴 것 <b>${d.unplayed}장</b> — 심으면 <b>${esc(pal.sowLabel[rule.type])}: ${esc(becomes)}</b>
+          <br>봄의 밭칸을 <span class="num">${cd.sownTurns}</span>턴 묶는다</div>
+      </div></div>`;
+  }).join("");
+
+  // ── 4. 겨울 하룻밤 ───────────────────────────────────────────
+  const visitHtml = y.visits.map(v => {
+    const e = enemies[v.enemyId];
+    return `<div class="visit${v.isBoss?" boss":""}${v.held?"":" fell"}">
+      <div class="mark">${v.held?"막았다":"뚫렸다"}</div>
+      <div class="who">${esc(e.nameKo)}${v.isBoss?" · 우두머리":""}</div>
+      <div class="st">체력 <span class="num">${v.enemyHp}</span> · <span class="num">${v.turns}</span>턴</div>
+      <div class="st">남은 체력 <span class="num">${v.playerHpLeft}</span></div>
+    </div>`;
+  }).join("");
+
+  // ── 5. 두 세계 ───────────────────────────────────────────────
+  const twoHtml = sample.yearsOut.map((yy,i) => {
+    const cu = sample.cut[i];
+    const grown = yy.deck.reduce((a,d)=>a+d.fromSown,0);
+    return `<tr>
+      <td>${yy.year}년</td>
+      <td class="num">${yy.deckSize}</td><td class="num gain">${grown}</td>
+      <td class="num">${yy.sownForNextYear}</td><td>${yy.held?"지켰다":"뚫렸다"}</td>
+      <td class="num cut">${cu.deckSize}</td><td class="num cut">0</td><td class="cut">${cu.held?"지켰다":"뚫렸다"}</td>
+    </tr>`;
+  }).join("");
+
+  document.querySelector("#root .wrap").innerHTML = `
+    <header>
+      <div class="collection">${esc(pal.name)}</div>
+      <h1>덱을 심는다</h1>
+      <div class="sub">씨드 <span class="num">${sample.seed}</span> · <span class="num">${sample.years}</span>해 ·
+        겨울에 밭으로 돌려보낼 칸 <span class="num">${sample.sowPlots}</span></div>
+      <div class="stamp ${last.held?"":"fell"}">${last.held?"제"+last.year+"해 · 표본집 온전함":"제"+last.year+"해 · 표본집 흩어짐"}</div>
+    </header>
+
+    <section>
+      <h2>표본의 내력</h2>
+      <p class="cap">한 표본의 여러 해 모습을 왼쪽에서 오른쪽으로 붙였다.
+        <b>그 밤에 쓰지 않은 표본은 버려지지 않고 밭으로 돌아가 심긴다</b> — 다음 해에 변해서 온다.
+        줄기의 길이와 잎의 수는 그림이 아니라 <code>generation</code> 에서 나온다.<br>
+        ‘그 밤에 씀’으로 끝난 줄은 거기서 내력이 멈춘 표본이다. 밤을 넘기는 데 쓰였고, 그래서 자라지 않았다.</p>
+      ${lineageHtml}
+    </section>
+
+    <section class="band">
+      <h2>심으면 무엇이 되는가</h2>
+      <p class="cap"><code>data/cards.json</code> 의 <code>sown</code> 규칙을 세 해까지 펼친 표다 — 한 판의 기록이 아니라 규칙 그 자체다.
+        규칙은 셋뿐이다: <b>자람</b>(한 장이 더 좋은 한 장이 된다) · <b>갈라짐</b>(좋은 한 장이 덜 좋은 두 장이 된다) ·
+        <b>씨앗만</b>(표본은 남지 않고 씨앗으로 돌아온다).<br>
+        자람과 갈라짐이 서로를 되돌리기 때문에 표본이 끝없이 불어나지 않는다. 그 왕복이 이 PoC 의 브레이크다.</p>
+      ${ruleHtml}
+    </section>
+
+    <section class="band">
+      <h2>제 ${last.year} 해의 밭</h2>
+      <p class="cap"><span style="color:var(--ink-faded)">심어 둔 표본이 돋은 마지막 해를 펼쳤다 —
+        고른 것이 아니라 규칙으로 뽑은 해다.</span><br>
+        밭 <span class="num">${last.plots}</span>칸 · 씨앗 <span class="num">${last.seedsAtStart}</span>로 시작했다.
+        <b style="color:var(--thread);font-weight:400">주황 줄은 심어 둔 표본이 돋아난 자리다</b> —
+        그 칸은 봄에 <span class="num">${last.plotTurnsToSown}</span>턴 묶였고, 그만큼 새로 기를 자리가 없었다.
+        심어서 돋은 표본 <span class="num">${last.cardsFromSown}</span>장 · 돌아온 씨앗 <span class="num">${last.seedsFromSown}</span>알.</p>
+      <div class="seasons">${seasonHtml}</div>
+    </section>
+
+    <section class="band">
+      <h2>그 해의 표본집</h2>
+      <p class="cap">표본을 얻는 길은 둘이고 둘 다 밭이다 — <b>씨앗으로 기르거나, 쓰지 않은 표본을 심거나.</b>
+        카드 상점은 없다. 지금 <span class="num">${last.deckSize}</span>장 ·
+        밤에 한 번도 안 쓴 것 <span class="num">${last.unplayedAfterNight}</span>장 ·
+        그 가운데 <span class="num">${last.sownForNextYear}</span>장을 밭으로 돌려보냈다.</p>
+      <div class="deck">${deckHtml}</div>
+    </section>
+
+    <section class="band">
+      <h2>겨울 하룻밤</h2>
+      <p class="cap">셋이 차례로 온다. 체력은 그 사이에 이어지고 회복하지 않는다.
+        <b>지면 그해 표본을 한 장도 심지 못한다</b> — 그래서 ‘전부 아끼고 아무것도 안 쓴다’가 자멸이 된다.</p>
+      <div class="nights">${visitHtml}</div>
+    </section>
+
+    <section class="band">
+      <h2>고리를 끊어 보면</h2>
+      <p class="cap">같은 씨드 · 같은 정책으로, <b>덱 → 밭 경로만 끊은 세계</b>를 나란히 돌린 결과다.
+        검사기 <code>LoopClosesBothWays</code> 가 판정하는 것이 이 차이다.<br>
+        <b style="color:var(--seal);font-weight:400">이 한 판은 한 판일 뿐이다.</b>
+        이 씨드에서는 이은 세계가 두 해째에 뚫리고 끊은 세계가 버텼다 — 표본이 늘어 덱이 묽어진 해다.
+        결합의 값은 목업이 아니라 60판을 평균한 검사기 출력에 있다(README 검증 칸).</p>
+      <table class="two">
+        <thead><tr><th>해</th><th>덱</th><th>심어서 온 장수</th><th>다음 해로 심음</th><th>밤</th>
+          <th>덱(끊은)</th><th>심어서(끊은)</th><th>밤(끊은)</th></tr></thead>
+        <tbody>${twoHtml}</tbody>
+      </table>
+    </section>
+
+    <p class="note">
+      이 화면의 수량은 손으로 적은 것이 아니다. <code>src/</code> 의 시뮬레이터가 씨드
+      <span class="num">${sample.seed}</span>으로 <span class="num">${sample.years}</span>해를 실제로 돌려
+      <code>presentation/sample_run.json</code> 에 구운 값이고, 작물·카드·계절·적은 <code>data/</code> 의 JSON 을 그대로 읽었다.
+      표본 그림도 그림 파일이 아니라 <code>presentation/palette.json</code> 의 <code>specimen</code>·<code>form</code> 수치와
+      각 표본의 <code>generation</code> 으로 그 자리에서 그린 SVG 다.<br>
+      <b>먼저 만든 두 하이브리드와 다른 점은 위쪽 첫 칸이다</b> — 저쪽은 밭이 덱을 만드는 한 방향이고,
+      여기서는 쓰지 않은 표본이 밭으로 돌아가 다음 해의 덱을 정한다. 고리가 두 방향으로 돈다.
+    </p>`;
+}
+</script>
+</body>
+</html>

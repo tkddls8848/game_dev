@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>표본집 — 덱을 심는다</title>
+<style>
+:root{
+  --paper:#efe6d0; --paper2:#e6dbc1; --paper3:#d8caa8; --card:#f6efdd;
+  --ink:#2c4b49; --ink2:#3d6663; --inkwash:#8fb0a9; --sepia:#6b4a2e; --sepia2:#9a7651;
+  --leaf:#66804a; --leaf2:#8aa166; --stamp:#a4473a; --thread:#fbf6ea; --fox:#b98d57;
+  --hand:"Nanum Pen Script","Nanum Brush Script","Gaegu","Comic Sans MS",cursive;
+  --serif:"Noto Serif KR","Nanum Myeongjo","Batang",serif;
+  --sans:"Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#1c1712;font-family:var(--serif);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;user-select:none;background:#2a2119}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .3s}
+body.show-a #scrA, body.show-b #scrB{opacity:1;pointer-events:auto}
+
+/* desk + paper */
+.desk{position:absolute;inset:0;background:
+  radial-gradient(900px 600px at 30% 20%,rgba(255,220,160,.12),transparent 60%),
+  repeating-linear-gradient(92deg,#2d2219 0 18px,#33271c 18px 30px,#2a2018 30px 52px),#2b2119}
+.sheet{position:absolute;left:26px;top:22px;right:26px;bottom:22px;background:
+  radial-gradient(60px 40px at 8% 12%,rgba(185,141,87,.22),transparent 70%),
+  radial-gradient(30px 22px at 92% 30%,rgba(185,141,87,.25),transparent 70%),
+  radial-gradient(44px 30px at 70% 88%,rgba(185,141,87,.18),transparent 70%),
+  radial-gradient(20px 16px at 30% 70%,rgba(185,141,87,.22),transparent 70%),
+  radial-gradient(1100px 700px at 45% 40%,#f3ebd8 0%,#ece2c9 55%,#dfd2b3 100%);
+  box-shadow:0 30px 60px rgba(0,0,0,.55),0 0 0 1px #c9b893 inset;border-radius:3px}
+.sheet::before{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:multiply;border-radius:3px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .3  0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sheet::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:3px;background:
+  linear-gradient(90deg,rgba(90,60,30,.10),transparent 4%,transparent 96%,rgba(90,60,30,.12)),
+  linear-gradient(180deg,rgba(90,60,30,.08),transparent 5%,transparent 95%,rgba(90,60,30,.12))}
+.under{position:absolute;left:40px;top:34px;right:12px;bottom:10px;background:#d9ccad;transform:rotate(.6deg);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.lamp{position:absolute;inset:0;pointer-events:none;background:radial-gradient(1000px 700px at 40% 30%,rgba(255,236,190,.18),transparent 60%),radial-gradient(ellipse 90% 90% at 50% 50%,transparent 60%,rgba(40,25,10,.35) 100%)}
+
+/* label block (herbarium label) */
+.label{position:absolute;left:66px;top:52px;width:360px;padding:12px 16px 12px;background:#f8f2e2;border:1.5px solid var(--ink);box-shadow:3px 3px 0 rgba(44,75,73,.15)}
+.label .inst{font-family:var(--sans);font-size:10px;letter-spacing:.34em;color:var(--ink2)}
+.label h1{font-family:var(--serif);font-weight:700;font-size:30px;letter-spacing:.12em;color:var(--ink);margin:2px 0 4px}
+.label .ln{display:flex;gap:12px;font-size:14px;color:var(--sepia);border-top:1px solid rgba(44,75,73,.35);padding-top:6px}
+.label .ln b{font-family:var(--hand);font-size:22px;font-weight:400;color:var(--ink);line-height:.9}
+.nightpips{position:absolute;left:452px;top:58px;display:flex;gap:12px;align-items:center}
+.np{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--sepia);gap:4px}
+.np i{width:44px;height:44px;border-radius:50%;border:1.5px dashed var(--sepia2);display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--hand);font-size:20px;color:var(--sepia2)}
+.np.done i{background:rgba(102,128,74,.18);border-style:solid;border-color:var(--leaf);color:var(--leaf)}
+.np.now i{border:2px solid var(--stamp);color:var(--stamp);background:rgba(164,71,58,.08);box-shadow:0 0 0 4px rgba(164,71,58,.12)}
+.np.now{color:var(--stamp)}
+.np .dash{width:26px;height:1px;border-top:1.5px dashed var(--sepia2);margin-top:-18px}
+
+/* battle illustration area */
+.field{position:absolute;left:60px;top:150px;width:1110px;height:420px}
+.foeplate{position:absolute;font-family:var(--serif)}
+.intent{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1.5px solid var(--stamp);color:var(--stamp);font-weight:700;font-size:22px;background:rgba(248,242,226,.85);transform:rotate(-2deg)}
+.intent small{font-family:var(--hand);font-size:18px;font-weight:400}
+.hpline{margin-top:8px;width:260px}
+.hpline .t{display:flex;justify-content:space-between;font-size:14px;color:var(--ink)}
+.hpline .t b{font-family:var(--hand);font-size:24px;font-weight:400}
+.inkbar{height:10px;border:1.5px solid var(--ink);position:relative;background:rgba(255,255,255,.4)}
+.inkbar span{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(-45deg,var(--ink2) 0 3px,var(--ink) 3px 6px);transition:width .4s}
+.fence{position:absolute;left:36px;top:360px;width:330px}
+.fence .inkbar span{background:repeating-linear-gradient(-45deg,var(--leaf) 0 3px,#4e6638 3px 6px)}
+.blocktag{display:inline-block;margin-top:6px;font-family:var(--hand);font-size:22px;color:var(--leaf)}
+.dmg{position:absolute;font-family:var(--hand);font-size:72px;color:var(--stamp);pointer-events:none;z-index:50;animation:dmg 1.2s ease-out forwards;text-shadow:1px 1px 0 rgba(255,255,255,.6)}
+@keyframes dmg{0%{opacity:0;transform:scale(.4) rotate(-10deg)}20%{opacity:1;transform:scale(1.2) rotate(-4deg)}100%{opacity:0;transform:translateY(-70px) rotate(-4deg)}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(8px)}60%{transform:translateX(-6px)}}
+
+/* sow tray */
+.tray{position:absolute;right:60px;top:52px;width:360px;height:560px;padding:18px 18px 16px;
+  background:linear-gradient(180deg,#e4d5b1,#d9c79e);border:1.5px solid var(--sepia);box-shadow:4px 6px 0 rgba(107,74,46,.18),inset 0 0 40px rgba(107,74,46,.15);
+  clip-path:polygon(0 3%,50% 0,100% 3%,100% 100%,0 100%)}
+.tray h2{font-size:21px;letter-spacing:.14em;color:var(--sepia);text-align:center;margin-top:4px}
+.tray .sub{font-family:var(--hand);font-size:17px;color:var(--ink);text-align:center;margin:2px 0 10px;line-height:1.1}
+.slot{position:relative;height:62px;margin-bottom:7px;border:1.5px dashed rgba(107,74,46,.6);display:flex;align-items:center;gap:12px;padding:0 12px;background:rgba(248,242,226,.35);transition:background .3s}
+.slot .pn{position:absolute;right:10px;top:6px;font-size:11px;letter-spacing:.1em;color:var(--sepia2)}
+.slot.empty{justify-content:center;font-family:var(--hand);font-size:20px;color:rgba(107,74,46,.6)}
+.slot.full{border-style:solid;border-color:var(--ink);background:rgba(248,242,226,.85)}
+.slot.fresh{animation:fresh .6s}
+@keyframes fresh{0%{background:rgba(143,176,169,.6)}100%{background:rgba(248,242,226,.85)}}
+.slot svg{width:44px;height:56px;flex:none}
+.slot .who{font-size:16px;font-weight:700;color:var(--ink)}
+.slot .fate{font-family:var(--hand);font-size:20px;color:var(--leaf);line-height:1}
+.slot .fate em{font-style:normal;color:var(--stamp)}
+.slot .cost{font-size:11px;color:var(--sepia);letter-spacing:.04em}
+.tray .foot{position:absolute;left:18px;right:18px;bottom:12px;font-size:12.5px;color:var(--sepia);line-height:1.5;border-top:1px solid rgba(107,74,46,.4);padding-top:8px}
+.tray .foot b{color:var(--stamp)}
+
+/* hand */
+.hand{position:absolute;left:200px;right:200px;bottom:48px;height:340px}
+.card{position:absolute;bottom:0;width:192px;height:292px;transform-origin:50% 130%;cursor:pointer;transition:transform .24s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.card .pg{position:absolute;inset:0;background:linear-gradient(170deg,#fbf6e8,#efe5cc);border:1px solid #bfae88;box-shadow:0 14px 24px rgba(60,40,20,.35),0 1px 0 #fff inset;overflow:hidden}
+.card .pg::before{content:"";position:absolute;inset:0;background:radial-gradient(14px 10px at 88% 88%,rgba(185,141,87,.35),transparent 70%),radial-gradient(10px 8px at 10% 60%,rgba(185,141,87,.3),transparent 70%)}
+.card .cost{position:absolute;left:10px;top:10px;width:38px;height:38px;border-radius:50%;border:2px solid var(--stamp);color:var(--stamp);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);background:rgba(251,246,232,.7)}
+.card .no{position:absolute;right:12px;top:14px;font-size:11px;color:var(--sepia2);letter-spacing:.08em}
+.card .spec{position:absolute;left:0;right:0;top:30px;height:136px;display:flex;justify-content:center}
+.card .spec svg{width:118px;height:136px;overflow:visible}
+.card .tag{position:absolute;left:12px;right:12px;top:170px;padding:6px 8px 7px;background:#fbf7ec;border:1px solid var(--ink);}
+.card .tag .nm{display:flex;flex-direction:column}
+.card .tag .nm b{font-size:19px;letter-spacing:.08em;color:var(--ink)}
+.card .tag .nm i{font-style:normal;font-size:11px;color:var(--sepia);letter-spacing:.06em}
+.card .tag .fx{font-size:14px;color:var(--ink);margin-top:3px}
+.card .tag .fx b{font-size:17px;color:var(--stamp)}
+.card .sown{position:absolute;left:8px;right:8px;bottom:9px;font-family:var(--hand);font-size:16px;color:var(--leaf);text-align:center;line-height:1}
+.card .keep{position:absolute;left:50%;top:-22px;transform:translateX(-50%);padding:3px 12px 4px;font-family:var(--hand);font-size:19px;color:var(--ink);background:#f8f2e2;border:1.5px dashed var(--ink);white-space:nowrap;opacity:0;transition:opacity .15s}
+.card:hover .keep{opacity:1}
+.card .keep:hover{background:var(--ink);color:#f8f2e2;border-style:solid}
+.card:hover{transform:var(--lift) !important;z-index:40}
+.card.flying{opacity:0}
+.card.nope{animation:shake .3s}
+.card.kept .pg{outline:2px solid var(--ink);outline-offset:3px}
+.energy{position:absolute;left:66px;bottom:74px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f8f2e2,#e2d4b2);border:2px solid var(--ink);box-shadow:0 6px 0 rgba(44,75,73,.2);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.energy b{font-family:var(--hand);font-size:66px;font-weight:400;line-height:.8;color:var(--ink)}
+.energy small{font-size:12px;letter-spacing:.3em;color:var(--sepia)}
+.energy .ring{position:absolute;inset:-10px;border-radius:50%;border:1.5px dashed var(--ink2);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.deckinfo{position:absolute;left:62px;bottom:32px;width:140px;text-align:center;font-size:13px;color:var(--sepia)}
+.endbtn{position:absolute;right:66px;bottom:70px;width:170px;height:68px;border:2px solid var(--ink);background:#f8f2e2;color:var(--ink);font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.2em;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transform:rotate(1deg)}
+.endbtn:hover{background:#fff}.endbtn:active{transform:translate(3px,3px) rotate(1deg);box-shadow:1px 1px 0 var(--ink)}
+.note{position:absolute;font-family:var(--hand);font-size:23px;color:var(--ink2);line-height:1.05;transform:rotate(-3deg);pointer-events:none}
+.note svg{position:absolute;overflow:visible}
+
+/* screen B: garden plan */
+.plan{position:absolute;left:60px;top:196px;width:1040px;height:560px}
+.plot{position:absolute;width:320px;height:256px;border:1.5px solid var(--sepia);background:
+  repeating-linear-gradient(0deg,rgba(107,74,46,.10) 0 2px,transparent 2px 22px),linear-gradient(180deg,rgba(154,118,81,.20),rgba(154,118,81,.30));cursor:pointer;transition:box-shadow .2s}
+.plot:hover{box-shadow:0 0 0 4px rgba(44,75,73,.2)}
+.plot .pn{position:absolute;left:10px;top:8px;font-size:14px;font-weight:700;color:var(--sepia);letter-spacing:.08em}
+.plot .fert{position:absolute;right:10px;top:10px;font-size:11px;color:var(--sepia2)}
+.plot .bind{position:absolute;left:10px;bottom:10px;padding:2px 10px;background:var(--ink);color:#f8f2e2;font-size:12px;letter-spacing:.08em}
+.plot .bind.new{background:var(--leaf)}
+.plot .crop{position:absolute;left:0;right:0;bottom:36px;top:34px;display:flex;justify-content:center;align-items:flex-end}
+.plot .crop svg{height:100%;overflow:visible}
+.plot .res{position:absolute;right:10px;bottom:8px;font-family:var(--hand);font-size:22px;color:var(--ink);text-align:right;line-height:1}
+.plot .res em{font-style:normal;color:var(--stamp)}
+.plot.lock{background:repeating-linear-gradient(45deg,rgba(107,74,46,.08) 0 8px,transparent 8px 16px);border-style:dashed}
+.plot.sown{border:2px solid var(--ink);box-shadow:inset 0 0 0 5px rgba(143,176,169,.25)}
+.lineage{position:absolute;left:60px;right:60px;bottom:42px;height:190px;padding:16px 22px;background:#f8f2e2;border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(44,75,73,.15)}
+.lineage h3{font-size:15px;letter-spacing:.2em;color:var(--sepia);display:flex;gap:16px;align-items:baseline}
+.lineage h3 b{font-family:var(--hand);font-size:26px;letter-spacing:0;color:var(--ink);font-weight:400}
+.lrow{display:flex;align-items:center;gap:10px;margin-top:10px}
+.stage{display:flex;align-items:center;gap:10px;padding:6px 12px;border:1px solid rgba(44,75,73,.35);background:#fbf7ec;height:118px}
+.stage svg{width:70px;height:104px;overflow:visible}
+.stage .t{font-size:12px;color:var(--sepia);line-height:1.5}
+.stage .t b{display:block;font-size:18px;color:var(--ink)}
+.stage .t em{font-style:normal;font-family:var(--hand);font-size:19px;color:var(--leaf)}
+.arrow{font-family:var(--hand);font-size:22px;color:var(--ink2);text-align:center;line-height:1;width:84px}
+.arrow svg{display:block;margin:4px auto 0}
+.stage.ghost{border-style:dashed;opacity:.7}
+.stage.used{background:repeating-linear-gradient(-45deg,#fbf7ec 0 8px,#f1e7d0 8px 16px)}
+.budget{position:absolute;right:60px;top:52px;width:360px;padding:16px 18px;background:#f8f2e2;border:1.5px solid var(--ink);box-shadow:4px 4px 0 rgba(44,75,73,.15)}
+.budget h2{font-size:20px;letter-spacing:.16em;color:var(--ink)}
+.budget .r{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(44,75,73,.25);padding:8px 0 6px;font-size:14px;color:var(--sepia)}
+.budget .r b{font-family:var(--hand);font-size:30px;font-weight:400;color:var(--ink);line-height:.8}
+.drops{display:flex;gap:4px}.drops i{width:10px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#6f9aa0;display:block}.drops i.o{background:none;border:1px solid #6f9aa0}
+.seedrow{display:flex;gap:5px}.seedrow i{width:10px;height:13px;border-radius:50%;background:var(--sepia);display:block}.seedrow i.n{background:var(--stamp);animation:pop .6s ease-out}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.4)}100%{transform:scale(1)}}
+.sun{position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 600px at 20% 0%,rgba(255,238,190,.35),transparent 60%);mix-blend-mode:soft-light}
+.petal{position:absolute;width:8px;height:5px;border-radius:50%;background:rgba(138,161,102,.6);pointer-events:none;animation:drift linear infinite}
+@keyframes drift{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(260px,760px) rotate(540deg)}}
+.stampbig{position:absolute;left:640px;top:62px;padding:6px 18px;border:3px double var(--stamp);color:var(--stamp);font-size:24px;font-weight:700;letter-spacing:.2em;transform:rotate(-6deg);opacity:.85;background:rgba(248,242,226,.4)}
+
+.tabs{position:absolute;right:40px;bottom:6px;z-index:100;display:flex;gap:6px}
+.tabs button{width:34px;height:22px;background:#2b2119;border:1px solid #6b4a2e;color:#d9c79e;font-size:12px;cursor:pointer}
+body.show-a .tabs .ta, body.show-b .tabs .tb{background:#efe6d0;color:#2c4b49}
+.hint{position:absolute;left:40px;bottom:5px;z-index:100;font-family:var(--sans);font-size:11px;color:#8a7458}
+</style>
+</head>
+<body class="show-a">
+<div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
+  <filter id="wash"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="8"/><feColorMatrix values="0 0 0 0 .56  0 0 0 0 .69  0 0 0 0 .66  0 0 0 .9 -.35"/></filter>
+  <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="6" stroke="#2c4b49" stroke-width="1"/></pattern>
+</defs></svg>
+
+<!-- ===================== A : 겨울 하룻밤 — 쓸까, 남겨 심을까 ===================== -->
+<section class="screen" id="scrA">
+  <div class="desk"></div><div class="under"></div><div class="sheet"></div>
+
+  <div class="field">
+    <svg width="1110" height="420" viewBox="0 0 1110 420" style="position:absolute;inset:0">
+      <!-- moon wash -->
+      <rect x="0" y="0" width="1110" height="420" filter="url(#wash)" opacity=".55"/>
+      <circle cx="860" cy="70" r="40" fill="none" stroke="#2c4b49" stroke-width="1.5"/>
+      <circle cx="860" cy="70" r="40" fill="url(#hatch)" opacity=".25"/>
+      <!-- horizon & hills ink lines -->
+      <path d="M0 250 C120 230 220 244 330 236 C460 226 540 246 680 238 C820 230 930 246 1110 232" fill="none" stroke="#2c4b49" stroke-width="1.6" filter="url(#rough)"/>
+      <path d="M0 214 C160 190 300 206 420 180 C540 156 640 190 760 176 C880 162 990 186 1110 170" fill="none" stroke="#3d6663" stroke-width="1" opacity=".6"/>
+      <!-- beds (the field) -->
+      <g stroke="#6b4a2e" stroke-width="1.2" fill="none" opacity=".7">
+        <path d="M40 300 L520 280 M30 330 L530 306 M20 360 L540 332 M10 392 L550 360"/>
+      </g>
+      <!-- fence (the player's line) -->
+      <g stroke="#6b4a2e" stroke-width="3" stroke-linecap="round" filter="url(#rough)">
+        <path d="M60 350 V270 M120 346 V266 M180 342 V262 M240 338 V258 M300 334 V254 M360 330 V250"/>
+        <path d="M50 290 L370 268 M50 320 L370 298" stroke-width="2"/>
+      </g>
+      <!-- little specimens growing along the fence -->
+      <g stroke="#66804a" stroke-width="1.6" fill="none">
+        <path d="M90 350 C92 330 86 318 94 300 M94 316 C104 310 110 314 112 306 M92 330 C82 326 78 330 74 322"/>
+        <path d="M210 340 C212 320 206 306 214 290 M213 305 C224 300 230 304 232 296"/>
+        <path d="M330 332 C332 314 328 302 334 288 M332 300 C340 296 346 300 348 292 M331 316 C322 312 318 316 314 310"/>
+      </g>
+      <!-- trampled hoof prints toward fence -->
+      <g fill="#6b4a2e" opacity=".55">
+        <path d="M600 330 q4 -8 8 0 z M612 334 q4 -8 8 0z M560 344 q4 -8 8 0z M572 348 q4 -8 8 0z M520 360 q4 -8 8 0z M532 364 q4 -8 8 0z"/>
+      </g>
+      <!-- the roe deer, ink drawing -->
+      <g id="roe" transform="translate(640 60)" stroke="#2c4b49" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M80 190 C60 150 70 120 110 108 C170 92 230 100 260 112 C280 88 290 64 298 44" />
+        <path d="M298 44 C306 30 318 26 330 30 L352 44 C356 52 348 56 338 56 L318 58 C310 70 300 82 290 96"/>
+        <path d="M320 28 C316 10 322 -6 334 -18 M326 10 C334 4 340 -2 342 -10 M318 30 C308 16 296 8 286 6"/>
+        <path d="M330 32 l10 -12 l4 14" fill="#2c4b49"/>
+        <circle cx="336" cy="40" r="2.6" fill="#2c4b49"/>
+        <path d="M110 108 C100 140 104 170 96 206 L92 250 M126 150 C132 190 128 214 132 250 M236 118 C250 150 256 180 248 210 L252 250 M258 120 C272 150 278 182 276 250"/>
+        <path d="M80 190 C70 196 66 186 70 176"/>
+        <path d="M130 130 C170 150 210 146 240 132" stroke-width="1" opacity=".6"/>
+        <path d="M120 120 l6 10 M140 124 l6 10 M160 126 l6 10 M180 126 l6 10 M200 124 l6 10 M220 120 l6 10" stroke-width="1" opacity=".55"/>
+      </g>
+      <ellipse cx="820" cy="316" rx="160" ry="12" fill="#2c4b49" opacity=".12"/>
+      <!-- boar waiting in the dark, ghosted -->
+      <g transform="translate(990 170) scale(.55)" stroke="#2c4b49" stroke-width="3" fill="url(#hatch)" opacity=".45">
+        <path d="M0 110 C0 60 40 30 100 30 C150 30 180 50 200 80 L230 96 L226 116 L200 118 C190 150 150 160 100 160 C60 160 30 150 20 140 L10 170 M60 158 L56 190 M150 156 L154 190 M190 140 L196 180"/>
+      </g>
+      <text x="940" y="276" font-family="Nanum Pen Script, cursive" font-size="20" fill="#2c4b49" opacity=".7">다음 — 멧돼지</text>
+    </svg>
+
+    <div class="foeplate" id="roePlate" style="left:700px;top:0px">
+      <div class="intent">⚔ 11 <small>들이받기</small></div>
+    </div>
+    <div class="foeplate" style="left:720px;top:330px">
+      <div class="hpline"><div class="t"><span>노루 · 2년차 120%</span><b id="roeHp">23 / 48</b></div><div class="inkbar"><span id="roeBar" style="width:48%"></span></div></div>
+      <div style="font-family:var(--hand);font-size:20px;color:var(--stamp);margin-top:4px">불꽃씨 화상 4 · 2턴</div>
+    </div>
+    <div class="fence">
+      <div class="hpline" style="width:330px"><div class="t"><span>울타리 · 표본집을 지킨다</span><b id="fenceHp">31 / 50</b></div><div class="inkbar"><span id="fenceBar" style="width:62%"></span></div></div>
+      <span class="blocktag" id="blockTag">방어 0</span>
+    </div>
+  </div>
+
+  <div class="label">
+    <div class="inst">HERBARIUM · 제2권</div>
+    <h1>겨울 하룻밤</h1>
+    <div class="ln"><span>2년차 / 3년</span><span>채집 <b>17</b>장</span><span>밭 <b>5</b>칸</span></div>
+  </div>
+  <div class="nightpips">
+    <div class="np done"><i>토</i>산토끼</div><div class="dash"></div>
+    <div class="np now"><i>노</i>노루</div><div class="dash"></div>
+    <div class="np"><i>멧</i>멧돼지</div>
+  </div>
+
+  <aside class="tray" id="tray">
+    <h2>파 종 함</h2>
+    <p class="sub">이 밤에 쓰지 않은 표본은<br>버리지 않고 밭으로 돌아간다</p>
+    <div id="slots"></div>
+    <div class="foot">심은 칸은 다음 봄에 묶인다<br><b>밤에 지면 한 장도 못 심는다</b><br>남은 표본 <span id="leftCount">9</span>장 중 심을 수 있는 칸 <span id="slotCount">5</span></div>
+  </aside>
+
+  <div class="note" style="left:470px;top:560px">남길수록 봄이 좋아진다 —<br>하지만 멧돼지가 아직 남았다
+    <svg width="80" height="60" style="left:300px;top:30px"><path d="M0 0 C40 10 60 30 70 58" stroke="#3d6663" stroke-width="1.6" fill="none"/><path d="M62 50 L70 58 L74 46" stroke="#3d6663" stroke-width="1.6" fill="none"/></svg>
+  </div>
+
+  <div class="energy"><div class="ring"></div><b id="en">3</b><small>기 운</small></div>
+  <div class="deckinfo">뽑을 표본 <b id="drawN">6</b> · 버림 <b>4</b></div>
+  <div class="hand" id="hand"></div>
+  <button class="endbtn" id="endA">밤을 넘긴다</button>
+</section>
+
+<!-- ===================== B : 봄 — 심은 표본이 돋아난다 ===================== -->
+<section class="screen" id="scrB">
+  <div class="desk"></div><div class="under"></div><div class="sheet"></div><div class="sun"></div>
+  <div class="label">
+    <div class="inst">HERBARIUM · 제3권</div>
+    <h1>봄 · 돋아남</h1>
+    <div class="ln"><span>3년차 / 3년</span><span>봄 <b>1</b>/5턴</span><span>심은 표본 <b>4</b></span></div>
+  </div>
+  <div class="stampbig">지난 겨울 · 지켰다</div>
+
+  <div class="plan" id="plan"></div>
+
+  <aside class="budget">
+    <h2>봄의 살림</h2>
+    <div class="r"><span>씨앗</span><span class="seedrow" id="seeds"></span><b id="seedN">6</b></div>
+    <div class="r"><span>물 / 12</span><span class="drops" id="drops"></span><b>12</b></div>
+    <div class="r"><span>새로 기를 칸</span><b>2 / 5</b></div>
+    <p style="font-family:var(--hand);font-size:18px;color:var(--ink2);line-height:1.15;margin-top:8px">심은 칸 셋이 봄을 묶는다.<br>가시덤불은 봄에 씨앗으로 살 수 없다 —<br>작년 어린싹을 심어 둔 덕이다.</p>
+  </aside>
+
+  <aside class="budget" style="top:372px;height:372px">
+    <h2>올 겨울의 표본집</h2>
+    <p style="font-size:12px;color:#9a7651;margin:4px 0 8px">봄에 돋은 것 + 올해 기를 것 = 겨울 하룻밤의 덱</p>
+    <div id="deckchips"></div>
+    <div class="r" style="margin-top:6px"><span>겨울 · 3년차 140%</span><b style="font-size:19px">토끼 · 노루 · 멧돼지</b></div>
+  </aside>
+  <div class="lineage">
+    <h3>계보 <b>제004호 — 넓은잎의 세 해</b></h3>
+    <div class="lrow" id="lineage"></div>
+    <div style="position:absolute;right:26px;top:56px;width:300px;font-family:var(--hand);font-size:22px;line-height:1.2;color:var(--ink2);transform:rotate(-2deg)">쓰지 않으면 더 좋은 것이 되어 돌아온다.<br>쓰면 내력은 거기서 멈춘다.<br><span style="color:var(--stamp)">— 심은 칸이 곧 값이다</span></div>
+  </div>
+</section>
+
+<div class="hint">1 / 2 화면 전환 · 표본을 누르면 쓴다 · 위의 ‘남겨 심기’를 누르면 파종함으로</div>
+<div class="tabs"><button class="ta" data-s="a">1</button><button class="tb" data-s="b">2</button></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function show(k){document.body.className='show-'+k;try{history.replaceState(null,'','#'+k);}catch(e){}}
+  function fromHash(){show((location.hash||'').indexOf('b')>=0?'b':'a');}
+  window.addEventListener('hashchange',fromHash);fromHash();
+  document.addEventListener('keydown',function(e){if(e.key==='1')show('a');if(e.key==='2')show('b');});
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){show(b.getAttribute('data-s'));});});
+
+  /* ---- audio: paper, pen, soil ---- */
+  var ac=null;function A(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return ac;}
+  function rustle(dur,f,g){var a=A();if(!a)return;var len=Math.floor(a.sampleRate*dur),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*i/len),1.5)*(0.6+0.4*Math.random());
+    var s=a.createBufferSource();s.buffer=b;var fl=a.createBiquadFilter();fl.type='bandpass';fl.frequency.value=f;fl.Q.value=.7;var gn=a.createGain();gn.gain.value=g;s.connect(fl);fl.connect(gn);gn.connect(a.destination);s.start();}
+  function pluck(fr,dur,g){var a=A();if(!a)return;var o=a.createOscillator(),gn=a.createGain();o.type='triangle';o.frequency.value=fr;gn.gain.setValueAtTime(g,a.currentTime);gn.gain.exponentialRampToValueAtTime(.0001,a.currentTime+dur);o.connect(gn);gn.connect(a.destination);o.start();o.stop(a.currentTime+dur);}
+  var sfx={play:function(){rustle(.22,2400,.5);},hit:function(){rustle(.3,300,.8);pluck(110,.3,.2);},keep:function(){rustle(.35,1200,.4);setTimeout(function(){pluck(523,.5,.08);pluck(784,.6,.05);},120);},
+    grow:function(){[392,494,587,784].forEach(function(f,i){setTimeout(function(){pluck(f,.7,.07);},i*90);});},nope:function(){pluck(98,.2,.15);}};
+
+  /* ---- procedural pressed specimen (data -> drawing) ---- */
+  function rng(seed){var s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+  function leaf(x,y,ang,len,wid,fill,stroke){var a=ang*Math.PI/180,tx=x+Math.cos(a)*len,ty=y+Math.sin(a)*len,nx=-Math.sin(a)*wid,ny=Math.cos(a)*wid,mx=(x+tx)/2,my=(y+ty)/2;
+    return '<path d="M'+x.toFixed(1)+' '+y.toFixed(1)+' Q'+(mx+nx).toFixed(1)+' '+(my+ny).toFixed(1)+' '+tx.toFixed(1)+' '+ty.toFixed(1)+' Q'+(mx-nx).toFixed(1)+' '+(my-ny).toFixed(1)+' '+x.toFixed(1)+' '+y.toFixed(1)+'Z" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1"/>'+
+      '<path d="M'+x.toFixed(1)+' '+y.toFixed(1)+' L'+tx.toFixed(1)+' '+ty.toFixed(1)+'" stroke="'+stroke+'" stroke-width=".6" opacity=".7"/>';}
+  function specimen(kind,gen,seed,w,h){
+    var r=rng(seed),W=w||130,H=h||150,cx=W/2,base=H-6,out='',stemTop=base-(H*(.34+gen*.15)),stroke='#3f5a33';
+    var fills={sprout:'#9bb27a',bramble:'#7e9658',broadleaf:'#8aa166',thicket:'#6b8449',ember:'#b0764a'};
+    var fill=fills[kind]||'#8aa166';
+    var stems=kind==='thicket'?3:(kind==='bramble'&&gen>1?2:1);
+    for(var s=0;s<stems;s++){
+      var off=(s-(stems-1)/2)*18,bend=(r()-.5)*28,top=stemTop+s*8;
+      out+='<path d="M'+(cx+off*.3)+' '+base+' C'+(cx+off*.3+bend*.3)+' '+(base-(base-top)*.4)+' '+(cx+off+bend)+' '+(top+(base-top)*.3)+' '+(cx+off+bend*.6)+' '+top+'" stroke="'+(kind==='ember'?'#7a5236':stroke)+'" stroke-width="'+(1.6+gen*.4)+'" fill="none"/>';
+      var n=kind==='sprout'?2:(3+gen*2+(kind==='thicket'?2:0));
+      for(var i=0;i<n;i++){
+        var t=kind==='sprout'?1:(0.25+0.75*i/Math.max(1,n-1)),y=base-(base-top)*t,x=cx+off*.3+(off+bend*.6-off*.3)*t*t,side=i%2?1:-1;
+        if(kind==='ember'){out+='<ellipse cx="'+(x+side*8)+'" cy="'+y+'" rx="4" ry="9" transform="rotate('+(side*30)+' '+(x+side*8)+' '+y+')" fill="#b0764a" stroke="#6b4a2e" stroke-width=".8"/>';continue;}
+        var len=kind==='broadleaf'||kind==='thicket'?(20+r()*10):(kind==='sprout'?16:(12+r()*6)),wid=kind==='broadleaf'?11:(kind==='thicket'?9:(kind==='sprout'?8:4));
+        out+=leaf(x,y,side>0?(-20-r()*40):(-160+r()*40),len,wid,fill,stroke);
+        if(kind==='bramble'){out+='<path d="M'+x+' '+(y+6)+' l'+(side*-6)+' -3" stroke="'+stroke+'" stroke-width="1.2"/>';}
+      }
+      if(kind==='bramble'&&gen>1)out+='<circle cx="'+(cx+off+bend*.6)+'" cy="'+(top-4)+'" r="4" fill="#a4473a" opacity=".8"/>';
+    }
+    // roots
+    out+='<path d="M'+cx+' '+base+' q-8 6 -16 4 M'+cx+' '+base+' q6 7 14 5 M'+cx+' '+base+' q0 6 -2 10" stroke="#6b4a2e" stroke-width=".9" fill="none"/>';
+    // thread stitches
+    var st=[base-(base-stemTop)*.2,base-(base-stemTop)*.62];
+    st.forEach(function(y){out+='<path d="M'+(cx-9)+' '+(y-3)+' L'+(cx+9)+' '+(y+3)+' M'+(cx-9)+' '+(y+3)+' L'+(cx+9)+' '+(y-3)+'" stroke="#fbf6ea" stroke-width="2.4"/><path d="M'+(cx-9)+' '+(y-3)+' L'+(cx+9)+' '+(y+3)+'" stroke="#c9b893" stroke-width=".6"/>';});
+    return '<svg viewBox="0 0 '+W+' '+H+'">'+out+'</svg>';
+  }
+
+  /* ---- data (from games/hybrid-sown-deck/data) ---- */
+  var CARDS={
+    sprout:{nm:'어린싹',lab:'씨무릇 · 첫해',cost:1,fx:'피해 <b>4</b>',sown:'심으면 → 가시덤불',gen:1,kind:'sprout'},
+    bramble:{nm:'가시덤불',lab:'두해살이',cost:2,fx:'피해 <b>9</b>',sown:'심으면 → 어린싹 ×2',gen:2,kind:'bramble'},
+    broadleaf:{nm:'넓은잎',lab:'넓은잎 · 첫해',cost:2,fx:'방어 <b>9</b>',sown:'심으면 → 덤불벽',gen:1,kind:'broadleaf'},
+    thicket:{nm:'덤불벽',lab:'세해살이',cost:2,fx:'방어 <b>18</b>',sown:'심으면 → 넓은잎 ×2',gen:3,kind:'thicket'},
+    ember:{nm:'불꽃씨',lab:'마른 꼬투리',cost:1,fx:'화상 <b>4</b> · 방어 무시',sown:'심으면 → 씨앗 3알',gen:1,kind:'ember'}
+  };
+  var S={en:3,roe:23,roeMax:48,fence:31,block:0,draw:6,
+    hand:[{id:'broadleaf',no:'004'},{id:'sprout',no:'011'},{id:'bramble',no:'007'},{id:'ember',no:'015'},{id:'broadleaf',no:'016'}],
+    slots:[{id:'sprout',no:'009',fresh:false},{id:'broadleaf',no:'012',fresh:false},null,null,null]};
+  var PLOTS=['담장 밑','물길 옆','남쪽 두렁','마른 자리','그늘 밭'];
+  var FATE={sprout:'내년 봄 → <em>가시덤불</em>',bramble:'내년 봄 → <em>어린싹 ×2</em>',broadleaf:'내년 봄 → <em>덤불벽</em>',thicket:'내년 봄 → <em>넓은잎 ×2</em>',ember:'내년 봄 → <em>씨앗 3알</em>'};
+  var BIND={sprout:1,bramble:2,broadleaf:1,thicket:2,ember:1};
+
+  var handEl=document.getElementById('hand'),slotsEl=document.getElementById('slots');
+  function renderSlots(){
+    var h='',filled=0;
+    S.slots.forEach(function(s,i){
+      if(!s){h+='<div class="slot empty"><span class="pn">'+PLOTS[i]+'</span>비어 있음 — 남은 표본을 여기로</div>';return;}
+      filled++;var c=CARDS[s.id];
+      h+='<div class="slot full'+(s.fresh?' fresh':'')+'"><span class="pn">'+PLOTS[i]+'</span>'+specimen(c.kind,c.gen,parseInt(s.no,10)*7,52,64)+
+        '<div><div class="who">'+c.nm+' <span style="font-weight:400;font-size:12px;color:#9a7651">제'+s.no+'호</span></div><div class="fate">'+FATE[s.id]+'</div><div class="cost">봄에 이 칸 '+BIND[s.id]+'턴 묶임</div></div></div>';
+      s.fresh=false;});
+    slotsEl.innerHTML=h;
+    document.getElementById('leftCount').textContent=S.hand.length+S.draw;
+    document.getElementById('slotCount').textContent=(5-filled)+'칸 남음';
+  }
+  function renderHand(){
+    handEl.innerHTML='';var n=S.hand.length,W=1200,step=Math.min(200,(W-192)/Math.max(1,n-1));
+    S.hand.forEach(function(h,i){
+      var c=CARDS[h.id],el=document.createElement('div');el.className='card';
+      el.innerHTML='<div class="pg"><div class="cost">'+c.cost+'</div><div class="no">제'+h.no+'호</div><div class="spec">'+specimen(c.kind,c.gen,parseInt(h.no,10)*7,130,150)+'</div>'+
+        '<div class="tag"><div class="nm"><b>'+c.nm+'</b><i>'+c.lab+'</i></div><div class="fx">'+c.fx+'</div></div><div class="sown">'+c.sown+'</div></div><div class="keep">남겨 심기 ↗</div>';
+      var off=i-(n-1)/2,x=W/2-96+off*step,rot=off*2.5,y=off*off*3;
+      el.style.transform='translate('+x+'px,'+y+'px) rotate('+rot+'deg)';el.style.setProperty('--lift','translate('+x+'px,-50px) rotate(0deg) scale(1.08)');el.style.zIndex=10+i;
+      el.addEventListener('click',function(e){if(e.target.className==='keep'){keep(i,el);}else{play(i,el);}});
+      handEl.appendChild(el);
+    });
+    document.getElementById('en').textContent=S.en;document.getElementById('drawN').textContent=S.draw;
+  }
+  function dmg(t,x,y){var d=document.createElement('div');d.className='dmg';d.textContent=t;d.style.left=x+'px';d.style.top=y+'px';stage.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},1300);}
+  function upd(){document.getElementById('roeHp').textContent=S.roe+' / '+S.roeMax;document.getElementById('roeBar').style.width=(S.roe/S.roeMax*100)+'%';
+    document.getElementById('fenceHp').textContent=S.fence+' / 50';document.getElementById('fenceBar').style.width=(S.fence/50*100)+'%';document.getElementById('blockTag').textContent='방어 '+S.block;}
+  function play(i,el){
+    var h=S.hand[i],c=CARDS[h.id];if(c.cost>S.en){el.classList.remove('nope');void el.offsetWidth;el.classList.add('nope');sfx.nope();return;}
+    S.en-=c.cost;sfx.play();el.style.transition='transform .35s ease-in, opacity .35s';el.style.transform='translate(700px,-520px) rotate(20deg) scale(.5)';el.style.opacity='0';
+    setTimeout(function(){
+      if(h.id==='broadleaf'||h.id==='thicket'){S.block+=(h.id==='thicket'?18:9);dmg('+'+(h.id==='thicket'?18:9),260,560);}
+      else{var n=h.id==='sprout'?4:h.id==='bramble'?9:4;S.roe=Math.max(0,S.roe-n);dmg(n,860,330);sfx.hit();var r=document.getElementById('roe');r.classList.remove('shake');void r.getBoundingClientRect();r.classList.add('shake');}
+      S.hand.splice(i,1);upd();renderHand();renderSlots();
+    },360);
+  }
+  function keep(i,el){
+    var at=-1;for(var k=0;k<S.slots.length;k++){if(!S.slots[k]){at=k;break;}}
+    if(at<0){sfx.nope();return;}
+    var h=S.hand[i];sfx.keep();el.style.transition='transform .45s cubic-bezier(.5,0,.3,1), opacity .45s';el.style.transform='translate(1100px,-560px) rotate(-8deg) scale(.3)';el.style.opacity='0';
+    setTimeout(function(){S.slots[at]={id:h.id,no:h.no,fresh:true};S.hand.splice(i,1);renderHand();renderSlots();},440);
+  }
+  document.getElementById('endA').addEventListener('click',function(){rustle(.6,600,.5);S.fence=Math.max(0,S.fence-Math.max(0,11-S.block));S.block=0;S.en=3;upd();renderHand();});
+  upd();renderHand();renderSlots();
+
+  /* ---- B: spring plots ---- */
+  var PL=[
+    {nm:'담장 밑',fert:100,kind:'thicket',gen:3,sown:true,bind:'묶임 2턴',res:'넓은잎 → <em>덤불벽</em>',x:0,y:0,seed:28},
+    {nm:'물길 옆',fert:120,kind:'bramble',gen:2,sown:true,bind:'묶임 2턴',res:'어린싹 → <em>가시덤불</em>',x:350,y:0,seed:77},
+    {nm:'남쪽 두렁',fert:100,kind:'ember',gen:0,sown:true,bind:'묶임 1턴',res:'불꽃씨 → <em>씨앗 +3</em>',x:700,y:0,seed:15},
+    {nm:'마른 자리',fert:80,kind:'sprout',gen:1,sown:false,bind:'새로 심음 · 씨무릇',res:'1턴 뒤 어린싹 2',x:0,y:278,seed:4},
+    {nm:'그늘 밭',fert:90,kind:'broadleaf',gen:0,sown:false,bind:'빈 칸',res:'',x:350,y:278,seed:9},
+    {nm:'온실 구석',fert:110,lock:true,x:700,y:278}
+  ];
+  var plan=document.getElementById('plan');
+  function drawPlots(grow){
+    var h='';
+    PL.forEach(function(p,i){
+      if(p.lock){h+='<div class="plot lock" style="left:'+p.x+'px;top:'+p.y+'px"><span class="pn" style="color:#9a7651">'+p.nm+'</span><span class="fert">잠김</span><div class="res" style="color:#9a7651">지면 안 열린다<br>이긴 해만 한 칸</div></div>';return;}
+      var art='';
+      if(p.kind==='ember'&&p.sown){art='<svg viewBox="0 0 200 200"><g fill="#6b4a2e">'+[0,1,2].map(function(k){return '<ellipse cx="'+(70+k*30)+'" cy="'+(170-(grow?10:0))+'" rx="7" ry="10" fill="'+(grow?'#a4473a':'#6b4a2e')+'"/>';}).join('')+'</g><path d="M40 184 Q100 170 160 184" stroke="#6b4a2e" fill="none"/><text x="100" y="120" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="28" fill="#2c4b49">꼬투리가 터졌다</text></svg>';}
+      else if(p.gen===0){art='<svg viewBox="0 0 200 200"><path d="M30 186 Q100 176 170 186" stroke="#6b4a2e" fill="none"/><text x="100" y="140" text-anchor="middle" font-family="Nanum Pen Script,cursive" font-size="28" fill="#9a7651">무엇을 심을까</text></svg>';}
+      else{art=specimen(p.kind,grow?p.gen:Math.max(1,p.gen-1),p.seed*7,200,210);}
+      h+='<div class="plot'+(p.sown?' sown':'')+'" data-i="'+i+'" style="left:'+p.x+'px;top:'+p.y+'px"><span class="pn">'+p.nm+'</span><span class="fert">비옥 '+p.fert+'%</span><div class="crop">'+art+'</div>'+
+        '<span class="bind'+(p.sown?'':' new')+'">'+p.bind+'</span><div class="res">'+p.res+'</div></div>';
+    });
+    plan.innerHTML=h;
+    Array.prototype.forEach.call(plan.querySelectorAll('.plot[data-i]'),function(el){el.addEventListener('click',function(){sfx.grow();drawPlots(!grown);grown=!grown;});});
+  }
+  var grown=true;drawPlots(true);
+  var sd='';for(var i=0;i<9;i++)sd+='<i class="'+(i>=6?'n':'')+'"></i>';document.getElementById('seeds').innerHTML=sd;document.getElementById('seedN').textContent='6+3';
+  var dr='';for(i=0;i<12;i++)dr+='<i class="'+(i<9?'':'o')+'"></i>';document.getElementById('drops').innerHTML=dr;
+  var L=[
+    {k:'broadleaf',g:1,t:'<b>넓은잎</b>1년차 가을 · 기름<br><em>방어 9</em>',cls:''},
+    {a:'그 밤 · 안 씀'},
+    {k:'broadleaf',g:1,t:'<b>파종함</b>담장 밑에 심음<br><em>봄 1턴 묶임</em>',cls:''},
+    {a:'자람'},
+    {k:'thicket',g:3,t:'<b>덤불벽</b>2년차 봄 · 돋아남<br><em>방어 18</em>',cls:''},
+    {a:'그 밤 · 씀'},
+    {k:'thicket',g:3,t:'<b>내력 멈춤</b>멧돼지 16을 막고<br>표본집에 남았다',cls:'used'}
+  ];
+  var lh='';L.forEach(function(s,i){if(s.a){lh+='<div class="arrow">'+s.a+'<svg width="60" height="14"><path d="M0 7 H52 M44 1 L54 7 L44 13" stroke="#3d6663" stroke-width="1.6" fill="none"/></svg></div>';}
+    else lh+='<div class="stage '+s.cls+'">'+specimen(s.k,s.g,28+i,70,104)+'<div class="t">'+s.t+'</div></div>';});
+  document.getElementById('lineage').innerHTML=lh;
+  var DC=[['thicket','덤불벽','심어서 2',2],['bramble','가시덤불','심어서 1',1],['sprout','어린싹','기를 것',4],['broadleaf','넓은잎','기를 것',2],['ember','불꽃씨','씨앗 +3',0]];
+  document.getElementById('deckchips').innerHTML=DC.map(function(d,i){return '<div style="display:flex;align-items:center;gap:10px;border-top:1px solid rgba(44,75,73,.2);height:44px">'+'<span style="width:30px;height:40px;display:inline-block">'+specimen(d[0],d[0]==='thicket'?3:d[0]==='bramble'?2:1,40+i,30,40)+'</span><b style="font-size:15px;color:#2c4b49;width:70px">'+d[1]+'</b><span style="font-size:12px;color:#9a7651;flex:1">'+d[2]+'</span><b style="font-family:var(--hand);font-size:26px;font-weight:400;color:'+(d[3]?'#2c4b49':'#a4473a')+'">'+(d[3]?'×'+d[3]:'—')+'</b></div>';}).join('');
+  // drifting petals on spring page
+  var sb=document.getElementById('scrB');for(i=0;i<14;i++){var p=document.createElement('div');p.className='petal';p.style.left=(Math.random()*1400)+'px';p.style.top=(-40-Math.random()*300)+'px';p.style.animationDuration=(9+Math.random()*8)+'s';p.style.animationDelay=(-Math.random()*12)+'s';sb.appendChild(p);}
+})();
+</script>
+</body>
+</html>

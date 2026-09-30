@@ -1,0 +1,47 @@
+{
+  "_": "작가에게 상태가 있다 — 자신감 · 신뢰 · 고집. 수치는 전부 정수이고 0~100이다.",
+  "_왜_셋인가": "자신감은 '내가 쓸 수 있는가', 신뢰는 '이 편집자가 내 편인가', 고집은 '이번엔 안 고친다'이다. 셋이 서로 다르게 움직여야 혹독함이 양날이 된다 — 혹독하면 신뢰가 깎이면서 고집이 서고, 관대하면 신뢰는 오르지만 원고는 그대로다.",
+
+  "name": "윤소하",
+  "note": "세 번째 단편을 보내 왔다. 앞의 둘은 어디에도 실리지 못했다",
+
+  "startConfidence": 52,
+  "startTrust": 50,
+  "startStubborn": 24,
+
+  "stubbornPerHarsh": 22,
+  "trustCalmsStubborn": 18,
+  "prideAmplifyPercent": 60,
+  "_아끼는_문장": "prideGuard 90인 문장에 손대면 상처가 154%가 된다(100 + 90×60/100). 첫 문장에 펜을 대지 말라는 말을 규칙으로 적은 것이다",
+
+  "ignoreStubborn": 72,
+  "hardMarkFrom": 4,
+  "_버티기": "고집이 72를 넘으면 harshness 4 이상(도려내기·삽입·삭제)을 **아예 하지 않는다.** 편지는 받았고 고치지는 않았다",
+
+  "goodConfidence": 62,
+  "goodTrust": 60,
+  "timidConfidence": 30,
+
+  "reviseGoodQuality": 3,
+  "reviseGoodVoice": 4,
+  "reviseNormalQuality": 1,
+  "reviseNormalVoice": 0,
+  "reviseTimidQuality": -2,
+  "reviseTimidVoice": -5,
+  "_고쳐_쓰기": "표시와 무관하게 회차마다 작가가 다시 쓴다. 상태가 좋으면 청하지 않은 데까지 좋아지고, 겁을 먹으면 짧고 무난해지면서 목소리가 빠진다",
+
+  "dayJitterMin": -2,
+  "dayJitterMax": 2,
+  "_그날": "작가의 그날. 씨드와 회차로만 정해진다 — 편집자가 무엇을 했든 같은 값이다(src/ManuscriptSim.cs)",
+
+  "wasteConfidence": -6,
+  "wasteTrust": -7,
+  "wasteStubborn": 5,
+  "hollowTrust": -6,
+  "_빈_칭찬": "★ 흠이 있는 문장에 동그라미만 치거나 아무 말도 하지 않은 것. 작가도 자기 글의 흠을 안다 — 아무것도 묻지 않는 사람은 읽지 않은 사람이다. 이 값이 없으면 '칭찬만 다섯 번'이 언제나 최선이 된다",
+  "_헛줄": "고칠 것도 없는 문장에 그어 놓은 붉은 줄. 원고는 그대로고 작가만 깎인다 — 한 부호만 다섯 번 되풀이하는 것이 최선이 되지 않게 막는 값이다",
+
+  "quitTrust": 12,
+  "silenceConfidence": 4,
+  "_무너지는_두_길": "신뢰가 12 밑이면 원고를 거듬 가고(e_withdrawn), 자신감이 4 밑이면 더 쓰지 못한다(e_silenced). 길이 둘이어야 상처와 화가 서로 다른 것이 된다"
+}

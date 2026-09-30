@@ -1,0 +1,7 @@
+# Local authoring intermediates; source .blend, shaders, baked PNG/bytes remain versioned.
+art/bake-source/
+art/*.blend1
+art/reference-city-baked.blend
+art/*.log
+unity/*build.log
+unity/*player.log

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>수면 아래 스텔스</title>
+<style>
+:root{--cyan:#6ff3ff;--teal:#0f8a9a;--deep:#03192b;--gold:#ffc94a;--red:#ff3d5a;--ui:#dffaff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ui)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;transform-origin:50% 50%;overflow:hidden;background:var(--deep)}
+.screen{position:absolute;inset:0;display:none}
+body[data-screen="a"] #sa, body[data-screen="b"] #sb{display:block}
+svg.scene{position:absolute;inset:0}
+.caustic{position:absolute;left:0;right:0;top:250px;bottom:0;pointer-events:none;mix-blend-mode:screen;opacity:.35;
+ background-image:radial-gradient(ellipse 40px 16px at 30% 40%,rgba(160,255,255,.5),transparent 70%),radial-gradient(ellipse 60px 20px at 70% 20%,rgba(160,255,255,.4),transparent 70%),radial-gradient(ellipse 30px 12px at 50% 70%,rgba(160,255,255,.5),transparent 70%),radial-gradient(ellipse 50px 14px at 10% 80%,rgba(160,255,255,.4),transparent 70%);
+ background-size:220px 160px,300px 190px,260px 150px,340px 210px;animation:cau 9s linear infinite;-webkit-mask:linear-gradient(#000,transparent 85%);mask:linear-gradient(#000,transparent 85%)}
+@keyframes cau{to{background-position:220px 40px,-300px 20px,130px -150px,-340px 60px}}
+.walkA{animation:walkA 9s ease-in-out infinite alternate}
+@keyframes walkA{from{transform:translateX(0)}to{transform:translateX(380px)}}
+.walkB{animation:walkB 11s ease-in-out infinite alternate}
+@keyframes walkB{from{transform:translateX(0)}to{transform:translateX(-300px)}}
+.bob{animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.bub{animation:rise 4s linear infinite}
+@keyframes rise{from{transform:translateY(0);opacity:.9}to{transform:translateY(-360px);opacity:0}}
+.sway{animation:sway 5s ease-in-out infinite alternate;transform-origin:bottom center;transform-box:fill-box}
+@keyframes sway{from{transform:skewX(-6deg)}to{transform:skewX(6deg)}}
+/* HUD */
+.hud{position:absolute;font-weight:600}
+.status{left:50%;top:292px;transform:translateX(-50%);padding:10px 26px;border-radius:30px;font-size:22px;letter-spacing:.06em;display:flex;align-items:center;gap:12px;backdrop-filter:blur(4px)}
+.status.go{background:rgba(10,60,50,.55);border:1px solid rgba(110,255,190,.6);color:#8fffc8}
+.status.go i{width:12px;height:12px;border-radius:50%;background:#8fffc8;box-shadow:0 0 12px #8fffc8;animation:pl 1s infinite}
+@keyframes pl{50%{opacity:.3}}
+.topbar{left:40px;right:40px;top:26px;display:flex;align-items:center;gap:24px}
+.topbar .t{font-size:26px;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 0 18px rgba(111,243,255,.5)}
+.topbar .st{font-size:15px;padding:6px 12px;border:1px solid rgba(111,243,255,.4);border-radius:6px;color:var(--cyan)}
+.topbar .sp{flex:1}
+.loot{display:flex;gap:8px;align-items:center;font-size:15px}
+.loot span{width:30px;height:30px;border-radius:6px;border:1px solid rgba(255,201,74,.5);display:flex;align-items:center;justify-content:center}
+.loot span.got{background:rgba(255,201,74,.25);box-shadow:0 0 10px rgba(255,201,74,.5)}
+.o2{left:40px;bottom:40px;width:330px;padding:16px 18px;border-radius:12px;background:rgba(2,20,34,.7);border:1px solid rgba(111,243,255,.3)}
+.o2 .lbl{font-size:13px;letter-spacing:.3em;color:#8fd8e6;display:flex;justify-content:space-between}
+.o2 .bar{height:10px;border-radius:5px;background:rgba(111,243,255,.12);margin:8px 0 14px;overflow:hidden}
+.o2 .bar i{display:block;height:100%;border-radius:5px}
+.legend{right:40px;bottom:40px;width:360px;padding:16px 18px;border-radius:12px;background:rgba(2,20,34,.7);border:1px solid rgba(111,243,255,.3);font-size:15px;line-height:1.9}
+.legend b{color:var(--cyan)}
+.legend kbd{display:inline-block;min-width:26px;padding:1px 6px;margin-right:6px;border:1px solid rgba(223,250,255,.5);border-bottom-width:3px;border-radius:5px;font:600 13px/1.4 sans-serif;text-align:center}
+.label{position:absolute;font-size:13px;letter-spacing:.12em;color:#bff;opacity:.85;padding:3px 8px;border-radius:4px;background:rgba(0,30,40,.55)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 75% at 50% 45%,transparent 50%,rgba(0,5,12,.85))}
+#tabs{position:absolute;right:14px;top:74px;z-index:50;display:flex;gap:4px}
+#tabs a{font:12px/1 sans-serif;color:var(--cyan);text-decoration:none;padding:6px 9px;border:1px solid rgba(111,243,255,.4);background:#021422cc;border-radius:4px}
+#tabs a.on{background:var(--cyan);color:#021422}
+/* B */
+.alarm{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 40%,transparent 40%,rgba(255,30,60,.35));animation:al 1.4s ease-in-out infinite}
+@keyframes al{50%{opacity:.45}}
+.freeze{left:50%;top:300px;transform:translateX(-50%);text-align:center}
+.freeze b{display:block;font-size:92px;font-weight:900;letter-spacing:.2em;color:#fff;text-shadow:0 0 30px rgba(255,61,90,.9),0 0 80px rgba(255,61,90,.5);animation:shiver .12s infinite}
+@keyframes shiver{50%{transform:translateX(1px)}}
+.freeze span{font-size:20px;color:#ffd0d8;letter-spacing:.1em}
+.detect{left:50%;bottom:44px;transform:translateX(-50%);width:560px;text-align:center}
+.detect .lbl{display:flex;justify-content:space-between;font-size:14px;letter-spacing:.25em;color:#ffb0bc}
+.detect .bar{height:16px;border-radius:8px;background:rgba(255,61,90,.15);margin-top:8px;overflow:hidden;border:1px solid rgba(255,61,90,.5)}
+.detect .bar i{display:block;height:100%;width:78%;background:linear-gradient(90deg,#ffc94a,#ff3d5a);box-shadow:0 0 20px #ff3d5a;animation:fill 3s ease-in-out infinite alternate}
+@keyframes fill{from{width:70%}to{width:84%}}
+.breath{right:40px;bottom:40px;width:330px;padding:16px 18px;border-radius:12px;background:rgba(40,4,12,.7);border:1px solid rgba(255,61,90,.5);font-size:15px;line-height:1.7}
+.breath b{color:#fff}
+</style>
+</head>
+<body data-screen="a">
+<div id="stage">
+ <section class="screen" id="sa">
+  <svg class="scene" viewBox="0 0 1600 1000" width="1600" height="1000">
+   <defs>
+    <linearGradient id="air" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1620"/><stop offset="1" stop-color="#1c3444"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1bb6c4"/><stop offset=".25" stop-color="#0c6f86"/><stop offset=".7" stop-color="#06304e"/><stop offset="1" stop-color="#021526"/></linearGradient>
+    <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfffff" stop-opacity=".35"/><stop offset="1" stop-color="#bfffff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000814" stop-opacity=".8"/><stop offset="1" stop-color="#000814" stop-opacity="0"/></linearGradient>
+    <radialGradient id="gold" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#ffc94a"/><stop offset="1" stop-color="#9a6a10"/></radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffc94a" stop-opacity=".55"/><stop offset="1" stop-color="#ffc94a" stop-opacity="0"/></radialGradient>
+    <filter id="refr"><feTurbulence type="turbulence" baseFrequency=".012 .05" numOctaves="2" seed="4"><animate attributeName="seed" values="1;2;3;4;5;6;7;8" dur="1.2s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="14"/></filter>
+    <filter id="blur6"><feGaussianBlur stdDeviation="6"/></filter>
+   </defs>
+   <!-- above surface: museum gallery, seen refracted -->
+   <rect width="1600" height="260" fill="url(#air)"/>
+   <g filter="url(#refr)" opacity=".9">
+    <g fill="#243c4c"><rect x="120" y="60" width="160" height="120" rx="4"/><rect x="620" y="50" width="200" height="140" rx="4"/><rect x="1180" y="60" width="160" height="120" rx="4"/></g>
+    <g fill="#ffe7a8" opacity=".25"><path d="M200 0 L150 180 L250 180Z"/><path d="M720 0 L660 190 L780 190Z"/><path d="M1260 0 L1210 180 L1310 180Z"/></g>
+    <g class="walkA"><g transform="translate(360 0)"><ellipse cx="0" cy="96" rx="18" ry="20" fill="#02070c"/><path d="M-26 118 h52 l6 110 h-64z" fill="#02070c"/><path d="M-24 228 l-4 30 h20 l4 -30z M24 228 l4 30 h-20 l-4 -30z" fill="#02070c"/><rect x="-22" y="78" width="44" height="10" rx="3" fill="#02070c"/></g></g>
+    <g class="walkB"><g transform="translate(1200 0)"><ellipse cx="0" cy="100" rx="17" ry="19" fill="#02070c"/><path d="M-24 120 h48 l6 106 h-60z" fill="#02070c"/><path d="M-22 226 l-4 30 h18 l4 -30z M22 226 l4 30 h-18 l-4 -30z" fill="#02070c"/></g></g>
+   </g>
+   <!-- water body -->
+   <rect y="250" width="1600" height="750" fill="url(#water)"/>
+   <path id="surf" d="M0 256 Q40 246 80 256 T160 256 T240 256 T320 256 T400 256 T480 256 T560 256 T640 256 T720 256 T800 256 T880 256 T960 256 T1040 256 T1120 256 T1200 256 T1280 256 T1360 256 T1440 256 T1520 256 T1600 256" stroke="#dfffff" stroke-width="3" fill="none" opacity=".8"/>
+   <!-- light shafts -->
+   <g opacity=".7"><path d="M180 260 L120 1000 L300 1000 L260 260Z" fill="url(#shaft)"/><path d="M700 260 L620 1000 L860 1000 L790 260Z" fill="url(#shaft)"/><path d="M1240 260 L1180 1000 L1360 1000 L1320 260Z" fill="url(#shaft)"/></g>
+   <!-- guard shadows cast into water (move with guards) -->
+   <g class="walkA"><path d="M320 258 L400 258 L470 820 L250 820Z" fill="url(#shadow)"/><rect x="306" y="276" width="108" height="24" rx="4" fill="#00202a" opacity=".7"/><text x="360" y="293" text-anchor="middle" font-size="13" fill="#bff" letter-spacing="1">경비 1 · 순찰 →</text></g>
+   <g class="walkB"><path d="M1160 258 L1240 258 L1310 820 L1090 820Z" fill="url(#shadow)"/><rect x="1146" y="276" width="108" height="24" rx="4" fill="#00202a" opacity=".7"/><text x="1200" y="293" text-anchor="middle" font-size="13" fill="#bff" letter-spacing="1">← 경비 2 · 순찰</text></g>
+   <!-- seabed -->
+   <path d="M0 880 C160 840 300 870 460 850 C620 830 760 880 920 860 C1080 840 1240 870 1400 850 C1500 840 1560 850 1600 846 L1600 1000 L0 1000Z" fill="#021019"/>
+   <g fill="#04202c"><path d="M80 880 C100 800 180 780 230 820 C260 790 320 800 330 870Z"/><path d="M1020 870 C1040 780 1120 760 1180 800 C1220 770 1280 790 1290 860Z"/></g>
+   <g class="sway" fill="none" stroke="#0e5a4a" stroke-width="8" stroke-linecap="round"><path d="M520 880 C510 820 540 780 520 720 C505 680 530 650 520 610"/><path d="M548 884 C560 830 530 800 548 760"/></g>
+   <g class="sway" fill="none" stroke="#0e5a4a" stroke-width="7" stroke-linecap="round" style="animation-delay:-2s"><path d="M1420 870 C1410 810 1440 770 1420 700 C1405 660 1430 640 1420 600"/></g>
+   <!-- stolen display case sunk -->
+   <g transform="translate(1320 790)"><rect x="-40" y="0" width="80" height="60" rx="4" fill="#0a2a3a" stroke="#6ff3ff" stroke-opacity=".4"/><text x="0" y="36" text-anchor="middle" font-size="13" fill="#6ff3ff" opacity=".7">반출구</text></g>
+   <!-- diver carrying treasure -->
+   <g class="bob"><g transform="translate(900 610) rotate(-8)">
+    <circle cx="0" cy="0" r="90" fill="url(#glow)"/>
+    <path d="M-120 10 C-90 -6 -40 -14 10 -10 L40 -4 C60 0 60 20 40 22 L-20 26 C-60 30 -100 30 -120 22Z" fill="#0b1e2a" stroke="#6ff3ff" stroke-opacity=".5" stroke-width="2"/>
+    <path d="M-100 20 L-150 44 M-96 12 L-152 20" stroke="#0b1e2a" stroke-width="12" stroke-linecap="round"/><path d="M-150 44 l-26 14 l6 -24z M-152 20 l-28 4 l14 -20z" fill="#0b1e2a"/><path d="M20 12 C24 26 20 34 14 40" stroke="#0b1e2a" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <circle cx="52" cy="4" r="18" fill="#0b1e2a" stroke="#6ff3ff" stroke-opacity=".6" stroke-width="2"/>
+    <path d="M56 -4 a12 10 0 0 1 10 12" stroke="#bfffff" stroke-width="3" fill="none"/>
+    <rect x="-50" y="-30" width="54" height="18" rx="8" fill="#123448"/>
+    <g transform="translate(10 40)"><rect x="-26" y="-4" width="52" height="34" rx="5" fill="url(#gold)" stroke="#7a5008" stroke-width="2"/><path d="M-26 6 h52" stroke="#7a5008" stroke-width="2"/><circle cx="0" cy="14" r="4" fill="#7a5008"/></g>
+   </g></g>
+   <g fill="none" stroke="#dfffff" stroke-opacity=".7"><circle class="bub" cx="960" cy="590" r="4"/><circle class="bub" cx="968" cy="600" r="2.5" style="animation-delay:-1.3s"/><circle class="bub" cx="955" cy="598" r="3" style="animation-delay:-2.6s"/></g>
+   <!-- planned path -->
+   <path d="M900 640 C1000 700 1150 760 1300 790" stroke="#6ff3ff" stroke-width="2" stroke-dasharray="4 10" fill="none" opacity=".7"/>
+  </svg>
+  <div class="caustic"></div>
+    <div class="hud topbar"><span class="t">수면 아래 스텔스</span><span class="st">스테이지 12 / 40 · 해양박물관 지하 수조</span><span class="sp"></span><div class="loot">유물 <span class="got">◆</span><span class="got">◆</span><span class="got">◆</span><span>◆</span><span>◆</span></div></div>
+  <div class="hud status go"><i></i>그림자 이동 중 — 움직여도 된다</div>
+  <div class="hud o2"><div class="lbl"><span>산소</span><span>64%</span></div><div class="bar"><i style="width:64%;background:linear-gradient(90deg,#6ff3ff,#b8fff0)"></i></div><div class="lbl"><span>들고 있는 무게</span><span>금관 · 무거움</span></div><div class="bar"><i style="width:80%;background:linear-gradient(90deg,#ffc94a,#ff9a3a)"></i></div></div>
+  <div class="hud legend"><kbd>WASD</kbd>헤엄 · <kbd>Shift</kbd>천천히<br><kbd>Space</kbd>멈추기 — 거품을 참는다<br><b>그림자가 멈추면, 나도 멈춘다.</b></div>
+ </section>
+
+ <section class="screen" id="sb">
+  <svg class="scene" viewBox="0 0 1600 1000" width="1600" height="1000">
+   <defs>
+    <linearGradient id="waterB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#128a9a"/><stop offset=".3" stop-color="#084a64"/><stop offset=".75" stop-color="#041e36"/><stop offset="1" stop-color="#010a16"/></linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d8" stop-opacity=".75"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></linearGradient>
+    <linearGradient id="shadowB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000814" stop-opacity=".9"/><stop offset="1" stop-color="#000814" stop-opacity="0"/></linearGradient>
+    <radialGradient id="goldB" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#ffc94a"/><stop offset="1" stop-color="#9a6a10"/></radialGradient>
+    <filter id="refrB"><feTurbulence type="turbulence" baseFrequency=".012 .05" numOctaves="2" seed="9"/><feDisplacementMap in="SourceGraphic" scale="12"/></filter>
+    <filter id="bloom"><feGaussianBlur stdDeviation="10"/></filter>
+   </defs>
+   <rect width="1600" height="260" fill="#0a141c"/>
+   <g filter="url(#refrB)">
+    <g transform="translate(760 0)"><ellipse cx="0" cy="96" rx="19" ry="21" fill="#02070c"/><path d="M-28 118 h56 l6 110 h-68z" fill="#02070c"/><path d="M-26 228 l-4 30 h20 l4 -30z M26 228 l4 30 h-20 l-4 -30z" fill="#02070c"/><rect x="-24" y="76" width="48" height="10" rx="3" fill="#02070c"/><path d="M26 150 L60 190" stroke="#02070c" stroke-width="12" stroke-linecap="round"/><rect x="52" y="182" width="26" height="14" rx="3" fill="#444" transform="rotate(50 65 189)"/></g>
+    <g transform="translate(1260 0)" opacity=".7"><ellipse cx="0" cy="100" rx="17" ry="19" fill="#02070c"/><path d="M-24 120 h48 l6 106 h-60z" fill="#02070c"/></g>
+   </g>
+   <rect y="250" width="1600" height="750" fill="url(#waterB)"/>
+   <path d="M0 256 Q40 250 80 256 T160 256 T240 256 T320 256 T400 256 T480 256 T560 256 T640 256 T720 256 T800 256 T880 256 T960 256 T1040 256 T1120 256 T1200 256 T1280 256 T1360 256 T1440 256 T1520 256 T1600 256" stroke="#dfffff" stroke-width="3" fill="none" opacity=".6"/>
+   <!-- stopped shadow -->
+   <path d="M720 258 L800 258 L880 860 L640 860Z" fill="url(#shadowB)"/>
+   <!-- flashlight beam into water -->
+   <g filter="url(#bloom)" opacity=".7"><path d="M822 262 L1010 780 L870 800Z" fill="#fff6d8" opacity=".35"/></g>
+   <path id="beamP" d="M822 262 L1030 800 L850 820Z" fill="url(#beam)"/>
+   <path d="M0 880 C160 840 300 870 460 850 C620 830 760 880 920 860 C1080 840 1240 870 1400 850 C1500 840 1560 850 1600 846 L1600 1000 L0 1000Z" fill="#010a12"/>
+   <g fill="#031824"><path d="M1020 870 C1040 780 1120 760 1180 800 C1220 770 1280 790 1290 860Z"/><path d="M80 880 C100 800 180 780 230 820 C260 790 320 800 330 870Z"/></g>
+   <!-- diver frozen, pressed against rock, beam edge brushing -->
+   <g transform="translate(1110 760) rotate(-4)">
+    <path d="M-120 10 C-90 -6 -40 -14 10 -10 L40 -4 C60 0 60 20 40 22 L-20 26 C-60 30 -100 30 -120 22Z" fill="#081620" stroke="#ff3d5a" stroke-opacity=".7" stroke-width="2"/>
+    <path d="M-100 20 L-150 44 M-96 12 L-152 20" stroke="#081620" stroke-width="12" stroke-linecap="round"/><path d="M-150 44 l-26 14 l6 -24z M-152 20 l-28 4 l14 -20z" fill="#081620"/><path d="M20 12 C24 26 20 34 14 40" stroke="#081620" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <circle cx="52" cy="4" r="18" fill="#081620" stroke="#ff3d5a" stroke-opacity=".7" stroke-width="2"/>
+    <g transform="translate(10 40)"><rect x="-26" y="-4" width="52" height="34" rx="5" fill="url(#goldB)" stroke="#7a5008" stroke-width="2"/></g>
+   </g>
+   <!-- escaping bubbles (danger) -->
+   <g fill="none" stroke="#fff" stroke-opacity=".9">
+    <circle cx="1168" cy="700" r="6"/><circle cx="1160" cy="650" r="4"/><circle cx="1172" cy="600" r="7"/><circle cx="1164" cy="540" r="3"/><circle cx="1170" cy="470" r="5"/>
+   </g>
+   <path d="M1168 460 L1168 280" stroke="#ff3d5a" stroke-dasharray="3 8" stroke-width="2" opacity=".8"/>
+   <circle cx="1168" cy="262" r="14" fill="none" stroke="#ff3d5a" stroke-width="2"><animate attributeName="r" values="6;30" dur="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.2s" repeatCount="indefinite"/></circle>
+  </svg>
+  <div class="caustic" style="opacity:.2"></div>
+  <div class="alarm"></div>
+  <div class="label" style="left:640px;top:215px;background:rgba(60,0,10,.7);color:#ffd0d8">경비 1 · 멈춤 · 수면을 비추는 중</div>
+  <div class="label" style="left:1190px;top:470px;background:rgba(60,0,10,.7);color:#ffd0d8">거품 — 수면에 닿으면 발각</div>
+  <div class="hud topbar"><span class="t">수면 아래 스텔스</span><span class="st">스테이지 12 / 40</span><span class="sp"></span><div class="loot">유물 <span class="got">◆</span><span class="got">◆</span><span class="got">◆</span><span>◆</span><span>◆</span></div></div>
+  <div class="hud freeze"><b>멈춰</b><span>그림자가 멈췄다 · 손전등이 내려온다</span></div>
+  <div class="hud o2"><div class="lbl"><span>산소</span><span style="color:#ff8a9a">31%</span></div><div class="bar"><i style="width:31%;background:linear-gradient(90deg,#ff3d5a,#ff9aa8)"></i></div><div class="lbl"><span>숨 참기</span><span>4.2초</span></div><div class="bar"><i id="hold" style="width:60%;background:#dffaff"></i></div></div>
+  <div class="hud detect"><div class="lbl"><span>발각</span><span>78%</span></div><div class="bar"><i></i></div></div>
+  <div class="hud breath"><b>[ Space ] 길게 눌러 숨을 참는다</b><br>놓으면 거품이 나간다. 손전등이 지나갈 때까지.</div>
+ </section>
+ <div class="grain"></div><div class="vig"></div>
+ <nav id="tabs"><a href="#a" data-k="a">1 · 잠행</a><a href="#b" data-k="b">2 · 멈춰</a></nav>
+</div>
+<script>
+(function(){
+ var st=document.getElementById('stage');
+ function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);st.style.transform='translate(-50%,-50%) scale('+s+')';}
+ window.addEventListener('resize',fit);fit();
+ var tabs=document.querySelectorAll('#tabs a');
+ function show(k){document.body.setAttribute('data-screen',k);for(var i=0;i<tabs.length;i++){tabs[i].className=tabs[i].getAttribute('data-k')===k?'on':'';}}
+ function fromHash(){show(location.hash==='#b'?'b':'a');}
+ window.addEventListener('hashchange',fromHash);fromHash();
+ var AC=null;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+ function bubble(){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type='sine';var t=c.currentTime;o.frequency.setValueAtTime(300+Math.random()*200,t);o.frequency.exponentialRampToValueAtTime(900+Math.random()*400,t+0.08);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.1,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+0.15);}
+ function thump(){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type='sine';var t=c.currentTime;o.frequency.setValueAtTime(70,t);o.frequency.exponentialRampToValueAtTime(40,t+0.3);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.3,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+0.35);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+0.4);}
+ var hold=false,hv=60,hb=document.getElementById('hold');
+ window.addEventListener('keydown',function(e){if(e.key==='1')location.hash='a';if(e.key==='2')location.hash='b';if(e.key===' '||e.code==='Space'){if(!hold){thump();}hold=true;e.preventDefault();}});
+ window.addEventListener('keyup',function(e){if(e.key===' '||e.code==='Space'){hold=false;for(var i=0;i<4;i++){setTimeout(bubble,i*70);}}});
+ st.addEventListener('mousedown',function(){hold=true;thump();});st.addEventListener('mouseup',function(){hold=false;for(var i=0;i<4;i++){setTimeout(bubble,i*70);}});
+ setInterval(function(){hv+=hold?-1.2:0.8;hv=Math.max(0,Math.min(100,hv));if(hb)hb.style.width=hv.toFixed(0)+'%';},60);
+ var beam=document.getElementById('beamP'),t=0;
+ function loop(){t+=0.016;var sw=Math.sin(t*0.7)*90;if(beam)beam.setAttribute('d','M822 262 L'+(1030+sw).toFixed(0)+' 800 L'+(850+sw*0.8).toFixed(0)+' 820Z');window.requestAnimationFrame(loop);}
+ window.requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소리 없는 지휘봉</title>
+<style>
+:root{
+  --velvet:#140a0c; --velvet2:#2a1014; --tung:#f3c77a; --tungSoft:#c99a52; --gold:#e4b862;
+  --ivory:#efe6d2; --ash:#8c8276; --breath:#bfe3ff; --bow:#ffd9a0; --face:#ff9b83; --warn:#ff6a4d;
+  --paper:#ece4cf; --paperLit:#f6f0e0; --ink:#1d1b18; --inkSoft:#4b463d; --red:#b3261e; --pencil:#5a5550;
+  --serifK:"Nanum Myeongjo","Noto Serif KR","Noto Serif CJK KR","AppleMyungjo","Batang",serif;
+  --didot:"Bodoni Moda","Bodoni 72","Didot","Playfair Display","Georgia",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#050304;overflow:hidden;font-family:var(--serifK);color:var(--ivory)}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1600px;height:1000px;flex:none;overflow:hidden;transform-origin:center center;background:#000}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.screen.on{opacity:1;pointer-events:auto}
+#tabs{position:absolute;right:18px;top:16px;z-index:50;display:flex;gap:6px}
+#tabs button{font:600 12px/1 var(--serifK);padding:7px 11px;border-radius:3px;cursor:pointer;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#e9dcc2;letter-spacing:.04em}
+#tabs button.on{background:#e4b862;color:#1a0f08;border-color:#e4b862}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.14;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>")}
+
+/* ============ SCREEN A : the podium ============ */
+#A{background:
+  radial-gradient(ellipse 60% 42% at 50% 44%, rgba(243,199,122,.26), transparent 70%),
+  radial-gradient(ellipse 90% 60% at 50% 110%, #3a1a14 0%, transparent 60%),
+  linear-gradient(#070405 0%, #120709 38%, #1d0c0d 62%, #0b0506 100%)}
+#A svg.hall{position:absolute;inset:0}
+.vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 48%, transparent 45%, rgba(0,0,0,.82) 100%)}
+.dust{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(100deg, transparent 38%, rgba(255,214,150,.05) 45%, transparent 52%),
+  linear-gradient(80deg, transparent 50%, rgba(255,214,150,.045) 56%, transparent 62%);animation:dust 9s ease-in-out infinite alternate}
+@keyframes dust{from{opacity:.6}to{opacity:1}}
+
+.hudTop{position:absolute;left:36px;top:26px;width:560px}
+.piece{font:italic 400 15px/1 var(--didot);letter-spacing:.3em;color:var(--tungSoft);text-transform:uppercase}
+.pieceK{font-size:30px;font-weight:800;margin-top:8px;color:#f6ead2;text-shadow:0 2px 18px rgba(0,0,0,.8)}
+.barInfo{margin-top:10px;display:flex;gap:18px;align-items:baseline;font-size:15px;color:#cdbfa6}
+.barInfo b{font:700 26px/1 var(--didot);color:var(--tung)}
+.barNote{margin-top:6px;font-size:14px;color:#e8a88f}
+.mute{position:absolute;left:50%;top:22px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:8px 16px 8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:40px;background:rgba(0,0,0,.35);font-size:13px;color:#b7a993;letter-spacing:.12em}
+.mute .wave{display:flex;gap:3px;align-items:center;height:16px}
+.mute .wave i{display:block;width:2px;height:2px;background:#6c6258;border-radius:1px}
+
+.legend{position:absolute;right:36px;top:66px;width:300px;padding:16px 18px;border:1px solid rgba(228,184,98,.25);background:linear-gradient(rgba(20,10,10,.7),rgba(10,5,5,.55));border-radius:4px}
+.legend h4{font:italic 13px/1 var(--didot);letter-spacing:.25em;color:var(--tungSoft);margin-bottom:12px}
+.lg{display:flex;align-items:center;gap:12px;font-size:14px;margin:9px 0;color:#e9dcc2}
+.lg small{display:block;font-size:11.5px;color:#9d8f7c;margin-top:2px}
+.envelope{position:absolute;right:36px;top:330px;width:300px;background:rgba(10,5,5,.5);padding:13px 16px;border:1px dashed rgba(239,230,210,.25);border-radius:4px;font-size:12.5px;color:#a89a86;line-height:1.55}
+.envelope b{color:#efe6d2;font-weight:700}
+
+.sec{position:absolute;cursor:pointer}
+.sec .tag{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px;letter-spacing:.2em;color:#d9c9ac;text-shadow:0 1px 6px #000;padding:3px 8px;border-radius:2px;transition:color .2s}
+.sec:hover .tag{color:#fff}
+.sec.aim .tag{color:#1a0f08;background:var(--gold)}
+.cueglyph{position:absolute;pointer-events:none}
+
+#podium{position:absolute;left:0;right:0;bottom:0;height:250px;z-index:5}
+.stand{position:absolute;left:330px;right:330px;bottom:108px;height:124px;border-radius:4px 4px 0 0;
+  background:linear-gradient(#e8dcc0,#d6c7a4);box-shadow:0 -10px 40px rgba(243,199,122,.25),0 20px 40px rgba(0,0,0,.8);transform:perspective(900px) rotateX(28deg);transform-origin:bottom}
+.stand svg{position:absolute;inset:0}
+.cues{position:absolute;left:36px;right:36px;bottom:20px;height:86px;display:flex;gap:8px}
+.cue{flex:1;position:relative;border:1px solid rgba(228,184,98,.28);border-radius:4px;background:linear-gradient(#211113,#140a0b);padding:10px 8px 8px;cursor:pointer;transition:transform .08s,border-color .15s,background .15s;text-align:center}
+.cue:hover{border-color:var(--gold);background:linear-gradient(#32191a,#1c0d0e)}
+.cue:active,.cue.press{transform:translateY(3px) scale(.98);background:linear-gradient(#4a2618,#2a130e)}
+.cue .n{font-size:15px;font-weight:800;color:#f3e6cb}
+.cue .g{font-size:11px;color:#9a8b77;margin-top:4px;line-height:1.3}
+.cue .v{position:absolute;top:6px;right:7px;font:600 10px/1 var(--didot);color:var(--tungSoft)}
+.cue.hot{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset,0 0 20px rgba(228,184,98,.25)}
+.cue svg{display:block;margin:0 auto 4px}
+.flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 70%,rgba(255,220,160,.18),transparent 55%);opacity:0;transition:opacity .5s}
+.flash.go{opacity:1;transition:none}
+
+/* ============ SCREEN B : next morning ============ */
+#B{background:
+  linear-gradient(115deg, rgba(255,236,196,.0) 0%, rgba(255,236,196,.0) 30%, rgba(255,226,170,.32) 42%, rgba(255,226,170,.0) 70%),
+  radial-gradient(ellipse 80% 70% at 40% 40%, #7a5a3c 0%, #4a321f 60%, #2a1b10 100%)}
+.wood{position:absolute;inset:0;opacity:.35;background:repeating-linear-gradient(92deg, rgba(0,0,0,.18) 0 2px, transparent 2px 23px, rgba(255,210,160,.06) 23px 25px, transparent 25px 61px)}
+.windowShadow{position:absolute;inset:-100px;pointer-events:none;opacity:.5;filter:blur(6px);background:
+  linear-gradient(115deg, transparent 0 55%, rgba(20,10,0,.28) 55% 57%, transparent 57% 71%, rgba(20,10,0,.28) 71% 73%, transparent 73%),
+  linear-gradient(25deg, transparent 0 62%, rgba(20,10,0,.22) 62% 63.5%, transparent 63.5%);mix-blend-mode:multiply;animation:sway 14s ease-in-out infinite alternate}
+@keyframes sway{from{transform:translate(0,0)}to{transform:translate(14px,6px)}}
+.scoreSheet{position:absolute;left:70px;top:60px;width:900px;height:880px;transform:rotate(-2.2deg);
+  background:linear-gradient(#f3ecd9,#e6dcc2);box-shadow:0 30px 60px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.4) inset;border-radius:2px}
+.scoreSheet svg{position:absolute;inset:0}
+.clip{position:absolute;left:170px;top:140px;width:640px;height:640px;transform:rotate(1.6deg);
+  background:
+   radial-gradient(circle, rgba(40,36,30,.13) 1px, transparent 1.4px) 0 0/4px 4px,
+   linear-gradient(#e2ddd0,#d6d0c1);
+  color:var(--ink);padding:26px 34px 30px;box-shadow:0 18px 30px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.6) inset;
+  clip-path:polygon(0 1%,4% 0,21% .8%,38% 0,57% .6%,76% 0,100% .7%,99.4% 22%,100% 48%,99.2% 73%,100% 99%,81% 100%,60% 99.3%,39% 100%,17% 99.2%,0 100%,.7% 76%,0 51%,.8% 27%)}
+.clip .mast{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px double #2b2822;padding-bottom:6px;font-size:13px;color:#3b372f}
+.clip .mast b{font:900 30px/1 var(--serifK);letter-spacing:.12em;color:#141210}
+.clip .col{margin-top:10px;font-size:13px;letter-spacing:.3em;color:#555046}
+.clip h2{font:900 38px/1.22 var(--serifK);margin:10px 0 12px;letter-spacing:-.01em}
+.clip .photo{float:right;width:220px;height:180px;margin:4px 0 10px 18px;position:relative;background:#bdb6a6;overflow:hidden}
+.clip .photo svg{position:absolute;inset:0}
+.clip .photo .dots{position:absolute;inset:0;background:radial-gradient(circle, rgba(0,0,0,.55) 1.1px, transparent 1.6px) 0 0/5px 5px;mix-blend-mode:multiply;opacity:.55}
+.clip .photo small{position:absolute;left:6px;bottom:4px;font-size:10px;color:#f2eee4}
+.clip p{font-size:15.5px;line-height:1.72;color:#27241f;text-align:justify}
+.clip .notes{clear:both;margin-top:14px;border-top:1px solid #6d675b;padding-top:10px}
+.clip .note{font-size:17px;font-weight:700;padding:7px 8px;margin:3px -8px;border-radius:2px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.clip .note:hover{background:rgba(179,38,30,.08)}
+.clip .note.copied{background:rgba(179,38,30,.12)}
+.clip .note .arrow{font-size:12px;font-weight:400;color:#8a2a22;opacity:.8}
+.clip .by{margin-top:12px;font-size:12.5px;color:#58534a;text-align:right}
+.grade{position:absolute;left:770px;top:215px;width:150px;height:150px;border-radius:50%;border:5px double var(--red);color:var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-14deg);font-weight:900;opacity:.85;mix-blend-mode:multiply}
+.grade b{font-size:46px;line-height:1}
+.grade small{font:italic 700 15px/1 var(--didot);margin-top:6px;letter-spacing:.1em}
+.tape{position:absolute;width:130px;height:34px;background:linear-gradient(rgba(250,240,200,.55),rgba(230,220,180,.5));box-shadow:0 1px 3px rgba(0,0,0,.15);backdrop-filter:blur(.5px)}
+.cup{position:absolute;left:1390px;top:830px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, #2a1409 0 36%, #5b3217 37% 40%, #efe6d6 41% 58%, #d9cdb8 59% 62%, transparent 63%);box-shadow:30px 30px 50px rgba(0,0,0,.45)}
+.cup::after{content:"";position:absolute;left:70px;top:72px;width:60px;height:26px;border-radius:50%;background:rgba(255,240,210,.25);filter:blur(4px);animation:steam 4s ease-in-out infinite}
+@keyframes steam{50%{opacity:.4;transform:translate(10px,-4px) scale(1.2)}}
+.ring{position:absolute;left:640px;top:760px;width:190px;height:190px;border-radius:50%;border:6px solid rgba(90,50,20,.22);filter:blur(.6px)}
+.notebook{position:absolute;left:1010px;top:70px;width:520px;height:600px;transform:rotate(2.4deg);
+  background:repeating-linear-gradient(#f6f1e3 0 33px, #b8cde0 33px 34px);box-shadow:0 26px 50px rgba(0,0,0,.5);border-left:44px solid #1f2a36;padding:26px 30px 20px 32px;color:var(--pencil);border-radius:2px 6px 6px 2px}
+.notebook::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:rgba(200,60,50,.45)}
+.notebook h3{font-size:21px;font-weight:800;color:#2b2a27;line-height:34px;margin-top:-4px}
+.notebook .line{font-size:17px;line-height:34px;min-height:34px;font-family:"Nanum Pen Script","Nanum Brush Script",var(--serifK);white-space:nowrap}
+.notebook .line.red{color:var(--red)}
+.notebook .line.new{animation:write .9s steps(18) both}
+@keyframes write{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.season{position:absolute;left:1010px;top:708px;width:540px;padding:14px 18px;background:rgba(20,12,6,.93);box-shadow:0 20px 40px rgba(0,0,0,.5);border:1px solid rgba(255,230,190,.18);border-radius:4px;color:#eadfc9}
+.season h4{font-size:13px;letter-spacing:.2em;color:#d6b98a;font-weight:600;margin-bottom:10px}
+.nights{display:flex;gap:8px;align-items:flex-end;height:110px}
+.night{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.night .bar{width:100%;border-radius:2px 2px 0 0;background:linear-gradient(#e4b862,#8a6326)}
+.night .bar.pan{background:linear-gradient(#b3261e,#5a130f)}
+.night .bar.tep{background:linear-gradient(#9c9282,#5b544a)}
+.night .bar.fut{background:repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 4px,transparent 4px 8px);border:1px dashed rgba(255,255,255,.3)}
+.night span{font-size:11px;margin-top:5px;color:#b6a78f}
+.night em{position:absolute;top:-2px;font-style:normal;font-size:11px;color:#fff;font-weight:700}
+.night.today .bar{box-shadow:0 0 14px rgba(228,184,98,.7)}
+.hudB{position:absolute;left:34px;bottom:18px;font-size:13px;color:rgba(255,236,210,.7);letter-spacing:.12em}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+<!-- ================================================================ A -->
+<section class="screen" id="A">
+  <svg class="hall" viewBox="0 0 1600 1000" aria-hidden="true">
+    <defs>
+      <radialGradient id="spot" cx="50%" cy="0%" r="100%">
+        <stop offset="0" stop-color="#ffdca0" stop-opacity=".55"/><stop offset=".6" stop-color="#ffcf88" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a1f15"/><stop offset=".5" stop-color="#5a3322"/><stop offset="1" stop-color="#1a0c08"/>
+      </linearGradient>
+      <linearGradient id="curtain" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2b0a0e"/><stop offset=".5" stop-color="#5a141b"/><stop offset="1" stop-color="#2b0a0e"/>
+      </linearGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+      <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <g id="player">
+        <ellipse cx="0" cy="36" rx="22" ry="7" fill="#000" opacity=".5"/>
+        <path d="M-17 34 Q-19 6 -9 -2 L9 -2 Q19 6 17 34Z" fill="#0d0708"/>
+        <circle cx="0" cy="-12" r="9" fill="#0d0708"/>
+        <path d="M-8 -18 Q0 -24 8 -18" stroke="#f3c77a" stroke-opacity=".55" stroke-width="1.6" fill="none"/>
+        <path d="M-17 30 Q-19 6 -9 -2" stroke="#f3c77a" stroke-opacity=".35" stroke-width="1.2" fill="none"/>
+      </g>
+    </defs>
+    <!-- back wall organ pipes -->
+    <g opacity=".5">
+      <rect x="0" y="0" width="1600" height="330" fill="#0a0506"/>
+      <g fill="#1d1012" stroke="#3b2418" stroke-width="1">
+        <rect x="560" y="40" width="22" height="200"/><rect x="590" y="20" width="22" height="220"/><rect x="620" y="0" width="22" height="240"/><rect x="650" y="10" width="22" height="230"/><rect x="680" y="30" width="22" height="210"/>
+        <rect x="898" y="30" width="22" height="210"/><rect x="928" y="10" width="22" height="230"/><rect x="958" y="0" width="22" height="240"/><rect x="988" y="20" width="22" height="220"/><rect x="1018" y="40" width="22" height="200"/>
+      </g>
+      <text x="800" y="140" text-anchor="middle" font-family="Didot,Georgia,serif" font-style="italic" font-size="22" fill="#6b4a2a" letter-spacing="10">MANJONG HALL</text>
+    </g>
+    <path d="M0 0 H140 Q120 500 170 1000 H0Z" fill="url(#curtain)"/>
+    <path d="M1600 0 H1460 Q1480 500 1430 1000 H1600Z" fill="url(#curtain)"/>
+    <!-- stage floor arc -->
+    <path d="M60 760 Q800 250 1540 760 L1600 1000 H0Z" fill="url(#floor)"/>
+    <path d="M60 760 Q800 250 1540 760" stroke="#f3c77a" stroke-opacity=".18" stroke-width="2" fill="none"/>
+    <g stroke="#000" stroke-opacity=".25" stroke-width="1.5">
+      <path d="M200 1000 L640 330"/><path d="M500 1000 L730 320"/><path d="M800 1000 L800 318"/><path d="M1100 1000 L870 320"/><path d="M1400 1000 L960 330"/>
+    </g>
+    <!-- risers -->
+    <path d="M420 430 Q800 250 1180 430" stroke="#6b3d22" stroke-width="16" fill="none" opacity=".5"/>
+    <path d="M300 560 Q800 320 1300 560" stroke="#6b3d22" stroke-width="14" fill="none" opacity=".4"/>
+    <ellipse cx="800" cy="560" rx="560" ry="330" fill="url(#spot)"/>
+    <!-- players (silhouettes) -->
+    <g id="players"></g>
+    <!-- baton afterimage trail -->
+    <g id="trail" fill="none" stroke-linecap="round"></g>
+  </svg>
+  <div class="dust"></div>
+
+  <!-- section hit areas + cue glyphs injected by JS -->
+  <div id="secs"></div>
+
+  <div class="hudTop">
+    <div class="piece">Finale · 24 beats</div>
+    <div class="pieceK">종악장 「스물넷의 박」</div>
+    <div class="barInfo"><span>소절 <b id="bar">2</b> / 5</span><span>박 <b id="beat">3</b> / 4</span><span>요구 세기 <b id="dynReq">44</b></span></div>
+    <div class="barNote" id="barNote">갑자기 작게 — 표정만 보고 눌러야 하는데 팀파니가 그 자리에 들어온다</div>
+  </div>
+
+  <div class="mute"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M6 3 Q14 3 14 10 Q14 14 11 15 Q10 18 7 17" stroke="#b7a993" stroke-width="1.6" fill="none"/><path d="M8 8 Q10 7 11 9" stroke="#b7a993" stroke-width="1.4" fill="none"/><path d="M2 18 L18 2" stroke="#ff6a4d" stroke-width="1.8"/></svg>소리 없음<span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+
+  <div class="legend">
+    <h4>WHAT YOU CAN SEE</h4>
+    <div class="lg"><svg width="38" height="38"><circle cx="19" cy="19" r="14" fill="none" stroke="#bfe3ff" stroke-width="2" stroke-dasharray="2 3"/><circle cx="19" cy="19" r="6" fill="#bfe3ff" opacity=".7"/></svg><div>호흡 — 원의 크기<small>누적 어긋남. 클수록 박에서 멀다</small></div></div>
+    <div class="lg"><svg width="38" height="38"><line x1="7" y1="30" x2="31" y2="10" stroke="#ffd9a0" stroke-width="3" stroke-linecap="round"/><line x1="7" y1="30" x2="31" y2="30" stroke="#ffd9a0" stroke-opacity=".3"/></svg><div>활 — 기울기<small>벌어지는 속도. 목관·금관은 활이 없다</small></div></div>
+    <div class="lg"><svg width="38" height="38"><path d="M8 24 Q19 12 30 24" stroke="#ff9b83" stroke-width="4" fill="none" stroke-linecap="round"/></svg><div>표정 — 획의 방향·굵기<small>세기의 어긋남. 금관은 멀어서 흐리다</small></div></div>
+  </div>
+  <div class="envelope"><b>평론은 내일 아침에 온다.</b><br>지금은 아무것도 들리지 않고, 아무도 점수를 말해 주지 않는다. 오늘 밤 네가 가진 것은 네 무리의 몸뿐이다.</div>
+
+  <div id="podium">
+    <div class="stand"><svg viewBox="0 0 940 124" preserveAspectRatio="none" id="staff"></svg></div>
+    <div class="cues" id="cues"></div>
+  </div>
+  <div class="flash" id="flash"></div>
+  <div class="vign"></div>
+  <div class="grain"></div>
+</section>
+
+<!-- ================================================================ B -->
+<section class="screen" id="B">
+  <div class="wood"></div>
+  <div class="ring"></div>
+  <div class="scoreSheet">
+    <svg viewBox="0 0 900 880" aria-hidden="true" id="sheetSvg"></svg>
+  </div>
+
+  <div class="clip" id="clip">
+    <div class="mast"><b>만종일보</b><span>9월 29일 화요일 · 문화 23면</span></div>
+    <div class="col">음악 단평 · 만종 시립악단 제4회 정기 연주</div>
+    <h2>고르게 다듬어진<br>한 시간</h2>
+    <div class="photo">
+      <svg viewBox="0 0 220 180">
+        <rect width="220" height="180" fill="#8d877a"/>
+        <ellipse cx="110" cy="40" rx="130" ry="70" fill="#d8d2c2"/>
+        <path d="M60 180 Q66 110 96 96 L124 96 Q150 110 160 180Z" fill="#1b1916"/>
+        <circle cx="110" cy="80" r="17" fill="#1b1916"/>
+        <path d="M148 110 L200 58" stroke="#1b1916" stroke-width="5" stroke-linecap="round"/>
+        <path d="M200 58 L214 44" stroke="#f0ece0" stroke-width="2"/>
+        <g fill="#3a3630"><circle cx="20" cy="150" r="9"/><circle cx="44" cy="146" r="9"/><circle cx="182" cy="150" r="9"/><circle cx="206" cy="146" r="9"/></g>
+      </svg>
+      <div class="dots"></div>
+      <small>지휘대의 윤 서하 (사진 = 만종일보)</small>
+    </div>
+    <p>군데군데 어긋났으나 그때마다 제자리로 돌아왔다. 돌아오는 속도가 이 악단의 실력이다. 종악장 둘째 소절, 갑자기 작아지는 자리에서 팀파니가 들어올 때 객석은 잠시 숨을 멈췄다. 지휘대는 한 번도 뒤를 돌아보지 않았고, 이상하게도 그 편이 더 정확했다.</p>
+    <div class="notes">
+      <div class="note" data-i="0"><span>금관 — 내내 늘어졌다</span><span class="arrow">수첩에 옮기기 →</span></div>
+      <div class="note" data-i="1"><span>현, 타 — 둘이 서로 다른 박을 세고 있었다</span><span class="arrow">수첩에 옮기기 →</span></div>
+      <div class="note" data-i="2"><span>목관 — 들리지 않을 만큼 작았다</span><span class="arrow">수첩에 옮기기 →</span></div>
+    </div>
+    <div class="by">— 하 모 기자</div>
+  </div>
+  <div class="grade"><b>호평</b><small>71</small></div>
+  <div class="tape" style="left:190px;top:122px;transform:rotate(-8deg)"></div>
+  <div class="tape" style="left:690px;top:760px;transform:rotate(12deg)"></div>
+
+  <div class="notebook">
+    <h3>다음 연주 — 제5회 · 서곡</h3>
+    <div class="line">어젯밤 나는 금관을 세 번 봤다. 그것으로 모자랐다.</div>
+    <div class="line red" id="n0"></div>
+    <div class="line red" id="n1"></div>
+    <div class="line red" id="n2" style="color:#b9b3a6">(평론 한 줄을 더 옮겨 적을 자리)</div>
+    <div class="line">금관은 표정이 안 보인다. 숨으로만 읽는다.</div>
+    <div class="line">목관은 숨이 크다 — 원이 작아 보여도 믿지 말 것.</div>
+    <div class="line"></div>
+    <div class="line" style="color:#2b2a27">첫 소절: 현·목관 → 셋째 소절 금관 먼저.</div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line" style="text-align:right;color:#8a847a">— 서하</div>
+  </div>
+
+  <div class="cup"></div>
+
+  <div class="season">
+    <h4>시즌 아홉 회 · 오늘 아침까지 네 번의 평론</h4>
+    <div class="nights" id="nights"></div>
+  </div>
+  <div class="hudB">평론 문장을 눌러 수첩에 옮긴다 — 다음 연주의 사전 지식이 된다</div>
+  <div class="windowShadow"></div>
+  <div class="grain" style="opacity:.2"></div>
+</section>
+
+<div id="tabs"><button data-s="A">1 · 지휘대</button><button data-s="B">2 · 다음 날 아침</button></div>
+</div></div>
+
+<script>
+(function(){
+  "use strict";
+  var stage=document.getElementById("stage");
+  function fit(){
+    var s=Math.min(window.innerWidth/1600, window.innerHeight/1000);
+    stage.style.transform="scale("+s+")";
+  }
+  window.addEventListener("resize",fit); fit();
+
+  /* ---------- audio: only after interaction ---------- */
+  var ac=null;
+  function ctx(){ try{ if(!ac){ var C=window.AudioContext||window.webkitAudioContext; if(C) ac=new C(); } if(ac&&ac.state==="suspended") ac.resume(); }catch(e){ ac=null; } return ac; }
+  // felt, not heard: a low thud through the podium floor
+  function thud(strength){
+    var a=ctx(); if(!a) return;
+    try{
+      var o=a.createOscillator(), g=a.createGain(), f=a.createBiquadFilter();
+      o.type="sine"; o.frequency.setValueAtTime(62,a.currentTime); o.frequency.exponentialRampToValueAtTime(34,a.currentTime+.22);
+      f.type="lowpass"; f.frequency.value=140;
+      g.gain.setValueAtTime(0.0001,a.currentTime); g.gain.exponentialRampToValueAtTime(0.22*strength,a.currentTime+.012); g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+.3);
+      o.connect(f); f.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime+.32);
+    }catch(e){}
+  }
+  function scratch(){
+    var a=ctx(); if(!a) return;
+    try{
+      var len=Math.floor(a.sampleRate*.5), buf=a.createBuffer(1,len,a.sampleRate), d=buf.getChannelData(0), seed=7;
+      for(var i=0;i<len;i++){ seed=(seed*16807)%2147483647; var env=Math.abs(Math.sin(i/len*Math.PI*7)); d[i]=((seed/2147483647)*2-1)*env*.5; }
+      var s=a.createBufferSource(), f=a.createBiquadFilter(), g=a.createGain();
+      s.buffer=buf; f.type="bandpass"; f.frequency.value=3200; f.Q.value=1.2; g.gain.value=.25;
+      s.connect(f); f.connect(g); g.connect(a.destination); s.start();
+    }catch(e){}
+  }
+
+  /* ---------- screen switching ---------- */
+  var tabs=document.querySelectorAll("#tabs button");
+  function show(id){
+    ["A","B"].forEach(function(k){ document.getElementById(k).classList.toggle("on",k===id); });
+    for(var i=0;i<tabs.length;i++) tabs[i].classList.toggle("on",tabs[i].getAttribute("data-s")===id);
+  }
+  function fromHash(){ show((location.hash||"").toLowerCase()==="#b"?"B":"A"); }
+  for(var t=0;t<tabs.length;t++) tabs[t].addEventListener("click",function(){ var s=this.getAttribute("data-s"); history.replaceState(null,"","#"+s.toLowerCase()); show(s); });
+  window.addEventListener("hashchange",fromHash); fromHash();
+
+  /* ================= SCREEN A ================= */
+  var NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent){ var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+
+  // four sections as seen from the podium (seat per data: 현 왼쪽 앞, 목관 가운데, 금관 오른쪽 뒤, 타 맨 뒤)
+  var SECS=[
+    {id:"s_strings",name:"현",inst:"바이올린 · 비올라 · 첼로",x:370,y:640,w:330,rows:[[0,0],[60,-6],[120,-12],[180,-18],[240,-22],[30,-52],[90,-58],[150,-64],[210,-70]],bow:true, off:62, spd:2, face:1},
+    {id:"s_wood",name:"목관",inst:"플루트 · 클라리넷 · 오보에",x:800,y:520,w:260,rows:[[0,0],[56,0],[112,0],[168,0],[28,-40],[84,-40],[140,-40]],bow:false, off:-18, spd:0, face:-1},
+    {id:"s_brass",name:"금관",inst:"호른 · 트럼펫 · 트롬본",x:1200,y:600,w:300,rows:[[0,-22],[60,-18],[120,-12],[180,-6],[240,0],[30,-70],[90,-64],[150,-58],[210,-52]],bow:false, off:84, spd:0, face:2},
+    {id:"s_perc",name:"타",inst:"팀파니 · 트라이앵글",x:800,y:300,w:220,rows:[[0,0],[80,-4],[160,0]],bow:true, off:-40, spd:-3, face:0}
+  ];
+  var players=document.getElementById("players");
+  SECS.forEach(function(s){
+    var g=el("g",{},players), sc = s.y<400?0.8:(s.y<500?0.9:1.05);
+    s.rows.forEach(function(p){
+      var px=s.x - s.w/2 + 30 + p[0], py=s.y + p[1];
+      var u=el("use",{href:"#player",transform:"translate("+px+" "+py+") scale("+sc+")"},g);
+      u.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","#player");
+      if(s.bow){ el("line",{x1:px-4,y1:py+6,x2:px+26,y2:py-8,stroke:"#f3c77a","stroke-opacity":".5","stroke-width":"1.4"},g); }
+      if(s.id==="s_perc"){ el("ellipse",{cx:px,cy:py+30,rx:26,ry:10,fill:"#6a3a1c",stroke:"#f3c77a","stroke-opacity":".4"},g); }
+      if(s.id==="s_brass"){ el("circle",{cx:px+14,cy:py+4,r:6,fill:"none",stroke:"#e4b862","stroke-opacity":".75","stroke-width":"2"},g); }
+    });
+    // music stand lights
+    for(var i=0;i<3;i++){ var lx=s.x-s.w/2+60+i*(s.w/3), ly=s.y+18; el("rect",{x:lx,y:ly,width:22,height:3,fill:"#ffe0a8",opacity:".8",filter:"url(#glow)"},g); }
+  });
+
+  var secsDiv=document.getElementById("secs"), aim=2, glyphEls=[];
+  function glyphSVG(s){
+    // breath: ring radius ~ |offset|; bow: tilt ~ speed; face: stroke curvature/weight
+    var r=Math.min(58, 16+Math.abs(s.off)*0.45);
+    var tilt=Math.max(-40,Math.min(40,s.spd*9));
+    var faceW=2+Math.abs(s.face)*2, faceDir=s.face>=0?-1:1;
+    var h='<svg width="170" height="150" viewBox="-85 -75 170 150" style="overflow:visible">';
+    h+='<circle class="breathRing" cx="0" cy="0" r="'+r.toFixed(1)+'" fill="rgba(191,227,255,.06)" stroke="#bfe3ff" stroke-width="2" stroke-dasharray="3 4" style="filter:drop-shadow(0 0 6px rgba(191,227,255,.6))"/>';
+    h+='<circle cx="0" cy="0" r="4" fill="#bfe3ff"/>';
+    if(s.bow){
+      h+='<g transform="rotate('+(-tilt)+')"><line x1="-44" y1="0" x2="44" y2="0" stroke="#ffd9a0" stroke-width="3.2" stroke-linecap="round" style="filter:drop-shadow(0 0 5px rgba(255,217,160,.7))"/></g>';
+      h+='<line x1="-44" y1="0" x2="44" y2="0" stroke="#ffd9a0" stroke-opacity=".22" stroke-width="1"/>';
+    } else {
+      h+='<text x="0" y="-'+(r+8).toFixed(0)+'" text-anchor="middle" font-size="11" fill="#8f8170" letter-spacing="2">활 없음</text>';
+    }
+    h+='<path d="M-20 '+(30)+' Q0 '+(30+faceDir*12)+' 20 30" stroke="#ff9b83" stroke-width="'+faceW+'" fill="none" stroke-linecap="round" opacity="'+(s.id==="s_brass"?.5:.95)+'" '+(s.id==="s_brass"?'style="filter:blur(1.4px)"':'')+'/>';
+    h+='</svg>';
+    return h;
+  }
+  SECS.forEach(function(s,i){
+    var d=document.createElement("div"); d.className="sec"; d.style.left=(s.x-s.w/2)+"px"; d.style.top=(s.y-150)+"px"; d.style.width=s.w+"px"; d.style.height="220px";
+    var gd=document.createElement("div"); gd.className="cueglyph"; gd.style.left=(s.w/2-85)+"px"; gd.style.top="0px";
+    var tag=document.createElement("div"); tag.className="tag"; tag.style.top="196px"; tag.textContent=s.name+"  ·  "+s.inst;
+    d.appendChild(gd); d.appendChild(tag); secsDiv.appendChild(d);
+    glyphEls.push(gd);
+    d.addEventListener("click",function(){ aim=i; drawAim(); thud(.35); });
+  });
+  var aimRing=document.createElement("div");
+  aimRing.style.cssText="position:absolute;width:210px;height:210px;border-radius:50%;border:2px solid #e4b862;box-shadow:0 0 30px rgba(228,184,98,.55),inset 0 0 24px rgba(228,184,98,.25);pointer-events:none;transition:left .28s cubic-bezier(.2,.8,.2,1),top .28s cubic-bezier(.2,.8,.2,1)";
+  var aimTick=document.createElement("div"); aimTick.style.cssText="position:absolute;left:50%;top:-10px;width:2px;height:18px;background:#e4b862;transform:translateX(-50%)";
+  aimRing.appendChild(aimTick); secsDiv.appendChild(aimRing);
+  function drawGlyphs(){ SECS.forEach(function(s,i){ glyphEls[i].innerHTML=glyphSVG(s); }); }
+  function drawAim(){
+    var s=SECS[aim]; aimRing.style.left=(s.x-105)+"px"; aimRing.style.top=(s.y-180)+"px";
+    var d=secsDiv.querySelectorAll(".sec"); for(var i=0;i<d.length;i++) d[i].classList.toggle("aim",i===aim);
+  }
+  drawGlyphs(); drawAim();
+
+  // breathing pulse on rings
+  var t0=performance.now();
+  function breathe(now){
+    var rings=document.querySelectorAll(".breathRing");
+    for(var i=0;i<rings.length;i++){ var k=1+Math.sin((now-t0)/(700+i*130)+i)*0.05; rings[i].setAttribute("transform","scale("+k.toFixed(3)+")"); }
+    var w=document.querySelectorAll(".mute .wave i");
+    for(var j=0;j<w.length;j++){ w[j].style.height=(2+Math.abs(Math.sin((now-t0)/900+j))*1.5).toFixed(1)+"px"; }
+    requestAnimationFrame(breathe);
+  }
+  requestAnimationFrame(breathe);
+
+  // score strip on stand: bars with beats, afterimage dots
+  var staff=document.getElementById("staff");
+  var BARS=[{b:4,d:70,n:"현·목관·금관"},{b:4,d:44,n:"+ 팀파니 · 작게"},{b:4,d:84,n:"다시 크게"},{b:4,d:52,n:"늘어지는 자리"},{b:4,d:92,n:"끝"}];
+  var bar=1, beat=2; // 0-based: bar 2 beat 3
+  var history=[[ -8,1],[ 3,0],[14,2],[6,2],[-4,1],[22,2]]; // afterimage: [offset, section]
+  function drawStaff(){
+    var h='';
+    for(var l=0;l<5;l++) h+='<line x1="20" x2="920" y1="'+(28+l*12)+'" y2="'+(28+l*12)+'" stroke="#8d8570" stroke-width="1"/>';
+    var bw=900/5;
+    BARS.forEach(function(B,i){
+      var x=20+i*bw;
+      h+='<line x1="'+x+'" x2="'+x+'" y1="28" y2="76" stroke="#3d3a33" stroke-width="1.5"/>';
+      h+='<text x="'+(x+6)+'" y="20" font-size="11" fill="#5c5446">'+(i+1)+' · '+B.n+'</text>';
+      h+='<text x="'+(x+6)+'" y="100" font-size="12" fill="#8b2a20" font-style="italic">'+(B.d<50?'p':(B.d<75?'mf':'ff'))+' '+B.d+'</text>';
+      for(var k=0;k<B.b;k++){
+        var bx=x+22+k*(bw-30)/B.b, idx=i*4+k, cur=(i===bar&&k===beat), past=(i<bar)||(i===bar&&k<beat);
+        if(past){
+          var hh=history[idx % history.length], off=hh[0];
+          var col=["#2e4d6b","#6b4a2e","#8b2a20","#3b3b3b"][hh[1]];
+          h+='<circle cx="'+(bx+off*0.6)+'" cy="52" r="5" fill="'+col+'" opacity=".85"/><circle cx="'+bx+'" cy="52" r="7" fill="none" stroke="'+col+'" stroke-opacity=".25"/>';
+        } else if(cur){
+          h+='<rect x="'+(bx-10)+'" y="22" width="20" height="60" fill="#e4b862" opacity=".35"/><circle cx="'+bx+'" cy="52" r="6" fill="none" stroke="#1d1b18" stroke-width="2"/>';
+        } else {
+          h+='<circle cx="'+bx+'" cy="52" r="3" fill="#b5ad97"/>';
+        }
+      }
+    });
+    h+='<line x1="918" x2="918" y1="28" y2="76" stroke="#3d3a33" stroke-width="3"/>';
+    staff.innerHTML=h;
+    document.getElementById("bar").textContent=bar+1;
+    document.getElementById("beat").textContent=beat+1;
+    document.getElementById("dynReq").textContent=BARS[bar].d;
+    var notes=["현·목관·금관이 한꺼번에. 지휘봉은 하나뿐이다","갑자기 작게 — 표정만 보고 눌러야 하는데 팀파니가 그 자리에 들어온다","다시 크게","늘어지는 자리","끝"];
+    document.getElementById("barNote").textContent=notes[bar];
+  }
+  drawStaff();
+
+  // cue buttons (9 gestures from data)
+  var CUES=[
+    ["박만 준다","지휘봉을 수직으로",0,0],["살짝 당긴다","손목만 앞으로",30,0],["당긴다","팔꿈치까지 앞으로",60,0],["세게 당긴다","상체를 기울여",90,0],
+    ["살짝 늘린다","손바닥을 눕힌다",-30,0],["늘린다","팔을 옆으로",-60,0],["세게 늘린다","두 손으로 눌러",-90,0],["크게","손을 펴서 올린다",0,24],["작게","손등으로 누른다",0,-24]
+  ];
+  var cuesDiv=document.getElementById("cues");
+  function gestureIcon(t,d){
+    var s='<svg width="44" height="22" viewBox="-22 -11 44 22">';
+    if(d!==0){ s+='<path d="M-14 '+(d>0?6:-6)+' L0 '+(d>0?-6:6)+' L14 '+(d>0?6:-6)+'" stroke="#ff9b83" stroke-width="2.2" fill="none"/>'; }
+    else if(t===0){ s+='<line x1="0" y1="-9" x2="0" y2="9" stroke="#e4b862" stroke-width="2.2"/>'; }
+    else { var n=Math.abs(t)/30; for(var i=0;i<n;i++){ var x=(t>0?-10:10)+(t>0?1:-1)*i*8; s+='<path d="M'+x+' -6 L'+(x+(t>0?6:-6))+' 0 L'+x+' 6" stroke="'+(t>0?"#ffd9a0":"#bfe3ff")+'" stroke-width="2" fill="none"/>'; } }
+    return s+'</svg>';
+  }
+  CUES.forEach(function(c,i){
+    var b=document.createElement("div"); b.className="cue"+(i===2?" hot":"");
+    b.innerHTML='<span class="v">'+(c[2]?(c[2]>0?"+":"")+c[2]+"ms":(c[3]?(c[3]>0?"+":"")+c[3]:"·"))+'</span>'+gestureIcon(c[2],c[3])+'<div class="n">'+c[0]+'</div><div class="g">'+c[1]+'</div>';
+    b.addEventListener("click",function(){ conduct(i); });
+    cuesDiv.appendChild(b);
+  });
+
+  // baton afterimage trail over the hall
+  var trail=document.getElementById("trail"), strokes=[];
+  function addTrail(target){
+    var sx=800, sy=900, tx=target.x, ty=target.y-40;
+    var cx=(sx+tx)/2+(tx<800?-120:120), cy=Math.min(sy,ty)-120;
+    var p=el("path",{d:"M"+sx+" "+sy+" Q"+cx+" "+cy+" "+tx+" "+ty,stroke:"#ffe3ad","stroke-width":"3",opacity:"0.9",filter:"url(#glow)"},trail);
+    strokes.push(p); if(strokes.length>6){ var o=strokes.shift(); if(o.parentNode) o.parentNode.removeChild(o); }
+    for(var i=0;i<strokes.length;i++){ var a=(i+1)/strokes.length; strokes[i].setAttribute("opacity",(a*0.8).toFixed(2)); strokes[i].setAttribute("stroke-width",(1+a*2.5).toFixed(1)); }
+  }
+  addTrail(SECS[0]); addTrail(SECS[1]); addTrail(SECS[2]);
+
+  var seed=20260927;
+  function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+  function conduct(ci){
+    var c=CUES[ci], s=SECS[aim];
+    var btn=cuesDiv.children[ci]; btn.classList.add("press"); setTimeout(function(){ btn.classList.remove("press"); },120);
+    var nodes=cuesDiv.children; for(var i=0;i<nodes.length;i++) nodes[i].classList.toggle("hot",i===ci);
+    // the aimed section responds; others drift on their own (you cannot see what you do not look at)
+    s.off = Math.round(s.off - c[2]*0.9);
+    s.spd = Math.round(s.spd*0.5 - c[2]/30);
+    s.face = Math.max(-2,Math.min(2, s.face - Math.round(c[3]/24)));
+    SECS.forEach(function(o,j){ if(j!==aim){ o.off += Math.round((o.spd*4) + (rnd()*14-7)); o.spd += Math.round(rnd()*2-1); if(rnd()<.2) o.face=Math.max(-2,Math.min(2,o.face+(rnd()<.5?-1:1))); } });
+    history.push([Math.max(-20,Math.min(20,Math.round(s.off/4))), Math.min(3,aim)]);
+    addTrail(s); drawGlyphs();
+    beat++; if(beat>=BARS[bar].b){ beat=0; bar=(bar+1)%BARS.length; }
+    drawStaff();
+    var f=document.getElementById("flash"); f.classList.add("go"); setTimeout(function(){ f.classList.remove("go"); },30);
+    thud(beat===0?1:.6);
+  }
+  window.addEventListener("keydown",function(e){
+    if(e.key==="1"){ history_hash("a"); } else if(e.key==="2"){ history_hash("b"); }
+    else if(e.key==="ArrowLeft"){ aim=(aim+3)%4; drawAim(); } else if(e.key==="ArrowRight"){ aim=(aim+1)%4; drawAim(); }
+    else if(e.key===" "){ e.preventDefault(); conduct(0); }
+  });
+  function history_hash(h){ try{ window.history.replaceState(null,"","#"+h); }catch(e){} show(h==="b"?"B":"A"); }
+
+  /* ================= SCREEN B ================= */
+  // last night's afterimage printed faintly on the score sheet under the clipping
+  var sheet=document.getElementById("sheetSvg"), sh='';
+  for(var sys=0;sys<7;sys++){
+    var y0=60+sys*118;
+    for(var l=0;l<5;l++) sh+='<line x1="50" x2="860" y1="'+(y0+l*11)+'" y2="'+(y0+l*11)+'" stroke="#9a947f" stroke-width="1"/>';
+    for(var bx=50;bx<=860;bx+=162) sh+='<line x1="'+bx+'" x2="'+bx+'" y1="'+y0+'" y2="'+(y0+44)+'" stroke="#6e6853" stroke-width="1.2"/>';
+    for(var n=0;n<16;n++){ var x=70+n*49, jit=Math.round(Math.sin(sys*3+n)*9); sh+='<circle cx="'+(x+jit)+'" cy="'+(y0+22+Math.round(Math.cos(n+sys)*10))+'" r="'+(3+((n+sys)%3))+'" fill="#1e1d1a" opacity=".6"/>'; }
+    sh+='<path d="M60 '+(y0+60)+' Q300 '+(y0+40+sys*3)+' 520 '+(y0+64)+' T860 '+(y0+56)+'" stroke="#b3261e" stroke-opacity=".35" stroke-width="1.6" fill="none"/>';
+  }
+  sh+='<text x="50" y="40" font-family="Didot,Georgia,serif" font-style="italic" font-size="20" fill="#4a4740">Finale — "Twenty-four beats"</text>';
+  sheet.innerHTML=sh;
+
+  var COPY=["→ 금관: 첫 소절부터 살짝 당긴다 (늦는 성향)","→ 현·타: 한 박씩 번갈아 본다. 타는 돌아오지 않는다","→ 목관: 표정이 가라앉으면 \"크게\""];
+  var notes=document.querySelectorAll("#clip .note");
+  for(var q=0;q<notes.length;q++){
+    notes[q].addEventListener("click",function(){
+      var i=+this.getAttribute("data-i"), line=document.getElementById("n"+i);
+      if(!line) return;
+      this.classList.add("copied"); this.querySelector(".arrow").textContent="옮겨 적음 ✓".replace("✓","·");
+      line.style.color=''; line.textContent=COPY[i]; line.classList.remove("new"); void line.offsetWidth; line.classList.add("new"); scratch();
+    });
+  }
+  // prefill first so the still frame shows the loop
+  document.getElementById("n0").textContent=COPY[0];
+  notes[0].classList.add("copied"); notes[0].querySelector(".arrow").textContent="옮겨 적음";
+
+  var NIGHTS=[["1",41,"pan"],["2",52,"pan"],["3",58,"tep"],["4",71,"good",1],["5",0,"fut"],["6",0,"fut"],["7",0,"fut"],["8",0,"fut"],["9",0,"fut"]];
+  var nd=document.getElementById("nights");
+  NIGHTS.forEach(function(n){
+    var d=document.createElement("div"); d.className="night"+(n[3]?" today":"");
+    var h=n[1]?n[1]:30, cls=n[2]==="pan"?"pan":(n[2]==="tep"?"tep":(n[2]==="fut"?"fut":""));
+    d.innerHTML=(n[1]?'<em style="top:'+(100-h-16)+'px">'+n[1]+'</em>':'')+'<div class="bar '+cls+'" style="height:'+h+'px"></div><span>'+n[0]+'회'+''+'</span>';
+    nd.appendChild(d);
+  });
+  // pass line at 54 (신문 등급표의 「미온」 선)
+  var pl=document.createElement("div"); pl.style.cssText="position:absolute;left:18px;right:18px;top:"+(42+110-54)+"px;border-top:1px dashed rgba(255,200,140,.55)";
+  pl.innerHTML='<span style="position:absolute;right:0;top:-15px;font-size:10.5px;color:#e7c79a">합격선 54</span>';
+  document.querySelector(".season").appendChild(pl);
+})();
+</script>
+</body>
+</html>

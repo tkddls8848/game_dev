@@ -1,0 +1,100 @@
+{
+  "_": "검사기가 쓰는 한계값. 여기를 고쳐서 밸런스를 푼다 — 카드 상점을 넣지 않는다.",
+  "seed": 20260927,
+  "battle": {
+    "energyPerTurn": 3,
+    "drawPerTurn": 5,
+    "maxTurnsPerBattle": 22,
+    "maxPlaysPerTurn": 40,
+    "maxBurnStacks": 8,
+    "burnTurnsAssumed": 3,
+    "_sowWeight": "표본을 지금 쓰지 않고 남겨 둘 값. 클수록 아껴서 심는다. 0 이면 남는 것만 심는다.",
+    "sowWeightSpender": 0,
+    "sowWeightSkilled": 60,
+    "sowWeightHoarder": 600
+  },
+  "year": {
+    "_": "적 체력은 해마다 백분율 정수로 커진다. 나머지는 누적한다 — 부동소수 금지.",
+    "hpGrowthPctPerYear": 20,
+    "hpScaleMaxPct": 300,
+    "_campaignYears": "카드가 자라는 것을 보려면 한 해로는 부족하다. 세 해가 한 판이다.",
+    "campaignYears": 3
+  },
+  "sowing": {
+    "_": "덱 → 밭. 쓰지 않은 표본을 몇 칸까지 심는가. 심은 칸은 다음 봄에 묶인다.",
+    "plotsSkilled": 4,
+    "plotsNone": 0,
+    "plotsAll": 6,
+    "_seedValue": "seedfall 로 돌아오는 씨앗 하나를 전투 값으로 환산한 수치. 정책이 '심을까'를 셈할 때만 쓴다.",
+    "seedValueForSowing": 40,
+    "_최대": "밭 칸 수를 넘을 수 없다. 씨앗도 물도 들지 않는다 — 값은 오직 봄의 밭칸이다."
+  },
+  "economy": {
+    "seedStipendPerYear": 14,
+    "seedCarryCap": 6,
+    "seedWinBonus": 5,
+    "fertilizerCarryCap": 3,
+    "fertilizerWinBonus": 1,
+    "fertilizerYieldBonus": 1,
+    "seedCeiling": 40,
+    "fertilizerCeiling": 8,
+    "deckCeiling": 60,
+    "sownCeiling": 6,
+    "economyYears": 200
+  },
+  "seasonFeasibility": {
+    "_": "hybrid-harvest-deck 에서 두 번 실패한 검사기다. 기준 60%.",
+    "trials": 40,
+    "minWinPct": 60
+  },
+  "runSolvability": {
+    "trials": 40,
+    "minWinPct": 60
+  },
+  "fieldDeckMapping": {
+    "trials": 30,
+    "years": 3,
+    "campaigns": 12,
+    "minCardPlayPct": 5,
+    "maxExclusionGainPct": 15
+  },
+  "loopClosure": {
+    "_": "★ 이 PoC 의 핵. 덱 → 밭 경로를 끊은 세계와 이은 세계를 같은 정책으로 돌려 견준다.",
+    "trials": 60,
+    "years": 3,
+    "_기준": "셋을 다 넘겨야 통과다. 하나라도 못 넘기면 반대 방향 결합이 장식이라는 뜻이다.",
+    "_경로가_흐르는가": "세 해차 덱에서 '심어서 온 표본'이 차지해야 하는 최소 몫. 이보다 적으면 경로가 있어도 거의 흐르지 않는 것이다.",
+    "minSownSharePct": 8,
+    "_흡수되지_않는가": "심어서 들어온 몫 가운데 이만큼(백분율)은 덱 구성의 변화로 남아야 한다. 심기 정책이 전부 흡수해 버리면 경로가 있어도 표본집은 같은 모습이 된다. 고정 한계값이 아니라 흘러든 양에 비례하는 기준이다.",
+    "minShiftAsPctOfSownShare": 33,
+    "minWinGapPct": 5,
+    "_손잡이": "이은 세계에서 '몇 칸을 심는가' 축이 만드는 승률 폭의 하한. 폭이 좁으면 심는 것이 장식이다.",
+    "minSowKnobSpreadPct": 10,
+    "sowPlotSweep": [ 0, 1, 2, 3, 4, 5, 6 ]
+  },
+  "sowingNotAlwaysBest": {
+    "trials": 60,
+    "years": 3,
+    "_기준": "전부 심고 아무것도 안 쓰는 극단이 최적이면 밤이 의미를 잃는다.",
+    "maxExtremeGainPct": 0,
+    "minInteriorGainPct": 3
+  },
+  "dominance": {
+    "trials": 50,
+    "years": 3,
+    "monoCropMaxWinPct": 55,
+    "_남김축": "'지금 쓸까 남길까'를 훑는다. 폭은 재서 적기만 하고 판정하지 않는다 — 남는 표본의 수가 이미 밭칸 수에 묶여 있어서 이 축이 얇은 것은 고장이 아니라 설계 물음이다. README 판정 칸 참고.",
+    "sowWeightSweep": [ 0, 30, 60, 120, 300, 600 ],
+    "_칸축": "'몇 칸을 심을까'가 이 PoC 의 진짜 손잡이다. 여기는 판정한다: 양 끝이 최적이면 손잡이가 장식이다.",
+    "sowPlotSweep": [ 0, 1, 2, 3, 4, 5, 6 ],
+    "minSowPlotSpreadPct": 10
+  },
+  "winRateBand": {
+    "trials": 80,
+    "years": 3,
+    "randomMinPct": 0,
+    "randomMaxPct": 25,
+    "skilledMinPct": 40,
+    "skilledMaxPct": 85
+  }
+}

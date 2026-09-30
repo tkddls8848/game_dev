@@ -1,0 +1,55 @@
+{
+  "_": "수치는 전부 정수. 값 없는 int 는 -1 을 명시한다(설계 원칙 3·4).",
+  "_난수": "씨드는 여기 적는다. 분위기와 발각 판정은 **씨드와 마디 번호만으로** 굴린다 — 통역이 무엇을 골랐든 같은 값이 나오도록. 그래야 '한 낱말이 조약을 바꿨다'와 '난수가 달라졌다'를 가를 수 있다(src/SessionSim.cs).",
+
+  "seed": 20260927,
+  "extraSeeds": [11, 404, 1848, 20261, 777, 5150],
+
+  "startTension": 30,
+  "startTrustA": 66,
+  "startTrustB": 68,
+  "startSuspicion": 4,
+
+  "collapseTension": 82,
+  "signTrustMin": 30,
+
+  "moodJitterMin": -4,
+  "moodJitterMax": 6,
+  "_분위기": "마디마다 방에 붙는 것. 통역과 무관하다. 평균이 +1 인 이유는 회담은 가만 두면 나빠지기 때문이다",
+
+  "exposureSuspicion": 14,
+  "exposureTension": 7,
+  "exposureTrust": 4,
+
+  "misunderstandingFavorLoss": 7,
+  "misunderstandingTension": 4,
+  "_오해의_값": "남은 오해 하나가 양쪽의 실익을 7씩 깎고 조인 직전 긴장을 4 올린다. 조문에 적힌 숫자와 실제로 손에 쥐는 것이 다른 이유다",
+
+  "objectives": [
+    {
+      "id": "o_peace", "name": "평화가 오래가는가", "whose": "메르텐에 사는 사람들",
+      "signBonus": 30, "peaceWeight": 100, "favorAWeight": 0, "favorBWeight": 0,
+      "suspicionWeight": 0, "standingWeight": 0, "exposedWeight": 8, "unsetWeight": 0
+    },
+    {
+      "id": "o_haran", "name": "하란이 가져가는 것", "whose": "벨크 장군",
+      "signBonus": 20, "peaceWeight": 0, "favorAWeight": 100, "favorBWeight": 0,
+      "suspicionWeight": 0, "standingWeight": 0, "exposedWeight": 0, "unsetWeight": 6
+    },
+    {
+      "id": "o_keria", "name": "케리아가 지켜 내는 것", "whose": "오르멘 사절",
+      "signBonus": 20, "peaceWeight": 0, "favorAWeight": 0, "favorBWeight": 100,
+      "suspicionWeight": 0, "standingWeight": 0, "exposedWeight": 0, "unsetWeight": 6
+    },
+    {
+      "id": "o_clarity", "name": "두 나라가 같은 것을 읽었는가", "whose": "십 년 뒤의 역사가",
+      "signBonus": 20, "peaceWeight": 20, "favorAWeight": 0, "favorBWeight": 0,
+      "suspicionWeight": 0, "standingWeight": 18, "exposedWeight": 12, "unsetWeight": 4
+    },
+    {
+      "id": "o_mission", "name": "통역이 받은 지시", "whose": "통역을 부른 하란 외무성",
+      "signBonus": 40, "peaceWeight": 60, "favorAWeight": 80, "favorBWeight": 0,
+      "suspicionWeight": 50, "standingWeight": 3, "exposedWeight": 8, "unsetWeight": 4
+    }
+  ]
+}
