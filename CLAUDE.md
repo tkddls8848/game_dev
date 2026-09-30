@@ -34,7 +34,7 @@ AssetDownloads/            내려받은 원본 (gitignore). 아래를 읽을 것
 
 ## ⚠️ AssetDownloads 는 git 에 넣지 않는다
 
-**8 GB 다.** GitHub 저장소 권장 상한이 5 GB이고 LFS 무료 용량은 1 GB이므로 들어가지 않는다.
+**6.9 GB 다.** GitHub 저장소 권장 상한이 5 GB이고 LFS 무료 용량은 1 GB이므로 들어가지 않는다.
 그리고 **넣을 필요가 없다** — 이 저장소가 그 문제를 이미 풀어 두었다:
 
 * `docs/asset-index/` 가 **목록**을 들고 있다 (audio · models · icons · fonts · images · shaders)
@@ -52,6 +52,27 @@ AssetDownloads/            내려받은 원본 (gitignore). 아래를 읽을 것
 | 생성 음악 | `docs/poc-gallery/music/` | Lyria 3 Pro (Artlist) |
 
 **이것들은 지우지 않는다.** 크레딧을 다시 써야 복구된다.
+
+### tmp_game 은 중복본이 아니다 (2026-09-30 확인)
+
+`AssetDownloads/tmp_game/assets/` 는 `library/` 와 폴더 구조가 닮아서 **중복 덤프처럼 보인다.**
+한 번 그렇게 보고 "지우면 8 GB 가 1 GB 가 된다"고 적었는데, **틀렸다.**
+126,169개를 전부 sha256 으로 견줘 보니 이렇다:
+
+```
+tmp_game 6,891 MB
+  밖에 사본이 있다      711 MB  (23,300개)
+  tmp_game 에만 있다  6,180 MB  (72,073개)   ← 통째로 지우면 이만큼 사라진다
+```
+
+둘은 **정리 방식이 다른 별개의 수집물**이다 — `library/` 는 Kenney 팩 단위로,
+`tmp_game/assets/` 는 audio·models·icons 처럼 종류별로 모아 두었고 출처도 더 넓다.
+**구조가 닮았다는 것으로 내용이 같다고 판단하지 않는다.**
+
+내용이 같은 사본은 2026-09-30 에 정리했다 — 33,029개 · 1,038 MB 를 지웠고,
+지운 것은 전부 **같은 sha256 의 파일이 다른 자리에 남아 있는 것**뿐이다.
+남길 쪽은 tmp_game 밖을 먼저 골랐다(`library/` 가 asset-index 가 가리키는 정규 자리다).
+`asset-index` 가 링크하는 폴더 275개 중 비어 버린 것은 없다.
 
 ---
 

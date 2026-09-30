@@ -50,14 +50,17 @@ API 키는 저장소 뿌리의 `.env`에서 읽는다(gitignore에 있다). 필�
 games/         시안 하나 = 폴더 하나 (29개). 각자 README.md 를 갖는다
 kit/           게임이 아닌 것 — 에셋 수집기 · 갤러리 생성기 · TTS · Unity 셸
 docs/          컨셉 71 · 장르 계획 5 · 에셋 목록 · 갤러리 ← docs/README.md
-AssetDownloads/  내려받은 원본 8 GB (gitignore). 아래를 읽을 것
+AssetDownloads/  내려받은 원본 6.9 GB (gitignore). 아래를 읽을 것
 ```
 
 ## ⚠️ 에셋 원본은 git 에 없다
 
-`AssetDownloads/` 는 **8 GB**라 GitHub 에 들어가지 않는다(권장 상한 5 GB · LFS 무료 1 GB).
+`AssetDownloads/` 는 **6.9 GB**라 GitHub 에 들어가지 않는다(권장 상한 5 GB · LFS 무료 1 GB).
 그리고 넣을 필요가 없다 — `docs/asset-index/` 가 목록을 들고 있고
 `kit/tools/asset-collect/*.py` 가 Kenney · Quaternius · Poly Haven · itch 에서 다시 내려받는다.
+
+> **`tmp_game` 은 `library` 의 중복본이 아니다.** 구조가 닮았을 뿐 내용의 90% 는 거기에만 있다.
+> 근거와 정리 기록은 [`CLAUDE.md`](CLAUDE.md#tmp_game-은-중복본이-아니다-2026-09-30).
 
 그래서 `docs/asset-index/*.md` 의 `../../AssetDownloads/...` 링크는 **깨져 있는 것이 정상이다.**
 내려받은 사람의 디스크에서만 열린다.
