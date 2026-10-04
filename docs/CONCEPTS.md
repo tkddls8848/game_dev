@@ -128,6 +128,8 @@
 
 **시안.** 101개 모두 HTML 시안(화면 A/B)과 AI 생성 목업 2장이 있다 — [`poc-gallery/concepts/index.html`](poc-gallery/concepts/index.html). 목업 이미지는 실행 빌드 화면이 아니다.
 
+**상업 후보 5선(2026-10-02).** 2026 Steam 수요(공포·Job Sim·검사 시뮬·코지×로그라이트)에 맞춰 33·87·25·57·90을 골라 상업판 시안을 따로 만들었다 — [`poc-gallery/concepts/_market/`](poc-gallery/concepts/_market/index.html). v1 시안은 그대로다.
+
 ---
 
 ## 착수 우선순위 — 내 판정

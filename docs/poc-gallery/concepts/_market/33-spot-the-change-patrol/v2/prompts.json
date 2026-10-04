@@ -1,0 +1,18 @@
+{
+"num": 33,
+"slug": "spot-the-change-patrol",
+"title": "틀린 그림 순찰",
+"version": "market",
+"images": [
+{
+"id": "a",
+"screen": "A · 순찰 중 보고 — 2전시실에서 도록 대조 후 이상현상 보고서 작성",
+"prompt": "Actual gameplay view, not poster, no device frame. First-person horror game, a night security guard standing in a small classical museum painting gallery at 02:41 a.m. Eye-level camera looking straight at the back wall. Burgundy damask wallpaper, dark wood wainscot, herringbone parquet floor, a red velvet rope on brass stanchions. On the wall left to right: a gilded-frame night seascape with a full moon, a gilded portrait of a pale woman in a dark dress whose eyes now look straight at the viewer, a marble bust on a black pedestal. Right of center a lit glass vitrine with two celadon vases and one empty velvet spot; on the right a steel suit of armor holding a sword. On the bench in the foreground sits a small chipped white coffee mug that does not belong. Everything outside a warm circular flashlight beam is near-black with floating dust; the beam rests on the portrait. The guard's gloved hand holds a black flashlight at the lower right. A semi-transparent sepia catalog photo of the same portrait (eyes looking down) is overlaid inside the beam, slightly offset, labelled '도록 대조'. Left side, a cream paper report form clipped to a dark clipboard titled '이상현상 보고서', fields '대상: 여인 초상', six type tabs '이동 · 소실 · 추가 · 변형 · 시선 · 소지품' with '시선' highlighted amber, a red '무전 보고' button. Top-left HUD '2전시실 · 근대 회화', '둘째 바퀴'. Top-right big amber clock '02:41' and a trust meter '본부 신뢰 80%' with four of five pips. Bottom-right battery bar '손전등 64%'. Small green exit sign and a red CCTV LED in the corner. Realistic, cinematic, quiet dread, high readability."
+},
+{
+"id": "b",
+"screen": "B · 실패 순간 — 보고 지연으로 전시실이 넘어가고, 진열장에 내 머그가 있다",
+"prompt": "Actual gameplay view, not poster, no device frame. The same first-person museum painting gallery as before, same eye-level camera and same layout: burgundy damask wall, gilded seascape on the left, gilded portrait of a pale woman, marble bust on a black pedestal, glass vitrine, steel suit of armor on the right, red velvet rope, herringbone parquet. But the room has gone wrong: emergency red light floods everything, the flashlight beam flickers weakly, chromatic aberration and heavy film grain at the edges. Every painting now faces the viewer, the portrait woman's eyes are huge and black, the bust has turned its head fully toward the camera, the armor has stepped over the rope with its sword raised. Inside the vitrine the celadon vases are gone and a chipped white coffee mug, a ring of house keys and a security guard name tag sit under a warm spotlight with a small cream placard '야간 경비원의 머그 — 기증: 본인'. Centered overlay: a cream paper report form torn diagonally with a big red rubber stamp '보고 지연', and a dark band of text '2전시실을 잃었다 · 넷째 밤 실패'. Bottom panel in typewriter type titled '순찰 기록', rows: '02:12 흉상의 고개 — 놓침', '02:26 갑옷의 검 — 오보 (변형으로 보고)', '02:38 진열장 — 소지품 — 놓침', buttons '같은 밤 다시' and '본부에 전화'. Realistic, cinematic, horror climax but readable UI. Correction: the torn report header reads only '야간 순찰 보고서' — no museum name, no document number, no calendar dates or years anywhere. Keep exactly the same eye-level straight-on camera and layout as the patrol view: the gilded night seascape with a full moon (no lighthouse) on the left wall, the woman's portrait center-left, bust on a black pedestal, vitrine center-right, armor on the right in front of the rope; the report form sits in the lower center so the portrait and vitrine stay visible."
+}
+]
+}

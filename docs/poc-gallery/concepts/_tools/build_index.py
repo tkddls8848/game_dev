@@ -60,7 +60,7 @@ h2{{font:23px/1.4 Batang,'Noto Serif KR',serif;margin:6px 0 4px}}.body p{{color:
 footer{{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}}
 @media(max-width:560px){{main{{padding:18px 16px 50px}}h1{{font-size:32px}}.grid{{grid-template-columns:1fr}}}}
 </style></head><body><main>
-<nav><a href="../index.html">← PoC 갤러리</a><a href="../../CONCEPTS.md">CONCEPTS.md</a><a href="_critique/index.html">비판 리뷰 전후 (3안)</a></nav>
+<nav><a href="../index.html">← PoC 갤러리</a><a href="../../CONCEPTS.md">CONCEPTS.md</a><a href="_critique/index.html">비판 리뷰 전후 (3안)</a><a href="_market/index.html">상업 후보 5선</a></nav>
 <header><span class="eyebrow">{len(concepts)} CONCEPTS · HTML MOCKUP + 2 SCREEN MOCKS EACH</span><h1>컨셉 시안 {len(concepts)}</h1>
 <p>docs/CONCEPTS.md의 모든 컨셉을 같은 조건으로 놓았다. 카드마다 HTML 시안(화면 A/B, 키 1·2로 전환)과 AI 생성 화면 목업 2장.
 <b>목업 이미지는 AI 생성 시안이며 실행 빌드 화면이 아니다.</b> 구현된 컨셉은 기존 PoC 링크도 함께 둔다.</p></header>
