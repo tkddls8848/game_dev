@@ -72,5 +72,7 @@ var f='all',q=document.getElementById('q'),cards=[].slice.call(document.querySel
 function apply(){{var s=q.value.trim().toLowerCase();cards.forEach(function(c){{c.style.display=((f==='all'||c.dataset.built===f)&&(!s||c.dataset.q.indexOf(s)>=0))?'':'none'}})}}
 q.addEventListener('input',apply);[].forEach.call(document.querySelectorAll('.bar button'),function(b){{b.onclick=function(){{f=b.dataset.f;[].forEach.call(document.querySelectorAll('.bar button'),function(x){{x.classList.toggle('on',x===b)}});apply()}}}});
 </script></body></html>"""
-(ROOT / "index.html").write_text(page, encoding="utf-8")
+# .gitattributes 가 `* text=auto eol=lf` 라 작업트리도 LF 로 쓴다
+# (write_text 는 윈도우에서 CRLF 를 넣어 한 줄만 고쳐도 파일 전체가 diff 로 잡힌다).
+(ROOT / "index.html").write_bytes(page.replace("\r\n", "\n").encode("utf-8"))
 print(f"{len(concepts)} cards, missing: {missing}")

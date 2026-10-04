@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>일곱 번째 주</title>
+<style>
+:root{
+  --ink:#1b2430; --ink2:#2b3a46; --soft:#6a7b86;
+  --paper:#e8dcc0; --paper-d:#d4c4a0; --paper-l:#f2e9d4;
+  --gold:#c9a227; --gold-d:#8f7118; --verm:#b5452f; --teal:#2d6e6b; --moss:#5a6b3b;
+  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;
+  --mono:Consolas,"D2Coding",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0a0d10;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;
+  transform-origin:50% 50%;transform:translate(-50%,-50%);background:#141a20}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+canvas.map{position:absolute;image-rendering:pixelated}
+svg.over{position:absolute;overflow:visible}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.13;mix-blend-mode:overlay}
+.light{position:absolute;inset:0;pointer-events:none;z-index:30}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 11px;border-radius:2px;
+  border:1px solid rgba(233,220,192,.32);background:rgba(14,20,26,.72);color:#e8dcc0;cursor:pointer}
+.tabs button.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+/* 고전풍 장식 액자 — §3 "고전풍 장식 UI" */
+.frame{background:linear-gradient(170deg,var(--paper-l),var(--paper) 55%,var(--paper-d));
+  box-shadow:0 14px 34px rgba(4,10,14,.55),
+    inset 0 0 0 1px rgba(27,36,48,.3), inset 0 0 0 3px var(--paper-l),
+    inset 0 0 0 4px rgba(27,36,48,.42), inset 0 0 0 6px rgba(201,162,39,.3);
+  border-radius:2px}
+.corner{position:absolute;width:11px;height:11px;border:2px solid var(--gold-d);opacity:.65}
+
+/* ── 화면 A ─────────────────────────────────────────── */
+.hud{position:absolute;left:20px;top:18px;z-index:35;display:flex;gap:10px;align-items:stretch}
+.plate{padding:10px 16px 9px;position:relative}
+.plate small{display:block;font:700 10px/1 var(--sans);letter-spacing:.24em;color:var(--verm);margin-bottom:6px}
+.plate b{font:800 25px/1 var(--serif);letter-spacing:.03em;display:block}
+.plate i{font-style:normal;font:600 10px/1.3 var(--sans);color:var(--soft);letter-spacing:.08em;
+  display:block;margin-top:5px}
+.weekdots{display:flex;gap:3px;margin-top:7px}
+.weekdots u{width:11px;height:5px;background:rgba(27,36,48,.2);border-radius:1px;text-decoration:none}
+.weekdots u.on{background:var(--verm)}
+.weekdots u.cur{background:var(--gold);box-shadow:0 0 0 1px var(--gold-d)}
+
+.res{display:flex;gap:0;align-items:center;padding:10px 4px 9px}
+.res div{padding:0 13px;text-align:center;border-right:1px solid rgba(27,36,48,.18)}
+.res div:last-child{border-right:0}
+.res span{display:block;font:700 9px/1 var(--sans);letter-spacing:.16em;color:var(--soft)}
+.res b{display:block;font:800 19px/1 var(--mono);margin-top:5px;letter-spacing:-.01em}
+.res .g b{color:var(--gold-d)} .res .w b{color:#7a5a32} .res .o b{color:var(--ink2)}
+
+.mapwrap{position:absolute;left:20px;top:112px;width:1046px;height:866px;z-index:10}
+.legend{position:absolute;left:20px;bottom:14px;z-index:35;display:flex;gap:9px;align-items:center;
+  padding:7px 12px;background:rgba(14,20,26,.76);border:1px solid rgba(233,220,192,.2);border-radius:2px}
+.legend i{font-style:normal;font:600 10px/1 var(--sans);color:#cfc3a6;display:flex;align-items:center;gap:5px}
+.legend i em{width:11px;height:11px;display:inline-block;border:1px solid rgba(0,0,0,.4)}
+
+.budget{position:absolute;left:20px;bottom:56px;width:1046px;z-index:35;
+  padding:11px 15px 12px;display:flex;align-items:center;gap:14px}
+.budget .bl{flex:none;font:700 10px/1 var(--sans);letter-spacing:.2em;color:var(--soft)}
+.bbar{flex:1;height:17px;background:rgba(27,36,48,.14);border:1px solid rgba(27,36,48,.3);
+  position:relative;overflow:hidden}
+.bbar u{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(var(--teal),#1f5250);
+  text-decoration:none;transition:width .25s}
+.bbar s{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,
+  rgba(181,69,47,.85) 0 5px,rgba(140,46,28,.85) 5px 10px);text-decoration:none;transition:all .25s}
+.bbar span{position:absolute;inset:0;font:700 10px/17px var(--mono);text-align:center;
+  color:var(--paper-l);text-shadow:0 1px 2px rgba(0,0,0,.7);letter-spacing:.06em}
+.budget .bn{flex:none;font:800 13px/1 var(--mono);min-width:96px;text-align:right}
+.budget .bn.short{color:var(--verm)}
+
+.panel{position:absolute;right:18px;top:18px;bottom:18px;width:498px;z-index:35;padding:18px 20px}
+.ph{display:flex;align-items:baseline;justify-content:space-between;
+  border-bottom:2px solid var(--ink);padding-bottom:6px}
+.ph h2{font:800 20px/1 var(--serif);letter-spacing:.05em}
+.ph span{font:700 10px/1 var(--sans);letter-spacing:.14em;color:var(--soft)}
+.sect{font:700 10px/1 var(--sans);letter-spacing:.2em;color:var(--soft);
+  margin:15px 0 7px;display:flex;justify-content:space-between;align-items:baseline}
+.sect em{font-style:normal;color:var(--verm);letter-spacing:.05em;font-size:10px}
+
+.blds{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bld{background:rgba(255,252,243,.72);border:1px solid rgba(27,36,48,.22);border-radius:2px;
+  padding:7px 8px;text-align:center;position:relative}
+.bld.lock{opacity:.45;background:rgba(27,36,48,.07)}
+.bld svg{display:block;margin:0 auto 4px}
+.bld b{display:block;font:700 11px/1.2 var(--serif)}
+.bld span{display:block;font:600 9px/1.2 var(--mono);color:var(--soft);margin-top:2px}
+.bld.lock span{color:var(--verm)}
+
+.units{display:flex;flex-direction:column;gap:4px}
+.urow{display:grid;grid-template-columns:30px 1fr 38px 38px 46px 40px;gap:7px;align-items:center;
+  background:rgba(255,252,243,.72);border:1px solid rgba(27,36,48,.18);border-radius:2px;
+  padding:5px 8px;cursor:pointer;transition:transform .13s,background .13s}
+.urow:hover{transform:translateX(-3px);background:#fffdf6}
+.urow.sel{background:#fff8e2;border-color:var(--gold-d);box-shadow:inset 0 0 0 1px rgba(201,162,39,.5)}
+.urow.lock{opacity:.4;cursor:default}
+.urow .ico{width:30px;height:30px;display:grid;place-items:center}
+.urow .nm b{display:block;font:700 12px/1.25 var(--serif)}
+.urow .nm span{display:block;font:600 9px/1 var(--mono);color:var(--soft);margin-top:1px}
+.urow .st{font:700 11px/1 var(--mono);text-align:center;color:var(--ink2)}
+.urow .st u{display:block;font:600 8px/1 var(--sans);color:var(--soft);text-decoration:none;
+  letter-spacing:.08em;margin-bottom:2px}
+.urow .gw{font:700 11px/1 var(--mono);text-align:right;color:var(--gold-d)}
+.urow .buy{font:700 10px/1 var(--sans);text-align:center;padding:5px 0;border-radius:2px;
+  border:1px solid var(--gold-d);color:var(--gold-d);background:rgba(201,162,39,.1)}
+.urow.lock .buy{border-color:rgba(27,36,48,.2);color:var(--soft);background:none}
+
+.growth{margin-top:4px;padding:9px 11px;background:rgba(181,69,47,.08);
+  border-left:3px solid var(--verm);font:600 11px/1.5 var(--sans);color:var(--ink2)}
+.growth b{color:var(--verm);font-weight:800}
+
+.turn{position:absolute;left:20px;right:20px;bottom:16px;height:0}
+.nextbtn{position:absolute;right:18px;bottom:18px;z-index:36;
+  padding:13px 26px;border:0;border-radius:2px;cursor:pointer;
+  background:linear-gradient(var(--gold),var(--gold-d));color:#1b2430;
+  font:800 15px/1 var(--serif);letter-spacing:.1em;
+  box-shadow:0 7px 18px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,245,210,.6)}
+.nextbtn:active{transform:translateY(1px)}
+.nextbtn small{display:block;font:600 9px/1 var(--sans);letter-spacing:.14em;
+  margin-top:4px;opacity:.72}
+
+.callout{position:absolute;z-index:38;padding:8px 12px;border-radius:2px;
+  background:rgba(181,69,47,.94);color:var(--paper-l);
+  font:700 12px/1.45 var(--sans);box-shadow:0 8px 20px rgba(0,0,0,.5);max-width:220px}
+.callout::after{content:"";position:absolute;left:-6px;top:13px;border:6px solid transparent;
+  border-right-color:rgba(181,69,47,.94);border-left:0}
+.callout span{display:block;font:600 10px/1.4 var(--mono);opacity:.85;margin-top:3px}
+
+/* ── 화면 B ─────────────────────────────────────────── */
+.initbar{position:absolute;left:18px;right:18px;top:16px;height:74px;z-index:35;
+  display:flex;align-items:center;gap:7px;padding:0 14px}
+.initbar .lbl{flex:none;font:700 10px/1.35 var(--sans);letter-spacing:.18em;color:var(--soft);
+  padding-right:11px;border-right:1px solid rgba(27,36,48,.22);margin-right:5px}
+.ichip{flex:none;width:52px;height:52px;border-radius:2px;position:relative;
+  display:grid;place-items:center;background:rgba(255,252,243,.75);
+  border:1px solid rgba(27,36,48,.25);transition:transform .15s}
+.ichip.now{background:#fff6dc;border-color:var(--gold-d);transform:translateY(-3px);
+  box-shadow:0 6px 14px rgba(0,0,0,.3),inset 0 0 0 1px rgba(201,162,39,.55)}
+.ichip.foe{background:rgba(181,69,47,.12);border-color:rgba(181,69,47,.45)}
+.ichip.done{opacity:.34}
+.ichip u{position:absolute;right:2px;bottom:1px;font:700 9px/1 var(--mono);
+  color:var(--ink2);text-decoration:none}
+.ichip i{position:absolute;left:3px;top:2px;font-style:normal;font:700 8px/1 var(--mono);
+  color:var(--soft);letter-spacing:.04em}
+
+.bwrap{position:absolute;left:18px;top:102px;width:1010px;height:598px;z-index:10}
+.bside{position:absolute;right:18px;top:102px;width:536px;z-index:35;padding:16px 18px}
+.formula{margin-top:9px;padding:11px 13px;background:rgba(27,36,48,.055);
+  border:1px solid rgba(27,36,48,.16);border-radius:2px;font:600 12px/1.95 var(--mono)}
+.formula div{display:flex;justify-content:space-between;gap:10px}
+.formula span{color:var(--soft)}
+.formula b{color:var(--ink)}
+.formula .hit{border-top:1px dashed rgba(27,36,48,.3);margin-top:6px;padding-top:7px}
+.formula .hit b{color:var(--verm);font-size:16px}
+.formula .pen b{color:var(--verm)}
+.stackbox{display:flex;gap:11px;align-items:center;margin-top:9px;
+  padding:10px 12px;background:rgba(255,252,243,.72);
+  border:1px solid rgba(27,36,48,.2);border-radius:2px}
+.stackbox .big{width:46px;height:46px;display:grid;place-items:center;flex:none}
+.stackbox .t{flex:1}
+.stackbox .t b{display:block;font:800 15px/1.25 var(--serif)}
+.stackbox .t span{display:block;font:600 10px/1.4 var(--mono);color:var(--soft);margin-top:2px}
+.hpbar{height:13px;background:rgba(27,36,48,.14);border:1px solid rgba(27,36,48,.28);
+  position:relative;margin-top:6px}
+.hpbar u{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(var(--moss),#3f4d29);
+  text-decoration:none;transition:width .3s}
+.hpbar span{position:absolute;inset:0;font:700 9px/13px var(--mono);text-align:center;
+  color:var(--paper-l);text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.frontnote{font:600 10px/1.5 var(--sans);color:var(--soft);margin-top:5px}
+.frontnote b{color:var(--ink2)}
+.bacts{position:absolute;left:18px;right:18px;bottom:16px;height:66px;z-index:35;
+  display:flex;align-items:center;gap:9px;padding:0 15px}
+.bacts button{padding:10px 17px;border-radius:2px;cursor:pointer;
+  border:1px solid rgba(27,36,48,.3);background:rgba(255,252,243,.78);
+  font:700 12px/1 var(--sans);color:var(--ink);letter-spacing:.04em}
+.bacts button:hover{background:#fffdf6}
+.bacts button.pri{background:linear-gradient(var(--verm),#8c2e1c);color:var(--paper-l);
+  border-color:#7a2718}
+.bacts button kbd{font:700 9px/1 var(--mono);opacity:.6;margin-left:6px;
+  border:1px solid currentColor;padding:2px 3px;border-radius:2px}
+.bacts .sp{flex:1}
+.bacts .log{font:600 11px/1.5 var(--mono);color:var(--soft);text-align:right;max-width:430px}
+.bacts .log b{color:var(--verm)}
+
+.float{position:absolute;z-index:45;pointer-events:none;font:800 27px/1 var(--serif);
+  color:#ffd9a0;text-shadow:0 2px 0 #7a2718,0 0 14px rgba(255,140,80,.75);
+  opacity:0;transition:none}
+.float.go{animation:fl 1.05s ease-out forwards}
+@keyframes fl{0%{opacity:0;transform:translateY(6px) scale(.8)}
+  18%{opacity:1;transform:translateY(-8px) scale(1.12)}
+  100%{opacity:0;transform:translateY(-46px) scale(1)}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ══ 화면 A · 어드벤처 맵 ══ -->
+<section class="screen" id="sa">
+  <div class="mapwrap">
+    <canvas class="map" id="mapA" width="1046" height="866"></canvas>
+    <svg class="over" id="ovA" width="1046" height="866"></svg>
+  </div>
+
+  <div class="hud">
+    <div class="plate frame">
+      <small>일곱 번째 주</small>
+      <b id="dayTxt">29일째</b>
+      <i>마감 49일 · <span id="leftTxt">20일 남음</span></i>
+      <div class="weekdots" id="wdots"></div>
+    </div>
+    <div class="plate frame" style="min-width:132px">
+      <small>영웅</small>
+      <b style="font-size:19px">가라드</b>
+      <i>레벨 6 · 공 +3 / 방 +2</i>
+      <i style="color:var(--verm);font-weight:700">전 스택에 적용</i>
+    </div>
+    <div class="res frame">
+      <div class="g"><span>금</span><b id="rGold">8,450</b></div>
+      <div class="w"><span>목재</span><b>14</b></div>
+      <div class="o"><span>광석</span><b>9</b></div>
+    </div>
+  </div>
+
+  <div class="budget frame">
+    <span class="bl">이동력</span>
+    <div class="bbar">
+      <u id="bFill" style="width:0"></u>
+      <s id="bShort" style="left:0;width:0"></s>
+      <span id="bTxt">—</span>
+    </div>
+    <span class="bn" id="bNum">1400 / 1400</span>
+  </div>
+
+  <div class="legend">
+    <i><em style="background:#a89468"></em>길 75</i>
+    <i><em style="background:#6d8c4a"></em>초원 100</i>
+    <i><em style="background:#8a7a4e"></em>언덕 150</i>
+    <i><em style="background:#3f5f3a"></em>숲 175</i>
+    <i><em style="background:#4a5a46"></em>늪 200</i>
+    <i><em style="background:#2c5a6e"></em>호수 ∞</i>
+    <i style="color:var(--gold);margin-left:4px">클릭 — 목표를 바꿔 본다</i>
+  </div>
+
+  <aside class="panel frame">
+    <div class="ph"><h2>왕관 · 본성</h2><span>성벽 2단 · 수입 1,750/일</span></div>
+
+    <div class="sect"><span>건물 6 — 주거 4 · 성벽 · 금고</span><em id="bldNote">2단까지 올렸다</em></div>
+    <div class="blds" id="blds"></div>
+
+    <div class="sect"><span>병종 — 진영 2 × 등급 4</span><em>등급 3·4는 주거 미완</em></div>
+    <div class="units" id="units"></div>
+
+    <div class="growth">
+      <b id="gD">이틀 뒤</b> 주 1일 — 주거 등급별로 병력이 자란다.
+      <b id="gSum">민병 +14 · 석궁병 +9 · 창기병 +5</b>
+      <br>기다리면 강해지는데 <b>상대도 자란다</b>. 기다림의 값을 매 주 다시 센다.
+    </div>
+  </aside>
+
+  <button class="nextbtn" id="nextBtn">다음 턴<small>이동력이 한 칸 부족하다</small></button>
+  <div class="light" style="background:radial-gradient(ellipse 58% 52% at 32% 42%,rgba(255,228,170,.13),transparent 68%),radial-gradient(ellipse 86% 82% at 38% 48%,transparent 58%,rgba(8,14,20,.6))"></div>
+</section>
+
+<!-- ══ 화면 B · 전술 전투 ══ -->
+<section class="screen" id="sb">
+  <div class="initbar frame">
+    <span class="lbl">주도권<br>순서</span>
+    <div style="display:flex;gap:7px" id="initRow"></div>
+  </div>
+
+  <div class="bwrap">
+    <canvas class="map" id="mapB" width="1010" height="598"></canvas>
+    <svg class="over" id="ovB" width="1010" height="598"></svg>
+  </div>
+
+  <aside class="bside frame">
+    <div class="ph"><h2>타격 판정</h2><span>정수 천분율 · 부동소수 없음</span></div>
+
+    <div class="stackbox" id="atkBox"></div>
+    <div style="text-align:center;font:700 11px/1 var(--mono);color:var(--verm);margin:7px 0 0">▼ 공격</div>
+    <div class="stackbox" id="defBox"></div>
+
+    <div class="formula" id="formula"></div>
+    <p class="frontnote" style="margin-top:9px">
+      스택 체력은 <b>맨 앞 한 마리의 남은 체력</b>을 따로 들고 간다 —
+      전체를 하나로 뭉치면 “9마리 남고 앞 한 마리가 반피”가 표현되지 않는다.
+    </p>
+  </aside>
+
+  <div class="bacts frame">
+    <button class="pri" id="hitBtn">타격<kbd>Space</kbd></button>
+    <button id="shotBtn">사격<kbd>S</kbd></button>
+    <button id="waitBtn">대기<kbd>W</kbd></button>
+    <span class="sp"></span>
+    <span class="log" id="bLog">주도권 순서대로 진행한다. 속도 90 늑대기수가 먼저 움직였다.</span>
+  </div>
+  <div class="light" style="background:radial-gradient(ellipse 60% 55% at 46% 44%,rgba(255,220,160,.1),transparent 66%),radial-gradient(ellipse 88% 84% at 46% 48%,transparent 56%,rgba(10,8,16,.66))"></div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 어드벤처 맵</button><button data-s="b">2 · 전술 전투</button></div>
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);
+    stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),
+    d=x.createImageData(400,250);
+    for(var i=0;i<d.data.length;i+=4){var v=Math.random()*255|0;
+      d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}
+    x.putImageData(d,0,0);c.style.width='1600px';c.style.height='1000px';})();
+
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,p){var e=document.createElementNS(NS,t);
+    for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+
+  /* 씨드 고정 난수 — 원칙 5. UnityEngine.Random 금지와 같은 이유로 여기도 고정한다 */
+  var seed=1949;
+  function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+
+  /* ════════ 지형 · scenario.json 의 이동 비용 (전부 100배 정수) ════════ */
+  var TER={
+    road :{c: 75,col:'#a89468',n:'길'},
+    grass:{c:100,col:'#6d8c4a',n:'초원'},
+    hill :{c:150,col:'#8a7a4e',n:'언덕'},
+    wood :{c:175,col:'#3f5f3a',n:'숲'},
+    swamp:{c:200,col:'#4a5a46',n:'늪'},
+    water:{c: -1,col:'#2c5a6e',n:'호수'},
+    mtn  :{c: -1,col:'#58544e',n:'산'}
+  };
+  var BUDGET=1400, COLS=26, ROWS=21, TS=40;
+
+  /* 맵을 만든다. §5 '맵 대칭' 검사기가 180° 회전 대칭을 요구하므로
+     위쪽 절반만 만들고 아래쪽은 회전해 복사한다 — 그러면 대칭이 보장된다. */
+  var grid=[];
+  (function build(){
+    var i,x,y;
+    for(y=0;y<ROWS;y++){grid[y]=[];for(x=0;x<COLS;x++)grid[y][x]='grass';}
+    var half=Math.floor(ROWS/2);
+    function put(x,y,t){if(y>=0&&y<ROWS&&x>=0&&x<COLS)grid[y][x]=t;}
+    /* 북 회랑 = 숲·언덕 */
+    for(x=2;x<COLS-2;x++){if(rnd()<.62)put(x,1,'wood');if(rnd()<.5)put(x,2,'wood');
+      if(rnd()<.45)put(x,3,'hill');}
+    for(y=1;y<5;y++)for(x=3;x<COLS-3;x++)if(rnd()<.2)put(x,y,'hill');
+    /* 서 회랑 = 길 */
+    for(y=4;y<half+1;y++)put(1,y,'road');
+    for(x=1;x<8;x++)put(x,half,'road');
+    /* 중앙을 호수 + 산으로 막는다 — 네 갈래가 갈라지는 이유 */
+    for(y=half-3;y<=half+3;y++)for(x=10;x<16;x++){
+      var dx=(x-12.5)/3.1,dy=(y-half)/3.4;
+      if(dx*dx+dy*dy<1)put(x,y,'water');}
+    for(y=half-4;y<=half-2;y++)for(x=9;x<17;x++)if(grid[y][x]!=='water'&&rnd()<.55)put(x,y,'mtn');
+    /* 남 회랑 = 늪 (아래쪽은 회전 복사로 생기므로 위쪽에 심는다) */
+    for(x=4;x<COLS-4;x++)if(rnd()<.5)put(x,half-6,'swamp');
+    for(y=half-7;y<half-4;y++)for(x=5;x<COLS-5;x++)if(rnd()<.26)put(x,y,'swamp');
+    /* 180° 회전 복사 */
+    for(y=0;y<half;y++)for(x=0;x<COLS;x++)grid[ROWS-1-y][COLS-1-x]=grid[y][x];
+    /* 중앙 행은 스스로 대칭이 되게 */
+    for(x=0;x<Math.floor(COLS/2);x++)grid[half][COLS-1-x]=grid[half][x];
+  })();
+
+  /* 대칭 자기검사 — 검사기를 문서에만 적지 않고 시안에서도 돌린다 */
+  var symOK=true;
+  for(var yy=0;yy<ROWS;yy++)for(var xx=0;xx<COLS;xx++)
+    if(grid[yy][xx]!==grid[ROWS-1-yy][COLS-1-xx])symOK=false;
+
+  var HERO={x:4,y:10};
+  /* 금광은 예산 바로 밖에 둔다 — 비용 1428, 예산 1400, 28 부족.
+     가장 싼 지형이 75 라서 어느 방향으로도 한 칸을 더 갈 수 없다.
+     이 한 칸이 §4 '이동력 예산' 장치의 전부다. 자리는 다익스트라로 골랐다. */
+  var SITES=[
+    {x:14,y:2, k:'mine',  n:'금광',     v:'+1000/일'},
+    {x:19,y:4, k:'mine',  n:'목재소',   v:'+2 목재/일'},
+    {x:21,y:14,k:'camp',  n:'중립 군대', v:'고블린 32'},
+    {x:8, y:6, k:'chest', n:'보물상자', v:'금 1500'},
+    {x:24,y:10,k:'castle',n:'적 본성',  v:'야만'}
+  ];
+  var target=SITES[0];
+
+  /* ── 다익스트라: 이동력 예산 안에 무엇이 들어오는가 ──
+     "한 칸만 더" 장치를 흉내내지 않고 실제로 센다. */
+  function dijkstra(sx,sy){
+    var dist=[],i,j;
+    for(i=0;i<ROWS;i++){dist[i]=[];for(j=0;j<COLS;j++)dist[i][j]=Infinity;}
+    dist[sy][sx]=0;
+    var q=[[sx,sy]];
+    while(q.length){
+      /* 작은 맵이라 선형 추출로 충분하다 */
+      var bi=0;
+      for(i=1;i<q.length;i++)if(dist[q[i][1]][q[i][0]]<dist[q[bi][1]][q[bi][0]])bi=i;
+      var cur=q.splice(bi,1)[0],cx=cur[0],cy=cur[1],cd=dist[cy][cx];
+      for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){
+        if(!dx&&!dy)continue;
+        var nx=cx+dx,ny=cy+dy;
+        if(nx<0||ny<0||nx>=COLS||ny>=ROWS)continue;
+        var t=TER[grid[ny][nx]];if(t.c<0)continue;
+        /* 사각 8방향 — §4 "격자는 육각이 아니라 사각으로".
+           대각은 비용을 올려 8방향이 공짜 지름길이 되지 않게 한다 (141/100). */
+        var step=Math.round(t.c*((dx&&dy)?1.41:1));
+        if(cd+step<dist[ny][nx]){dist[ny][nx]=cd+step;q.push([nx,ny]);}
+      }
+    }
+    return dist;
+  }
+  var dist=dijkstra(HERO.x,HERO.y);
+
+  /* ── 화면 A 그리기 ── */
+  var cA=document.getElementById('mapA'),xA=cA.getContext('2d'),ovA=document.getElementById('ovA');
+  function paintA(){
+    var x,y;
+    xA.fillStyle='#141a20';xA.fillRect(0,0,1046,866);
+    for(y=0;y<ROWS;y++)for(x=0;x<COLS;x++){
+      var t=TER[grid[y][x]],px=x*TS+3,py=y*TS+3;
+      xA.fillStyle=t.col;xA.fillRect(px,py,TS,TS);
+      /* 평면 채색 + 도트 질감. 해상도를 섞지 않는다 (§3) */
+      seed=(x*73+y*131+7)%2147483647||7;
+      if(t.c>0){
+        xA.fillStyle='rgba(0,0,0,.09)';
+        for(var k=0;k<5;k++)xA.fillRect(px+(rnd()*TS|0),py+(rnd()*TS|0),4,4);
+      }
+      if(grid[y][x]==='wood'){xA.fillStyle='rgba(20,40,20,.5)';
+        for(k=0;k<3;k++){var tx=px+6+(rnd()*24|0),ty=py+8+(rnd()*18|0);
+          xA.beginPath();xA.moveTo(tx,ty+10);xA.lineTo(tx+5,ty);xA.lineTo(tx+10,ty+10);
+          xA.closePath();xA.fill();}}
+      if(grid[y][x]==='mtn'){xA.fillStyle='rgba(235,235,240,.35)';
+        xA.beginPath();xA.moveTo(px+6,py+30);xA.lineTo(px+20,py+7);xA.lineTo(px+34,py+30);
+        xA.closePath();xA.fill();}
+      if(grid[y][x]==='hill'){xA.fillStyle='rgba(0,0,0,.13)';
+        xA.beginPath();xA.arc(px+20,py+26,13,Math.PI,0);xA.fill();}
+      xA.strokeStyle='rgba(10,16,20,.22)';xA.lineWidth=1;
+      xA.strokeRect(px+.5,py+.5,TS-1,TS-1);
+      /* 도달 가능 범위 — 예산 안은 밝게, 바로 밖은 붉게 */
+      var d=dist[y][x];
+      if(d===Infinity)continue;
+      if(d<=BUDGET){xA.fillStyle='rgba(255,236,190,.17)';xA.fillRect(px,py,TS,TS);}
+      else if(d<=BUDGET+600){xA.fillStyle='rgba(181,69,47,.17)';xA.fillRect(px,py,TS,TS);}
+    }
+    /* 예산 경계선 */
+    xA.strokeStyle='rgba(255,230,170,.85)';xA.lineWidth=2;
+    for(y=0;y<ROWS;y++)for(x=0;x<COLS;x++){
+      if(dist[y][x]>BUDGET||dist[y][x]===Infinity)continue;
+      var px2=x*TS+3,py2=y*TS+3;
+      function out(nx,ny){return nx<0||ny<0||nx>=COLS||ny>=ROWS||
+        dist[ny][nx]>BUDGET||dist[ny][nx]===Infinity;}
+      xA.beginPath();
+      if(out(x,y-1)){xA.moveTo(px2,py2);xA.lineTo(px2+TS,py2);}
+      if(out(x,y+1)){xA.moveTo(px2,py2+TS);xA.lineTo(px2+TS,py2+TS);}
+      if(out(x-1,y)){xA.moveTo(px2,py2);xA.lineTo(px2,py2+TS);}
+      if(out(x+1,y)){xA.moveTo(px2+TS,py2);xA.lineTo(px2+TS,py2+TS);}
+      xA.stroke();
+    }
+  }
+
+  var ICON={
+    mine:'M3 17h18l-2-6H5zM9 11V4h6v7',
+    chest:'M3 9h18v10H3zM3 9l2-5h14l2 5M12 9v10',
+    camp:'M12 3l9 17H3zM12 10v6',
+    castle:'M3 20V8l3 2V5h3v5l3-3 3 3V5h3v5l3-2v12z'
+  };
+  function overA(){
+    while(ovA.firstChild)ovA.removeChild(ovA.firstChild);
+    /* 목표까지의 경로 */
+    var td=dist[target.y][target.x];
+    if(td!==Infinity){
+      var path=[],cx=target.x,cy=target.y,guard=0;
+      while(!(cx===HERO.x&&cy===HERO.y)&&guard++<900){
+        path.push([cx,cy]);var best=null,bd=Infinity;
+        for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){
+          if(!dx&&!dy)continue;var nx=cx+dx,ny=cy+dy;
+          if(nx<0||ny<0||nx>=COLS||ny>=ROWS)continue;
+          if(dist[ny][nx]<bd){bd=dist[ny][nx];best=[nx,ny];}
+        }
+        if(!best)break;cx=best[0];cy=best[1];
+      }
+      path.push([HERO.x,HERO.y]);path.reverse();
+      var pts=path.map(function(p){return (p[0]*TS+23)+','+(p[1]*TS+23);}).join(' ');
+      el('polyline',{points:pts,fill:'none',stroke:'rgba(20,28,34,.5)',
+        'stroke-width':7,'stroke-linecap':'round'},ovA);
+      el('polyline',{points:pts,fill:'none',
+        stroke:td<=BUDGET?'#ffe6aa':'#b5452f','stroke-width':3,
+        'stroke-dasharray':'7 5','stroke-linecap':'round'},ovA);
+      /* 예산이 끊기는 칸에 표시 */
+      for(var i=0;i<path.length;i++){
+        if(dist[path[i][1]][path[i][0]]>BUDGET){
+          var bx=path[i][0]*TS+23,by=path[i][1]*TS+23;
+          el('circle',{cx:bx,cy:by,r:15,fill:'none',stroke:'#b5452f','stroke-width':3},ovA);
+          el('line',{x1:bx-8,y1:by-8,x2:bx+8,y2:by+8,stroke:'#b5452f','stroke-width':3},ovA);
+          el('line',{x1:bx+8,y1:by-8,x2:bx-8,y2:by+8,stroke:'#b5452f','stroke-width':3},ovA);
+          break;
+        }
+      }
+    }
+    /* 거점 */
+    SITES.forEach(function(s){
+      var gx=s.x*TS+23,gy=s.y*TS+23,on=(s===target);
+      el('circle',{cx:gx,cy:gy,r:on?19:15,
+        fill:on?'rgba(201,162,39,.95)':'rgba(232,220,192,.9)',
+        stroke:'#1b2430','stroke-width':2},ovA);
+      var g=el('g',{transform:'translate('+(gx-9)+','+(gy-9)+') scale(.75)'},ovA);
+      el('path',{d:ICON[s.k],fill:'none',stroke:'#1b2430','stroke-width':2.4,
+        'stroke-linejoin':'round'},g);
+    });
+    /* 영웅 */
+    var hx=HERO.x*TS+23,hy=HERO.y*TS+23;
+    el('circle',{cx:hx,cy:hy,r:21,fill:'rgba(45,110,107,.96)',
+      stroke:'#e8dcc0','stroke-width':3},ovA);
+    el('path',{d:'M'+(hx-7)+' '+(hy+9)+'v-11l7-7 7 7v11z',
+      fill:'none',stroke:'#e8dcc0','stroke-width':2.4,'stroke-linejoin':'round'},ovA);
+    el('text',{x:hx,y:hy+34,'text-anchor':'middle',fill:'#ffe6aa',
+      style:'font:700 11px Consolas,monospace;text-shadow:0 1px 3px #000'},ovA)
+      .textContent='가라드';
+  }
+
+  /* 목표가 바뀔 때마다 예산 막대와 말풍선을 다시 센다 */
+  var callout=null;
+  function syncBudget(){
+    var td=dist[target.y][target.x];
+    var fill=document.getElementById('bFill'),shortEl=document.getElementById('bShort'),
+        txt=document.getElementById('bTxt'),num=document.getElementById('bNum'),
+        btn=document.getElementById('nextBtn');
+    if(callout){callout.parentNode.removeChild(callout);callout=null;}
+    if(td===Infinity){
+      fill.style.width='0';shortEl.style.width='0';
+      txt.textContent='닿을 수 없다 — 호수와 산이 중앙을 막는다';
+      num.textContent='— / '+BUDGET;num.className='bn';
+      btn.innerHTML='다음 턴<small>길이 없다. 회랑을 돌아야 한다</small>';
+      return;
+    }
+    var pct=Math.min(100,td/BUDGET*100);
+    fill.style.width=Math.min(100,pct)+'%';
+    if(td<=BUDGET){
+      shortEl.style.width='0';
+      txt.textContent=target.n+'까지 '+td+' — 예산 안에 든다';
+      num.textContent=td+' / '+BUDGET;num.className='bn';
+      btn.innerHTML='다음 턴<small>이번 턴에 닿는다</small>';
+    }else{
+      var over=td-BUDGET,ow=Math.min(100-100*BUDGET/td,40);
+      shortEl.style.left=(100*BUDGET/td)+'%';shortEl.style.width=ow+'%';
+      fill.style.width=(100*BUDGET/td)+'%';
+      txt.textContent=target.n+'까지 '+td+' — '+over+' 부족';
+      num.textContent='−'+over+' 부족';num.className='bn short';
+      btn.innerHTML='다음 턴<small>'+over+'이 부족하다. 그래서 누른다</small>';
+      /* "한 칸만 더" — 부족분이 한 칸 비용 이하일 때만 말풍선을 띄운다 */
+      if(over<=200){
+        callout=document.createElement('div');callout.className='callout';
+        callout.innerHTML='이동력 '+over+' 부족<span>'+target.n+' · '+target.v+
+          '<br>딱 한 칸이 모자라다</span>';
+        callout.style.left=(20+target.x*TS+48)+'px';
+        callout.style.top=(112+target.y*TS-6)+'px';
+        document.getElementById('sa').appendChild(callout);
+      }
+    }
+  }
+
+  ovA.addEventListener('click',function(ev){
+    var r=ovA.getBoundingClientRect(),sc=r.width/1046;
+    var gx=Math.floor((ev.clientX-r.left)/sc/TS),gy=Math.floor((ev.clientY-r.top)/sc/TS);
+    if(gx<0||gy<0||gx>=COLS||gy>=ROWS)return;
+    /* 가까운 거점을 고르거나, 빈 칸이면 임시 목표로 둔다 */
+    var hit=null;
+    SITES.forEach(function(s){if(Math.abs(s.x-gx)<=1&&Math.abs(s.y-gy)<=1)hit=s;});
+    target=hit||{x:gx,y:gy,k:'mine',n:'그 칸',v:TER[grid[gy][gx]].n};
+    paintA();overA();syncBudget();tick(220);
+  });
+
+  /* 49일 중 29일째 — 주 표시 */
+  var DAY=29,DAYS=49;
+  (function(){
+    var w=document.getElementById('wdots'),i;
+    for(i=1;i<=7;i++){var u=document.createElement('u');
+      var cw=Math.ceil(DAY/7);
+      if(i<cw)u.className='on';else if(i===cw)u.className='cur';
+      w.appendChild(u);}
+    document.getElementById('leftTxt').textContent=(DAYS-DAY)+'일 남음';
+    document.getElementById('gD').textContent=(7-(DAY%7||7)+1)+'일 뒤';
+  })();
+
+  /* 건물 6 — 주거 4 + 성벽 + 금고 */
+  var BLD=[
+    {n:'주거 1단',s:'민병',ok:1},{n:'주거 2단',s:'석궁병',ok:1},
+    {n:'주거 3단',s:'창기병 · 목재 5',ok:0},{n:'주거 4단',s:'성기사 · 광석 20',ok:0},
+    {n:'성벽',s:'2단 완성',ok:1},{n:'금고',s:'+500/일',ok:1}
+  ];
+  (function(){
+    var box=document.getElementById('blds');
+    BLD.forEach(function(b){
+      var d=document.createElement('div');d.className='bld'+(b.ok?'':' lock');
+      d.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24">'+
+        '<path d="'+(b.n==='성벽'?ICON.castle:b.n==='금고'?ICON.chest:
+          'M4 20V10l8-6 8 6v10zM10 20v-6h4v6')+'" fill="none" stroke="#1b2430" '+
+        'stroke-width="1.9" stroke-linejoin="round"/></svg>'+
+        '<b>'+b.n+'</b><span>'+(b.ok?b.s:'미완 · '+b.s)+'</span>';
+      box.appendChild(d);
+    });
+  })();
+
+  /* ════════ 병종 — §6 초안 그대로. shots:-1 = 근접 ════════ */
+  var UNITS=[
+    {f:'왕관',t:1,n:'민병',  atk:4, def:5, dmg:[1,3],  hp:10,spd:40,shots:-1,grow:14,gold:60, ok:1},
+    {f:'왕관',t:2,n:'석궁병',atk:6, def:3, dmg:[2,5],  hp:10,spd:50,shots:12,grow:9, gold:110,ok:1},
+    {f:'왕관',t:3,n:'창기병',atk:9, def:8, dmg:[5,9],  hp:35,spd:70,shots:-1,grow:5, gold:300,ok:0},
+    {f:'왕관',t:4,n:'성기사',atk:13,def:12,dmg:[10,16],hp:80,spd:80,shots:-1,grow:2, gold:900,ok:0},
+    {f:'야만',t:1,n:'고블린',atk:5, def:3, dmg:[1,3],  hp:8, spd:50,shots:-1,grow:18,gold:45, ok:0},
+    {f:'야만',t:2,n:'투척병',atk:5, def:4, dmg:[2,4],  hp:12,spd:40,shots:10,grow:9, gold:100,ok:0},
+    {f:'야만',t:3,n:'늑대기수',atk:8,def:6,dmg:[4,8],  hp:28,spd:90,shots:-1,grow:6, gold:260,ok:0},
+    {f:'야만',t:4,n:'오거',  atk:14,def:10,dmg:[12,18],hp:90,spd:50,shots:-1,grow:2, gold:950,ok:0}
+  ];
+  var UICO={
+    '민병':'M12 4v7M7 11h10l-2 9H9zM9 7h6',
+    '석궁병':'M4 12h16M8 7v10M12 4l5 8-5 8',
+    '창기병':'M5 19l9-14M14 5h5v5M7 17h5',
+    '성기사':'M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z',
+    '고블린':'M6 10l6-6 6 6-3 9H9zM10 13h4',
+    '투척병':'M12 5a2 2 0 110 4 2 2 0 010-4M12 9v6l-4 5M12 15l4 5',
+    '늑대기수':'M4 15l4-6 4 3 4-6 4 9zM8 19h10',
+    '오거':'M7 4h10l2 8-4 8H9l-4-8zM10 9h4'
+  };
+  function uico(n,c,sz){
+    return '<svg width="'+(sz||22)+'" height="'+(sz||22)+'" viewBox="0 0 24 24">'+
+      '<path d="'+(UICO[n]||'')+'" fill="none" stroke="'+(c||'#1b2430')+
+      '" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  }
+  (function(){
+    var box=document.getElementById('units');
+    UNITS.filter(function(u){return u.f==='왕관';}).forEach(function(u){
+      var r=document.createElement('div');r.className='urow'+(u.ok?'':' lock');
+      r.innerHTML='<span class="ico">'+uico(u.n)+'</span>'+
+        '<span class="nm"><b>'+u.n+'</b><span>등급 '+u.t+' · '+
+          (u.shots<0?'근접':'사격 '+u.shots)+'</span></span>'+
+        '<span class="st"><u>공/방</u>'+u.atk+'/'+u.def+'</span>'+
+        '<span class="st"><u>피해</u>'+u.dmg[0]+'–'+u.dmg[1]+'</span>'+
+        '<span class="st"><u>HP/속도</u>'+u.hp+'/'+u.spd+'</span>'+
+        '<span class="buy">'+u.gold+'금</span>';
+      box.appendChild(r);
+    });
+    var note=UNITS.filter(function(u){return u.f==='왕관'&&u.ok;})
+      .map(function(u){return u.n+' +'+u.grow;}).join(' · ');
+    document.getElementById('gSum').textContent=note;
+  })();
+
+  /* ════════ 화면 B · 전술 전투 ════════ */
+  var BC=14,BR=9,BT=62;
+  var cB=document.getElementById('mapB'),xB=cB.getContext('2d'),ovB=document.getElementById('ovB');
+
+  function U(n){for(var i=0;i<UNITS.length;i++)if(UNITS[i].n===n)return UNITS[i];}
+  var stacks=[
+    {u:U('늑대기수'),cnt:12,x:5,y:2,foe:1,frontHp:28,acted:0},
+    {u:U('고블린'),  cnt:34,x:4,y:5,foe:1,frontHp:8, acted:0},
+    {u:U('투척병'),  cnt:11,x:2,y:7,foe:1,frontHp:12,acted:0},
+    {u:U('오거'),    cnt:3, x:6,y:7,foe:1,frontHp:90,acted:0},
+    {u:U('창기병'),  cnt:9, x:9,y:3,foe:0,frontHp:35,acted:0},
+    {u:U('민병'),    cnt:41,x:11,y:5,foe:0,frontHp:10,acted:0},
+    {u:U('석궁병'),  cnt:16,x:12,y:7,foe:0,frontHp:10,acted:0},
+    {u:U('성기사'),  cnt:2, x:10,y:1,foe:0,frontHp:80,acted:0}
+  ];
+  /* 주도권 = 속도 내림차순. HoMM3 쪽에서 가져온 "전투의 명료함" */
+  var order=stacks.slice().sort(function(a,b){return b.u.spd-a.u.spd;});
+  var turnIdx=0;
+  var atk=order[0], def=stacks[4];
+
+  function adjacent(a,b){return Math.abs(a.x-b.x)<=1&&Math.abs(a.y-b.y)<=1;}
+
+  /* §6 피해 공식 — 정수 천분율. 부동소수를 쓰지 않는다 (원칙 4) */
+  function damage(a,d,ranged){
+    var roll=[],i,base=0;
+    for(i=0;i<a.cnt;i++){var r=a.u.dmg[0]+Math.floor(rnd()*(a.u.dmg[1]-a.u.dmg[0]+1));base+=r;}
+    var mille,why;
+    if(a.u.atk>d.u.def){mille=Math.min(4000,1000+50*(a.u.atk-d.u.def));
+      why='1000 + 50 × ('+a.u.atk+'−'+d.u.def+')';}
+    else if(d.u.def>a.u.atk){mille=Math.max(300,1000-25*(d.u.def-a.u.atk));
+      why='1000 − 25 × ('+d.u.def+'−'+a.u.atk+')';}
+    else{mille=1000;why='공 = 방';}
+    var pen=0;
+    if(a.u.shots>0&&!ranged){pen=1;}
+    if(a.u.shots>0&&adjacent(a,d)&&ranged){pen=1;}
+    var dmg=Math.floor(base*mille/1000);
+    if(pen)dmg=Math.floor(dmg*500/1000);
+    return {base:base,mille:mille,why:why,pen:pen,dmg:dmg};
+  }
+
+  function applyDamage(d,amount){
+    var pool=(d.cnt-1)*d.u.hp+d.frontHp;
+    pool=Math.max(0,pool-amount);
+    if(pool<=0){d.cnt=0;d.frontHp=0;return;}
+    d.cnt=Math.ceil(pool/d.u.hp);
+    var rem=pool%d.u.hp;
+    d.frontHp=rem===0?d.u.hp:rem;
+  }
+
+  function paintB(){
+    xB.fillStyle='#1a1520';xB.fillRect(0,0,1010,598);
+    var x,y;
+    for(y=0;y<BR;y++)for(x=0;x<BC;x++){
+      var px=x*BT+8,py=y*BT+8;
+      var dark=(x+y)%2;
+      xB.fillStyle=dark?'#4c5a3a':'#55643f';
+      xB.fillRect(px,py,BT,BT);
+      seed=(x*37+y*91+13)%2147483647||11;
+      xB.fillStyle='rgba(0,0,0,.08)';
+      for(var k=0;k<4;k++)xB.fillRect(px+(rnd()*BT|0),py+(rnd()*BT|0),5,5);
+      xB.strokeStyle='rgba(12,16,10,.3)';xB.lineWidth=1;
+      xB.strokeRect(px+.5,py+.5,BT-1,BT-1);
+    }
+    /* 현재 스택의 이동 가능 칸 — 속도를 칸으로 환산 */
+    var reach=Math.max(1,Math.round(atk.u.spd/20));
+    for(y=0;y<BR;y++)for(x=0;x<BC;x++){
+      var md=Math.max(Math.abs(x-atk.x),Math.abs(y-atk.y));
+      if(md>0&&md<=reach){xB.fillStyle='rgba(255,236,190,.13)';
+        xB.fillRect(x*BT+8,y*BT+8,BT,BT);}
+    }
+  }
+
+  function overB(){
+    while(ovB.firstChild)ovB.removeChild(ovB.firstChild);
+    stacks.forEach(function(s){
+      if(s.cnt<=0)return;
+      var gx=s.x*BT+8+BT/2,gy=s.y*BT+8+BT/2;
+      var isA=(s===atk),isD=(s===def);
+      el('rect',{x:gx-26,y:gy-26,width:52,height:52,rx:2,
+        fill:s.foe?'rgba(181,69,47,.86)':'rgba(45,110,107,.86)',
+        stroke:isA?'#ffe6aa':isD?'#ff9b6a':'#0e1216',
+        'stroke-width':isA||isD?3:1.6},ovB);
+      var g=el('g',{transform:'translate('+(gx-13)+','+(gy-16)+') scale(1.1)'},ovB);
+      el('path',{d:UICO[s.u.n]||'',fill:'none',stroke:'#f2e9d4','stroke-width':1.9,
+        'stroke-linejoin':'round','stroke-linecap':'round'},g);
+      /* 마리수 */
+      el('rect',{x:gx-26,y:gy+13,width:52,height:15,fill:'rgba(10,14,18,.86)'},ovB);
+      el('text',{x:gx,y:gy+24,'text-anchor':'middle',fill:'#f2e9d4',
+        style:'font:700 11px Consolas,monospace'},ovB).textContent=s.cnt+'마리';
+      /* 앞 한 마리 체력 — 전체 체력을 뭉치지 않는 표현 */
+      if(s.frontHp<s.u.hp&&s.cnt>0){
+        el('rect',{x:gx-26,y:gy-32,width:52,height:5,fill:'rgba(10,14,18,.8)'},ovB);
+        el('rect',{x:gx-26,y:gy-32,width:52*s.frontHp/s.u.hp,height:5,fill:'#c9a227'},ovB);
+      }
+      if(isA)el('text',{x:gx,y:gy-34,'text-anchor':'middle',fill:'#ffe6aa',
+        style:'font:700 10px Consolas,monospace'},ovB).textContent='▼ 지금';
+    });
+    /* 공격선 */
+    if(atk.cnt>0&&def.cnt>0){
+      el('line',{x1:atk.x*BT+8+BT/2,y1:atk.y*BT+8+BT/2,
+        x2:def.x*BT+8+BT/2,y2:def.y*BT+8+BT/2,
+        stroke:'rgba(255,180,120,.55)','stroke-width':2,'stroke-dasharray':'6 5'},ovB);
+    }
+  }
+
+  function initRow(){
+    var row=document.getElementById('initRow');row.innerHTML='';
+    order.forEach(function(s,i){
+      var d=document.createElement('div');
+      d.className='ichip'+(s===atk?' now':'')+(s.foe?' foe':'')+(s.acted?' done':'');
+      d.innerHTML='<i>'+s.u.spd+'</i>'+uico(s.u.n,s.foe?'#8c2e1c':'#1b2430',24)+
+        '<u>'+s.cnt+'</u>';
+      d.title=s.u.n+' · 속도 '+s.u.spd;
+      row.appendChild(d);
+    });
+  }
+
+  function boxes(){
+    function one(s,lab){
+      var pool=(s.cnt-1)*s.u.hp+s.frontHp,max=s.cnt*s.u.hp;
+      return '<span class="big">'+uico(s.u.n,s.foe?'#8c2e1c':'#1b2430',40)+'</span>'+
+        '<span class="t"><b>'+s.u.n+' × '+s.cnt+'</b>'+
+        '<span>'+lab+' · 공 '+s.u.atk+' / 방 '+s.u.def+' · 피해 '+s.u.dmg[0]+'–'+s.u.dmg[1]+
+        ' · '+(s.u.shots<0?'근접':'사격 '+s.u.shots)+'</span>'+
+        '<span class="hpbar"><u style="width:'+(max?pool/max*100:0)+'%"></u>'+
+        '<span>'+pool+' / '+max+'</span></span>'+
+        '<span class="frontnote">앞 한 마리 <b>'+s.frontHp+' / '+s.u.hp+'</b>'+
+        (s.frontHp<s.u.hp?' — 반피로 남아 있다':'')+'</span></span>';
+    }
+    document.getElementById('atkBox').innerHTML=one(atk,atk.foe?'야만':'왕관');
+    document.getElementById('defBox').innerHTML=one(def,def.foe?'야만':'왕관');
+  }
+
+  var lastCalc=null;
+  function showFormula(c){
+    var f=document.getElementById('formula');
+    if(!c){f.innerHTML='<div><span>타격을 누르면 계산을 펼친다</span></div>';return;}
+    f.innerHTML=
+      '<div><span>기본 = 마리수 × 난수(피해)</span><b>'+c.base+'</b></div>'+
+      '<div><span>천분율 = '+c.why+'</span><b>'+c.mille+'</b></div>'+
+      (c.pen?'<div class="pen"><span>사격병 인접 페널티 × 500/1000</span><b>적용</b></div>':'')+
+      '<div class="hit"><span>피해 = 기본 × 천분율 / 1000'+(c.pen?' × 500/1000':'')+'</span>'+
+      '<b>'+c.dmg+'</b></div>';
+  }
+
+  function floatNum(v){
+    var s=document.createElement('div');s.className='float';
+    s.textContent='−'+v;
+    s.style.left=(18+def.x*BT+8+BT/2-18)+'px';
+    s.style.top=(102+def.y*BT+8)+'px';
+    document.getElementById('sb').appendChild(s);
+    void s.offsetWidth;s.classList.add('go');
+    setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},1200);
+  }
+
+  function strike(ranged){
+    if(atk.cnt<=0||def.cnt<=0)return;
+    if(atk.u.shots<0&&ranged){log('근접 병종은 사격할 수 없다.');return;}
+    var c=damage(atk,def,ranged);
+    applyDamage(def,c.dmg);
+    lastCalc=c;showFormula(c);floatNum(c.dmg);
+    thud(ranged);
+    var msg=atk.u.n+' → '+def.u.n+' <b>'+c.dmg+'</b> 피해';
+    if(c.pen)msg+=' (사격병이 붙어서 절반)';
+    if(def.cnt<=0)msg+=' — 스택 전멸';
+    log(msg);
+    atk.acted=1;
+    nextTurn();
+  }
+  function nextTurn(){
+    var guard=0;
+    do{turnIdx=(turnIdx+1)%order.length;guard++;}
+    while(order[turnIdx].cnt<=0&&guard<order.length*2);
+    if(order.every(function(s){return s.acted||s.cnt<=0;}))
+      order.forEach(function(s){s.acted=0;});
+    atk=order[turnIdx];
+    /* 가장 가까운 적을 기본 대상으로 */
+    var best=null,bd=1e9;
+    stacks.forEach(function(s){
+      if(s.foe===atk.foe||s.cnt<=0)return;
+      var d=Math.max(Math.abs(s.x-atk.x),Math.abs(s.y-atk.y));
+      if(d<bd){bd=d;best=s;}});
+    if(best)def=best;
+    paintB();overB();initRow();boxes();
+  }
+  function log(h){document.getElementById('bLog').innerHTML=h;}
+
+  ovB.addEventListener('click',function(ev){
+    var r=ovB.getBoundingClientRect(),sc=r.width/1010;
+    var gx=Math.floor(((ev.clientX-r.left)/sc-8)/BT),gy=Math.floor(((ev.clientY-r.top)/sc-8)/BT);
+    var hit=null;
+    stacks.forEach(function(s){if(s.cnt>0&&s.x===gx&&s.y===gy)hit=s;});
+    if(!hit)return;
+    if(hit.foe!==atk.foe){def=hit;overB();boxes();showFormula(null);
+      log('대상을 '+hit.u.n+'으로 바꿨다.');}
+    else{atk=hit;turnIdx=order.indexOf(hit);paintB();overB();initRow();boxes();
+      showFormula(null);log(hit.u.n+' 차례로 옮겼다. 속도 '+hit.u.spd+'.');}
+    blip();
+  });
+
+  /* ── 소리: 행동마다 반응이 있어야 한다 (§3) ── */
+  var AC=null;
+  function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return AC;}
+  function blip(){var c=ac();if(!c)return;var t=c.currentTime,
+    o=c.createOscillator(),g=c.createGain();
+    o.type='square';o.frequency.setValueAtTime(680,t);
+    o.frequency.exponentialRampToValueAtTime(420,t+.07);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,t+.008);
+    g.gain.exponentialRampToValueAtTime(.0001,t+.14);
+    o.connect(g).connect(c.destination);o.start(t);o.stop(t+.16);}
+  function thud(ranged){var c=ac();if(!c)return;var t=c.currentTime,
+    len=(c.sampleRate*.34)|0,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);
+    for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,ranged?1.6:3.2);
+    var n=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();
+    f.type=ranged?'highpass':'lowpass';f.frequency.value=ranged?1400:360;
+    g.gain.value=ranged?.3:.55;
+    n.buffer=b;n.connect(f).connect(g).connect(c.destination);n.start(t);
+    var o=c.createOscillator(),g2=c.createGain();o.type='triangle';
+    o.frequency.setValueAtTime(ranged?300:110,t);
+    o.frequency.exponentialRampToValueAtTime(ranged?180:55,t+.2);
+    g2.gain.setValueAtTime(.22,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.3);
+    o.connect(g2).connect(c.destination);o.start(t);o.stop(t+.32);}
+  function tick(f){var c=ac();if(!c)return;var t=c.currentTime,
+    o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f||220;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.06,t+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,t+.3);
+    o.connect(g).connect(c.destination);o.start(t);o.stop(t+.32);}
+
+  document.getElementById('hitBtn').addEventListener('click',function(){strike(false);});
+  document.getElementById('shotBtn').addEventListener('click',function(){strike(true);});
+  document.getElementById('waitBtn').addEventListener('click',function(){
+    atk.acted=1;log(atk.u.n+' 대기 — 주도권을 뒤로 넘겼다.');nextTurn();blip();});
+  document.getElementById('nextBtn').addEventListener('click',function(){
+    tick(320);
+    var td=dist[target.y][target.x];
+    document.getElementById('nextBtn').querySelector('small').textContent=
+      td>BUDGET&&td!==Infinity?'다음 턴이면 닿는다. 그래서 또 누른다':'이번 턴에 닿는다';
+  });
+
+  /* ── 화면 전환 ── */
+  var cur='a';
+  function show(k){
+    if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');
+    document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');
+    for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}
+  }
+  var tb=document.querySelectorAll('.tabs button');
+  for(var i=0;i<tb.length;i++)
+    tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('keydown',function(ev){
+    if(ev.key==='1')show('a');
+    else if(ev.key==='2')show('b');
+    else if(cur==='b'){
+      if(ev.code==='Space'){ev.preventDefault();strike(false);}
+      else if(ev.key==='s'||ev.key==='S')strike(true);
+      else if(ev.key==='w'||ev.key==='W'){atk.acted=1;nextTurn();blip();}
+    }
+  });
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  paintA();overA();syncBudget();
+  paintB();overB();initRow();boxes();showFormula(null);
+  if(!symOK)log('맵 대칭 검사 실패 — 시안 생성 오류');
+  show((location.hash||'#a').slice(1));
+})();
+</script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 # 컨셉 목록
 
-> 2026-09-28. **착수 여부와 무관하게 컨셉 101개를 한 목록에 동등하게 놓는다.**
+> 2026-09-28. **착수 여부와 무관하게 컨셉 102개를 한 목록에 동등하게 놓는다.**
 > 2026-09-29: 72~101번 30안을 추가했다(같은 날 시안 HTML·목업 이미지 생성).
+> 2026-10-04: 102번을 추가했다. 이것만 출처가 다르다 — 다른 101개는 컨셉으로 태어났는데,
+> 102번은 [`PLAN_GENRES.md`](PLAN_GENRES.md#5-턴제-전략--고전-homm-계열) §5 의 장르 계획서(Phase 0)가
+> 먼저 있었고 거기서 시안을 역으로 뽑았다. 그래서 **다른 안보다 설계가 깊다**(병종 수치·피해 공식·검사기 10개까지).
 > 전에는 출처별로 세 묶음(40안 / 수정 10종 / 장르 PoC)으로 갈라 두었는데,
 > 출처는 어디서 왔는가일 뿐 **무엇을 만들지 고르는 기준이 아니다.** 열로 내렸다.
 >
@@ -9,7 +12,7 @@
 > [`POC_FACTORY.md`](POC_FACTORY.md), 쓸 수 있는 에셋은
 > [`ASSET_LIBRARY.md`](ASSET_LIBRARY.md)와 [`asset-index/`](asset-index/INDEX.md).
 
-**읽는 법.** `상태`가 비교의 축이다 — 미착수 70개(1~40, 72~101)는 고르는 대상이고, 구현된 31개는
+**읽는 법.** `상태`가 비교의 축이다 — 미착수 71개(1~40, 72~102)는 고르는 대상이고, 구현된 31개는
 이미 검사기를 통과했지만 **재미 판정은 아직 아무도 하지 않았다**(뿌리 [`CLAUDE.md`](../CLAUDE.md) 원칙 7).
 
 | 표기 | 뜻 |
@@ -20,7 +23,7 @@
 
 ---
 
-## 컨셉 101
+## 컨셉 102
 
 | # | 컨셉 | 한 줄 | 결 | 상태 | 에셋 | 헤드리스 | 메모 |
 |---|---|---|---|---|:-:|:-:|---|
@@ -125,8 +128,10 @@
 | 99 | **먹물 문어** | 문어가 먹물로 그림을 그려 포식자를 속인다 | 액션 · 드로잉 · 2026-09-29 추가 | 미착수 | ? | △ | 에셋 미조사. 시안: [`concepts/99-ink-octopus`](poc-gallery/concepts/99-ink-octopus/index.html) |
 | 100 | **궤도 청소부** | 우주 쓰레기를 치운다. 충돌 연쇄(케슬러 증후군)를 막아야 한다 | 퍼즐 · 물리 · 2026-09-29 추가 | 미착수 | ? | ◎ | 에셋 미조사. 시안: [`concepts/100-orbit-sweeper`](poc-gallery/concepts/100-orbit-sweeper/index.html) |
 | 101 | **이름 없는 신당** | 잊힌 신들의 신당을 관리한다. 참배객이 기억하는 만큼 신이 존재한다 | 경영 · 내러티브 · 2026-09-29 추가 | 미착수 | ? | ◎ | 에셋 미조사. 시안: [`concepts/101-lost-name-shrine`](poc-gallery/concepts/101-lost-name-shrine/index.html) |
+| 102 | **일곱 번째 주** | 이동력이 딱 한 칸 부족하다. 그래서 다음 턴을 누른다 | 턴제 전략 · 고전 HoMM · 2026-10-04 추가 | 미착수 | ✅ | ◎ | **계획서가 먼저 있는 유일한 안** — [`PLAN_GENRES.md` §5](PLAN_GENRES.md#5-턴제-전략--고전-homm-계열)에 병종 8종 수치·정수 천분율 피해 공식·검사기 10개까지 있다(Phase 0). 에셋은 조사 완료 — `icons/game-icons` 4,239개로 **새로 구할 것이 없다**. 1순위 리스크는 **분량**(2진영 × 4등급이 '빈약'으로 읽힐 수 있다). 시안: [`concepts/102-seventh-week`](poc-gallery/concepts/102-seventh-week/index.html) |
 
-**시안.** 101개 모두 HTML 시안(화면 A/B)과 AI 생성 목업 2장이 있다 — [`poc-gallery/concepts/index.html`](poc-gallery/concepts/index.html). 목업 이미지는 실행 빌드 화면이 아니다.
+**시안.** 102개 모두 HTML 시안(화면 A/B)과 AI 생성 목업 2장이 있다 — [`poc-gallery/concepts/index.html`](poc-gallery/concepts/index.html). 목업 이미지는 실행 빌드 화면이 아니다.
+표의 네 열(상태·에셋·헤드리스·메모)까지 한 장에 모아 시안을 그 자리에서 띄워 보려면 [`poc-gallery/concepts/all.html`](poc-gallery/concepts/all.html).
 
 **상업 후보 5선(2026-10-02).** 2026 Steam 수요(공포·Job Sim·검사 시뮬·코지×로그라이트)에 맞춰 33·87·25·57·90을 골라 상업판 시안을 따로 만들었다 — [`poc-gallery/concepts/_market/`](poc-gallery/concepts/_market/index.html). v1 시안은 그대로다.
 

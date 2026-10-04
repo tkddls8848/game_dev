@@ -24,8 +24,9 @@ import sys
 from pathlib import Path
 
 # 윈도우 콘솔은 기본이 cp949 라 한글·기호 출력이 터진다.
-if hasattr(sys.stdout, 'reconfigure'):
-    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, 'reconfigure'):
+        _s.reconfigure(encoding='utf-8', errors='replace')
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                      # docs/poc-gallery/concepts
@@ -35,6 +36,8 @@ CONCEPTS_MD = REPO / 'docs' / 'CONCEPTS.md'
 # ── docs/CONCEPTS.md 의 `## 컨셉 101` 표만 읽는다 ────────────────────────────
 LINK_RE = re.compile(r'\[`?([^\]`]+)`?\]\([^)]*\)')      # [`slug`](path) -> slug
 BOLD_RE = re.compile(r'\*\*([^*]+)\*\*')
+# 절 제목에 개수가 들어 있다(`## 컨셉 101` -> `## 컨셉 102`). 숫자를 박지 않는다.
+HEAD_RE = re.compile(r'^##\s+컨셉\s+\d+\s*$')
 
 
 def strip_md(s):
@@ -46,13 +49,13 @@ def strip_md(s):
 def parse_table():
     lines = CONCEPTS_MD.read_text(encoding='utf-8').splitlines()
     try:
-        start = next(i for i, l in enumerate(lines) if l.startswith('## 컨셉 101'))
+        start = next(i for i, l in enumerate(lines) if HEAD_RE.match(l))
     except StopIteration:
-        raise SystemExit('CONCEPTS.md 에서 "## 컨셉 101" 절을 찾지 못했다')
+        raise SystemExit('CONCEPTS.md 에서 "## 컨셉 <개수>" 절을 찾지 못했다')
 
     rows = {}
-    for line in lines[start:]:
-        if line.startswith('## ') and not line.startswith('## 컨셉 101'):
+    for line in lines[start + 1:]:
+        if line.startswith('## '):
             break                                    # 다음 절에서 멈춘다
         if not line.startswith('|'):
             continue

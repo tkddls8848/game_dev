@@ -16,17 +16,29 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from PIL import Image
 
+# 윈도우 콘솔은 기본이 cp949 라 한글 출력이 터진다
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 # CONCEPTS_ROOT 로 다른 폴더(예: _critique/<NN>-<slug>/ 아래 v2)를 대상으로 돌릴 수 있다
 ROOT = Path(os.environ.get("CONCEPTS_ROOT") or Path(__file__).resolve().parent.parent).resolve()
 LOG = Path(__file__).resolve().parent / "gen-log.json"
 WORKERS = 4
-PATH_RE = re.compile(r"(/[^\s`'\"]*?/\.codex/generated_images/[^\s`'\"]+?\.png)")
+# codex 가 내놓는 경로는 설치마다 다르다. POSIX 기본은 ~/.codex/generated_images/ 지만,
+# CODEX_HOME 을 옮긴 설치는 .../orca/codex-accounts/<uuid>/home/generated_images/ 에 쓴다.
+# `.codex` 를 요구하지 않고 generated_images 폴더만 기준으로 잡는다.
+PATH_RE = re.compile(
+    r"((?:[A-Za-z]:[\\/]|/)[^\s`'\"]*?[\\/]generated_images[\\/][^\s`'\"]+?\.png)"
+)
+# codex 는 저장소 밖에서 돌려야 한다(샌드박스가 파일 쓰기를 막는다). /tmp 는 윈도우에 없다.
+WORKDIR = tempfile.gettempdir()
 
 INSTRUCTION = (
     "Use your built-in image generation tool exactly once, landscape 16:9, to create this image. "
@@ -59,7 +71,8 @@ def run(job):
             r = subprocess.run(
                 ["codex", "exec", "--skip-git-repo-check", "--sandbox", "read-only",
                  INSTRUCTION + img["prompt"]],
-                capture_output=True, text=True, timeout=900, cwd="/tmp",
+                capture_output=True, text=True, timeout=900, cwd=WORKDIR,
+                encoding="utf-8", errors="replace",
             )
         except subprocess.TimeoutExpired:
             # 한 장이 멈춰도 배치 전체가 죽지 않게 한다
@@ -91,7 +104,8 @@ def main():
     log = json.loads(LOG.read_text(encoding="utf-8")) if LOG.exists() else {}
     for res in results:
         log[res["file"]] = res
-    LOG.write_text(json.dumps(log, ensure_ascii=False, indent=1), encoding="utf-8")
+    # .gitattributes 가 eol=lf 라 작업트리도 LF 로 쓴다 (윈도우 write_text 는 CRLF 를 넣는다)
+    LOG.write_bytes(json.dumps(log, ensure_ascii=False, indent=1).replace("\r\n", "\n").encode("utf-8"))
     failed = [r["file"] for r in results if not r["ok"]]
     print(f"done: {len(results)-len(failed)} ok, {len(failed)} failed {failed}")
 
