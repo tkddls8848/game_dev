@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아무것도 없는 산책</title>
+<style>
+:root{--haze:#c9d2cf;--ink:#e8ecea;--soft:#93a19c;--leaf:#c87a2a;--dirt:#b08a5a;--grav:#9aa0a6;--plank:#e0c080;--water:#6fb6c9;--moss:#7f9a5a;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--mono:Consolas,"D2Coding",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#050706;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#0d1210}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+canvas.full{position:absolute;left:0;top:0;width:1600px;height:1000px}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.09;mix-blend-mode:overlay;width:1600px;height:1000px}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px;opacity:.35;transition:opacity .3s}
+.tabs:hover{opacity:1}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#ddd;cursor:pointer}
+.tabs button.on{background:#e8e2cf;color:#1d2420;border-color:#e8e2cf}
+
+/* ── 화면 A — 아무것도 없다 ── */
+#ca{cursor:none}
+.hint{position:absolute;left:0;right:0;bottom:84px;text-align:center;z-index:20;font:400 15px/1.9 var(--sans);letter-spacing:.14em;color:rgba(245,244,236,.82);text-shadow:0 1px 8px rgba(0,0,0,.6);transition:opacity 2.4s;pointer-events:none}
+.hint small{display:block;font-size:12px;letter-spacing:.2em;color:rgba(245,244,236,.55)}
+.hint.gone{opacity:0}
+.pause{position:absolute;inset:0;z-index:25;background:rgba(6,10,12,.28);opacity:0;transition:opacity .8s;pointer-events:none}
+.pause.on{opacity:1}
+.pause .line{position:absolute;left:42px;bottom:40px;font:300 17px/1 var(--sans);letter-spacing:.08em;color:rgba(232,236,234,.82)}
+.pause .mid{position:absolute;left:0;right:0;top:47%;text-align:center;font:300 13px/1 var(--sans);letter-spacing:.42em;color:rgba(232,236,234,.6)}
+
+/* ── 화면 B — 소리 지도 ── */
+#sb{background:#0f1512}
+#cb{position:absolute;left:24px;top:24px;width:1010px;height:870px;cursor:crosshair;border-radius:4px}
+#strip{position:absolute;left:24px;top:906px;width:1010px;height:70px}
+.panel{position:absolute;left:1060px;top:24px;width:516px;bottom:24px;display:flex;flex-direction:column;gap:16px}
+.panel h1{font:700 26px/1.1 var(--sans);letter-spacing:.02em}
+.panel h1 small{display:block;font:500 12px/1.5 var(--sans);letter-spacing:.06em;color:var(--soft);margin-top:8px}
+.box{background:rgba(232,236,234,.045);border:1px solid rgba(232,236,234,.09);border-radius:5px;padding:14px 16px}
+.box h3{font:700 11px/1 var(--sans);letter-spacing:.24em;color:var(--soft);margin-bottom:12px}
+.mx{display:grid;grid-template-columns:86px 1fr 40px;gap:8px 12px;align-items:center}
+.mx span{font-size:13px;color:#cfd6d3}
+.mx em{font-style:normal;font:700 14px/1 var(--mono);text-align:right}
+.bar{height:10px;border-radius:5px;background:rgba(255,255,255,.07);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:5px;transition:width .12s}
+.surf{width:100%;border-collapse:collapse;font-size:12.5px}
+.surf td{padding:6px 4px;border-top:1px solid rgba(255,255,255,.06);color:#c9d0cd;vertical-align:top}
+.surf td:first-child{white-space:nowrap;font-weight:700;width:76px}
+.surf tr.cur td{background:rgba(255,255,255,.06)}
+.surf i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.judge{font-size:12.5px;line-height:1.65;color:#c9d0cd}
+.judge b{display:inline-block;min-width:44px;font-size:11px;letter-spacing:.1em;padding:1px 6px;border-radius:3px;margin-right:8px;text-align:center}
+.judge .m{background:#2f4a3e;color:#a9e0c4}.judge .s{background:#3d3a2a;color:#e6d39a}.judge .p{background:#4a2f2f;color:#f0b3a6}
+.judge p+p{margin-top:5px}
+.go{margin-top:auto;font:700 14px/1 var(--sans);letter-spacing:.1em;padding:14px;border-radius:5px;border:0;background:#e8e2cf;color:#1d2420;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="screen" id="sa">
+  <canvas class="full" id="ca" width="1600" height="1000"></canvas>
+  <div class="hint" id="hint">누르고 있으면 걷는다<small>W · ↑ · 마우스 &nbsp;|&nbsp; A D 길 가장자리 &nbsp;|&nbsp; Esc 쉬기 &nbsp;|&nbsp; 이어폰 권장</small></div>
+  <div class="pause" id="pause"><div class="mid">쉬는 중</div><div class="line" id="pline"></div></div>
+</section>
+
+<section class="screen" id="sb">
+  <canvas id="cb" width="1010" height="870"></canvas>
+  <canvas id="strip" width="1010" height="70"></canvas>
+  <div class="panel">
+    <h1>소리 지도<small>설계자 화면 — 게임에는 없다. 이 게임의 레벨 디자인은 소리다. 지도를 누르면 그 자리에서 들린다.</small></h1>
+    <div class="box"><h3>지금 이 자리의 믹스 · 0–100 정수</h3>
+      <div class="mx">
+        <span id="mxSurf">발소리 · 흙</span><div class="bar"><i id="bF" style="background:var(--dirt)"></i></div><em id="vF">0</em>
+        <span>바람</span><div class="bar"><i id="bW" style="background:#b9c4c8"></i></div><em id="vW">0</em>
+        <span>개울</span><div class="bar"><i id="bS" style="background:var(--water)"></i></div><em id="vS">0</em>
+        <span>새</span><div class="bar"><i id="bB" style="background:var(--moss)"></i></div><em id="vB">0</em>
+      </div>
+    </div>
+    <div class="box"><h3>발 밑 재질 → 발소리 합성</h3>
+      <table class="surf" id="surfT">
+        <tr data-s="흙"><td><i style="background:var(--dirt)"></i>흙</td><td>저역 통과 500Hz 잡음 60ms + 70Hz 쿵. 가장 조용하다</td></tr>
+        <tr data-s="낙엽"><td><i style="background:var(--leaf)"></i>낙엽</td><td>고역 통과 2.5kHz 잔 알갱이 6–10개를 120ms 에 흩뿌린다</td></tr>
+        <tr data-s="자갈"><td><i style="background:var(--grav)"></i>자갈</td><td>대역 통과 3kHz 알갱이 5–8개 + 낮은 쿵. 밟는 무게가 들린다</td></tr>
+        <tr data-s="다리"><td><i style="background:var(--plank)"></i>나무다리</td><td>140Hz 공명 120ms + 짧은 400Hz 잡음. 속이 빈 소리</td></tr>
+      </table>
+    </div>
+    <div class="box judge"><h3>판정 — 누가 무엇을 보는가</h3>
+      <p><b class="m">기계</b>길이 끊기지 않는가 · 발 밑 재질과 발소리가 일치하는가 · 씨드가 같으면 숲이 같은가</p>
+      <p><b class="s">화면</b>안개·빛줄기·물빛이 실사로 읽히는가 — 이건 언리얼에서만 확인된다</p>
+      <p><b class="p">사람</b><strong>목표 없이 30분 걸었는데 끄고 싶지 않은가.</strong> 이 안의 유일한 질문이다</p>
+    </div>
+    <button class="go" id="goWalk">여기서 걷기 →</button>
+  </div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 걷기</button><button data-s="b">2 · 소리 지도</button></div>
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(400,250);
+    for(var i=0;i<d.data.length;i+=4){var v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);})();
+
+  // 씨드 고정 난수 — 원칙 5. 같은 씨드면 같은 숲이다
+  function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function hex(c){return [parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)];}
+  function mixc(a,b,t){return 'rgb('+((a[0]+(b[0]-a[0])*t)|0)+','+((a[1]+(b[1]-a[1])*t)|0)+','+((a[2]+(b[2]-a[2])*t)|0)+')';}
+
+  /* ── 길 데이터: 구간 = [세그먼트 수, 굽이, 경사(m/세그), 재질, 숲] — 세그먼트 2m ── */
+  var SEG=2;
+  var SECTIONS=[
+    [60, 0,     .02, '흙',  'pine'],
+    [50, .018,  .06, '흙',  'pine'],
+    [40,-.012,  .04, '낙엽','oak'],
+    [60,-.02,  -.03, '낙엽','oak'],
+    [30, .01,  -.05, '자갈','bank'],
+    [10, 0,     0,   '다리','bank'],
+    [50, .02,   .08, '자갈','bank'],
+    [80,-.015,  .03, '흙',  'ridge'],
+    [60, .025, -.02, '흙',  'pine'],
+    [60,-.02,  -.06, '낙엽','oak'],
+    [40, 0,    -.10, '흙',  'pine']];
+  var segs=[];
+  SECTIONS.forEach(function(s,si){for(var k=0;k<s[0];k++){
+    // 구간 경계에서 굽이가 튀지 않게 앞뒤 8세그먼트를 부드럽게 잇는다
+    var e=Math.min(1,k/8,(s[0]-1-k)/8);
+    segs.push({curve:s[1]*e,slope:s[2],surf:s[3],biome:s[4],sec:si,stream:null,bridge:s[3]==='다리',sp:[]});}});
+  var N=segs.length, LEN=N*SEG;           // 540세그먼트 = 1080m
+  segs.forEach(function(g,i){
+    if(i>=150&&i<240)g.stream=3.6;                       // 개울이 오른쪽을 따라온다
+    else if(i>=240&&i<250)g.stream=0;                    // 다리 밑을 지난다
+    else if(i>=250&&i<300)g.stream=-(3.6+(i-250)*.22);   // 왼쪽으로 멀어진다
+  });
+  function ridgeAt(i){return i>=300&&i<380?Math.min(1,(i-300)/15,(380-i)/15):0;}
+
+  /* 나무·고사리·바위 배치 — 씨드 103 */
+  (function(){var R=rng(103);
+    segs.forEach(function(g){
+      var n=g.biome==='ridge'?1:g.biome==='bank'?2:3;
+      for(var k=0;k<n;k++){
+        var side=R()<.5?-1:1,off=side*(2.3+Math.pow(R(),1.6)*30);
+        if(g.stream!==null&&Math.abs(off-g.stream)<2.2){g.sp.push({t:'rock',x:g.stream+(R()-.5)*3,s:.7+R()*.8});continue;}
+        if(g.bridge&&Math.abs(off)<14)continue;
+        var t=g.biome==='oak'?(R()<.72?'oak':'pine'):(R()<.8?'pine':'oak');
+        if(g.biome==='ridge'&&R()<.4)t='pine';
+        g.sp.push({t:t,x:off,s:.75+R()*.5,v:(R()*3)|0});}
+      if(!g.bridge&&R()<.55)g.sp.push({t:'fern',x:(R()<.5?-1:1)*(1+R()*1.6),s:.7+R()*.7});
+      if(!g.bridge&&R()<.12)g.sp.push({t:'rock',x:(R()<.5?-1:1)*(1.2+R()*4),s:.5+R()});
+      if(g.bridge){g.sp.push({t:'post',x:-.85,s:1});g.sp.push({t:'post',x:.85,s:1});}
+    });})();
+
+  /* ── 스프라이트를 미리 그린다: 종류 × 안개 6단 ── */
+  var HAZE=hex('#c9d2cf'),FOGN=6;
+  function mkTree(kind,v){
+    var R=rng(7+v*31+(kind==='oak'?500:0)),c=document.createElement('canvas'),x;
+    if(kind==='pine'){c.width=220;c.height=640;x=c.getContext('2d');
+      var lean=(R()-.5)*30;
+      var tg=x.createLinearGradient(0,640,0,120);tg.addColorStop(0,'#3e3029');tg.addColorStop(.45,'#7a4a33');tg.addColorStop(1,'#c06a3e');
+      x.strokeStyle=tg;x.lineCap='round';
+      x.lineWidth=15;x.beginPath();x.moveTo(110,640);x.quadraticCurveTo(110+lean*.2,380,110+lean,150);x.stroke();
+      x.lineWidth=4;x.strokeStyle='#5a3a2a';for(var b=0;b<5;b++){var by=170+b*55;x.beginPath();x.moveTo(110+lean*(1-by/640),by);x.lineTo(110+lean+(b%2?60:-60)*(.6+R()*.5),by-30-R()*20);x.stroke();}
+      for(var k=0;k<11;k++){var cx=110+lean+(R()-.5)*150,cy=60+R()*230,rw=40+R()*45,rh=18+R()*16;
+        x.fillStyle='#24382a';x.beginPath();x.ellipse(cx,cy,rw,rh,(R()-.5)*.4,0,7);x.fill();
+        x.fillStyle='rgba(98,128,74,.75)';x.beginPath();x.ellipse(cx+rw*.25,cy-rh*.35,rw*.6,rh*.45,0,0,7);x.fill();}
+      c.h=16;}
+    else{c.width=360;c.height=460;x=c.getContext('2d');
+      x.strokeStyle='#4f463f';x.lineCap='round';x.lineWidth=20;x.beginPath();x.moveTo(180,460);x.lineTo(180+(R()-.5)*20,230);x.stroke();
+      x.lineWidth=7;for(var b2=0;b2<4;b2++){x.beginPath();x.moveTo(180,280-b2*15);x.lineTo(180+(b2%2?1:-1)*(60+R()*50),170-R()*60);x.stroke();}
+      var cols=['#4e5a2c','#6f7432','#8f7d34','#a3742c','#5d6a30'];
+      for(var k2=0;k2<26;k2++){var ox=180+(R()-.5)*270,oy=60+R()*200,r=26+R()*34;
+        x.fillStyle=cols[(R()*cols.length)|0];x.beginPath();x.arc(ox,oy,r,0,7);x.fill();
+        x.fillStyle='rgba(230,200,120,.22)';x.beginPath();x.arc(ox+r*.3,oy-r*.3,r*.55,0,7);x.fill();}
+      c.h=12;}
+    return c;}
+  function mkFern(){var c=document.createElement('canvas');c.width=160;c.height=80;var x=c.getContext('2d'),R=rng(11);
+    x.lineCap='round';for(var k=0;k<14;k++){var a=-Math.PI*(.12+R()*.76),L=40+R()*36;x.strokeStyle=R()<.5?'#3f6a32':'#5c8a3e';x.lineWidth=3;
+      x.beginPath();x.moveTo(80,80);x.quadraticCurveTo(80+Math.cos(a)*L*.6,80+Math.sin(a)*L*.9,80+Math.cos(a)*L,80+Math.sin(a)*L*.55);x.stroke();}
+    c.h=.8;return c;}
+  function mkRock(){var c=document.createElement('canvas');c.width=140;c.height=80;var x=c.getContext('2d');
+    var g=x.createLinearGradient(0,10,0,80);g.addColorStop(0,'#8d918a');g.addColorStop(1,'#4a4d48');x.fillStyle=g;
+    x.beginPath();x.moveTo(8,80);x.quadraticCurveTo(10,20,60,14);x.quadraticCurveTo(122,10,134,80);x.fill();
+    x.fillStyle='rgba(110,140,70,.8)';x.beginPath();x.ellipse(62,22,40,10,-.1,0,7);x.fill();c.h=.7;return c;}
+  function mkPost(){var c=document.createElement('canvas');c.width=20;c.height=100;var x=c.getContext('2d');
+    x.fillStyle='#6b5034';x.fillRect(4,0,12,100);x.fillStyle='rgba(255,220,160,.25)';x.fillRect(12,0,4,100);c.h=1.05;return c;}
+  function fogged(src){var out=[];for(var f=0;f<FOGN;f++){var c=document.createElement('canvas');c.width=src.width;c.height=src.height;var x=c.getContext('2d');
+      x.drawImage(src,0,0);x.globalCompositeOperation='source-atop';x.fillStyle='rgba('+HAZE.join(',')+','+(f/(FOGN-1))*.92+')';x.fillRect(0,0,c.width,c.height);c.h=src.h;out.push(c);}return out;}
+  var SPR={pine:[0,1,2].map(function(v){return fogged(mkTree('pine',v));}),oak:[0,1,2].map(function(v){return fogged(mkTree('oak',v));}),
+    fern:[fogged(mkFern())],rock:[fogged(mkRock())],post:[fogged(mkPost())]};
+
+  /* ── 2D 지도 좌표 (화면 B 와 소리 계산이 같은 것을 쓴다) ── */
+  var P=[],S=[];(function(){var x=0,y=0,h=0;for(var i=0;i<=N;i++){var g=segs[i%N];P.push({x:x,y:y,h:h});h+=g.curve/SEG*3.2;x+=Math.sin(h)*SEG;y-=Math.cos(h)*SEG;}
+    for(var j=0;j<N;j++){var o=segs[j].stream;if(o===null)continue;var p=P[j];S.push({x:p.x+Math.cos(P[j].h)*o,y:p.y+Math.sin(P[j].h)*o,i:j});}})();
+  var EMIT=[{name:'딱따구리',i:185,off:-9,r:45,col:'#d9a86a'},{name:'까마귀',i:360,off:24,r:70,col:'#b9b0c8'},{name:'박새 무리',i:470,off:6,r:35,col:'#9ccf8a'}];
+  EMIT.forEach(function(e){var p=P[e.i];e.x=p.x+Math.cos(p.h)*e.off;e.y=p.y+Math.sin(p.h)*e.off;});
+  function where(pos){var f=(((pos%LEN)+LEN)%LEN)/SEG,i=Math.floor(f),t=f-i,a=P[i],b=P[i+1];return{x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,h:a.h,i:i};}
+  function streamDist(w){var d=1e9,side=0;for(var k=0;k<S.length;k++){var dx=S[k].x-w.x,dy=S[k].y-w.y,q=dx*dx+dy*dy;if(q<d){d=q;side=dx*Math.cos(w.h)+dy*Math.sin(w.h);}}return{d:Math.sqrt(d),pan:clamp(side/6,-1,1)};}
+  // 믹스 — 0~100 정수(원칙 4). 오디오 이득과 B 화면 막대가 같은 수를 쓴다
+  function mix(pos){var w=where(pos),g=segs[w.i],sd=streamDist(w);
+    var stream=Math.round(100*Math.pow(clamp(1-sd.d/45,0,1),1.6));
+    var wind=Math.round(22+50*ridgeAt(w.i)+(g.biome==='bank'?6:0));
+    var birds=g.biome==='oak'?70:g.biome==='pine'?50:g.biome==='bank'?35:18;
+    var foot={'흙':45,'낙엽':72,'자갈':80,'다리':76}[g.surf];
+    return{w:w,surf:g.surf,stream:stream,pan:sd.pan,wind:wind,birds:birds,foot:foot,dist:sd.d};}
+
+  /* ── 소리 — 이 게임의 본체 ── */
+  var AC=null,NB,master,gWind,gStream,gBurb,bpBurb,panS,lpWind;
+  function audio(){if(AC){if(AC.state==='suspended')AC.resume();return;}
+    try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return;}
+    NB=AC.createBuffer(1,AC.sampleRate*3,AC.sampleRate);var d=NB.getChannelData(0),b0=0;
+    for(var i=0;i<d.length;i++){var wv=Math.random()*2-1;b0=.97*b0+.03*wv;d[i]=wv*.6+b0*2.2;}
+    master=AC.createGain();master.gain.value=.9;master.connect(AC.destination);
+    function loop(){var s=AC.createBufferSource();s.buffer=NB;s.loop=true;s.loopStart=Math.random();s.start(0,Math.random()*2);return s;}
+    lpWind=AC.createBiquadFilter();lpWind.type='lowpass';lpWind.frequency.value=420;gWind=AC.createGain();gWind.gain.value=0;loop().connect(lpWind);lpWind.connect(gWind);gWind.connect(master);
+    panS=AC.createStereoPanner?AC.createStereoPanner():AC.createGain();panS.connect(master);
+    var bp=AC.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2200;bp.Q.value=.6;gStream=AC.createGain();gStream.gain.value=0;loop().connect(bp);bp.connect(gStream);gStream.connect(panS);
+    bpBurb=AC.createBiquadFilter();bpBurb.type='bandpass';bpBurb.frequency.value=700;bpBurb.Q.value=4;gBurb=AC.createGain();gBurb.gain.value=0;loop().connect(bpBurb);bpBurb.connect(gBurb);gBurb.connect(panS);
+  }
+  function burst(t0,dur,type,f,q,gain,pan){var s=AC.createBufferSource();s.buffer=NB;var fl=AC.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;
+    var g=AC.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(gain,t0+.004);g.gain.exponentialRampToValueAtTime(.0005,t0+dur);
+    var p=AC.createStereoPanner?AC.createStereoPanner():null;s.connect(fl);fl.connect(g);if(p){p.pan.value=pan;g.connect(p);p.connect(master);}else g.connect(master);s.start(t0,Math.random()*2.5);s.stop(t0+dur+.02);}
+  function tone(t0,dur,f0,f1,gain,pan,type){var o=AC.createOscillator();o.type=type||'sine';o.frequency.setValueAtTime(f0,t0);o.frequency.exponentialRampToValueAtTime(f1,t0+dur);
+    var g=AC.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(gain,t0+.006);g.gain.exponentialRampToValueAtTime(.0005,t0+dur);
+    var p=AC.createStereoPanner?AC.createStereoPanner():null;o.connect(g);if(p){p.pan.value=pan;g.connect(p);p.connect(master);}else g.connect(master);o.start(t0);o.stop(t0+dur+.02);}
+  var footR=rng(9);
+  function footstep(surf,side){if(!AC)return;var t=AC.currentTime+.005,pan=side*.18,k;
+    if(surf==='흙'){burst(t,.07,'lowpass',520,.7,.42,pan);tone(t,.05,80,55,.22,pan);}
+    else if(surf==='낙엽'){for(k=0;k<6+(footR()*5|0);k++)burst(t+footR()*.12,.018+footR()*.02,'highpass',2400+footR()*1800,.8,.12+footR()*.16,pan+(footR()-.5)*.2);burst(t,.05,'lowpass',400,.7,.18,pan);}
+    else if(surf==='자갈'){for(k=0;k<5+(footR()*4|0);k++)burst(t+footR()*.09,.025,'bandpass',2600+footR()*1400,1.2,.2+footR()*.15,pan);tone(t,.05,90,60,.2,pan);}
+    else {tone(t,.13,150,128,.34,pan,'triangle');burst(t,.04,'bandpass',420,1.5,.28,pan);}}
+  function chirp(pan,loud){var t=AC.currentTime+.01,n=2+(Math.random()*3|0),f=3200+Math.random()*1600;for(var k=0;k<n;k++)tone(t+k*.11,.07,f,f*1.25,.05*loud,pan);}
+  function knock(pan,loud){var t=AC.currentTime+.01;for(var k=0;k<14;k++)burst(t+k*.045,.02,'bandpass',1300,3,.22*loud*(1-k/18),pan);}
+  function caw(pan,loud){var t=AC.currentTime+.01;for(var k=0;k<2;k++){tone(t+k*.42,.28,620,480,.05*loud,pan,'sawtooth');burst(t+k*.42,.22,'bandpass',900,2,.06*loud,pan);}}
+  var nextBird=2,nextEmit=4;
+  function ambience(dt,m){if(!AC)return;var now=AC.currentTime,tt=performance.now()/1000;
+    var gust=.75+.25*Math.sin(tt*.21)+.15*Math.sin(tt*.67+1);
+    gWind.gain.setTargetAtTime(m.wind/100*.42*gust,now,.4);lpWind.frequency.setTargetAtTime(300+200*gust+m.wind*3,now,.6);
+    gStream.gain.setTargetAtTime(m.stream/100*.32,now,.25);gBurb.gain.setTargetAtTime(m.stream/100*.22,now,.25);
+    bpBurb.frequency.setTargetAtTime(500+Math.random()*600,now,.05);
+    if(panS.pan)panS.pan.setTargetAtTime(m.pan*.8,now,.3);
+    nextBird-=dt;if(nextBird<=0){chirp((Math.random()-.5)*1.6,m.birds/70);nextBird=(1.2+Math.random()*5)*(80/(m.birds+10));}
+    nextEmit-=dt;if(nextEmit<=0){nextEmit=3+Math.random()*4;
+      EMIT.forEach(function(e){var dx=e.x-m.w.x,dy=e.y-m.w.y,d=Math.sqrt(dx*dx+dy*dy);if(d>e.r)return;var l=1-d/e.r,pan=clamp((dx*Math.cos(m.w.h)+dy*Math.sin(m.w.h))/10,-1,1);
+        if(e.name==='딱따구리')knock(pan,l);else if(e.name==='까마귀')caw(pan,l);else chirp(pan,l*1.4);});}}
+
+  /* ── 상태 ── */
+  var pos=262, lat=0, v=0, walking=false, paused=false, walked=0, wtime=0, stepAcc=0, stepSide=1, phase=0, latIn=0;
+
+  /* ── 화면 A — 의사 3D 오솔길 ── */
+  var ca=document.getElementById('ca'),X=ca.getContext('2d'),W=1600,H=1000,F=820,DRAW=170,EYE=1.65;
+  var GROUND={pine:['#3d4229','#393e27'],oak:['#5b4325','#563f23'],bank:['#4a4a3a','#45463a'],ridge:['#66703f','#606a3c']};
+  var GRC={};for(var gk in GROUND)GRC[gk]=GROUND[gk].map(hex);
+  var SURF={'흙':hex('#8b6e4c'),'낙엽':hex('#9a6430'),'자갈':hex('#8a8c88'),'다리':hex('#9a7a52')};
+  var WATER=hex('#3c5b5c'),WATERL=hex('#7fa3a0');
+  var sky=document.createElement('canvas');sky.width=W;sky.height=H;(function(){var x=sky.getContext('2d');
+    var g=x.createLinearGradient(0,0,0,600);g.addColorStop(0,'#7d98a6');g.addColorStop(.55,'#c4cdc6');g.addColorStop(1,'#ece2c8');x.fillStyle=g;x.fillRect(0,0,W,H);
+    var s=x.createRadialGradient(1180,330,4,1180,330,520);s.addColorStop(0,'rgba(255,246,214,1)');s.addColorStop(.08,'rgba(255,236,190,.85)');s.addColorStop(.4,'rgba(255,224,170,.25)');s.addColorStop(1,'rgba(255,220,170,0)');x.fillStyle=s;x.fillRect(0,0,W,H);})();
+  var hills=document.createElement('canvas');hills.width=3200;hills.height=300;(function(){var x=hills.getContext('2d'),R=rng(5);
+    [['rgba(150,166,166,.55)',150,70],['rgba(118,136,130,.7)',200,50]].forEach(function(L){x.fillStyle=L[0];x.beginPath();x.moveTo(0,300);
+      for(var px=0;px<=3200;px+=40){x.lineTo(px,L[1]-Math.sin(px/3200*Math.PI*6)*L[2]*.5-R()*L[2]*.5-Math.sin(px/3200*Math.PI*2)*L[2]);}x.lineTo(3200,300);x.fill();});})();
+
+  function drawSprite(sp,sx,sy,scale,fog){var arr=SPR[sp.t][sp.v||0]||SPR[sp.t][0],img=arr[clamp(Math.round(fog*(FOGN-1)),0,FOGN-1)];
+    var hpx=img.h*sp.s*scale;if(hpx<1.5||hpx>5200)return;var wpx=hpx*img.width/img.height;
+    X.drawImage(img,sx-wpx/2,sy-hpx,wpx,hpx);}
+  function quad(x1,y1,w1,x2,y2,w2,col){X.fillStyle=col;X.beginPath();X.moveTo(x1-w1,y1);X.lineTo(x2-w2,y2);X.lineTo(x2+w2,y2);X.lineTo(x1+w1,y1);X.closePath();X.fill();}
+
+  function renderA(t){
+    var base=Math.floor(pos/SEG),frac=(pos/SEG)-base;
+    var bobY=Math.sin(phase*Math.PI*2)*.035*Math.min(1,v/1.2),bobX=Math.cos(phase*Math.PI)*.02*Math.min(1,v/1.2);
+    // 앞 세그먼트의 굽이 누적으로 원경이 흐른다
+    var turn=0;for(var q=0;q<40;q++)turn+=segs[(base+q)%N].curve;
+    var HOR=470+turn*-40;
+    X.drawImage(sky,0,0);
+    var hx=((pos*.6+turn*900)%1600+1600)%1600;X.drawImage(hills,-hx,HOR-210,3200,300);X.drawImage(hills,3200-hx-3200,HOR-210,3200,300);
+    // 안개 띠
+    var mg=X.createLinearGradient(0,HOR-120,0,HOR+60);mg.addColorStop(0,'rgba(220,226,220,0)');mg.addColorStop(.6,'rgba(220,226,220,.85)');mg.addColorStop(1,'rgba(205,212,206,.9)');X.fillStyle=mg;X.fillRect(0,HOR-120,W,180);
+    // 세그먼트 투영 (앞에서 뒤로 계산, 뒤에서 앞으로 그린다)
+    var pts=[],x=0,dx=-segs[base%N].curve*frac,y=-segs[base%N].slope*frac,camX=lat+bobX,camY=EYE+bobY;
+    for(var k=0;k<=DRAW;k++){var idx=(base+k)%N,g=segs[idx],z=(k-frac)*SEG;
+      pts.push({idx:idx,g:g,z:z,x:x,y:y});x+=dx;dx+=g.curve;y+=g.slope;}
+    function pr(p,wx,wy){var z=Math.max(p.z,.25),s=F/z;return{x:W/2+(p.x+wx-camX)*s,y:HOR-(p.y+(wy||0)-camY)*s,s:s};}
+    for(k=DRAW-1;k>=0;k--){var a=pts[k],b=pts[k+1];if(b.z<=.25)continue;
+      var g2=a.g,fog=1-Math.exp(-Math.max(a.z,0)/95),pa=pr(a,0),pb=pr(b,0);
+      if(pb.y<pa.y){ // 앞면일 때만 땅을 깐다 — 고갯마루 너머는 가려진다
+        var gc=GRC[g2.biome][(a.idx>>1)&1];
+        X.fillStyle=mixc(gc,HAZE,fog);X.fillRect(0,pb.y,W,pa.y-pb.y+1);
+        if(g2.bridge){X.fillStyle=mixc(WATER,HAZE,fog);X.fillRect(0,pb.y,W,pa.y-pb.y+1);}
+        if(g2.stream!==null&&!g2.bridge){var o=g2.stream,ww=.9+Math.abs(o)*.06,wa=pr(a,o),wb=pr(b,o);
+          quad(wa.x,pa.y,ww*pa.s,wb.x,pb.y,ww*pb.s,mixc(WATER,HAZE,fog));
+          if(((a.idx+Math.floor(t*6))%3)===0)quad(wa.x,pa.y,ww*.35*pa.s,wb.x,pb.y,ww*.35*pb.s,mixc(WATERL,HAZE,fog*.8+.1));}
+        var pw=g2.bridge?.8:.62;
+        quad(pa.x,pa.y,pw*1.15*pa.s,pb.x,pb.y,pw*1.15*pb.s,mixc(GRC[g2.biome][0].map(function(c){return c*.8;}),HAZE,fog));
+        var sc=SURF[g2.surf],alt=g2.bridge?((a.idx&1)?1:.86):(((a.idx>>1)&1)?1:.95);
+        quad(pa.x,pa.y,pw*pa.s,pb.x,pb.y,pw*pb.s,mixc(sc.map(function(c){return c*alt;}),HAZE,fog));
+        if(g2.bridge){X.strokeStyle=mixc([60,44,30],HAZE,fog);X.lineWidth=Math.max(1,pa.s*.03);X.beginPath();X.moveTo(pa.x-pw*pa.s,pa.y);X.lineTo(pa.x+pw*pa.s,pa.y);X.stroke();
+          [-.85,.85].forEach(function(r){var ra=pr(a,r,1.02),rb=pr(b,r,1.02);X.strokeStyle=mixc([110,82,54],HAZE,fog);X.lineWidth=Math.max(1,pa.s*.06);X.beginPath();X.moveTo(ra.x,ra.y);X.lineTo(rb.x,rb.y);X.stroke();});}
+      }
+      // 이 세그먼트의 스프라이트 (먼 것부터)
+      var list=g2.sp.slice().sort(function(m,n){return Math.abs(n.x)-Math.abs(m.x);});
+      for(var j=0;j<list.length;j++){var sp=list[j];if(a.z<1)continue;var ps=pr(a,sp.x);if(ps.x<-2400||ps.x>W+2400)continue;drawSprite(sp,ps.x,ps.y,ps.s,fog);}
+    }
+    // 지평선 안개 — 먼 땅을 덮는다
+    var hm=X.createLinearGradient(0,HOR-30,0,HOR+140);hm.addColorStop(0,'rgba(214,220,214,.75)');hm.addColorStop(1,'rgba(214,220,214,0)');X.fillStyle=hm;X.fillRect(0,HOR-30,W,170);
+    // 빛줄기 — 해가 숲 사이로 든다
+    X.save();X.globalCompositeOperation='lighter';
+    for(var r=0;r<6;r++){var ang=2.0+r*.16+Math.sin(t*.07+r)*.03,len=1500,wd=.025+(r%3)*.012,al=.035+.02*Math.sin(t*.3+r*1.7);
+      X.fillStyle='rgba(255,236,190,'+Math.max(0,al)+')';X.beginPath();X.moveTo(1180,330-turn*0);X.lineTo(1180+Math.cos(ang-wd)*len,330+Math.sin(ang-wd)*len);X.lineTo(1180+Math.cos(ang+wd)*len,330+Math.sin(ang+wd)*len);X.fill();}
+    X.restore();
+    // 가장자리 비네트, 움직일 때만 아주 약한 흐림 대신 어둠
+    var vg=X.createRadialGradient(W/2,H*.55,H*.35,W/2,H*.55,H*.95);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(8,12,10,'+(.45+v*.06)+')');X.fillStyle=vg;X.fillRect(0,0,W,H);
+  }
+
+  /* ── 화면 B — 소리 지도 ── */
+  var cb=document.getElementById('cb'),Y=cb.getContext('2d'),BW=1010,BH=870,st=document.getElementById('strip'),Z=st.getContext('2d');
+  var bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9;P.forEach(function(p){bx0=Math.min(bx0,p.x);bx1=Math.max(bx1,p.x);by0=Math.min(by0,p.y);by1=Math.max(by1,p.y);});
+  var MS=Math.min((BW-160)/(bx1-bx0),(BH-160)/(by1-by0)),MX=(BW-(bx1-bx0)*MS)/2-bx0*MS,MY=(BH-(by1-by0)*MS)/2-by0*MS;
+  function mp(x,y){return[MX+x*MS,MY+y*MS];}
+  var mapBase=document.createElement('canvas');mapBase.width=BW;mapBase.height=BH;(function(){var x=mapBase.getContext('2d'),R=rng(31);
+    x.fillStyle='#16201b';x.fillRect(0,0,BW,BH);
+    // 나무 — 실제 배치에서 찍는다
+    segs.forEach(function(g,i){var p=P[i];g.sp.forEach(function(sp){if(sp.t!=='pine'&&sp.t!=='oak')return;var q=mp(p.x+Math.cos(p.h)*sp.x,p.y+Math.sin(p.h)*sp.x);
+      x.fillStyle=sp.t==='oak'?'rgba(160,130,60,.35)':'rgba(70,110,72,.4)';x.beginPath();x.arc(q[0],q[1],2+sp.s*2.2,0,7);x.fill();});});
+    // 능선 바람 구역
+    x.strokeStyle='rgba(185,196,200,.13)';x.lineWidth=70;x.lineCap='round';x.beginPath();for(var i=300;i<380;i++){var q=mp(P[i].x,P[i].y);i===300?x.moveTo(q[0],q[1]):x.lineTo(q[0],q[1]);}x.stroke();
+    // 개울
+    x.strokeStyle='rgba(111,182,201,.22)';x.lineWidth=16;x.lineJoin='round';x.beginPath();S.forEach(function(s,k){var q=mp(s.x,s.y);k?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]);});
+    var e0=S[S.length-1],eh=P[e0.i].h-1.2,q0=mp(e0.x,e0.y);x.lineTo(q0[0]+Math.sin(eh)*120,q0[1]-Math.cos(eh)*120);x.stroke();
+    x.strokeStyle='#6fb6c9';x.lineWidth=3;x.stroke();
+    // 길 — 재질 색
+    var SC={'흙':'#b08a5a','낙엽':'#c87a2a','자갈':'#9aa0a6','다리':'#e0c080'};x.lineWidth=6;x.lineCap='butt';
+    for(i=0;i<N;i++){var a=mp(P[i].x,P[i].y),b=mp(P[i+1].x,P[i+1].y);x.strokeStyle=SC[segs[i].surf];x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();}
+    // 100m 눈금
+    x.fillStyle='rgba(232,236,234,.55)';x.font='600 11px '+getComputedStyle(document.body).fontFamily;
+    for(i=0;i<N;i+=50){var c=mp(P[i].x,P[i].y);x.beginPath();x.arc(c[0],c[1],3,0,7);x.fill();x.textAlign='left';x.fillText((i*SEG)+'m',c[0]+7,c[1]-6);}
+    // 이름표
+    x.font='700 13px '+getComputedStyle(document.body).fontFamily;
+    [[60,'솔숲 오르막',26],[175,'참나무 낙엽길',-30],[245,'개울 다리',30],[330,'능선 — 바람',-46],[500,'내리막 낙엽',-30]].forEach(function(L){var p=P[L[0]],q=mp(p.x+Math.cos(p.h)*L[2],p.y+Math.sin(p.h)*L[2]);x.fillStyle='rgba(232,236,234,.82)';x.textAlign='center';x.fillText(L[1],q[0],q[1]);});
+    // 소리 내는 것들
+    EMIT.forEach(function(e){var q=mp(e.x,e.y);x.setLineDash([4,5]);x.strokeStyle=e.col;x.globalAlpha=.55;x.lineWidth=1.5;x.beginPath();x.arc(q[0],q[1],e.r*MS,0,7);x.stroke();x.setLineDash([]);x.globalAlpha=1;
+      x.fillStyle=e.col;x.beginPath();x.arc(q[0],q[1],5,0,7);x.fill();x.textAlign='left';x.font='600 12px '+getComputedStyle(document.body).fontFamily;x.fillText('♪ '+e.name,q[0]+9,q[1]+4);});
+  })();
+  function renderB(t){var m=mix(pos);Y.drawImage(mapBase,0,0);
+    var q=mp(m.w.x,m.w.y);
+    // 들리는 반경 45m (개울 감쇠 거리)
+    var rg=Y.createRadialGradient(q[0],q[1],0,q[0],q[1],45*MS);rg.addColorStop(0,'rgba(232,226,207,.22)');rg.addColorStop(1,'rgba(232,226,207,0)');Y.fillStyle=rg;Y.beginPath();Y.arc(q[0],q[1],45*MS,0,7);Y.fill();
+    for(var k=0;k<3;k++){var rr=((t*18+k*15)%45)*MS;Y.strokeStyle='rgba(232,226,207,'+(.5*(1-rr/(45*MS)))+')';Y.lineWidth=1.2;Y.beginPath();Y.arc(q[0],q[1],rr,0,7);Y.stroke();}
+    Y.fillStyle='#f4efe0';Y.beginPath();Y.arc(q[0],q[1],7,0,7);Y.fill();
+    Y.strokeStyle='#f4efe0';Y.lineWidth=2.5;Y.beginPath();Y.moveTo(q[0],q[1]);Y.lineTo(q[0]+Math.sin(m.w.h)*22,q[1]-Math.cos(m.w.h)*22);Y.stroke();
+    // 띠
+    Z.clearRect(0,0,1010,70);var SC={'흙':'#b08a5a','낙엽':'#c87a2a','자갈':'#9aa0a6','다리':'#e0c080'};
+    for(var i=0;i<N;i++){Z.fillStyle=SC[segs[i].surf];Z.fillRect(i/N*1010,22,1010/N+1,16);Z.fillStyle='rgba(185,196,200,'+ridgeAt(i)*.6+')';Z.fillRect(i/N*1010,12,1010/N+1,6);if(segs[i].stream!==null){Z.fillStyle='rgba(111,182,201,.8)';Z.fillRect(i/N*1010,42,1010/N+1,5);}}
+    Z.fillStyle='rgba(232,236,234,.6)';Z.font='600 11px '+getComputedStyle(document.body).fontFamily;Z.textAlign='left';
+    Z.fillText('바람',2,9);Z.fillText('개울',2,62);for(i=200;i<=LEN;i+=200){Z.fillText(i+'m',Math.min(985,i/LEN*1010),62);}
+    var mx=((pos%LEN)/LEN)*1010;Z.fillStyle='#f4efe0';Z.fillRect(mx-1.5,6,3,46);
+    // 막대
+    function bar(id,vid,val){document.getElementById(id).style.width=val+'%';document.getElementById(vid).textContent=val;}
+    document.getElementById('mxSurf').textContent='발소리 · '+m.surf;document.getElementById('bF').style.background={'흙':'var(--dirt)','낙엽':'var(--leaf)','자갈':'var(--grav)','다리':'var(--plank)'}[m.surf];
+    bar('bF','vF',m.foot);bar('bW','vW',m.wind);bar('bS','vS',m.stream);bar('bB','vB',m.birds);
+    var rows=document.querySelectorAll('#surfT tr');for(i=0;i<rows.length;i++)rows[i].classList.toggle('cur',rows[i].getAttribute('data-s')===m.surf);
+  }
+  function pick(ev){var r=cb.getBoundingClientRect(),sx=(ev.clientX-r.left)/r.width*BW,sy=(ev.clientY-r.top)/r.height*BH,best=0,bd=1e9;
+    for(var i=0;i<N;i++){var q=mp(P[i].x,P[i].y),d=(q[0]-sx)*(q[0]-sx)+(q[1]-sy)*(q[1]-sy);if(d<bd){bd=d;best=i;}}pos=best*SEG+.01;audio();}
+  var dragging=false;cb.addEventListener('mousedown',function(e){dragging=true;pick(e);});window.addEventListener('mouseup',function(){dragging=false;});cb.addEventListener('mousemove',function(e){if(dragging)pick(e);});
+  document.getElementById('goWalk').addEventListener('click',function(){show('a');audio();});
+
+  /* ── 입력 ── */
+  var keys={};
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1'){show('a');return;}if(e.key==='2'){show('b');return;}
+    if(e.key==='Escape'&&cur==='a'){paused=!paused;document.getElementById('pause').classList.toggle('on',paused);return;}
+    keys[e.code]=true;if(cur==='a')audio();if(e.code==='ArrowUp'||e.code==='Space')e.preventDefault();});
+  window.addEventListener('keyup',function(e){keys[e.code]=false;});
+  var mouseWalk=false;ca.addEventListener('mousedown',function(){mouseWalk=true;audio();});window.addEventListener('mouseup',function(){mouseWalk=false;});
+  window.addEventListener('blur',function(){keys={};mouseWalk=false;});
+
+  /* ── 화면 전환 ── */
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  var T=0,last=performance.now(),hintGone=false;
+  function frame(now){var dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+    walking=cur==='a'&&!paused&&(keys.KeyW||keys.ArrowUp||mouseWalk);
+    var target=walking?1.35:0;v+=(target-v)*Math.min(1,dt*(walking?1.6:2.6)); // 걷기 1.35m/s, 서서히 서고 선다
+    if(v<.01)v=0;
+    latIn=(keys.KeyA||keys.ArrowLeft?-1:0)+(keys.KeyD||keys.ArrowRight?1:0);lat=clamp(lat+latIn*dt*.9,-.42,.42);
+    pos=(pos+v*dt)%LEN;walked+=v*dt;if(v>.2)wtime+=dt;
+    phase+=v*dt/.75*.5;stepAcc+=v*dt;
+    if(stepAcc>=.75){stepAcc-=.75;stepSide=-stepSide;footstep(segs[Math.floor(pos/SEG)%N].surf,stepSide);}
+    if(!hintGone&&walked>6){hintGone=true;document.getElementById('hint').classList.add('gone');}
+    var m=mix(pos);ambience(dt,m);
+    if(paused)document.getElementById('pline').textContent='걸은 시간 '+Math.floor(wtime/60)+'분 · '+(Math.round(walked/100)/10).toFixed(1)+'km · '+(m.stream>40?'개울 소리':m.wind>50?'능선 바람':m.birds>55?'새소리':'바람 소리');
+    if(cur==='a')renderA(T);else renderB(T);
+    requestAnimationFrame(frame);}
+  show((location.hash||'#a').slice(1));
+  renderA(0);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
