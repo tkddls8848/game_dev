@@ -41,7 +41,7 @@ PATH_RE = re.compile(
 WORKDIR = tempfile.gettempdir()
 
 INSTRUCTION = (
-    "Use your built-in image generation tool exactly once, landscape 16:9, to create this image. "
+    "Use your built-in image generation tool exactly once, {aspect}, to create this image. "
     "Do not write files or run commands. After generating, reply with only the absolute path "
     "of the generated PNG file.\n\nIMAGE PROMPT:\n"
 )
@@ -55,12 +55,14 @@ def jobs(selected, force):
         pj = d / "prompts.json"
         if not pj.exists():
             continue
-        for img in json.loads(pj.read_text(encoding="utf-8"))["images"]:
+        spec = json.loads(pj.read_text(encoding="utf-8"))
+        for img in spec["images"]:
             out = d / f"mock-{img['id']}.jpg"
             if selected and num not in selected and f"{num}{img['id']}" not in selected:
                 continue
             if force or not out.exists():
-                yield d, img, out
+                # 화면비는 기본 16:9. 원작 화면비를 따라야 하는 시안은 prompts.json 의 "aspect" 로 바꾼다
+                yield d, dict(img, aspect=spec.get("aspect", "landscape 16:9")), out
 
 
 def run(job):
@@ -70,7 +72,7 @@ def run(job):
         try:
             r = subprocess.run(
                 ["codex", "exec", "--skip-git-repo-check", "--sandbox", "read-only",
-                 INSTRUCTION + img["prompt"]],
+                 INSTRUCTION.format(aspect=img["aspect"]) + img["prompt"]],
                 capture_output=True, text=True, timeout=900, cwd=WORKDIR,
                 encoding="utf-8", errors="replace",
             )
