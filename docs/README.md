@@ -8,7 +8,7 @@
 | [`POC_FACTORY.md`](POC_FACTORY.md) | 폴더 규약 · 새 PoC 시작 절차 · 졸업 기준 · 현재 PoC 표 | **새 PoC를 시작할 때 먼저** |
 | [`CONCEPTS.md`](CONCEPTS.md) | **컨셉 103개를 한 목록에 동등하게.** 미착수 72 + 구현 31. 상태·에셋·헤드리스 판정 가능성·착수 우선순위를 열로 비교 | 다음에 무엇을 만들지 고를 때 |
 | [`PLAN_GENRES.md`](PLAN_GENRES.md) | 장르 계획 다섯 — 파밍 · 로그라이크 덱빌더 · 둘의 결합 · 실시간 전술 · **턴제 전략(HoMM 계열)**. 시장 근거 · 검사기 설계 · Phase · 리스크 | 장르를 정한 뒤 설계할 때 |
-| [`ENGINE_FIT.md`](ENGINE_FIT.md) | 컨셉 101개의 엔진 적합도 — 유형 클러스터 · 1순위/대안 엔진 · 엔진 리스크 · 결정할 것과 검증 방법 | 셸(`unity/` 등)을 붙이기 전, 엔진·파이프라인을 정할 때 |
+| [`ENGINE_FIT.md`](ENGINE_FIT.md) | 컨셉 103개의 엔진 적합도(Unreal 은 #103 하나) — 유형 클러스터 · 1순위/대안 엔진 · 엔진 리스크 · 결정할 것과 검증 방법 | 셸(`unity/` 등)을 붙이기 전, 엔진·파이프라인을 정할 때 |
 | [`MUSIC_DIRECTION.md`](MUSIC_DIRECTION.md) | 컨셉 101개를 음악 계열 27개로 묶은 방향 — 악기·BPM·적응형 레이어·쓰지 말 것 · 기존 라이브러리 매칭과 공백 · 참고곡 · 생성 프롬프트 초안 (기계용 `poc-gallery/music/families.json`) | 소리·음악을 붙이기 전 |
 | [`ASSET_LIBRARY.md`](ASSET_LIBRARY.md) | 에셋 쓰는 법 · 라이선스 · 출처 표기 의무 | 에셋을 게임에 넣기 전 |
 | [`asset-index/`](asset-index/INDEX.md) | 실제 파일 목록 4,208개. 오디오 · 폰트 · 아이콘 · 이미지 · 모델 · 셰이더 | 쓸 수 있는 파일을 찾을 때 |
