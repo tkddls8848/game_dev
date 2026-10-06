@@ -9,7 +9,7 @@ if(!chromium)throw Error('Playwright unavailable');
   try{
     const entries=catalog.entries,ids=new Set(entries.map(p=>p.slug));
     assert.equal(ids.size,entries.length);
-    const directories=fs.readdirSync(path.join(ROOT,'games'),{withFileTypes:true}).filter(d=>d.isDirectory());
+    const directories=fs.readdirSync(path.join(ROOT,'games'),{withFileTypes:true}).filter(d=>d.isDirectory()&&!d.name.startsWith('_'));
     assert.equal(entries.length,directories.length);
     for(const p of entries){
       for(const key of ['presentation','screenshot','fullScreenshot','readme'])if(p[key])assert.ok(fs.existsSync(path.resolve(GALLERY,p[key])),`${p.slug}: ${key}`);
@@ -23,10 +23,14 @@ if(!chromium)throw Error('Playwright unavailable');
     assert.equal(await page.locator('iframe').count(),0);
     await page.locator('#collection').selectOption('revised');
     assert.equal(await page.locator('.card').count(),entries.filter(p=>p.collection==='revised').length);
-    await page.locator('[data-related="the-map-lies"]').click();
-    assert.equal(await page.locator('.card').count(),entries.length);
-    assert.ok(page.url().endsWith('#the-map-lies'));
-    await page.locator('#clear').click();
+    // 원본·개정판 짝은 2026-10-06 원본 쪽이 games/_archive 로 보관되어 지금은 없다. 짝이 있을 때만 검사한다
+    const pair=entries.find(p=>p.related);
+    if(pair){
+      await page.locator(`[data-related="${pair.related}"]`).first().click();
+      assert.equal(await page.locator('.card').count(),entries.length);
+      assert.ok(page.url().endsWith('#'+pair.related));
+      await page.locator('#clear').click();
+    }else await page.locator('#clear').click();
     await page.locator('#search').fill('definitely-no-such-poc');
     assert.equal(await page.locator('#empty').isVisible(),true);
     await page.locator('#search').fill('deck-');

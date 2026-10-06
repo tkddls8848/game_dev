@@ -63,9 +63,12 @@ TestResults.xml
 # 게임 빌드 산출물(Build/)과 섞였다.
 games/*/tests/bin/
 games/*/tests/obj/
+games/_archive/*/tests/obj/
 games/*/unity/TestBuild/
+games/_archive/*/unity/TestBuild/
 # 헤드리스 PoC 산출물 (kit/templates/poc 의 BaseOutputPath)
 games/*/TestBuild/
+games/_archive/*/TestBuild/
 
 games/*/unity/Build/
 

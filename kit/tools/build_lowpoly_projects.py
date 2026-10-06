@@ -8,7 +8,7 @@ def copy(src,dst):
 # **farm-erosion 은 다른 저장소로 갔다** (github.com/tkddls8848/game).
 # 여기서 구울 수 있는 것은 지도 퍼즐 하나뿐이다.
 for slug,mode in [('puzzle-tomorrow-map','map')]:
-    project=ROOT/'games'/slug/'unity'
+    project=ROOT/'games/_archive'/slug/'unity'   # 2026-10-06 보관
     for folder in ['Assets/Resources','Assets/Runtime','Assets/Editor','ProjectSettings','Packages']:
         (project/folder).mkdir(parents=True,exist_ok=True)
     # 에디터가 한 번 열리면 여기에 리비전 해시(m_EditorVersionWithRevision)를 덧붙인다.
@@ -49,7 +49,7 @@ for slug,mode in [('puzzle-tomorrow-map','map')]:
     for src in RULES.rglob('*.cs'):
         if src.name=='DataLoader.cs' or 'Report' in src.parts: continue
         copy(src,project/'Assets/Runtime/Rules'/src.relative_to(RULES))
-    for src in (ROOT/'games'/slug/'data').glob('*.json'):
+    for src in (ROOT/'games/_archive'/slug/'data').glob('*.json'):
         copy(src,project/'Assets/Resources/Data'/src.name)
     for folder,name,content in [('Runtime','Lowpoly.Runtime',{'name':'Lowpoly.Runtime'}),('Editor','Lowpoly.Editor',{'name':'Lowpoly.Editor','references':['Lowpoly.Runtime'],'includePlatforms':['Editor']})]:
         (project/f'Assets/{folder}/{name}.asmdef').write_text(json.dumps(content))

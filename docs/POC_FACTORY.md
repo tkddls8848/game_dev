@@ -203,7 +203,7 @@ csproj의 `ProjectReference`로 잇는다. **복사하면 반드시 갈라지고
 |---|---|---|---|
 | `games/mystery-blackwood` | 내러티브 미스터리 · 분위기 호러 | **Unity** | 헤드리스 316 · EditMode 325 |
 | `games/farm-erosion` | 파밍 — 밭이 줄어든다 | **Unity** | 헤드리스 49 · 승인 시안 대비 연출 진행 중 |
-| `games/puzzle-tomorrow-map` | 지도 퍼즐 — 내일의 지도 | **Unity** | 헤드리스 8 |
+| `games/_archive/puzzle-tomorrow-map` | 지도 퍼즐 — 내일의 지도 | **Unity** | 헤드리스 8 |
 | 그 밖 29개 | 파밍 · 덱빌더 · 혼합 · 전술 · 내러티브 · 추리 … | 헤드리스 | 각 PoC의 `README.md` |
 
 **PoC 전체 목록은 여기 두지 않는다** — [`CONCEPTS.md`](CONCEPTS.md)에 컨셉 71개가 한 표로 있고

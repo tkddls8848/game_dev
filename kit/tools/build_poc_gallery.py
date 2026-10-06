@@ -36,9 +36,10 @@ def metadata(text, key):
 def build():
     revised = {p["slug"]:p for p in json.loads(read(OUT/"revised-concepts.json") or "[]")}
     reverse = {v:k for k,v in PAIRS.items()}
+    # 짝 한쪽이 games/_archive 로 보관됐으면 related 를 끊는다 (2026-10-06)
     rows=[]
     for folder in sorted((ROOT/"games").iterdir()):
-        if not folder.is_dir(): continue
+        if not folder.is_dir() or folder.name.startswith("_"): continue  # _archive = 보관
         slug=folder.name
         html=read(folder/"presentation/index.html")
         meaningful=len(re.sub(r"<!--.*?-->", "", html, flags=re.S).strip())>100
@@ -58,7 +59,7 @@ def build():
             presentation=f"../../games/{slug}/presentation/index.html" if meaningful else None,
             screenshot=screenshot,fullScreenshot=f"png/{slug}-full.png" if (OUT/f"png/{slug}-full.png").exists() else None,
             readme=f"../../games/{slug}/README.md" if (folder/"README.md").exists() else None,
-            related=PAIRS.get(slug,reverse.get(slug)),needsReadme=template))
+            related=(lambda r:r if r and (ROOT/'games'/r).is_dir() else None)(PAIRS.get(slug,reverse.get(slug))),needsReadme=template))
     catalogue={"version":1,"total":len(rows),"entries":rows}
     OUT.mkdir(parents=True,exist_ok=True)
     (OUT/"catalog.json").write_text(json.dumps(catalogue,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")

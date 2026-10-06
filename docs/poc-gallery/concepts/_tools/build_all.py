@@ -77,7 +77,8 @@ def parse_table():
 
 
 table = parse_table()
-meta = {c['num']: c for c in json.loads((HERE / 'concepts.json').read_text(encoding='utf-8'))}
+meta = {c['num']: c for c in json.loads((HERE / 'concepts.json').read_text(encoding='utf-8'))
+        if not c.get('archived')}                   # 보관된 안은 CONCEPTS.md 표에도 없다
 
 missing_md = sorted(set(meta) - set(table))
 missing_json = sorted(set(table) - set(meta))

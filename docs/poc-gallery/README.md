@@ -1,6 +1,6 @@
 # PoC 통합 갤러리
 
-게임 폴더 32개를 자동 검색해 목록을 생성한다. 원안과 수정안은 독립된 구현이므로 삭제하거나 합치지 않는다.
+게임 폴더 20개를 자동 검색해 목록을 생성한다. 원안과 수정안은 독립된 구현이므로 삭제하거나 합치지 않는다.
 
 - [전체 목록](index.html): 검색, 장르, 원안/수정안, 화면 유형, 정렬, 관련 버전 이동.
 - [PNG만 보기](shots.html): 파일로 바로 열리는 캡처 목록.
@@ -36,35 +36,23 @@ node kit/tools/shoot_mocks.js --missing
 
 | 제목 | 폴더 | 화면 유형 | PNG | 관련 버전 |
 |---|---|---|---|---|
-| 가업으로 물려받은 저주 관리 | `curse-ledger` | HTML 목업 | 있음 | management-curse-inheritance |
+| 가업으로 물려받은 저주 관리 | `curse-ledger` | HTML 목업 | 있음 | — |
 | 소모되는 활자 | `deck-attrition` | HTML 목업 | 있음 | — |
 | 공개된 다음 수 | `deck-openhand` | HTML 목업 | 있음 | — |
 | 되감는 전투 | `deck-rewind` | HTML 목업 | 있음 | — |
-| 밭이 줄어드는 세계 | `farm-erosion` | HTML 목업 | 있음 | — |
 | 되돌릴 수 있는 한 해 | `farm-rewind-year` | HTML 목업 | 있음 | — |
 | 작물이 정보다 | `farm-signal` | HTML 목업 | 있음 | — |
-| 신의 비서 | `gods-secretary` | HTML 목업 | 있음 | puzzle-prayer-office |
-| 가짜 기억 심기 | `grafted-memory` | HTML 목업 | 있음 | puzzle-memory-suture |
+| 신의 비서 | `gods-secretary` | HTML 목업 | 있음 | — |
+| 가짜 기억 심기 | `grafted-memory` | HTML 목업 | 있음 | — |
 | 수확하는 덱 | `hybrid-harvest-deck` | HTML 목업 | 있음 | — |
 | 겨울 요새 | `hybrid-siege-seasons` | HTML 목업 | 있음 | — |
 | 덱을 심는다 | `hybrid-sown-deck` | HTML 목업 | 있음 | — |
-| 철거 직전 건물의 마지막 세입자들 | `last-tenants` | HTML 목업 | 있음 | narrative-last-address |
-| 죽은 사람의 휴대폰 | `locked-phone` | HTML 목업 | 있음 | mystery-locked-phone |
-| 저주상속 | `management-curse-inheritance` | 브라우저 PoC | 있음 | curse-ledger |
-| 블랙우드 저택 | `mystery-blackwood` | Unity 전용 | 없음 | — |
-| 잠금 해제 불가 | `mystery-locked-phone` | 브라우저 PoC | 있음 | locked-phone |
-| 잔향 감식실 | `mystery-scent-layers` | 브라우저 PoC | 있음 | scent-layers |
-| 휴전의 문장 | `narrative-armistice` | 브라우저 PoC | 있음 | the-interpreter |
-| 마지막 이삿날 | `narrative-last-address` | 브라우저 PoC | 있음 | last-tenants |
-| 붉은 펜으로 남긴 것 | `narrative-redline` | 브라우저 PoC | 있음 | red-pen |
-| 기억의 봉합사 | `puzzle-memory-suture` | 브라우저 PoC | 있음 | grafted-memory |
-| 기적 배정과 | `puzzle-prayer-office` | 브라우저 PoC | 있음 | gods-secretary |
-| 내일의 지도 | `puzzle-tomorrow-map` | 브라우저 PoC | 있음 | the-map-lies |
-| 원고 되돌려 보내기 | `red-pen` | HTML 목업 | 있음 | narrative-redline |
-| 당신의 박자 | `rhythm-your-tempo` | 브라우저 PoC | 있음 | silent-baton |
-| 냄새로 푸는 추리 | `scent-layers` | HTML 목업 | 있음 | mystery-scent-layers |
-| 소리 없는 오케스트라 | `silent-baton` | HTML 목업 | 있음 | rhythm-your-tempo |
+| 철거 직전 건물의 마지막 세입자들 | `last-tenants` | HTML 목업 | 있음 | — |
+| 죽은 사람의 휴대폰 | `locked-phone` | HTML 목업 | 있음 | — |
+| 원고 되돌려 보내기 | `red-pen` | HTML 목업 | 있음 | — |
+| 냄새로 푸는 추리 | `scent-layers` | HTML 목업 | 있음 | — |
+| 소리 없는 오케스트라 | `silent-baton` | HTML 목업 | 있음 | — |
 | 능선 초소 | `tactics-partisan-1941` | HTML 목업 | 있음 | — |
 | 속삭이는 지도 | `tactics-whisper-map` | HTML 목업 | 있음 | — |
-| 번역가의 전쟁 | `the-interpreter` | HTML 목업 | 있음 | narrative-armistice |
-| 지도가 거짓말하는 도시 | `the-map-lies` | HTML 목업 | 있음 | puzzle-tomorrow-map |
+| 번역가의 전쟁 | `the-interpreter` | HTML 목업 | 있음 | — |
+| 지도가 거짓말하는 도시 | `the-map-lies` | HTML 목업 | 있음 | — |

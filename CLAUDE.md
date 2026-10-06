@@ -12,14 +12,15 @@
 ## 지도
 
 ```
-games/                     시안 29개. 대부분 순수 C# 규칙 + 목업 HTML 이다
-  puzzle-tomorrow-map/     유일하게 Unity 셸이 있는 시안 (아래 주의)
+games/                     시안 20개. 대부분 순수 C# 규칙 + 목업 HTML 이다
+  _archive/                보관 10개 (2026-10-06, CONCEPTS.md '보관 34' 중 구현된 것). 지우지 않았다
+    puzzle-tomorrow-map/   유일하게 Unity 셸이 있는 시안 (아래 주의)
 kit/
   unity-lowpoly/           로우폴리 Unity 셸. 지금은 puzzle-tomorrow-map 만 쓴다
   tools/                   에셋 수집기 · 갤러리 생성기 · TTS · 공유 로직 목록 생성기
 docs/
   README.md                ★ 문서 색인
-  CONCEPTS.md              컨셉 목록 — 40안 + 수정 컨셉 10종
+  CONCEPTS.md              컨셉 목록 — 70안 + 보관 34 (시안 폴더는 poc-gallery/concepts/_archive/)
   PLAN_GENRES.md           장르 계획 다섯
   ENGINE_FIT.md            엔진 선택
   MUSIC_DIRECTION.md       음악 방향

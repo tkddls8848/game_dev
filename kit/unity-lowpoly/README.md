@@ -79,7 +79,7 @@ Scope: one map puzzle with three outcomes; one deterministic 24-plot farm with s
 
 | 게임 | 실행 파일 | 구현 범위 |
 |---|---|---|
-| 내일의 지도 | `games/puzzle-tomorrow-map/unity/Build/TomorrowMap.exe` | 도면 수정, 민원 열람, 출입구 이전, 승인, 세 결말 |
+| 내일의 지도 | `games/_archive/puzzle-tomorrow-map/unity/Build/TomorrowMap.exe` | 도면 수정, 민원 열람, 출입구 이전, 승인, 세 결말 |
 | 밭이 줄어드는 세계 | `games/farm-erosion/unity/Build/FarmErosion.exe` | 24칸 선택, 6작물, 제방, 자동 물 배분·수확, 날짜 진행, 생활비·세금, 침식·파산 |
 
 [실제 Unity 화면 갤러리](../../docs/poc-gallery/lowpoly/playable.html) (재생성·빌드 안내는 이 문서 위쪽 영문 절)

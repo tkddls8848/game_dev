@@ -12,6 +12,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 concepts = json.loads((ROOT / "_tools" / "concepts.json").read_text(encoding="utf-8"))
+# 보관된 안(CONCEPTS.md "보관" 절)은 폴더는 남기고 갤러리에서만 뺀다
+concepts = [c for c in concepts if not c.get("archived")]
 
 cards, missing = [], []
 for c in concepts:

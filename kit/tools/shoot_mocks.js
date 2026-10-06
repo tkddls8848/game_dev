@@ -102,7 +102,7 @@ function findPocs(filter) {
   const games = path.join(REPO, "games");
   return fs
     .readdirSync(games, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && d.name !== "mystery-blackwood")
+    .filter((d) => d.isDirectory() && d.name !== "mystery-blackwood" && !d.name.startsWith("_"))  // _archive = 보관
     .map((d) => d.name)
     .filter((n) => !filter.length || filter.includes(n))
     .filter((n) => fs.existsSync(path.join(games, n, "presentation", "index.html")))

@@ -29,7 +29,7 @@
 게임 로직을 검사한 뒤 `data/graph.json`을 재생성한다. HTML은 이 그래프를 따른다.
 
 ```powershell
-& C:/Users/PSI/.dotnet/dotnet.exe test games/management-curse-inheritance/tests/management-curse-inheritance.Tests.csproj
+& C:/Users/PSI/.dotnet/dotnet.exe test games/_archive/management-curse-inheritance/tests/management-curse-inheritance.Tests.csproj
 node kit/tools/verify_revised_pocs.js
 python kit/tools/build_revised_gallery.py
 ```

@@ -27,7 +27,7 @@
 · 살아 있는 목업은 [`docs/poc-gallery/index.html`](docs/poc-gallery/index.html) — **서버로 열어야 한다**
 (목업이 `fetch('../data/*.json')`를 쓰는데 `file://`에서는 막힌다. 뿌리에서 `python -m http.server`)
 
-**Unity 셸이 있는 시안은 [`games/puzzle-tomorrow-map`](games/puzzle-tomorrow-map/) 하나다.**
+**Unity 셸이 있는 시안은 [`games/_archive/puzzle-tomorrow-map`](games/_archive/puzzle-tomorrow-map/) 하나다.**
 나머지 28개는 헤드리스 수직 슬라이스다.
 
 > **전부 "재미 미확인"이다.** 검사기는 고장을 잡을 뿐이고, 재미는 사람이 플레이해야 안다.

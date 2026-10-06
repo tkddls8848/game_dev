@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>같은 주소</title>
+<style>
+:root{
+  --bg:#0d0f14; --panel:#161a22; --line:#2a3140; --ink:#d9dde6; --soft:#7d8799;
+  --farm:#8cc152; --farm-d:#4f7a2a; --dun:#b48ead; --dun-d:#6b4a66;
+  --hot:#ffd166; --warn:#ef6f5e; --mono:Consolas,"D2Coding",monospace;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#05060a;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;
+  transform-origin:50% 50%;transform:translate(-50%,-50%);background:var(--bg)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.55);color:#ddd;cursor:pointer}
+.tabs button.on{background:var(--hot);color:#2a1a08;border-color:var(--hot)}
+
+/* ── 화면 A ─────────────────────────────── */
+.top{position:absolute;left:40px;right:40px;top:26px;display:flex;align-items:baseline;gap:18px}
+.top h1{font:800 30px/1 var(--sans);letter-spacing:-.5px}
+.top p{color:var(--soft);font-size:15px}
+.win{position:absolute;top:84px;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.win .bar{height:32px;display:flex;align-items:center;gap:8px;padding:0 12px;font:600 13px/1 var(--mono);
+  border-bottom:1px solid var(--line)}
+.win .bar i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.win .bar span{margin-left:auto;color:var(--soft);font-weight:400}
+#wf{left:40px;width:560px;height:540px}
+#wf .bar{background:#1d2a14;color:var(--farm)}
+#wd{left:1000px;width:560px;height:540px}
+#wd .bar{background:#2a1a28;color:var(--dun)}
+#wm{left:620px;width:360px;height:540px}
+#wm .bar{background:#1c1f28;color:var(--hot)}
+canvas{display:block;image-rendering:pixelated}
+.ctl{display:flex;gap:8px;padding:12px;flex-wrap:wrap}
+.ctl button{font:600 14px/1 var(--sans);padding:10px 14px;border-radius:4px;border:1px solid var(--line);
+  background:#222838;color:var(--ink);cursor:pointer}
+.ctl button:hover{border-color:var(--hot)}
+.ctl button:disabled{opacity:.35;cursor:default}
+.ctl .hint{font-size:12px;color:var(--soft);align-self:center}
+.hex{padding:10px 12px;font:13px/20px var(--mono);color:#4a5366;user-select:none}
+.hex .row{display:flex;gap:0}
+.hex .ad{width:34px;color:#39404f}
+.hex b{width:19px;text-align:center;font-weight:400;display:inline-block;border-radius:2px}
+.hex b.sh{color:#1a1206;background:var(--hot);font-weight:700;cursor:help}
+.hex b.fl{animation:fl .9s ease-out}
+@keyframes fl{0%{background:#fff;color:#000;transform:scale(1.5)}100%{}}
+.legend{padding:4px 12px 0;font:12px/1.55 var(--sans)}
+.legend div{display:flex;gap:8px;align-items:baseline;border-top:1px dashed var(--line);padding:6px 0}
+.legend code{font:700 13px var(--mono);color:var(--hot);width:40px}
+.legend .f{color:var(--farm)} .legend .d{color:var(--dun)}
+.log{position:absolute;left:40px;right:40px;top:644px;height:170px;background:#0a0c10;border:1px solid var(--line);
+  border-radius:6px;padding:10px 14px;font:13px/1.65 var(--mono);color:var(--soft);overflow:hidden}
+.log .f{color:var(--farm)} .log .d{color:var(--dun)} .log .w{color:var(--hot)} .log .x{color:var(--warn)}
+.goal{position:absolute;left:40px;right:40px;top:834px;display:flex;gap:24px;font-size:15px;color:var(--soft)}
+.goal b{color:var(--ink)}
+.banner{position:absolute;left:1040px;top:150px;width:480px;text-align:center;font:800 26px/1.4 var(--sans);padding:18px 0;
+  color:var(--hot);background:rgba(10,8,14,.92);border:2px solid var(--hot);border-radius:6px;display:none;z-index:5}
+
+/* ── 화면 B ─────────────────────────────── */
+#cB{position:absolute;left:0;top:0}
+.hud{position:absolute;left:30px;top:26px;width:400px;background:rgba(8,10,14,.86);border:1px solid var(--line);
+  border-radius:6px;padding:14px 16px;font:13px/1.7 var(--mono);z-index:3}
+.hud h2{font:800 20px/1.2 var(--sans);margin-bottom:8px;color:var(--ink)}
+.hud .k{color:var(--soft)} .hud .f{color:var(--farm)} .hud .d{color:var(--dun)} .hud .h{color:var(--hot)}
+.cap{position:absolute;right:30px;top:26px;width:420px;background:rgba(8,10,14,.86);border:1px solid var(--line);
+  border-radius:6px;padding:14px 16px;font:14px/1.6 var(--sans);color:var(--soft);z-index:3}
+.cap b{color:var(--ink)}
+.sl{position:absolute;left:0;right:0;bottom:70px;text-align:center;font:13px var(--sans);color:var(--soft);z-index:3}
+.sl input{width:420px;vertical-align:middle;margin:0 10px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ══ 화면 A · 두 게임, 한 메모리 ══ -->
+<section class="screen" id="sa">
+  <div class="top"><h1>같은 주소</h1><p>두 게임이 메모리 256바이트를 나눠 쓴다. 한쪽의 금화가 다른 쪽의 체력이다.</p></div>
+
+  <div class="win" id="wf">
+    <div class="bar"><i style="background:var(--farm)"></i>양치기.exe<span id="fDay">1일째</span></div>
+    <canvas id="cf" width="560" height="440"></canvas>
+    <div class="ctl">
+      <button id="bSell">양 팔기 · 금 +2</button>
+      <button id="bBuy">양 사기 · 금 −2</button>
+      <button id="bDay">다음 날 · 양 1마리당 금 +1</button>
+    </div>
+  </div>
+
+  <div class="win" id="wm">
+    <div class="bar"><i style="background:var(--hot)"></i>공유 메모리<span>Local\같은주소 · 256B</span></div>
+    <div class="hex" id="hex"></div>
+    <div class="legend">
+      <div><code>0x10</code><span><span class="f">목장: 양의 수</span> · <span class="d">던전: 열리는 문 번호</span></span></div>
+      <div><code>0x11</code><span><span class="f">목장: 금화</span> · <span class="d">던전: 영웅 체력</span></span></div>
+      <div><code>0x12</code><span><span class="f">목장: 날짜</span> · <span class="d">던전: 층</span></span></div>
+    </div>
+  </div>
+
+  <div class="win" id="wd">
+    <div class="bar"><i style="background:var(--dun)"></i>지하감옥.exe<span id="dHp">체력 2</span></div>
+    <canvas id="cd" width="560" height="440"></canvas>
+    <div class="ctl">
+      <span class="hint">영웅 이동 — 방향키 / WASD, 또는 옆 칸 클릭. 문은 0x10 과 번호가 같을 때만 열린다.</span>
+      <button id="bReset">처음부터</button>
+    </div>
+  </div>
+  <div class="banner" id="banner">계단에 닿았다<br><small style="font-size:16px;color:var(--ink)">1층 통과 — 2층에서는 0x13 이 열린다</small></div>
+
+  <div class="log" id="log"></div>
+  <div class="goal">
+    <span><b>목표</b> 던전 영웅을 계단(▼)까지</span>
+    <span><b>길 1</b> 3번 문 — 양을 3마리로 맞추고, 가시 4칸을 버틸 금화를 모은다</span>
+    <span><b>길 2</b> 1번 문 — 가시는 없지만 양을 1마리까지 팔아야 한다</span>
+  </div>
+</section>
+
+<!-- ══ 화면 B · 패스스루 — 던전의 규칙을 목장 그림으로 ══ -->
+<section class="screen" id="sb">
+  <canvas id="cB" width="1600" height="1000"></canvas>
+  <div class="hud" id="hud"></div>
+  <div class="cap">
+    <b>패스스루.</b> 2층부터 두 창이 하나로 합쳐진다. 규칙은 던전이 돌리고(보이지 않는 창),
+    화면은 목장이 그린다. 울타리는 벽, 엉겅퀴는 가시, 우리 문은 번호 문이다.<br><br>
+    던전의 화면은 버리지 않는다 — 목장이 그 <b>깊이</b>만 빌려 자기 그림에 합성한다.
+    아래 막대를 밀면 숨은 던전 그림이 드러난다.
+  </div>
+  <div class="sl">던전이 그린 것 <input type="range" id="slide" min="0" max="100" value="18"> 목장이 그린 것</div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 두 게임, 한 메모리</button><button data-s="b">2 · 패스스루</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);
+    stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    ['a','b'].forEach(function(s){document.getElementById('s'+s).classList.toggle('on',s===k);});
+    var bs=document.querySelectorAll('.tabs button');
+    for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');
+  for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+
+  /* 씨드 고정 난수 — 원칙 5 */
+  function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
+
+  /* ── 공유 메모리 ─────────────────────────────── */
+  var A_SHEEP=0x10,A_GOLD=0x11,A_DAY=0x12;
+  var mem=new Uint8Array(256);
+  (function(){var R=rng(104);for(var i=0;i<256;i++)mem[i]=(R()*256)|0;})();
+  var hexEl=document.getElementById('hex'),cells=[];
+  (function(){
+    for(var r=0;r<14;r++){                     // 0x00~0xDF 만 보인다 — 창 높이
+      var row=document.createElement('div');row.className='row';
+      var ad=document.createElement('span');ad.className='ad';ad.textContent=(r*16).toString(16).toUpperCase().padStart(2,'0');
+      row.appendChild(ad);
+      for(var c=0;c<16;c++){var b=document.createElement('b');var a=r*16+c;
+        if(a===A_SHEEP||a===A_GOLD||a===A_DAY){b.className='sh';
+          b.title={16:'0x10 · 목장: 양 / 던전: 문 번호',17:'0x11 · 목장: 금화 / 던전: 체력',18:'0x12 · 목장: 날짜 / 던전: 층'}[a];}
+        cells[a]=b;row.appendChild(b);}
+      hexEl.appendChild(row);}
+  })();
+  function hx(v){return v.toString(16).toUpperCase().padStart(2,'0');}
+  function paintHex(){for(var a=0;a<224;a++)cells[a].textContent=hx(mem[a]);}
+  function poke(a,v,who){
+    v=Math.max(0,Math.min(255,v|0));
+    if(mem[a]===v)return;
+    mem[a]=v;var b=cells[a];b.classList.remove('fl');void b.offsetWidth;b.classList.add('fl');
+    paintHex();
+    log('<span class="'+(who==='f'?'f':'d')+'">'+(who==='f'?'목장':'던전')+'</span> 이 0x'+hx(a)+' 에 '+hx(v)+' 를 썼다 → '+
+      '<span class="w">'+(a===A_SHEEP?'양 '+v+' · 문 '+v+'번':a===A_GOLD?'금화 '+v+' · 체력 '+v:'날짜 '+v+' · 층 '+v)+'</span>');
+  }
+
+  var logEl=document.getElementById('log'),lines=[];
+  function log(h){lines.unshift(h);lines=lines.slice(0,7);logEl.innerHTML=lines.join('<br>');}
+
+  /* ── 목장 (양치기.exe) ───────────────────────── */
+  var cf=document.getElementById('cf'),F=cf.getContext('2d');
+  var sheepPos=[];(function(){var R=rng(7);for(var i=0;i<40;i++)sheepPos.push([60+R()*380,170+R()*200,R()*6]);})();
+  function px(x,X,Y,W,H,c){x.fillStyle=c;x.fillRect(X,Y,W,H);}
+  function drawSheep(x,X,Y,s,t,ph){var b=Math.sin(t*3+ph)>0.6?2:0;
+    px(x,X,Y-b,14*s,9*s,'#f4f1e8');px(x,X+2*s,Y-2*s-b,10*s,3*s,'#f4f1e8');
+    px(x,X+11*s,Y+1*s-b,5*s,5*s,'#2b2b2b');px(x,X+2*s,Y+9*s-b,2*s,3*s,'#2b2b2b');px(x,X+9*s,Y+9*s-b,2*s,3*s,'#2b2b2b');}
+  function drawFarm(t){
+    var x=F;px(x,0,0,560,440,'#6fa83d');
+    var R=rng(3);for(var i=0;i<260;i++)px(x,(R()*560)|0,(R()*440)|0,3,2,R()<.5?'#5f9632':'#82bb4c');
+    px(x,0,0,560,120,'#9fd3ff');px(x,0,96,560,24,'#7cb6e6');           // 하늘
+    px(x,380,30,120,70,'#a3412c');px(x,370,24,140,10,'#7a2f20');px(x,420,62,30,38,'#5a2416'); // 헛간
+    px(x,40,64,60,40,'#e8d6a0');px(x,36,58,68,8,'#b8865a');             // 집
+    // 울타리
+    x.fillStyle='#8a5a2b';for(var fx=40;fx<520;fx+=24){x.fillRect(fx,150,5,26);x.fillRect(fx,384,5,26);}
+    x.fillRect(40,156,480,4);x.fillRect(40,390,480,4);
+    for(var fy=150;fy<410;fy+=24){x.fillRect(40,fy,5,22);x.fillRect(515,fy,5,22);}
+    var n=Math.min(mem[A_SHEEP],40);
+    for(var k=0;k<n;k++){var p=sheepPos[k];drawSheep(x,p[0]+Math.sin(t*.4+p[2])*6,p[1],2,t,p[2]);}
+    // 농부
+    px(x,470,240,14,22,'#3d5a99');px(x,470,228,14,12,'#f0c8a0');px(x,467,224,20,5,'#d9b44a');
+    // 금화 · 양 수
+    x.font='700 20px Consolas,monospace';x.fillStyle='#1a1a1a';x.globalAlpha=.55;x.fillRect(12,404,536,30);x.globalAlpha=1;
+    x.fillStyle='#ffd166';x.fillText('금화 '+mem[A_GOLD],24,426);
+    x.fillStyle='#f4f1e8';x.fillText('양 '+mem[A_SHEEP],190,426);
+    x.fillStyle='#9fd3ff';x.fillText('날짜 '+mem[A_DAY],330,426);
+  }
+  document.getElementById('bSell').onclick=function(){if(mem[A_SHEEP]<1)return;
+    poke(A_SHEEP,mem[A_SHEEP]-1,'f');poke(A_GOLD,mem[A_GOLD]+2,'f');sync();};
+  document.getElementById('bBuy').onclick=function(){if(mem[A_GOLD]<2)return;
+    poke(A_GOLD,mem[A_GOLD]-2,'f');poke(A_SHEEP,mem[A_SHEEP]+1,'f');sync();};
+  document.getElementById('bDay').onclick=function(){
+    poke(A_DAY,mem[A_DAY]+1,'f');poke(A_GOLD,mem[A_GOLD]+mem[A_SHEEP],'f');sync();};
+
+  /* ── 던전 (지하감옥.exe) ─────────────────────── */
+  var MAP=[
+    "############",
+    "#S...#.....#",
+    "###.##.###.#",
+    "#...1..#...#",
+    "#.######.###",
+    "#..3^^^^..>#",
+    "############"];
+  var TS=46,OX=4,OY=60;
+  var cd=document.getElementById('cd'),D=cd.getContext('2d');
+  var hero={x:1,y:1},dead=false,won=false;
+  function tile(x,y){return MAP[y]&&MAP[y][x]||'#';}
+  function doorOpen(ch){return mem[A_SHEEP]===+ch;}
+  function passable(x,y){var c=tile(x,y);if(c==='#')return false;if(/[0-9]/.test(c))return doorOpen(c);return true;}
+  function drawDungeon(t){
+    var x=D;px(x,0,0,560,440,'#120d16');
+    x.font='600 14px Consolas,monospace';x.fillStyle='#b48ead';x.fillText('1층 · 문은 0x10 과 번호가 같을 때 열린다',12,30);
+    for(var y=0;y<MAP.length;y++)for(var X=0;X<MAP[y].length;X++){
+      var c=MAP[y][X],sx=OX+X*TS,sy=OY+y*TS;
+      if(c==='#'){px(x,sx,sy,TS,TS,'#3a2f42');px(x,sx,sy,TS,4,'#55465f');px(x,sx+TS/2,sy+12,2,TS-14,'#2a2130');continue;}
+      px(x,sx,sy,TS,TS,(X+y)%2?'#241c2a':'#211a27');
+      if(c==='^'){x.fillStyle='#9aa3b2';for(var k=0;k<3;k++){x.beginPath();x.moveTo(sx+6+k*13,sy+38);x.lineTo(sx+12+k*13,sy+12);x.lineTo(sx+18+k*13,sy+38);x.fill();}}
+      if(/[0-9]/.test(c)){var op=doorOpen(c);
+        px(x,sx+4,sy+2,TS-8,TS-4,op?'#3c5e3a':'#6b3f22');
+        if(!op){px(x,sx+4,sy+TS/2-2,TS-8,4,'#3b220f');}
+        x.fillStyle=op?'#c7f0a0':'#ffd166';x.font='800 22px Consolas,monospace';x.fillText(c,sx+TS/2-6,sy+TS/2+8);}
+      if(c==='>'){x.fillStyle='#ffd166';x.font='800 26px Consolas,monospace';x.fillText('▼',sx+TS/2-12,sy+TS/2+9);}
+    }
+    // 영웅
+    var hx_=OX+hero.x*TS,hy=OY+hero.y*TS,bb=Math.sin(t*4)>0?1:0;
+    if(!dead){px(x,hx_+15,hy+10-bb,16,14,'#f0c8a0');px(x,hx_+12,hy+24-bb,22,14,'#5aa0c8');px(x,hx_+31,hy+16-bb,4,20,'#d8dde6');
+      px(x,hx_+12,hy+6-bb,22,6,'#8a8f9a');}
+    else{x.fillStyle='#ef6f5e';x.font='800 22px Consolas,monospace';x.fillText('✕',hx_+14,hy+30);}
+    // 체력
+    x.fillStyle='#ef6f5e';x.font='700 18px Consolas,monospace';x.fillText('체력 '+mem[A_GOLD],12,420);
+    x.fillStyle='#b48ead';x.fillText('층 '+mem[A_DAY],140,420);
+  }
+  function move(dx,dy){
+    if(dead||won)return;var nx=hero.x+dx,ny=hero.y+dy;
+    if(!passable(nx,ny)){var c=tile(nx,ny);if(/[0-9]/.test(c))log('<span class="d">던전</span>: '+c+'번 문이 잠겨 있다 — 0x10 이 지금 '+hx(mem[A_SHEEP])+' 이다');return;}
+    hero.x=nx;hero.y=ny;
+    if(tile(nx,ny)==='^'){poke(A_GOLD,mem[A_GOLD]-1,'d');
+      if(mem[A_GOLD]===0){dead=true;log('<span class="x">영웅이 쓰러졌다. 목장의 금화도 0 이다.</span>');}}
+    if(tile(nx,ny)==='>'){won=true;document.getElementById('banner').style.display='block';
+      log('<span class="w">계단에 닿았다 — 1층 통과</span>');}
+    sync();
+  }
+  document.addEventListener('keydown',function(e){if(cur!=='a')return;
+    var k=e.key,m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]}[k];
+    if(m){e.preventDefault();move(m[0],m[1]);}});
+  cd.addEventListener('click',function(e){var r=cd.getBoundingClientRect(),sc=r.width/560;
+    var tx=Math.floor(((e.clientX-r.left)/sc-OX)/TS),ty=Math.floor(((e.clientY-r.top)/sc-OY)/TS);
+    var dx=tx-hero.x,dy=ty-hero.y;if(Math.abs(dx)+Math.abs(dy)===1)move(dx,dy);});
+  function reset(){mem[A_SHEEP]=5;mem[A_GOLD]=2;mem[A_DAY]=1;hero={x:1,y:1};dead=false;won=false;
+    document.getElementById('banner').style.display='none';lines=[];
+    log('두 프로세스가 같은 256바이트를 연다. <span class="f">양 5</span> · <span class="w">금화 2 = 체력 2</span> · 3번 문은 양이 3마리일 때만 열린다.');
+    paintHex();sync();}
+  document.getElementById('bReset').onclick=reset;
+
+  function sync(){
+    document.getElementById('fDay').textContent=mem[A_DAY]+'일째';
+    document.getElementById('dHp').textContent='체력 '+mem[A_GOLD];
+    document.getElementById('bSell').disabled=mem[A_SHEEP]<1;
+    document.getElementById('bBuy').disabled=mem[A_GOLD]<2;
+  }
+
+  /* ── 화면 B · 패스스루 ─────────────────────── */
+  var cB=document.getElementById('cB'),B=cB.getContext('2d'),BT=88,BX=(1600-12*BT)/2,BY=262;
+  var path=[[1,1],[2,1],[3,1],[3,2],[3,3],[4,3],[5,3],[6,3],[6,2],[6,1],[7,1],[8,1],[9,1],[10,1],[10,2],[10,3],[9,3],[8,3],[8,4],[8,5],[9,5],[10,5]];
+  function farmTile(x,X,Y,c,t){
+    px(x,X,Y,BT,BT,(X/BT+Y/BT)%2?'#6fa83d':'#69a238');
+    var R=rng((X*7+Y*13)|0);for(var i=0;i<8;i++)px(x,X+R()*BT,Y+R()*BT,4,3,'#82bb4c');
+    if(c==='#'){px(x,X,Y,BT,BT,'#6fa83d');x.fillStyle='#8a5a2b';x.fillRect(X+8,Y+20,8,64);x.fillRect(X+BT-16,Y+20,8,64);
+      x.fillRect(X,Y+34,BT,8);x.fillRect(X,Y+60,BT,8);px(x,X+30,Y+30,36,40,'#d9b44a');px(x,X+30,Y+44,36,4,'#b8902f');}
+    if(c==='^'){for(var k=0;k<3;k++){px(x,X+14+k*26,Y+40,6,40,'#4f7a2a');px(x,X+8+k*26,Y+28,18,16,'#9b59b6');}}
+    if(/[0-9]/.test(c)){px(x,X+10,Y+20,BT-20,BT-30,'#c79a5a');px(x,X+10,Y+40,BT-20,6,'#8a5a2b');px(x,X+10,Y+62,BT-20,6,'#8a5a2b');
+      x.fillStyle='#fff3c4';x.font='800 30px Consolas,monospace';x.fillText(c,X+BT/2-9,Y+BT/2+8);}
+    if(c==='>'){px(x,X+12,Y+14,BT-24,BT-20,'#a3412c');px(x,X+30,Y+38,BT-60,BT-44,'#5a2416');}
+  }
+  function dunTile(x,X,Y,c){
+    if(c==='#'){px(x,X,Y,BT,BT,'#3a2f42');px(x,X,Y,BT,8,'#55465f');return;}
+    px(x,X,Y,BT,BT,'#211a27');
+    if(c==='^'){x.fillStyle='#9aa3b2';for(var k=0;k<3;k++){x.beginPath();x.moveTo(X+12+k*26,Y+80);x.lineTo(X+25+k*26,Y+24);x.lineTo(X+38+k*26,Y+80);x.fill();}}
+    if(/[0-9]/.test(c)){px(x,X+8,Y+4,BT-16,BT-8,'#6b3f22');x.fillStyle='#ffd166';x.font='800 30px Consolas,monospace';x.fillText(c,X+BT/2-9,Y+BT/2+10);}
+    if(c==='>'){x.fillStyle='#ffd166';x.font='800 44px Consolas,monospace';x.fillText('▼',X+BT/2-22,Y+BT/2+16);}
+  }
+  var hb=[0,0];
+  function renderB(t){
+    var x=B;px(x,0,0,1600,1000,'#0d0f14');
+    var cut=BX+12*BT*(+document.getElementById('slide').value/100);
+    // 던전이 그린 것(왼쪽) · 목장이 그린 것(오른쪽)
+    for(var y=0;y<7;y++)for(var X=0;X<12;X++){var c=MAP[y][X],sx=BX+X*BT,sy=BY+y*BT;
+      x.save();x.beginPath();x.rect(BX,BY,cut-BX,7*BT);x.clip();dunTile(x,sx,sy,c);x.restore();
+      x.save();x.beginPath();x.rect(cut,BY,BX+12*BT-cut,7*BT);x.clip();farmTile(x,sx,sy,c,t);x.restore();}
+    // 영웅이 1번 문 우회로를 따라 걷는다 (패스스루 상태에서는 0x10 = 1)
+    var L=path.length,f=(t*2.2)%(L+3),i=Math.min(L-1,Math.floor(f)),j=Math.min(L-1,i+1),u=Math.min(1,f-i);
+    var hxp=BX+(path[i][0]+(path[j][0]-path[i][0])*u)*BT,hyp=BY+(path[i][1]+(path[j][1]-path[i][1])*u)*BT;
+    if(hxp<cut){px(x,hxp+34,hyp+20,28,24,'#f0c8a0');px(x,hxp+28,hyp+44,40,30,'#5aa0c8');px(x,hxp+28,hyp+12,40,10,'#8a8f9a');}
+    else{px(x,hxp+34,hyp+24,28,22,'#f0c8a0');px(x,hxp+30,hyp+18,36,8,'#d9b44a');px(x,hxp+32,hyp+46,32,34,'#3d5a99');}
+    // 던전의 '괴물'은 목장에서는 양이다
+    [[5,1],[9,3]].forEach(function(m,k){var mx=BX+m[0]*BT+Math.sin(t+k)*10,my=BY+m[1]*BT+30;
+      if(mx<cut){px(x,mx+24,my,48,34,'#7a3b8a');px(x,mx+34,my+8,8,8,'#ffd166');px(x,mx+54,my+8,8,8,'#ffd166');}
+      else drawSheep(x,mx+20,my,4,t,k);});
+    // 합성선
+    px(x,cut-2,BY-14,4,7*BT+28,'#ffd166');
+    x.fillStyle='#ffd166';x.font='700 15px Consolas,monospace';x.fillText('◀ 지하감옥.exe 가 그린 것',cut-230,BY-24);x.fillText('양치기.exe 가 그린 것 ▶',cut+14,BY-24);
+    // HUD
+    hb[0]+=1;if((t*60|0)%2===0)hb[1]+=1;
+    document.getElementById('hud').innerHTML=
+      '<h2>2층 · 패스스루</h2>'+
+      '<span class="k">호스트(그림)</span>  <span class="f">양치기.exe</span>   60 fps<br>'+
+      '<span class="k">규칙(숨은 창)</span> <span class="d">지하감옥.exe</span>  화면 표시 생략<br>'+
+      '<span class="k">공유 구역</span>    <span class="h">Local\\같은주소</span><br>'+
+      '<span class="k">심장박동</span>     F '+hb[0]+' · D '+hb[1]+'<br>'+
+      '<span class="k">0x10</span> = 01  <span class="k">→</span> 1번 우리 문 열림<br>'+
+      '<span class="k">0x11</span> = 09  <span class="k">→</span> 금화 9 = 체력 9';
+  }
+
+  /* ── 루프 ─────────────────────────────────── */
+  reset();show((location.hash||'#a').slice(1));
+  var T=0,last=performance.now();
+  function frame(now){var dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+    if(cur==='a'){drawFarm(T);drawDungeon(T);}else renderB(T);
+    requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
