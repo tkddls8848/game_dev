@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>길드 인사과</title>
+<style>
+:root{--desk:#231a13;--desk2:#2e2219;--paper:#efe6d0;--paper2:#e6dbc0;--manila:#d6bd8f;--manila2:#c9ad7c;--ink:#2a241d;--ink2:#5d5446;--fade:#8a7f6c;
+  --red:#a8322a;--blue:#2f4f7a;--green:#3f6b3a;--gold:#b58a2c;--line:rgba(42,36,29,.22);
+  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",Batang,serif;--sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;
+  --mono:"D2Coding","Nanum Gothic Coding","Noto Sans Mono CJK KR",Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#120d09;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse at 40% 30%,#3a2b1f 0%,var(--desk) 60%,#170f0a 100%)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.08;mix-blend-mode:overlay;width:1600px;height:1000px}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px;opacity:.4;transition:opacity .3s}
+.tabs:hover{opacity:1}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#ddd;cursor:pointer}
+.tabs button.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+/* ── 화면 A — 인사과 책상 ── */
+.top{position:absolute;left:24px;right:24px;top:18px;height:56px;display:flex;align-items:center;gap:26px;color:#e9dcc2;font:500 14px/1 var(--sans)}
+.top h1{font:700 24px/1 var(--serif);letter-spacing:.06em;color:#f2e6cc}
+.top h1 small{font:400 12px/1 var(--sans);letter-spacing:.2em;color:#b9a684;margin-left:10px}
+.top .k{display:flex;flex-direction:column;gap:5px}
+.top .k span{font-size:11px;letter-spacing:.18em;color:#a8946f}
+.top .k b{font:700 17px/1 var(--mono);color:#f4e9d2}
+.top .k b.warn{color:#f0907f}
+.top .sp{flex:1}
+.nextday{font:700 15px/1 var(--serif);letter-spacing:.12em;padding:13px 20px;border-radius:3px;border:0;background:var(--paper);color:var(--ink);cursor:pointer;box-shadow:0 3px 0 #9c8b6b}
+.nextday:active{transform:translateY(2px);box-shadow:0 1px 0 #9c8b6b}
+.nextday small{display:block;font:400 10px/1 var(--sans);letter-spacing:.1em;color:var(--fade);margin-top:4px}
+
+.col-h{font:700 12px/1 var(--sans);letter-spacing:.3em;color:#c7b38d;margin:0 0 10px 4px}
+#roster{position:absolute;left:24px;top:92px;width:640px;bottom:24px}
+#cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{position:relative;height:200px;background:linear-gradient(180deg,var(--manila) 0,var(--manila2) 100%);border-radius:2px 14px 2px 2px;padding:12px 14px 10px;cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.25),0 8px 18px rgba(0,0,0,.35);transition:transform .12s,box-shadow .12s;user-select:none;overflow:hidden}
+.card:before{content:"";position:absolute;right:0;top:0;width:90px;height:14px;background:rgba(0,0,0,.06);border-radius:0 14px 0 6px}
+.card:hover{transform:translateY(-2px)}
+.card.sel{box-shadow:0 0 0 3px var(--blue),0 8px 18px rgba(0,0,0,.35)}
+.card.inparty{box-shadow:0 0 0 3px var(--gold),0 8px 18px rgba(0,0,0,.35)}
+.card.off{cursor:default;filter:saturate(.55) brightness(.86)}
+.card .nm{font:700 21px/1 var(--serif);letter-spacing:.04em}
+.card .job{font:500 12px/1 var(--sans);color:var(--ink2);margin-top:6px}
+.card .no{position:absolute;right:14px;top:16px;font:600 11px/1 var(--mono);color:var(--ink2)}
+.card .pw{position:absolute;right:14px;top:34px;font:700 22px/1 var(--mono);color:var(--ink)}
+.card .pw small{font:500 10px/1 var(--sans);color:var(--ink2);margin-right:4px}
+.meter{display:grid;grid-template-columns:34px 1fr 28px;gap:6px;align-items:center;font:500 11px/1 var(--sans);color:var(--ink2);margin-top:7px}
+.meter .b{height:8px;background:rgba(42,36,29,.15);border-radius:1px;overflow:hidden}
+.meter .b i{display:block;height:100%}
+.meter em{font:700 12px/1 var(--mono);font-style:normal;text-align:right;color:var(--ink)}
+.card .ft{position:absolute;left:14px;right:14px;bottom:10px;display:flex;justify-content:space-between;font:500 11px/1.3 var(--sans);color:var(--ink2)}
+.card .aff{position:absolute;right:12px;bottom:28px;font:700 12px/1 var(--sans);padding:3px 6px;border-radius:2px}
+.aff.p{background:rgba(63,107,58,.18);color:var(--green)}.aff.n{background:rgba(168,50,42,.16);color:var(--red)}
+.stamp{position:absolute;right:26px;top:72px;transform:rotate(-14deg);font:900 24px/1 var(--serif);letter-spacing:.2em;padding:6px 10px;border:3px solid currentColor;border-radius:4px;opacity:.78;mix-blend-mode:multiply;pointer-events:none}
+.stamp.away{color:var(--blue)}.stamp.hurt{color:var(--red)}.stamp.leave{color:var(--green)}.stamp.dead{color:#1d1915;font-size:28px}.stamp.gone{color:#6b6255}
+.card.dead{filter:grayscale(.9) brightness(.7)}
+.card.dead:after{content:"";position:absolute;left:0;top:0;width:44px;height:200px;background:#1d1915;opacity:.55;transform:skewX(-8deg) translateX(-10px)}
+
+#board{position:absolute;left:688px;top:92px;width:440px;bottom:24px}
+.quest{position:relative;background:var(--paper);padding:12px 14px 10px;margin-bottom:12px;border-radius:1px;box-shadow:0 6px 14px rgba(0,0,0,.35);cursor:pointer;transition:transform .12s}
+.quest:before{content:"";position:absolute;left:50%;top:-6px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e46a5c,#8d241d);box-shadow:0 2px 2px rgba(0,0,0,.4)}
+.quest:nth-child(odd){transform:rotate(-.5deg)}.quest:nth-child(even){transform:rotate(.6deg)}
+.quest.sel{outline:3px solid var(--gold);outline-offset:2px}
+.quest.drop{outline:3px dashed var(--blue);outline-offset:2px}
+.quest h3{font:700 17px/1.25 var(--serif);padding-right:70px}
+.quest .rw{position:absolute;right:14px;top:13px;font:700 15px/1 var(--mono);color:var(--gold)}
+.quest .rw small{display:block;font:400 10px/1 var(--sans);color:var(--fade);margin-top:3px;text-align:right}
+.quest .ln{display:flex;gap:14px;font:500 12px/1 var(--sans);color:var(--ink2);margin-top:8px}
+.quest .ln b{font:700 12px/1 var(--mono);color:var(--ink)}
+.slots{display:flex;gap:6px;margin-top:10px;align-items:center;min-height:26px}
+.slot{min-width:62px;height:24px;border:1px dashed var(--line);border-radius:2px;font:600 12px/22px var(--sans);text-align:center;color:var(--fade);padding:0 6px}
+.slot.f{border:1px solid var(--ink2);color:var(--ink);background:var(--paper2)}
+.chance{margin-left:auto;font:700 20px/1 var(--mono);color:var(--ink)}
+.chance small{font:400 10px/1 var(--sans);color:var(--fade);margin-right:5px}
+.chance.lo{color:var(--red)}.chance.hi{color:var(--green)}
+.send{display:none;margin-top:10px;width:100%;font:700 14px/1 var(--serif);letter-spacing:.3em;padding:10px;border:2px solid var(--red);color:var(--red);background:transparent;cursor:pointer;border-radius:2px}
+.quest.sel .send{display:block}
+.send:hover{background:rgba(168,50,42,.08)}
+.out{background:rgba(239,230,208,.08);border:1px dashed rgba(239,230,208,.25);color:#cbb995;padding:10px 12px;font:500 12px/1.6 var(--sans);margin-bottom:8px;border-radius:2px}
+.out b{color:#f0e3c6;font-family:var(--serif)}
+.empty{color:#a8946f;font:400 13px/1.6 var(--sans);padding:6px 4px}
+
+#inbox{position:absolute;left:1152px;top:92px;right:24px;bottom:24px;display:flex;flex-direction:column}
+#doc{position:relative;flex:0 0 auto;min-height:440px;max-height:560px;overflow:hidden;background:var(--paper);padding:22px 24px 20px;box-shadow:0 10px 24px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(180deg,transparent 0 25px,rgba(47,79,122,.08) 25px 26px);font:400 14px/26px var(--mono);color:#2b2620}
+#doc .hd{display:flex;justify-content:space-between;font:600 11px/1 var(--sans);letter-spacing:.14em;color:var(--fade);border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:10px}
+#doc h2{font:700 18px/1.4 var(--serif);margin-bottom:6px}
+#doc p{text-indent:0;letter-spacing:.01em}
+#doc p.q{color:var(--ink2)}
+#doc p.d{color:#000;font-weight:700}
+#doc .sig{margin-top:12px;font:400 12px/1.6 var(--sans);color:var(--fade)}
+#doc .bigst{position:absolute;right:26px;bottom:26px;transform:rotate(-12deg);font:900 30px/1 var(--serif);letter-spacing:.3em;padding:8px 12px 8px 18px;border:4px double currentColor;border-radius:6px;opacity:.75;mix-blend-mode:multiply}
+#doc .bigst.ok{color:var(--blue)}#doc .bigst.ng{color:var(--red)}#doc .bigst.ev{color:var(--gold)}
+#doc.typing p{animation:type .45s steps(18) both}
+@keyframes type{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.tray{flex:1;min-height:0;overflow:auto;margin-top:14px;display:flex;flex-direction:column;gap:8px;padding-right:4px}
+.req{background:#f6eedb;border-left:6px solid var(--gold);padding:9px 12px;font:500 13px/1.45 var(--sans);box-shadow:0 3px 8px rgba(0,0,0,.3);border-radius:1px}
+.req.funeral{border-left-color:#1d1915}.req.renew{border-left-color:var(--blue)}
+.req b{font-family:var(--serif)}
+.req .bt{display:flex;gap:6px;margin-top:7px}
+.req button{font:700 12px/1 var(--sans);padding:6px 10px;border-radius:2px;cursor:pointer;border:1px solid var(--ink2);background:transparent;color:var(--ink)}
+.req button.y{border-color:var(--blue);color:var(--blue)}.req button.n{border-color:var(--red);color:var(--red)}
+.rl{display:flex;gap:10px;align-items:center;background:rgba(239,230,208,.08);color:#d9c9a8;padding:7px 10px;font:500 12px/1.3 var(--sans);cursor:pointer;border-radius:2px}
+.rl:hover,.rl.cur{background:rgba(239,230,208,.18)}
+.rl i{font-style:normal;font:700 11px/1 var(--mono);width:44px;color:#a8946f}
+.rl em{margin-left:auto;font-style:normal;font-weight:700}
+.rl em.ok{color:#9fc0e8}.rl em.ng{color:#f0907f}.rl em.ev{color:#e8c36a}
+.help{position:absolute;left:24px;bottom:4px;font:400 11px/1 var(--sans);color:#8f7d5f;letter-spacing:.08em}
+
+/* ── 화면 B — 설계자 ── */
+#sb{background:#191510}
+#sb .wrap{position:absolute;inset:24px;display:grid;grid-template-columns:520px 520px 1fr;gap:18px}
+#sb .colb{display:flex;flex-direction:column;gap:14px;min-height:0}
+#sb h1{font:700 26px/1.1 var(--serif);color:#f2e6cc}
+#sb h1 small{display:block;font:500 12px/1.5 var(--sans);letter-spacing:.05em;color:#a8946f;margin-top:8px}
+.box{background:rgba(239,230,208,.05);border:1px solid rgba(239,230,208,.11);border-radius:4px;padding:14px 16px;color:#e4d8bf}
+.box h3{font:700 11px/1 var(--sans);letter-spacing:.24em;color:#b9a684;margin-bottom:11px}
+.fx{font:400 12.5px/1.75 var(--mono);color:#e9dcc2;white-space:pre}
+.fx b{color:#e8c36a;font-weight:700}
+.hm{border-collapse:collapse;font:600 11px/1 var(--sans)}
+.hm td,.hm th{width:50px;height:34px;text-align:center;color:#e9dcc2}
+.hm th{font-weight:500;color:#b9a684;font-size:11px}
+.hm th.r{text-align:right;padding-right:8px;width:70px}
+.hm td{font:700 13px/1 var(--mono);border:1px solid #191510}
+.note{font:400 12px/1.65 var(--sans);color:#bfb091}
+.mc{width:100%;border-collapse:collapse;font:500 12.5px/1 var(--sans)}
+.mc th{font:600 11px/1.3 var(--sans);color:#b9a684;text-align:right;padding:7px 6px;border-bottom:1px solid rgba(239,230,208,.15)}
+.mc th:first-child,.mc td:first-child{text-align:left}
+.mc td{padding:9px 6px;text-align:right;border-bottom:1px solid rgba(239,230,208,.06);font-family:var(--mono);color:#efe3c8}
+.mc td:first-child{font-family:var(--sans);font-weight:700}
+.mc td small{display:block;font:400 10.5px/1.4 var(--sans);color:#a8946f;margin-top:3px}
+.mc td.best{color:#a9e0c4}.mc td.worst{color:#f0b3a6}
+.bars{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.brow{display:grid;grid-template-columns:110px 1fr 46px;gap:8px;align-items:center;font:500 12px/1 var(--sans)}
+.brow .b{height:12px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.brow .b i{display:block;height:100%}
+.brow em{font:700 12px/1 var(--mono);font-style:normal;text-align:right}
+.bill{width:100%;border-collapse:collapse;font-size:12px}
+.bill td{padding:6px 4px;border-top:1px solid rgba(239,230,208,.07);color:#ddd0b4;vertical-align:top}
+.bill td.n{font-family:var(--mono);text-align:right;white-space:nowrap}
+.bill tr.sum td{font-weight:700;color:#e8c36a;border-top:1px solid rgba(239,230,208,.3)}
+.judge{font-size:12.5px;line-height:1.65;color:#ddd0b4}
+.judge b{display:inline-block;min-width:44px;font-size:11px;letter-spacing:.1em;padding:1px 6px;border-radius:3px;margin-right:8px;text-align:center}
+.judge .m{background:#2f4a3e;color:#a9e0c4}.judge .s{background:#3d3a2a;color:#e6d39a}.judge .p{background:#4a2f2f;color:#f0b3a6}
+.judge p+p{margin-top:6px}
+.chk{font:700 12px/1 var(--mono);margin-left:4px}.chk.y{color:#a9e0c4}.chk.n{color:#f0b3a6}
+.rerun{font:700 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(239,230,208,.3);background:transparent;color:#e9dcc2;cursor:pointer;float:right;margin-top:-4px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="screen" id="sa">
+  <div class="top">
+    <h1>모험가 길드 인사과<small>HUMAN RESOURCES · 3층 끝방</small></h1>
+    <div class="k"><span>기간</span><b id="tDay">-</b></div>
+    <div class="k"><span>인사과 예산</span><b id="tBud">-</b></div>
+    <div class="k"><span>분기 성공률 · 길드장 요구 60%</span><b id="tRate">-</b></div>
+    <div class="k"><span>재직</span><b id="tHead">-</b></div>
+    <div class="sp"></div>
+    <button class="nextday" id="next">하루 넘기기 ▶<small>N · Space</small></button>
+  </div>
+
+  <div id="roster"><div class="col-h">인사 기록 카드</div><div id="cards"></div></div>
+  <div id="board"><div class="col-h">의뢰 게시판</div><div id="quests"></div><div class="col-h" style="margin-top:16px">파견 중</div><div id="outs"></div></div>
+  <div id="inbox"><div class="col-h">결재함</div><div id="doc"></div><div class="tray" id="tray"></div></div>
+  <div class="help">의뢰를 누르고 카드를 눌러 편성한다(카드를 의뢰로 끌어도 된다) · 카드를 고르면 다른 카드에 궁합이 뜬다 · Enter 파견</div>
+</section>
+
+<section class="screen" id="sb">
+  <div class="wrap">
+    <div class="colb">
+      <h1>인사과 설계자 화면<small>게임에는 없다. 화면 A 와 같은 함수(chanceOf · resolve · nextDay)를 그대로 부른다.</small></h1>
+      <div class="box"><h3>판정 공식 — 전부 정수</h3><div class="fx" id="fx"></div></div>
+      <div class="box"><h3>궁합 행렬 · −2 ~ +2 · 같이 보내면 짝마다 ±5%p, ±2 는 사기도 움직인다</h3><table class="hm" id="hm"></table>
+        <p class="note" style="margin-top:10px">대각선은 비어 있다. ±2 짝은 보고서에 반드시 한 줄을 남긴다 — 수치가 아니라 문장으로 드러나야 한다.</p></div>
+    </div>
+    <div class="colb">
+      <div class="box"><h3>정책 시뮬 · 씨드 <span id="mcN">200</span>개 × 1분기(30일) <button class="rerun" id="rerun">다시 돌리기</button></h3>
+        <table class="mc" id="mc"></table>
+        <p class="note" style="margin-top:10px" id="mcNote"></p></div>
+      <div class="box"><h3>분기 성공률 · 정책별</h3><div class="bars" id="mcBars"></div></div>
+      <div class="box"><h3>같은 씨드 두 번 — 결정성</h3><p class="note" id="det"></p></div>
+    </div>
+    <div class="colb">
+      <div class="box"><h3>콘텐츠 청구서 — 보고서 문장</h3><table class="bill" id="bill"></table>
+        <p class="note" style="margin-top:8px">한 분기에 보고서 약 25장. 같은 문장이 세 번 보이면 공문이 아니라 틀로 읽힌다 — 그래서 버릇·유품은 <b>사람마다</b> 따로 쓴다.</p></div>
+      <div class="box judge"><h3>판정 — 누가 무엇을 보는가</h3>
+        <p><b class="m">기계</b>같은 씨드면 같은 보고서인가<span class="chk" id="c1"></span> · 성공률이 5–95 를 벗어나지 않는가<span class="chk" id="c2"></span> · <strong>혹사가 쉬게 하기보다 분기 성과가 나쁜가</strong><span class="chk" id="c3"></span> — 아니면 이 게임의 윤리가 수치에서 거꾸로다</p>
+        <p><b class="s">화면</b>보고서가 서류로 읽히는가 — 타자 질감, 도장이 찍히는 순간, 사망 카드의 검은 띠</p>
+        <p><b class="p">사람</b><strong>숫자 뒤의 사람이 보이는가 — 보고서 한 장으로 누군가를 아끼게 되는가.</strong> 전투를 보여 주지 않는 이 안의 전부가 여기 걸려 있다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 인사과 책상</button><button data-s="b">2 · 설계자</button></div>
+<canvas class="grain" id="grain" width="400" height="250"></canvas>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  (function(){var c=document.getElementById('grain'),x=c.getContext('2d'),d=x.createImageData(400,250),r=rng0(107);
+    for(var i=0;i<d.data.length;i+=4){var v=r()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}x.putImageData(d,0,0);})();
+  function rng0(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+  /* ════════════════ 규칙 — 순수 함수. DOM 을 모른다 (원칙 1·4·5) ════════════════ */
+
+  // 씨드 + 이름표로 정수 하나. 같은 (씨드, 이름표) 는 언제 불러도 같은 값이다 — 호출 순서에 기대지 않는다
+  function H(seed,parts){var h=(seed^0x9E3779B9)>>>0;
+    for(var p=0;p<parts.length;p++){var s=String(parts[p]);for(var i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),0x01000193);h=Math.imul(h^0x7f,0x85ebca6b);h^=h>>>13;}
+    var t=h+0x6D2B79F5|0;t=Math.imul(t^t>>>15,1|t);t=t+Math.imul(t^t>>>7,61|t)^t;return(t^t>>>14)>>>0;}
+  function R(S){return H(S.seed,Array.prototype.slice.call(arguments,1));}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+
+  // 한국어가 원문이다(원칙 6). 조각을 잇지 않고 {0} 자리표시자를 쓰고, 조사는 받침을 보고 고른다
+  var PAIRS={'은(는)':['은','는'],'이(가)':['이','가'],'을(를)':['을','를'],'과(와)':['과','와'],'와(과)':['과','와'],'으로(로)':['으로','로']};
+  function fmt(t,a){return t.replace(/\{(\d+)\}(은\(는\)|이\(가\)|을\(를\)|과\(와\)|와\(과\)|으로\(로\))?/g,function(_,i,j){var v=String(a[+i]);if(!j)return v;
+    var c=v.charCodeAt(v.length-1),bat=(c>=0xAC00&&c<=0xD7A3)?(c-0xAC00)%28:0;return v+(bat?PAIRS[j][0]:PAIRS[j][1]);});}
+
+  var T={
+    head:'보고 제{0}호 · {1}',
+    ok:'의뢰 「{0}」 완료. 귀환 {1}/{2}명. 전리품 {3}골드 상당, 회계과 이관.',
+    fail:'의뢰 「{0}」 실패. 목표 미달성. 귀환 {1}/{2}명.',
+    hurt:'{0}({1}) 부상. 회복 소요 {2}일 예상. 치료비 {3}골드 집행.',
+    dead:'{0}({1}) 사망. 시신 수습 {2}. 유품: {3}.',
+    bad:'{0}와(과) {1} 사이 언쟁 있었음. 귀환 중 서로 다른 길로 걸었음.',
+    good:'{0}이(가) {1}의 짐을 대신 들었음. 특이사항 없음.',
+    tired:'{0}은(는) 출발 시 이미 피로 누적 상태였음. 행군 지연 반나절.',
+    eval:'제{0}분기 성공률 {1}% ({2}/{3}). 길드장 요구 60% {4}.',
+    cut:'차기 분기 인사과 예산 {0}% 삭감. 배정액 {1}골드.',
+    evalNote:'사망 {0}명, 퇴사 {1}명은 성과 지표에 포함되지 않음.',
+    quit:'{0}의 사직서 수리. 사유란 공란.',
+    end:'{0}과(와) 계약 종료. 송별 인원 없음.',
+    leaveReq:'{0} — 휴가 신청 3일. 사유: "{1}"',
+    funReq:'{0} — 장례비 신청. 신청인 {1}.',
+    renReq:'{0} — 계약 만료. 갱신 여부 결재 바람.',
+    expired:'의뢰 「{0}」 기한 경과. 타 길드 수주.'
+  };
+
+  // 사람 — 수치보다 버릇과 유품이 먼저 쓰였다. 보고서가 이 사람들을 기억하게 하는 장치다
+  var ADV=[
+    {name:'브란',job:'전사',age:41,power:26,wage:14,contract:54,quirk:'{0}은(는) 귀환 즉시 우체국에 들렀음. 수신인 딸.',item:'딸에게 부치지 못한 편지 세 통',why:'딸 생일입니다'},
+    {name:'미라',job:'궁수',age:23,power:20,wage:10,contract:70,quirk:'{0}은(는) 화살을 회수하러 혼자 되돌아갔다가 반나절 늦게 합류함.',item:'깃털을 직접 단 화살 열한 발',why:'활시위가 아니라 제가 끊어질 것 같습니다'},
+    {name:'오슬',job:'사제',age:58,power:14,wage:9,contract:40,quirk:'{0}은(는) 적의 시신에도 기도를 올렸음. 일행 일부 불만 표시.',item:'닳은 기도서 한 권, 책갈피는 마른 꽃',why:'기도가 나오지 않습니다'},
+    {name:'케이',job:'도적',age:19,power:18,wage:8,contract:85,quirk:'{0}의 배낭에서 출처 불명의 은수저 두 벌 발견. 조사 중.',item:'주인을 알 수 없는 열쇠 꾸러미',why:'그냥요'},
+    {name:'할레',job:'마법사',age:34,power:24,wage:13,contract:62,quirk:'{0}은(는) 야영 중 밤새 무언가를 적었음. 내용 제출 거부.',item:'끝까지 채우지 못한 연구 노트',why:'연구를 마무리해야 합니다'},
+    {name:'토르비',job:'전사',age:27,power:22,wage:11,contract:48,quirk:'{0}은(는) 일행 몫까지 요리를 맡았음. 평이 좋음.',item:'이가 빠진 무쇠 냄비',why:'어머니 가게 일을 도와야 합니다'},
+    {name:'세나',job:'궁수',age:31,power:19,wage:10,contract:33,quirk:'{0}은(는) 귀환 길에 주운 새끼 여우를 길드에 데려옴. 처분 지시 바람.',item:'여우털이 묻은 망토',why:'여우가 아픕니다'},
+    {name:'가렛',job:'도적',age:63,power:16,wage:12,contract:9,quirk:'{0}은(는) 무릎 통증을 호소했으나 휴식을 거부함.',item:'은퇴 후 살 집의 계약서 사본',why:'무릎이'}
+  ];
+  // 궁합 — 손으로 쓴다. 대칭. 0 이 대부분이어야 ±2 가 이야기가 된다
+  var AFF=(function(){var m=[];for(var i=0;i<8;i++){m.push([0,0,0,0,0,0,0,0]);}
+    function s(a,b,v){m[a][b]=m[b][a]=v;}
+    s(0,5,2);   // 브란-토르비: 스승과 제자
+    s(3,7,2);   // 케이-가렛: 손버릇을 가르친 사람
+    s(1,6,-2);  // 미라-세나: 같은 자리를 노리는 궁수
+    s(2,3,-2);  // 오슬-케이: 성당 은수저
+    s(2,4,-1);  // 오슬-할레: 신앙과 연구
+    s(0,1,1);s(5,6,1);s(3,4,1);s(0,7,-1);s(4,6,1);
+    return m;})();
+
+  var QT=[
+    {t:'버려진 광산의 거미 소탕',d:58,days:3,r:420,max:3},
+    {t:'상단 호위 — 서쪽 고갯길',d:44,days:4,r:360,max:3},
+    {t:'늪지 마녀 생포',d:78,days:5,r:820,max:4},
+    {t:'실종된 양치기 수색',d:34,days:2,r:180,max:2},
+    {t:'지하묘지 봉인 재설치',d:64,days:3,r:540,max:3},
+    {t:'다리 밑 트롤 퇴거',d:52,days:2,r:300,max:3},
+    {t:'고블린 정찰대 추적',d:40,days:3,r:260,max:2},
+    {t:'영주 딸의 반지 회수',d:48,days:2,r:380,max:2},
+    {t:'역병 마을 물자 전달',d:38,days:4,r:240,max:3},
+    {t:'북쪽 탑의 와이번',d:86,days:5,r:960,max:4}
+  ];
+  var DPQ=30, ALLOT0=3400, COST={leave:60,funeral:200,renew:150,heal:40};
+  var STLABEL={idle:'',away:'파견중',hurt:'부상',leave:'휴가',dead:'사망',gone:'퇴사'};
+
+  function newState(seed){
+    var S={seed:seed,day:-3,budget:ALLOT0,allot:ALLOT0,revenue:0,adv:[],quests:[],missions:[],reports:[],reqs:[],
+      stat:{n:0,ok:0,dead:0,gone:0,missed:0},qs:{n:0,ok:0,dead:0,gone:0},qn:0,rn:0,reqn:0};
+    ADV.forEach(function(a,i){S.adv.push({id:i,name:a.name,job:a.job,age:a.age,power:a.power,wage:a.wage,contract:a.contract,
+      fatigue:10+R(S,'f0',i)%30,morale:55+R(S,'m0',i)%30,status:'idle',hurt:0,leave:0});});
+    for(var k=0;k<4;k++)spawn(S);
+    // 프롤로그: 지난주에 보낸 파티가 1일에 돌아온다. 첫 화면부터 보고서가 한 장 있다
+    S.quests[0].days=4;dispatch(S,S.quests[0].id,[0,5,2]);
+    while(S.day<1)nextDay(S);
+    S.stat={n:S.stat.n,ok:S.stat.ok,dead:S.stat.dead,gone:S.stat.gone,missed:S.stat.missed};
+    return S;}
+
+  function spawn(S){var id=++S.qn,t=QT[R(S,'qt',id)%QT.length];
+    S.quests.push({id:id,title:t.t,diff:t.d+R(S,'qd',id)%13-6,days:t.days,reward:t.r+(R(S,'qr',id)%7)*20,max:t.max,expire:S.day+3+R(S,'qe',id)%3});}
+
+  function eff(a){return (a.power*(100-(a.fatigue>>1))/100|0)+((a.morale-50)/10|0);}
+  function affSum(S,ids){var s=0;for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++)s+=AFF[ids[i]][ids[j]];return s;}
+  function chanceOf(S,ids,q){if(!ids.length)return 0;var sum=0;ids.forEach(function(i){sum+=eff(S.adv[i]);});
+    return clamp(50+(sum-q.diff)*2+affSum(S,ids)*5,5,95);}
+
+  function dispatch(S,qid,ids){var qi=-1;S.quests.forEach(function(q,i){if(q.id===qid)qi=i;});if(qi<0||!ids.length)return false;
+    var q=S.quests[qi];if(ids.length>q.max)return false;
+    for(var i=0;i<ids.length;i++)if(S.adv[ids[i]].status!=='idle')return false;
+    S.quests.splice(qi,1);
+    var ch=chanceOf(S,ids,q),tired=ids.filter(function(i){return S.adv[i].fatigue>=70;});
+    ids.forEach(function(i){S.adv[i].status='away';});
+    S.missions.push({q:q,ids:ids.slice(),back:S.day+q.days,chance:ch,tired:tired});return true;}
+
+  function report(S,o){o.no=++S.rn;o.day=S.day;S.reports.push(o);return o;}
+  function request(S,kind,adv,extra){S.reqs.push({id:++S.reqn,kind:kind,adv:adv,day:S.day,extra:extra});}
+  function alive(a){return a.status!=='dead'&&a.status!=='gone';}
+
+  function resolve(S,m){
+    var q=m.q,ids=m.ids,roll=R(S,'res',q.id)%100,ok=roll<m.chance,lines=[],deadIds=[],gap=Math.max(0,q.diff-ids.reduce(function(s,i){return s+eff(S.adv[i]);},0));
+    m.tired.forEach(function(i){lines.push({c:'q',t:fmt(T.tired,[S.adv[i].name])});});
+    ids.forEach(function(i){var a=S.adv[i],risk=clamp(8+gap+(a.fatigue/6|0)+(ok?0:15),2,60),r=R(S,'inj',q.id,i)%100;
+      if(!ok&&r<(risk>>2)){a.status='dead';deadIds.push(i);S.stat.dead++;S.qs.dead++;
+        lines.push({c:'d',t:fmt(T.dead,[a.name,a.job,R(S,'body',q.id,i)%2?'완료':'불가',ADV[i].item])});}
+      else if(r<risk){a.status='hurt';a.hurt=3+R(S,'hd',q.id,i)%5;S.budget-=COST.heal;
+        lines.push({c:'',t:fmt(T.hurt,[a.name,a.job,a.hurt,COST.heal])});}
+      else a.status='idle';
+      a.fatigue=clamp(a.fatigue+q.days*9,0,100);a.morale=clamp(a.morale+(ok?8:-10),0,100);});
+    var back=ids.length-deadIds.length;
+    lines.unshift({c:'',t:ok?fmt(T.ok,[q.title,back,ids.length,q.reward]):fmt(T.fail,[q.title,back,ids.length])});
+    for(var x=0;x<ids.length;x++)for(var y=x+1;y<ids.length;y++){var A=S.adv[ids[x]],B=S.adv[ids[y]],v=AFF[ids[x]][ids[y]];
+      if(v>=2&&alive(A)&&alive(B)){A.morale=clamp(A.morale+4,0,100);B.morale=clamp(B.morale+4,0,100);lines.push({c:'',t:fmt(T.good,[R(S,'gd',q.id)%2?A.name:B.name,R(S,'gd',q.id)%2?B.name:A.name])});}
+      if(v<=-2){A.morale=clamp(A.morale-8,0,100);B.morale=clamp(B.morale-8,0,100);lines.push({c:'',t:fmt(T.bad,[A.name,B.name])});}}
+    var liv=ids.filter(function(i){return alive(S.adv[i]);});
+    if(liv.length){var w=liv[R(S,'qk',q.id)%liv.length];lines.push({c:'q',t:fmt(ADV[w].quirk,[S.adv[w].name])});}
+    // 죽음은 성과표에 없고 사람들 사기에만 남는다. 짝이 +2 였던 사람은 더 깎인다
+    deadIds.forEach(function(d){S.adv.forEach(function(o,j){if(alive(o))o.morale=clamp(o.morale-(AFF[d][j]>=1?18:6),0,100);});
+      var fr=-1,best=-9;S.adv.forEach(function(o,j){if(alive(o)&&AFF[d][j]>best){best=AFF[d][j];fr=j;}});
+      request(S,'funeral',d,fr>=0?S.adv[fr].name:'없음');});
+    S.stat.n++;S.qs.n++;if(ok){S.stat.ok++;S.qs.ok++;S.revenue+=q.reward;}
+    report(S,{kind:ok?'ok':'ng',title:q.title,lines:lines,chance:m.chance,roll:roll,names:ids.map(function(i){return S.adv[i].name;})});}
+
+  function nextDay(S){
+    S.day++;
+    var keep=[];S.missions.forEach(function(m){if(m.back<=S.day)resolve(S,m);else keep.push(m);});S.missions=keep;
+    S.adv.forEach(function(a){if(!alive(a))return;S.budget-=a.wage;
+      if(a.status==='idle'){a.fatigue=clamp(a.fatigue-12,0,100);if(a.fatigue>70)a.morale=clamp(a.morale-2,0,100);}
+      else if(a.status==='leave'){a.fatigue=clamp(a.fatigue-25,0,100);a.morale=clamp(a.morale+6,0,100);if(--a.leave<=0)a.status='idle';}
+      else if(a.status==='hurt'){a.morale=clamp(a.morale-1,0,100);if(--a.hurt<=0)a.status='idle';}
+      if(a.status!=='away'&&a.contract>0){a.contract--;
+        if(a.contract===0&&!hasReq(S,'renew',a.id))request(S,'renew',a.id);}
+      if(a.status==='idle'&&a.morale<35&&!(a.cool>S.day)&&!hasReq(S,'leave',a.id))request(S,'leave',a.id);});
+    var q2=[];S.quests.forEach(function(q){if(q.expire<S.day){S.stat.missed++;}else q2.push(q);});S.quests=q2;
+    var tries=0;while(S.quests.length<4&&(S.quests.length<2||R(S,'new',S.day,tries)%100<55)&&tries<4){spawn(S);tries++;}
+    if(S.day>1&&(S.day-1)%DPQ===0)evaluate(S);}
+
+  function hasReq(S,k,id){return S.reqs.some(function(r){return r.kind===k&&r.adv===id;});}
+
+  function evaluate(S){var qn=Math.floor((S.day-2)/DPQ)+1,rate=S.qs.n?Math.round(S.qs.ok*100/S.qs.n):0,pass=rate>=60,cut=pass?5:15;
+    S.allot=Math.round(S.allot*(100-cut)/100);S.budget+=S.allot;
+    report(S,{kind:'ev',title:'제'+qn+'분기 인사 평가',lines:[{c:'',t:fmt(T.eval,[qn,rate,S.qs.ok,S.qs.n,pass?'충족':'미달'])},{c:'',t:fmt(T.cut,[cut,S.allot])},{c:'q',t:fmt(T.evalNote,[S.qs.dead,S.qs.gone])}]});
+    S.qs={n:0,ok:0,dead:0,gone:0};}
+
+  function decide(S,rid,yes){var i=-1;S.reqs.forEach(function(r,k){if(r.id===rid)i=k;});if(i<0)return;var r=S.reqs[i],a=S.adv[r.adv];
+    if(r.kind==='leave'){if(a.status!=='idle'&&yes)return;
+      if(yes){S.budget-=COST.leave;a.status='leave';a.leave=3;}
+      else{a.morale=clamp(a.morale-6,0,100);a.cool=S.day+5;if(a.morale<10)quit(S,a,T.quit);}}
+    else if(r.kind==='funeral'){S.budget-=yes?COST.funeral:0;S.adv.forEach(function(o){if(alive(o))o.morale=clamp(o.morale+(yes?4:-12),0,100);});}
+    else if(r.kind==='renew'){if(yes){S.budget-=COST.renew;a.contract=60;a.morale=clamp(a.morale+5,0,100);}else quit(S,a,T.end);}
+    S.reqs.splice(i,1);}
+  function quit(S,a,t){if(a.status==='away')return;a.status='gone';S.stat.gone++;S.qs.gone++;
+    S.reqs=S.reqs.filter(function(r){return r.adv!==a.id||r.kind==='funeral';});
+    report(S,{kind:'ev',title:'인사 발령',lines:[{c:'',t:fmt(t,[a.name])}]});}
+
+  /* ── 정책 — 설계자 화면의 몬테카를로가 쓴다. 사람은 이걸 손으로 한다 ── */
+  function idle(S,maxF){return S.adv.filter(function(a){return a.status==='idle'&&a.fatigue<maxF;}).map(function(a){return a.id;});}
+  function greedy(S,maxF,target,useAff){
+    var qs=S.quests.slice().sort(function(a,b){return b.reward-a.reward;});
+    qs.forEach(function(q){var pool=idle(S,maxF),party=[];
+      while(party.length<q.max&&pool.length){var bi=-1,bv=-1;
+        pool.forEach(function(id,k){var v=useAff?chanceOf(S,party.concat([id]),q):S.adv[id].power;if(v>bv){bv=v;bi=k;}});
+        party.push(pool.splice(bi,1)[0]);if(target&&chanceOf(S,party,q)>=target)break;}
+      if(party.length&&(!target||chanceOf(S,party,q)>=target-10))dispatch(S,q.id,party);});}
+  var POL=[
+    {k:'혹사',d:'피로를 보지 않고 40% 넘으면 보낸다 · 요구는 전부 반려',f:function(S){S.reqs.slice().forEach(function(r){decide(S,r.id,false);});greedy(S,101,50,false);}},
+    {k:'쉬게 하기',d:'피로 50 이상은 대기 · 요구는 승인 · 70% 맞을 만큼만 보낸다',f:function(S){S.reqs.slice().forEach(function(r){if(S.budget>300)decide(S,r.id,true);});greedy(S,50,70,false);}},
+    {k:'궁합 맞춤',d:'쉬게 하기 + 성공률이 가장 오르는 사람부터 고른다',f:function(S){S.reqs.slice().forEach(function(r){if(S.budget>300)decide(S,r.id,true);});greedy(S,50,70,true);}},
+    {k:'방치',d:'아무것도 결재하지 않는다 — 바닥선',f:function(S){}}
+  ];
+  function runPolicy(p,N){var o={n:0,ok:0,dead:0,gone:0,bud:0,mor:0,head:0};
+    for(var s=1;s<=N;s++){var S=newState(s*7919+107),b={n:S.stat.n,ok:S.stat.ok};
+      while(S.day<DPQ){p.f(S);nextDay(S);}
+      o.n+=S.stat.n-b.n;o.ok+=S.stat.ok-b.ok;o.dead+=S.stat.dead;o.gone+=S.stat.gone;o.bud+=S.budget;
+      var al=S.adv.filter(alive);o.head+=al.length;o.mor+=al.length?al.reduce(function(t,a){return t+a.morale;},0)/al.length:0;}
+    return {rate:o.n?Math.round(o.ok*100/o.n):0,done:(o.ok/N).toFixed(1),dead:(o.dead/N).toFixed(2),gone:(o.gone/N).toFixed(2),bud:Math.round(o.bud/N),mor:Math.round(o.mor/N),head:(o.head/N).toFixed(1)};}
+
+  /* ════════════════ 화면 A ════════════════ */
+  var S=newState(107),selQ=null,party=[],selA=null,shown=null,typed=false;
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function meter(lbl,v,col){return '<div class="meter"><span>'+lbl+'</span><div class="b"><i style="width:'+v+'%;background:'+col+'"></i></div><em>'+v+'</em></div>';}
+  function fcol(v){return v>=70?'#a8322a':v>=45?'#b58a2c':'#5d7a4a';}
+  function mcol(v){return v<35?'#a8322a':v<55?'#b58a2c':'#2f4f7a';}
+
+  function render(){
+    var qn=Math.floor((S.day-1)/DPQ)+1,dd=(S.day-1)%DPQ+1;
+    $('tDay').textContent='제'+qn+'분기 '+dd+'일차';
+    $('tBud').textContent=S.budget.toLocaleString()+' G';$('tBud').className=S.budget<500?'warn':'';
+    var rate=S.qs.n?Math.round(S.qs.ok*100/S.qs.n):null;
+    $('tRate').textContent=rate===null?'— (0건)':rate+'% ('+S.qs.ok+'/'+S.qs.n+')';$('tRate').className=rate!==null&&rate<60?'warn':'';
+    $('tHead').textContent=S.adv.filter(alive).length+' / 8';
+    // 카드
+    var h='';S.adv.forEach(function(a,i){var st=a.status,cls='card'+(st!=='idle'?' off':'')+(st==='dead'?' dead':'')+(selA===i?' sel':'')+(party.indexOf(i)>=0?' inparty':'');
+      var af='';if(selA!==null&&selA!==i&&alive(a)){var v=AFF[selA][i];if(v>0)af='<div class="aff p">'+'♥'.repeat(v)+' '+esc(S.adv[selA].name)+'</div>';else if(v<0)af='<div class="aff n">'+'✕'.repeat(-v)+' '+esc(S.adv[selA].name)+'</div>';}
+      var sub=st==='hurt'?' '+a.hurt+'일':st==='leave'?' '+a.leave+'일':'';
+      h+='<div class="'+cls+'" data-a="'+i+'" draggable="'+(st==='idle')+'"><div class="nm">'+esc(a.name)+'</div><div class="job">'+a.job+' · '+a.age+'세</div>'+
+        '<div class="no">No.'+String(107000+i*13).slice(-4)+'</div><div class="pw"><small>실력</small>'+eff(a)+'</div>'+
+        '<div style="margin-top:12px">'+meter('피로',a.fatigue,fcol(a.fatigue))+meter('사기',a.morale,mcol(a.morale))+'</div>'+
+        '<div class="ft"><span>계약 '+(alive(a)?a.contract+'일':'—')+'</span><span>일당 '+a.wage+'G</span></div>'+af+
+        (STLABEL[st]?'<div class="stamp '+st+'">'+STLABEL[st]+sub+'</div>':'')+'</div>';});
+    $('cards').innerHTML=h;
+    // 의뢰
+    h='';S.quests.forEach(function(q){var sel=selQ===q.id,ids=sel?party:[],ch=chanceOf(S,ids,q),sl='';
+      for(var k=0;k<q.max;k++)sl+=ids[k]!==undefined?'<span class="slot f">'+esc(S.adv[ids[k]].name)+'</span>':'<span class="slot">빈 자리</span>';
+      var chs=ids.length?'<span class="chance '+(ch<50?'lo':ch>=70?'hi':'')+'"><small>예상</small>'+ch+'%</span>':'';
+      h+='<div class="quest'+(sel?' sel':'')+'" data-q="'+q.id+'"><h3>'+esc(q.title)+'</h3><div class="rw">'+q.reward+'G<small>보상</small></div>'+
+        '<div class="ln"><span>난도 <b>'+q.diff+'</b></span><span>소요 <b>'+q.days+'일</b></span><span>최대 <b>'+q.max+'명</b></span><span>게시 마감 <b>'+(q.expire-S.day+1)+'일</b></span></div>'+
+        '<div class="slots">'+sl+chs+'</div><button class="send" data-send="'+q.id+'">파 견 결 재</button></div>';});
+    $('quests').innerHTML=h||'<div class="empty">게시된 의뢰가 없다.</div>';
+    h='';S.missions.forEach(function(m){h+='<div class="out"><b>'+esc(m.q.title)+'</b> — '+m.ids.map(function(i){return esc(S.adv[i].name);}).join(' · ')+'<br>귀환 예정 '+(m.back-S.day)+'일 뒤 · 결재 시 예상 '+m.chance+'%</div>';});
+    $('outs').innerHTML=h||'<div class="empty">없다. 아무도 밖에 있지 않다.</div>';
+    // 결재함
+    var r=shown!==null?S.reports.filter(function(x){return x.no===shown;})[0]:S.reports[S.reports.length-1];
+    if(r){var st=r.kind==='ok'?'<div class="bigst ok">완료</div>':r.kind==='ng'?'<div class="bigst ng">실패</div>':'<div class="bigst ev">접수</div>';
+      $('doc').innerHTML='<div class="hd"><span>'+fmt(T.head,[r.no,'제'+(Math.floor((r.day-1)/DPQ)+1)+'분기 '+((r.day-1)%DPQ+1)+'일'])+'</span><span>인사과 수신</span></div>'+
+        '<h2>'+esc(r.title)+'</h2>'+r.lines.map(function(l){return '<p class="'+l.c+'">'+esc(l.t)+'</p>';}).join('')+
+        (r.names?'<div class="sig">파견 인원: '+r.names.map(esc).join(', ')+' · 결재 시 예상 '+r.chance+'% · 판정 '+r.roll+'</div>':'')+st;
+      $('doc').classList.toggle('typing',typed);}
+    h='';S.reqs.forEach(function(q){var a=S.adv[q.adv],t=q.kind==='leave'?fmt(T.leaveReq,[a.name,ADV[q.adv].why]):q.kind==='funeral'?fmt(T.funReq,[a.name,q.extra]):fmt(T.renReq,[a.name]);
+      var c=COST[q.kind==='funeral'?'funeral':q.kind];
+      h+='<div class="req '+q.kind+'"><b>'+esc(t)+'</b><div class="bt"><button class="y" data-r="'+q.id+'" data-y="1">승인 '+c+'G</button><button class="n" data-r="'+q.id+'" data-y="0">반려</button></div></div>';});
+    S.reports.slice(-8).reverse().forEach(function(x){var cur=r&&x.no===r.no;
+      h+='<div class="rl'+(cur?' cur':'')+'" data-rep="'+x.no+'"><i>제'+x.no+'호</i>'+esc(x.title)+'<em class="'+x.kind+'">'+(x.kind==='ok'?'완료':x.kind==='ng'?'실패':'통지')+'</em></div>';});
+    $('tray').innerHTML=h;}
+
+  function advance(){var n=S.reports.length;nextDay(S);if(selQ!==null&&!S.quests.some(function(q){return q.id===selQ;})){selQ=null;party=[];}
+    party=party.filter(function(i){return S.adv[i].status==='idle';});
+    typed=S.reports.length>n;shown=null;render();typed=false;}
+  function toggleParty(i){var a=S.adv[i];if(a.status!=='idle')return;
+    if(selQ===null){selA=selA===i?null:i;render();return;}
+    var q=S.quests.filter(function(x){return x.id===selQ;})[0],k=party.indexOf(i);
+    if(k>=0)party.splice(k,1);else if(party.length<q.max)party.push(i);selA=i;render();}
+  function send(){if(selQ===null||!party.length)return;if(dispatch(S,selQ,party)){selQ=null;party=[];selA=null;render();}}
+
+  $('cards').addEventListener('click',function(e){var c=e.target.closest('.card');if(c)toggleParty(+c.dataset.a);});
+  $('quests').addEventListener('click',function(e){var b=e.target.closest('[data-send]');if(b){send();return;}
+    var q=e.target.closest('.quest');if(!q)return;var id=+q.dataset.q;if(selQ!==id){selQ=id;party=[];}render();});
+  $('tray').addEventListener('click',function(e){var b=e.target.closest('button[data-r]');if(b){decide(S,+b.dataset.r,b.dataset.y==='1');render();return;}
+    var l=e.target.closest('.rl');if(l){shown=+l.dataset.rep;render();}});
+  $('next').addEventListener('click',advance);
+  // 끌어 놓기 — 카드를 의뢰 위로
+  var drag=null;
+  $('cards').addEventListener('dragstart',function(e){var c=e.target.closest('.card');if(!c)return;drag=+c.dataset.a;e.dataTransfer.setData('text/plain',String(drag));});
+  $('quests').addEventListener('dragover',function(e){var q=e.target.closest('.quest');if(q&&drag!==null){e.preventDefault();q.classList.add('drop');}});
+  $('quests').addEventListener('dragleave',function(e){var q=e.target.closest('.quest');if(q)q.classList.remove('drop');});
+  $('quests').addEventListener('drop',function(e){var q=e.target.closest('.quest');if(!q||drag===null)return;e.preventDefault();var id=+q.dataset.q;
+    if(selQ!==id){selQ=id;party=[];}var i=drag;drag=null;if(party.indexOf(i)<0)toggleParty(i);else render();});
+
+  /* ════════════════ 화면 B ════════════════ */
+  function buildB(){
+    $('fx').innerHTML=
+'실력_i  = 힘 × (100 − 피로/2) / 100 + (사기 − 50) / 10\n'+
+'성공률  = <b>clamp(50 + (Σ실력 − 난도) × 2 + Σ궁합 × 5, 5, 95)</b>\n'+
+'판정    = H(씨드, "res", 의뢰번호) mod 100  &lt;  성공률\n'+
+'부상    = clamp(8 + 부족분 + 피로/6 + (실패 ? 15 : 0), 2, 60)\n'+
+'사망    = 실패 이고  H(씨드,"inj",의뢰,사람) mod 100 &lt; 부상위험/4\n'+
+'피로    +9 × 일수 (귀환) · −12/일 (대기) · −25/일 (휴가)\n'+
+'사기    성공 +8 · 실패 −10 · 궁합+2 짝 +4 · −2 짝 −8\n'+
+'        사망 시 전원 −6, 가까웠던 사람 −18\n'+
+'예산    분기 배정 3400G · 성공률 60% 미달이면 다음 분기 −15%\n'+
+'        (충족해도 −5%). 사망·퇴사는 지표에 없다';
+    var names=ADV.map(function(a){return a.name;}),h='<tr><th></th>'+names.map(function(n){return '<th>'+n+'</th>';}).join('')+'</tr>';
+    for(var i=0;i<8;i++){h+='<tr><th class="r">'+names[i]+'</th>';for(var j=0;j<8;j++){var v=AFF[i][j],bg=i===j?'transparent':v>0?'rgba(120,190,140,'+(.2+v*.3)+')':v<0?'rgba(220,100,90,'+(.2-v*.3)+')':'rgba(239,230,208,.05)';
+      h+='<td style="background:'+bg+'">'+(i===j?'':v>0?'+'+v:v===0?'·':v)+'</td>';}h+='</tr>';}
+    $('hm').innerHTML=h;
+    var keys=Object.keys(T).length,quirks=ADV.length,items=ADV.length,whys=ADV.length;
+    var rows=[['결과 첫 줄 (성공·실패)',2,24,'의뢰 종류마다 두 벌'],['부상 · 부위·정도',1,30,'"회복 소요"만 바꾸면 세 번째부터 틀이 보인다'],
+      ['사망 · 수습 상황',1,12,'가장 무거운 문장 — 반복되면 무게가 사라진다'],['유품',items,120,'모험가 풀 60명 × 2'],['버릇 (보고서 끝 한 줄)',quirks,300,'60명 × 5. 이 안의 본체'],
+      ['휴가 사유',whys,120,'60명 × 2'],['궁합 ±2 문장',2,48,'짝마다 다르게 — 24짝 × 2'],['평가·발령·통지',keys-9,20,'길드장 말투 고정']];
+    var now=0,need=0;h='<tr><td style="color:#b9a684">항목</td><td class="n" style="color:#b9a684">지금</td><td class="n" style="color:#b9a684">출시</td><td style="color:#b9a684">이유</td></tr>';
+    rows.forEach(function(r){now+=r[1];need+=r[2];h+='<tr><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'</td><td>'+r[3]+'</td></tr>';});
+    h+='<tr class="sum"><td>합계 (한 줄 문장)</td><td class="n">'+now+'</td><td class="n">'+need+'</td><td>대략 한 사람의 3주 분량. 그림은 카드 일러스트 60장뿐</td></tr>';
+    $('bill').innerHTML=h;
+    runMC();
+    // 결정성
+    var a=newState(4242),b=newState(4242);for(var d=0;d<20;d++){POL[1].f(a);nextDay(a);POL[1].f(b);nextDay(b);}
+    var ja=JSON.stringify(a.reports),jb=JSON.stringify(b.reports),same=ja===jb;
+    $('det').innerHTML='씨드 4242 로 쉬게 하기 정책을 20일 두 번 돌렸다 — 보고서 '+a.reports.length+'장, 글자 '+ja.length+'자. <b>'+(same?'완전히 같다':'다르다 — 고장')+'</b>. 판정은 호출 순서가 아니라 (씨드, 의뢰번호, 사람)으로만 정해진다.';
+    $('c1').textContent=same?' ✓':' ✕';$('c1').className='chk '+(same?'y':'n');}
+  function runMC(){var N=200,res=POL.map(function(p){return runPolicy(p,N);});$('mcN').textContent=N;
+    var cols=[['rate','성공률 %',1],['done','완료 의뢰',1],['dead','사망',-1],['gone','퇴사',-1],['head','남은 인원',1],['mor','평균 사기',1],['bud','분기 말 예산',1]];
+    var h='<tr><th>정책</th>'+cols.map(function(c){return '<th>'+c[1]+'</th>';}).join('')+'</tr>';
+    var best={},worst={};cols.forEach(function(c){var vs=res.slice(0,3).map(function(r){return +r[c[0]];});best[c[0]]=c[2]>0?Math.max.apply(0,vs):Math.min.apply(0,vs);worst[c[0]]=c[2]>0?Math.min.apply(0,vs):Math.max.apply(0,vs);});
+    res.forEach(function(r,i){h+='<tr><td>'+POL[i].k+'<small>'+POL[i].d+'</small></td>'+cols.map(function(c){var v=+r[c[0]],cl=i<3?(v===best[c[0]]?'best':v===worst[c[0]]?'worst':''):'';return '<td class="'+cl+'">'+r[c[0]]+'</td>';}).join('')+'</tr>';});
+    $('mc').innerHTML=h;
+    var o=res[0],rs=res[1],af=res[2];
+    var ok3=(+o.dead+ +o.gone)>(+rs.dead+ +rs.gone)&&o.rate<=rs.rate;
+    $('c3').textContent=ok3?' ✓':' ✕';$('c3').className='chk '+(ok3?'y':'n');
+    $('mcNote').innerHTML='혹사는 의뢰를 '+o.done+'건 끝내고 '+(+o.dead+ +o.gone).toFixed(2)+'명을 잃는다. 쉬게 하기는 '+rs.done+'건에 '+(+rs.dead+ +rs.gone).toFixed(2)+'명. '+
+      '궁합 맞춤은 같은 피로 기준에서 성공률이 '+(af.rate-rs.rate>=0?'+':'')+(af.rate-rs.rate)+'%p. '+
+      (o.rate>=rs.rate?'<b>혹사가 성공률에서 이긴다</b> — 길드장 지표와 사람이 갈라지는, 의도한 긴장이다.':'<b>지금 수치로는 쉬게 하기가 성공률까지 이긴다.</b> 혹사가 아끼는 것은 예산('+(o.bud-rs.bud)+'G)뿐이라 유혹이 약하다 — 슬라이스 전 조정 과제: 혹사 쪽에 단기 성과를 더 줘야 선택이 된다.');
+    h='';res.forEach(function(r,i){var col=['#f0907f','#a9e0c4','#9fc0e8','#8a7f6c'][i];h+='<div class="brow"><span>'+POL[i].k+'</span><div class="b"><i style="width:'+r.rate+'%;background:'+col+'"></i></div><em>'+r.rate+'%</em></div>';});
+    h+='<div class="brow"><span style="color:#a8946f">길드장 요구</span><div class="b" style="position:relative;background:none"><i style="position:absolute;left:60%;width:2px;background:#e8c36a"></i></div><em style="color:#e8c36a">60%</em></div>';
+    $('mcBars').innerHTML=h;
+    // 5–95 경계: 모든 의뢰 × 가능한 1~4인 편성을 다 세어 본다
+    var S0=newState(1),mn=100,mx=0,cnt=0;S0.quests.forEach(function(q){for(var m=1;m<256;m++){var ids=[];for(var b=0;b<8;b++)if(m&(1<<b))ids.push(b);if(ids.length>4)continue;var c=chanceOf(S0,ids,q);cnt++;if(c<mn)mn=c;if(c>mx)mx=c;}});
+    var ok2=mn>=5&&mx<=95;$('c2').textContent=ok2?' ✓ ('+cnt+'편성 '+mn+'–'+mx+')':' ✕';$('c2').className='chk '+(ok2?'y':'n');}
+  $('rerun').addEventListener('click',runMC);
+
+  /* ── 입력 · 화면 전환 ── */
+  var cur='a',builtB=false;
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    $('sa').classList.toggle('on',k==='a');$('sb').classList.toggle('on',k==='b');
+    if(k==='b'&&!builtB){builtB=true;buildB();}
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  window.addEventListener('keydown',function(e){
+    if(e.key==='1'){show('a');return;}if(e.key==='2'){show('b');return;}
+    if(cur!=='a')return;
+    if(e.key==='n'||e.key==='N'||e.code==='Space'){e.preventDefault();advance();}
+    else if(e.key==='Enter')send();
+    else if(e.key==='Escape'){selQ=null;party=[];selA=null;render();}});
+
+  // 첫 화면: 의뢰 하나를 골라 둔 상태로 연다 — 무엇을 하는 화면인지 바로 보이게
+  if(S.quests.length){selQ=S.quests[0].id;party=[];}
+  render();
+  show((location.hash||'#a').slice(1));
+  window.__guild={S:function(){return S;},newState:newState,nextDay:nextDay,runPolicy:runPolicy,POL:POL};
+})();
+</script>
+</body>
+</html>

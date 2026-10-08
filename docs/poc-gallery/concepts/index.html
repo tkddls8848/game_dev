@@ -1,5 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>컨셉 시안 70</title><link rel="icon" href="data:,">
+<title>컨셉 시안 76</title><link rel="icon" href="data:,">
 <style>
 :root{color-scheme:dark;--bg:#141615;--card:#1c201e;--ink:#e8e3d6;--muted:#9c9a92;--accent:#d2b97c;--line:#ffffff1c}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 'Pretendard','Malgun Gothic','Noto Sans KR',sans-serif}
@@ -10,6 +10,9 @@ h1{font:44px/1.3 Batang,'Noto Serif KR',serif;letter-spacing:-1.5px;margin:10px 
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 24px}.bar input{flex:1;min-width:200px;background:#0f1110;border:1px solid var(--line);color:var(--ink);padding:9px 12px;font:inherit}
 .bar button{background:none;border:1px solid var(--line);color:var(--muted);padding:8px 14px;font:inherit;cursor:pointer}.bar button.on{border-color:var(--accent);color:var(--accent)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:22px}
+.engine-group{margin:36px 0 48px}.group-title{font-size:28px}.group-count{font:14px sans-serif;color:var(--accent)}
+.group-description,#result{color:var(--muted)}[hidden]{display:none!important}
+.meta,.links{flex-wrap:wrap}
 .card{background:var(--card);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
 .shots{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#000}.shot{display:block;aspect-ratio:16/9;overflow:hidden;background:#222}
 .shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}.shot:hover img{transform:scale(1.04)}
@@ -21,295 +24,330 @@ h2{font:23px/1.4 Batang,'Noto Serif KR',serif;margin:6px 0 4px}.body p{color:var
 footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
 @media(max-width:560px){main{padding:18px 16px 50px}h1{font-size:32px}.grid{grid-template-columns:1fr}}
 </style></head><body><main>
-<nav><a href="../index.html">← PoC 갤러리</a><a href="../../CONCEPTS.md">CONCEPTS.md</a><a href="_critique/index.html">비판 리뷰 전후 (3안)</a><a href="_market/index.html">상업 후보 5선</a></nav>
-<header><span class="eyebrow">70 CONCEPTS · HTML MOCKUP + 2 SCREEN MOCKS EACH</span><h1>컨셉 시안 70</h1>
+<nav><a href="../index.html">← PoC 갤러리</a><a href="../../CONCEPTS.md">CONCEPTS.md</a><a href="../../ENGINE_FIT.md">엔진 분류·제작 공수</a><a href="_critique/index.html">비판 리뷰 전후 (3안)</a><a href="_market/index.html">상업 후보 5선</a></nav>
+<header><span class="eyebrow">76 CONCEPTS · HTML MOCKUP + 2 SCREEN MOCKS EACH</span><h1>컨셉 시안 76</h1>
 <p>docs/CONCEPTS.md의 모든 컨셉을 같은 조건으로 놓았다. 카드마다 HTML 시안(화면 A/B, 키 1·2로 전환)과 AI 생성 화면 목업 2장.
-<b>목업 이미지는 AI 생성 시안이며 실행 빌드 화면이 아니다.</b> 구현된 컨셉은 기존 PoC 링크도 함께 둔다.</p></header>
-<div class="bar"><input id="q" placeholder="제목·장르 검색"><button data-f="all" class="on">전체 70</button><button data-f="0">미착수</button><button data-f="1">구현됨</button></div>
-<section class="grid" id="grid"><article class="card" data-built="0" data-q="해킹 탈출 방 제한 시간 안에 명령어로 시스템을 뚫는데 유령이 명령을 되받아친다 터미널 유령 · 상업">
+<b>목업 이미지는 AI 생성 시안이며 실행 빌드 화면이 아니다.</b> 구현된 컨셉은 기존 PoC 링크도 함께 둔다.</p>
+<p>3D 제작 공수와 시각 방향을 기준으로 <b>권장 구동 엔진</b>별로 묶었다. 현재 구현된 엔진을 뜻하지 않는다.</p></header>
+<div class="bar"><input id="q" aria-label="번호·제목·장르·엔진 검색" placeholder="번호·제목·장르·엔진 검색"><button data-f="all" class="on" aria-pressed="true">전체 76</button><button data-f="0" aria-pressed="false">미착수</button><button data-f="1" aria-pressed="false">구현됨</button></div>
+<div class="bar" aria-label="권장 구동 엔진 필터"><button data-engine="all" class="on" aria-pressed="true">모든 엔진</button><button data-engine="unreal" aria-pressed="false">Unreal Engine 5 · 8</button><button data-engine="unity-3d" aria-pressed="false">Unity · URP 3D · 12</button><button data-engine="unity-2d" aria-pressed="false">Unity · URP 2D / UI·오디오 · 55</button><button data-engine="web" aria-pressed="false">웹 · TypeScript + PixiJS · 1</button></div>
+<p id="result" role="status" aria-live="polite">76개 표시</p>
+<div id="grid"><section class="engine-group" data-engine="unreal" id="unreal"><h2 class="group-title">Unreal Engine 5 <span class="group-count">8개</span></h2><p class="group-description">실사 공간·조명·환경음 중심. 배경 제작 자동화의 효과를 확인할 묶음.</p><div class="grid"><article class="card" data-engine="unreal" data-num="3" data-built="0" data-q="3 빛이 닿지 않는 것 비추면 사라지고 어둠에서만 존재하는 사람 손전등 하나 · 예술 unreal engine 5">
+<div class="shots"><a class="shot" href="03-what-light-cannot-reach/mock-a.jpg"><img src="03-what-light-cannot-reach/mock-a.jpg" alt="빛이 닿지 않는 것 목업 A" loading="lazy"></a><a class="shot" href="03-what-light-cannot-reach/mock-b.jpg"><img src="03-what-light-cannot-reach/mock-b.jpg" alt="빛이 닿지 않는 것 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#03</span><span>손전등 하나 · 예술</span><span class="st st-0">미착수</span></div>
+<h2>빛이 닿지 않는 것</h2><p>비추면 사라지고 어둠에서만 존재하는 사람</p>
+<div class="links"><a class="play" href="03-what-light-cannot-reach/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="8" data-built="0" data-q="8 수면 아래 스텔스 위층 경비의 그림자를 피해 보물을 옮긴다 뒤집힌 수족관 · 상업 unreal engine 5">
+<div class="shots"><a class="shot" href="08-surface-stealth/mock-a.jpg"><img src="08-surface-stealth/mock-a.jpg" alt="수면 아래 스텔스 목업 A" loading="lazy"></a><a class="shot" href="08-surface-stealth/mock-b.jpg"><img src="08-surface-stealth/mock-b.jpg" alt="수면 아래 스텔스 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#08</span><span>뒤집힌 수족관 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>수면 아래 스텔스</h2><p>위층 경비의 그림자를 피해 보물을 옮긴다</p>
+<div class="links"><a class="play" href="08-surface-stealth/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="15" data-built="0" data-q="15 창문 속 괴물 반사가 다른 승객 하나를 찾는다 지하철 마지막 열차 · 상업 unreal engine 5">
+<div class="shots"><a class="shot" href="15-reflection-monster/mock-a.jpg"><img src="15-reflection-monster/mock-a.jpg" alt="창문 속 괴물 목업 A" loading="lazy"></a><a class="shot" href="15-reflection-monster/mock-b.jpg"><img src="15-reflection-monster/mock-b.jpg" alt="창문 속 괴물 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#15</span><span>지하철 마지막 열차 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>창문 속 괴물</h2><p>반사가 다른 승객 하나를 찾는다</p>
+<div class="links"><a class="play" href="15-reflection-monster/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="16" data-built="0" data-q="16 빙판 탈출 균열 소리로 안전 경로를 판단 얼음 아래 목소리 · 상업 unreal engine 5">
+<div class="shots"><a class="shot" href="16-ice-escape/mock-a.jpg"><img src="16-ice-escape/mock-a.jpg" alt="빙판 탈출 목업 A" loading="lazy"></a><a class="shot" href="16-ice-escape/mock-b.jpg"><img src="16-ice-escape/mock-b.jpg" alt="빙판 탈출 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#16</span><span>얼음 아래 목소리 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>빙판 탈출</h2><p>균열 소리로 안전 경로를 판단</p>
+<div class="links"><a class="play" href="16-ice-escape/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="17" data-built="0" data-q="17 틀린 그림 순찰 밤마다 바뀐 전시물 찾기 박물관 야간 경비 · 상업 unreal engine 5">
+<div class="shots"><a class="shot" href="17-spot-the-change-patrol/mock-a.jpg"><img src="17-spot-the-change-patrol/mock-a.jpg" alt="틀린 그림 순찰 목업 A" loading="lazy"></a><a class="shot" href="17-spot-the-change-patrol/mock-b.jpg"><img src="17-spot-the-change-patrol/mock-b.jpg" alt="틀린 그림 순찰 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#17</span><span>박물관 야간 경비 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>틀린 그림 순찰</h2><p>밤마다 바뀐 전시물 찾기</p>
+<div class="links"><a class="play" href="17-spot-the-change-patrol/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="19" data-built="0" data-q="19 숨소리 도둑 숨 리듬이 경보 잠든 사람 옆에서 · 상업 unreal engine 5">
+<div class="shots"><a class="shot" href="19-breath-thief/mock-a.jpg"><img src="19-breath-thief/mock-a.jpg" alt="숨소리 도둑 목업 A" loading="lazy"></a><a class="shot" href="19-breath-thief/mock-b.jpg"><img src="19-breath-thief/mock-b.jpg" alt="숨소리 도둑 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#19</span><span>잠든 사람 옆에서 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>숨소리 도둑</h2><p>숨 리듬이 경보</p>
+<div class="links"><a class="play" href="19-breath-thief/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="48" data-built="0" data-q="48 폭풍의 등대지기 등대 빛의 회전 속도와 색으로 암초 사이의 배들을 인도한다 실시간 전략 unreal engine 5">
+<div class="shots"><a class="shot" href="48-storm-lighthouse/mock-a.jpg"><img src="48-storm-lighthouse/mock-a.jpg" alt="폭풍의 등대지기 목업 A" loading="lazy"></a><a class="shot" href="48-storm-lighthouse/mock-b.jpg"><img src="48-storm-lighthouse/mock-b.jpg" alt="폭풍의 등대지기 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#48</span><span>실시간 전략</span><span class="st st-0">새 컨셉</span></div>
+<h2>폭풍의 등대지기</h2><p>등대 빛의 회전 속도와 색으로 암초 사이의 배들을 인도한다</p>
+<div class="links"><a class="play" href="48-storm-lighthouse/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unreal" data-num="69" data-built="0" data-q="69 아무것도 없는 산책 언리얼로 만든 실사 숲을 그냥 걷는다. 목표도 적도 없고 발소리만 있다 산책 시뮬 · 아웃도어 asmr · 2026-10-05 추가 unreal engine 5">
+<div class="shots"><a class="shot" href="69-nothing-walk/mock-a.jpg"><img src="69-nothing-walk/mock-a.jpg" alt="아무것도 없는 산책 목업 A" loading="lazy"></a><a class="shot" href="69-nothing-walk/mock-b.jpg"><img src="69-nothing-walk/mock-b.jpg" alt="아무것도 없는 산책 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#69</span><span>산책 시뮬 · 아웃도어 ASMR · 2026-10-05 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>아무것도 없는 산책</h2><p>언리얼로 만든 실사 숲을 그냥 걷는다. 목표도 적도 없고 발소리만 있다</p>
+<div class="links"><a class="play" href="69-nothing-walk/index.html#a">HTML 시안 ↗</a></div></div></article></div></section><section class="engine-group" data-engine="unity-3d" id="unity-3d"><h2 class="group-title">Unity · URP 3D <span class="group-count">12개</span></h2><p class="group-description">디오라마·스타일화 3D·공간 조작 중심. 기존 셸과 모듈형 에셋 활용.</p><div class="grid"><article class="card" data-engine="unity-3d" data-num="21" data-built="1" data-q="21 밭이 줄어드는 세계 침식이 매년 땅을 먹는다. 확장이 아니라 어느 칸을 포기할지 고르는 게임 파밍 (경영) unity · urp 3d">
+<div class="shots"><a class="shot" href="21-farm-erosion/mock-a.jpg"><img src="21-farm-erosion/mock-a.jpg" alt="밭이 줄어드는 세계 목업 A" loading="lazy"></a><a class="shot" href="21-farm-erosion/mock-b.jpg"><img src="21-farm-erosion/mock-b.jpg" alt="밭이 줄어드는 세계 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#21</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
+<h2>밭이 줄어드는 세계</h2><p>침식이 매년 땅을 먹는다. 확장이 아니라 어느 칸을 포기할지 고르는 게임</p>
+<div class="links"><a class="play" href="21-farm-erosion/index.html#a">HTML 시안 ↗</a><a href="../../../games/farm-erosion/presentation/index.html">기존 PoC</a><a href="../../../games/farm-erosion/README.md">README</a></div></div></article><article class="card" data-engine="unity-3d" data-num="42" data-built="0" data-q="42 조수 간만 우체부 썰물에만 드러나는 갯길로 섬마다 편지를 나른다. 물때표가 곧 퍼즐이다 퍼즐 · 경로 unity · urp 3d">
+<div class="shots"><a class="shot" href="42-tide-postman/mock-a.jpg"><img src="42-tide-postman/mock-a.jpg" alt="조수 간만 우체부 목업 A" loading="lazy"></a><a class="shot" href="42-tide-postman/mock-b.jpg"><img src="42-tide-postman/mock-b.jpg" alt="조수 간만 우체부 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#42</span><span>퍼즐 · 경로</span><span class="st st-0">새 컨셉</span></div>
+<h2>조수 간만 우체부</h2><p>썰물에만 드러나는 갯길로 섬마다 편지를 나른다. 물때표가 곧 퍼즐이다</p>
+<div class="links"><a class="play" href="42-tide-postman/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="43" data-built="0" data-q="43 그림자 경매 경매에 나온 것은 물건이 아니라 물건의 그림자다. 그림자만 보고 입찰한다 추리 · 경매 unity · urp 3d">
+<div class="shots"><a class="shot" href="43-shadow-auction/mock-a.jpg"><img src="43-shadow-auction/mock-a.jpg" alt="그림자 경매 목업 A" loading="lazy"></a><a class="shot" href="43-shadow-auction/mock-b.jpg"><img src="43-shadow-auction/mock-b.jpg" alt="그림자 경매 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#43</span><span>추리 · 경매</span><span class="st st-0">새 컨셉</span></div>
+<h2>그림자 경매</h2><p>경매에 나온 것은 물건이 아니라 물건의 그림자다. 그림자만 보고 입찰한다</p>
+<div class="links"><a class="play" href="43-shadow-auction/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="49" data-built="0" data-q="49 개미 고고학 개미굴 단면에서 떨어진 인간의 물건을 개미의 시점으로 해석한다 탐험 · 추리 unity · urp 3d">
+<div class="shots"><a class="shot" href="49-ant-archaeology/mock-a.jpg"><img src="49-ant-archaeology/mock-a.jpg" alt="개미 고고학 목업 A" loading="lazy"></a><a class="shot" href="49-ant-archaeology/mock-b.jpg"><img src="49-ant-archaeology/mock-b.jpg" alt="개미 고고학 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#49</span><span>탐험 · 추리</span><span class="st st-0">새 컨셉</span></div>
+<h2>개미 고고학</h2><p>개미굴 단면에서 떨어진 인간의 물건을 개미의 시점으로 해석한다</p>
+<div class="links"><a class="play" href="49-ant-archaeology/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="51" data-built="0" data-q="51 골목 고양이 정치 골목 고양이 파벌 사이에서 영역과 사료를 두고 외교한다 전략 · 외교 unity · urp 3d">
+<div class="shots"><a class="shot" href="51-alley-cat-politics/mock-a.jpg"><img src="51-alley-cat-politics/mock-a.jpg" alt="골목 고양이 정치 목업 A" loading="lazy"></a><a class="shot" href="51-alley-cat-politics/mock-b.jpg"><img src="51-alley-cat-politics/mock-b.jpg" alt="골목 고양이 정치 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#51</span><span>전략 · 외교</span><span class="st st-0">새 컨셉</span></div>
+<h2>골목 고양이 정치</h2><p>골목 고양이 파벌 사이에서 영역과 사료를 두고 외교한다</p>
+<div class="links"><a class="play" href="51-alley-cat-politics/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="52" data-built="0" data-q="52 시계탑 수리공 도시 시계가 틀리면 사람들 약속이 어긋나 사건이 난다. 톱니로 시간을 고친다 퍼즐 · 시뮬 unity · urp 3d">
+<div class="shots"><a class="shot" href="52-clocktower-repair/mock-a.jpg"><img src="52-clocktower-repair/mock-a.jpg" alt="시계탑 수리공 목업 A" loading="lazy"></a><a class="shot" href="52-clocktower-repair/mock-b.jpg"><img src="52-clocktower-repair/mock-b.jpg" alt="시계탑 수리공 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#52</span><span>퍼즐 · 시뮬</span><span class="st st-0">새 컨셉</span></div>
+<h2>시계탑 수리공</h2><p>도시 시계가 틀리면 사람들 약속이 어긋나 사건이 난다. 톱니로 시간을 고친다</p>
+<div class="links"><a class="play" href="52-clocktower-repair/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="54" data-built="0" data-q="54 이불 요새 아이 방에서 이불과 베개로 요새를 짓고 밤마다 상상의 괴물을 막는다 타워 디펜스 unity · urp 3d">
+<div class="shots"><a class="shot" href="54-blanket-fort/mock-a.jpg"><img src="54-blanket-fort/mock-a.jpg" alt="이불 요새 목업 A" loading="lazy"></a><a class="shot" href="54-blanket-fort/mock-b.jpg"><img src="54-blanket-fort/mock-b.jpg" alt="이불 요새 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#54</span><span>타워 디펜스</span><span class="st st-0">새 컨셉</span></div>
+<h2>이불 요새</h2><p>아이 방에서 이불과 베개로 요새를 짓고 밤마다 상상의 괴물을 막는다</p>
+<div class="links"><a class="play" href="54-blanket-fort/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="58" data-built="0" data-q="58 인형의 집 탐정 미니어처 집 안 인형 가족의 사건. 벽을 떼어 단면으로 보고 가구를 옮겨 재현한다 추리 unity · urp 3d">
+<div class="shots"><a class="shot" href="58-dollhouse-detective/mock-a.jpg"><img src="58-dollhouse-detective/mock-a.jpg" alt="인형의 집 탐정 목업 A" loading="lazy"></a><a class="shot" href="58-dollhouse-detective/mock-b.jpg"><img src="58-dollhouse-detective/mock-b.jpg" alt="인형의 집 탐정 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#58</span><span>추리</span><span class="st st-0">새 컨셉</span></div>
+<h2>인형의 집 탐정</h2><p>미니어처 집 안 인형 가족의 사건. 벽을 떼어 단면으로 보고 가구를 옮겨 재현한다</p>
+<div class="links"><a class="play" href="58-dollhouse-detective/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="60" data-built="0" data-q="60 비행운 서예 비행기로 하늘에 글씨를 쓴다. 바람이 획을 번지게 한다 액션 · 드로잉 unity · urp 3d">
+<div class="shots"><a class="shot" href="60-contrail-calligraphy/mock-a.jpg"><img src="60-contrail-calligraphy/mock-a.jpg" alt="비행운 서예 목업 A" loading="lazy"></a><a class="shot" href="60-contrail-calligraphy/mock-b.jpg"><img src="60-contrail-calligraphy/mock-b.jpg" alt="비행운 서예 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#60</span><span>액션 · 드로잉</span><span class="st st-0">새 컨셉</span></div>
+<h2>비행운 서예</h2><p>비행기로 하늘에 글씨를 쓴다. 바람이 획을 번지게 한다</p>
+<div class="links"><a class="play" href="60-contrail-calligraphy/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="62" data-built="0" data-q="62 방탈출 제작자 방탈출을 설계하고 시뮬레이션 손님이 푸는 걸 지켜본다 샌드박스 · 설계 unity · urp 3d">
+<div class="shots"><a class="shot" href="62-escape-room-maker/mock-a.jpg"><img src="62-escape-room-maker/mock-a.jpg" alt="방탈출 제작자 목업 A" loading="lazy"></a><a class="shot" href="62-escape-room-maker/mock-b.jpg"><img src="62-escape-room-maker/mock-b.jpg" alt="방탈출 제작자 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#62</span><span>샌드박스 · 설계</span><span class="st st-0">새 컨셉</span></div>
+<h2>방탈출 제작자</h2><p>방탈출을 설계하고 시뮬레이션 손님이 푸는 걸 지켜본다</p>
+<div class="links"><a class="play" href="62-escape-room-maker/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="64" data-built="0" data-q="64 거인의 등 위 마을 걷는 거인의 등 위에서 농사짓는다. 거인의 걸음이 계절이다 생존 · 경영 unity · urp 3d">
+<div class="shots"><a class="shot" href="64-giant-back-village/mock-a.jpg"><img src="64-giant-back-village/mock-a.jpg" alt="거인의 등 위 마을 목업 A" loading="lazy"></a><a class="shot" href="64-giant-back-village/mock-b.jpg"><img src="64-giant-back-village/mock-b.jpg" alt="거인의 등 위 마을 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#64</span><span>생존 · 경영</span><span class="st st-0">새 컨셉</span></div>
+<h2>거인의 등 위 마을</h2><p>걷는 거인의 등 위에서 농사짓는다. 거인의 걸음이 계절이다</p>
+<div class="links"><a class="play" href="64-giant-back-village/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-3d" data-num="66" data-built="0" data-q="66 궤도 청소부 우주 쓰레기를 치운다. 충돌 연쇄(케슬러 증후군)를 막아야 한다 퍼즐 · 물리 unity · urp 3d">
+<div class="shots"><a class="shot" href="66-orbit-sweeper/mock-a.jpg"><img src="66-orbit-sweeper/mock-a.jpg" alt="궤도 청소부 목업 A" loading="lazy"></a><a class="shot" href="66-orbit-sweeper/mock-b.jpg"><img src="66-orbit-sweeper/mock-b.jpg" alt="궤도 청소부 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#66</span><span>퍼즐 · 물리</span><span class="st st-0">새 컨셉</span></div>
+<h2>궤도 청소부</h2><p>우주 쓰레기를 치운다. 충돌 연쇄(케슬러 증후군)를 막아야 한다</p>
+<div class="links"><a class="play" href="66-orbit-sweeper/index.html#a">HTML 시안 ↗</a></div></div></article></div></section><section class="engine-group" data-engine="unity-2d" id="unity-2d"><h2 class="group-title">Unity · URP 2D / UI·오디오 <span class="group-count">55개</span></h2><p class="group-description">서류·카드·격자·이미지·소리 중심. 2D 조명과 효과까지 포함.</p><div class="grid"><article class="card" data-engine="unity-2d" data-num="1" data-built="0" data-q="1 해킹 탈출 방 제한 시간 안에 명령어로 시스템을 뚫는데 유령이 명령을 되받아친다 터미널 유령 · 상업 unity · urp 2d / ui·오디오">
 <div class="shots"><a class="shot" href="01-hack-escape-room/mock-a.jpg"><img src="01-hack-escape-room/mock-a.jpg" alt="해킹 탈출 방 목업 A" loading="lazy"></a><a class="shot" href="01-hack-escape-room/mock-b.jpg"><img src="01-hack-escape-room/mock-b.jpg" alt="해킹 탈출 방 목업 B" loading="lazy"></a></div>
 <div class="body"><div class="meta"><span>#01</span><span>터미널 유령 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>해킹 탈출 방</h2><p>제한 시간 안에 명령어로 시스템을 뚫는데 유령이 명령을 되받아친다</p>
-<div class="links"><a class="play" href="01-hack-escape-room/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="주파수 사냥 다이얼로 조난 신호를 잡아 좌표를 적는다 라디오 수색 · 상업">
-<div class="shots"><a class="shot" href="03-frequency-hunt/mock-a.jpg"><img src="03-frequency-hunt/mock-a.jpg" alt="주파수 사냥 목업 A" loading="lazy"></a><a class="shot" href="03-frequency-hunt/mock-b.jpg"><img src="03-frequency-hunt/mock-b.jpg" alt="주파수 사냥 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#03</span><span>라디오 수색 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="01-hack-escape-room/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="2" data-built="0" data-q="2 주파수 사냥 다이얼로 조난 신호를 잡아 좌표를 적는다 라디오 수색 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="02-frequency-hunt/mock-a.jpg"><img src="02-frequency-hunt/mock-a.jpg" alt="주파수 사냥 목업 A" loading="lazy"></a><a class="shot" href="02-frequency-hunt/mock-b.jpg"><img src="02-frequency-hunt/mock-b.jpg" alt="주파수 사냥 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#02</span><span>라디오 수색 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>주파수 사냥</h2><p>다이얼로 조난 신호를 잡아 좌표를 적는다</p>
-<div class="links"><a class="play" href="03-frequency-hunt/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="빛이 닿지 않는 것 비추면 사라지고 어둠에서만 존재하는 사람 손전등 하나 · 예술">
-<div class="shots"><a class="shot" href="06-what-light-cannot-reach/mock-a.jpg"><img src="06-what-light-cannot-reach/mock-a.jpg" alt="빛이 닿지 않는 것 목업 A" loading="lazy"></a><a class="shot" href="06-what-light-cannot-reach/mock-b.jpg"><img src="06-what-light-cannot-reach/mock-b.jpg" alt="빛이 닿지 않는 것 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#06</span><span>손전등 하나 · 예술</span><span class="st st-0">미착수</span></div>
-<h2>빛이 닿지 않는 것</h2><p>비추면 사라지고 어둠에서만 존재하는 사람</p>
-<div class="links"><a class="play" href="06-what-light-cannot-reach/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="사진 속 범인 흑백 사진 확대·비교로 범인 지목, 100건 박제된 사진관 · 상업">
-<div class="shots"><a class="shot" href="07-culprit-in-photo/mock-a.jpg"><img src="07-culprit-in-photo/mock-a.jpg" alt="사진 속 범인 목업 A" loading="lazy"></a><a class="shot" href="07-culprit-in-photo/mock-b.jpg"><img src="07-culprit-in-photo/mock-b.jpg" alt="사진 속 범인 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#07</span><span>박제된 사진관 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="02-frequency-hunt/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="4" data-built="0" data-q="4 사진 속 범인 흑백 사진 확대·비교로 범인 지목, 100건 박제된 사진관 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="04-culprit-in-photo/mock-a.jpg"><img src="04-culprit-in-photo/mock-a.jpg" alt="사진 속 범인 목업 A" loading="lazy"></a><a class="shot" href="04-culprit-in-photo/mock-b.jpg"><img src="04-culprit-in-photo/mock-b.jpg" alt="사진 속 범인 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#04</span><span>박제된 사진관 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>사진 속 범인</h2><p>흑백 사진 확대·비교로 범인 지목, 100건</p>
-<div class="links"><a class="play" href="07-culprit-in-photo/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="마지막 공연 늙은 인형사의 손이 떨린다 탁상 인형극 · 예술">
-<div class="shots"><a class="shot" href="10-last-performance/mock-a.jpg"><img src="10-last-performance/mock-a.jpg" alt="마지막 공연 목업 A" loading="lazy"></a><a class="shot" href="10-last-performance/mock-b.jpg"><img src="10-last-performance/mock-b.jpg" alt="마지막 공연 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#10</span><span>탁상 인형극 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="04-culprit-in-photo/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="5" data-built="0" data-q="5 마지막 공연 늙은 인형사의 손이 떨린다 탁상 인형극 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="05-last-performance/mock-a.jpg"><img src="05-last-performance/mock-a.jpg" alt="마지막 공연 목업 A" loading="lazy"></a><a class="shot" href="05-last-performance/mock-b.jpg"><img src="05-last-performance/mock-b.jpg" alt="마지막 공연 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#05</span><span>탁상 인형극 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>마지막 공연</h2><p>늙은 인형사의 손이 떨린다</p>
-<div class="links"><a class="play" href="10-last-performance/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="내려가는 곳 층 버튼이 전부 마이너스 엘리베이터 · 예술">
-<div class="shots"><a class="shot" href="12-going-down/mock-a.jpg"><img src="12-going-down/mock-a.jpg" alt="내려가는 곳 목업 A" loading="lazy"></a><a class="shot" href="12-going-down/mock-b.jpg"><img src="12-going-down/mock-b.jpg" alt="내려가는 곳 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#12</span><span>엘리베이터 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="05-last-performance/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="6" data-built="0" data-q="6 내려가는 곳 층 버튼이 전부 마이너스 엘리베이터 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="06-going-down/mock-a.jpg"><img src="06-going-down/mock-a.jpg" alt="내려가는 곳 목업 A" loading="lazy"></a><a class="shot" href="06-going-down/mock-b.jpg"><img src="06-going-down/mock-b.jpg" alt="내려가는 곳 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#06</span><span>엘리베이터 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>내려가는 곳</h2><p>층 버튼이 전부 마이너스</p>
-<div class="links"><a class="play" href="12-going-down/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="사라지는 언어의 마지막 화자 뜻을 적을 때마다 하나를 잊는다 오답 사전 · 예술">
-<div class="shots"><a class="shot" href="14-last-speaker/mock-a.jpg"><img src="14-last-speaker/mock-a.jpg" alt="사라지는 언어의 마지막 화자 목업 A" loading="lazy"></a><a class="shot" href="14-last-speaker/mock-b.jpg"><img src="14-last-speaker/mock-b.jpg" alt="사라지는 언어의 마지막 화자 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#14</span><span>오답 사전 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="06-going-down/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="7" data-built="0" data-q="7 사라지는 언어의 마지막 화자 뜻을 적을 때마다 하나를 잊는다 오답 사전 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="07-last-speaker/mock-a.jpg"><img src="07-last-speaker/mock-a.jpg" alt="사라지는 언어의 마지막 화자 목업 A" loading="lazy"></a><a class="shot" href="07-last-speaker/mock-b.jpg"><img src="07-last-speaker/mock-b.jpg" alt="사라지는 언어의 마지막 화자 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#07</span><span>오답 사전 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>사라지는 언어의 마지막 화자</h2><p>뜻을 적을 때마다 하나를 잊는다</p>
-<div class="links"><a class="play" href="14-last-speaker/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="수면 아래 스텔스 위층 경비의 그림자를 피해 보물을 옮긴다 뒤집힌 수족관 · 상업">
-<div class="shots"><a class="shot" href="15-surface-stealth/mock-a.jpg"><img src="15-surface-stealth/mock-a.jpg" alt="수면 아래 스텔스 목업 A" loading="lazy"></a><a class="shot" href="15-surface-stealth/mock-b.jpg"><img src="15-surface-stealth/mock-b.jpg" alt="수면 아래 스텔스 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#15</span><span>뒤집힌 수족관 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>수면 아래 스텔스</h2><p>위층 경비의 그림자를 피해 보물을 옮긴다</p>
-<div class="links"><a class="play" href="15-surface-stealth/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="펜팔 추리 상대가 거짓말을 한다, 답장 선택으로 진실을 캔다 답장 없는 편지 · 상업">
-<div class="shots"><a class="shot" href="17-penpal-deduction/mock-a.jpg"><img src="17-penpal-deduction/mock-a.jpg" alt="펜팔 추리 목업 A" loading="lazy"></a><a class="shot" href="17-penpal-deduction/mock-b.jpg"><img src="17-penpal-deduction/mock-b.jpg" alt="펜팔 추리 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#17</span><span>답장 없는 편지 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="07-last-speaker/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="9" data-built="0" data-q="9 펜팔 추리 상대가 거짓말을 한다, 답장 선택으로 진실을 캔다 답장 없는 편지 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="09-penpal-deduction/mock-a.jpg"><img src="09-penpal-deduction/mock-a.jpg" alt="펜팔 추리 목업 A" loading="lazy"></a><a class="shot" href="09-penpal-deduction/mock-b.jpg"><img src="09-penpal-deduction/mock-b.jpg" alt="펜팔 추리 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#09</span><span>답장 없는 편지 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>펜팔 추리</h2><p>상대가 거짓말을 한다, 답장 선택으로 진실을 캔다</p>
-<div class="links"><a class="play" href="17-penpal-deduction/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="연결하면 안 되는 통화 한 통화의 대가로 마을이 바뀐다 전화 교환수 · 예술">
-<div class="shots"><a class="shot" href="20-call-not-to-connect/mock-a.jpg"><img src="20-call-not-to-connect/mock-a.jpg" alt="연결하면 안 되는 통화 목업 A" loading="lazy"></a><a class="shot" href="20-call-not-to-connect/mock-b.jpg"><img src="20-call-not-to-connect/mock-b.jpg" alt="연결하면 안 되는 통화 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#20</span><span>전화 교환수 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="09-penpal-deduction/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="10" data-built="0" data-q="10 연결하면 안 되는 통화 한 통화의 대가로 마을이 바뀐다 전화 교환수 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="10-call-not-to-connect/mock-a.jpg"><img src="10-call-not-to-connect/mock-a.jpg" alt="연결하면 안 되는 통화 목업 A" loading="lazy"></a><a class="shot" href="10-call-not-to-connect/mock-b.jpg"><img src="10-call-not-to-connect/mock-b.jpg" alt="연결하면 안 되는 통화 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#10</span><span>전화 교환수 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>연결하면 안 되는 통화</h2><p>한 통화의 대가로 마을이 바뀐다</p>
-<div class="links"><a class="play" href="20-call-not-to-connect/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="시력을 잃는 하루 눈 뜨는 시간이 점점 짧아져 0초 눈 감은 기록 · 예술">
-<div class="shots"><a class="shot" href="22-day-losing-sight/mock-a.jpg"><img src="22-day-losing-sight/mock-a.jpg" alt="시력을 잃는 하루 목업 A" loading="lazy"></a><a class="shot" href="22-day-losing-sight/mock-b.jpg"><img src="22-day-losing-sight/mock-b.jpg" alt="시력을 잃는 하루 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#22</span><span>눈 감은 기록 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="10-call-not-to-connect/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="11" data-built="0" data-q="11 시력을 잃는 하루 눈 뜨는 시간이 점점 짧아져 0초 눈 감은 기록 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="11-day-losing-sight/mock-a.jpg"><img src="11-day-losing-sight/mock-a.jpg" alt="시력을 잃는 하루 목업 A" loading="lazy"></a><a class="shot" href="11-day-losing-sight/mock-b.jpg"><img src="11-day-losing-sight/mock-b.jpg" alt="시력을 잃는 하루 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#11</span><span>눈 감은 기록 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>시력을 잃는 하루</h2><p>눈 뜨는 시간이 점점 짧아져 0초</p>
-<div class="links"><a class="play" href="22-day-losing-sight/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="아무도 없는 학교에 말 걸기 마이크 입력, 대답은 복도에서 폐교 방송실 · 예술">
-<div class="shots"><a class="shot" href="24-talking-to-empty-school/mock-a.jpg"><img src="24-talking-to-empty-school/mock-a.jpg" alt="아무도 없는 학교에 말 걸기 목업 A" loading="lazy"></a><a class="shot" href="24-talking-to-empty-school/mock-b.jpg"><img src="24-talking-to-empty-school/mock-b.jpg" alt="아무도 없는 학교에 말 걸기 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#24</span><span>폐교 방송실 · 예술</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="11-day-losing-sight/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="12" data-built="0" data-q="12 아무도 없는 학교에 말 걸기 마이크 입력, 대답은 복도에서 폐교 방송실 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="12-talking-to-empty-school/mock-a.jpg"><img src="12-talking-to-empty-school/mock-a.jpg" alt="아무도 없는 학교에 말 걸기 목업 A" loading="lazy"></a><a class="shot" href="12-talking-to-empty-school/mock-b.jpg"><img src="12-talking-to-empty-school/mock-b.jpg" alt="아무도 없는 학교에 말 걸기 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#12</span><span>폐교 방송실 · 예술</span><span class="st st-0">미착수</span></div>
 <h2>아무도 없는 학교에 말 걸기</h2><p>마이크 입력, 대답은 복도에서</p>
-<div class="links"><a class="play" href="24-talking-to-empty-school/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="분실물 창고 내용물로 주인을 찾아 배송, 하루 20건 잘못 배송된 소포 · 상업">
-<div class="shots"><a class="shot" href="25-lost-parcel-depot/mock-a.jpg"><img src="25-lost-parcel-depot/mock-a.jpg" alt="분실물 창고 목업 A" loading="lazy"></a><a class="shot" href="25-lost-parcel-depot/mock-b.jpg"><img src="25-lost-parcel-depot/mock-b.jpg" alt="분실물 창고 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#25</span><span>잘못 배송된 소포 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="12-talking-to-empty-school/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="13" data-built="0" data-q="13 분실물 창고 내용물로 주인을 찾아 배송, 하루 20건 잘못 배송된 소포 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="13-lost-parcel-depot/mock-a.jpg"><img src="13-lost-parcel-depot/mock-a.jpg" alt="분실물 창고 목업 A" loading="lazy"></a><a class="shot" href="13-lost-parcel-depot/mock-b.jpg"><img src="13-lost-parcel-depot/mock-b.jpg" alt="분실물 창고 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#13</span><span>잘못 배송된 소포 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>분실물 창고</h2><p>내용물로 주인을 찾아 배송, 하루 20건</p>
-<div class="links"><a class="play" href="25-lost-parcel-depot/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="말풍선 퍼즐 컷 순서·말풍선 재배치로 결말을 바꾼다, 200문제 한 프레임 만화 · 상업">
-<div class="shots"><a class="shot" href="27-bubble-puzzle/mock-a.jpg"><img src="27-bubble-puzzle/mock-a.jpg" alt="말풍선 퍼즐 목업 A" loading="lazy"></a><a class="shot" href="27-bubble-puzzle/mock-b.jpg"><img src="27-bubble-puzzle/mock-b.jpg" alt="말풍선 퍼즐 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#27</span><span>한 프레임 만화 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="13-lost-parcel-depot/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="14" data-built="0" data-q="14 말풍선 퍼즐 컷 순서·말풍선 재배치로 결말을 바꾼다, 200문제 한 프레임 만화 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="14-bubble-puzzle/mock-a.jpg"><img src="14-bubble-puzzle/mock-a.jpg" alt="말풍선 퍼즐 목업 A" loading="lazy"></a><a class="shot" href="14-bubble-puzzle/mock-b.jpg"><img src="14-bubble-puzzle/mock-b.jpg" alt="말풍선 퍼즐 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#14</span><span>한 프레임 만화 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>말풍선 퍼즐</h2><p>컷 순서·말풍선 재배치로 결말을 바꾼다, 200문제</p>
-<div class="links"><a class="play" href="27-bubble-puzzle/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="창문 속 괴물 반사가 다른 승객 하나를 찾는다 지하철 마지막 열차 · 상업">
-<div class="shots"><a class="shot" href="29-reflection-monster/mock-a.jpg"><img src="29-reflection-monster/mock-a.jpg" alt="창문 속 괴물 목업 A" loading="lazy"></a><a class="shot" href="29-reflection-monster/mock-b.jpg"><img src="29-reflection-monster/mock-b.jpg" alt="창문 속 괴물 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#29</span><span>지하철 마지막 열차 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>창문 속 괴물</h2><p>반사가 다른 승객 하나를 찾는다</p>
-<div class="links"><a class="play" href="29-reflection-monster/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="빙판 탈출 균열 소리로 안전 경로를 판단 얼음 아래 목소리 · 상업">
-<div class="shots"><a class="shot" href="31-ice-escape/mock-a.jpg"><img src="31-ice-escape/mock-a.jpg" alt="빙판 탈출 목업 A" loading="lazy"></a><a class="shot" href="31-ice-escape/mock-b.jpg"><img src="31-ice-escape/mock-b.jpg" alt="빙판 탈출 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#31</span><span>얼음 아래 목소리 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>빙판 탈출</h2><p>균열 소리로 안전 경로를 판단</p>
-<div class="links"><a class="play" href="31-ice-escape/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="틀린 그림 순찰 밤마다 바뀐 전시물 찾기 박물관 야간 경비 · 상업">
-<div class="shots"><a class="shot" href="33-spot-the-change-patrol/mock-a.jpg"><img src="33-spot-the-change-patrol/mock-a.jpg" alt="틀린 그림 순찰 목업 A" loading="lazy"></a><a class="shot" href="33-spot-the-change-patrol/mock-b.jpg"><img src="33-spot-the-change-patrol/mock-b.jpg" alt="틀린 그림 순찰 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#33</span><span>박물관 야간 경비 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>틀린 그림 순찰</h2><p>밤마다 바뀐 전시물 찾기</p>
-<div class="links"><a class="play" href="33-spot-the-change-patrol/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="테이프 감식 겹쳐 녹음된 증거를 되감고 필터로 복원, 15건 녹음기 되감기 · 상업">
-<div class="shots"><a class="shot" href="35-tape-forensics/mock-a.jpg"><img src="35-tape-forensics/mock-a.jpg" alt="테이프 감식 목업 A" loading="lazy"></a><a class="shot" href="35-tape-forensics/mock-b.jpg"><img src="35-tape-forensics/mock-b.jpg" alt="테이프 감식 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#35</span><span>녹음기 되감기 · 상업</span><span class="st st-0">미착수</span></div>
+<div class="links"><a class="play" href="14-bubble-puzzle/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="18" data-built="0" data-q="18 테이프 감식 겹쳐 녹음된 증거를 되감고 필터로 복원, 15건 녹음기 되감기 · 상업 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="18-tape-forensics/mock-a.jpg"><img src="18-tape-forensics/mock-a.jpg" alt="테이프 감식 목업 A" loading="lazy"></a><a class="shot" href="18-tape-forensics/mock-b.jpg"><img src="18-tape-forensics/mock-b.jpg" alt="테이프 감식 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#18</span><span>녹음기 되감기 · 상업</span><span class="st st-0">미착수</span></div>
 <h2>테이프 감식</h2><p>겹쳐 녹음된 증거를 되감고 필터로 복원, 15건</p>
-<div class="links"><a class="play" href="35-tape-forensics/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="숨소리 도둑 숨 리듬이 경보 잠든 사람 옆에서 · 상업">
-<div class="shots"><a class="shot" href="37-breath-thief/mock-a.jpg"><img src="37-breath-thief/mock-a.jpg" alt="숨소리 도둑 목업 A" loading="lazy"></a><a class="shot" href="37-breath-thief/mock-b.jpg"><img src="37-breath-thief/mock-b.jpg" alt="숨소리 도둑 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#37</span><span>잠든 사람 옆에서 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>숨소리 도둑</h2><p>숨 리듬이 경보</p>
-<div class="links"><a class="play" href="37-breath-thief/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="버스 정류장 관찰 실루엣으로 직업·행선지를 맞힌다 이름 없는 정거장 · 상업">
-<div class="shots"><a class="shot" href="39-bus-stop-watch/mock-a.jpg"><img src="39-bus-stop-watch/mock-a.jpg" alt="버스 정류장 관찰 목업 A" loading="lazy"></a><a class="shot" href="39-bus-stop-watch/mock-b.jpg"><img src="39-bus-stop-watch/mock-b.jpg" alt="버스 정류장 관찰 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#39</span><span>이름 없는 정거장 · 상업</span><span class="st st-0">미착수</span></div>
-<h2>버스 정류장 관찰</h2><p>실루엣으로 직업·행선지를 맞힌다</p>
-<div class="links"><a class="play" href="39-bus-stop-watch/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="1" data-q="밭이 줄어드는 세계 침식이 매년 땅을 먹는다. 확장이 아니라 어느 칸을 포기할지 고르는 게임 파밍 (경영)">
-<div class="shots"><a class="shot" href="51-farm-erosion/mock-a.jpg"><img src="51-farm-erosion/mock-a.jpg" alt="밭이 줄어드는 세계 목업 A" loading="lazy"></a><a class="shot" href="51-farm-erosion/mock-b.jpg"><img src="51-farm-erosion/mock-b.jpg" alt="밭이 줄어드는 세계 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#51</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
-<h2>밭이 줄어드는 세계</h2><p>침식이 매년 땅을 먹는다. 확장이 아니라 어느 칸을 포기할지 고르는 게임</p>
-<div class="links"><a class="play" href="51-farm-erosion/index.html#a">HTML 시안 ↗</a><a href="../../games/farm-erosion/presentation/index.html">기존 PoC</a><a href="../../games/farm-erosion/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="되돌릴 수 있는 한 해 할당량을 못 채우면 봄으로 되감을 수 있지만, 되감은 횟수만큼 토질이 영구히 깎인다 파밍 (경영)">
-<div class="shots"><a class="shot" href="52-farm-rewind-year/mock-a.jpg"><img src="52-farm-rewind-year/mock-a.jpg" alt="되돌릴 수 있는 한 해 목업 A" loading="lazy"></a><a class="shot" href="52-farm-rewind-year/mock-b.jpg"><img src="52-farm-rewind-year/mock-b.jpg" alt="되돌릴 수 있는 한 해 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#52</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="18-tape-forensics/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="22" data-built="1" data-q="22 되돌릴 수 있는 한 해 할당량을 못 채우면 봄으로 되감을 수 있지만, 되감은 횟수만큼 토질이 영구히 깎인다 파밍 (경영) unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="22-farm-rewind-year/mock-a.jpg"><img src="22-farm-rewind-year/mock-a.jpg" alt="되돌릴 수 있는 한 해 목업 A" loading="lazy"></a><a class="shot" href="22-farm-rewind-year/mock-b.jpg"><img src="22-farm-rewind-year/mock-b.jpg" alt="되돌릴 수 있는 한 해 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#22</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
 <h2>되돌릴 수 있는 한 해</h2><p>할당량을 못 채우면 봄으로 되감을 수 있지만, 되감은 횟수만큼 토질이 영구히 깎인다</p>
-<div class="links"><a class="play" href="52-farm-rewind-year/index.html#a">HTML 시안 ↗</a><a href="../../games/farm-rewind-year/presentation/index.html">기존 PoC</a><a href="../../games/farm-rewind-year/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="작물이 정보다 밭에 담이 없어 남이 본다. 무엇을 심었는지가 다음 계절의 시세·평판·도둑을 바꾼다 파밍 (경영)">
-<div class="shots"><a class="shot" href="53-farm-signal/mock-a.jpg"><img src="53-farm-signal/mock-a.jpg" alt="작물이 정보다 목업 A" loading="lazy"></a><a class="shot" href="53-farm-signal/mock-b.jpg"><img src="53-farm-signal/mock-b.jpg" alt="작물이 정보다 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#53</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="22-farm-rewind-year/index.html#a">HTML 시안 ↗</a><a href="../../../games/farm-rewind-year/presentation/index.html">기존 PoC</a><a href="../../../games/farm-rewind-year/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="23" data-built="1" data-q="23 작물이 정보다 밭에 담이 없어 남이 본다. 무엇을 심었는지가 다음 계절의 시세·평판·도둑을 바꾼다 파밍 (경영) unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="23-farm-signal/mock-a.jpg"><img src="23-farm-signal/mock-a.jpg" alt="작물이 정보다 목업 A" loading="lazy"></a><a class="shot" href="23-farm-signal/mock-b.jpg"><img src="23-farm-signal/mock-b.jpg" alt="작물이 정보다 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#23</span><span>파밍 (경영)</span><span class="st st-1">구현됨</span></div>
 <h2>작물이 정보다</h2><p>밭에 담이 없어 남이 본다. 무엇을 심었는지가 다음 계절의 시세·평판·도둑을 바꾼다</p>
-<div class="links"><a class="play" href="53-farm-signal/index.html#a">HTML 시안 ↗</a><a href="../../games/farm-signal/presentation/index.html">기존 PoC</a><a href="../../games/farm-signal/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="되감는 전투 전투를 회차당 세 번 되감을 수 있는데, 적이 그것을 기억해 같은 수를 다시 두지 않는다 로그라이크 덱빌더">
-<div class="shots"><a class="shot" href="54-deck-rewind/mock-a.jpg"><img src="54-deck-rewind/mock-a.jpg" alt="되감는 전투 목업 A" loading="lazy"></a><a class="shot" href="54-deck-rewind/mock-b.jpg"><img src="54-deck-rewind/mock-b.jpg" alt="되감는 전투 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#54</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="23-farm-signal/index.html#a">HTML 시안 ↗</a><a href="../../../games/farm-signal/presentation/index.html">기존 PoC</a><a href="../../../games/farm-signal/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="24" data-built="1" data-q="24 되감는 전투 전투를 회차당 세 번 되감을 수 있는데, 적이 그것을 기억해 같은 수를 다시 두지 않는다 로그라이크 덱빌더 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="24-deck-rewind/mock-a.jpg"><img src="24-deck-rewind/mock-a.jpg" alt="되감는 전투 목업 A" loading="lazy"></a><a class="shot" href="24-deck-rewind/mock-b.jpg"><img src="24-deck-rewind/mock-b.jpg" alt="되감는 전투 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#24</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
 <h2>되감는 전투</h2><p>전투를 회차당 세 번 되감을 수 있는데, 적이 그것을 기억해 같은 수를 다시 두지 않는다</p>
-<div class="links"><a class="play" href="54-deck-rewind/index.html#a">HTML 시안 ↗</a><a href="../../games/deck-rewind/presentation/index.html">기존 PoC</a><a href="../../games/deck-rewind/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="공개된 다음 수 적의 다음 다섯 수가 늘 보인다. 문제는 &quot;무엇이 올까&quot;가 아니라 &quot;어느 순서로 받을까&quot; 로그라이크 덱빌더">
-<div class="shots"><a class="shot" href="55-deck-openhand/mock-a.jpg"><img src="55-deck-openhand/mock-a.jpg" alt="공개된 다음 수 목업 A" loading="lazy"></a><a class="shot" href="55-deck-openhand/mock-b.jpg"><img src="55-deck-openhand/mock-b.jpg" alt="공개된 다음 수 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#55</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="24-deck-rewind/index.html#a">HTML 시안 ↗</a><a href="../../../games/deck-rewind/presentation/index.html">기존 PoC</a><a href="../../../games/deck-rewind/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="25" data-built="1" data-q="25 공개된 다음 수 적의 다음 다섯 수가 늘 보인다. 문제는 &quot;무엇이 올까&quot;가 아니라 &quot;어느 순서로 받을까&quot; 로그라이크 덱빌더 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="25-deck-openhand/mock-a.jpg"><img src="25-deck-openhand/mock-a.jpg" alt="공개된 다음 수 목업 A" loading="lazy"></a><a class="shot" href="25-deck-openhand/mock-b.jpg"><img src="25-deck-openhand/mock-b.jpg" alt="공개된 다음 수 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#25</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
 <h2>공개된 다음 수</h2><p>적의 다음 다섯 수가 늘 보인다. 문제는 &quot;무엇이 올까&quot;가 아니라 &quot;어느 순서로 받을까&quot;</p>
-<div class="links"><a class="play" href="55-deck-openhand/index.html#a">HTML 시안 ↗</a><a href="../../games/deck-openhand/presentation/index.html">기존 PoC</a><a href="../../games/deck-openhand/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="소모되는 활자 강한 카드에 남은 인쇄 횟수가 있고 회차 전체에서 줄어든다. &quot;지금 쓸까 아껴 둘까&quot; 로그라이크 덱빌더">
-<div class="shots"><a class="shot" href="56-deck-attrition/mock-a.jpg"><img src="56-deck-attrition/mock-a.jpg" alt="소모되는 활자 목업 A" loading="lazy"></a><a class="shot" href="56-deck-attrition/mock-b.jpg"><img src="56-deck-attrition/mock-b.jpg" alt="소모되는 활자 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#56</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="25-deck-openhand/index.html#a">HTML 시안 ↗</a><a href="../../../games/deck-openhand/presentation/index.html">기존 PoC</a><a href="../../../games/deck-openhand/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="26" data-built="1" data-q="26 소모되는 활자 강한 카드에 남은 인쇄 횟수가 있고 회차 전체에서 줄어든다. &quot;지금 쓸까 아껴 둘까&quot; 로그라이크 덱빌더 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="26-deck-attrition/mock-a.jpg"><img src="26-deck-attrition/mock-a.jpg" alt="소모되는 활자 목업 A" loading="lazy"></a><a class="shot" href="26-deck-attrition/mock-b.jpg"><img src="26-deck-attrition/mock-b.jpg" alt="소모되는 활자 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#26</span><span>로그라이크 덱빌더</span><span class="st st-1">구현됨</span></div>
 <h2>소모되는 활자</h2><p>강한 카드에 남은 인쇄 횟수가 있고 회차 전체에서 줄어든다. &quot;지금 쓸까 아껴 둘까&quot;</p>
-<div class="links"><a class="play" href="56-deck-attrition/index.html#a">HTML 시안 ↗</a><a href="../../games/deck-attrition/presentation/index.html">기존 PoC</a><a href="../../games/deck-attrition/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="수확하는 덱 그 해 수확물이 그대로 덱이 되어 겨울 하룻밤의 침입을 막는다. 카드 상점이 없다 혼합 (파밍 × 덱빌더)">
-<div class="shots"><a class="shot" href="57-hybrid-harvest-deck/mock-a.jpg"><img src="57-hybrid-harvest-deck/mock-a.jpg" alt="수확하는 덱 목업 A" loading="lazy"></a><a class="shot" href="57-hybrid-harvest-deck/mock-b.jpg"><img src="57-hybrid-harvest-deck/mock-b.jpg" alt="수확하는 덱 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#57</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="26-deck-attrition/index.html#a">HTML 시안 ↗</a><a href="../../../games/deck-attrition/presentation/index.html">기존 PoC</a><a href="../../../games/deck-attrition/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="27" data-built="1" data-q="27 수확하는 덱 그 해 수확물이 그대로 덱이 되어 겨울 하룻밤의 침입을 막는다. 카드 상점이 없다 혼합 (파밍 × 덱빌더) unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="27-hybrid-harvest-deck/mock-a.jpg"><img src="27-hybrid-harvest-deck/mock-a.jpg" alt="수확하는 덱 목업 A" loading="lazy"></a><a class="shot" href="27-hybrid-harvest-deck/mock-b.jpg"><img src="27-hybrid-harvest-deck/mock-b.jpg" alt="수확하는 덱 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#27</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
 <h2>수확하는 덱</h2><p>그 해 수확물이 그대로 덱이 되어 겨울 하룻밤의 침입을 막는다. 카드 상점이 없다</p>
-<div class="links"><a class="play" href="57-hybrid-harvest-deck/index.html#a">HTML 시안 ↗</a><a href="../../games/hybrid-harvest-deck/presentation/index.html">기존 PoC</a><a href="../../games/hybrid-harvest-deck/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="겨울 요새 그 덱이 해를 넘겨 남고, 남은 채로 닳는다 혼합 (파밍 × 덱빌더)">
-<div class="shots"><a class="shot" href="58-hybrid-siege-seasons/mock-a.jpg"><img src="58-hybrid-siege-seasons/mock-a.jpg" alt="겨울 요새 목업 A" loading="lazy"></a><a class="shot" href="58-hybrid-siege-seasons/mock-b.jpg"><img src="58-hybrid-siege-seasons/mock-b.jpg" alt="겨울 요새 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#58</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="27-hybrid-harvest-deck/index.html#a">HTML 시안 ↗</a><a href="../../../games/hybrid-harvest-deck/presentation/index.html">기존 PoC</a><a href="../../../games/hybrid-harvest-deck/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="28" data-built="1" data-q="28 겨울 요새 그 덱이 해를 넘겨 남고, 남은 채로 닳는다 혼합 (파밍 × 덱빌더) unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="28-hybrid-siege-seasons/mock-a.jpg"><img src="28-hybrid-siege-seasons/mock-a.jpg" alt="겨울 요새 목업 A" loading="lazy"></a><a class="shot" href="28-hybrid-siege-seasons/mock-b.jpg"><img src="28-hybrid-siege-seasons/mock-b.jpg" alt="겨울 요새 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#28</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
 <h2>겨울 요새</h2><p>그 덱이 해를 넘겨 남고, 남은 채로 닳는다</p>
-<div class="links"><a class="play" href="58-hybrid-siege-seasons/index.html#a">HTML 시안 ↗</a><a href="../../games/hybrid-siege-seasons/presentation/index.html">기존 PoC</a><a href="../../games/hybrid-siege-seasons/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="덱을 심는다 쓰지 않은 표본이 버려지지 않고 밭으로 돌아가 심긴다. 밭에 들어가는 길도 덱뿐이다 혼합 (파밍 × 덱빌더)">
-<div class="shots"><a class="shot" href="59-hybrid-sown-deck/mock-a.jpg"><img src="59-hybrid-sown-deck/mock-a.jpg" alt="덱을 심는다 목업 A" loading="lazy"></a><a class="shot" href="59-hybrid-sown-deck/mock-b.jpg"><img src="59-hybrid-sown-deck/mock-b.jpg" alt="덱을 심는다 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#59</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="28-hybrid-siege-seasons/index.html#a">HTML 시안 ↗</a><a href="../../../games/hybrid-siege-seasons/presentation/index.html">기존 PoC</a><a href="../../../games/hybrid-siege-seasons/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="29" data-built="1" data-q="29 덱을 심는다 쓰지 않은 표본이 버려지지 않고 밭으로 돌아가 심긴다. 밭에 들어가는 길도 덱뿐이다 혼합 (파밍 × 덱빌더) unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="29-hybrid-sown-deck/mock-a.jpg"><img src="29-hybrid-sown-deck/mock-a.jpg" alt="덱을 심는다 목업 A" loading="lazy"></a><a class="shot" href="29-hybrid-sown-deck/mock-b.jpg"><img src="29-hybrid-sown-deck/mock-b.jpg" alt="덱을 심는다 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#29</span><span>혼합 (파밍 × 덱빌더)</span><span class="st st-1">구현됨</span></div>
 <h2>덱을 심는다</h2><p>쓰지 않은 표본이 버려지지 않고 밭으로 돌아가 심긴다. 밭에 들어가는 길도 덱뿐이다</p>
-<div class="links"><a class="play" href="59-hybrid-sown-deck/index.html#a">HTML 시안 ↗</a><a href="../../games/hybrid-sown-deck/presentation/index.html">기존 PoC</a><a href="../../games/hybrid-sown-deck/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="능선 초소 순찰을 며칠 지켜보고 한 번의 매복으로 초소를 지운다. 빼앗은 보급으로 거점을 고친다 실시간 전술 × 거점">
-<div class="shots"><a class="shot" href="60-tactics-partisan-1941/mock-a.jpg"><img src="60-tactics-partisan-1941/mock-a.jpg" alt="능선 초소 목업 A" loading="lazy"></a><a class="shot" href="60-tactics-partisan-1941/mock-b.jpg"><img src="60-tactics-partisan-1941/mock-b.jpg" alt="능선 초소 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#60</span><span>실시간 전술 × 거점</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="29-hybrid-sown-deck/index.html#a">HTML 시안 ↗</a><a href="../../../games/hybrid-sown-deck/presentation/index.html">기존 PoC</a><a href="../../../games/hybrid-sown-deck/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="30" data-built="1" data-q="30 능선 초소 순찰을 며칠 지켜보고 한 번의 매복으로 초소를 지운다. 빼앗은 보급으로 거점을 고친다 실시간 전술 × 거점 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="30-tactics-partisan-1941/mock-a.jpg"><img src="30-tactics-partisan-1941/mock-a.jpg" alt="능선 초소 목업 A" loading="lazy"></a><a class="shot" href="30-tactics-partisan-1941/mock-b.jpg"><img src="30-tactics-partisan-1941/mock-b.jpg" alt="능선 초소 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#30</span><span>실시간 전술 × 거점</span><span class="st st-1">구현됨</span></div>
 <h2>능선 초소</h2><p>순찰을 며칠 지켜보고 한 번의 매복으로 초소를 지운다. 빼앗은 보급으로 거점을 고친다</p>
-<div class="links"><a class="play" href="60-tactics-partisan-1941/index.html#a">HTML 시안 ↗</a><a href="../../games/tactics-partisan-1941/presentation/index.html">기존 PoC</a><a href="../../games/tactics-partisan-1941/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="속삭이는 지도 순찰 위치를 마을 사람에게 물어야 알고, 묻는 것은 신뢰를 쓴다 실시간 전술 × 거점">
-<div class="shots"><a class="shot" href="61-tactics-whisper-map/mock-a.jpg"><img src="61-tactics-whisper-map/mock-a.jpg" alt="속삭이는 지도 목업 A" loading="lazy"></a><a class="shot" href="61-tactics-whisper-map/mock-b.jpg"><img src="61-tactics-whisper-map/mock-b.jpg" alt="속삭이는 지도 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#61</span><span>실시간 전술 × 거점</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="30-tactics-partisan-1941/index.html#a">HTML 시안 ↗</a><a href="../../../games/tactics-partisan-1941/presentation/index.html">기존 PoC</a><a href="../../../games/tactics-partisan-1941/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="31" data-built="1" data-q="31 속삭이는 지도 순찰 위치를 마을 사람에게 물어야 알고, 묻는 것은 신뢰를 쓴다 실시간 전술 × 거점 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="31-tactics-whisper-map/mock-a.jpg"><img src="31-tactics-whisper-map/mock-a.jpg" alt="속삭이는 지도 목업 A" loading="lazy"></a><a class="shot" href="31-tactics-whisper-map/mock-b.jpg"><img src="31-tactics-whisper-map/mock-b.jpg" alt="속삭이는 지도 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#31</span><span>실시간 전술 × 거점</span><span class="st st-1">구현됨</span></div>
 <h2>속삭이는 지도</h2><p>순찰 위치를 마을 사람에게 물어야 알고, 묻는 것은 신뢰를 쓴다</p>
-<div class="links"><a class="play" href="61-tactics-whisper-map/index.html#a">HTML 시안 ↗</a><a href="../../games/tactics-whisper-map/presentation/index.html">기존 PoC</a><a href="../../games/tactics-whisper-map/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="죽은 사람의 휴대폰 죽은 사람의 휴대폰. 잠금은 풀 수 없고 잠금 화면 하나가 게임 전체다 1인칭 추리 · 조사">
-<div class="shots"><a class="shot" href="62-locked-phone/mock-a.jpg"><img src="62-locked-phone/mock-a.jpg" alt="죽은 사람의 휴대폰 목업 A" loading="lazy"></a><a class="shot" href="62-locked-phone/mock-b.jpg"><img src="62-locked-phone/mock-b.jpg" alt="죽은 사람의 휴대폰 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#62</span><span>1인칭 추리 · 조사</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="31-tactics-whisper-map/index.html#a">HTML 시안 ↗</a><a href="../../../games/tactics-whisper-map/presentation/index.html">기존 PoC</a><a href="../../../games/tactics-whisper-map/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="32" data-built="1" data-q="32 죽은 사람의 휴대폰 죽은 사람의 휴대폰. 잠금은 풀 수 없고 잠금 화면 하나가 게임 전체다 1인칭 추리 · 조사 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="32-locked-phone/mock-a.jpg"><img src="32-locked-phone/mock-a.jpg" alt="죽은 사람의 휴대폰 목업 A" loading="lazy"></a><a class="shot" href="32-locked-phone/mock-b.jpg"><img src="32-locked-phone/mock-b.jpg" alt="죽은 사람의 휴대폰 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#32</span><span>1인칭 추리 · 조사</span><span class="st st-1">구현됨</span></div>
 <h2>죽은 사람의 휴대폰</h2><p>죽은 사람의 휴대폰. 잠금은 풀 수 없고 잠금 화면 하나가 게임 전체다</p>
-<div class="links"><a class="play" href="62-locked-phone/index.html#a">HTML 시안 ↗</a><a href="../../games/locked-phone/presentation/index.html">기존 PoC</a><a href="../../games/locked-phone/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="냄새로 푸는 추리 방마다 냄새가 층으로 쌓여 있다. 보이지도 들리지도 않고 층을 시간순으로 벗겨 낸다 1인칭 추리 · 감각 박탈">
-<div class="shots"><a class="shot" href="63-scent-layers/mock-a.jpg"><img src="63-scent-layers/mock-a.jpg" alt="냄새로 푸는 추리 목업 A" loading="lazy"></a><a class="shot" href="63-scent-layers/mock-b.jpg"><img src="63-scent-layers/mock-b.jpg" alt="냄새로 푸는 추리 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#63</span><span>1인칭 추리 · 감각 박탈</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="32-locked-phone/index.html#a">HTML 시안 ↗</a><a href="../../../games/locked-phone/presentation/index.html">기존 PoC</a><a href="../../../games/locked-phone/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="33" data-built="1" data-q="33 냄새로 푸는 추리 방마다 냄새가 층으로 쌓여 있다. 보이지도 들리지도 않고 층을 시간순으로 벗겨 낸다 1인칭 추리 · 감각 박탈 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="33-scent-layers/mock-a.jpg"><img src="33-scent-layers/mock-a.jpg" alt="냄새로 푸는 추리 목업 A" loading="lazy"></a><a class="shot" href="33-scent-layers/mock-b.jpg"><img src="33-scent-layers/mock-b.jpg" alt="냄새로 푸는 추리 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#33</span><span>1인칭 추리 · 감각 박탈</span><span class="st st-1">구현됨</span></div>
 <h2>냄새로 푸는 추리</h2><p>방마다 냄새가 층으로 쌓여 있다. 보이지도 들리지도 않고 층을 시간순으로 벗겨 낸다</p>
-<div class="links"><a class="play" href="63-scent-layers/index.html#a">HTML 시안 ↗</a><a href="../../games/scent-layers/presentation/index.html">기존 PoC</a><a href="../../games/scent-layers/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="원고 되돌려 보내기 조작이 대화 선택지가 아니라 붉은 펜으로 문장을 고치는 것이다 — 삭제·삽입·이동·주석 내러티브 시뮬 · 관계 드라마">
-<div class="shots"><a class="shot" href="64-red-pen/mock-a.jpg"><img src="64-red-pen/mock-a.jpg" alt="원고 되돌려 보내기 목업 A" loading="lazy"></a><a class="shot" href="64-red-pen/mock-b.jpg"><img src="64-red-pen/mock-b.jpg" alt="원고 되돌려 보내기 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#64</span><span>내러티브 시뮬 · 관계 드라마</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="33-scent-layers/index.html#a">HTML 시안 ↗</a><a href="../../../games/scent-layers/presentation/index.html">기존 PoC</a><a href="../../../games/scent-layers/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="34" data-built="1" data-q="34 원고 되돌려 보내기 조작이 대화 선택지가 아니라 붉은 펜으로 문장을 고치는 것이다 — 삭제·삽입·이동·주석 내러티브 시뮬 · 관계 드라마 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="34-red-pen/mock-a.jpg"><img src="34-red-pen/mock-a.jpg" alt="원고 되돌려 보내기 목업 A" loading="lazy"></a><a class="shot" href="34-red-pen/mock-b.jpg"><img src="34-red-pen/mock-b.jpg" alt="원고 되돌려 보내기 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#34</span><span>내러티브 시뮬 · 관계 드라마</span><span class="st st-1">구현됨</span></div>
 <h2>원고 되돌려 보내기</h2><p>조작이 대화 선택지가 아니라 붉은 펜으로 문장을 고치는 것이다 — 삭제·삽입·이동·주석</p>
-<div class="links"><a class="play" href="64-red-pen/index.html#a">HTML 시안 ↗</a><a href="../../games/red-pen/presentation/index.html">기존 PoC</a><a href="../../games/red-pen/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="소리 없는 오케스트라 청각을 잃은 지휘자. 소리가 없고 단원의 호흡·활 각도·표정만 보고 박을 맞춘다 관찰·지휘 시뮬">
-<div class="shots"><a class="shot" href="65-silent-baton/mock-a.jpg"><img src="65-silent-baton/mock-a.jpg" alt="소리 없는 오케스트라 목업 A" loading="lazy"></a><a class="shot" href="65-silent-baton/mock-b.jpg"><img src="65-silent-baton/mock-b.jpg" alt="소리 없는 오케스트라 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#65</span><span>관찰·지휘 시뮬</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="34-red-pen/index.html#a">HTML 시안 ↗</a><a href="../../../games/red-pen/presentation/index.html">기존 PoC</a><a href="../../../games/red-pen/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="35" data-built="1" data-q="35 소리 없는 오케스트라 청각을 잃은 지휘자. 소리가 없고 단원의 호흡·활 각도·표정만 보고 박을 맞춘다 관찰·지휘 시뮬 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="35-silent-baton/mock-a.jpg"><img src="35-silent-baton/mock-a.jpg" alt="소리 없는 오케스트라 목업 A" loading="lazy"></a><a class="shot" href="35-silent-baton/mock-b.jpg"><img src="35-silent-baton/mock-b.jpg" alt="소리 없는 오케스트라 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#35</span><span>관찰·지휘 시뮬</span><span class="st st-1">구현됨</span></div>
 <h2>소리 없는 오케스트라</h2><p>청각을 잃은 지휘자. 소리가 없고 단원의 호흡·활 각도·표정만 보고 박을 맞춘다</p>
-<div class="links"><a class="play" href="65-silent-baton/index.html#a">HTML 시안 ↗</a><a href="../../games/silent-baton/presentation/index.html">기존 PoC</a><a href="../../games/silent-baton/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="철거 직전 건물의 마지막 세입자들 철거 하루 전, 여섯 집 사정을 알아내지만 하나만 도울 수 있다 내러티브 선택 · 사회 드라마">
-<div class="shots"><a class="shot" href="66-last-tenants/mock-a.jpg"><img src="66-last-tenants/mock-a.jpg" alt="철거 직전 건물의 마지막 세입자들 목업 A" loading="lazy"></a><a class="shot" href="66-last-tenants/mock-b.jpg"><img src="66-last-tenants/mock-b.jpg" alt="철거 직전 건물의 마지막 세입자들 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#66</span><span>내러티브 선택 · 사회 드라마</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="35-silent-baton/index.html#a">HTML 시안 ↗</a><a href="../../../games/silent-baton/presentation/index.html">기존 PoC</a><a href="../../../games/silent-baton/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="36" data-built="1" data-q="36 철거 직전 건물의 마지막 세입자들 철거 하루 전, 여섯 집 사정을 알아내지만 하나만 도울 수 있다 내러티브 선택 · 사회 드라마 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="36-last-tenants/mock-a.jpg"><img src="36-last-tenants/mock-a.jpg" alt="철거 직전 건물의 마지막 세입자들 목업 A" loading="lazy"></a><a class="shot" href="36-last-tenants/mock-b.jpg"><img src="36-last-tenants/mock-b.jpg" alt="철거 직전 건물의 마지막 세입자들 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#36</span><span>내러티브 선택 · 사회 드라마</span><span class="st st-1">구현됨</span></div>
 <h2>철거 직전 건물의 마지막 세입자들</h2><p>철거 하루 전, 여섯 집 사정을 알아내지만 하나만 도울 수 있다</p>
-<div class="links"><a class="play" href="66-last-tenants/index.html#a">HTML 시안 ↗</a><a href="../../games/last-tenants/presentation/index.html">기존 PoC</a><a href="../../games/last-tenants/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="번역가의 전쟁 두 나라 사이에서 통역만 맡는다. 오역 한 낱말이 조약을 바꾼다 내러티브 · 정치 드라마">
-<div class="shots"><a class="shot" href="67-the-interpreter/mock-a.jpg"><img src="67-the-interpreter/mock-a.jpg" alt="번역가의 전쟁 목업 A" loading="lazy"></a><a class="shot" href="67-the-interpreter/mock-b.jpg"><img src="67-the-interpreter/mock-b.jpg" alt="번역가의 전쟁 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#67</span><span>내러티브 · 정치 드라마</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="36-last-tenants/index.html#a">HTML 시안 ↗</a><a href="../../../games/last-tenants/presentation/index.html">기존 PoC</a><a href="../../../games/last-tenants/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="37" data-built="1" data-q="37 번역가의 전쟁 두 나라 사이에서 통역만 맡는다. 오역 한 낱말이 조약을 바꾼다 내러티브 · 정치 드라마 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="37-the-interpreter/mock-a.jpg"><img src="37-the-interpreter/mock-a.jpg" alt="번역가의 전쟁 목업 A" loading="lazy"></a><a class="shot" href="37-the-interpreter/mock-b.jpg"><img src="37-the-interpreter/mock-b.jpg" alt="번역가의 전쟁 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#37</span><span>내러티브 · 정치 드라마</span><span class="st st-1">구현됨</span></div>
 <h2>번역가의 전쟁</h2><p>두 나라 사이에서 통역만 맡는다. 오역 한 낱말이 조약을 바꾼다</p>
-<div class="links"><a class="play" href="67-the-interpreter/index.html#a">HTML 시안 ↗</a><a href="../../games/the-interpreter/presentation/index.html">기존 PoC</a><a href="../../games/the-interpreter/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="신의 비서 기도가 편지로 도착한다. 들어주면 반드시 다른 곳에서 대가가 빠진다 내러티브 선택 · 서류 심사">
-<div class="shots"><a class="shot" href="68-gods-secretary/mock-a.jpg"><img src="68-gods-secretary/mock-a.jpg" alt="신의 비서 목업 A" loading="lazy"></a><a class="shot" href="68-gods-secretary/mock-b.jpg"><img src="68-gods-secretary/mock-b.jpg" alt="신의 비서 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#68</span><span>내러티브 선택 · 서류 심사</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="37-the-interpreter/index.html#a">HTML 시안 ↗</a><a href="../../../games/the-interpreter/presentation/index.html">기존 PoC</a><a href="../../../games/the-interpreter/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="38" data-built="1" data-q="38 신의 비서 기도가 편지로 도착한다. 들어주면 반드시 다른 곳에서 대가가 빠진다 내러티브 선택 · 서류 심사 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="38-gods-secretary/mock-a.jpg"><img src="38-gods-secretary/mock-a.jpg" alt="신의 비서 목업 A" loading="lazy"></a><a class="shot" href="38-gods-secretary/mock-b.jpg"><img src="38-gods-secretary/mock-b.jpg" alt="신의 비서 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#38</span><span>내러티브 선택 · 서류 심사</span><span class="st st-1">구현됨</span></div>
 <h2>신의 비서</h2><p>기도가 편지로 도착한다. 들어주면 반드시 다른 곳에서 대가가 빠진다</p>
-<div class="links"><a class="play" href="68-gods-secretary/index.html#a">HTML 시안 ↗</a><a href="../../games/gods-secretary/presentation/index.html">기존 PoC</a><a href="../../games/gods-secretary/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="가업으로 물려받은 저주 관리 저주를 운영하는 가문의 후계자. 도덕이 자원이고 값은 사람으로 치른다 내러티브 경영 · 다크 판타지">
-<div class="shots"><a class="shot" href="69-curse-ledger/mock-a.jpg"><img src="69-curse-ledger/mock-a.jpg" alt="가업으로 물려받은 저주 관리 목업 A" loading="lazy"></a><a class="shot" href="69-curse-ledger/mock-b.jpg"><img src="69-curse-ledger/mock-b.jpg" alt="가업으로 물려받은 저주 관리 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#69</span><span>내러티브 경영 · 다크 판타지</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="38-gods-secretary/index.html#a">HTML 시안 ↗</a><a href="../../../games/gods-secretary/presentation/index.html">기존 PoC</a><a href="../../../games/gods-secretary/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="39" data-built="1" data-q="39 가업으로 물려받은 저주 관리 저주를 운영하는 가문의 후계자. 도덕이 자원이고 값은 사람으로 치른다 내러티브 경영 · 다크 판타지 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="39-curse-ledger/mock-a.jpg"><img src="39-curse-ledger/mock-a.jpg" alt="가업으로 물려받은 저주 관리 목업 A" loading="lazy"></a><a class="shot" href="39-curse-ledger/mock-b.jpg"><img src="39-curse-ledger/mock-b.jpg" alt="가업으로 물려받은 저주 관리 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#39</span><span>내러티브 경영 · 다크 판타지</span><span class="st st-1">구현됨</span></div>
 <h2>가업으로 물려받은 저주 관리</h2><p>저주를 운영하는 가문의 후계자. 도덕이 자원이고 값은 사람으로 치른다</p>
-<div class="links"><a class="play" href="69-curse-ledger/index.html#a">HTML 시안 ↗</a><a href="../../games/curse-ledger/presentation/index.html">기존 PoC</a><a href="../../games/curse-ledger/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="가짜 기억 심기 남의 꿈에 가짜 기억을 끼워 넣는다. 어긋나면 꿈이 거부 반응을 일으킨다 내러티브 추리 · 심리 호러">
-<div class="shots"><a class="shot" href="70-grafted-memory/mock-a.jpg"><img src="70-grafted-memory/mock-a.jpg" alt="가짜 기억 심기 목업 A" loading="lazy"></a><a class="shot" href="70-grafted-memory/mock-b.jpg"><img src="70-grafted-memory/mock-b.jpg" alt="가짜 기억 심기 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#70</span><span>내러티브 추리 · 심리 호러</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="39-curse-ledger/index.html#a">HTML 시안 ↗</a><a href="../../../games/curse-ledger/presentation/index.html">기존 PoC</a><a href="../../../games/curse-ledger/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="40" data-built="1" data-q="40 가짜 기억 심기 남의 꿈에 가짜 기억을 끼워 넣는다. 어긋나면 꿈이 거부 반응을 일으킨다 내러티브 추리 · 심리 호러 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="40-grafted-memory/mock-a.jpg"><img src="40-grafted-memory/mock-a.jpg" alt="가짜 기억 심기 목업 A" loading="lazy"></a><a class="shot" href="40-grafted-memory/mock-b.jpg"><img src="40-grafted-memory/mock-b.jpg" alt="가짜 기억 심기 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#40</span><span>내러티브 추리 · 심리 호러</span><span class="st st-1">구현됨</span></div>
 <h2>가짜 기억 심기</h2><p>남의 꿈에 가짜 기억을 끼워 넣는다. 어긋나면 꿈이 거부 반응을 일으킨다</p>
-<div class="links"><a class="play" href="70-grafted-memory/index.html#a">HTML 시안 ↗</a><a href="../../games/grafted-memory/presentation/index.html">기존 PoC</a><a href="../../games/grafted-memory/README.md">README</a></div></div></article><article class="card" data-built="1" data-q="지도가 거짓말하는 도시 지도는 완벽하다. 대신 도시가 매일 지도에 맞춰 스스로를 고친다 도시 건설 · 전략 시뮬">
-<div class="shots"><a class="shot" href="71-the-map-lies/mock-a.jpg"><img src="71-the-map-lies/mock-a.jpg" alt="지도가 거짓말하는 도시 목업 A" loading="lazy"></a><a class="shot" href="71-the-map-lies/mock-b.jpg"><img src="71-the-map-lies/mock-b.jpg" alt="지도가 거짓말하는 도시 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#71</span><span>도시 건설 · 전략 시뮬</span><span class="st st-1">구현됨</span></div>
+<div class="links"><a class="play" href="40-grafted-memory/index.html#a">HTML 시안 ↗</a><a href="../../../games/grafted-memory/presentation/index.html">기존 PoC</a><a href="../../../games/grafted-memory/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="41" data-built="1" data-q="41 지도가 거짓말하는 도시 지도는 완벽하다. 대신 도시가 매일 지도에 맞춰 스스로를 고친다 도시 건설 · 전략 시뮬 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="41-the-map-lies/mock-a.jpg"><img src="41-the-map-lies/mock-a.jpg" alt="지도가 거짓말하는 도시 목업 A" loading="lazy"></a><a class="shot" href="41-the-map-lies/mock-b.jpg"><img src="41-the-map-lies/mock-b.jpg" alt="지도가 거짓말하는 도시 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#41</span><span>도시 건설 · 전략 시뮬</span><span class="st st-1">구현됨</span></div>
 <h2>지도가 거짓말하는 도시</h2><p>지도는 완벽하다. 대신 도시가 매일 지도에 맞춰 스스로를 고친다</p>
-<div class="links"><a class="play" href="71-the-map-lies/index.html#a">HTML 시안 ↗</a><a href="../../games/the-map-lies/presentation/index.html">기존 PoC</a><a href="../../games/the-map-lies/README.md">README</a></div></div></article><article class="card" data-built="0" data-q="조수 간만 우체부 썰물에만 드러나는 갯길로 섬마다 편지를 나른다. 물때표가 곧 퍼즐이다 퍼즐 · 경로">
-<div class="shots"><a class="shot" href="72-tide-postman/mock-a.jpg"><img src="72-tide-postman/mock-a.jpg" alt="조수 간만 우체부 목업 A" loading="lazy"></a><a class="shot" href="72-tide-postman/mock-b.jpg"><img src="72-tide-postman/mock-b.jpg" alt="조수 간만 우체부 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#72</span><span>퍼즐 · 경로</span><span class="st st-0">새 컨셉</span></div>
-<h2>조수 간만 우체부</h2><p>썰물에만 드러나는 갯길로 섬마다 편지를 나른다. 물때표가 곧 퍼즐이다</p>
-<div class="links"><a class="play" href="72-tide-postman/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="그림자 경매 경매에 나온 것은 물건이 아니라 물건의 그림자다. 그림자만 보고 입찰한다 추리 · 경매">
-<div class="shots"><a class="shot" href="73-shadow-auction/mock-a.jpg"><img src="73-shadow-auction/mock-a.jpg" alt="그림자 경매 목업 A" loading="lazy"></a><a class="shot" href="73-shadow-auction/mock-b.jpg"><img src="73-shadow-auction/mock-b.jpg" alt="그림자 경매 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#73</span><span>추리 · 경매</span><span class="st st-0">새 컨셉</span></div>
-<h2>그림자 경매</h2><p>경매에 나온 것은 물건이 아니라 물건의 그림자다. 그림자만 보고 입찰한다</p>
-<div class="links"><a class="play" href="73-shadow-auction/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="중력 주방 우주정거장 주방에서 중력 방향을 돌려 재료를 냄비로 떨어뜨린다 액션 퍼즐 · 요리">
-<div class="shots"><a class="shot" href="74-gravity-kitchen/mock-a.jpg"><img src="74-gravity-kitchen/mock-a.jpg" alt="중력 주방 목업 A" loading="lazy"></a><a class="shot" href="74-gravity-kitchen/mock-b.jpg"><img src="74-gravity-kitchen/mock-b.jpg" alt="중력 주방 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#74</span><span>액션 퍼즐 · 요리</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="41-the-map-lies/index.html#a">HTML 시안 ↗</a><a href="../../../games/the-map-lies/presentation/index.html">기존 PoC</a><a href="../../../games/the-map-lies/README.md">README</a></div></div></article><article class="card" data-engine="unity-2d" data-num="44" data-built="0" data-q="44 중력 주방 우주정거장 주방에서 중력 방향을 돌려 재료를 냄비로 떨어뜨린다 액션 퍼즐 · 요리 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="44-gravity-kitchen/mock-a.jpg"><img src="44-gravity-kitchen/mock-a.jpg" alt="중력 주방 목업 A" loading="lazy"></a><a class="shot" href="44-gravity-kitchen/mock-b.jpg"><img src="44-gravity-kitchen/mock-b.jpg" alt="중력 주방 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#44</span><span>액션 퍼즐 · 요리</span><span class="st st-0">새 컨셉</span></div>
 <h2>중력 주방</h2><p>우주정거장 주방에서 중력 방향을 돌려 재료를 냄비로 떨어뜨린다</p>
-<div class="links"><a class="play" href="74-gravity-kitchen/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="봉화 네트워크 봉화대 불 패턴으로 적 침입을 수도까지 알린다. 신호 코드를 직접 설계한다 전략 · 퍼즐">
-<div class="shots"><a class="shot" href="75-beacon-network/mock-a.jpg"><img src="75-beacon-network/mock-a.jpg" alt="봉화 네트워크 목업 A" loading="lazy"></a><a class="shot" href="75-beacon-network/mock-b.jpg"><img src="75-beacon-network/mock-b.jpg" alt="봉화 네트워크 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#75</span><span>전략 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="44-gravity-kitchen/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="45" data-built="0" data-q="45 봉화 네트워크 봉화대 불 패턴으로 적 침입을 수도까지 알린다. 신호 코드를 직접 설계한다 전략 · 퍼즐 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="45-beacon-network/mock-a.jpg"><img src="45-beacon-network/mock-a.jpg" alt="봉화 네트워크 목업 A" loading="lazy"></a><a class="shot" href="45-beacon-network/mock-b.jpg"><img src="45-beacon-network/mock-b.jpg" alt="봉화 네트워크 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#45</span><span>전략 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
 <h2>봉화 네트워크</h2><p>봉화대 불 패턴으로 적 침입을 수도까지 알린다. 신호 코드를 직접 설계한다</p>
-<div class="links"><a class="play" href="75-beacon-network/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="벌집 도시계획 육각 벌집 도시를 경영한다. 정보는 8자 춤으로만 전달된다 경영 · 시뮬">
-<div class="shots"><a class="shot" href="76-hive-planner/mock-a.jpg"><img src="76-hive-planner/mock-a.jpg" alt="벌집 도시계획 목업 A" loading="lazy"></a><a class="shot" href="76-hive-planner/mock-b.jpg"><img src="76-hive-planner/mock-b.jpg" alt="벌집 도시계획 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#76</span><span>경영 · 시뮬</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="45-beacon-network/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="46" data-built="0" data-q="46 벌집 도시계획 육각 벌집 도시를 경영한다. 정보는 8자 춤으로만 전달된다 경영 · 시뮬 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="46-hive-planner/mock-a.jpg"><img src="46-hive-planner/mock-a.jpg" alt="벌집 도시계획 목업 A" loading="lazy"></a><a class="shot" href="46-hive-planner/mock-b.jpg"><img src="46-hive-planner/mock-b.jpg" alt="벌집 도시계획 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#46</span><span>경영 · 시뮬</span><span class="st st-0">새 컨셉</span></div>
 <h2>벌집 도시계획</h2><p>육각 벌집 도시를 경영한다. 정보는 8자 춤으로만 전달된다</p>
-<div class="links"><a class="play" href="76-hive-planner/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="유령 부동산 유령이 사는 집을 파는 중개사. 새 집주인과 유령 둘 다 서명해야 계약이 된다 내러티브 · 협상">
-<div class="shots"><a class="shot" href="77-haunted-realty/mock-a.jpg"><img src="77-haunted-realty/mock-a.jpg" alt="유령 부동산 목업 A" loading="lazy"></a><a class="shot" href="77-haunted-realty/mock-b.jpg"><img src="77-haunted-realty/mock-b.jpg" alt="유령 부동산 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#77</span><span>내러티브 · 협상</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="46-hive-planner/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="47" data-built="0" data-q="47 유령 부동산 유령이 사는 집을 파는 중개사. 새 집주인과 유령 둘 다 서명해야 계약이 된다 내러티브 · 협상 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="47-haunted-realty/mock-a.jpg"><img src="47-haunted-realty/mock-a.jpg" alt="유령 부동산 목업 A" loading="lazy"></a><a class="shot" href="47-haunted-realty/mock-b.jpg"><img src="47-haunted-realty/mock-b.jpg" alt="유령 부동산 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#47</span><span>내러티브 · 협상</span><span class="st st-0">새 컨셉</span></div>
 <h2>유령 부동산</h2><p>유령이 사는 집을 파는 중개사. 새 집주인과 유령 둘 다 서명해야 계약이 된다</p>
-<div class="links"><a class="play" href="77-haunted-realty/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="폭풍의 등대지기 등대 빛의 회전 속도와 색으로 암초 사이의 배들을 인도한다 실시간 전략">
-<div class="shots"><a class="shot" href="78-storm-lighthouse/mock-a.jpg"><img src="78-storm-lighthouse/mock-a.jpg" alt="폭풍의 등대지기 목업 A" loading="lazy"></a><a class="shot" href="78-storm-lighthouse/mock-b.jpg"><img src="78-storm-lighthouse/mock-b.jpg" alt="폭풍의 등대지기 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#78</span><span>실시간 전략</span><span class="st st-0">새 컨셉</span></div>
-<h2>폭풍의 등대지기</h2><p>등대 빛의 회전 속도와 색으로 암초 사이의 배들을 인도한다</p>
-<div class="links"><a class="play" href="78-storm-lighthouse/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="개미 고고학 개미굴 단면에서 떨어진 인간의 물건을 개미의 시점으로 해석한다 탐험 · 추리">
-<div class="shots"><a class="shot" href="79-ant-archaeology/mock-a.jpg"><img src="79-ant-archaeology/mock-a.jpg" alt="개미 고고학 목업 A" loading="lazy"></a><a class="shot" href="79-ant-archaeology/mock-b.jpg"><img src="79-ant-archaeology/mock-b.jpg" alt="개미 고고학 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#79</span><span>탐험 · 추리</span><span class="st st-0">새 컨셉</span></div>
-<h2>개미 고고학</h2><p>개미굴 단면에서 떨어진 인간의 물건을 개미의 시점으로 해석한다</p>
-<div class="links"><a class="play" href="79-ant-archaeology/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="지우개 모험 연필로 그려진 세계에서 지우개로 지형을 지우며 나아간다. 지운 것은 돌아오지 않는다 플랫포머">
-<div class="shots"><a class="shot" href="80-eraser-platformer/mock-a.jpg"><img src="80-eraser-platformer/mock-a.jpg" alt="지우개 모험 목업 A" loading="lazy"></a><a class="shot" href="80-eraser-platformer/mock-b.jpg"><img src="80-eraser-platformer/mock-b.jpg" alt="지우개 모험 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#80</span><span>플랫포머</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="47-haunted-realty/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="50" data-built="0" data-q="50 지우개 모험 연필로 그려진 세계에서 지우개로 지형을 지우며 나아간다. 지운 것은 돌아오지 않는다 플랫포머 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="50-eraser-platformer/mock-a.jpg"><img src="50-eraser-platformer/mock-a.jpg" alt="지우개 모험 목업 A" loading="lazy"></a><a class="shot" href="50-eraser-platformer/mock-b.jpg"><img src="50-eraser-platformer/mock-b.jpg" alt="지우개 모험 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#50</span><span>플랫포머</span><span class="st st-0">새 컨셉</span></div>
 <h2>지우개 모험</h2><p>연필로 그려진 세계에서 지우개로 지형을 지우며 나아간다. 지운 것은 돌아오지 않는다</p>
-<div class="links"><a class="play" href="80-eraser-platformer/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="골목 고양이 정치 골목 고양이 파벌 사이에서 영역과 사료를 두고 외교한다 전략 · 외교">
-<div class="shots"><a class="shot" href="81-alley-cat-politics/mock-a.jpg"><img src="81-alley-cat-politics/mock-a.jpg" alt="골목 고양이 정치 목업 A" loading="lazy"></a><a class="shot" href="81-alley-cat-politics/mock-b.jpg"><img src="81-alley-cat-politics/mock-b.jpg" alt="골목 고양이 정치 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#81</span><span>전략 · 외교</span><span class="st st-0">새 컨셉</span></div>
-<h2>골목 고양이 정치</h2><p>골목 고양이 파벌 사이에서 영역과 사료를 두고 외교한다</p>
-<div class="links"><a class="play" href="81-alley-cat-politics/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="시계탑 수리공 도시 시계가 틀리면 사람들 약속이 어긋나 사건이 난다. 톱니로 시간을 고친다 퍼즐 · 시뮬">
-<div class="shots"><a class="shot" href="82-clocktower-repair/mock-a.jpg"><img src="82-clocktower-repair/mock-a.jpg" alt="시계탑 수리공 목업 A" loading="lazy"></a><a class="shot" href="82-clocktower-repair/mock-b.jpg"><img src="82-clocktower-repair/mock-b.jpg" alt="시계탑 수리공 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#82</span><span>퍼즐 · 시뮬</span><span class="st st-0">새 컨셉</span></div>
-<h2>시계탑 수리공</h2><p>도시 시계가 틀리면 사람들 약속이 어긋나 사건이 난다. 톱니로 시간을 고친다</p>
-<div class="links"><a class="play" href="82-clocktower-repair/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="한 해의 나무 식물 시점에서 1년을 10분에 산다. 햇빛을 향해 가지를 뻗는다 시뮬 · 예술">
-<div class="shots"><a class="shot" href="83-plant-year/mock-a.jpg"><img src="83-plant-year/mock-a.jpg" alt="한 해의 나무 목업 A" loading="lazy"></a><a class="shot" href="83-plant-year/mock-b.jpg"><img src="83-plant-year/mock-b.jpg" alt="한 해의 나무 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#83</span><span>시뮬 · 예술</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="50-eraser-platformer/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="53" data-built="0" data-q="53 한 해의 나무 식물 시점에서 1년을 10분에 산다. 햇빛을 향해 가지를 뻗는다 시뮬 · 예술 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="53-plant-year/mock-a.jpg"><img src="53-plant-year/mock-a.jpg" alt="한 해의 나무 목업 A" loading="lazy"></a><a class="shot" href="53-plant-year/mock-b.jpg"><img src="53-plant-year/mock-b.jpg" alt="한 해의 나무 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#53</span><span>시뮬 · 예술</span><span class="st st-0">새 컨셉</span></div>
 <h2>한 해의 나무</h2><p>식물 시점에서 1년을 10분에 산다. 햇빛을 향해 가지를 뻗는다</p>
-<div class="links"><a class="play" href="83-plant-year/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="이불 요새 아이 방에서 이불과 베개로 요새를 짓고 밤마다 상상의 괴물을 막는다 타워 디펜스">
-<div class="shots"><a class="shot" href="85-blanket-fort/mock-a.jpg"><img src="85-blanket-fort/mock-a.jpg" alt="이불 요새 목업 A" loading="lazy"></a><a class="shot" href="85-blanket-fort/mock-b.jpg"><img src="85-blanket-fort/mock-b.jpg" alt="이불 요새 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#85</span><span>타워 디펜스</span><span class="st st-0">새 컨셉</span></div>
-<h2>이불 요새</h2><p>아이 방에서 이불과 베개로 요새를 짓고 밤마다 상상의 괴물을 막는다</p>
-<div class="links"><a class="play" href="85-blanket-fort/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="향신료 항로 선창의 향신료가 항해 중 향이 섞이며 값이 변한다. 적재 배치 퍼즐 무역 · 퍼즐">
-<div class="shots"><a class="shot" href="86-spice-route/mock-a.jpg"><img src="86-spice-route/mock-a.jpg" alt="향신료 항로 목업 A" loading="lazy"></a><a class="shot" href="86-spice-route/mock-b.jpg"><img src="86-spice-route/mock-b.jpg" alt="향신료 항로 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#86</span><span>무역 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="53-plant-year/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="55" data-built="0" data-q="55 향신료 항로 선창의 향신료가 항해 중 향이 섞이며 값이 변한다. 적재 배치 퍼즐 무역 · 퍼즐 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="55-spice-route/mock-a.jpg"><img src="55-spice-route/mock-a.jpg" alt="향신료 항로 목업 A" loading="lazy"></a><a class="shot" href="55-spice-route/mock-b.jpg"><img src="55-spice-route/mock-b.jpg" alt="향신료 항로 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#55</span><span>무역 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
 <h2>향신료 항로</h2><p>선창의 향신료가 항해 중 향이 섞이며 값이 변한다. 적재 배치 퍼즐</p>
-<div class="links"><a class="play" href="86-spice-route/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="괴수 세탁소 괴수 손님들의 옷을 빤다. 얼룩마다 세제 조합이 다르고, 망치면 괴수가 화낸다 캐주얼 경영">
-<div class="shots"><a class="shot" href="87-monster-laundry/mock-a.jpg"><img src="87-monster-laundry/mock-a.jpg" alt="괴수 세탁소 목업 A" loading="lazy"></a><a class="shot" href="87-monster-laundry/mock-b.jpg"><img src="87-monster-laundry/mock-b.jpg" alt="괴수 세탁소 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#87</span><span>캐주얼 경영</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="55-spice-route/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="56" data-built="0" data-q="56 괴수 세탁소 괴수 손님들의 옷을 빤다. 얼룩마다 세제 조합이 다르고, 망치면 괴수가 화낸다 캐주얼 경영 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="56-monster-laundry/mock-a.jpg"><img src="56-monster-laundry/mock-a.jpg" alt="괴수 세탁소 목업 A" loading="lazy"></a><a class="shot" href="56-monster-laundry/mock-b.jpg"><img src="56-monster-laundry/mock-b.jpg" alt="괴수 세탁소 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#56</span><span>캐주얼 경영</span><span class="st st-0">새 컨셉</span></div>
 <h2>괴수 세탁소</h2><p>괴수 손님들의 옷을 빤다. 얼룩마다 세제 조합이 다르고, 망치면 괴수가 화낸다</p>
-<div class="links"><a class="play" href="87-monster-laundry/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="자판기의 마음 화자는 골목 자판기다. 누구에게 무엇을 내줄지로 대화한다 내러티브">
-<div class="shots"><a class="shot" href="88-vending-soul/mock-a.jpg"><img src="88-vending-soul/mock-a.jpg" alt="자판기의 마음 목업 A" loading="lazy"></a><a class="shot" href="88-vending-soul/mock-b.jpg"><img src="88-vending-soul/mock-b.jpg" alt="자판기의 마음 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#88</span><span>내러티브</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="56-monster-laundry/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="57" data-built="0" data-q="57 자판기의 마음 화자는 골목 자판기다. 누구에게 무엇을 내줄지로 대화한다 내러티브 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="57-vending-soul/mock-a.jpg"><img src="57-vending-soul/mock-a.jpg" alt="자판기의 마음 목업 A" loading="lazy"></a><a class="shot" href="57-vending-soul/mock-b.jpg"><img src="57-vending-soul/mock-b.jpg" alt="자판기의 마음 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#57</span><span>내러티브</span><span class="st st-0">새 컨셉</span></div>
 <h2>자판기의 마음</h2><p>화자는 골목 자판기다. 누구에게 무엇을 내줄지로 대화한다</p>
-<div class="links"><a class="play" href="88-vending-soul/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="인형의 집 탐정 미니어처 집 안 인형 가족의 사건. 벽을 떼어 단면으로 보고 가구를 옮겨 재현한다 추리">
-<div class="shots"><a class="shot" href="89-dollhouse-detective/mock-a.jpg"><img src="89-dollhouse-detective/mock-a.jpg" alt="인형의 집 탐정 목업 A" loading="lazy"></a><a class="shot" href="89-dollhouse-detective/mock-b.jpg"><img src="89-dollhouse-detective/mock-b.jpg" alt="인형의 집 탐정 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#89</span><span>추리</span><span class="st st-0">새 컨셉</span></div>
-<h2>인형의 집 탐정</h2><p>미니어처 집 안 인형 가족의 사건. 벽을 떼어 단면으로 보고 가구를 옮겨 재현한다</p>
-<div class="links"><a class="play" href="89-dollhouse-detective/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="거꾸로 던전 던전 주인으로 모험가를 만족시키되 살려 보낸다. 점수는 리뷰 전략 · 설계">
-<div class="shots"><a class="shot" href="90-reverse-dungeon/mock-a.jpg"><img src="90-reverse-dungeon/mock-a.jpg" alt="거꾸로 던전 목업 A" loading="lazy"></a><a class="shot" href="90-reverse-dungeon/mock-b.jpg"><img src="90-reverse-dungeon/mock-b.jpg" alt="거꾸로 던전 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#90</span><span>전략 · 설계</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="57-vending-soul/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="59" data-built="0" data-q="59 거꾸로 던전 던전 주인으로 모험가를 만족시키되 살려 보낸다. 점수는 리뷰 전략 · 설계 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="59-reverse-dungeon/mock-a.jpg"><img src="59-reverse-dungeon/mock-a.jpg" alt="거꾸로 던전 목업 A" loading="lazy"></a><a class="shot" href="59-reverse-dungeon/mock-b.jpg"><img src="59-reverse-dungeon/mock-b.jpg" alt="거꾸로 던전 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#59</span><span>전략 · 설계</span><span class="st st-0">새 컨셉</span></div>
 <h2>거꾸로 던전</h2><p>던전 주인으로 모험가를 만족시키되 살려 보낸다. 점수는 리뷰</p>
-<div class="links"><a class="play" href="90-reverse-dungeon/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="비행운 서예 비행기로 하늘에 글씨를 쓴다. 바람이 획을 번지게 한다 액션 · 드로잉">
-<div class="shots"><a class="shot" href="91-contrail-calligraphy/mock-a.jpg"><img src="91-contrail-calligraphy/mock-a.jpg" alt="비행운 서예 목업 A" loading="lazy"></a><a class="shot" href="91-contrail-calligraphy/mock-b.jpg"><img src="91-contrail-calligraphy/mock-b.jpg" alt="비행운 서예 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#91</span><span>액션 · 드로잉</span><span class="st st-0">새 컨셉</span></div>
-<h2>비행운 서예</h2><p>비행기로 하늘에 글씨를 쓴다. 바람이 획을 번지게 한다</p>
-<div class="links"><a class="play" href="91-contrail-calligraphy/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="메아리 지도 제작자 동굴에서 소리를 내고 돌아오는 메아리로 지도를 그린다 탐험">
-<div class="shots"><a class="shot" href="94-echo-cartographer/mock-a.jpg"><img src="94-echo-cartographer/mock-a.jpg" alt="메아리 지도 제작자 목업 A" loading="lazy"></a><a class="shot" href="94-echo-cartographer/mock-b.jpg"><img src="94-echo-cartographer/mock-b.jpg" alt="메아리 지도 제작자 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#94</span><span>탐험</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="59-reverse-dungeon/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="61" data-built="0" data-q="61 메아리 지도 제작자 동굴에서 소리를 내고 돌아오는 메아리로 지도를 그린다 탐험 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="61-echo-cartographer/mock-a.jpg"><img src="61-echo-cartographer/mock-a.jpg" alt="메아리 지도 제작자 목업 A" loading="lazy"></a><a class="shot" href="61-echo-cartographer/mock-b.jpg"><img src="61-echo-cartographer/mock-b.jpg" alt="메아리 지도 제작자 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#61</span><span>탐험</span><span class="st st-0">새 컨셉</span></div>
 <h2>메아리 지도 제작자</h2><p>동굴에서 소리를 내고 돌아오는 메아리로 지도를 그린다</p>
-<div class="links"><a class="play" href="94-echo-cartographer/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="방탈출 제작자 방탈출을 설계하고 시뮬레이션 손님이 푸는 걸 지켜본다 샌드박스 · 설계">
-<div class="shots"><a class="shot" href="95-escape-room-maker/mock-a.jpg"><img src="95-escape-room-maker/mock-a.jpg" alt="방탈출 제작자 목업 A" loading="lazy"></a><a class="shot" href="95-escape-room-maker/mock-b.jpg"><img src="95-escape-room-maker/mock-b.jpg" alt="방탈출 제작자 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#95</span><span>샌드박스 · 설계</span><span class="st st-0">새 컨셉</span></div>
-<h2>방탈출 제작자</h2><p>방탈출을 설계하고 시뮬레이션 손님이 푸는 걸 지켜본다</p>
-<div class="links"><a class="play" href="95-escape-room-maker/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="열차 시간표 교향곡 철도 시간표가 곧 악보다. 열차 도착이 음이 되고 선로 배치로 곡을 만든다 리듬 · 퍼즐">
-<div class="shots"><a class="shot" href="96-timetable-symphony/mock-a.jpg"><img src="96-timetable-symphony/mock-a.jpg" alt="열차 시간표 교향곡 목업 A" loading="lazy"></a><a class="shot" href="96-timetable-symphony/mock-b.jpg"><img src="96-timetable-symphony/mock-b.jpg" alt="열차 시간표 교향곡 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#96</span><span>리듬 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="61-echo-cartographer/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="63" data-built="0" data-q="63 열차 시간표 교향곡 철도 시간표가 곧 악보다. 열차 도착이 음이 되고 선로 배치로 곡을 만든다 리듬 · 퍼즐 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="63-timetable-symphony/mock-a.jpg"><img src="63-timetable-symphony/mock-a.jpg" alt="열차 시간표 교향곡 목업 A" loading="lazy"></a><a class="shot" href="63-timetable-symphony/mock-b.jpg"><img src="63-timetable-symphony/mock-b.jpg" alt="열차 시간표 교향곡 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#63</span><span>리듬 · 퍼즐</span><span class="st st-0">새 컨셉</span></div>
 <h2>열차 시간표 교향곡</h2><p>철도 시간표가 곧 악보다. 열차 도착이 음이 되고 선로 배치로 곡을 만든다</p>
-<div class="links"><a class="play" href="96-timetable-symphony/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="거인의 등 위 마을 걷는 거인의 등 위에서 농사짓는다. 거인의 걸음이 계절이다 생존 · 경영">
-<div class="shots"><a class="shot" href="97-giant-back-village/mock-a.jpg"><img src="97-giant-back-village/mock-a.jpg" alt="거인의 등 위 마을 목업 A" loading="lazy"></a><a class="shot" href="97-giant-back-village/mock-b.jpg"><img src="97-giant-back-village/mock-b.jpg" alt="거인의 등 위 마을 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#97</span><span>생존 · 경영</span><span class="st st-0">새 컨셉</span></div>
-<h2>거인의 등 위 마을</h2><p>걷는 거인의 등 위에서 농사짓는다. 거인의 걸음이 계절이다</p>
-<div class="links"><a class="play" href="97-giant-back-village/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="먹물 문어 문어가 먹물로 그림을 그려 포식자를 속인다 액션 · 드로잉">
-<div class="shots"><a class="shot" href="99-ink-octopus/mock-a.jpg"><img src="99-ink-octopus/mock-a.jpg" alt="먹물 문어 목업 A" loading="lazy"></a><a class="shot" href="99-ink-octopus/mock-b.jpg"><img src="99-ink-octopus/mock-b.jpg" alt="먹물 문어 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#99</span><span>액션 · 드로잉</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="63-timetable-symphony/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="65" data-built="0" data-q="65 먹물 문어 문어가 먹물로 그림을 그려 포식자를 속인다 액션 · 드로잉 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="65-ink-octopus/mock-a.jpg"><img src="65-ink-octopus/mock-a.jpg" alt="먹물 문어 목업 A" loading="lazy"></a><a class="shot" href="65-ink-octopus/mock-b.jpg"><img src="65-ink-octopus/mock-b.jpg" alt="먹물 문어 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#65</span><span>액션 · 드로잉</span><span class="st st-0">새 컨셉</span></div>
 <h2>먹물 문어</h2><p>문어가 먹물로 그림을 그려 포식자를 속인다</p>
-<div class="links"><a class="play" href="99-ink-octopus/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="궤도 청소부 우주 쓰레기를 치운다. 충돌 연쇄(케슬러 증후군)를 막아야 한다 퍼즐 · 물리">
-<div class="shots"><a class="shot" href="100-orbit-sweeper/mock-a.jpg"><img src="100-orbit-sweeper/mock-a.jpg" alt="궤도 청소부 목업 A" loading="lazy"></a><a class="shot" href="100-orbit-sweeper/mock-b.jpg"><img src="100-orbit-sweeper/mock-b.jpg" alt="궤도 청소부 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#100</span><span>퍼즐 · 물리</span><span class="st st-0">새 컨셉</span></div>
-<h2>궤도 청소부</h2><p>우주 쓰레기를 치운다. 충돌 연쇄(케슬러 증후군)를 막아야 한다</p>
-<div class="links"><a class="play" href="100-orbit-sweeper/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="이름 없는 신당 잊힌 신들의 신당을 관리한다. 참배객이 기억하는 만큼 신이 존재한다 경영 · 내러티브">
-<div class="shots"><a class="shot" href="101-lost-name-shrine/mock-a.jpg"><img src="101-lost-name-shrine/mock-a.jpg" alt="이름 없는 신당 목업 A" loading="lazy"></a><a class="shot" href="101-lost-name-shrine/mock-b.jpg"><img src="101-lost-name-shrine/mock-b.jpg" alt="이름 없는 신당 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#101</span><span>경영 · 내러티브</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="65-ink-octopus/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="67" data-built="0" data-q="67 이름 없는 신당 잊힌 신들의 신당을 관리한다. 참배객이 기억하는 만큼 신이 존재한다 경영 · 내러티브 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="67-lost-name-shrine/mock-a.jpg"><img src="67-lost-name-shrine/mock-a.jpg" alt="이름 없는 신당 목업 A" loading="lazy"></a><a class="shot" href="67-lost-name-shrine/mock-b.jpg"><img src="67-lost-name-shrine/mock-b.jpg" alt="이름 없는 신당 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#67</span><span>경영 · 내러티브</span><span class="st st-0">새 컨셉</span></div>
 <h2>이름 없는 신당</h2><p>잊힌 신들의 신당을 관리한다. 참배객이 기억하는 만큼 신이 존재한다</p>
-<div class="links"><a class="play" href="101-lost-name-shrine/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="일곱 번째 주 이동력이 딱 한 칸 부족하다. 그래서 다음 턴을 누른다 턴제 전략 · 고전 homm">
-<div class="shots"><a class="shot" href="102-seventh-week/mock-a.jpg"><img src="102-seventh-week/mock-a.jpg" alt="일곱 번째 주 목업 A" loading="lazy"></a><a class="shot" href="102-seventh-week/mock-b.jpg"><img src="102-seventh-week/mock-b.jpg" alt="일곱 번째 주 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#102</span><span>턴제 전략 · 고전 HoMM</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="67-lost-name-shrine/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="68" data-built="0" data-q="68 일곱 번째 주 이동력이 딱 한 칸 부족하다. 그래서 다음 턴을 누른다 턴제 전략 · 고전 homm unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="68-seventh-week/mock-a.jpg"><img src="68-seventh-week/mock-a.jpg" alt="일곱 번째 주 목업 A" loading="lazy"></a><a class="shot" href="68-seventh-week/mock-b.jpg"><img src="68-seventh-week/mock-b.jpg" alt="일곱 번째 주 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#68</span><span>턴제 전략 · 고전 HoMM</span><span class="st st-0">새 컨셉</span></div>
 <h2>일곱 번째 주</h2><p>이동력이 딱 한 칸 부족하다. 그래서 다음 턴을 누른다</p>
-<div class="links"><a class="play" href="102-seventh-week/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="아무것도 없는 산책 언리얼로 만든 실사 숲을 그냥 걷는다. 목표도 적도 없고 발소리만 있다 산책 시뮬 · 아웃도어 asmr · 2026-10-05 추가">
-<div class="shots"><a class="shot" href="103-nothing-walk/mock-a.jpg"><img src="103-nothing-walk/mock-a.jpg" alt="아무것도 없는 산책 목업 A" loading="lazy"></a><a class="shot" href="103-nothing-walk/mock-b.jpg"><img src="103-nothing-walk/mock-b.jpg" alt="아무것도 없는 산책 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#103</span><span>산책 시뮬 · 아웃도어 ASMR · 2026-10-05 추가</span><span class="st st-0">새 컨셉</span></div>
-<h2>아무것도 없는 산책</h2><p>언리얼로 만든 실사 숲을 그냥 걷는다. 목표도 적도 없고 발소리만 있다</p>
-<div class="links"><a class="play" href="103-nothing-walk/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-built="0" data-q="같은 주소 두 게임이 메모리 256바이트를 나눠 쓴다. 한쪽의 금화가 다른 쪽의 체력이다 메타 퍼즐 · 패스스루 · 2026-10-06 추가">
-<div class="shots"><a class="shot" href="104-same-address/mock-a.jpg"><img src="104-same-address/mock-a.jpg" alt="같은 주소 목업 A" loading="lazy"></a><a class="shot" href="104-same-address/mock-b.jpg"><img src="104-same-address/mock-b.jpg" alt="같은 주소 목업 B" loading="lazy"></a></div>
-<div class="body"><div class="meta"><span>#104</span><span>메타 퍼즐 · 패스스루 · 2026-10-06 추가</span><span class="st st-0">새 컨셉</span></div>
+<div class="links"><a class="play" href="68-seventh-week/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="70" data-built="0" data-q="70 같은 주소 두 게임이 메모리 256바이트를 나눠 쓴다. 한쪽의 금화가 다른 쪽의 체력이다 메타 퍼즐 · 패스스루 · 2026-10-06 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="70-same-address/mock-a.jpg"><img src="70-same-address/mock-a.jpg" alt="같은 주소 목업 A" loading="lazy"></a><a class="shot" href="70-same-address/mock-b.jpg"><img src="70-same-address/mock-b.jpg" alt="같은 주소 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#70</span><span>메타 퍼즐 · 패스스루 · 2026-10-06 추가</span><span class="st st-0">새 컨셉</span></div>
 <h2>같은 주소</h2><p>두 게임이 메모리 256바이트를 나눠 쓴다. 한쪽의 금화가 다른 쪽의 체력이다</p>
-<div class="links"><a class="play" href="104-same-address/index.html#a">HTML 시안 ↗</a></div></div></article></section>
+<div class="links"><a class="play" href="70-same-address/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="71" data-built="0" data-q="71 반동 비행사 총을 쏴야만 움직인다. 탄창이 연료이자 무기다 액션 · 무중력 슈터 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="71-recoil-drifter/mock-a.jpg"><img src="71-recoil-drifter/mock-a.jpg" alt="반동 비행사 목업 A" loading="lazy"></a><a class="shot" href="71-recoil-drifter/mock-b.jpg"><img src="71-recoil-drifter/mock-b.jpg" alt="반동 비행사 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#71</span><span>액션 · 무중력 슈터 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>반동 비행사</h2><p>총을 쏴야만 움직인다. 탄창이 연료이자 무기다</p>
+<div class="links"><a class="play" href="71-recoil-drifter/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="72" data-built="0" data-q="72 10초 전의 나 10초마다 직전 10초의 내가 적으로 들어온다 액션 · 탑다운 아레나 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="72-ten-seconds-ago/mock-a.jpg"><img src="72-ten-seconds-ago/mock-a.jpg" alt="10초 전의 나 목업 A" loading="lazy"></a><a class="shot" href="72-ten-seconds-ago/mock-b.jpg"><img src="72-ten-seconds-ago/mock-b.jpg" alt="10초 전의 나 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#72</span><span>액션 · 탑다운 아레나 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>10초 전의 나</h2><p>10초마다 직전 10초의 내가 적으로 들어온다</p>
+<div class="links"><a class="play" href="72-ten-seconds-ago/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="73" data-built="0" data-q="73 녹는 창고 팔 물건이 매일 녹는다. 언제 팔지가 전부다 경영 · 재고 · 조선 빙고 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="73-melting-icehouse/mock-a.jpg"><img src="73-melting-icehouse/mock-a.jpg" alt="녹는 창고 목업 A" loading="lazy"></a><a class="shot" href="73-melting-icehouse/mock-b.jpg"><img src="73-melting-icehouse/mock-b.jpg" alt="녹는 창고 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#73</span><span>경영 · 재고 · 조선 빙고 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>녹는 창고</h2><p>팔 물건이 매일 녹는다. 언제 팔지가 전부다</p>
+<div class="links"><a class="play" href="73-melting-icehouse/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="74" data-built="0" data-q="74 길드 인사과 던전은 보지 않는다. 돌아온 보고서와 빈 자리만 본다 경영 · 인사 시뮬 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="74-guild-hr/mock-a.jpg"><img src="74-guild-hr/mock-a.jpg" alt="길드 인사과 목업 A" loading="lazy"></a><a class="shot" href="74-guild-hr/mock-b.jpg"><img src="74-guild-hr/mock-b.jpg" alt="길드 인사과 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#74</span><span>경영 · 인사 시뮬 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>길드 인사과</h2><p>던전은 보지 않는다. 돌아온 보고서와 빈 자리만 본다</p>
+<div class="links"><a class="play" href="74-guild-hr/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="75" data-built="0" data-q="75 소문은 덱이다 카드는 소문이다. 한 번 돌 때마다 말이 부풀어 돌아온다 덱빌더 · 사회 전략 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="75-rumor-deck/mock-a.jpg"><img src="75-rumor-deck/mock-a.jpg" alt="소문은 덱이다 목업 A" loading="lazy"></a><a class="shot" href="75-rumor-deck/mock-b.jpg"><img src="75-rumor-deck/mock-b.jpg" alt="소문은 덱이다 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#75</span><span>덱빌더 · 사회 전략 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>소문은 덱이다</h2><p>카드는 소문이다. 한 번 돌 때마다 말이 부풀어 돌아온다</p>
+<div class="links"><a class="play" href="75-rumor-deck/index.html#a">HTML 시안 ↗</a></div></div></article><article class="card" data-engine="unity-2d" data-num="76" data-built="0" data-q="76 섞지 않는 덱 덱을 섞지 않는다. 열차의 칸 순서가 곧 뽑는 순서다 덱빌더 · 열차 편성 · 2026-10-08 추가 unity · urp 2d / ui·오디오">
+<div class="shots"><a class="shot" href="76-unshuffled-train/mock-a.jpg"><img src="76-unshuffled-train/mock-a.jpg" alt="섞지 않는 덱 목업 A" loading="lazy"></a><a class="shot" href="76-unshuffled-train/mock-b.jpg"><img src="76-unshuffled-train/mock-b.jpg" alt="섞지 않는 덱 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#76</span><span>덱빌더 · 열차 편성 · 2026-10-08 추가</span><span class="st st-0">새 컨셉</span></div>
+<h2>섞지 않는 덱</h2><p>덱을 섞지 않는다. 열차의 칸 순서가 곧 뽑는 순서다</p>
+<div class="links"><a class="play" href="76-unshuffled-train/index.html#a">HTML 시안 ↗</a></div></div></article></div></section><section class="engine-group" data-engine="web" id="web"><h2 class="group-title">웹 · TypeScript + PixiJS <span class="group-count">1개</span></h2><p class="group-description">설치 없이 링크로 공유하는 데일리 챌린지. 웹 런타임 권장.</p><div class="grid"><article class="card" data-engine="web" data-num="20" data-built="0" data-q="20 버스 정류장 관찰 실루엣으로 직업·행선지를 맞힌다 이름 없는 정거장 · 상업 웹 · typescript + pixijs">
+<div class="shots"><a class="shot" href="20-bus-stop-watch/mock-a.jpg"><img src="20-bus-stop-watch/mock-a.jpg" alt="버스 정류장 관찰 목업 A" loading="lazy"></a><a class="shot" href="20-bus-stop-watch/mock-b.jpg"><img src="20-bus-stop-watch/mock-b.jpg" alt="버스 정류장 관찰 목업 B" loading="lazy"></a></div>
+<div class="body"><div class="meta"><span>#20</span><span>이름 없는 정거장 · 상업</span><span class="st st-0">미착수</span></div>
+<h2>버스 정류장 관찰</h2><p>실루엣으로 직업·행선지를 맞힌다</p>
+<div class="links"><a class="play" href="20-bus-stop-watch/index.html#a">HTML 시안 ↗</a></div></div></article></div></section></div>
+<p id="empty" hidden>조건에 맞는 컨셉이 없습니다. 검색어나 필터를 바꿔 보세요.</p>
 <footer>생성: <code>python docs/poc-gallery/concepts/_tools/build_index.py</code> · 이미지: <code>_tools/gen_images.py</code> (Codex image_gen) · 누락 0건</footer>
 </main><script>
-var f='all',q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card'));
-function apply(){var s=q.value.trim().toLowerCase();cards.forEach(function(c){c.style.display=((f==='all'||c.dataset.built===f)&&(!s||c.dataset.q.indexOf(s)>=0))?'':'none'})}
-q.addEventListener('input',apply);[].forEach.call(document.querySelectorAll('.bar button'),function(b){b.onclick=function(){f=b.dataset.f;[].forEach.call(document.querySelectorAll('.bar button'),function(x){x.classList.toggle('on',x===b)});apply()}});
+var f='all',engine='all',q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card'));
+function apply(){
+  var s=q.value.trim().toLowerCase(),total=0;
+  cards.forEach(function(c){c.hidden=!((f==='all'||c.dataset.built===f)&&(engine==='all'||c.dataset.engine===engine)&&(!s||c.dataset.q.indexOf(s)>=0));if(!c.hidden)total++});
+  document.querySelectorAll('.engine-group').forEach(function(g){var n=g.querySelectorAll('.card:not([hidden])').length;g.hidden=n===0;g.querySelector('.group-count').textContent=n+'개'});
+  document.getElementById('result').textContent=total+'개 표시 / 전체 '+cards.length+'개';document.getElementById('empty').hidden=total!==0;
+}
+q.addEventListener('input',apply);
+function bind(selector,key){document.querySelectorAll(selector).forEach(function(b){b.onclick=function(){if(key==='f')f=b.dataset.f;else engine=b.dataset.engine;document.querySelectorAll(selector).forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',String(x===b))});apply()}})}
+bind('button[data-f]','f');bind('button[data-engine]','engine');apply();
 </script></body></html>

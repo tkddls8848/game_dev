@@ -3,18 +3,15 @@
     "id": "F01",
     "title": "호러 드론·저음 긴장",
     "concepts": [
-      5,
+      3,
       6,
-      11,
-      12,
-      21,
-      29
+      15
     ],
     "bpm": "무박(프리 템포) 드론 + 위험 레이어에서 60~70 BPM 심장 박동형 펄스",
     "instruments": "서브베이스 드론, 활로 긁은 금속(bowed cymbal/waterphone), 저역 현 클러스터, 먼 금속성 타격, 역재생 피아노 한 음",
     "mood": "숨 막힘, 좁은 공간, 보이지 않는 것의 존재감, 끝나지 않는 하강",
     "loop_structure": "인트로 없음(환경음에서 스며듦) → 60~90초 드론 루프(2~3개 교대) → 스팅어(발견·접촉 0.5~2초, 곡이 아니라 효과음 층)",
-    "adaptive": "L0 룸톤/환경음만 → L1 드론(위험도 1) → L2 저역 펄스(적 근접) → L3 고역 현 트레몰로(시야 안 위협). 손전등 배터리(5)·남은 시간(21)·층수(11,12)에 L2 템포를 5~10% 연동. 발견 순간 전 레이어 200ms 덕킹 후 스팅어.",
+    "adaptive": "L0 룸톤/환경음만 → L1 드론(위험도 1) → L2 저역 펄스(적 근접) → L3 고역 현 트레몰로(시야 안 위협). 손전등 배터리(구5)·남은 시간(구21)·층수(구11,6)에 L2 템포를 5~10% 연동. 발견 순간 전 레이어 200ms 덕킹 후 스팅어.",
     "avoid": "점프스케어용 오케스트라 히트 남발, 선율이 분명한 테마(공포가 '음악'이 되어 안전해짐), 4/4 드럼 비트, 에픽 트레일러 브라스",
     "music_free_note": "",
     "library_matches": [
@@ -91,7 +88,7 @@
         "author": "Kevin MacLeod (incompetech.com)"
       }
     ],
-    "library_gaps": "드론은 넉넉하지만 전부 스테레오 단일 믹스라 레이어 분리(stem)가 없다. 위험도 레이어용 저역 펄스·고역 트레몰로를 따로 만들어야 한다. 엘리베이터(11,12)·지하철(29) 운행 럼블 루프도 없다(audio.md '부족한 것').",
+    "library_gaps": "드론은 넉넉하지만 전부 스테레오 단일 믹스라 레이어 분리(stem)가 없다. 위험도 레이어용 저역 펄스·고역 트레몰로를 따로 만들어야 한다. 엘리베이터(구11,6)·지하철(15) 운행 럼블 루프도 없다(audio.md '부족한 것').",
     "artlist_refs": [
       {
         "title": "Dark Tension",
@@ -114,25 +111,29 @@
     ],
     "gen_prompt": "Dark ambient horror underscore, instrumental. Sub-bass drone, bowed metal and waterphone scrapes, low string clusters, a distant reversed piano note, sparse metallic hits far away. No melody, no drums, no orchestral hits. Tense, claustrophobic, slowly breathing. Free tempo with a faint 64 BPM heartbeat-like low pulse. Seamless loop, 30 seconds.",
     "priority_score": 6,
-    "priority_rank": 7
+    "priority_rank": 7,
+    "archived_concepts": [
+      5,
+      11,
+      21
+    ]
   },
   {
     "id": "F02",
     "title": "소리가 정보 — 음악 최소·덕킹",
     "concepts": [
-      24,
-      31,
-      32,
-      37,
-      94
+      12,
+      16,
+      19,
+      61
     ],
-    "bpm": "무박. 37번만 숨 리듬(분당 12~20회) 자체가 템포",
+    "bpm": "무박. 19번만 숨 리듬(분당 12~20회) 자체가 템포",
     "instruments": "음악은 거의 쓰지 않는다. 쓰더라도 20Hz~150Hz 서브 드론 한 줄(정보 대역 500Hz~8kHz를 비워 둠)",
     "mood": "귀를 기울이게 하는 정적, 긴장된 청취",
     "loop_structure": "루프 음악 없음. 결과 화면·장 전환에만 5~10초 스팅어",
-    "adaptive": "정보 소리(균열 31, 두드림 32, 숨 37, 메아리 94, 복도 대답 24)가 날 때 드론 -12dB 사이드체인. 위험이 높아질수록 음악을 더하는 것이 아니라 환경음을 빼서 정보 소리를 드러낸다(역-레이어링).",
-    "avoid": "중고역을 채우는 패드·선율, 리버브가 긴 음악(메아리·균열 판독을 망침), 리듬(37번 숨 리듬과 충돌)",
-    "music_free_note": "의도적 음악 최소 가족. 대체 피드백: 31·32 얼음 균열 핑·두드림(ice/*), 37 숨 3단계 루프(breathing-heartbeat/* 가공), 94 클릭·메아리(합성 IR), 24 마이크 입력 후 복도 잔향. 정보 소리가 곧 음악이다.",
+    "adaptive": "정보 소리(균열 16, 두드림 구32, 숨 19, 메아리 61, 복도 대답 12)가 날 때 드론 -12dB 사이드체인. 위험이 높아질수록 음악을 더하는 것이 아니라 환경음을 빼서 정보 소리를 드러낸다(역-레이어링).",
+    "avoid": "중고역을 채우는 패드·선율, 리버브가 긴 음악(메아리·균열 판독을 망침), 리듬(19번 숨 리듬과 충돌)",
+    "music_free_note": "의도적 음악 최소 가족. 대체 피드백: 16·구32 얼음 균열 핑·두드림(ice/*), 19 숨 3단계 루프(breathing-heartbeat/* 가공), 94 클릭·메아리(합성 IR), 24 마이크 입력 후 복도 잔향. 정보 소리가 곧 음악이다.",
     "library_matches": [
       {
         "pack": "ice/ice-breakingshattering",
@@ -206,24 +207,25 @@
     ],
     "gen_prompt": "Extremely sparse sub-bass drone for a listening-based game, instrumental. Only frequencies below 150 Hz, a single slowly evolving low tone with subtle air noise, no melody, no rhythm, no mid or high frequencies, no reverb tails. Cold, attentive, quiet. Free tempo. Seamless loop, 30 seconds.",
     "priority_score": 1.5,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      32
+    ]
   },
   {
     "id": "F03",
     "title": "무음 지향·다이제틱 대체",
     "concepts": [
-      40,
-      47,
-      63,
-      65
+      33,
+      35
     ],
-    "bpm": "해당 없음 — 47·65는 화면 속 시각 박자가 템포(단원 호흡·지휘봉)이고 소리로 내지 않는다",
-    "instruments": "음악 없음. 환경음·다이제틱 소리·(65·47) 저역 진동감만",
+    "bpm": "해당 없음 — 구47·35는 화면 속 시각 박자가 템포(단원 호흡·지휘봉)이고 소리로 내지 않는다",
+    "instruments": "음악 없음. 환경음·다이제틱 소리·(35·구47) 저역 진동감만",
     "mood": "고요, 부재, 감각 박탈의 체험 그 자체",
     "loop_structure": "루프 음악 없음. 엔딩 크레딧 1곡만 허용(선택)",
-    "adaptive": "음악 대신 감각 치환: 65·47은 박을 맞추면 화면 진동·조명 펄스·(선택) 60Hz 이하 촉각형 저음 한 번, 틀리면 단원 표정·활 흔들림. 63은 냄새 층을 벗길 때 들숨 폴리와 방 룸톤만 필터가 열리듯 변함. 40은 시간대별 환경음(매미→저녁 새→귀뚜라미→버스 없는 도로)이 곧 진행 표시.",
-    "avoid": "어떤 형태든 배경음악(이 컨셉의 핵심 규칙을 깬다), '감동' 피아노 삽입, 효과음으로 박자 알려 주기(47·65)",
-    "music_free_note": "#47·#65 청각을 잃은 지휘자 — 음악이 없는 것이 규칙이다. #63 보이지도 들리지도 않는 방. #40 앉아 있기만 하는 저녁 — 환경음 체험. 대체: 시각 박·진동·폴리·환경음 레이어.",
+    "adaptive": "음악 대신 감각 치환: 35·구47은 박을 맞추면 화면 진동·조명 펄스·(선택) 60Hz 이하 촉각형 저음 한 번, 틀리면 단원 표정·활 흔들림. 33은 냄새 층을 벗길 때 들숨 폴리와 방 룸톤만 필터가 열리듯 변함. 구40은 시간대별 환경음(매미→저녁 새→귀뚜라미→버스 없는 도로)이 곧 진행 표시.",
+    "avoid": "어떤 형태든 배경음악(이 컨셉의 핵심 규칙을 깬다), '감동' 피아노 삽입, 효과음으로 박자 알려 주기(구47·35)",
+    "music_free_note": "구#47·#35 청각을 잃은 지휘자 — 음악이 없는 것이 규칙이다. #33 보이지도 들리지도 않는 방. 구#40 앉아 있기만 하는 저녁 — 환경음 체험. 대체: 시각 박·진동·폴리·환경음 레이어.",
     "library_matches": [
       {
         "pack": "ambience/crickets-ambient-noise-loopable",
@@ -268,7 +270,7 @@
         "author": "eXpl0it3r"
       }
     ],
-    "library_gaps": "음악 갭 없음(생성 불필요). 소리 갭: 콘서트홀 룸톤(65), 시골 정류장 저녁 필드 레코딩(40), 들숨/냄새 맡기 폴리(63).",
+    "library_gaps": "음악 갭 없음(생성 불필요). 소리 갭: 콘서트홀 룸톤(35), 시골 정류장 저녁 필드 레코딩(구40), 들숨/냄새 맡기 폴리(33).",
     "artlist_refs": [
       {
         "title": "Reset",
@@ -285,21 +287,23 @@
     ],
     "gen_prompt": "(Not recommended to generate — this family is intentionally music-free.) Optional end-credits only: warm, almost silent ambient piece, single sustained felt-piano chord dissolving into room tone and distant evening field recording, no rhythm, no melody hook, 50 BPM feel. Instrumental, seamless loop, 30 seconds.",
     "priority_score": 0,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      40,
+      47
+    ]
   },
   {
     "id": "F04",
     "title": "아날로그 라디오·다이제틱 방송",
     "concepts": [
-      3,
-      4,
-      23
+      2
     ],
     "bpm": "곡마다 70~110 BPM",
     "instruments": "다이제틱 곡(1970~90s 가요풍 이지리스닝·재즈 발라드·방송 징글) + AM 필터·잡음·페이딩. 비다이제틱은 쓰지 않는다",
     "mood": "밤의 고독, 전파 너머의 사람, 흘러간 시대",
-    "loop_structure": "라디오 곡 2~3분 여러 개(루프 아님) + 방송 징글 3~5초 + 튜닝 사이 정적. 4번은 20년 전 테이프처럼 열화된 판본",
-    "adaptive": "다이얼 위치 = 믹스: 주파수 일치도에 따라 곡의 대역폭(300Hz~3kHz → 전대역)과 잡음 비율이 연속 변화. 3번은 조난 신호 근처에서 곡이 사라지고 모스·음성이 드러남. 23번은 사연 분위기에 따라 선곡이 바뀜(선곡 자체가 조작).",
+    "loop_structure": "라디오 곡 2~3분 여러 개(루프 아님) + 방송 징글 3~5초 + 튜닝 사이 정적. 구4번은 20년 전 테이프처럼 열화된 판본",
+    "adaptive": "다이얼 위치 = 믹스: 주파수 일치도에 따라 곡의 대역폭(300Hz~3kHz → 전대역)과 잡음 비율이 연속 변화. 2번은 조난 신호 근처에서 곡이 사라지고 모스·음성이 드러남. 구23번은 사연 분위기에 따라 선곡이 바뀜(선곡 자체가 조작).",
     "avoid": "현대적 풀레인지 믹스를 필터 없이 틀기, 실존 가요 샘플(권리), 비다이제틱 BGM을 라디오 위에 덧씌우기",
     "music_free_note": "",
     "library_matches": [
@@ -375,20 +379,23 @@
     ],
     "gen_prompt": "Late-night 1980s Asian city radio easy-listening ballad, instrumental. Electric piano, soft nylon guitar, gentle fretless bass, brushed drums, warm saxophone phrase. Nostalgic, lonely, intimate, as if heard through an old AM radio. 84 BPM. Seamless loop, 30 seconds.",
     "priority_score": 6,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      4,
+      23
+    ]
   },
   {
     "id": "F05",
     "title": "터미널 글리치·사이버 신스",
     "concepts": [
-      1,
-      2
+      1
     ],
-    "bpm": "1: 120~140 BPM / 2: 무박~70 BPM",
-    "instruments": "비트크러시 신스 베이스, 16분음 아르페지에이터, 글리치 퍼커션(데이터 잡음), CRT 험, 2번은 사인파 패드와 느린 벨",
-    "mood": "압박, 시간 초과, 기계 속 무언가가 되받아치는 불쾌함(1) / 꺼져 가는 존재와의 대화(2)",
-    "loop_structure": "1: 8마디 인트로 → 16마디 루프 A/B → 성공/실패 스팅어(2초) / 2: 90초 패드 루프 → 삭제 카운트다운 구간 변주",
-    "adaptive": "1: 남은 시간 30%마다 레이어 추가(하이햇→베이스 옥타브→리드). 유령이 명령을 되받아칠 때 템포 순간 역재생/스터터. 2: 남은 시간에 따라 비트레이트를 낮춰 음악이 점점 부서짐(샘플레이트 44.1k→8k).",
+    "bpm": "1: 120~140 BPM / 구2: 무박~70 BPM",
+    "instruments": "비트크러시 신스 베이스, 16분음 아르페지에이터, 글리치 퍼커션(데이터 잡음), CRT 험, 구2번은 사인파 패드와 느린 벨",
+    "mood": "압박, 시간 초과, 기계 속 무언가가 되받아치는 불쾌함(1) / 꺼져 가는 존재와의 대화(구2)",
+    "loop_structure": "1: 8마디 인트로 → 16마디 루프 A/B → 성공/실패 스팅어(2초) / 구2: 90초 패드 루프 → 삭제 카운트다운 구간 변주",
+    "adaptive": "1: 남은 시간 30%마다 레이어 추가(하이햇→베이스 옥타브→리드). 유령이 명령을 되받아칠 때 템포 순간 역재생/스터터. 구2: 남은 시간에 따라 비트레이트를 낮춰 음악이 점점 부서짐(샘플레이트 44.1k→8k).",
     "avoid": "신스웨이브 향수(밝은 80s 리드), EDM 드롭, 할리우드 해커 클리셰 보컬 찹",
     "music_free_note": "",
     "library_matches": [
@@ -429,7 +436,7 @@
         "author": "Kenney (kenney.nl)"
       }
     ],
-    "library_gaps": "글리치 곡 1개(CC0)와 사이버펑크 편곡 1개뿐 — 템포가 맞는 레이어 세트가 없다. 2번용 느린 패드도 없다.",
+    "library_gaps": "글리치 곡 1개(CC0)와 사이버펑크 편곡 1개뿐 — 템포가 맞는 레이어 세트가 없다. 구2번용 느린 패드도 없다.",
     "artlist_refs": [
       {
         "title": "Glitch Flop",
@@ -446,22 +453,23 @@
     ],
     "gen_prompt": "Tense glitch electronic hacking underscore, instrumental. Bitcrushed synth bass, fast 16th-note arpeggiator, glitchy data-noise percussion, CRT hum, stuttering edits. Pressured, cold, digital, no vocals, no EDM drop. 128 BPM. Seamless loop, 30 seconds.",
     "priority_score": 2,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      2
+    ]
   },
   {
     "id": "F06",
     "title": "모던 수사·미니멀 전자 펄스",
     "concepts": [
-      35,
-      41,
-      43,
-      62
+      18,
+      32
     ],
     "bpm": "90~110 BPM",
-    "instruments": "뮤트 피아노 반복음, 아날로그 신스 펄스(8분음), 저역 패드, 가벼운 틱 퍼커션(시계·로그), 35번은 테이프 모터음을 리듬 요소로",
+    "instruments": "뮤트 피아노 반복음, 아날로그 신스 펄스(8분음), 저역 패드, 가벼운 틱 퍼커션(시계·로그), 18번은 테이프 모터음을 리듬 요소로",
     "mood": "집중, 냉정한 분석, 드러나는 진실의 무게",
     "loop_structure": "인트로 4마디 → 루프 A(조사) 16마디 / 루프 B(단서 결합) 16마디 → 결론 스팅어(판정 맞음/틀림 두 벌)",
-    "adaptive": "증거 수에 따라 레이어 추가(펄스→베이스→피아노 모티프). 잘못된 추론·모순 발견 시 펄스가 반박자 어긋남. 43·62는 전화 알림이 올 때 음악 전체 로우패스.",
+    "adaptive": "증거 수에 따라 레이어 추가(펄스→베이스→피아노 모티프). 잘못된 추론·모순 발견 시 펄스가 반박자 어긋남. 구43·32는 전화 알림이 올 때 음악 전체 로우패스.",
     "avoid": "트루크라임 다큐 클리셰(과장된 붐), 밝은 코퍼릿 피아노, 공포 드론(장르가 호러로 기움)",
     "music_free_note": "",
     "library_matches": [
@@ -502,7 +510,7 @@
         "author": "LFA"
       }
     ],
-    "library_gaps": "수사물용 펄스 곡이 없다. 구현된 41·43·62가 이 가족이라 격차 체감이 가장 크다.",
+    "library_gaps": "수사물용 펄스 곡이 없다. 구현된 구41·구43·32가 이 가족이라 격차 체감이 가장 크다.",
     "artlist_refs": [
       {
         "title": "Empty Rooms",
@@ -525,23 +533,22 @@
     ],
     "gen_prompt": "Minimal modern investigation underscore, instrumental. Muted repeating piano notes, analog synth eighth-note pulse, low warm pad, light ticking percussion like a clock. Focused, cool, analytical, slowly building. No big hits, no horror. 100 BPM. Seamless loop, 30 seconds.",
     "priority_score": 8,
-    "priority_rank": 3
+    "priority_rank": 3,
+    "archived_concepts": [
+      41,
+      43
+    ]
   },
   {
     "id": "F07",
     "title": "테이프 루프·열화 노스탤지어",
-    "concepts": [
-      8,
-      26,
-      30,
-      36
-    ],
+    "concepts": [],
     "bpm": "55~75 BPM(루프 길이가 템포)",
     "instruments": "업라이트 피아노/일렉트릭 피아노 짧은 프레이즈를 테이프 루프로(워우·플러터·히스), 멀리 있는 현 패드, 빈티지 오르간 한 음",
     "mood": "바랜 사진, 사라진 사람, 기억이 닳는 소리",
     "loop_structure": "4~8마디 테이프 루프 하나를 반복하며 열화 단계 3~4개(원본→약한 워우→심한 드롭아웃→거의 잡음)",
-    "adaptive": "진행도 = 열화도. 36번은 재생할수록 루프가 늘어져 사라짐(피치 -1~-3% 누적, 드롭아웃 증가). 8번은 빠진 한 사람에 다가갈수록 루프에서 한 음이 빠짐. 30번 종점은 역 정차마다 루프가 조금씩 느려짐.",
-    "avoid": "깨끗한 하이파이 피아노, 로파이 힙합 드럼(26·30의 슬픔을 '칠'로 바꿈), 감상적 현악 크레셴도",
+    "adaptive": "진행도 = 열화도. 구36번은 재생할수록 루프가 늘어져 사라짐(피치 -1~-3% 누적, 드롭아웃 증가). 구8번은 빠진 한 사람에 다가갈수록 루프에서 한 음이 빠짐. 구30번 종점은 역 정차마다 루프가 조금씩 느려짐.",
+    "avoid": "깨끗한 하이파이 피아노, 로파이 힙합 드럼(구26·구30의 슬픔을 '칠'로 바꿈), 감상적 현악 크레셴도",
     "music_free_note": "",
     "library_matches": [
       {
@@ -604,26 +611,28 @@
     ],
     "gen_prompt": "Nostalgic degraded tape-loop ambient, instrumental. A short upright piano phrase repeating on worn cassette tape with wow and flutter, tape hiss, occasional dropouts, a distant soft string pad. Melancholic, faded, tender, memory slowly disappearing. 64 BPM. Seamless loop, 30 seconds.",
     "priority_score": 4,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      8,
+      26,
+      30,
+      36
+    ]
   },
   {
     "id": "F08",
     "title": "상실·돌봄 미니멀 피아노",
     "concepts": [
-      18,
-      22,
-      28,
-      38,
-      49,
-      66
+      11,
+      36
     ],
     "bpm": "60~80 BPM",
     "instruments": "펠트 피아노(해머 소리·페달 노이즈 포함), 첼로 한 줄, 가끔 어쿠스틱 기타 하모닉스, 창밖 비·방 룸톤과 섞이는 믹스",
     "mood": "조용한 슬픔, 곁에 있음, 이별 직전의 일상",
     "loop_structure": "인트로 없음 → 60~90초 루프(선율 A) + 변주 A' → 장 끝 2~4마디 코다(결말 분기별 조성 다름)",
-    "adaptive": "22번: 눈 뜨는 시간이 줄수록 악기가 하나씩 빠지고 마지막엔 피아노 한 음. 38번: 부모의 숨이 고르면 첼로 등장, 불안정하면 피아노만. 49·66번: 도운 집 수만큼 화성이 열림(단조→병행장조). 18번: 40일 진행에 따라 선율이 짧아짐.",
+    "adaptive": "11번: 눈 뜨는 시간이 줄수록 악기가 하나씩 빠지고 마지막엔 피아노 한 음. 구38번: 부모의 숨이 고르면 첼로 등장, 불안정하면 피아노만. 구49·36번: 도운 집 수만큼 화성이 열림(단조→병행장조). 구18번: 40일 진행에 따라 선율이 짧아짐.",
     "avoid": "웅장한 현악 오케스트라, 드럼, '감동 유도' 크레셴도, 과한 리버브",
-    "music_free_note": "38번 간병은 긴 무음 구간을 허용(숨소리·시계·냉장고 험이 주인공). 음악은 새벽 전환에만.",
+    "music_free_note": "구38번 간병은 긴 무음 구간을 허용(숨소리·시계·냉장고 험이 주인공). 음악은 새벽 전환에만.",
     "library_matches": [
       {
         "pack": "music/soliloquy",
@@ -703,22 +712,27 @@
     ],
     "gen_prompt": "Intimate minimal felt piano, instrumental. Soft felt-muted upright piano with audible hammers and pedal noise, a single sustained cello line entering halfway, lots of space and silence between phrases. Quiet grief, tenderness, late night at home. No drums, no strings swell. 68 BPM. Seamless loop, 30 seconds.",
     "priority_score": 6,
-    "priority_rank": 8
+    "priority_rank": 8,
+    "archived_concepts": [
+      18,
+      28,
+      38,
+      49
+    ]
   },
   {
     "id": "F09",
     "title": "서재·편지 실내악 (펜과 활자)",
     "concepts": [
-      17,
-      48,
-      56,
-      64
+      9,
+      26,
+      34
     ],
     "bpm": "72~96 BPM",
-    "instruments": "현악 3~4중주(피치카토+레가토), 클라리넷 또는 바순, 업라이트 피아노, 56번은 인쇄기·타자기 리듬을 퍼커션으로",
+    "instruments": "현악 3~4중주(피치카토+레가토), 클라리넷 또는 바순, 업라이트 피아노, 26번은 인쇄기·타자기 리듬을 퍼커션으로",
     "mood": "사색, 문장을 고르는 긴장, 종이 냄새",
     "loop_structure": "인트로 2마디 → 루프 A(읽기) / 루프 B(고치기·인쇄, 피치카토 밀도↑) → 반송·완성 스팅어",
-    "adaptive": "편집 조작(삭제·삽입·이동, 48·64)마다 피치카토 한 음을 박자에 양자화해 붙임 — 손맛이 음악에 섞임. 56번은 남은 인쇄 횟수가 줄수록 현이 하나씩 빠짐. 17번은 상대 거짓말 판정에 따라 조성 흔들림.",
+    "adaptive": "편집 조작(삭제·삽입·이동, 구48·34)마다 피치카토 한 음을 박자에 양자화해 붙임 — 손맛이 음악에 섞임. 26번은 남은 인쇄 횟수가 줄수록 현이 하나씩 빠짐. 9번은 상대 거짓말 판정에 따라 조성 흔들림.",
     "avoid": "바로크 패스티시 과잉, 코믹 피치카토(가볍게 무너짐), 전자음",
     "music_free_note": "",
     "library_matches": [
@@ -765,7 +779,7 @@
         "author": "rubberduck"
       }
     ],
-    "library_gaps": "실내악 곡이 전혀 없다. 구현된 48·56·64 세 개가 이 가족.",
+    "library_gaps": "실내악 곡이 전혀 없다. 구현된 구48·26·34 세 개가 이 가족.",
     "artlist_refs": [
       {
         "title": "Morning Dance",
@@ -788,20 +802,22 @@
     ],
     "gen_prompt": "Intimate chamber music for a writing desk, instrumental. String quartet alternating gentle pizzicato and legato phrases, a warm clarinet line, soft upright piano. Thoughtful, literary, quietly tense, like choosing the right sentence. 84 BPM. Seamless loop, 30 seconds.",
     "priority_score": 8,
-    "priority_rank": 4
+    "priority_rank": 4,
+    "archived_concepts": [
+      48
+    ]
   },
   {
     "id": "F10",
     "title": "천상 관료제 (하프·첼레스타·허밍)",
     "concepts": [
-      50,
-      68
+      38
     ],
     "bpm": "84~100 BPM",
     "instruments": "콘서트 하프, 첼레스타, 허밍 합창 패드(가사 없음), 피치카토 현, 작은 핸드벨, 도장 소리를 퍼커션으로",
     "mood": "신성하지만 사무적인, 은근한 유머와 대가의 무게",
     "loop_structure": "루프 A(서류 처리) 16마디 → 루프 B(대가 발생, 저역 추가) → 결재 스팅어(종 한 번)",
-    "adaptive": "들어준 기도 수만큼 합창 레이어 두꺼워짐, 다른 곳에서 대가가 빠질 때 저역 현이 반음 내려감(50번 하류 확인 시).",
+    "adaptive": "들어준 기도 수만큼 합창 레이어 두꺼워짐, 다른 곳에서 대가가 빠질 때 저역 현이 반음 내려감(구50번 하류 확인 시).",
     "avoid": "교회 오르간·그레고리안 성가(특정 종교 연상), 에픽 합창",
     "music_free_note": "",
     "library_matches": [
@@ -859,23 +875,25 @@
     ],
     "gen_prompt": "Celestial bureaucracy underscore, instrumental. Concert harp arpeggios, celesta, wordless humming choir pad, light pizzicato strings, small handbells. Heavenly yet orderly and slightly playful, like an office in the clouds. No organ, no epic choir. 92 BPM. Seamless loop, 30 seconds.",
     "priority_score": 3.0,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      50
+    ]
   },
   {
     "id": "F11",
     "title": "노이르 재즈·야간 순찰",
     "concepts": [
-      7,
-      20,
-      33,
-      34,
-      73
+      4,
+      10,
+      17,
+      43
     ],
     "bpm": "60~90 BPM(스윙 필)",
-    "instruments": "뮤트 트럼펫/테너 색소폰, 업라이트 베이스 워킹, 브러시 드럼, 재즈 피아노 보이싱, 33·34는 비브라폰·피치카토 '살금살금'",
+    "instruments": "뮤트 트럼펫/테너 색소폰, 업라이트 베이스 워킹, 브러시 드럼, 재즈 피아노 보이싱, 17·구34는 비브라폰·피치카토 '살금살금'",
     "mood": "담배 연기, 흑백 사진, 밤의 전시실, 속삭이는 경매장",
     "loop_structure": "인트로 4마디 → 루프 A(조사·순찰) 16마디 → 루프 B(용의자 좁힘·경매 호가) → 지목/낙찰 스팅어",
-    "adaptive": "33·34: 바뀐 전시물을 놓칠수록 베이스만 남기고 드럼 빠짐 → 34번 예술안은 점점 조가 틀어짐(4분의 1음 디튠). 73: 호가가 오를수록 피아노 컴핑 밀도↑. 20: 금지 통화 연결 시 음악 전체 전화선 필터.",
+    "adaptive": "17·구34: 바뀐 전시물을 놓칠수록 베이스만 남기고 드럼 빠짐 → 구34번 예술안은 점점 조가 틀어짐(4분의 1음 디튠). 43: 호가가 오를수록 피아노 컴핑 밀도↑. 10: 금지 통화 연결 시 음악 전체 전화선 필터.",
     "avoid": "빅밴드 스윙(너무 밝음), 스무스 재즈, 전자 비트",
     "music_free_note": "",
     "library_matches": [
@@ -945,21 +963,20 @@
     ],
     "gen_prompt": "Film noir detective jazz, instrumental. Muted trumpet, walking upright bass, brushed drums, smoky jazz piano voicings, soft vibraphone. Night-time, mysterious, slow swing feel, cigarette smoke and black-and-white photographs. 72 BPM. Seamless loop, 30 seconds.",
     "priority_score": 2.5,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      34
+    ]
   },
   {
     "id": "F12",
     "title": "보드빌·래그타임·서커스 칼리오페",
-    "concepts": [
-      9,
-      19,
-      98
-    ],
+    "concepts": [],
     "bpm": "100~140 BPM",
-    "instruments": "래그타임 피아노, 튜바·트롬본, 스네어·심벌, 칼리오페/증기 오르간(98), 밴조, 클라리넷",
+    "instruments": "래그타임 피아노, 튜바·트롬본, 스네어·심벌, 칼리오페/증기 오르간(구98), 밴조, 클라리넷",
     "mood": "왁자한 무대, 분주한 교환대, 마지막 순회의 쓸쓸한 흥",
-    "loop_structure": "인트로 2마디 → 루프 A 16마디 → 루프 B(고조) → 박수·실패 스팅어. 98은 도시별 변주(같은 선율, 편성만 교체)",
-    "adaptive": "9: 관객 호응 게이지가 오르면 편성 추가·템포 +5%. 19: 대기 통화 수 = 피아노 오른손 밀도, 잘못 연결 시 한 박 삐끗(오음). 98: 단원이 빠질 때마다 악기가 하나씩 사라지고 마지막 공연은 칼리오페 혼자.",
+    "loop_structure": "인트로 2마디 → 루프 A 16마디 → 루프 B(고조) → 박수·실패 스팅어. 구98은 도시별 변주(같은 선율, 편성만 교체)",
+    "adaptive": "구9: 관객 호응 게이지가 오르면 편성 추가·템포 +5%. 구19: 대기 통화 수 = 피아노 오른손 밀도, 잘못 연결 시 한 박 삐끗(오음). 구98: 단원이 빠질 때마다 악기가 하나씩 사라지고 마지막 공연은 칼리오페 혼자.",
     "avoid": "공포 서커스 클리셰(디튠 오르골), 현대 팝 드럼",
     "music_free_note": "",
     "library_matches": [
@@ -1029,22 +1046,27 @@
     ],
     "gen_prompt": "Vintage vaudeville circus ragtime, instrumental. Bouncy ragtime piano, oom-pah tuba, steam calliope organ melody, clarinet runs, snare and cymbal hits. Lively, theatrical, a little bittersweet. 120 BPM. Seamless loop, 30 seconds.",
     "priority_score": 1.5,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      9,
+      19,
+      98
+    ]
   },
   {
     "id": "F13",
     "title": "오르골·태엽·미니어처",
     "concepts": [
-      10,
-      79,
-      82,
-      89
+      5,
+      49,
+      52,
+      58
     ],
-    "bpm": "3/4 왈츠 84~110 BPM(82는 60 BPM 초침과 동기)",
-    "instruments": "오르골(뮤직 박스), 첼레스타, 피치카토 현, 클라비코드, 시계 틱·톱니를 퍼커션으로(82), 칼림바(79)",
+    "bpm": "3/4 왈츠 84~110 BPM(52는 60 BPM 초침과 동기)",
+    "instruments": "오르골(뮤직 박스), 첼레스타, 피치카토 현, 클라비코드, 시계 틱·톱니를 퍼커션으로(52), 칼림바(49)",
     "mood": "작고 정교한 세계, 태엽의 시간, 늙은 손의 떨림",
     "loop_structure": "루프 A 16마디(왈츠) → 태엽 풀림 구간(템포 하강) → 태엽 감기 스팅어",
-    "adaptive": "10: 인형사의 손 떨림 = 오르골 음정 흔들림·박 흔들림. 82: 시계가 틀린 만큼 음악 템포가 어긋나고, 톱니를 맞추면 초침과 박이 정확히 동기. 89: 벽을 떼면 방별로 다른 악기(부엌=칼림바 등). 79: 지하 깊이만큼 저역 추가.",
+    "adaptive": "5: 인형사의 손 떨림 = 오르골 음정 흔들림·박 흔들림. 52: 시계가 틀린 만큼 음악 템포가 어긋나고, 톱니를 맞추면 초침과 박이 정확히 동기. 58: 벽을 떼면 방별로 다른 악기(부엌=칼림바 등). 49: 지하 깊이만큼 저역 추가.",
     "avoid": "공포 오르골(디튠·역재생, F01과 혼동), 신스 패드",
     "music_free_note": "",
     "library_matches": [
@@ -1120,16 +1142,15 @@
     "id": "F14",
     "title": "동화 어쿠스틱 (연필·이불·눈사람)",
     "concepts": [
-      80,
-      85,
-      93
+      50,
+      54
     ],
     "bpm": "80~120 BPM",
-    "instruments": "글로켄슈필, 첼레스타, 목관(플루트·바순), 우쿨렐레, 토이 피아노, 85는 밤 전투용 팀파니·저역 현 추가",
+    "instruments": "글로켄슈필, 첼레스타, 목관(플루트·바순), 우쿨렐레, 토이 피아노, 54는 밤 전투용 팀파니·저역 현 추가",
     "mood": "아이의 상상, 포근함, 조금 무서운 밤과 녹는 봄",
     "loop_structure": "낮(설계/놀이) 루프 → 밤(방어·위기) 루프 같은 선율 단조 편곡 → 승리·아침 스팅어",
-    "adaptive": "85: 괴물 수에 따라 팀파니·저역 현 추가, 요새 붕괴 시 토이피아노만. 93: 녹을수록(기온) 템포가 느려지고 음정이 아래로 흐름. 80: 지운 지형만큼 선율 음이 빠짐(지운 것은 돌아오지 않는다 = 음도 돌아오지 않는다).",
-    "avoid": "디즈니식 풀 오케스트라, 크리스마스 캐럴 클리셰(93), 칩튠",
+    "adaptive": "54: 괴물 수에 따라 팀파니·저역 현 추가, 요새 붕괴 시 토이피아노만. 구93: 녹을수록(기온) 템포가 느려지고 음정이 아래로 흐름. 50: 지운 지형만큼 선율 음이 빠짐(지운 것은 돌아오지 않는다 = 음도 돌아오지 않는다).",
+    "avoid": "디즈니식 풀 오케스트라, 크리스마스 캐럴 클리셰(구93), 칩튠",
     "music_free_note": "",
     "library_matches": [
       {
@@ -1192,24 +1213,27 @@
     ],
     "gen_prompt": "Cozy storybook acoustic, instrumental. Glockenspiel, celesta, toy piano, gentle flute and bassoon, soft ukulele strums. Warm, childlike imagination, bedtime adventure, a hint of mischief. No big orchestra. 100 BPM. Seamless loop, 30 seconds.",
     "priority_score": 3,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      93
+    ]
   },
   {
     "id": "F15",
     "title": "목가 어쿠스틱 파밍 (계절 한 벌)",
     "concepts": [
-      51,
-      52,
-      53,
-      57,
-      59,
-      97
+      21,
+      22,
+      23,
+      27,
+      29,
+      64
     ],
     "bpm": "80~110 BPM",
-    "instruments": "어쿠스틱 기타 핑거피킹, 만돌린, 피들, 틴휘슬/플루트, 업라이트 베이스, 97은 저역 팀파니·호른으로 '걸음'",
-    "mood": "흙냄새, 계절의 순환, 잃어 가는 땅에 대한 애틋함(51), 거인의 걸음(97)",
-    "loop_structure": "계절 4벌(봄·여름·가을·겨울) 같은 선율 다른 편성, 각 60~90초 루프 + 수확·결산 스팅어 + 겨울 밤 전투(57·58 연결)",
-    "adaptive": "51: 침식이 진행될수록 악기 하나씩 빠지고 파도·균열 효과음이 들어옴(세계가 줄면 음악도 준다). 52: 되감을 때마다 테이프 역재생 스윕, 토질이 깎인 만큼 기타 줄 하나가 디튠. 53: 시세 급등락 시 피들 스타카토. 97: 거인 걸음 박(40~50 BPM 저역)에 곡 템포 동기.",
+    "instruments": "어쿠스틱 기타 핑거피킹, 만돌린, 피들, 틴휘슬/플루트, 업라이트 베이스, 64은 저역 팀파니·호른으로 '걸음'",
+    "mood": "흙냄새, 계절의 순환, 잃어 가는 땅에 대한 애틋함(21), 거인의 걸음(64)",
+    "loop_structure": "계절 4벌(봄·여름·가을·겨울) 같은 선율 다른 편성, 각 60~90초 루프 + 수확·결산 스팅어 + 겨울 밤 전투(27·28 연결)",
+    "adaptive": "21: 침식이 진행될수록 악기 하나씩 빠지고 파도·균열 효과음이 들어옴(세계가 줄면 음악도 준다). 22: 되감을 때마다 테이프 역재생 스윕, 토질이 깎인 만큼 기타 줄 하나가 디튠. 23: 시세 급등락 시 피들 스타카토. 64: 거인 걸음 박(40~50 BPM 저역)에 곡 템포 동기.",
     "avoid": "컨트리 팝 드럼, 신스, 과한 켈틱 지그(모든 계절이 축제가 됨)",
     "music_free_note": "",
     "library_matches": [
@@ -1262,7 +1286,7 @@
         "author": "AntumDeluge"
       }
     ],
-    "library_gaps": "파밍 곡으로 쓸 CC0 곡이 몇 개 있지만 계절 한 벌·단계적 레이어가 없다. 구현 6개 중 51은 유일하게 Unity 셸이 있어 가장 먼저 필요하다.",
+    "library_gaps": "파밍 곡으로 쓸 CC0 곡이 몇 개 있지만 계절 한 벌·단계적 레이어가 없다. 구현 6개 중 21은 유일하게 Unity 셸이 있어 가장 먼저 필요하다.",
     "artlist_refs": [
       {
         "title": "Lantern Light",
@@ -1291,15 +1315,15 @@
     "id": "F16",
     "title": "바다·항해 포크 (물때·폭풍·향신료)",
     "concepts": [
-      72,
-      78,
-      86
+      42,
+      48,
+      55
     ],
     "bpm": "84~120 BPM(6/8 가능)",
-    "instruments": "아코디언, 틴휘슬, 어쿠스틱 기타, 콘트라베이스, 프레임 드럼. 86은 우드(oud)·다르부카 색채, 78 폭풍 레이어는 저역 현·팀파니",
+    "instruments": "아코디언, 틴휘슬, 어쿠스틱 기타, 콘트라베이스, 프레임 드럼. 55은 우드(oud)·다르부카 색채, 48 폭풍 레이어는 저역 현·팀파니",
     "mood": "짠바람, 물때를 기다리는 시간, 폭풍 속 등대의 긴장",
-    "loop_structure": "잔잔 루프(72 썰물·86 항해) / 폭풍 루프(78) — 같은 조성, 폭풍은 추가 레이어로 교차 페이드",
-    "adaptive": "72: 물때표의 수위 = 음악 필터(만조일수록 저역 먹먹). 78: 파고·암초 근접도에 따라 현 트레몰로·팀파니, 배를 무사히 인도하면 해소 코드. 86: 선창의 향 섞임에 따라 악기 색이 바뀜(향 = 음색).",
+    "loop_structure": "잔잔 루프(42 썰물·55 항해) / 폭풍 루프(48) — 같은 조성, 폭풍은 추가 레이어로 교차 페이드",
+    "adaptive": "42: 물때표의 수위 = 음악 필터(만조일수록 저역 먹먹). 48: 파고·암초 근접도에 따라 현 트레몰로·팀파니, 배를 무사히 인도하면 해소 코드. 55: 선창의 향 섞임에 따라 악기 색이 바뀜(향 = 음색).",
     "avoid": "해적 영화 에픽 브라스, 레게/열대풍, 과한 뱃노래 합창",
     "music_free_note": "",
     "library_matches": [
@@ -1369,15 +1393,14 @@
     "id": "F17",
     "title": "수중 앰비언트",
     "concepts": [
-      15,
-      16,
-      99
+      8,
+      65
     ],
-    "bpm": "무박~70 BPM(99는 100~110 BPM)",
-    "instruments": "로우패스 신스 패드, 물 하프·유리 하모닉스, 느린 벨, 고래 울음 같은 저역 글라이드, 99는 마림바·피치카토로 '먹물 그리기' 리듬",
+    "bpm": "무박~70 BPM(65는 100~110 BPM)",
+    "instruments": "로우패스 신스 패드, 물 하프·유리 하모닉스, 느린 벨, 고래 울음 같은 저역 글라이드, 65는 마림바·피치카토로 '먹물 그리기' 리듬",
     "mood": "먹먹함, 굴절된 빛, 위에서 내려다보는 그림자",
     "loop_structure": "90초 패드 루프 2벌(얕은 물·깊은 물) + 발각/포식자 스팅어",
-    "adaptive": "15: 위층 경비 그림자가 가까울수록 고역이 더 깎이고 저역 펄스 추가. 16: 수면에 가까울수록 필터가 열림. 99: 포식자 거리 = 퍼커션 밀도, 속임 성공 시 벨 한 음.",
+    "adaptive": "8: 위층 경비 그림자가 가까울수록 고역이 더 깎이고 저역 펄스 추가. 구16: 수면에 가까울수록 필터가 열림. 65: 포식자 거리 = 퍼커션 밀도, 속임 성공 시 벨 한 음.",
     "avoid": "해양 다큐 에픽, 밝은 트로피컬, 고역 반짝이 과다(물속 느낌이 깨짐)",
     "music_free_note": "",
     "library_matches": [
@@ -1435,21 +1458,24 @@
     ],
     "gen_prompt": "Submerged underwater ambient, instrumental. Heavily low-passed warm synth pads, glass harmonics and water-harp tones, slow distant bells, low whale-like gliding tones, muffled and refracted. Calm but uneasy, light filtering from above. No drums. Free tempo, 60 BPM feel. Seamless loop, 30 seconds.",
     "priority_score": 6,
-    "priority_rank": 12
+    "priority_rank": 12,
+    "archived_concepts": [
+      16
+    ]
   },
   {
     "id": "F18",
     "title": "국악·조선 산수",
     "concepts": [
-      14,
-      75,
-      101
+      7,
+      45,
+      67
     ],
     "bpm": "진양조~중모리 느낌 40~90 BPM(장단은 12/8·6/8 계열)",
-    "instruments": "가야금, 거문고, 대금·단소, 해금, 장구·북, 101은 징·방울·구음(무가풍, 가사 없음), 75는 대북·나각",
+    "instruments": "가야금, 거문고, 대금·단소, 해금, 장구·북, 67은 징·방울·구음(무가풍, 가사 없음), 45는 대북·나각",
     "mood": "수묵의 여백, 산 능선의 봉화, 잊힌 신들의 신당",
-    "loop_structure": "14: 여백 많은 산조풍 즉흥 루프 / 75: 봉화 연결 단계마다 북 패턴 추가 / 101: 참배 시간대별 3벌(새벽·낮·밤) + 신 소멸 스팅어",
-    "adaptive": "14: 뜻을 하나 잊을 때마다 선율에서 한 음(시김새)이 사라짐. 75: 봉화가 수도로 전달될수록 북 레이어가 쌓이고, 적 침입 경보는 나각. 101: 참배객이 기억하는 만큼 해당 신의 악기가 크게 들림(신 = 악기), 잊히면 그 악기가 빠짐.",
+    "loop_structure": "7: 여백 많은 산조풍 즉흥 루프 / 45: 봉화 연결 단계마다 북 패턴 추가 / 67: 참배 시간대별 3벌(새벽·낮·밤) + 신 소멸 스팅어",
+    "adaptive": "7: 뜻을 하나 잊을 때마다 선율에서 한 음(시김새)이 사라짐. 45: 봉화가 수도로 전달될수록 북 레이어가 쌓이고, 적 침입 경보는 나각. 67: 참배객이 기억하는 만큼 해당 신의 악기가 크게 들림(신 = 악기), 잊히면 그 악기가 빠짐.",
     "avoid": "중국 5음계 클리셰(얼후·구정 사운드), 일본 고토·샤쿠하치 색, 퓨전 EDM 국악, 무속을 호러로 소비하는 연출",
     "music_free_note": "",
     "library_matches": [],
@@ -1482,16 +1508,15 @@
     "id": "F19",
     "title": "전쟁과 조약 — 저현 오스티나토",
     "concepts": [
-      42,
-      60,
-      61,
-      67
+      30,
+      31,
+      37
     ],
     "bpm": "70~100 BPM",
-    "instruments": "저역 현 오스티나토(첼로·콘트라베이스), 스네어 롤·군악 림샷(60·61), 피아노 저음, 솔로 바이올린/비올라, 67은 해금·대금 한 줄로 동서 양측 색",
+    "instruments": "저역 현 오스티나토(첼로·콘트라베이스), 스네어 롤·군악 림샷(30·31), 피아노 저음, 솔로 바이올린/비올라, 37은 해금·대금 한 줄로 동서 양측 색",
     "mood": "말 한 마디의 무게, 매복 직전의 정적, 해질 무렵 능선",
     "loop_structure": "정찰/협상 루프(오스티나토만) → 실행/결렬 루프(타악 추가) → 조약 체결·매복 성공/실패 스팅어",
-    "adaptive": "42·67: 상대 긴장도 게이지 = 오스티나토 밀도·음역, 오역이 확정되면 불협 한 화음. 60: 순찰 감시 공백 타임라인과 스네어 패턴 동기(감시 중 = 림샷, 공백 = 무음). 61: 신뢰를 쓸수록 선율이 가늘어짐.",
+    "adaptive": "구42·37: 상대 긴장도 게이지 = 오스티나토 밀도·음역, 오역이 확정되면 불협 한 화음. 30: 순찰 감시 공백 타임라인과 스네어 패턴 동기(감시 중 = 림샷, 공백 = 무음). 31: 신뢰를 쓸수록 선율이 가늘어짐.",
     "avoid": "할리우드 전쟁 에픽(합창·브라스 팡파르), 영웅적 행진곡, 특정 국가 국가/군가 인용",
     "music_free_note": "",
     "library_matches": [
@@ -1555,22 +1580,24 @@
     ],
     "gen_prompt": "Tense political and tactical drama underscore, instrumental. Low cello and double bass ostinato, restrained snare rolls and rim clicks, sparse low piano notes, a lonely solo viola line. Suspenseful, restrained, dusk before an ambush or a treaty signing. No heroic brass, no choir. 88 BPM. Seamless loop, 30 seconds.",
     "priority_score": 8,
-    "priority_rank": 5
+    "priority_rank": 5,
+    "archived_concepts": [
+      42
+    ]
   },
   {
     "id": "F20",
     "title": "다크 판타지·오컬트 (촛불과 장부)",
     "concepts": [
-      46,
-      55,
-      58,
-      69
+      25,
+      28,
+      39
     ],
     "bpm": "60~90 BPM",
-    "instruments": "첼로 솔로, 하프시코드, 낮은 남성 허밍 합창, 파이프 오르간 저음(절제), 종, 58은 전투 팀파니·프레임드럼",
+    "instruments": "첼로 솔로, 하프시코드, 낮은 남성 허밍 합창, 파이프 오르간 저음(절제), 종, 28은 전투 팀파니·프레임드럼",
     "mood": "촛불, 계약서의 피, 타로, 눈 덮인 요새의 밤",
     "loop_structure": "장부/계약 루프 → 결산 스팅어(도덕 대가) / 58 전투 루프(카드 턴과 동기)",
-    "adaptive": "46·69: 도덕 자원이 줄수록 조성이 어두워지고(단조→프리지안) 합창이 가까워짐. 55: 공개된 적 수 5칸 = 5음 모티프, 받은 순서대로 음이 재생. 58: 요새 내구도 = 드럼 레이어.",
+    "adaptive": "구46·39: 도덕 자원이 줄수록 조성이 어두워지고(단조→프리지안) 합창이 가까워짐. 25: 공개된 적 수 5칸 = 5음 모티프, 받은 순서대로 음이 재생. 28: 요새 내구도 = 드럼 레이어.",
     "avoid": "메탈 기타, 에픽 트레일러 합창, 코믹 할로윈(F25와 구별)",
     "music_free_note": "",
     "library_matches": [
@@ -1634,20 +1661,22 @@
     ],
     "gen_prompt": "Dark fantasy occult chamber piece, instrumental. Solo cello melody, harpsichord arpeggios, low male humming choir, restrained low organ pedal, a distant bell. Candlelit, ominous, contractual, elegant decay. No metal guitars, no trailer hits. 72 BPM. Seamless loop, 30 seconds.",
     "priority_score": 6.0,
-    "priority_rank": 10
+    "priority_rank": 10,
+    "archived_concepts": [
+      46
+    ]
   },
   {
     "id": "F21",
     "title": "몽환 기억 앰비언트",
     "concepts": [
-      44,
-      70
+      40
     ],
     "bpm": "무박~75 BPM",
-    "instruments": "역재생 피아노, 그래뉼러 패드, 멀리서 들리는 오르골, 테이프 딜레이, 70은 불협 현 글리산도",
+    "instruments": "역재생 피아노, 그래뉼러 패드, 멀리서 들리는 오르골, 테이프 딜레이, 40은 불협 현 글리산도",
     "mood": "기억의 조각, 꿈의 봉합선, 거부 반응",
     "loop_structure": "루프 A(꿈 안정) / 루프 B(모순·거부 반응: 피치 흔들림) → 봉합 성공 스팅어",
-    "adaptive": "44: 조각이 맞아 들수록 역재생 요소가 정방향으로 돌아옴. 70: 가짜 기억의 어긋남 수치 = 디튠·그래뉼러 파편화, 한계 넘으면 F01급 드론으로 붕괴.",
+    "adaptive": "구44: 조각이 맞아 들수록 역재생 요소가 정방향으로 돌아옴. 40: 가짜 기억의 어긋남 수치 = 디튠·그래뉼러 파편화, 한계 넘으면 F01급 드론으로 붕괴.",
     "avoid": "명상 음악 클리셰, 뉴에이지 싱잉볼",
     "music_free_note": "",
     "library_matches": [
@@ -1699,20 +1728,23 @@
     ],
     "gen_prompt": "Dreamy memory ambient, instrumental. Reversed piano phrases, granular shimmering pads, a faint distant music box, tape delay echoes, occasional pitch wobble. Hazy, intimate, fragile, like stitching memories together. No drums. 70 BPM. Seamless loop, 30 seconds.",
     "priority_score": 2,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      44
+    ]
   },
   {
     "id": "F22",
     "title": "하늘·계절 앰비언트",
     "concepts": [
-      83,
-      91
+      53,
+      60
     ],
     "bpm": "60~90 BPM",
     "instruments": "스트링 패드, 따뜻한 신스 패드, 피아노 하모닉스, 어쿠스틱 기타 스웰, 새소리·바람과 섞임",
     "mood": "햇빛, 바람, 긴 시간의 흐름, 하늘에 쓰는 글씨",
-    "loop_structure": "83: 계절 4벌 크로스페이드(10분에 1년) / 91: 비행 루프 + 획 완성 스팅어",
-    "adaptive": "83: 햇빛 받는 양 = 화성 밝기(장조 텐션), 계절 경계에서 자동 크로스페이드. 91: 바람 세기 = 패드 필터 스윕, 획이 번질수록 리버브 증가.",
+    "loop_structure": "53: 계절 4벌 크로스페이드(10분에 1년) / 60: 비행 루프 + 획 완성 스팅어",
+    "adaptive": "53: 햇빛 받는 양 = 화성 밝기(장조 텐션), 계절 경계에서 자동 크로스페이드. 60: 바람 세기 = 패드 필터 스윕, 획이 번질수록 리버브 증가.",
     "avoid": "코퍼릿 업리프팅(박수 비트), 에픽 오케스트라",
     "music_free_note": "",
     "library_matches": [
@@ -1782,19 +1814,17 @@
     "id": "F23",
     "title": "시스템 미니멀리즘 (반복 패턴)",
     "concepts": [
-      45,
-      71,
-      76,
-      84,
-      96
+      41,
+      46,
+      63
     ],
     "bpm": "100~130 BPM(모든 가족 중 템포 고정성이 가장 중요)",
-    "instruments": "마림바·비브라폰 반복 패턴(스티브 라이히식 위상), 신스 아르페지오, 피아노 오스티나토, 71은 디튠된 피아노로 언캐니, 96은 열차 도착음 = 음표(프로시저럴)",
+    "instruments": "마림바·비브라폰 반복 패턴(스티브 라이히식 위상), 신스 아르페지오, 피아노 오스티나토, 41은 디튠된 피아노로 언캐니, 63은 열차 도착음 = 음표(프로시저럴)",
     "mood": "질서, 흐름, 교통망·벌집·도시가 스스로 움직이는 감각",
     "loop_structure": "모듈식: 1~2마디 셀 8~12개를 상태에 따라 켜고 끄는 스템 구조. 선형 루프보다 '셀 라이브러리'",
-    "adaptive": "45·71: 유효 경로 수 = 활성 셀 수, 71은 도시가 지도에 맞춰 스스로 고칠 때 한 셀이 반박자 밀림(위상 이동). 76: 8자 춤 정보 = 마림바 패턴. 84: 층별 드론 교통량 = 옥타브별 아르페지오 밀도, 충돌 위험 시 불협. 96: 음악이 곧 게임플레이 — 열차 도착 시각을 박에 양자화해 음 발생(스케일 고정으로 오답도 음악적으로).",
+    "adaptive": "구45·41: 유효 경로 수 = 활성 셀 수, 41은 도시가 지도에 맞춰 스스로 고칠 때 한 셀이 반박자 밀림(위상 이동). 46: 8자 춤 정보 = 마림바 패턴. 구84: 층별 드론 교통량 = 옥타브별 아르페지오 밀도, 충돌 위험 시 불협. 63: 음악이 곧 게임플레이 — 열차 도착 시각을 박에 양자화해 음 발생(스케일 고정으로 오답도 음악적으로).",
     "avoid": "EDM 킥, 감정적 선율 테마, 긴 리버브(패턴이 흐려짐)",
-    "music_free_note": "96은 배경 음악을 깔지 않는다 — 플레이어가 만든 선로가 곡이다. 필요한 것은 곡이 아니라 음색 샘플 세트(마림바·벨·현 피치카토 한 음씩).",
+    "music_free_note": "63은 배경 음악을 깔지 않는다 — 플레이어가 만든 선로가 곡이다. 필요한 것은 곡이 아니라 음색 샘플 세트(마림바·벨·현 피치카토 한 음씩).",
     "library_matches": [
       {
         "pack": "ambience/scifi-city-ambient-loop",
@@ -1844,21 +1874,24 @@
     ],
     "gen_prompt": "Minimalist systems music in the style of phasing pattern pieces, instrumental. Interlocking marimba and vibraphone patterns, a soft synth arpeggio, repeating piano ostinato, gradually shifting phase. Orderly, flowing, like a city network running itself. No kick drum, no big melody. 116 BPM. Seamless loop, 30 seconds.",
     "priority_score": 10,
-    "priority_rank": 1
+    "priority_rank": 1,
+    "archived_concepts": [
+      45,
+      84
+    ]
   },
   {
     "id": "F24",
     "title": "경쾌 퍼즐 (피치카토·마림바)",
     "concepts": [
-      13,
-      27,
-      95
+      14,
+      62
     ],
     "bpm": "110~135 BPM",
-    "instruments": "피치카토 현, 마림바, 우쿨렐레, 핑거스냅, 글로켄, 27은 만화풍 브라스 스탭, 95는 방탈출 설계용 약간의 미스터리 비브라폰",
+    "instruments": "피치카토 현, 마림바, 우쿨렐레, 핑거스냅, 글로켄, 14은 만화풍 브라스 스탭, 62는 방탈출 설계용 약간의 미스터리 비브라폰",
     "mood": "번뜩임, 가벼운 장난기, 조합의 쾌감",
     "loop_structure": "루프 A(설계·조합) 16마디 → 정답 스팅어(0.5~1.5초, 조성 맞춤) / 오답 스팅어(부드러운 하강)",
-    "adaptive": "13: 조합한 정의 수만큼 레이어 추가. 27: 컷 순서가 맞을수록 편성이 풀 밴드로. 95: 시뮬레이션 손님의 막힘 = 템포 하강, 풀리는 순간 원래 템포 복귀.",
+    "adaptive": "구13: 조합한 정의 수만큼 레이어 추가. 14: 컷 순서가 맞을수록 편성이 풀 밴드로. 62: 시뮬레이션 손님의 막힘 = 템포 하강, 풀리는 순간 원래 템포 복귀.",
     "avoid": "어린이 교육 앱 같은 과한 밝음, 칩튠(F25와 구별), 반복 피로를 부르는 짧은 루프(30초 미만 반복 금지)",
     "music_free_note": "",
     "library_matches": [
@@ -1922,22 +1955,25 @@
     ],
     "gen_prompt": "Light clever puzzle music, instrumental. Playful pizzicato strings, marimba, ukulele, finger snaps, glockenspiel accents. Bright, curious, witty, satisfying to think along with. No chiptune, not childish. 120 BPM. Seamless loop, 30 seconds.",
     "priority_score": 3,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      13
+    ]
   },
   {
     "id": "F25",
     "title": "유쾌한 괴물 (테레민·튜바 / 칩튠 변주)",
     "concepts": [
-      77,
-      87,
-      90
+      47,
+      56,
+      59
     ],
     "bpm": "96~140 BPM",
-    "instruments": "테레민, 튜바, 바순, 하프시코드, 핑거스냅, 오르간 콤보. 90은 같은 선율의 16비트 칩튠(펄스파·삼각파·노이즈) 판본",
+    "instruments": "테레민, 튜바, 바순, 하프시코드, 핑거스냅, 오르간 콤보. 59은 같은 선율의 16비트 칩튠(펄스파·삼각파·노이즈) 판본",
     "mood": "무섭지 않은 유령, 투덜대는 괴수 손님, 모험가를 살려 보내는 던전",
     "loop_structure": "루프 A(영업·설계) → 루프 B(손님 화남·모험가 입장) → 계약·리뷰 스팅어",
-    "adaptive": "77: 유령과 새 집주인 서명 여부에 따라 테레민(유령)과 피아노(사람) 볼륨 교차. 87: 괴수 짜증 게이지 = 튜바 음역 하강·템포 상승. 90: 모험가 스릴 곡선(시안의 그래프)을 그대로 음악 강도 커브로 사용.",
-    "avoid": "진짜 공포 드론(F01), 할로윈 클리셰 비명 샘플, 90의 칩튠을 다른 두 컨셉에 섞기",
+    "adaptive": "47: 유령과 새 집주인 서명 여부에 따라 테레민(유령)과 피아노(사람) 볼륨 교차. 56: 괴수 짜증 게이지 = 튜바 음역 하강·템포 상승. 59: 모험가 스릴 곡선(시안의 그래프)을 그대로 음악 강도 커브로 사용.",
+    "avoid": "진짜 공포 드론(F01), 할로윈 클리셰 비명 샘플, 59의 칩튠을 다른 두 컨셉에 섞기",
     "music_free_note": "",
     "library_matches": [
       {
@@ -2006,17 +2042,16 @@
     "id": "F26",
     "title": "로파이 재즈·빗속 도시 (일상 경영)",
     "concepts": [
-      25,
-      39,
-      81,
-      88,
-      92
+      13,
+      20,
+      51,
+      57
     ],
     "bpm": "70~90 BPM",
     "instruments": "로즈 피아노, 재즈 기타, 업라이트 베이스, 브러시/로파이 드럼, 비닐 크래클, 빗소리와 믹스",
     "mood": "퇴근길 노을, 비 오는 골목, 자판기 불빛, 고양이 정치",
     "loop_structure": "2~3분 루프 3~4개 순환(하루 근무 반복 피로 방지) + 하루 결산 스팅어",
-    "adaptive": "92: 실제 비 세기 = 빗소리 대 음악 비율, 예보가 틀릴 때 코드 하나 비틀림. 25: 하루 20건 진행도에 따라 드럼 밀도. 81: 파벌별 모티프(콘트라베이스 피치카토=골목 대장 등). 88: 손님별 자판기 버튼음이 곡 조성에 맞춰 조율됨.",
+    "adaptive": "구92: 실제 비 세기 = 빗소리 대 음악 비율, 예보가 틀릴 때 코드 하나 비틀림. 13: 하루 20건 진행도에 따라 드럼 밀도. 51: 파벌별 모티프(콘트라베이스 피치카토=골목 대장 등). 57: 손님별 자판기 버튼음이 곡 조성에 맞춰 조율됨.",
     "avoid": "스터디 로파이 1시간 틀기(정보 없음), 힙합 보컬 찹, 과한 비닐 잡음",
     "music_free_note": "",
     "library_matches": [
@@ -2086,21 +2121,24 @@
     ],
     "gen_prompt": "Rainy city lo-fi jazz, instrumental. Rhodes electric piano chords, soft jazz guitar licks, upright bass, dusty brushed lo-fi drums, light vinyl crackle, gentle rain in the background. Cozy, end-of-day, neon reflections on wet streets. 82 BPM. Seamless loop, 30 seconds.",
     "priority_score": 0,
-    "priority_rank": null
+    "priority_rank": null,
+    "archived_concepts": [
+      92
+    ]
   },
   {
     "id": "F27",
     "title": "하드 SF 신스 (궤도·정거장)",
     "concepts": [
-      54,
-      74,
-      100
+      24,
+      44,
+      66
     ],
     "bpm": "80~120 BPM",
-    "instruments": "아날로그 신스 아르페지오, 저역 드론, 스페이스 패드, 텔레메트리 삑 소리를 리듬으로, 74는 일렉트로 펑크 베이스·클라비넷",
-    "mood": "진공의 고요, 궤도 역학, 무중력 주방의 소동(74)",
-    "loop_structure": "100: 90초 궤도 루프 + 케슬러 연쇄 경보 레이어 / 54: 전투 루프(되감기 3회 = 3단계 변주) / 74: 주방 러시 루프",
-    "adaptive": "100: 잔해 밀도 = 아르페지오 음 수, 연쇄 충돌 위험 시 불협 저역·경보. 54: 되감을 때마다 테이프 역재생 스윕 후 한 레이어 추가(적이 기억한다 = 음악도 기억한다). 74: 중력 방향 전환 = 스테레오 패닝 회전·피치 벤드.",
+    "instruments": "아날로그 신스 아르페지오, 저역 드론, 스페이스 패드, 텔레메트리 삑 소리를 리듬으로, 44는 일렉트로 펑크 베이스·클라비넷",
+    "mood": "진공의 고요, 궤도 역학, 무중력 주방의 소동(44)",
+    "loop_structure": "66: 90초 궤도 루프 + 케슬러 연쇄 경보 레이어 / 24: 전투 루프(되감기 3회 = 3단계 변주) / 44: 주방 러시 루프",
+    "adaptive": "66: 잔해 밀도 = 아르페지오 음 수, 연쇄 충돌 위험 시 불협 저역·경보. 24: 되감을 때마다 테이프 역재생 스윕 후 한 레이어 추가(적이 기억한다 = 음악도 기억한다). 44: 중력 방향 전환 = 스테레오 패닝 회전·피치 벤드.",
     "avoid": "스타워즈식 오케스트라, 신스웨이브 향수 리드, 과한 SF 효과음을 음악에 섞기",
     "music_free_note": "",
     "library_matches": [
@@ -2141,7 +2179,7 @@
         "author": "NASA"
       }
     ],
-    "library_gaps": "SF 환경음은 있지만 음악은 CC0 1곡. Apollo 교신(PD)은 100번 분위기용 다이제틱 소스로 좋다.",
+    "library_gaps": "SF 환경음은 있지만 음악은 CC0 1곡. Apollo 교신(PD)은 66번 분위기용 다이제틱 소스로 좋다.",
     "artlist_refs": [
       {
         "title": "Outer Limits",

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>섞지 않는 덱</title>
+<style>
+:root{--ink:#f1e8d8;--soft:#b9a98f;--dim:#7d705e;--panel:rgba(24,18,14,.78);--line:rgba(241,232,216,.12);--hot:#ff8a4c;--ok:#9fe0b4;--bad:#ff7a6a;
+  --c-cargo:#c27a4a;--c-turret:#8fb3c4;--c-armor:#a7b1b3;--c-dining:#7cc4a4;--c-coupler:#e3c86f;--c-sniper:#c98fd0;--c-coal:#8d8d8d;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--mono:Consolas,"D2Coding",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#0b0806;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:#1a120d;user-select:none}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px;opacity:.4;transition:opacity .3s}
+.tabs:hover{opacity:1}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#ddd;cursor:pointer}
+.tabs button.on{background:#f1e8d8;color:#2a1c12;border-color:#f1e8d8}
+
+/* ── 화면 A ── */
+#scene{position:absolute;left:0;top:0;width:1600px;height:420px}
+.ttl{position:absolute;left:28px;top:20px;z-index:5}
+.ttl h1{font:800 30px/1 var(--sans);letter-spacing:.02em;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.ttl p{font:500 13px/1.6 var(--sans);color:#f6dcbc;margin-top:8px;letter-spacing:.04em;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.mode{display:inline-block;font:700 11px/1 var(--sans);letter-spacing:.2em;padding:5px 8px;border-radius:3px;background:#f1e8d8;color:#2a1c12;margin-right:8px;vertical-align:2px}
+.mode.raid{background:var(--hot);color:#2a1006}
+#raiders{position:absolute;left:760px;top:52px;width:820px;height:150px;z-index:4}
+.rd{position:absolute;top:0;width:250px;height:140px;transition:opacity .5s,filter .5s}
+.rd svg{position:absolute;left:0;top:0}
+.rd .nm{position:absolute;left:96px;top:14px;font:700 14px/1 var(--sans);text-shadow:0 1px 4px #000}
+.rd .hpb{position:absolute;left:96px;top:36px;width:130px;height:8px;border-radius:4px;background:rgba(0,0,0,.45);overflow:hidden}
+.rd .hpb i{display:block;height:100%;background:#ff9a6a;transition:width .35s}
+.rd .hpt{position:absolute;left:96px;top:50px;font:700 12px/1 var(--mono);color:#ffd6bf;text-shadow:0 1px 3px #000}
+.rd .int{position:absolute;left:96px;top:70px;font:800 13px/1 var(--sans);padding:5px 8px;border-radius:3px;background:rgba(120,20,10,.85);color:#ffe3d6;border:1px solid rgba(255,140,110,.6)}
+.rd .int.zero{background:rgba(0,0,0,.4);color:#b9a98f;border-color:rgba(255,255,255,.15)}
+.rd.dead{opacity:.28;filter:grayscale(1)}
+.rd .pop{position:absolute;left:30px;top:-6px;font:900 26px/1 var(--mono);color:#fff2a8;text-shadow:0 2px 6px #000;animation:pop 1s forwards;pointer-events:none}
+@keyframes pop{0%{transform:translateY(10px);opacity:0}20%{opacity:1}100%{transform:translateY(-34px);opacity:0}}
+
+#train{position:absolute;left:0;top:236px;width:1600px;height:120px;z-index:6}
+.car{position:absolute;top:0;width:118px;height:96px;cursor:grab;transition:left .18s,filter .2s,transform .2s}
+.car svg{display:block}
+.car .lb{position:absolute;left:0;right:0;top:-18px;text-align:center;font:700 11px/1 var(--sans);letter-spacing:.06em;color:#fff3df;text-shadow:0 1px 4px #000}
+.car .ix{position:absolute;left:4px;top:4px;font:700 10px/1 var(--mono);color:rgba(255,255,255,.7)}
+.car.drag{z-index:20;transition:none;cursor:grabbing;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6)) brightness(1.12)}
+.raiding .car{cursor:default}
+.car.inhand{filter:drop-shadow(0 0 10px rgba(255,220,140,.95)) brightness(1.15)}
+.car.used{filter:brightness(.55)}
+.car.glow{animation:glow .9s ease-out}
+@keyframes glow{0%{filter:drop-shadow(0 0 0 #ffe08a) brightness(1)}30%{filter:drop-shadow(0 0 18px #ffe08a) brightness(1.5)}100%{filter:drop-shadow(0 0 0 #ffe08a) brightness(1)}}
+.car.hit{animation:hit .5s}
+@keyframes hit{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px) rotate(-.6deg)}75%{transform:translateX(4px) rotate(.6deg)}}
+#loco{position:absolute;left:18px;top:236px;z-index:6}
+#links{position:absolute;left:0;top:340px;width:1600px;height:60px;z-index:7;pointer-events:none}
+.lk{position:absolute;font:700 11px/1 var(--sans);padding:4px 7px;border-radius:10px;white-space:nowrap;transform:translateX(-50%)}
+.lk.din{background:rgba(124,196,164,.2);color:#bff0d8;border:1px solid rgba(124,196,164,.6)}
+.lk.cpl{background:rgba(227,200,111,.18);color:#f8e7a8;border:1px solid rgba(227,200,111,.6)}
+.lk.coal{background:rgba(255,255,255,.1);color:#e8e8e8;border:1px solid rgba(255,255,255,.35)}
+.bracket{position:absolute;height:10px;border:2px solid rgba(227,200,111,.75);border-top:0;border-radius:0 0 8px 8px}
+.dinarc{position:absolute;height:8px;border:2px solid rgba(124,196,164,.8);border-top:0;border-radius:0 0 10px 10px}
+#marker{position:absolute;top:206px;height:24px;z-index:8;border:2px solid #ffe08a;border-bottom:0;border-radius:8px 8px 0 0;transition:left .35s,width .35s;display:none}
+#marker span{position:absolute;left:50%;top:-20px;transform:translateX(-50%);font:800 11px/1 var(--sans);color:#ffe08a;letter-spacing:.1em;white-space:nowrap;text-shadow:0 1px 4px #000}
+
+/* 구간 표 */
+#tl{position:absolute;left:24px;top:428px;width:1552px;height:222px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+#tl h3,.pn h3{font:700 11px/1 var(--sans);letter-spacing:.22em;color:var(--soft);margin-bottom:10px}
+#tl h3 em{font-style:normal;color:var(--dim);letter-spacing:.06em;margin-left:10px}
+.grid{display:grid;grid-template-columns:150px repeat(6,1fr);gap:4px}
+.grid div{font-size:13px;padding:5px 8px;border-radius:3px;background:rgba(255,255,255,.035);display:flex;align-items:center;gap:6px;min-height:28px}
+.grid .h{background:none;color:var(--soft);font-weight:700;font-size:12px;letter-spacing:.1em}
+.grid .rn{background:none;color:#f6dcbc;font-weight:700}
+.grid .cur{background:rgba(255,138,76,.18);box-shadow:inset 0 0 0 1px rgba(255,138,76,.55)}
+.grid .past{opacity:.35}
+.atk{font:800 14px/1 var(--mono);color:#ffb39a}
+.atk small{font-size:11px;color:#ff7a6a;margin-left:1px}
+.atk.z{color:var(--dim);font-weight:400}
+.grid .sum{font:800 14px/1 var(--mono);color:#fff}
+.chip{display:inline-flex;align-items:center;gap:5px;font:600 12px/1 var(--sans);padding:4px 7px;border-radius:3px;background:rgba(0,0,0,.35);border-left:4px solid}
+.dead-row{text-decoration:line-through;opacity:.4}
+
+/* 아래 */
+#bot{position:absolute;left:24px;top:666px;width:1552px;height:288px}
+.pn{position:absolute;top:0;bottom:0;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+#pnL{left:0;width:330px}
+#pnM{left:344px;width:830px}
+#pnR{left:1188px;width:364px;display:flex;flex-direction:column;gap:10px}
+.stat{display:grid;grid-template-columns:70px 1fr 56px;gap:10px 12px;align-items:center;font-size:13px}
+.stat em{font-style:normal;font:800 15px/1 var(--mono);text-align:right}
+.meter{height:12px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:6px;transition:width .35s}
+.pips{display:flex;gap:6px}
+.pips b{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.pips b.on{background:#ffd27a;border-color:#ffd27a;box-shadow:0 0 8px rgba(255,210,122,.7)}
+.note{font-size:12.5px;line-height:1.7;color:#d8c8b0;margin-top:14px}
+.note b{color:#fff}
+.warn{color:#ffb39a}
+.hand{display:flex;gap:18px;height:226px;align-items:flex-start}
+.card{position:relative;width:200px;height:226px;border-radius:8px;background:linear-gradient(#3a2a1e,#241912);border:2px solid rgba(255,255,255,.12);padding:10px;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.card .cost{position:absolute;right:10px;top:10px;width:30px;height:30px;border-radius:50%;background:#ffd27a;color:#2a1c12;font:900 16px/30px var(--mono);text-align:center}
+.card .cost.x{background:#555;color:#bbb;font-size:12px}
+.card .nm{font:800 16px/1 var(--sans);margin:2px 0 8px}
+.card .art{height:84px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);border-radius:4px}
+.card .tx{font-size:13px;line-height:1.55;margin-top:9px;color:#efdfc7}
+.card .tx b{color:#9fe0b4}
+.card .pos{position:absolute;left:10px;bottom:9px;font:700 11px/1 var(--mono);color:var(--soft)}
+.card.no{opacity:.45;cursor:not-allowed}
+.card.no:hover{transform:none;box-shadow:none}
+.card.gone{opacity:.15;pointer-events:none;transform:translateY(20px)}
+.hand .pass{font-size:13px;color:var(--soft);line-height:1.7;max-width:240px;padding-top:8px}
+.yard{display:flex;gap:14px;flex-wrap:wrap}
+.ycar{width:132px;padding:6px;border-radius:5px;background:rgba(0,0,0,.25);border:1px dashed rgba(255,255,255,.2);cursor:pointer;text-align:center;font-size:12px;color:#eadbc4}
+.ycar:hover{border-color:#ffd27a;background:rgba(255,210,122,.08)}
+.btn{font:800 15px/1 var(--sans);letter-spacing:.06em;padding:14px;border-radius:5px;border:0;background:#f1e8d8;color:#2a1c12;cursor:pointer}
+.btn.hot{background:var(--hot);color:#2a1006}
+.btn.ghost{background:rgba(255,255,255,.07);color:#eadbc4;border:1px solid rgba(255,255,255,.18)}
+.btn:disabled{opacity:.4;cursor:default}
+#log{flex:1;overflow:hidden;font-size:12px;line-height:1.65;color:#d6c6ad;display:flex;flex-direction:column-reverse}
+#log p.w{color:#ffb39a}#log p.g{color:#9fe0b4}#log p.y{color:#ffe08a}
+#oracle{font-size:12.5px;line-height:1.6;color:#ffe08a;min-height:20px}
+#result{position:absolute;inset:0;z-index:30;background:rgba(10,6,4,.72);display:none;align-items:center;justify-content:center}
+#result.on{display:flex}
+#result .rbox{width:560px;padding:34px 38px;border-radius:8px;background:#21170f;border:1px solid rgba(255,255,255,.15);text-align:center}
+#result h2{font:900 40px/1 var(--sans);margin-bottom:14px}
+#result p{font-size:15px;line-height:1.75;color:#e6d6bd;margin-bottom:22px}
+
+/* ── 화면 B ── */
+#sb{background:#17110c;padding:24px}
+#sb .col{position:absolute;left:24px;top:24px;width:1010px;bottom:24px;display:flex;flex-direction:column;gap:14px}
+#sb .side{position:absolute;left:1058px;top:24px;width:518px;bottom:52px;display:flex;flex-direction:column;gap:14px}
+.box{background:rgba(241,232,216,.04);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.box h3{font:700 11px/1 var(--sans);letter-spacing:.22em;color:var(--soft);margin-bottom:12px}
+.side h1{font:800 26px/1.15 var(--sans)}
+.side h1 small{display:block;font:500 12.5px/1.6 var(--sans);color:var(--soft);margin-top:8px}
+table.cat{width:100%;border-collapse:collapse;font-size:12.5px}
+.cat td,.cat th{padding:6px 6px;border-top:1px solid rgba(255,255,255,.06);text-align:left;vertical-align:top;color:#e4d4bb}
+.cat th{color:var(--soft);font-size:11px;letter-spacing:.12em;border-top:0}
+.cat td:first-child{white-space:nowrap;font-weight:700}
+.cat i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+.bf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.bf .r{background:rgba(0,0,0,.22);border-radius:5px;padding:10px 12px}
+.bf .r b{display:block;font:700 12px/1 var(--sans);color:var(--soft);letter-spacing:.08em}
+.bf .r strong{display:block;font:900 26px/1 var(--mono);margin:8px 0 6px}
+.bf .r small{font-size:11.5px;color:var(--dim);line-height:1.5}
+.bfbar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
+.bfbar i{display:block;height:100%;background:var(--hot)}
+.ov{display:flex;gap:22px;align-items:flex-start;margin-top:12px}
+.heat{display:grid;grid-template-columns:62px repeat(6,40px);gap:3px;font-size:11px}
+.heat div{height:24px;display:flex;align-items:center;justify-content:center;border-radius:2px;font:700 11px/1 var(--mono)}
+.heat .l{justify-content:flex-start;font:700 11px/1 var(--sans);color:#e4d4bb}
+.heat .t{color:var(--soft);font-family:var(--sans)}
+.uni{flex:1;font-size:12.5px;line-height:1.6;color:#e4d4bb}
+.uni .row{display:flex;gap:3px;margin:4px 0}
+.uni .row span{flex:1;height:22px;border-radius:2px;font:700 10.5px/22px var(--sans);text-align:center;color:#1a120d}
+.verdict{font-size:13px;line-height:1.7;color:#f1e8d8;margin-top:12px;padding:10px 12px;border-left:3px solid var(--hot);background:rgba(255,138,76,.07)}
+.bill{width:100%;border-collapse:collapse;font-size:12.5px}
+.bill td{padding:5px 4px;border-top:1px solid rgba(255,255,255,.06);color:#e4d4bb}
+.bill td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap}
+.judge{font-size:12.5px;line-height:1.65;color:#e4d4bb}
+.judge b{display:inline-block;min-width:44px;font-size:11px;letter-spacing:.1em;padding:1px 6px;border-radius:3px;margin-right:8px;text-align:center}
+.judge .m{background:#2f4a3e;color:#a9e0c4}.judge .s{background:#3d3a2a;color:#e6d39a}.judge .p{background:#4a2f2f;color:#f0b3a6}
+.judge p+p{margin-top:6px}
+.go{margin-top:auto}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="screen" id="sa">
+  <canvas id="scene" width="1600" height="420"></canvas>
+  <div class="ttl"><h1>섞지 않는 덱</h1><p><span class="mode" id="modeTag">편성</span><span id="sub">대륙 횡단 화물 7호 · 붉은 협곡 구간 · 습격 6턴</span></p></div>
+  <div id="raiders"></div>
+  <div id="marker"><span>이번 역</span></div>
+  <svg id="loco" width="176" height="96"></svg>
+  <div id="train"></div>
+  <div id="links"></div>
+
+  <div id="tl"><h3>구간 — 습격 의도는 미리 공개된다 <em>덱을 섞지 않으므로 몇 번째 턴에 어느 칸이 들어오는지도 정해져 있다</em></h3><div class="grid" id="grid"></div></div>
+
+  <div id="bot">
+    <div class="pn" id="pnL"></div>
+    <div class="pn" id="pnM"></div>
+    <div class="pn" id="pnR"></div>
+  </div>
+  <div id="result"><div class="rbox"><h2 id="rH"></h2><p id="rP"></p><button class="btn hot" id="rBack">편성으로 돌아가기 — 칸을 옮겨 다시</button></div></div>
+</section>
+
+<section class="screen" id="sb">
+  <div class="col">
+    <div class="box"><h3>칸 도감 — 비용 · 효과 · 이웃 규칙</h3>
+      <table class="cat" id="cat"></table>
+    </div>
+    <div class="box" style="flex:1"><h3>전수 탐색 — 6칸 열차의 순열 720개 × 습격 3종 × 최선 플레이 (난수 없음)</h3>
+      <div class="bf" id="bf"></div>
+      <div class="ov">
+        <div><div class="heat" id="heat"></div><div style="font-size:11px;color:var(--dim);margin-top:6px;width:310px;line-height:1.5">칸이 그 자리에 있을 때 이긴 편성 수 (습격 셋 합계)</div></div>
+        <div class="uni" id="uni"></div>
+      </div>
+      <div class="verdict" id="verdict">계산 중…</div>
+    </div>
+  </div>
+  <div class="side">
+    <h1>편성 설계자 화면<small>게임에는 없다. 셔플이 없는 덱빌더의 위험은 하나다 — <b>정답 편성이 하나뿐이면 퍼즐이 되고, 한 번 풀면 끝난다.</b> 그래서 기계로 순열을 전부 돌려 본다.</small></h1>
+    <div class="box"><h3>콘텐츠 청구서 — 출시 기준 추정</h3>
+      <table class="bill">
+        <tr><td>칸 종류 (측면 스프라이트 1장 + 효과 1줄)</td><td>24종</td></tr>
+        <tr><td>습격대 (의도 패턴 3–4개씩)</td><td>12종 · 패턴 40</td></tr>
+        <tr><td>노선 × 역 (역마다 상점 4칸)</td><td>3노선 · 24역</td></tr>
+        <tr><td>배경 (협곡 · 설원 · 해안 패럴랙스)</td><td>3세트</td></tr>
+        <tr><td>소리 — 연결음 · 레일 이음매 박자 · 포격</td><td>20여 개</td></tr>
+        <tr><td>검사기 — 노선마다 '만능 편성' 비율 상한</td><td>1개</td></tr>
+      </table>
+    </div>
+    <div class="box judge"><h3>판정 — 누가 무엇을 보는가</h3>
+      <p><b class="m">기계</b>모든 습격에 이기는 편성이 있는가 · 이기는 편성이 노선마다 겹치지 않는가 · 같은 편성은 늘 같은 결과인가</p>
+      <p><b class="s">화면</b>다음 역에 들어올 두 칸이 열차 위에서 한눈에 읽히는가 · 이웃 효과의 연결선이 드래그 중에 바로 바뀌는가</p>
+      <p><b class="p">사람</b><strong>셔플이 없어도 매 판이 다르게 느껴지는가 — 아니면 정답 편성을 찾으면 끝인가.</strong></p>
+    </div>
+    <button class="btn hot go" id="goA">편성하러 가기 →</button>
+  </div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 편성 · 습격</button><button data-s="b">2 · 설계자</button></div>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';stage._s=s;}
+  window.addEventListener('resize',fit);fit();
+  function $(id){return document.getElementById(id);}
+
+  /* ───────── 규칙 — 정수만, 난수 없음 ───────── */
+  var CARS={
+    coal:   {n:'석탄칸',cost:0,col:'--c-coal'},
+    turret: {n:'포탑칸',cost:1,col:'--c-turret'},
+    armor:  {n:'장갑칸',cost:1,col:'--c-armor'},
+    dining: {n:'식당칸',cost:1,col:'--c-dining'},
+    coupler:{n:'연결칸',cost:1,col:'--c-coupler'},
+    sniper: {n:'저격칸',cost:2,col:'--c-sniper'},
+    cargo:  {n:'화물칸',cost:-1,col:'--c-cargo'}};
+  var RULE={energy:2,free:7,min:4,max:10};
+  function colOf(t){return getComputedStyle(document.documentElement).getPropertyValue(CARS[t].col).trim();}
+  // 식당칸 바로 뒤 칸은 사기 +2
+  function bonusAt(order,i){return (i>0&&order[i-1]==='dining')?2:0;}
+  function effect(order,i,st,via,fx){var t=order[i],b=bonusAt(order,i);
+    if(fx)fx.push({k:'glow',i:i});
+    if(t==='coal'){var e=(i===0?2:1)+(b?1:0);st.en+=e;if(fx)fx.push({k:'log',s:CARS[t].n+' — 에너지 +'+e});}
+    else if(t==='turret')hit(st,0,3+b,fx,t);
+    else if(t==='sniper')hit(st,1,7+b,fx,t);
+    else if(t==='armor'){st.block+=4+b;if(fx)fx.push({k:'log',s:'장갑칸 — 막기 +'+(4+b)});}
+    else if(t==='dining'){var h=Math.min(st.max,st.hp+2+b)-st.hp;st.hp+=h;if(fx)fx.push({k:'log',s:'식당칸 — 체력 +'+h});}
+    else if(t==='coupler'&&!via){if(fx)fx.push({k:'log',s:'연결칸 — 앞뒤 칸을 함께 발동',c:'y'});
+      if(i>0)effect(order,i-1,st,1,fx);if(i<order.length-1)effect(order,i+1,st,1,fx);}
+  }
+  // mode 0 = 맨 앞 습격대, 1 = 체력이 가장 많은 습격대
+  function hit(st,mode,d,fx,t){var k=-1;for(var j=0;j<st.r.length;j++){if(st.r[j]<=0)continue;if(k<0){k=j;if(!mode)break;}else if(st.r[j]>st.r[k])k=j;}
+    if(k>=0){var real=Math.min(d,st.r[k]);st.r[k]-=real;if(fx){fx.push({k:'pop',j:k,d:d});fx.push({k:'log',s:CARS[t].n+' — '+(RAID?RAID.r[k].n:'#'+k)+' '+d+(st.r[k]<=0?' · 격파':''),c:st.r[k]<=0?'g':''});}}}
+  function handIdx(order,turn){var n=order.length;return [(turn*2)%n,(turn*2+1)%n];}
+  function penalty(order){return Math.max(0,order.length-RULE.free);}
+  function play(order,st,idxs){for(var k=0;k<idxs.length;k++){var c=CARS[order[idxs[k]]];if(c.cost<0||c.cost>st.en)return false;st.en-=c.cost;effect(order,idxs[k],st,0,null);}return true;}
+  function raidHit(order,st,raiders,turn){var pen=penalty(order),dmg=0;
+    for(var j=0;j<raiders.length;j++){if(st.r[j]<=0)continue;var a=raiders[j].it[turn];if(a>0)dmg+=a+pen;}
+    var taken=Math.max(0,dmg-st.block);st.hp-=taken;st.block=0;return {dmg:dmg,taken:taken};}
+  function alive(st){for(var j=0;j<st.r.length;j++)if(st.r[j]>0)return true;return false;}
+  function clone(st){return {hp:st.hp,max:st.max,block:0,en:0,r:st.r.slice()};}
+  // 최선 플레이 — 매 턴 손 두 칸의 사용 부분집합과 순서를 전부 본다. 반환: 남은 체력(전멸시키면 +100), 지면 -99
+  function solve(order,raiders,hp,turns){var best=-99;
+    function rec(t,st){if(!alive(st)){best=Math.max(best,st.hp+100);return;}if(st.hp<=0)return;if(t===turns){best=Math.max(best,st.hp);return;}
+      var h=handIdx(order,t),opts=[[],[h[0]],[h[1]],[h[0],h[1]],[h[1],h[0]]];
+      for(var o=0;o<opts.length;o++){var s=clone(st);s.en=RULE.energy;if(!play(order,s,opts[o]))continue;raidHit(order,s,raiders,t);rec(t+1,s);}}
+    rec(0,{hp:hp,max:hp,block:0,en:0,r:raiders.map(function(r){return r.hp;})});return best;}
+
+  /* ───────── 그림 — 칸 측면 ───────── */
+  function wheels(w){var s='';[20,38,w-38,w-20].forEach(function(x){s+='<circle cx="'+x+'" cy="84" r="8" fill="#1c1714"/><circle cx="'+x+'" cy="84" r="3" fill="#6b5d50"/>';});
+    return '<rect x="6" y="72" width="'+(w-12)+'" height="6" fill="#2a221d"/>'+s+'<rect x="0" y="70" width="6" height="4" fill="#3a302a"/><rect x="'+(w-6)+'" y="70" width="6" height="4" fill="#3a302a"/>';}
+  function carArt(t,w){w=w||118;var c=colOf(t),s='';
+    if(t==='cargo'){s='<rect x="6" y="18" width="'+(w-12)+'" height="54" rx="2" fill="#8a4b2e"/><rect x="6" y="14" width="'+(w-12)+'" height="6" fill="#6e3a23"/>';
+      for(var x=14;x<w-8;x+=10)s+='<rect x="'+x+'" y="20" width="1.5" height="50" fill="#6e3a23"/>';
+      s+='<rect x="'+(w/2-16)+'" y="26" width="32" height="40" fill="#a35a36" stroke="#5d2f1c" stroke-width="2"/><path d="M'+(w/2-16)+' 26 L'+(w/2+16)+' 66 M'+(w/2+16)+' 26 L'+(w/2-16)+' 66" stroke="#5d2f1c" stroke-width="2"/>';}
+    else if(t==='turret'){s='<rect x="6" y="56" width="'+(w-12)+'" height="16" fill="#4b5a63"/><rect x="18" y="48" width="'+(w-36)+'" height="10" fill="#5e6f79"/>'+
+      '<path d="M'+(w/2-24)+' 48 Q'+(w/2)+' 14 '+(w/2+24)+' 48 Z" fill="#7d939e"/><rect x="'+(w/2+6)+'" y="26" width="46" height="6" rx="2" fill="#3b474e" transform="rotate(-14 '+(w/2+6)+' 29)"/><circle cx="'+(w/2-6)+'" cy="38" r="3" fill="#cfe3ee"/>';}
+    else if(t==='armor'){s='<path d="M8 22 L'+(w-8)+' 22 L'+(w-4)+' 72 L4 72 Z" fill="#69777b"/><rect x="8" y="16" width="'+(w-16)+'" height="8" fill="#56636a"/>'+
+      '<rect x="20" y="36" width="'+(w-40)+'" height="5" fill="#2b3135"/>';for(var x=14;x<w-10;x+=12){s+='<circle cx="'+x+'" cy="28" r="1.6" fill="#9fb0b5"/><circle cx="'+x+'" cy="64" r="1.6" fill="#9fb0b5"/>';}}
+    else if(t==='dining'){s='<rect x="6" y="20" width="'+(w-12)+'" height="52" rx="3" fill="#2f5b4f"/><path d="M6 22 Q'+(w/2)+' 6 '+(w-6)+' 22 Z" fill="#244a40"/>';
+      for(var x=14;x<w-20;x+=24)s+='<rect x="'+x+'" y="32" width="16" height="16" rx="2" fill="#ffcf7a"/><rect x="'+x+'" y="40" width="16" height="2" fill="#e09a4a"/>';
+      s+='<rect x="6" y="56" width="'+(w-12)+'" height="3" fill="#c9a24a"/>';}
+    else if(t==='coupler'){s='<rect x="6" y="56" width="'+(w-12)+'" height="16" fill="#3b3f45"/>';
+      for(var k=0;k<4;k++)s+='<ellipse cx="'+(20+k*26)+'" cy="44" rx="15" ry="9" fill="none" stroke="#e3c86f" stroke-width="5"/>';
+      s+='<rect x="0" y="40" width="10" height="8" fill="#e3c86f"/><rect x="'+(w-10)+'" y="40" width="10" height="8" fill="#e3c86f"/>';}
+    else if(t==='sniper'){s='<rect x="6" y="50" width="'+(w-12)+'" height="22" fill="#5a3f60"/><rect x="'+(w/2-14)+'" y="10" width="28" height="42" fill="#7a5683"/><rect x="'+(w/2-10)+'" y="16" width="20" height="9" fill="#2a1d2d"/>'+
+      '<rect x="'+(w/2+8)+'" y="18" width="52" height="3" fill="#2a1d2d"/><path d="M'+(w/2-18)+' 10 L'+(w/2+18)+' 10 L'+(w/2+12)+' 4 L'+(w/2-12)+' 4Z" fill="#4a3150"/>';}
+    else if(t==='coal'){s='<path d="M8 30 L'+(w-8)+' 30 L'+(w-18)+' 72 L18 72 Z" fill="#3a3632"/>';
+      for(var x=18;x<w-14;x+=11)s+='<circle cx="'+x+'" cy="'+(28+(x%3))+'" r="8" fill="#1d1b19"/>';s+='<rect x="8" y="30" width="'+(w-16)+'" height="4" fill="#57514b"/>';}
+    s+=wheels(w);
+    return '<svg width="'+w+'" height="96" viewBox="0 0 '+w+' 96"><rect x="0" y="0" width="0" height="0" fill="'+c+'"/>'+s+'<rect x="6" y="66" width="'+(w-12)+'" height="3" fill="'+c+'"/></svg>';}
+  $('loco').innerHTML='<path d="M10 70 L0 84 L26 84 Z" fill="#3b302a"/><rect x="20" y="30" width="96" height="40" rx="18" fill="#7a2c22"/><rect x="20" y="44" width="96" height="4" fill="#c9a24a"/>'+
+    '<rect x="40" y="8" width="16" height="26" fill="#2b2522"/><rect x="36" y="4" width="24" height="8" fill="#3b302a"/><circle cx="24" cy="50" r="6" fill="#ffe9a8"/>'+
+    '<rect x="112" y="14" width="56" height="58" rx="3" fill="#5c1f18"/><rect x="122" y="22" width="18" height="16" fill="#ffcf7a"/><rect x="146" y="22" width="16" height="16" fill="#ffcf7a"/><rect x="108" y="10" width="64" height="7" fill="#3b1410"/>'+
+    '<rect x="14" y="70" width="156" height="7" fill="#2a221d"/>'+[34,62,90].map(function(x){return '<circle cx="'+x+'" cy="82" r="13" fill="#1c1714"/><circle cx="'+x+'" cy="82" r="4" fill="#8a7a6a"/>';}).join('')+
+    '<circle cx="140" cy="86" r="8" fill="#1c1714"/><circle cx="158" cy="86" r="8" fill="#1c1714"/><rect x="34" y="80" width="56" height="4" fill="#8a7a6a"/>';
+
+  function riderArt(kind){
+    if(kind===0)return '<svg width="96" height="110"><g fill="#2a1712"><path d="M12 78 Q20 56 48 58 L70 52 L80 60 L72 64 L66 80 L60 98 L55 98 L58 80 L34 82 L28 100 L22 100 L24 80 Z"/><circle cx="46" cy="36" r="7"/><path d="M40 44 L52 44 L54 62 L40 62Z"/><path d="M52 44 L74 30" stroke="#2a1712" stroke-width="3"/></g><path d="M20 30 L50 28" stroke="#c43a2a" stroke-width="3"/></svg>';
+    if(kind===1)return '<svg width="96" height="110"><g fill="#2a1712"><rect x="6" y="50" width="80" height="34" rx="4"/><rect x="40" y="34" width="40" height="20" rx="3"/><rect x="18" y="40" width="24" height="12"/><rect x="58" y="22" width="34" height="5" transform="rotate(-8 58 24)"/><circle cx="22" cy="90" r="11"/><circle cx="70" cy="90" r="11"/></g><rect x="48" y="38" width="14" height="6" fill="#ff8a4c"/></svg>';
+    return '<svg width="96" height="110"><g fill="#2a1712"><path d="M10 100 L30 60 L60 60 L84 100Z"/><circle cx="46" cy="38" r="8"/><path d="M38 48 L56 48 L58 70 L36 70Z"/><path d="M50 50 L92 40" stroke="#2a1712" stroke-width="3"/></g><circle cx="88" cy="41" r="2.5" fill="#ff5a3a"/></svg>';}
+
+  /* ───────── 습격 구간 A ───────── */
+  var RAID={n:'붉은 협곡',hp:22,turns:6,r:[
+    {n:'모래 기마대',hp:9, it:[3,3,0,3,3,0]},
+    {n:'장갑 트럭', hp:16,it:[0,6,0,0,7,0]},
+    {n:'협곡 저격수',hp:6, it:[2,0,3,2,0,4]}]};
+  var order=['coal','turret','cargo','dining','armor','cargo','coupler','turret'];
+  var yard=['sniper','armor','cargo'];
+  var mode='form',st=null,turn=0,used={},T=0;
+
+  var CW=118,GAP=6,X0=196;
+  function carX(i){return X0+i*(CW+GAP);}
+
+  function renderTrain(){
+    var tr=$('train');tr.classList.toggle('raiding',mode!=='form');
+    var html='';order.forEach(function(t,i){
+      var cls='car';if(mode==='raid'){var h=handIdx(order,turn);if((h[0]===i||h[1]===i)&&!used[i])cls+=' inhand';if(used[i])cls+=' used';}
+      html+='<div class="'+cls+'" data-i="'+i+'" style="left:'+carX(i)+'px"><span class="lb">'+CARS[t].n+'</span><span class="ix">'+(i+1)+'</span>'+carArt(t)+'</div>';});
+    tr.innerHTML=html;renderLinks();
+    var m=$('marker');if(mode==='raid'){var h=handIdx(order,turn),a=Math.min(h[0],h[1]),b=Math.max(h[0],h[1]);
+      if(b-a===1){m.style.left=(carX(a)-4)+'px';m.style.width=(2*CW+GAP+8)+'px';}else{m.style.left=(carX(b)-4)+'px';m.style.width=(CW+8)+'px';}
+      m.style.display='block';m.firstChild.textContent=(turn+1)+'번째 역 — 이 칸들이 손에 든다'+(b-a!==1?' (앞으로 한 바퀴)':'');}else m.style.display='none';
+  }
+  function renderLinks(){var s='';
+    order.forEach(function(t,i){var cx=carX(i)+CW/2;
+      if(t==='dining'&&i<order.length-1){s+='<div class="dinarc" style="left:'+cx+'px;width:'+(CW+GAP)+'px;top:2px"></div><div class="lk din" style="left:'+(carX(i+1)+CW/2)+'px;top:16px">사기 +2</div>';}
+      if(t==='coupler'){var a=i>0?carX(i-1)+CW/2:cx,b=i<order.length-1?carX(i+1)+CW/2:cx;s+='<div class="bracket" style="left:'+a+'px;width:'+(b-a)+'px;top:'+(order[i-1]==='dining'?26:2)+'px"></div><div class="lk cpl" style="left:'+cx+'px;top:'+(order[i-1]==='dining'?38:16)+'px">앞뒤 함께 발동</div>';}
+      if(t==='coal')s+='<div class="lk coal" style="left:'+cx+'px;top:16px">'+(i===0?'기관차 옆 · 에너지 +2':'에너지 +1')+'</div>';});
+    $('links').innerHTML=s;}
+
+  function renderRaiders(){var s='';RAID.r.forEach(function(r,j){var hp=st?st.r[j]:r.hp,a=r.it[Math.min(turn,RAID.turns-1)],pen=penalty(order);
+      var it=mode==='raid'?(hp<=0?'격파':a>0?'이번 턴 공격 '+(a+pen):'숨 고르는 중'):(a>0?'1턴 공격 '+(a+pen):'1턴 쉰다');
+      s+='<div class="rd'+(hp<=0?' dead':'')+'" id="rd'+j+'" style="left:'+(j*270)+'px">'+riderArt(j)+'<div class="nm">'+r.n+'</div><div class="hpb"><i style="width:'+(hp/r.hp*100)+'%"></i></div><div class="hpt">'+hp+' / '+r.hp+'</div><div class="int'+((a>0&&hp>0)?'':' zero')+'">'+it+'</div></div>';});
+    $('raiders').innerHTML=s;}
+
+  function renderGrid(){var g='<div class="h">턴</div>',pen=penalty(order);
+    for(var t=0;t<RAID.turns;t++)g+='<div class="h'+(mode==='raid'&&t===turn?' cur':'')+'">'+(t+1)+'턴</div>';
+    RAID.r.forEach(function(r,j){var dead=st&&st.r[j]<=0;g+='<div class="rn'+(dead?' dead-row':'')+'">'+r.n+'</div>';
+      for(var t=0;t<RAID.turns;t++){var a=r.it[t],c=(mode==='raid'&&t===turn?' cur':'')+(mode==='raid'&&t<turn?' past':'')+(dead?' dead-row':'');
+        g+='<div class="'+c+'">'+(a>0?'<span class="atk">'+a+(pen?'<small>+'+pen+'</small>':'')+'</span>':'<span class="atk z">—</span>')+'</div>';}});
+    g+='<div class="rn">들어오는 칸</div>';
+    for(var t=0;t<RAID.turns;t++){var h=handIdx(order,t),c=(mode==='raid'&&t===turn?' cur':'')+(mode==='raid'&&t<turn?' past':'');
+      g+='<div class="'+c+'" style="flex-wrap:wrap;gap:4px">'+h.map(function(i){return '<span class="chip" style="border-color:'+colOf(order[i])+'">'+(i+1)+' '+CARS[order[i]].n+'</span>';}).join('')+'</div>';}
+    $('grid').innerHTML=g;}
+
+  function cardText(i){var t=order[i],b=bonusAt(order,i),bb=b?' <b>(+2 사기)</b>':'';
+    if(t==='coal')return '에너지 +'+((i===0?2:1)+(b?1:0))+(i===0?' <b>(기관차 옆)</b>':'')+(b?' <b>(사기)</b>':'');
+    if(t==='turret')return '맨 앞 습격대에 '+(3+b)+' 피해'+bb;
+    if(t==='sniper')return '체력이 가장 많은 습격대에 '+(7+b)+' 피해'+bb;
+    if(t==='armor')return '이번 턴 막기 '+(4+b)+bb;
+    if(t==='dining')return '체력 +'+(2+b)+bb+'<br><span style="color:#bff0d8">뒤 칸 사기 +2 (늘)</span>';
+    if(t==='coupler')return '앞 칸 '+(i>0?CARS[order[i-1]].n:'(기관차)')+'과 뒤 칸 '+(i<order.length-1?CARS[order[i+1]].n:'(없음)')+'을 한 번 더 발동';
+    return '쓸 수 없다. 끝까지 지키면 인도 점수 1';}
+
+  function renderBottom(){
+    var L=$('pnL'),M=$('pnM'),R=$('pnR');
+    var hp=st?st.hp:RAID.hp,cargo=order.filter(function(t){return t==='cargo';}).length,pen=penalty(order);
+    L.innerHTML='<h3>열차</h3><div class="stat"><span>체력</span><div class="meter"><i style="width:'+(hp/RAID.hp*100)+'%;background:'+(hp<8?'var(--bad)':'#e6b36a')+'"></i></div><em>'+hp+'</em>'+
+      '<span>막기</span><div class="meter"><i style="width:'+Math.min(100,(st?st.block:0)*8)+'%;background:var(--c-armor)"></i></div><em>'+(st?st.block:0)+'</em>'+
+      '<span>에너지</span><div class="pips">'+pipsHtml()+'</div><em>'+(st?st.en:RULE.energy)+'</em></div>'+
+      '<div class="note">길이 <b>'+order.length+'칸</b> · 화물 <b>'+cargo+'칸</b><br>'+(pen?'<span class="warn">무벌점 '+RULE.free+'칸 초과 '+pen+' → 습격대 공격마다 +'+pen+'</span>':'무벌점 '+RULE.free+'칸 이내 — 느려지지 않는다')+
+      '<br>한 턴에 <b>두 칸</b>이 순서대로 들어오고, 쓰지 않은 칸은 지나간다.</div>';
+    if(mode==='form'){
+      M.innerHTML='<h3>편성 — 칸을 끌어 순서를 바꾼다 · 차고로 끌어내리면 뺀다</h3><div class="note" style="margin:0 0 12px">덱을 섞지 않는다. 왼쪽부터 두 칸씩 손에 들어오고, 끝까지 가면 앞으로 돌아온다. <b>무엇을 넣을까</b>에 더해 <b>어디에 둘까</b>가 덱빌딩이다.</div>'+
+        '<h3>차고 — 붉은 협곡역 (누르면 열차 끝에 붙는다)</h3><div class="yard">'+yard.map(function(t,k){return '<div class="ycar" data-k="'+k+'">'+carArt(t,118).replace('width="118"','width="118" style="display:block;margin:0 auto"')+CARS[t].n+'</div>';}).join('')+(yard.length?'':'<div class="note">비었다</div>')+'</div>';
+      R.innerHTML='<h3>출발 전</h3><button class="btn ghost" id="ask">설계자 도구 · 이 편성으로 이길 수 있나?</button><div id="oracle"></div><div id="log"></div><button class="btn hot" id="go">출발 — 협곡으로</button>';
+      $('go').onclick=start;$('ask').onclick=ask;
+      [].forEach.call(document.querySelectorAll('.ycar'),function(el){el.onclick=function(){if(order.length>=RULE.max)return;order.push(yard.splice(+el.dataset.k,1)[0]);refresh();};});
+    }else{
+      var h=handIdx(order,turn),uniq=h[0]===h[1]?[h[0]]:h;
+      M.innerHTML='<h3>손 — '+(turn+1)+'번째 역에서 들어온 칸 · 눌러서 쓴다</h3><div class="hand">'+uniq.map(function(i){var t=order[i],c=CARS[t],can=!used[i]&&c.cost>=0&&c.cost<=st.en;
+        return '<div class="card'+(used[i]?' gone':can?'':' no')+'" data-i="'+i+'" style="border-color:'+colOf(t)+'"><div class="cost'+(c.cost<0?' x':'')+'">'+(c.cost<0?'—':c.cost)+'</div><div class="nm" style="color:'+colOf(t)+'">'+c.n+'</div><div class="art">'+carArt(t,118)+'</div><div class="tx">'+cardText(i)+'</div><div class="pos">열차 '+(i+1)+'번째 칸</div></div>';}).join('')+
+        '<div class="pass">다음 역에서는<br><b>'+handIdx(order,turn+1).map(function(i){return (i+1)+' '+CARS[order[i]].n;}).join(' · ')+'</b><br>이 들어온다.<br><br>쓰지 않은 칸은 그대로 지나간다 — 손에 남지 않는다.</div></div>';
+      R.innerHTML='<h3>'+(turn+1)+' / '+RAID.turns+'턴</h3><div id="log">'+logHtml+'</div><button class="btn hot" id="end">턴 끝 — 습격을 받는다</button><button class="btn ghost" id="quit">포기하고 편성으로</button>';
+      $('end').onclick=endTurn;$('quit').onclick=back;
+      [].forEach.call(document.querySelectorAll('.card'),function(el){el.onclick=function(){playCard(+el.dataset.i);};});
+    }}
+  function pipsHtml(){var n=st?Math.max(RULE.energy,st.en):RULE.energy,on=st?st.en:RULE.energy,s='';for(var k=0;k<Math.max(n,3);k++)s+='<b class="'+(k<on?'on':'')+'"></b>';return s;}
+  var logHtml='';function log(s,c){logHtml='<p class="'+(c||'')+'">'+s+'</p>'+logHtml;var el=$('log');if(el)el.innerHTML=logHtml;}
+
+  function refresh(){renderTrain();renderRaiders();renderGrid();renderBottom();
+    $('modeTag').textContent=mode==='form'?'편성':'습격';$('modeTag').className='mode'+(mode==='form'?'':' raid');}
+
+  function ask(){var v=solve(order,RAID.r,RAID.hp,RAID.turns);
+    $('oracle').textContent=v<=0?'이 편성은 어떻게 두어도 협곡을 못 넘는다. 칸을 옮겨 보라.':v>=100?'최선으로 두면 습격대를 전멸시킨다 (체력 '+(v-100)+' 남음).':'최선으로 두면 체력 '+v+'을 남기고 도착한다.';}
+
+  /* ───────── 습격 진행 ───────── */
+  function start(){mode='raid';turn=0;used={};logHtml='';st={hp:RAID.hp,max:RAID.hp,block:0,en:RULE.energy,r:RAID.r.map(function(r){return r.hp;})};
+    log('협곡 진입 — 습격대 셋이 따라붙는다','y');refresh();}
+  function playCard(i){if(used[i])return;var c=CARS[order[i]];if(c.cost<0){log('화물칸은 쓸 수 없다 — 지키는 칸이다');return;}if(c.cost>st.en){log('에너지가 모자라다','w');return;}
+    st.en-=c.cost;used[i]=1;var fx=[];effect(order,i,st,0,fx);refresh();
+    fx.forEach(function(f,k){if(f.k==='log')log(f.s,f.c);
+      setTimeout(function(){if(f.k==='glow'){var el=document.querySelector('.car[data-i="'+f.i+'"]');if(el){el.classList.remove('glow');void el.offsetWidth;el.classList.add('glow');}}
+        if(f.k==='pop'){var r=$('rd'+f.j);if(r){var p=document.createElement('div');p.className='pop';p.textContent='-'+f.d;r.appendChild(p);}}},k*90);});
+    if(!alive(st))setTimeout(function(){finish(true,true);},700);}
+  function endTurn(){var r=raidHit(order,st,RAID.r,turn);
+    log((turn+1)+'턴 습격 — 공격 '+r.dmg+(r.dmg!==r.taken?' · 막고 '+r.taken:'')+' 피해','w');
+    if(r.taken>0){[].forEach.call(document.querySelectorAll('.car'),function(el){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit');});flash=1;}
+    if(st.hp<=0){st.hp=0;refresh();setTimeout(function(){finish(false);},500);return;}
+    turn++;used={};st.en=RULE.energy;
+    if(turn>=RAID.turns){refresh();setTimeout(function(){finish(true,false);},400);return;}
+    refresh();}
+  function finish(win,wiped){var cargo=order.filter(function(t){return t==='cargo';}).length;
+    $('rH').textContent=win?(wiped?'습격대 전멸':'협곡 통과'):'열차가 멈췄다';$('rH').style.color=win?'var(--ok)':'var(--bad)';
+    $('rP').innerHTML=win?'체력 <b>'+st.hp+'</b> · 화물 <b>'+cargo+'칸</b> 인도.<br>같은 편성은 언제나 같은 결과다. 화물을 하나 더 실어 볼까?':
+      (turn+1)+'번째 턴에 체력이 바닥났다. 편성은 그대로 남아 있다.<br><b>섞지 않으니, 어느 칸이 어느 턴에 왔는지 기억한 채로 옮길 수 있다.</b>';
+    $('result').classList.add('on');}
+  function back(){$('result').classList.remove('on');mode='form';st=null;turn=0;used={};logHtml='';refresh();}
+  $('rBack').onclick=back;
+
+  /* ───────── 편성 — 끌어서 순서 바꾸기 ───────── */
+  var drag=null;
+  function stageXY(e){var r=stage.getBoundingClientRect(),s=r.width/1600;return [(e.clientX-r.left)/s,(e.clientY-r.top)/s];}
+  $('train').addEventListener('pointerdown',function(e){if(mode!=='form')return;var el=e.target.closest('.car');if(!el)return;
+    var p=stageXY(e),i=+el.dataset.i;drag={i:i,el:el,dx:p[0]-carX(i),y0:p[1]};el.classList.add('drag');el.setPointerCapture(e.pointerId);e.preventDefault();});
+  $('train').addEventListener('pointermove',function(e){if(!drag)return;var p=stageXY(e);drag.el.style.left=(p[0]-drag.dx)+'px';drag.el.style.top=Math.max(-20,p[1]-drag.y0)+'px';
+    var to=Math.max(0,Math.min(order.length-1,Math.round((p[0]-drag.dx-X0)/(CW+GAP))));
+    [].forEach.call(document.querySelectorAll('.car'),function(c){var k=+c.dataset.i;if(k===drag.i)return;var slot=k;if(drag.i<k&&k<=to)slot=k-1;else if(drag.i>k&&k>=to)slot=k+1;c.style.left=carX(slot)+'px';});});
+  $('train').addEventListener('pointerup',function(e){if(!drag)return;var p=stageXY(e),i=drag.i;
+    if(p[1]>640&&order.length>RULE.min){yard.push(order.splice(i,1)[0]);}
+    else{var to=Math.max(0,Math.min(order.length-1,Math.round((p[0]-drag.dx-X0)/(CW+GAP))));var t=order.splice(i,1)[0];order.splice(to,0,t);}
+    drag=null;$('oracle').textContent='';refresh();});
+
+  /* ───────── 배경 — 협곡, 레일 ───────── */
+  var sc=$('scene'),X=sc.getContext('2d'),scroll=0,flash=0;
+  function mesa(x,base,w,h,col){X.fillStyle=col;X.beginPath();X.moveTo(x,base);X.lineTo(x+w*.12,base-h);X.lineTo(x+w*.88,base-h);X.lineTo(x+w,base);X.closePath();X.fill();}
+  function drawScene(dt){var speed=(mode==='raid'?220:90)*Math.max(.45,1-penalty(order)*.18);scroll+=speed*dt;
+    var g=X.createLinearGradient(0,0,0,420);g.addColorStop(0,'#3a1f2e');g.addColorStop(.45,'#c4583a');g.addColorStop(.62,'#f2a65a');g.addColorStop(.63,'#b8673c');g.addColorStop(1,'#6e3a22');
+    X.fillStyle=g;X.fillRect(0,0,1600,420);
+    X.fillStyle='rgba(255,226,170,.85)';X.beginPath();X.arc(330,232,46,0,7);X.fill();
+    var layers=[[.08,'#7c3a34',230,140],[.18,'#5e2a26',250,110],[.35,'#45201c',262,70]];
+    layers.forEach(function(L,li){var off=(scroll*L[0])%700;for(var k=-1;k<4;k++){var bx=k*700-off+li*180;mesa(bx,L[2],260+li*40,L[3],L[1]);mesa(bx+360,L[2],170,L[3]*.7,L[1]);}});
+    X.fillStyle='#8a4a2a';X.fillRect(0,262,1600,158);
+    X.fillStyle='rgba(60,25,15,.35)';for(var k=0;k<30;k++){var dx=((k*173-scroll*.9)%1700+1700)%1700-50;X.fillRect(dx,290+(k*37)%110,40+(k%5)*14,3);}
+    // 레일
+    X.fillStyle='#4a2a1a';X.fillRect(0,330,1600,14);
+    X.fillStyle='#2e1a12';var so=scroll%28;for(var x=-so;x<1600;x+=28)X.fillRect(x,331,14,13);
+    X.fillStyle='#c9b6a0';X.fillRect(0,328,1600,3);X.fillStyle='#8f7f70';X.fillRect(0,340,1600,2);
+    // 먼지
+    if(mode==='raid'){X.fillStyle='rgba(240,190,140,.18)';for(var k=0;k<14;k++){var dx=((k*211+scroll*1.6)%1800)-100;X.beginPath();X.arc(dx,250+(k%4)*12,18+(k%3)*10,0,7);X.fill();}}
+    if(flash>0){X.fillStyle='rgba(255,60,40,'+(flash*.35)+')';X.fillRect(0,0,1600,420);flash=Math.max(0,flash-dt*2.5);}
+  }
+  var last=performance.now();
+  function frame(now){var dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;
+    if(cur==='a'){drawScene(dt);
+      // 습격대 흔들림
+      for(var j=0;j<3;j++){var r=$('rd'+j);if(r&&!drag)r.style.transform='translateY('+(Math.sin(T*6+j*2)*3)+'px)';}
+      $('loco').style.transform='translateY('+(Math.sin(T*18)*.8)+'px)';}
+    requestAnimationFrame(frame);}
+
+  /* ───────── 화면 B — 전수 탐색 ───────── */
+  function catalog(){var rows=[['coal','0','에너지 +1','맨 앞(기관차 옆)이면 +2'],['turret','1','맨 앞 습격대에 3','식당칸 뒤면 +2'],['sniper','2','체력 최대 습격대에 7','식당칸 뒤면 +2'],
+      ['armor','1','이번 턴 막기 4','식당칸 뒤면 +2'],['dining','1','체력 +2','<b>바로 뒤 칸 사기 +2</b> — 편성만으로 늘 붙는다'],['coupler','1','앞·뒤 칸을 한 번 더 발동','<b>위치가 효과의 전부</b> — 연쇄는 한 번만'],['cargo','—','쓸 수 없다 · 인도 점수 1','손을 막는다. 많이 실을수록 길어진다']];
+    $('cat').innerHTML='<tr><th>칸</th><th>비용</th><th>효과</th><th>이웃 규칙</th></tr>'+rows.map(function(r){return '<tr><td><i style="background:'+colOf(r[0])+'"></i>'+CARS[r[0]].n+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';}).join('')+
+      '<tr><td colspan="4" style="color:var(--soft)">공통 — 매 턴 에너지 2 · 두 칸이 열차 순서대로 들어온다 · 쓰지 않은 칸은 지나간다 · 길이 '+RULE.free+'칸 초과분만큼 모든 공격 +1</td></tr>';}
+  var BF_SET=['cargo','turret','armor','dining','coupler','sniper'];
+  var BF_RAIDS=[
+    {n:'기마대 — 꾸준한 압박',hp:10,r:[{hp:8,it:[4,4,4,4]},{hp:10,it:[0,6,0,7]}]},
+    {n:'장갑 트럭 — 격주 강타',hp:10,r:[{hp:15,it:[0,8,0,9]},{hp:4,it:[3,3,3,3]}]},
+    {n:'매복 — 앞뒤로 몰린다',hp:10,r:[{hp:11,it:[8,0,0,7]},{hp:10,it:[0,0,8,5]}]}];
+  function perms(a){if(a.length<=1)return [a];var out=[];for(var i=0;i<a.length;i++){var rest=a.slice(0,i).concat(a.slice(i+1));perms(rest).forEach(function(p){out.push([a[i]].concat(p));});}return out;}
+  function bruteforce(){var t0=performance.now(),P=perms(BF_SET),wins=BF_RAIDS.map(function(){return {};}),heat={};
+    BF_SET.forEach(function(c){heat[c]=[0,0,0,0,0,0];});
+    BF_RAIDS.forEach(function(rd,ri){P.forEach(function(p){if(solve(p,rd.r,rd.hp,4)>0){wins[ri][p.join(',')]=1;p.forEach(function(c,k){heat[c][k]++;});}});});
+    var ms=Math.round(performance.now()-t0),cnt=wins.map(function(w){return Object.keys(w).length;});
+    var all=Object.keys(wins[0]).filter(function(k){return wins[1][k]&&wins[2][k];}),any={};wins.forEach(function(w){for(var k in w)any[k]=1;});var anyN=Object.keys(any).length;
+    var pairs=[[0,1],[0,2],[1,2]].map(function(q){return Object.keys(wins[q[0]]).filter(function(k){return wins[q[1]][k];}).length;});
+    $('bf').innerHTML=BF_RAIDS.map(function(rd,ri){return '<div class="r"><b>'+rd.n+'</b><strong>'+cnt[ri]+' <span style="font-size:14px;color:var(--dim)">/ 720</span></strong><div class="bfbar"><i style="width:'+(cnt[ri]/720*100)+'%"></i></div><small>이기는 편성 '+(cnt[ri]/7.2).toFixed(1)+'% · 열차 체력 '+rd.hp+' · 4턴</small></div>';}).join('');
+    var max=0;BF_SET.forEach(function(c){heat[c].forEach(function(v){max=Math.max(max,v);});});
+    var h='<div class="t"></div>'+[1,2,3,4,5,6].map(function(k){return '<div class="t">'+k+'번</div>';}).join('');
+    BF_SET.forEach(function(c){h+='<div class="l"><i style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:'+colOf(c)+'"></i>'+CARS[c].n.replace('칸','')+'</div>';
+      heat[c].forEach(function(v){var a=v/max;h+='<div style="background:rgba(255,138,76,'+(a*.9+.04)+');color:'+(a>.55?'#2a1006':'#e4d4bb')+'">'+v+'</div>';});});
+    $('heat').innerHTML=h;
+    $('uni').innerHTML='<b>세 습격을 모두 이기는 편성 '+all.length+'개</b> · 하나라도 이기는 편성 '+anyN+'개<br>두 습격씩 겹치는 수: '+pairs.join(' · ')+'<br>'+
+      all.slice(0,6).map(function(k){return '<div class="row">'+k.split(',').map(function(c){return '<span style="background:'+colOf(c)+'">'+CARS[c].n.replace('칸','')+'</span>';}).join('')+'</div>';}).join('')+
+      '<span style="color:var(--dim);font-size:11px">계산 '+ms+'ms · 720 × 3 × 최선 수 탐색 · 같은 입력이면 같은 결과</span>';
+    var share=all.length/Math.max(1,anyN);
+    $('verdict').innerHTML='습격마다 이기는 편성은 '+cnt.join(' · ')+'개로 <b>정답 하나로 수렴하지 않는다.</b> 그러나 세 습격을 다 이기는 <b>만능 편성이 '+all.length+'개</b> 있다 — 이기는 편성 '+anyN+'개 중 '+(share*100).toFixed(1)+'%. '+
+      (all.length?'이 칸 세트로는 만능 편성을 한 번 찾으면 노선 내내 옮길 이유가 줄어든다. <b>역마다 칸 세트가 바뀌어야 퍼즐이 매번 새로 열린다</b> — 검사기는 노선마다 이 비율의 상한을 건다.':'만능 편성이 없다 — 습격마다 다시 짜야 한다.');}
+
+  /* ───────── 입력 · 화면 전환 ───────── */
+  window.addEventListener('keydown',function(e){if(e.key==='1')show('a');else if(e.key==='2')show('b');});
+  var cur='a',bfDone=false;
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;$('sa').classList.toggle('on',k==='a');$('sb').classList.toggle('on',k==='b');
+    [].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.classList.toggle('on',b.getAttribute('data-s')===k);});
+    if(k==='b'&&!bfDone){bfDone=true;catalog();setTimeout(bruteforce,30);}
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  [].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){show(b.getAttribute('data-s'));});});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  $('goA').onclick=function(){show('a');};
+  show((location.hash||'#a').slice(1));
+  refresh();drawScene(0);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

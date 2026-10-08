@@ -206,7 +206,7 @@ csproj의 `ProjectReference`로 잇는다. **복사하면 반드시 갈라지고
 | `games/_archive/puzzle-tomorrow-map` | 지도 퍼즐 — 내일의 지도 | **Unity** | 헤드리스 8 |
 | 그 밖 29개 | 파밍 · 덱빌더 · 혼합 · 전술 · 내러티브 · 추리 … | 헤드리스 | 각 PoC의 `README.md` |
 
-**PoC 전체 목록은 여기 두지 않는다** — [`CONCEPTS.md`](CONCEPTS.md)에 컨셉 71개가 한 표로 있고
+**PoC 전체 목록은 여기 두지 않는다** — [`CONCEPTS.md`](CONCEPTS.md)에 컨셉 76개가 한 표로 있고
 구현된 것은 `상태` 열에 검사기 통과 수가 붙어 있다. 이 문서는 **절차**를 정하는 곳이다.
 
 Unity 셸이 붙은 셋을 뺀 나머지는 전부 §3의 2단계(수직 슬라이스)까지 왔고

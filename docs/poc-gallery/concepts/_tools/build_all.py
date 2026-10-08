@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""컨셉 101개를 한 장에 모은 열람용 색인(docs/poc-gallery/concepts/all.html)을 만든다.
+"""활성 컨셉 전부를 한 장에 모은 열람용 색인(docs/poc-gallery/concepts/all.html)을 만든다.
 
     python docs/poc-gallery/concepts/_tools/build_all.py
 
@@ -10,7 +10,7 @@
      이미지 목업도 같은 자리에서 확대한다.
 
 입력
-  ../../CONCEPTS.md          `## 컨셉 101` 표 (상태·에셋·헤드리스·메모의 원본)
+  ../../CONCEPTS.md          `## 컨셉 <개수>` 표 (상태·에셋·헤드리스·메모의 원본)
   _tools/concepts.json       번호 -> slug·game_dir·batch
   <NN>-<slug>/               index.html · mock-a.jpg · mock-b.jpg 존재 여부
   ../png/<game>.png          구현된 컨셉의 실제 실행 스크린샷
@@ -33,7 +33,7 @@ ROOT = HERE.parent                      # docs/poc-gallery/concepts
 REPO = ROOT.parent.parent.parent         # repo root
 CONCEPTS_MD = REPO / 'docs' / 'CONCEPTS.md'
 
-# ── docs/CONCEPTS.md 의 `## 컨셉 101` 표만 읽는다 ────────────────────────────
+# ── docs/CONCEPTS.md 의 `## 컨셉 <개수>` 표만 읽는다 ────────────────────────────
 LINK_RE = re.compile(r'\[`?([^\]`]+)`?\]\([^)]*\)')      # [`slug`](path) -> slug
 BOLD_RE = re.compile(r'\*\*([^*]+)\*\*')
 # 절 제목에 개수가 들어 있다(`## 컨셉 101` -> `## 컨셉 102`). 숫자를 박지 않는다.

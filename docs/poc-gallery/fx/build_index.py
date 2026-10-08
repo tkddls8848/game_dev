@@ -3,7 +3,7 @@
 
     python docs/poc-gallery/fx/build_index.py
 
-입력: catalog.json(효과 24종 · 쓰는 컨셉 번호)과 각 <slug>/index.html · thumb.jpg 존재 여부,
+입력: catalog.json(효과 24종 · 쓰는 컨셉 번호 · 보관된 안은 archived_concepts 에 구번호)과 각 <slug>/index.html · thumb.jpg 존재 여부,
       컨셉 제목은 ../concepts/_tools/concepts.json.
 """
 import html
@@ -12,7 +12,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 fx = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))
-concepts = {c["num"]: c for c in json.loads((ROOT.parent / "concepts" / "_tools" / "concepts.json").read_text(encoding="utf-8"))}
+_all = json.loads((ROOT.parent / "concepts" / "_tools" / "concepts.json").read_text(encoding="utf-8"))
+# 보관된 안은 구번호를 그대로 쓰므로 활성 번호와 겹친다 — 따로 찾는다
+concepts = {c["num"]: c for c in _all if not c.get("archived")}
+archived = {c["num"]: c for c in _all if c.get("archived")}
 
 cards, missing = [], []
 for e in fx:
@@ -24,7 +27,9 @@ for e in fx:
              if (d / "thumb.jpg").exists() else '<div class="ph">미리보기 없음</div>')
     uses = "".join(
         f'<a href="../concepts/{n:02d}-{concepts[n]["slug"]}/index.html">#{n} {html.escape(concepts[n]["title"])}</a>'
-        for n in e["concepts"] if n in concepts)
+        for n in e["concepts"] if n in concepts) + "".join(
+        f'<a href="../concepts/_archive/{n:02d}-{archived[n]["slug"]}/index.html">구#{n} {html.escape(archived[n]["title"])}</a>'
+        for n in e.get("archived_concepts", []) if n in archived)
     cards.append(f"""<article class="card"><a class="shot" href="{e['slug']}/index.html">{thumb}</a>
 <div class="body"><h2><a href="{e['slug']}/index.html">{html.escape(e['title'])}</a></h2>
 <p>{html.escape(e['desc'])}</p><div class="uses">{uses}</div></div></article>""")
@@ -49,7 +54,7 @@ h2{{font-size:18px;margin:0 0 4px}}h2 a{{text-decoration:none}}.body p{{color:va
 <nav><a href="../index.html">← PoC 갤러리</a><a href="../concepts/index.html">컨셉 시안</a><a href="../../MUSIC_DIRECTION.md">음악 방향</a><a href="../../ENGINE_FIT.md">엔진 적합성</a></nav>
 <span class="eyebrow" style="display:block;margin-top:28px">EFFECT SAMPLES · {len(cards)} KINDS · 3–4 VARIANTS EACH</span>
 <h1>효과 구현 샘플</h1>
-<p class="lead">컨셉 101개가 공통으로 필요로 하는 효과를 효과별로 모았다. 각 샘플은 단일 HTML(Canvas2D/WebGL + WebAudio)로 파일에서 바로 열린다.
+<p class="lead">컨셉들이 공통으로 필요로 하는 효과를 효과별로 모았다. 각 샘플은 단일 HTML(Canvas2D/WebGL + WebAudio)로 파일에서 바로 열린다.
 변형마다 쓰는 컨셉이 붙어 있고, 조작→시각·소리 피드백, 수치 슬라이더(게임 이식용 JSON), Unity 이식 메모가 있다.
 <b>헤드리스 소프트웨어 렌더링에서만 확인했다 — 실제 GPU 프레임과 소리의 만족도는 사람이 판정해야 한다.</b></p>
 <section class="grid">{''.join(cards)}</section>

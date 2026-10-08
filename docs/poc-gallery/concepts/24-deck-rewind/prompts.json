@@ -1,0 +1,17 @@
+{
+ "num": 24,
+ "slug": "deck-rewind",
+ "title": "되감기",
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 라운드 4 — 보이지 않는 적의 의도",
+   "prompt": "Polished landscape 16:9 gameplay screenshot of a roguelike deckbuilder titled \"되감기\", styled as a cold laboratory blueprint. Actual gameplay view, not poster, no device frame. Composition: dark slate background with a two-level cyan graph-paper grid; center, a large thin-line cyan wireframe schematic of the enemy 'archivist', a filing-cabinet machine with drawers, a lens eye, jointed arms and dimension marks, a horizontal scanline sweeping over it; below it a red enemy health bar. Right of the enemy, a dashed amber box with large question marks showing the enemy's next move is unknown, and a small memory panel with stacks and damage modifier. Left: player health, three glowing cyan energy rings and status list. Top: a round timeline of eight numbered boxes with the current one filled cyan and a row of three rewind charge icons, one spent. Bottom: a fanned hand of five blueprint-style cards with cost badges, small line diagrams and rarity colors (grey, cyan, one orange rare). Buttons at lower right for rewind (amber) and end turn (cyan). Monospace type, 1px lines, measured and clinical. Korean UI: \"되감기\", enemy name \"기록관\", \"? ? ?\", button \"턴 종료\". HUD constraints: the round timeline label reads \"라운드 4/8\", boxes 1-3 are dimmed as past, box 4 is filled cyan as current, boxes 5-8 are empty outlines; rewind charges show one spent and two remaining (\"충전 2/3\"). STRICT (retry): the player health reads exactly \"62 / 80\" (maximum 80, never 75), matching the rewind screen; the enemy health reads \"320 / 320\"."
+  },
+  {
+   "id": "b",
+   "screen": "B · 되감기 — 적이 기억한다",
+   "prompt": "Polished landscape 16:9 gameplay screenshot of the rewind moment in a roguelike deckbuilder titled \"되감기\". Actual gameplay view, not poster, no device frame. Composition: the same cyan blueprint lab grid now overlaid with fast horizontal rewind scan bars and a faint amber tint; the archivist wireframe shown with offset chromatic ghost copies (cyan and amber) like a tape rewinding, an amber dashed memory ring rotating around its lens eye with a pulse. Large centered title with RGB split. Round timeline at top: current round cyan, the next round shown as a dashed amber 'seen' ghost. Left: two dashed info boxes, the top one amber with a struck-through remembered enemy attack, the lower one cyan with unknown question marks for the shifted pattern. Right: a restored-state box. Bottom: two side-by-side panels listing what returns (cyan) and what does not return (amber), and a small table of damage multipliers with the current row highlighted amber. Monospace type, 1px lines, clinical tension. Korean UI: title \"되감기\", \"기억 2\", \"되돌아오지 않는 것\". Consistency constraints: the archivist is the same filing-cabinet machine as in the previous screen (stacked drawers, single lens eye, jointed arms), never a hooded humanoid; the round timeline has eight boxes with round 4 current and round 5 as the dashed amber seen ghost; player health reads 62/80 everywhere; both memory boxes are labeled \"기억 2\" only once (top: remembered, bottom: shifted). STRICT (retry): no calendar date, year or real timestamp anywhere (no \"2025-11-16\" or similar) — any corner technical text may show only a run number and a round label like \"ROUND 4\"."
+  }
+ ]
+}

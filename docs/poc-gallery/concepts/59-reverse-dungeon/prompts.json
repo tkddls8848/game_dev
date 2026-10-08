@@ -1,0 +1,17 @@
+{
+ "num": 59,
+ "slug": "reverse-dungeon",
+ "title": "거꾸로 던전",
+ "images": [
+  {
+   "id": "a",
+   "screen": "A · 함정 설계 (예상 스릴 곡선)",
+   "prompt": "Actual gameplay view, not poster, no device frame. A 16-bit pixel-art dungeon management game seen as a side-on cross-section, like an ant farm: a night sky with a crescent moon and grassy surface on top, an entrance gate on the left and an exit gate on the right, and three underground brick floors connected by wooden ladders, lit by flickering wall torches casting warm orange pools in deep purple stone. Floor traps and monsters are placed along the route: a spike floor, an arrow-slit wall, a hanging boulder, a green slime, a skeleton soldier, a toothy mimic chest, a real treasure chest and a glowing blue healing fountain. A small blue-tabard knight with a nervous sweat drop walks the route, leaving a dotted trail colored green to yellow to red by remaining health, with pixel speech tags like '−3 → 체력 1 !!'. Right side UI panels with chunky pixel frames: the visitor card '견습 기사 브람' with trait bars, a step-line 'thrill curve' graph dipping into a highlighted band just above the death line, and a big red button '모험가 입장 ▶'. Bottom build tray of item slots with gold costs, one skeleton slot highlighted. Title HUD '거꾸로 던전'. Crisp pixels, purple-slate, torch amber and gold palette, subtle scanlines. Correction: this is the pre-entry planning screen, so the visitor card shows health '10 / 10'. The route preview shows only these predicted tags: spike floor '−3', arrow wall '−2', boulder '−2', skeleton on the lowest floor '−2 → 체력 1 !!', healing fountain '+5'; no other damage numbers, and the total damage must never reach 10. The '체력 1' tag sits at the skeleton on the lowest floor, not at the first trap."
+  },
+  {
+   "id": "b",
+   "screen": "B · 생환 리뷰 도착",
+   "prompt": "Actual gameplay view, not poster, no device frame. Results screen of a pixel-art reverse-dungeon game. Left: the same side-view three-floor dungeon cross-section at smaller scale, the full adventurer route drawn as a colored dotted trail that turns red at the skeleton on the lowest floor where a pixel label reads '체력 1 — 죽을 뻔!', and the bandaged blue knight standing at the surface exit gate under the night sky with a green tag '생환!'. Below it, a wide replay health graph and a settlement bar with green and red coin numbers and the dungeon rating going from 4.2 up to 4.4. Right: a large cream parchment review card with a thick gold pixel border, slightly tilted, a 'new review' red badge, five huge gold pixel stars, the knight's pixel portrait with a bandage, a handwritten-style Korean review with highlighted phrases, dark tag chips, a dungeon owner's reply box, and a round red '생환' rubber stamp. Beneath, a pinboard of three smaller old review notes with one star, two stars and four stars and tiny pixel icons of a ghost, a slime and a mimic. Title HUD '거꾸로 던전'. Warm gold and cream against deep purple, playful ironic mood. Correction: the reviewer is the same visitor as image A — name '견습 기사 브람', level 'Lv.1' (no other name or level). No calendar dates or years on any review card; if a time is needed use only '12일째'-style in-game days. The dungeon keeps the same floor layout as image A (entrance top-left, exit top-right)."
+  }
+ ]
+}

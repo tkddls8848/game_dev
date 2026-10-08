@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>녹는 창고</title>
+<style>
+:root{--hanji:#ece3cf;--hanji2:#e2d6bc;--paper:#f4eedf;--meok:#1f1c18;--ink:#2b2722;--ink2:#5a5246;--soft:#8a7f6c;--line:rgba(43,39,34,.16);
+  --ice:#bfe2ee;--ice2:#7fb9cf;--water:#5f9cb3;--seal:#b5402c;--straw:#c9a24f;--earth:#6b5a42;--moss:#6f7d4a;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--serif:"Noto Serif KR","Noto Serif CJK KR",Batang,serif;--mono:Consolas,"D2Coding",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#16130f;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink)}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:1000px;overflow:hidden;transform-origin:50% 50%;transform:translate(-50%,-50%);background:var(--hanji)}
+.screen{position:absolute;inset:0;display:none}
+.screen.on{display:block}
+.fiber{position:absolute;inset:0;pointer-events:none;z-index:40;opacity:.16;mix-blend-mode:multiply;width:1600px;height:1000px}
+.tabs{position:absolute;right:14px;bottom:12px;z-index:60;display:flex;gap:6px;opacity:.45;transition:opacity .3s}
+.tabs:hover{opacity:1}
+.tabs button{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:3px;border:1px solid rgba(43,39,34,.35);background:rgba(244,238,223,.8);color:var(--ink);cursor:pointer}
+.tabs button.on{background:var(--meok);color:var(--paper);border-color:var(--meok)}
+button{font-family:var(--sans)}
+
+/* ── 화면 A ── */
+.hd{position:absolute;left:24px;right:24px;top:18px;height:58px;display:flex;align-items:flex-end;gap:28px;border-bottom:2px solid var(--meok);padding-bottom:10px}
+.hd h1{font:800 34px/1 var(--serif);letter-spacing:-.02em;color:var(--meok)}
+.hd h1 small{font:500 13px/1 var(--sans);letter-spacing:.1em;color:var(--soft);margin-left:10px}
+.hd .st{display:flex;gap:26px;margin-left:auto}
+.hd .st div{text-align:right}
+.hd .st span{display:block;font:600 11px/1 var(--sans);letter-spacing:.18em;color:var(--soft);margin-bottom:6px}
+.hd .st b{font:800 24px/1 var(--mono);color:var(--meok)}
+.hd .st b.hot{color:var(--seal)}
+#cv{position:absolute;left:24px;top:92px;width:940px;height:640px;border:1px solid var(--line);border-radius:3px}
+#tl{position:absolute;left:24px;top:744px;width:940px;height:232px;border:1px solid var(--line);border-radius:3px;background:var(--paper)}
+#side{position:absolute;left:988px;top:92px;width:588px;bottom:24px;display:flex;flex-direction:column;gap:12px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:13px 16px}
+.box h3{font:700 11px/1 var(--sans);letter-spacing:.24em;color:var(--soft);margin-bottom:10px;display:flex;justify-content:space-between}
+.box h3 em{font-style:normal;letter-spacing:.04em;color:var(--ink2)}
+.melt{font:500 13px/1.7 var(--sans);color:var(--ink2)}
+.melt .big{font:800 30px/1 var(--mono);color:var(--water);margin-right:6px}
+.melt .eq{font:500 12.5px/1.6 var(--mono);color:var(--ink2);margin-top:6px}
+.melt .eq b{color:var(--meok)}
+.offer{display:grid;grid-template-columns:96px 1fr 116px;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.offer:first-of-type{border-top:0}
+.offer .who{font:700 14px/1.2 var(--serif);color:var(--meok)}
+.offer .who small{display:block;font:500 11px/1.4 var(--sans);color:var(--soft);margin-top:3px}
+.offer .what{font:500 13px/1.45 var(--sans);color:var(--ink2)}
+.offer .what b{font-family:var(--mono);color:var(--meok)}
+.offer.done{opacity:.4}
+.btn{font:700 13px/1 var(--sans);padding:9px 10px;border-radius:3px;border:1px solid var(--meok);background:var(--meok);color:var(--paper);cursor:pointer}
+.btn.line{background:transparent;color:var(--meok)}
+.btn.seal{background:var(--seal);border-color:var(--seal)}
+.btn:disabled{opacity:.3;cursor:default}
+.seal-tag{display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.1em;padding:3px 5px;border:1.5px solid var(--seal);color:var(--seal);border-radius:2px;margin-left:6px;transform:rotate(-3deg)}
+.row{display:flex;gap:8px;align-items:center}
+.row .grow{flex:1}
+.go{font:800 17px/1 var(--sans);letter-spacing:.06em;padding:16px;border-radius:3px;border:0;background:var(--meok);color:var(--paper);cursor:pointer;width:100%}
+.go small{display:block;font:500 11px/1 var(--sans);letter-spacing:.08em;color:#b9ad95;margin-top:6px}
+.log{font:500 12px/1.65 var(--sans);color:var(--ink2);max-height:126px;overflow:hidden}
+.log p.bad{color:var(--seal)}
+.log p.good{color:#3d6b52}
+.scroll{flex:1;min-height:0;overflow:auto}
+.settle td{padding:5px 2px;font:500 14px/1.4 var(--sans);border-top:1px dashed var(--line)}
+.settle td:last-child{text-align:right;font-family:var(--mono);font-weight:700}
+.settle tr.total td{border-top:2px solid var(--meok);font-size:18px}
+.wice{display:flex;gap:6px;margin:4px 0 12px}
+.wice i{flex:1;height:40px;border-radius:2px;background:#d8d2c4;position:relative}
+.wice i b{position:absolute;left:0;right:0;bottom:0;background:var(--ice2)}
+.wice i.cut{outline:2px solid var(--meok)}
+.wice i.now{outline:2px solid var(--seal)}
+.wice i.fog b{background:#c9c2b2}
+
+/* ── 화면 B ── */
+#sb{background:var(--hanji)}
+#chart{position:absolute;left:24px;top:24px;width:1010px;height:560px;border:1px solid var(--line);border-radius:3px;background:var(--paper)}
+#stbl{position:absolute;left:24px;top:600px;width:1010px}
+.strat{width:100%;border-collapse:collapse;font-size:13px;background:var(--paper);border:1px solid var(--line)}
+.strat th{font:700 11px/1 var(--sans);letter-spacing:.14em;color:var(--soft);text-align:right;padding:10px 12px;border-bottom:1px solid var(--line)}
+.strat th:first-child,.strat td:first-child{text-align:left}
+.strat td{padding:9px 12px;border-top:1px dashed var(--line);text-align:right;font-family:var(--mono)}
+.strat td:first-child{font-family:var(--sans);font-weight:700}
+.strat td small{display:block;font:500 11px/1.4 var(--sans);color:var(--soft);font-weight:500}
+.strat i{display:inline-block;width:18px;height:3px;vertical-align:4px;margin-right:8px}
+.panel{position:absolute;left:1060px;top:24px;width:516px;bottom:24px;display:flex;flex-direction:column;gap:14px}
+.panel h1{font:800 28px/1.1 var(--serif);color:var(--meok)}
+.panel h1 small{display:block;font:500 12px/1.55 var(--sans);letter-spacing:.04em;color:var(--soft);margin-top:8px}
+.fx{font:500 12.5px/1.75 var(--mono);color:var(--ink2)}
+.fx b{color:var(--meok)}
+.bill{width:100%;border-collapse:collapse;font-size:12.5px}
+.bill td{padding:5px 3px;border-top:1px dashed var(--line);color:var(--ink2);vertical-align:top}
+.bill td:first-child{font-weight:700;color:var(--meok);white-space:nowrap;width:110px}
+.bill td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap}
+.judge{font-size:12.5px;line-height:1.65;color:var(--ink2)}
+.judge b{display:inline-block;min-width:44px;font-size:11px;letter-spacing:.1em;padding:1px 6px;border-radius:3px;margin-right:8px;text-align:center}
+.judge .m{background:#d6e3d6;color:#2f5a40}.judge .s{background:#ece0b8;color:#6b5418}.judge .p{background:#efd0c7;color:#8c2f1e}
+.judge p+p{margin-top:5px}
+.seedrow{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ink2)}
+.seedrow input{width:90px;font:700 13px var(--mono);padding:6px 8px;border:1px solid var(--line);background:var(--paper);color:var(--meok)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<section class="screen" id="sa">
+  <div class="hd">
+    <h1>녹는 창고<small>한강변 사설 빙고 · 정조 연간</small></h1>
+    <div class="st">
+      <div><span>때</span><b id="hTime">-</b></div>
+      <div><span>기온</span><b id="hTemp">-</b></div>
+      <div><span>얼음</span><b id="hStock">-</b></div>
+      <div><span>돈</span><b id="hMoney">-</b></div>
+    </div>
+  </div>
+  <canvas id="cv" width="940" height="640"></canvas>
+  <canvas id="tl" width="940" height="232"></canvas>
+  <div id="side"></div>
+</section>
+
+<section class="screen" id="sb">
+  <canvas id="chart" width="1010" height="560"></canvas>
+  <div id="stbl"></div>
+  <div class="panel">
+    <h1>설계자 화면<small>게임에는 없다. 같은 씨드로 세 가지 운영을 헤드리스로 끝까지 돌린 결과다 — 화면 A 와 같은 함수(<code>endTurn</code>)를 쓴다.</small></h1>
+    <div class="seedrow">씨드 <input id="seedIn" type="number" value="106"> <button class="btn line" id="seedGo">다시 돌리기</button> <span id="seedNote"></span></div>
+    <div class="box"><h3>녹는 양 — 정수 천분율 + 나머지 누적</h3>
+      <div class="fx">
+        율(‰/일) = max(<b>2</b>, 기온×2 − 24 − 짚×5 + 문×3)<br>
+        누적 += 얼음 × 율<br>
+        녹음 = ⌊누적 ÷ 1000⌋ · 누적 −= 녹음 × 1000<br>
+        <span style="color:var(--soft)">— 소수 없이 하루씩. 나머지는 버리지 않고 이월한다(원칙 4)<br>
+        — 짚은 세 후(候)마다 한 겹 썩는다 · 문은 팔 때마다 한 번 열린다<br>
+        — 시세(푼/덩이) = 10 + max(0, 기온 − 16) × 4</span>
+      </div>
+    </div>
+    <div class="box"><h3>콘텐츠 청구서 — 이 안의 실제 비용</h3>
+      <table class="bill">
+        <tr><td>손님</td><td>어물전·약방·반가 잔치·궁 진상·내의원. 손님마다 말투 대사 6줄</td><td>5종 · 30줄</td></tr>
+        <tr><td>계약</td><td>고정가·납기·위약금. 연도마다 다른 조합</td><td>12건</td></tr>
+        <tr><td>날씨</td><td>후 단위 기온 + 장마·폭염·이른 서리 사건</td><td>사건 8</td></tr>
+        <tr><td>그림</td><td>빙고 단면 1장 · 계절 하늘 4 · 손님 초상 5</td><td>10장</td></tr>
+        <tr><td>소리</td><td>물방울 · 문 삐걱 · 얼음 끌기 · 매미 · 강바람</td><td>5루프</td></tr>
+      </table>
+    </div>
+    <div class="box judge"><h3>판정 — 누가 무엇을 보는가</h3>
+      <p><b class="m">기계</b>같은 씨드면 같은 장부가 나오는가 · 녹는 양 합계 = 처음 재고 − 판 것 − 남은 것 (한 덩이도 새지 않는가) · 어떤 전략도 손해 없이 이기지 못하는가</p>
+      <p><b class="s">화면</b>얼음 더미가 줄어드는 것이 숫자보다 먼저 느껴지는가</p>
+      <p><b class="p">사람</b><strong>녹는 걸 지켜보며 버티는 것이 긴장인가 지루함인가.</strong> 계약 도장을 찍을 때 손이 머뭇거리는가</p>
+    </div>
+  </div>
+</section>
+
+<div class="tabs"><button data-s="a">1 · 빙고</button><button data-s="b">2 · 설계자</button></div>
+<canvas class="fiber" id="fiber" width="400" height="250"></canvas>
+</div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/1000);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  (function(){var c=document.getElementById('fiber'),x=c.getContext('2d'),r=rng(7);x.fillStyle='#fff';x.fillRect(0,0,400,250);
+    for(var i=0;i<900;i++){x.strokeStyle='rgba(120,100,70,'+(r()*.35)+')';x.lineWidth=r()*.8+.2;x.beginPath();var a=r()*400,b=r()*250,t=r()*6.28,l=r()*18+4;x.moveTo(a,b);x.quadraticCurveTo(a+Math.cos(t)*l*.6+r()*4,b+Math.sin(t)*l*.6,a+Math.cos(t)*l,b+Math.sin(t)*l);x.stroke();}})();
+
+  // 씨드 고정 난수 — 원칙 5
+  function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function ri(r,a,b){return a+Math.floor(r()*(b-a+1));}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+
+  /* ════════ 규칙 — DOM 을 모른다. 화면 A 와 화면 B 의 헤드리스 전략이 같은 함수를 쓴다 ════════ */
+  var JEOL=['입하','소만','망종','하지','소서','대서','입추','처서'];
+  var TURNS=24, DAYS=5, WINTER=12, CAP=600, LABOR=400, STRAW=300, TAX=1500, SCRAP=5, START=5000;
+  function turnName(t){return JEOL[Math.floor(t/3)]+' '+(t%3+1)+'후';}
+  function price(g,t){return 10+Math.max(0,g.temps[t]-16)*4;}
+  function rate(g,doors){return Math.max(2,g.temps[g.turn]*2-24-g.ins*5+doors*3);}
+
+  function newGame(seed){
+    var r=rng(seed),i,g={seed:seed,phase:'winter',wday:0,money:START,stock:0,ins:2,acc:0,turn:0,doors:0,
+      temps:[],ice:[],cut:[],offers:[],contracts:[],signed:[],log:[],hist:[],
+      tot:{cut:0,labor:0,straw:0,sold:0,revenue:0,melted:0,penalty:0,delivered:0}};
+    for(i=0;i<WINTER;i++)g.ice.push(ri(r,3,9));                         // 강 얼음 두께(치)
+    for(i=0;i<TURNS;i++)g.temps.push(17+Math.round(14*Math.sin(Math.PI*(i+1)/25))+ri(r,-2,2));
+    for(i=0;i<TURNS;i++){var o=[];
+      o.push({who:'어물전',note:'생선 궤짝에 깐다',qty:ri(r,20,48),mul:80});
+      if(r()<.6)o.push({who:'약방',note:'열 내리는 데 쓴다',qty:ri(r,4,10),mul:130});
+      if(r()<.3)o.push({who:'반가 잔치',note:'화채 한 독',qty:ri(r,14,30),mul:110});
+      o.forEach(function(x){x.price=Math.round(price(g,i)*x.mul/100);x.taken=false;});g.offers.push(o);}
+    g.contracts=[
+      {id:0,who:'궁 진상',note:'초복 수라간',open:0,due:[ri(r,11,13)],qty:ri(r,55,70),price:52,pen:4000},
+      {id:1,who:'내의원',note:'매 후 정기 납품',open:3,due:[6,7,8,9,10,11,12,13,14,15,16,17],qty:6,price:44,pen:400},
+      {id:2,who:'반가 혼례',note:'중복 잔칫날',open:8,due:[ri(r,14,16)],qty:ri(r,32,44),price:72,pen:2000}];
+    return g;}
+
+  function say(g,t,c){g.log.unshift({t:t,c:c||''});if(g.log.length>30)g.log.pop();}
+  function cutIce(g){if(g.phase!=='winter')return;var n=Math.min(CAP-g.stock,g.ice[g.wday]*8);
+    g.money-=LABOR;g.tot.labor+=LABOR;g.stock+=n;g.tot.cut+=n;g.cut[g.wday]=true;say(g,'채빙 '+(g.wday+1)+'일째 — 두께 '+g.ice[g.wday]+'치, '+n+'덩이 들였다');nextWinter(g);}
+  function restWinter(g){if(g.phase!=='winter')return;say(g,(g.wday+1)+'일째는 쉬었다 — 두께 '+g.ice[g.wday]+'치');nextWinter(g);}
+  function nextWinter(g){g.wday++;if(g.wday>=WINTER)startSummer(g);}
+  function startSummer(g){g.phase='summer';g.wday=WINTER;g.turn=0;g.doors=0;say(g,'빙고 문을 봉했다. 입하까지 얼음 '+g.stock+'덩이','good');deliver(g);}
+  function buyStraw(g){if(g.ins>=6||g.phase==='end')return;g.money-=STRAW;g.tot.straw+=STRAW;g.ins++;if(g.phase==='summer'){g.doors++;}say(g,'짚 한 겹 보강 — '+g.ins+'겹'+(g.phase==='summer'?' (문을 한 번 열었다)':''));}
+  function sell(g,k){var o=g.offers[g.turn][k];if(!o||o.taken||g.stock<o.qty||g.phase!=='summer')return false;
+    g.stock-=o.qty;g.money+=o.qty*o.price;g.tot.sold+=o.qty;g.tot.revenue+=o.qty*o.price;g.doors++;o.taken=true;
+    say(g,o.who+'에 '+o.qty+'덩이 · '+(o.qty*o.price)+'푼');return true;}
+  function sign(g,id){var c=g.contracts[id];if(g.signed.indexOf(id)>=0)return;if(!(g.turn>=c.open&&g.turn<=c.open+1&&g.phase==='summer'))return;
+    g.signed.push(id);say(g,c.who+' 계약에 도장 — '+c.qty+'덩이 × '+c.price+'푼 고정','good');}
+  function reserved(g,from){var n=0;g.signed.forEach(function(id){var c=g.contracts[id];c.due.forEach(function(d){if(d>=from)n+=c.qty;});});return n;}
+  function deliver(g){g.signed.forEach(function(id){var c=g.contracts[id];if(c.due.indexOf(g.turn)<0)return;
+    if(g.stock>=c.qty){g.stock-=c.qty;g.money+=c.qty*c.price;g.tot.delivered+=c.qty;g.tot.revenue+=c.qty*c.price;g.doors++;say(g,c.who+' 납품 '+c.qty+'덩이 · '+(c.qty*c.price)+'푼','good');}
+    else{g.money-=c.pen;g.tot.penalty+=c.pen;say(g,c.who+' 납품 못 함 — 위약금 '+c.pen+'푼','bad');}});}
+  // 닷새를 하루씩 녹인다. 나머지는 g.acc 로 이월
+  function meltSim(stock,acc,r){var m=0;for(var d=0;d<DAYS;d++){acc+=stock*r;var k=Math.floor(acc/1000);acc-=k*1000;stock-=k;m+=k;}return {stock:stock,acc:acc,melted:m};}
+  function endTurn(g){if(g.phase!=='summer')return;var r=rate(g,g.doors),s0=g.stock,ms=meltSim(g.stock,g.acc,r);
+    g.stock=ms.stock;g.acc=ms.acc;g.tot.melted+=ms.melted;
+    g.hist.push({turn:g.turn,temp:g.temps[g.turn],price:price(g,g.turn),stock:g.stock,melted:ms.melted,rate:r,doors:g.doors,ins:g.ins});
+    say(g,turnName(g.turn)+' — 율 '+r+'‰, '+ms.melted+'덩이 녹았다');
+    g.turn++;g.doors=0;if(g.turn%3===0&&g.ins>0){g.ins--;say(g,'짚 한 겹이 썩었다 — '+g.ins+'겹');}
+    if(g.turn>=TURNS){settle(g);return;}deliver(g);}
+  function settle(g){g.phase='end';g.turn=TURNS-1;var scrap=g.stock*SCRAP;g.money+=scrap-TAX;g.scrap=scrap;say(g,'처서가 지났다. 남은 '+g.stock+'덩이는 찌꺼기 값 '+scrap+'푼');}
+
+  /* ── 헤드리스 전략 셋 — 같은 씨드, 같은 규칙 ── */
+  var STRATS=[
+    {key:'early',name:'일찍 판다',col:'#c9a24f',desc:'오는 손님 다 받는다 · 짚 안 산다',
+     winter:function(g){return g.ice[g.wday]>=4;},
+     summer:function(g){g.offers[g.turn].forEach(function(o,k){sell(g,k);});}},
+    {key:'hold',name:'버틴다',col:'#5f9cb3',desc:'시세 60푼 이상만 판다 · 짚 5겹 유지',
+     winter:function(g){if(g.wday===0){buyStraw(g);buyStraw(g);buyStraw(g);}return true;},
+     summer:function(g){if(g.ins<5&&g.turn<18)buyStraw(g);if(price(g,g.turn)>=60)g.offers[g.turn].forEach(function(o,k){sell(g,k);});}},
+    {key:'contract',name:'계약한다',col:'#b5402c',desc:'계약 셋 다 찍는다 · 남는 몫만 판다',
+     winter:function(g){if(g.wday===0){buyStraw(g);buyStraw(g);}return true;},
+     summer:function(g){g.contracts.forEach(function(c){sign(g,c.id);});if(g.ins<4&&g.turn<18)buyStraw(g);
+       var spare=g.stock-Math.ceil(reserved(g,g.turn+1)*13/10)-30;
+       g.offers[g.turn].forEach(function(o,k){if(o.who!=='어물전'&&o.qty<=spare){if(sell(g,k))spare-=o.qty;}});}}];
+  function runStrat(seed,st){var g=newGame(seed);while(g.phase==='winter'){if(st.winter(g))cutIce(g);else restWinter(g);}
+    var trace=[{stock:g.stock}];while(g.phase==='summer'){st.summer(g);endTurn(g);trace.push({stock:g.stock});}
+    return {g:g,trace:trace};}
+
+  /* ════════ 화면 A ════════ */
+  var SEED=106, G=newGame(SEED), best={};
+  function bots(seed){var o={};STRATS.forEach(function(s){o[s.key]=runStrat(seed,s);});return o;}
+  var BOT=bots(SEED);
+  var cv=document.getElementById('cv'),X=cv.getContext('2d'),tl=document.getElementById('tl'),T=tl.getContext('2d'),side=document.getElementById('side');
+  var fx={drips:[],flash:0,shake:0};
+
+  // 아치 안에 얼음 칸을 미리 잡는다 — 칸 하나가 몇 덩이인지는 칸 수로 정한다
+  var AX=470,AY=600,ARX=330,ARY=400,BW=40,BH=32,CELLS=[];
+  (function(){for(var row=0;row<11;row++){var yb=AY-14-row*BH,yt=yb-BH,dy=AY-yt;if(dy>=ARY-30)break;
+    var hw=ARX*Math.sqrt(1-(dy/ARY)*(dy/ARY))-26,n=Math.floor(hw*2/BW);if(n<2)break;
+    var x0=AX-n*BW/2;for(var c=0;c<n;c++){var cc=(c%2?(n-1-(c>>1)):(c>>1));CELLS.push({x:x0+c*BW,y:yt,row:row,order:row*100+Math.abs(c-(n-1)/2)});}}
+    CELLS.sort(function(a,b){return a.order-b.order;});})();
+  var PER=CAP/CELLS.length;
+
+  function sky(g){var t=g.phase==='winter'?-8:g.temps[g.turn];var k=clamp((t+8)/42,0,1);
+    var top=k<.5?[110,130,150]:[214,150,96],bot=k<.5?[200,206,206]:[236,214,170];
+    if(k>=.5){var q=(k-.5)*2;top=[Math.round(150+64*q),Math.round(170-20*q),Math.round(190-94*q)];}
+    return {top:'rgb('+top.join(',')+')',bot:'rgb('+bot.join(',')+')',k:k};}
+
+  function drawA(now){var g=G,W=940,H=640,s=sky(g);X.clearRect(0,0,W,H);
+    var gr=X.createLinearGradient(0,0,0,240);gr.addColorStop(0,s.top);gr.addColorStop(1,s.bot);X.fillStyle=gr;X.fillRect(0,0,W,H);
+    // 해
+    X.fillStyle=g.phase==='winter'?'rgba(255,250,235,.7)':'rgba(255,'+Math.round(230-s.k*90)+','+Math.round(170-s.k*120)+',.85)';
+    X.beginPath();X.arc(780,64,g.phase==='winter'?22:30+s.k*10,0,7);X.fill();
+    if(g.phase!=='winter'&&s.k>.6){X.strokeStyle='rgba(255,200,120,.25)';for(var i=0;i<12;i++){var a=i/12*6.283+now/4000;X.beginPath();X.moveTo(780+Math.cos(a)*48,64+Math.sin(a)*48);X.lineTo(780+Math.cos(a)*70,64+Math.sin(a)*70);X.stroke();}}
+    // 강 (멀리)
+    X.fillStyle=g.phase==='winter'?'#dfe6e8':'#7fa7b4';X.fillRect(0,150,W,40);
+    if(g.phase==='winter'){X.strokeStyle='rgba(90,110,120,.35)';for(i=0;i<20;i++){X.beginPath();X.moveTo(i*52,160+(i%3)*8);X.lineTo(i*52+30,170+(i%2)*10);X.stroke();}}
+    else{X.strokeStyle='rgba(255,255,255,.35)';for(i=0;i<16;i++){var wx=(i*67+now/40)%W;X.beginPath();X.moveTo(wx,162+(i%3)*9);X.lineTo(wx+18,162+(i%3)*9);X.stroke();}}
+    // 봉분처럼 덮은 흙
+    X.fillStyle='#8a7656';X.beginPath();X.moveTo(0,H);X.lineTo(0,214);X.bezierCurveTo(150,196,180,150,470,140);X.bezierCurveTo(760,150,790,196,W,214);X.lineTo(W,H);X.fill();
+    X.fillStyle=g.phase==='winter'?'#eef0ee':'#6f7d4a';X.beginPath();X.moveTo(0,214);X.bezierCurveTo(150,196,180,150,470,140);X.bezierCurveTo(760,150,790,196,W,214);X.lineTo(W,226);X.bezierCurveTo(780,208,750,164,470,154);X.bezierCurveTo(190,164,160,208,0,226);X.fill();
+    // 흙 결
+    X.strokeStyle='rgba(60,45,30,.18)';for(i=0;i<40;i++){X.beginPath();var ex=(i*97)%W,ey=240+(i*53)%380;X.moveTo(ex,ey);X.lineTo(ex+14,ey+2);X.stroke();}
+    // 아치 내부
+    X.save();X.beginPath();X.ellipse(AX,AY,ARX,ARY,0,Math.PI,2*Math.PI);X.lineTo(AX+ARX,AY+8);X.lineTo(AX-ARX,AY+8);X.closePath();X.clip();
+    var ig=X.createLinearGradient(0,200,0,AY);ig.addColorStop(0,'#2a2620');ig.addColorStop(1,'#141210');X.fillStyle=ig;X.fillRect(0,0,W,H);
+    // 짚 — 벽을 따라 두께로 보인다
+    if(g.ins>0){X.strokeStyle='#c9a24f';for(var L=0;L<g.ins;L++){X.lineWidth=5;X.globalAlpha=.75;X.beginPath();X.ellipse(AX,AY,ARX-6-L*6,ARY-6-L*6,0,Math.PI,2*Math.PI);X.stroke();}
+      X.globalAlpha=.5;X.lineWidth=1;X.strokeStyle='#8a6a2a';for(i=0;i<120;i++){var an=Math.PI+i/120*Math.PI,rr=ARX-6-g.ins*3;X.beginPath();X.moveTo(AX+Math.cos(an)*rr,AY+Math.sin(an)*(ARY-6-g.ins*3));X.lineTo(AX+Math.cos(an+.02)*(rr-g.ins*5),AY+Math.sin(an+.03)*(ARY-6-g.ins*7));X.stroke();}X.globalAlpha=1;}
+    // 얼음
+    var full=g.stock/PER,nf=Math.floor(full),part=full-nf;
+    for(i=0;i<CELLS.length&&i<=nf;i++){var c=CELLS[i],al=i<nf?1:part;if(al<=0.02)continue;
+      var shrink=i<nf?0:(1-al)*BH*.6;X.globalAlpha=Math.max(.35,al);
+      var bg=X.createLinearGradient(c.x,c.y,c.x+BW,c.y+BH);bg.addColorStop(0,'#e8f6fa');bg.addColorStop(.55,'#bfe2ee');bg.addColorStop(1,'#86bcd0');
+      X.fillStyle=bg;X.fillRect(c.x+2,c.y+2+shrink,BW-4,BH-4-shrink);
+      X.strokeStyle='rgba(255,255,255,.7)';X.lineWidth=1;X.beginPath();X.moveTo(c.x+5,c.y+6+shrink);X.lineTo(c.x+BW-8,c.y+6+shrink);X.stroke();
+      X.strokeStyle='rgba(40,80,100,.35)';X.strokeRect(c.x+2.5,c.y+2.5+shrink,BW-5,BH-5-shrink);
+      // 왕겨 사이층
+      X.fillStyle='rgba(201,162,79,.45)';X.fillRect(c.x+2,c.y+BH-3,BW-4,2);}
+    X.globalAlpha=1;
+    // 물방울
+    var r=g.phase==='summer'?rate(g,g.doors):0;
+    if(g.phase==='summer'&&Math.random()<r/90&&nf>0){var cc2=CELLS[Math.floor(Math.random()*Math.min(nf,CELLS.length))];fx.drips.push({x:cc2.x+6+Math.random()*(BW-12),y:cc2.y+BH,v:0});}
+    X.fillStyle='rgba(150,205,225,.85)';fx.drips=fx.drips.filter(function(d){d.v+=.35;d.y+=d.v;X.beginPath();X.ellipse(d.x,d.y,1.6,3,0,0,7);X.fill();return d.y<AY+4;});
+    // 배수로 물
+    var last=g.hist.length?g.hist[g.hist.length-1].melted:0,wd=Math.min(10,2+last/6);
+    X.fillStyle='rgba(95,156,179,.75)';X.fillRect(AX-ARX,AY+8-wd,ARX*2,wd);
+    X.restore();
+    // 홍예 돌
+    X.strokeStyle='#4a4136';X.lineWidth=10;X.beginPath();X.ellipse(AX,AY,ARX+5,ARY+5,0,Math.PI,2*Math.PI);X.stroke();
+    X.strokeStyle='rgba(30,25,20,.6)';X.lineWidth=2;for(i=1;i<14;i++){var aa=Math.PI+i/14*Math.PI;X.beginPath();X.moveTo(AX+Math.cos(aa)*(ARX),AY+Math.sin(aa)*ARY);X.lineTo(AX+Math.cos(aa)*(ARX+10),AY+Math.sin(aa)*(ARY+10));X.stroke();}
+    // 바닥
+    X.fillStyle='#3a332a';X.fillRect(AX-ARX-10,AY+8,ARX*2+20,14);
+    // 문 — 열면 빛이 든다
+    var dx=AX+ARX+20,dy=AY-120;X.fillStyle='#4a4136';X.fillRect(dx-6,dy-6,72,132);X.fillStyle=g.doors>0||fx.flash>0?'#e9c98a':'#1b1814';X.fillRect(dx,dy,60,120);
+    X.fillStyle='#3a2e22';X.fillRect(dx+(g.doors>0?44:0),dy,16,120);
+    if(fx.flash>0){X.fillStyle='rgba(255,220,150,'+(fx.flash*.35)+')';X.beginPath();X.moveTo(dx,dy);X.lineTo(dx-260,AY+8);X.lineTo(dx,dy+120);X.fill();fx.flash=Math.max(0,fx.flash-.02);}
+    X.fillStyle='#2b2722';X.font='600 12px '+getComputedStyle(document.body).fontFamily;X.fillText(g.doors>0?'문 '+g.doors+'번 열림':'문 닫힘',dx+2,dy+140);
+    // 겨울: 일꾼과 썰매
+    if(g.phase==='winter'){X.fillStyle='rgba(40,35,30,.8)';for(i=0;i<3;i++){var px=120+i*90+Math.sin(now/600+i)*6;X.beginPath();X.arc(px,138,5,0,7);X.fill();X.fillRect(px-4,143,8,14);}
+      X.fillStyle='#d9eef4';X.fillRect(330+Math.sin(now/600)*6,148,30,12);X.strokeStyle='#2b2722';X.strokeRect(330+Math.sin(now/600)*6,148,30,12);}
+    // 눈
+    if(g.phase==='winter'){X.fillStyle='rgba(255,255,255,.85)';for(i=0;i<70;i++){var sx=(i*131+now/30*(1+i%3)*.3)%W,sy=(i*71+now/20*(1+i%4)*.3)%H;X.beginPath();X.arc(sx,sy,1.4+(i%3)*.6,0,7);X.fill();}}
+    // 아지랑이
+    if(g.phase==='summer'&&s.k>.7){X.strokeStyle='rgba(255,240,210,.18)';for(i=0;i<6;i++){X.beginPath();for(var hx=0;hx<W;hx+=20){X.lineTo(hx,200+i*6+Math.sin(hx/40+now/300+i)*3);}X.stroke();}}
+    // 단면 표기
+    X.fillStyle='rgba(244,238,223,.8)';X.font='500 12px '+getComputedStyle(document.body).fontFamily;
+    X.fillText('빙고 단면 · 칸 하나 ≈ '+PER.toFixed(1)+'덩이 · 들일 수 있는 양 '+CAP+'덩이',24,632);
+  }
+
+  function drawTL(){var g=G,W=940,H=232,L=46,R=20,Tp=26,B=40,w=(W-L-R)/TURNS;T.clearRect(0,0,W,H);
+    var font=getComputedStyle(document.body).fontFamily;T.font='600 11px '+font;
+    T.fillStyle='#8a7f6c';T.fillText('후(候)별 시세 · 남은 얼음',L,17);
+    var cur=g.phase==='summer'?g.turn:(g.phase==='end'?TURNS:-1);
+    for(var t=0;t<TURNS;t++){var x=L+t*w,p=price(g,t),known=t<=cur;
+      // 예년 시세 — 노이즈 없는 곡선. 실제 값은 그 후가 되어야 보인다
+      var pa=10+Math.max(0,17+Math.round(14*Math.sin(Math.PI*(t+1)/25))-16)*4,ph=known?p:pa;
+      var y=H-B-ph*1.6;T.fillStyle=known?(t===g.turn&&g.phase==='summer'?'#b5402c':'#c9a24f'):'rgba(201,162,79,.22)';T.fillRect(x+3,y,w-6,H-B-y);
+      if(known){T.fillStyle='#5a5246';T.fillText(p,x+w/2-7,y-4);}
+      if(t%3===0){T.fillStyle='#2b2722';T.font='700 12px '+font;T.fillText(JEOL[t/3],x+3,H-B+18);T.font='600 11px '+font;
+        T.strokeStyle='rgba(43,39,34,.25)';T.beginPath();T.moveTo(x,Tp);T.lineTo(x,H-B+4);T.stroke();}
+      // 계약 납기 도장
+      g.signed.forEach(function(id){var c=g.contracts[id];if(c.due.indexOf(t)>=0){T.strokeStyle='#b5402c';T.lineWidth=1.5;T.strokeRect(x+w/2-6,H-B+24,12,12);T.lineWidth=1;}});}
+    // 재고 선
+    T.strokeStyle='#5f9cb3';T.lineWidth=2.5;T.beginPath();var y0=H-B-g.hist.length*0;var pts=[];
+    if(g.phase!=='winter'){pts.push([L,(g.hist.length?g.hist[0].stock+g.hist[0].melted:g.stock)]);}
+    g.hist.forEach(function(h,i){pts.push([L+(i+1)*w,h.stock]);});
+    pts.forEach(function(p,i){var yy=H-B-p[1]/CAP*(H-B-Tp);if(i)T.lineTo(p[0],yy);else T.moveTo(p[0],yy);});T.stroke();T.lineWidth=1;
+    T.fillStyle='#5f9cb3';T.fillText('얼음',W-R-30,Tp+10);T.fillStyle='#c9a24f';T.fillText('시세(푼)',W-R-80,Tp+10);
+    T.strokeStyle='rgba(43,39,34,.3)';T.beginPath();T.moveTo(L,H-B);T.lineTo(W-R,H-B);T.stroke();}
+
+  function header(){var g=G,el=function(id){return document.getElementById(id);};
+    el('hTime').textContent=g.phase==='winter'?'소한 · 채빙 '+(g.wday+1)+'/'+WINTER+'일':g.phase==='end'?'처서 · 결산':turnName(g.turn);
+    var tp=g.phase==='winter'?'−'+(9+g.ice[g.wday])+'℃':g.temps[g.turn]+'℃';el('hTemp').textContent=tp;el('hTemp').classList.toggle('hot',g.phase==='summer'&&g.temps[g.turn]>=28);
+    el('hStock').textContent=g.stock+'덩이';el('hMoney').textContent=g.money.toLocaleString()+'푼';}
+
+  function logHtml(g){return '<div class="box"><h3>장부</h3><div class="log">'+g.log.slice(0,7).map(function(l){return '<p class="'+l.c+'">· '+l.t+'</p>';}).join('')+'</div></div>';}
+
+  function renderSide(){var g=G,h='';
+    if(g.phase==='winter'){
+      var n=Math.min(CAP-g.stock,g.ice[g.wday]*8);
+      h+='<div class="box"><h3>소한에서 대한까지 · 강 얼음 <em>'+(g.wday+1)+' / '+WINTER+'일</em></h3>';
+      h+='<div class="wice">'+g.ice.map(function(v,i){var vis=i<=g.wday;return '<i class="'+(g.cut[i]?'cut ':'')+(i===g.wday?'now ':'')+(vis?'':'fog')+'"><b style="height:'+(vis?v*11:30)+'%"></b></i>';}).join('')+'</div>';
+      h+='<div class="melt">오늘 얼음 두께 <span class="big">'+g.ice[g.wday]+'치</span> → 캐면 <b>'+n+'덩이</b> · 일꾼 삯 '+LABOR+'푼<br><span style="font-size:12px;color:var(--soft)">내일 두께는 내일이 되어야 안다. 두꺼운 날 캐야 덩이가 크다. 빙고에는 '+CAP+'덩이까지 들어간다.</span></div></div>';
+      h+='<div class="row"><button class="btn grow" data-a="cut" '+(n<=0?'disabled':'')+'>채빙한다 (−'+LABOR+'푼)</button><button class="btn line grow" data-a="rest">쉰다</button></div>';
+      h+='<div class="box"><h3>단열 <em>짚 '+g.ins+' / 6겹</em></h3><div class="row"><span class="grow melt">짚 한 겹마다 녹는 율 −5‰. 세 후마다 한 겹씩 썩는다.</span><button class="btn line" data-a="straw" '+(g.ins>=6?'disabled':'')+'>짚 한 겹 (−'+STRAW+'푼)</button></div></div>';
+      h+='<button class="go" data-a="skip">문을 봉하고 여름으로<small>남은 채빙일 '+(WINTER-g.wday)+'일을 버린다</small></button>';
+      h+=logHtml(g);
+    } else if(g.phase==='summer'){
+      var r=rate(g,g.doors),p=meltSim(g.stock,g.acc,r),base=g.temps[g.turn]*2-24;
+      h+='<div class="box"><h3>이번 후(닷새) 녹는 양 <em>나머지 누적 '+g.acc+'/1000</em></h3><div class="melt"><span class="big">'+r+'‰</span>하루 · 닷새면 약 <b>'+p.melted+'덩이</b>가 물이 된다'+
+        '<div class="eq">기온 '+g.temps[g.turn]+'℃ → <b>'+base+'</b> &nbsp;− 짚 '+g.ins+'겹 <b>'+(g.ins*5)+'</b> &nbsp;+ 문 '+g.doors+'번 <b>'+(g.doors*3)+'</b>'+(base-g.ins*5+g.doors*3<2?' &nbsp;(바닥 2)':'')+'</div></div></div>';
+      h+='<div class="box scroll"><h3>오늘 온 손님 <em>시세 '+price(g,g.turn)+'푼/덩이</em></h3>';
+      g.offers[g.turn].forEach(function(o,k){h+='<div class="offer'+(o.taken?' done':'')+'"><div class="who">'+o.who+'<small>'+o.note+'</small></div><div class="what"><b>'+o.qty+'</b>덩이 × <b>'+o.price+'</b>푼 = <b>'+(o.qty*o.price)+'</b>푼</div><button class="btn" data-a="sell" data-k="'+k+'" '+(o.taken||g.stock<o.qty?'disabled':'')+'>'+(o.taken?'팔았다':'문 열고 판다')+'</button></div>';});
+      g.contracts.forEach(function(c){var on=g.signed.indexOf(c.id)>=0,open=g.turn>=c.open&&g.turn<=c.open+1;if(!on&&!open)return;
+        var due=c.due.length>1?turnName(c.due[0])+'부터 '+c.due.length+'번':turnName(c.due[0]);
+        h+='<div class="offer"><div class="who">'+c.who+(on?'<span class="seal-tag">계약</span>':'')+'<small>'+c.note+'</small></div><div class="what"><b>'+c.qty+'</b>덩이 × <b>'+c.price+'</b>푼 고정 · '+due+'<br><span style="color:var(--seal)">못 대면 위약 '+c.pen+'푼'+(c.due.length>1?'/회':'')+'</span></div>'+(on?'<span style="font-size:12px;color:var(--soft)">맡아 둘 몫 '+reserved(g,g.turn)+'</span>':'<button class="btn seal" data-a="sign" data-k="'+c.id+'">도장 찍는다</button>')+'</div>';});
+      h+='</div>';
+      h+='<div class="row"><span class="grow melt" style="font-size:12.5px">짚 '+g.ins+'겹 · 보강하려면 문을 한 번 연다</span><button class="btn line" data-a="straw" '+(g.ins>=6?'disabled':'')+'>짚 보강 (−'+STRAW+'푼)</button></div>';
+      h+='<button class="go" data-a="end">문 닫고 닷새 보낸다<small>'+(g.turn+1<TURNS?'다음: '+turnName(g.turn+1):'마지막 후 — 결산')+'</small></button>';
+      h+=logHtml(g);
+    } else {
+      var t=g.tot;
+      h+='<div class="box"><h3>처서 결산 <em>씨드 '+g.seed+'</em></h3><table class="settle" style="width:100%">'+
+        '<tr><td>들인 얼음</td><td>'+t.cut+'덩이</td></tr><tr><td>판 것 · 납품</td><td>'+(t.sold+t.delivered)+'덩이</td></tr><tr><td>물이 된 것</td><td style="color:var(--water)">'+t.melted+'덩이</td></tr><tr><td>남은 찌꺼기</td><td>'+g.stock+'덩이</td></tr>'+
+        '<tr><td>매출</td><td>+'+t.revenue+'</td></tr><tr><td>찌꺼기 값</td><td>+'+g.scrap+'</td></tr><tr><td>일꾼 삯 · 짚</td><td>−'+(t.labor+t.straw)+'</td></tr><tr><td>위약금</td><td style="color:var(--seal)">−'+t.penalty+'</td></tr><tr><td>빙고 세</td><td>−'+TAX+'</td></tr>'+
+        '<tr class="total"><td>남은 돈 (밑천 '+START+')</td><td>'+g.money.toLocaleString()+'푼</td></tr></table></div>';
+      h+='<div class="box"><h3>같은 해를 다르게 산 사람들</h3><table class="settle" style="width:100%">'+STRATS.map(function(s){return '<tr><td>「'+s.name+'」 '+'<span style="font-size:11px;color:var(--soft)">'+s.desc+'</span></td><td>'+BOT[s.key].g.money.toLocaleString()+'</td></tr>';}).join('')+'</table></div>';
+      h+='<div class="row"><button class="btn grow" data-a="again">같은 해 다시</button><button class="btn line grow" data-a="new">다른 해</button></div>';
+      h+=logHtml(g);
+    }
+    side.innerHTML=h;header();drawTL();}
+
+  side.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;var a=b.getAttribute('data-a'),k=+b.getAttribute('data-k');
+    if(a==='cut')cutIce(G);else if(a==='rest')restWinter(G);else if(a==='straw'){buyStraw(G);if(G.phase==='summer')fx.flash=1;}
+    else if(a==='skip')startSummer(G);else if(a==='sell'){if(sell(G,k))fx.flash=1;}else if(a==='sign')sign(G,k);else if(a==='end')endTurn(G);
+    else if(a==='again'){G=newGame(SEED);}else if(a==='new'){SEED=1+Math.floor(Math.random()*9999);G=newGame(SEED);BOT=bots(SEED);document.getElementById('seedIn').value=SEED;drawB();}
+    renderSide();});
+
+  /* ════════ 화면 B ════════ */
+  var ch=document.getElementById('chart'),C=ch.getContext('2d');
+  function drawB(){var seed=+document.getElementById('seedIn').value||106,res=bots(seed),W=1010,H=560,L=60,R=60,Tp=50,B=56,w=(W-L-R)/TURNS,font=getComputedStyle(document.body).fontFamily;
+    C.clearRect(0,0,W,H);C.font='700 15px '+font;C.fillStyle='#1f1c18';C.fillText('같은 씨드 '+seed+' · 세 운영의 남은 얼음 (선) 과 시세 (막대)',L,30);
+    var g0=res.early.g;
+    for(var t=0;t<TURNS;t++){var p=price(g0,t),x=L+t*w,y=H-B-p*3.2;C.fillStyle='rgba(201,162,79,.28)';C.fillRect(x+4,y,w-8,H-B-y);
+      if(t%3===0){C.fillStyle='#2b2722';C.font='700 12px '+font;C.fillText(JEOL[t/3],x+3,H-B+20);C.strokeStyle='rgba(43,39,34,.18)';C.beginPath();C.moveTo(x,Tp);C.lineTo(x,H-B);C.stroke();}}
+    C.font='600 11px '+font;C.fillStyle='#8a7f6c';for(var v=0;v<=600;v+=150){var yy=H-B-v/CAP*(H-B-Tp);C.fillText(v,L-34,yy+4);C.strokeStyle='rgba(43,39,34,.08)';C.beginPath();C.moveTo(L,yy);C.lineTo(W-R,yy);C.stroke();}
+    C.fillText('덩이',L-34,Tp-10);C.fillText('시세 푼',W-R+6,Tp-10);for(v=0;v<=100;v+=25){C.fillText(v,W-R+8,H-B-v*3.2+4);}
+    STRATS.forEach(function(s){var tr=res[s.key].trace;C.strokeStyle=s.col;C.lineWidth=3;C.beginPath();tr.forEach(function(p,i){var x=L+i*w,y=H-B-p.stock/CAP*(H-B-Tp);if(i)C.lineTo(x,y);else C.moveTo(x,y);});C.stroke();
+      var lp=tr[tr.length-1];C.fillStyle=s.col;C.font='700 12px '+font;C.fillText(s.name,L+TURNS*w-60,H-B-lp.stock/CAP*(H-B-Tp)-8-(s.key==='hold'?16:s.key==='contract'?2:-14));});
+    C.lineWidth=1;
+    // 표
+    var rows=STRATS.map(function(s){var g=res[s.key].g,t=g.tot,leak=t.cut-(t.sold+t.delivered)-t.melted-g.stock;
+      return '<tr><td><i style="background:'+s.col+'"></i>'+s.name+'<small>'+s.desc+'</small></td><td>'+t.cut+'</td><td>'+(t.sold+t.delivered)+'</td><td>'+t.melted+'</td><td>'+g.stock+'</td><td>'+t.penalty+'</td><td>'+(leak===0?'0 ✓':leak+' ✕')+'</td><td><b>'+g.money.toLocaleString()+'</b></td></tr>';}).join('');
+    document.getElementById('stbl').innerHTML='<table class="strat"><tr><th>운영</th><th>들인 덩이</th><th>판 덩이</th><th>녹은 덩이</th><th>남은 덩이</th><th>위약금</th><th>샌 덩이</th><th>남은 돈(푼)</th></tr>'+rows+'</table>'+note(res);
+    // 결정성 — 같은 씨드 두 번
+    var a=runStrat(seed,STRATS[2]).g,b=runStrat(seed,STRATS[2]).g;document.getElementById('seedNote').textContent=(a.money===b.money&&a.tot.melted===b.tot.melted?'두 번 돌려 같은 장부 ✓':'재현 실패 ✕');}
+  // 이 씨드에서 읽히는 것 — 숫자를 사람이 읽기 쉬운 문장으로
+  function note(res){var bestK=STRATS.slice().sort(function(a,b){return res[b.key].g.money-res[a.key].g.money;})[0],out=[];
+    STRATS.forEach(function(s){var tr=res[s.key].trace,z=-1;for(var i=0;i<tr.length;i++)if(tr[i].stock<=5){z=i;break;}out.push('「'+s.name+'」 '+(z<0?'처서까지 버텼다':'얼음이 '+(z<TURNS?turnName(z):'처서')+'에 바닥났다'));});
+    return '<p style="margin-top:10px;font-size:12.5px;line-height:1.7;color:var(--ink2)">이 씨드에서 가장 많이 남긴 운영은 <b>「'+bestK.name+'」</b>. '+out.join(' · ')+'. '+
+      '<span style="color:var(--seal)">시세가 가장 높은 대서 무렵에 셋 다 얼음이 없다면 그것이 이 수치의 첫 번째 고칠 점이다 — 버티는 사람이 정점에 닿을 수 있어야 긴장이 생긴다.</span></p>';}
+  document.getElementById('seedGo').addEventListener('click',drawB);
+
+  /* ── 화면 전환 ── */
+  var cur='a';
+  function show(k){if(k!=='a'&&k!=='b')k='a';cur=k;
+    document.getElementById('sa').classList.toggle('on',k==='a');document.getElementById('sb').classList.toggle('on',k==='b');
+    var bs=document.querySelectorAll('.tabs button');for(var j=0;j<bs.length;j++)bs[j].classList.toggle('on',bs[j].getAttribute('data-s')===k);
+    if(k==='b')drawB();
+    if(location.hash!=='#'+k){try{history.replaceState(null,'','#'+k);}catch(e){}}}
+  var tb=document.querySelectorAll('.tabs button');for(var i=0;i<tb.length;i++)tb[i].addEventListener('click',function(){show(this.getAttribute('data-s'));});
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1));});
+  window.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT')return;if(e.key==='1')show('a');else if(e.key==='2')show('b');});
+
+  // 디버그·스크린샷용: ?demo 면 겨울을 캐고 여름 몇 후를 진행해 둔다
+  if(/demo/.test(location.search)){while(G.phase==='winter'){if(G.wday===0){buyStraw(G);buyStraw(G);}if(G.ice[G.wday]>=4)cutIce(G);else restWinter(G);}
+    for(var d=0;d<11;d++){if(G.turn===0)sign(G,0);if(G.turn===3)sign(G,1);if(G.turn%2===0)sell(G,1);if(G.turn%3===1&&G.ins<5)buyStraw(G);endTurn(G);}}
+
+  renderSide();show((location.hash||'#a').slice(1));
+  function frame(now){if(cur==='a')drawA(now);requestAnimationFrame(frame);}
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

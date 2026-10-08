@@ -20,7 +20,7 @@ kit/
   tools/                   에셋 수집기 · 갤러리 생성기 · TTS · 공유 로직 목록 생성기
 docs/
   README.md                ★ 문서 색인
-  CONCEPTS.md              컨셉 목록 — 70안 + 보관 34 (시안 폴더는 poc-gallery/concepts/_archive/)
+  CONCEPTS.md              컨셉 목록 — 76안 + 보관 34 (시안 폴더는 poc-gallery/concepts/_archive/)
   PLAN_GENRES.md           장르 계획 다섯
   ENGINE_FIT.md            엔진 선택
   MUSIC_DIRECTION.md       음악 방향
